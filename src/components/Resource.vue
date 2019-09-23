@@ -1,6 +1,6 @@
 <template>
   <router-link
-    :to="`${category}/${label}`"
+    :to="finalAddress"
     class="resource"
   >
     {{ label }}
@@ -13,6 +13,10 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'Resource',
   props: {
+    goto: {
+      type: String,
+      default: '',
+    },
     category: {
       type: String,
       default: 'level',
@@ -20,6 +24,12 @@ export default Vue.extend({
     label: {
       type: [String, Number],
       default: 'a label',
+    },
+  },
+  computed: {
+    finalAddress() {
+      const { goto, category, label } = this;
+      return goto || `${category}/${label}`;
     },
   },
 });

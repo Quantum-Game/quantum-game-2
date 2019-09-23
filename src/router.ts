@@ -14,6 +14,11 @@ export default new Router({
       component: Menu,
     },
     {
+      path: '/play',
+      name: 'play',
+      component: () => import('./views/Play.vue'),
+    },
+    {
       path: '/level/:id',
       name: 'level',
       component: () => import('./components/ExampleLevel.vue'),

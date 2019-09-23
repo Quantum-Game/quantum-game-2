@@ -2,6 +2,10 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <pre>// These do not lead anywhere yet</pre>
+    <resource
+      goto="play"
+      label="Play"
+    />
     <resource-container />
   </div>
 </template>
@@ -9,11 +13,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import ResourceContainer from '../components/ResourceContainer.vue';
+import Resource from '../components/Resource.vue';
 
 export default Vue.extend({
   name: 'HelloWorld',
   components: {
     ResourceContainer,
+    Resource,
   },
   props: {
     msg: {
@@ -26,6 +32,12 @@ export default Vue.extend({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.hello {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 h3 {
 	margin: 40px 0 0;
 }
