@@ -1,23 +1,26 @@
 <template>
   <div class="toolbox-container">
     <pre>THIS IS TOOLBOX, HELLO</pre>
-    <div class="tool">
-      A
-    </div>
+    <ToolSlot
+      v-for="(set) in toolsets"
+      :key="set[0]"
+      :set="set"
+    />
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+import ToolSlot from './ToolSlot.vue';
 
-// TODO:
-// [ ] create a notion of tools in the store;
-// [ ] d&d
-
-export default Vue.extend({
-  name: 'Toolbox',
-});
-
+@Component({
+  components: {
+    ToolSlot,
+  },
+})
+export default class ToolBox extends Vue {
+  @Prop() readonly toolsets!: Array<Object>
+}
 </script>
 
 <style lang="scss">
@@ -26,10 +29,5 @@ export default Vue.extend({
     height: 100%;
     width: 20%;
     margin-left: 10px;
-    .tool {
-      width: 100%;
-      background-color: purple;
-      height: 50px;
-    }
   }
 </style>

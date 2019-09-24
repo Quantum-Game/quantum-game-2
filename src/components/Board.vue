@@ -12,7 +12,7 @@
         :key="xIndex"
         :y="yIndex"
         :x="xIndex"
-        @tileClick="onTileClick"
+        @tile-click="onTileClick"
       />
     </div>
   </div>
@@ -37,7 +37,7 @@ export default class Board extends Vue {
 
   onTileClick(payload: {x: number, y: number}) : void {
     this.lastTile = payload;
-    const tileStatus = { ...payload, status: 'active' };
+    const tileStatus = { ...payload, element: 'active' };
     this.$store.commit('setTile', tileStatus);
   }
 }
