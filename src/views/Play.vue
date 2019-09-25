@@ -8,25 +8,31 @@
       CLICK ME
     </button>
     <board />
-    <toolbox />
+    <toolbox
+      :toolsets="availableTools"
+    />
   </div>
 </template>
 
-<script>
-import Vue from 'vue';
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
 import Board from '@/components/Board.vue';
 import Toolbox from '@/components/Toolbox.vue';
 
-export default Vue.extend({
-  name: 'Play',
+@Component({
   components: { Board, Toolbox },
+})
+export default class Play extends Vue {
+  sets = [['A', 1], ['B', 2], ['C', 3]]
 
-  methods: {
-    goOn() {
-      this.$store.commit('goToLevel', 'next');
-    },
-  },
-});
+  goOn() {
+    this.$store.commit('goToLevel', 'next');
+  }
+
+  get availableTools() {
+    return this.$store.state.currentLevel.availableTools;
+  }
+}
 </script>
 
 <style>

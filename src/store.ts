@@ -15,9 +15,9 @@ const store: StoreOptions<RootState> = {
       },
       elementPositions: [
         [
-          { status: 'a' },
-          { status: 'b' },
-          { status: 'c' },
+          { element: 'A' },
+          { element: 'B' },
+          { element: 'C' },
         ],
         Array(13),
         Array(13),
@@ -29,6 +29,12 @@ const store: StoreOptions<RootState> = {
         Array(13),
         Array(13),
         Array(13),
+      ],
+      availableTools: [
+        [
+          'Mirror',
+          3,
+        ],
       ],
     },
   },
@@ -54,10 +60,10 @@ const store: StoreOptions<RootState> = {
       }
     },
     setTile(state, payload) {
-      const { x, y, status } = payload;
+      const { x, y, element } = payload;
 
       // splicing magic to deal with Vue's reactivity system caveats
-      const alteredObject = { x, y, status };
+      const alteredObject = { x, y, element };
       state.currentLevel.elementPositions[y].splice(x, 1, alteredObject);
     },
   },
