@@ -2,7 +2,7 @@
   <div class="toolbox-container">
     <pre>THIS IS TOOLBOX, HELLO</pre>
     <ToolSlot
-      v-for="(set) in toolsets"
+      v-for="set in toolsets"
       :key="set[0]"
       :set="set"
     />
@@ -13,6 +13,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import ToolSlot from './ToolSlot.vue';
 
+// TODO: DROP EVENT (returning something to the tray)
 @Component({
   components: {
     ToolSlot,

@@ -24,6 +24,7 @@ export default class ToolSlot extends Vue {
     const dt = e.dataTransfer;
     if (dt) {
       dt.setData('text/plain', this.set[0]);
+      dt.setData('fromToolslot', 'true');
     }
   }
 }

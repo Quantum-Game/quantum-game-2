@@ -23,8 +23,6 @@ import Toolbox from '@/components/Toolbox.vue';
   components: { Board, Toolbox },
 })
 export default class Play extends Vue {
-  sets = [['A', 1], ['B', 2], ['C', 3]]
-
   goOn() {
     this.$store.commit('goToLevel', 'next');
   }

@@ -6,8 +6,7 @@ export interface RootState {
       y?: number,
     },
     elementPositions: any[][],
+    cells: { x: number, y: number, element: string, rotation: number, frozen: boolean}[],
     availableTools: Array<[string, number]>,
   }
-  // dimensions?: {x: number; y: number}
-  // boardState: {rows: string[][]}
 }
