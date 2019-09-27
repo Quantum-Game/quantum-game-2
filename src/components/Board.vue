@@ -1,7 +1,6 @@
 <template>
   <div class="board-container">
-    <pre>{{ `THIS IS BOARD, HELLO with dimentions: ${dimensions.x} X ${dimensions.y}
-      Last tile clicked: ${lastTile.x} / ${lastTile.y}` }}</pre>
+    <pre>{{ `THIS IS BOARD, HELLO with dimentions: ${dimensions.x} X ${dimensions.y}` }}</pre>
     <div
       v-for="(row, yIndex) in dimensions.y"
       :key="`${row}-${yIndex}`"
@@ -12,7 +11,6 @@
         :key="xIndex"
         :y="yIndex"
         :x="xIndex"
-        @tile-click="onTileClick"
       />
     </div>
   </div>
@@ -33,12 +31,6 @@ export default class Board extends Vue {
   // acts as compted:
   get dimensions() {
     return this.$store.state.currentLevel.boardDimensions;
-  }
-
-  onTileClick(payload: {x: number, y: number}) : void {
-    this.lastTile = payload;
-    const tileStatus = { ...payload, element: 'active' };
-    this.$store.commit('setTile', tileStatus);
   }
 }
 </script>
