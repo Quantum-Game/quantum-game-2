@@ -1,10 +1,16 @@
 <template>
-  <div class="toolbox-container">
+  <div
+    class="toolbox-container"
+    @drop.prevent="handleDrop"
+    @dragover.prevent="handleDragOver"
+  >
     <pre>THIS IS TOOLBOX, HELLO</pre>
     <ToolSlot
       v-for="set in toolsets"
       :key="set[0]"
       :set="set"
+      @drop.prevent="handleDrop"
+      @dragover.prevent="handleDragOver"
     />
   </div>
 </template>
@@ -21,13 +27,47 @@ import ToolSlot from './ToolSlot.vue';
 })
 export default class ToolBox extends Vue {
   @Prop() readonly toolsets!: Array<Object>
+
+  handleDrop(e: DragEvent) {
+    const dtObj: {
+      x: number,
+      y: number,
+      element: string,
+      originY?: number,
+      originX?: number,
+    } = {
+      x: -1,
+      y: -1,
+      element: '',
+      originX: -1,
+      originY: -1,
+    };
+
+    const dt = e.dataTransfer;
+    if (dt) {
+      dtObj.element = dt.getData('text/plain');
+      dtObj.originY = Number(dt.getData('originY'));
+      dtObj.originX = Number(dt.getData('originX'));
+    }
+
+    this.$store.dispatch('drop', dtObj);
+  }
+
+  handleDragOver(e: DragEvent) {
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = 'move';
+    }
+  }
 }
 </script>
 
 <style lang="scss">
   .toolbox-container {
-    display: inline-block;
-    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    // height: 100%;
     width: 20%;
     margin-left: 10px;
   }

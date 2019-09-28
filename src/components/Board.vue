@@ -37,9 +37,7 @@ export default class Board extends Vue {
 
 <style>
   .board-container {
-    display: inline-block;
-    height: 100%;
-    width: 60%
+    width: 50%
   }
 
   .row {

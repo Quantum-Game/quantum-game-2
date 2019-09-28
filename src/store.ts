@@ -13,30 +13,13 @@ const store: StoreOptions<RootState> = {
         x: 13,
         y: 13,
       },
-      elementPositions: [
-        [
-          { element: 'A' },
-          { element: 'B' },
-          { element: 'C' },
-        ],
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-        Array(13),
-      ],
       availableTools: [
         [
-          'Mirror',
+          'mirror',
           3,
         ],
         [
-          'Beam Splitter',
+          'beamsplitter',
           2,
         ],
 
@@ -190,15 +173,32 @@ const store: StoreOptions<RootState> = {
 
     REPLACE_CELL(state, WhatWithWhat) {
       const [index, newCell] = WhatWithWhat;
+
       state.currentLevel.cells.splice(index, 1, newCell);
+    },
+
+    ADD_TOOL(state, toolIndex) {
+      const tool = state.currentLevel.availableTools[toolIndex];
+      const newQuantity = tool[1] + 1;
+
+      state.currentLevel.availableTools.splice(toolIndex, 1, [tool[0], newQuantity]);
+    },
+
+    REMOVE_TOOL(state, toolIndex) {
+      const tool = state.currentLevel.availableTools[toolIndex];
+      const newQuantity = tool[1] - 1;
+
+      state.currentLevel.availableTools.splice(toolIndex, 1, [tool[0], newQuantity]);
     },
   },
   actions: {
     // USER INTERACTIONS:
     startDraggingElement({ commit }, arg) {
-      console.log('hello from startDraggingElement action');
+      console.log('startDraggingElement');
     },
 
+
+    // TODO: move the conditionality to tile/toolslot componenets
     drop({ commit, dispatch, getters }, payload) {
       const {
         x,
@@ -210,30 +210,54 @@ const store: StoreOptions<RootState> = {
       } = payload;
       const targetTile = getters.cell(y, x);
       const originCell = getters.cell(originY, originX);
+      const comingFromTray = originY < 0 || originX < 0;
+      const goingToTray = x < 0 || y < 0;
 
       // 0. does the tile we drop on exist in the "cells" array?
-      if (targetTile) {
+      if (targetTile && !goingToTray) {
         console.log('OCCUPIED!');
         return false;
       }
-      // commit('CREATE_CELL', payload);
-      dispatch('createCell', payload);
-      if (!fromToolslot) {
+
+      if (!goingToTray) {
+        dispatch('createCell', payload);
+      }
+
+      if (!comingFromTray) {
         dispatch('deleteCell', payload);
+      }
+
+      console.log(` comingFromTray ${comingFromTray}`);
+      console.log(` goingToTray ${goingToTray}`);
+
+
+      // If it's a tray thing:
+      if (comingFromTray || goingToTray) {
+        const possibleTool = getters.tools.find((tool: Array<[string, number]>) => tool[0] === element);
+        const trayItemIndex = getters.tools.indexOf(possibleTool);
+
+        if (goingToTray) {
+          return commit('ADD_TOOL', trayItemIndex);
+        }
+        if (comingFromTray && (possibleTool[1] >= 0)) {
+          return commit('REMOVE_TOOL', trayItemIndex);
+        }
       }
     },
 
-    rotate({getters, state, commit }, payload: {y: number, x: number, angle: number}) {
+    rotate({ getters, state, commit }, payload: {y: number, x: number, angle: number}) {
       const { y, x, angle } = payload;
       const cell = getters.cell(y, x);
+      const rotationAngle: number = 360 / 8;
+      let { rotation } = cell;
 
-      // TODO: refine calculation
-      let newRotation = cell.rotation + angle;
-      if (newRotation >= 360) {
-        newRotation %= 360;
+      if ((360 + angle) % rotationAngle !== 0) {
+        throw new Error('Error in the supplied angle compared to the element rotation angle.');
+      } else {
+        rotation = ((cell.rotation + angle) % 360 + 360) % 360;
       }
 
-      const rotatedCell = { ...cell, rotation: newRotation };
+      const rotatedCell = { ...cell, rotation };
       const index = state.currentLevel.cells.indexOf(cell);
 
       commit('REPLACE_CELL', [index, rotatedCell]);
@@ -241,7 +265,6 @@ const store: StoreOptions<RootState> = {
 
     // IMPLEMENTATION:
     createCell({ commit }, payload) {
-
       const alteredObject = {
         element: payload.element,
         y: payload.y,
@@ -269,9 +292,8 @@ const store: StoreOptions<RootState> = {
     },
   },
   getters: {
-    cell: state => (y: number, x: number) => {
-      return state.currentLevel.cells.find((o: {x: number, y: number}) => o.x === x && o.y === y);
-    },
+    cell: state => (y: number, x: number) => state.currentLevel.cells.find((o: {x: number, y: number}) => o.x === x && o.y === y),
+    tools: state => state.currentLevel.availableTools,
   },
 };
 

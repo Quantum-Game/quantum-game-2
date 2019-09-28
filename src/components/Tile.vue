@@ -2,18 +2,19 @@
   <div
     class="tile"
     :class="{'active': element === 'active'}"
-    :draggable="isDraggable"
     @click="tileClick"
-    @dragstart="tileDragStart"
     @dragover.prevent="tileDragOver"
     @drop.prevent="tileDrop"
     @dragend="tileDragEnd"
   >
+    <cell
+      v-if="element"
+      :cell="cell"
+    />
     <div class="dot top left" />
     <div class="dot top right" />
     <div class="dot bottom left" />
     <div class="dot bottom right" />
-    {{ `${element} ${(!cell.frozen && element) ? "movable":''}` }}
   </div>
 </template>
 
@@ -24,8 +25,13 @@ import {
   Prop,
   Emit,
 } from 'vue-property-decorator';
+import Cell from './Cell.vue';
 
-@Component
+@Component({
+  components: {
+    Cell,
+  },
+})
 export default class Tile extends Vue {
   @Prop({ default: false }) readonly active!: boolean
 
@@ -35,7 +41,7 @@ export default class Tile extends Vue {
 
   tileClick(e: MouseEvent) {
     if (this.element && !this.cell.frozen) {
-      this.$store.dispatch('rotate', { y: this.y, x: this.x, angle: 90 });
+      this.$store.dispatch('rotate', { y: this.y, x: this.x, angle: 45 });
     }
   }
 
@@ -84,7 +90,6 @@ export default class Tile extends Vue {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));
       dtObj.originX = Number(dt.getData('originX'));
-      dtObj.fromToolslot = dt.getData('fromToolslot');
     }
     this.$store.dispatch('drop', dtObj);
   }
@@ -123,9 +128,9 @@ export default class Tile extends Vue {
 
 <style lang="scss">
 .tile {
-  width: 100px;
-  height: 100px;
-  background-color: #780e0e;
+  width: 70px;
+  height: 70px;
+  background-color: #0e37782c;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -136,10 +141,6 @@ export default class Tile extends Vue {
     background-color: yellow;
     color: black;
   }
-}
-
-.active {
-  background-color: black;
 }
 
 .dot  {
