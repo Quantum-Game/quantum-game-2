@@ -7,7 +7,7 @@
     @drop.prevent="tileDrop"
     @dragend="tileDragEnd"
   >
-    <cell
+    <piece
       v-if="element"
       :cell="cell"
     />
@@ -25,11 +25,11 @@ import {
   Prop,
   Emit,
 } from 'vue-property-decorator';
-import Cell from './Cell.vue';
+import Piece from './Piece.vue';
 
 @Component({
   components: {
-    Cell,
+    Piece,
   },
 })
 export default class Tile extends Vue {
@@ -40,29 +40,19 @@ export default class Tile extends Vue {
   @Prop({ default: null }) readonly y!: number
 
   tileClick(e: MouseEvent) {
-    if (this.element && !this.cell.frozen) {
-      this.$store.dispatch('rotate', { y: this.y, x: this.x, angle: 45 });
+    const {
+      x,
+      y,
+      element,
+      frozen,
+    } = this.cell;
+    if (element && !frozen) {
+      const arrayOfOctadirectionalElements = ['mirror', 'beamsplitter'];
+      const isOctaDirectional = arrayOfOctadirectionalElements.indexOf(element) > -1;
+      const angle = isOctaDirectional ? 45 : 90;
+
+      this.$store.dispatch('rotate', { y, x, angle });
     }
-  }
-
-  tileDragStart(e: DragEvent) {
-    const dt = e.dataTransfer;
-
-    // no dragging, in case there is text present
-    if (this.cell.frozen) {
-      if (dt) {
-        dt.clearData();
-      }
-      return false;
-    }
-
-    if (dt) {
-      dt.setData('text/plain', this.element);
-      dt.setData('originY', String(this.y));
-      dt.setData('originX', String(this.x));
-    }
-
-    this.$store.dispatch('startDraggingElement', { x: this.x, y: this.y });
   }
 
   tileDrop(e: DragEvent) {
@@ -95,9 +85,9 @@ export default class Tile extends Vue {
   }
 
   tileDragOver(e: DragEvent) {
-    if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = 'move';
-    }
+    // if (!this.cell.element && e.dataTransfer) {
+    //   e.dataTransfer.dropEffect = 'move';
+    // }
     const tileDataObj = { x: this.x, y: this.y };
     return tileDataObj;
   }

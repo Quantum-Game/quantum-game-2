@@ -7,5 +7,5 @@ export interface RootState {
     },
     cells: { x: number, y: number, element: string, rotation: number, frozen: boolean}[],
     availableTools: Array<[string, number]>,
-  }
+  },
 }

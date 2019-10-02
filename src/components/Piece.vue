@@ -1,12 +1,12 @@
 <template>
   <div
-    class="element-wrapper"
+    class="piece-wrapper"
     :draggable="isDraggable"
     @dragstart="tileDragStart"
   >
     <svg
-      v-if="cell.element==='mirror'"
-      class="mirror"
+      v-if="cell.element"
+      :class="cell.element"
       x="0px"
       y="0px"
       width="100%"
@@ -14,8 +14,11 @@
       :style="{
         transform: `rotate(${cell.rotation}deg)`
       }"
+      style="enable-background:new 0 0 64 64;"
     >
-      <g>
+      <g
+        v-if="cell.element==='mirror'"
+      >
         <polygon
           class="st0"
           points="39,31.65 25,44.81 25,48.04 39,34.89"
@@ -37,21 +40,8 @@
           points="39,29.08 25,42.24 25,44.81 39,31.65"
         />
       </g>
-    </svg>
 
-    <svg
-      v-if="cell.element==='detector'"
-      class="detector"
-      x="0px"
-      y="0px"
-      width="100%"
-      viewBox="0 0 64 64"
-      :style="{
-        transform: `rotate(${cell.rotation}deg)`
-      }"
-      style="enable-background:new 0 0 64 64;"
-    >
-      <g>
+      <g v-if="cell.element==='detector'">
         <path
           class="st0"
           d="M6.95,49.23c-1.49,2.43-2.47,5.51-2.47,
@@ -238,20 +228,8 @@
           d="M23,12c1.1,0,2-0.9,2-2c0-1.1-0.9-2-2-2c-1.1,0-2,0.9-2,2C21,11.1,21.9,12,23,12z"
         />
       </g>
-    </svg>
 
-    <svg
-      v-if="cell.element==='beamsplitter'"
-      class="beamsplitter"
-      x="0px"
-      y="0px"
-      width="100%"
-      viewBox="0 0 64 64"
-      :style="{
-        transform: `rotate(${cell.rotation}deg)`
-      }"
-    >
-      <g>
+      <g v-if="cell.element==='beamsplitter'">
         <rect
           x="25"
           y="2"
@@ -270,20 +248,10 @@
           />
         </g>
       </g>
-    </svg>
 
-    <svg
-      v-if="cell.element==='laser'"
-      class="laser"
-      x="0px"
-      y="0px"
-      width="100%"
-      viewBox="0 0 64 64"
-      :style="{
-        transform: `rotate(${cell.rotation}deg)`
-      }"
-    >
-      <g>
+      <g
+        v-if="cell.element==='laser'"
+      >
         <circle
           class="st0"
           cx="31.93"
@@ -330,7 +298,6 @@
             />
           </g>
           <g>
-
             <rect
               x="24.01"
               y="31.52"
@@ -369,20 +336,8 @@
           </g>
         </g>
       </g>
-    </svg>
 
-    <svg
-      v-if="cell.element==='rock'"
-      class="rock"
-      x="0px"
-      y="0px"
-      width="100%"
-      viewBox="0 0 64 64"
-      :style="{
-        transform: `rotate(${cell.rotation}deg)`
-      }"
-    >
-      <g>
+      <g v-if="cell.element==='rock'">
         <path
           class="st0"
           d="M52.92,37c-1.33-1.33-3.34-1.56-6-1.85c-1.14-0.13-2.41-0.27-3.79-0.52c-1.2,1.36-2.95,2.23-4.9,2.23
@@ -472,10 +427,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import {
+  Component,
+  Emit,
+  Vue,
+  Prop,
+} from 'vue-property-decorator';
 
 @Component
-export default class Cell extends Vue {
+export default class Piece extends Vue {
   @Prop() readonly cell!: {
     element: string
     frozen: boolean,
@@ -484,13 +444,15 @@ export default class Cell extends Vue {
   }
 
   mounted() {
-    console.log(this.cell);
+    // console.log(this.cell);
   }
 
   get isDraggable(): boolean {
     return !this.cell.frozen && !!this.cell.element;
   }
 
+
+  @Emit()
   tileDragStart(e: DragEvent) {
     const dt = e.dataTransfer;
 
@@ -514,7 +476,6 @@ export default class Cell extends Vue {
       dt.setData('originY', String(y));
       dt.setData('originX', String(x));
     }
-
     this.$store.dispatch('startDraggingElement', { x, y });
   }
 }
@@ -523,7 +484,7 @@ export default class Cell extends Vue {
 </script>
 
 <style lang="scss">
-.element-wrapper {
+.piece-wrapper {
   height: 100%;
   width: 100%;
   .mirror {
@@ -564,7 +525,6 @@ export default class Cell extends Vue {
   // Animation class?
    svg {
     transition: 0.5s;
-    // transform:
   }
 }
 </style>

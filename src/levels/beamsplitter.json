@@ -1,0 +1,73 @@
+{
+    "id": 0,
+    "version": 2,
+    "name": "Weasel Beamsplitter Wizardry",
+    "group": "Dev",
+    "description": "Debugging level",
+    "completed": false,
+    "rows": 30,
+    "cols": 20,
+    "cells": [
+        {
+            "x": 2,
+            "y": 2,
+            "element": "laser",
+            "rotation": 90,
+            "frozen": true
+        },
+        {
+            "x": 15,
+            "y": 2,
+            "element": "laser",
+            "rotation": 90,
+            "frozen": true
+        },
+        {
+            "x": 4,
+            "y": 2,
+            "element": "mirror",
+            "rotation": 135,
+            "frozen": true
+        },
+        {
+            "x": 2,
+            "y": 5,
+            "element": "beamsplitter",
+            "rotation": 135,
+            "frozen": true
+        },
+        {
+            "x": 2,
+            "y": 10,
+            "element": "detector",
+            "rotation": 0,
+            "frozen": true
+        },
+        {
+            "x": 10,
+            "y": 5,
+            "element": "detector",
+            "rotation": 0,
+            "frozen": true
+        }
+    ],
+    "goals": [
+        {
+            "x": 2,
+            "y": 10,
+            "threshold": 50
+        },
+        {
+            "x": 2,
+            "y": 5,
+            "threshold": 50
+        }
+    ],
+    "hints": [
+        {
+            "x": 2,
+            "y": 10,
+            "message": "Weasel save the world fast!"
+        }
+    ]
+}

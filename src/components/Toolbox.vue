@@ -4,7 +4,6 @@
     @drop.prevent="handleDrop"
     @dragover.prevent="handleDragOver"
   >
-    <pre>THIS IS TOOLBOX, HELLO</pre>
     <ToolSlot
       v-for="set in toolsets"
       :key="set[0]"
@@ -48,7 +47,11 @@ export default class ToolBox extends Vue {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));
       dtObj.originX = Number(dt.getData('originX'));
+      // if (dtObj.originX < 0 || dtObj.originY < 0) {
+      //   return false;
+      // }
     }
+
 
     this.$store.dispatch('drop', dtObj);
   }

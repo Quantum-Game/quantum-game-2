@@ -21,5 +21,11 @@ Drag & Drop
 [x] track quantities (still got to track the toolbox);
 [x] Create elements -> import graphics, extract functionality;
 [x] Rotation
-[ ] create type interfaces for dtObject and newTileStatus;
+
+
+[x] limit the ability to take from tray - change architecture so that deagging is a tile / toolslot property, not that of a cell
+[~] level loading logic (router/store)
+[ ] level changing guards
+[ ] move drop logic to components from store
+[ ] Real interfaces
 [ ] RWD

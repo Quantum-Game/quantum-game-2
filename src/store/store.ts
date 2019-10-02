@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { RootState } from './types';
+import { RootState } from '../types';
+import moduleProgress from './moduleProgress';
+import moduleBoard from './moduleBoard';
 
 Vue.use(Vuex);
 
@@ -227,15 +229,15 @@ const store: StoreOptions<RootState> = {
         dispatch('deleteCell', payload);
       }
 
-      console.log(` comingFromTray ${comingFromTray}`);
-      console.log(` goingToTray ${goingToTray}`);
-
 
       // If it's a tray thing:
       if (comingFromTray || goingToTray) {
         const possibleTool = getters.tools.find((tool: Array<[string, number]>) => tool[0] === element);
         const trayItemIndex = getters.tools.indexOf(possibleTool);
 
+        if (goingToTray && comingFromTray) {
+          return false;
+        }
         if (goingToTray) {
           return commit('ADD_TOOL', trayItemIndex);
         }
@@ -294,6 +296,10 @@ const store: StoreOptions<RootState> = {
   getters: {
     cell: state => (y: number, x: number) => state.currentLevel.cells.find((o: {x: number, y: number}) => o.x === x && o.y === y),
     tools: state => state.currentLevel.availableTools,
+  },
+  modules: {
+    progress: moduleProgress,
+    board: moduleBoard,
   },
 };
 

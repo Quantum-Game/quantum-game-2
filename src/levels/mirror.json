@@ -1,0 +1,95 @@
+{
+    "id": 0,
+    "name": "Weasel Beamsplitter Wizardry",
+    "group": "Dev",
+    "description": "Debugging level",
+    "completed": false,
+    "rows": 30,
+    "cols": 30,
+    "cells": [
+        {
+            "y": 2,
+            "x": 6,
+            "element": "laser",
+            "rotation": 90,
+            "frozen": true
+        },
+        {
+            "y": 5,
+            "x": 6,
+            "element": "filter",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 6,
+            "x": 6,
+            "element": "filter",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 8,
+            "x": 6,
+            "element": "filter",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 9,
+            "x": 6,
+            "element": "phaseinc",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 10,
+            "x": 6,
+            "element": "phaseinc",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 11,
+            "x": 6,
+            "element": "phaseinc",
+            "rotation": 0,
+            "frozen": false
+        },
+        {
+            "y": 20,
+            "x": 6,
+            "element": "mirror",
+            "rotation": 135,
+            "frozen": true
+        },
+        {
+            "y": 20,
+            "x": 20,
+            "element": "mirror",
+            "rotation": 45,
+            "frozen": true
+        },
+        {
+            "y": 6,
+            "x": 20,
+            "element": "detector",
+            "rotation": 0,
+            "frozen": true
+        }
+    ],
+    "goals": [
+        {
+            "y": 6,
+            "x": 20,
+            "threshold": 1
+        }
+    ],
+    "hints": [
+        {
+            "y": 10,
+            "x": 2,
+            "message": "Weasel save the world fast!"
+        }
+    ]
+}

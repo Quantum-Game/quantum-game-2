@@ -4,7 +4,7 @@
     :draggable="isActive"
     @dragstart="handleElementDragStart"
   >
-    <cell
+    <piece
       :cell="cell"
     />
     x {{ set[1] }}
@@ -18,22 +18,25 @@ import {
   Prop,
   Emit,
 } from 'vue-property-decorator';
-import Cell from './Cell.vue';
+import Piece from './Piece.vue';
 
 @Component({
   components: {
-    Cell,
+    Piece,
   },
 })
 export default class ToolSlot extends Vue {
   @Prop() readonly set!: [string, number]
 
   handleElementDragStart(e: DragEvent) {
-    const dt = e.dataTransfer;
-    if (dt) {
-      dt.setData('text/plain', this.set[0]);
-      dt.setData('originY', '-1');
-      dt.setData('originX', '-1');
+
+    // in case there is no more items to drag:
+    if (this.set[1] <= 0) {
+      const dt = e.dataTransfer;
+      if (dt) {
+        dt.clearData();
+      }
+      return false;
     }
   }
 

@@ -21,7 +21,7 @@ export default new Router({
     {
       path: '/level/:id',
       name: 'level',
-      component: () => import('./components/ExampleLevel.vue'),
+      component: () => import('./views/Level.vue'),
     },
     {
       path: '/levels',
