@@ -2,39 +2,40 @@
 
 const moduleProgress = {
   state: {
-    currentLevel: {
-      number: 1,
-    },
+    levelNumber: 1,
   },
   mutations: {
-    GO_TO_LEVEL(state, payload) {
-      state.currentLevel.number = payload;
-      // rootState.levels.dispatch('loadALevel', payload )
+    SET_LEVEL_NUMBER(state, payload) {
+      state.levelNumber = payload;
     },
     PROGRESS_A_LEVEL(state) {
-      state.currentLevel.number += 1;
+      state.levelNumber += 1;
     },
     GO_BACK_A_LEVEL(state) {
-      state.currentLevel.number -= 1;
+      state.levelNumber -= 1;
     },
   },
   actions: {
-    goToLevel({state, commit, rootState}, payload) {
+    goToLevel({state, commit, dispatch}, payload) {
       if (payload) {
         if (typeof payload === 'number') {
-          commit('GO_TO_LEVEL', payload);
+          commit('SET_LEVEL_NUMBER', payload);
+          dispatch('loadALevel', payload);
         }
+
+        // in case we want to use phrases like 'next' instead of a number:
         if (typeof payload === 'string') {
           let direction;
           if (payload === 'next') {
-            direction = state.currentLevel.number + 1;
+            direction = state.levelNumber + 1;
           } else if (payload === 'back') {
-            direction = state.currentLevel.number - 1;
+            direction = state.levelNumber - 1;
           }
-          commit('GO_TO_LEVEL', direction);
+          commit('SET_LEVEL_NUMBER', direction);
+          dispatch('loadALevel', direction);
         }
       } else {
-        console.log('no payload specified!');
+        console.log('no level specified!');
       }
     },
   },

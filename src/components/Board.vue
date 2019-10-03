@@ -1,13 +1,13 @@
 <template>
   <div class="board-container">
-    <pre>{{ `THIS IS BOARD, HELLO with dimentions: ${dimensions.x} X ${dimensions.y}` }}</pre>
+    <pre>{{ `THIS IS BOARD, HELLO with dimentions: ${level.cols} X ${level.rows}` }}</pre>
     <div
-      v-for="(row, yIndex) in dimensions.y"
+      v-for="(row, yIndex) in level.rows"
       :key="`${row}-${yIndex}`"
       class="row"
     >
       <Tile
-        v-for="(column, xIndex) in dimensions.x"
+        v-for="(column, xIndex) in level.cols"
         :key="xIndex"
         :y="yIndex"
         :x="xIndex"
@@ -26,12 +26,7 @@ import Tile from '@/components/Tile.vue';
   },
 })
 export default class Board extends Vue {
-  lastTile: {x: number, y: number} = { x: 0, y: 0 }
-
-  // acts as compted:
-  get dimensions() {
-    return this.$store.state.currentLevel.boardDimensions;
-  }
+  @Prop() readonly level!: object
 }
 </script>
 

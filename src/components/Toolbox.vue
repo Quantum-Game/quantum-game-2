@@ -47,9 +47,6 @@ export default class ToolBox extends Vue {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));
       dtObj.originX = Number(dt.getData('originX'));
-      // if (dtObj.originX < 0 || dtObj.originY < 0) {
-      //   return false;
-      // }
     }
 
 
@@ -70,7 +67,7 @@ export default class ToolBox extends Vue {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-around;
-    // height: 100%;
+    min-height: 500px;
     width: 20%;
     margin-left: 10px;
   }

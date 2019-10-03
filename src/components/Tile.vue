@@ -40,6 +40,9 @@ export default class Tile extends Vue {
   @Prop({ default: null }) readonly y!: number
 
   tileClick(e: MouseEvent) {
+    if (!this.cell) {
+      return false;
+    }
     const {
       x,
       y,
@@ -98,16 +101,16 @@ export default class Tile extends Vue {
 
   get cell() {
     // TODO: make it a store getter
-    const thisTileCell = this.$store.state.currentLevel.cells.find((cell: {x: number, y: number}) => cell.x === this.x && cell.y === this.y);
-    if (thisTileCell) {
-      return thisTileCell;
+    let thisTileCell;
+    if (this.$store.state.currentLevel.cells) {
+      thisTileCell = this.$store.state.currentLevel.cells.find((cell: {x: number, y: number}) => cell.x === this.x && cell.y === this.y);
     }
-    return { element: '' };
+    return thisTileCell;
   }
 
-  get element(): string {
-    const { element } = this.cell;
-    return element;
+  get element() {
+    if (!this.cell) return undefined;
+    return this.cell.element;
   }
 
   get isDraggable(): boolean {

@@ -10,125 +10,18 @@ Vue.use(Vuex);
 const store: StoreOptions<RootState> = {
   state: {
     currentLevel: {
-      number: 0,
-      boardDimensions: {
-        x: 13,
-        y: 13,
-      },
-      availableTools: [
-        [
-          'mirror',
-          3,
-        ],
-        [
-          'beamsplitter',
-          2,
-        ],
-
-      ],
-      cells: [
-        {
-          x: 6,
-          y: 11,
-          element: 'laser',
-          rotation: 270,
-          frozen: true,
-        },
-        {
-          x: 6,
-          y: 7,
-          element: 'beamsplitter',
-          rotation: 135,
-          frozen: false,
-        },
-        {
-          x: 6,
-          y: 5,
-          element: 'beamsplitter',
-          rotation: 45,
-          frozen: false,
-        },
-        {
-          x: 4,
-          y: 7,
-          element: 'beamsplitter',
-          rotation: 45,
-          frozen: false,
-        },
-        {
-          x: 4,
-          y: 9,
-          element: 'beamsplitter',
-          rotation: 45,
-          frozen: false,
-        },
-        {
-          x: 6,
-          y: 3,
-          element: 'detector',
-          rotation: 0,
-          frozen: false,
-        },
-        {
-          x: 8,
-          y: 5,
-          element: 'detector',
-          rotation: 270,
-          frozen: true,
-        },
-        {
-          x: 2,
-          y: 7,
-          element: 'detector',
-          rotation: 90,
-          frozen: true,
-        },
-        {
-          x: 2,
-          y: 9,
-          element: 'detector',
-          rotation: 90,
-          frozen: true,
-        },
-        {
-          x: 4,
-          y: 11,
-          element: 'detector',
-          rotation: 0,
-          frozen: true,
-        },
-        {
-          x: 5,
-          y: 9,
-          element: 'rock',
-          rotation: 0,
-          frozen: true,
-        },
-      ],
+      id: 0,
+      version: 2,
+      name: 'Weasel Beamsplitter Wizardry',
+      group: 'Dev',
+      description: 'Debugging level',
+      completed: false,
+      rows: 30,
+      cols: 20,
+      cells: [],
     },
   },
   mutations: {
-    // TODO: Turn into an action
-    goToLevel(state, payload) {
-      if (payload) {
-        if (typeof payload === 'number') {
-          state.currentLevel.number = payload;
-          return;
-        }
-        if (typeof payload === 'string') {
-          if (state.currentLevel.number === 0) {
-            state.currentLevel.number = 1;
-            return;
-          }
-          if (state.currentLevel.number !== undefined && state.currentLevel.number !== null) {
-            state.currentLevel.number += payload === 'next' ? 1 : -1;
-            console.log('moved to yet another level');
-          }
-        }
-      } else {
-        console.log('no payload specified!');
-      }
-    },
     setTile(state, payload) {
       const { x, y, element } = payload;
 
@@ -179,18 +72,8 @@ const store: StoreOptions<RootState> = {
       state.currentLevel.cells.splice(index, 1, newCell);
     },
 
-    ADD_TOOL(state, toolIndex) {
-      const tool = state.currentLevel.availableTools[toolIndex];
-      const newQuantity = tool[1] + 1;
-
-      state.currentLevel.availableTools.splice(toolIndex, 1, [tool[0], newQuantity]);
-    },
-
-    REMOVE_TOOL(state, toolIndex) {
-      const tool = state.currentLevel.availableTools[toolIndex];
-      const newQuantity = tool[1] - 1;
-
-      state.currentLevel.availableTools.splice(toolIndex, 1, [tool[0], newQuantity]);
+    SUBSTITUTE_CURRENT_LEVEL(state, levelToSubstituteWith) {
+      state.currentLevel = levelToSubstituteWith;
     },
   },
   actions: {
@@ -199,21 +82,37 @@ const store: StoreOptions<RootState> = {
       console.log('startDraggingElement');
     },
 
+    moveCell({ commit }, { index, cellToBeCreated }) {
+      commit('DELETE_CELL', index);
+      commit('CREATE_CELL', cellToBeCreated);
+    },
+
 
     // TODO: move the conditionality to tile/toolslot componenets
-    drop({ commit, dispatch, getters }, payload) {
+    drop({ commit, dispatch, getters, state }, payload) {
       const {
         x,
         y,
         originX,
         originY,
         element,
-        fromToolslot,
       } = payload;
       const targetTile = getters.cell(y, x);
       const originCell = getters.cell(originY, originX);
       const comingFromTray = originY < 0 || originX < 0;
       const goingToTray = x < 0 || y < 0;
+
+      if (goingToTray && comingFromTray) {
+        return false;
+      }
+
+      // regular board move
+      if (!goingToTray && !comingFromTray) {
+        const index = state.currentLevel.cells.indexOf(getters.cell(y, x));
+        console.log()
+        // dispatch('moveCell', { index, payload });
+      }
+
 
       // 0. does the tile we drop on exist in the "cells" array?
       if (targetTile && !goingToTray) {
@@ -221,30 +120,44 @@ const store: StoreOptions<RootState> = {
         return false;
       }
 
-      if (!goingToTray) {
+      if (goingToTray) {
+        dispatch('deleteCell', { originX, originY });
+        dispatch('createCell', { ...payload, x: -1, y: -1 });
+        return true;
+      }
+      if (comingFromTray) {
         dispatch('createCell', payload);
+        const cellToDeleteIndex = state.currentLevel.cells.indexOf(getters.cell({ x, y, element }));
+        dispatch('deleteCell', { originX, originY });
       }
 
-      if (!comingFromTray) {
-        dispatch('deleteCell', payload);
-      }
+      // // If it's a tray thing:
+      // if (comingFromTray || goingToTray) {
+      //   const possibleTool = getters.tools.find((tool) => tool.element === element);
+      //   const possibleToolAbsoluteIndex = state.currentLevel.cells.indexOf(possibleTool)
 
+      //   if (possibleTool) {
+      //     if (goingToTray) {
+      //       return commit('ADD_TOOL', possibleToolAbsoluteIndex);
+      //     }
+      //     if (comingFromTray && (possibleTool[1] > 0)) {
+      //       return commit('REMOVE_TOOL', trayItemIndex);
+      //     }
+      //   }
+      // }
+    },
 
-      // If it's a tray thing:
-      if (comingFromTray || goingToTray) {
-        const possibleTool = getters.tools.find((tool: Array<[string, number]>) => tool[0] === element);
-        const trayItemIndex = getters.tools.indexOf(possibleTool);
-
-        if (goingToTray && comingFromTray) {
-          return false;
-        }
-        if (goingToTray) {
-          return commit('ADD_TOOL', trayItemIndex);
-        }
-        if (comingFromTray && (possibleTool[1] >= 0)) {
-          return commit('REMOVE_TOOL', trayItemIndex);
-        }
-      }
+    toolboxDrop({ state, getters, commit }, payload) {
+      const {
+        element,
+        originX,
+        originY,
+      } = payload;
+      const itemToDelete = getters.cell(payload);
+      const index = state.currentLevel.cells.indexOf(itemToDelete);
+      console.log(index)
+      commit('DELETE_CELL', index);
+      commit('CREATE_CELL', payload);
     },
 
     rotate({ getters, state, commit }, payload: {y: number, x: number, angle: number}) {
@@ -267,6 +180,8 @@ const store: StoreOptions<RootState> = {
 
     // IMPLEMENTATION:
     createCell({ commit }, payload) {
+      const {x, y, rotation, element } = payload;
+
       const alteredObject = {
         element: payload.element,
         y: payload.y,
@@ -279,14 +194,12 @@ const store: StoreOptions<RootState> = {
 
     deleteCell({ commit, getters, state }, payload) {
       const {
-        x,
-        y,
         originX,
         originY,
         element,
       } = payload;
-      const originalCell = getters.cell(originY, originX);
-      const index = state.currentLevel.cells.indexOf(originalCell);
+      const cellToDelete = getters.cell(originY, originX, element);
+      const index = state.currentLevel.cells.indexOf(cellToDelete);
 
       // TO DO: Tray DELETION
 
@@ -295,7 +208,8 @@ const store: StoreOptions<RootState> = {
   },
   getters: {
     cell: state => (y: number, x: number) => state.currentLevel.cells.find((o: {x: number, y: number}) => o.x === x && o.y === y),
-    tools: state => state.currentLevel.availableTools,
+    tools: state => state.currentLevel.cells.filter(cell => cell.x === -1 && cell.y === -1),
+    cellFromTray: state => (element: string) => state.currentLevel.cells.find(o => o.element === element)
   },
   modules: {
     progress: moduleProgress,
