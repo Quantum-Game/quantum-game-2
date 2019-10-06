@@ -13,8 +13,6 @@
       <piece
         :disabled="isSetEmty(set)"
         :cell="set[0]"
-        @onDragEnd="onDragEnd"
-        @pieceDragStart="handlePieceDragStart(set[0])"
       />
       x {{ set[1] }}
     </div>
@@ -22,40 +20,39 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import ToolSlot from './ToolSlot.vue';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+} from 'vue-property-decorator';
 import Piece from './Piece.vue';
 import EventBus from '../eventbus';
 
 @Component({
   components: {
-    ToolSlot,
     Piece,
   },
 })
 export default class ToolBox extends Vue {
   @Prop() readonly toolsets!: Array<Object>
 
-  toolState = this.toolsets
+  toolState = this.toolsets;
 
-  onDragEnd(payload) {
-    // console.log(payload)
+  @Watch('toolsets')
+  updateState() {
+    this.toolState = this.toolsets;
   }
 
-  handlePieceDragStart(cell) {
-    this.removeTool(cell)
+  created() {
+    EventBus.$on('removeFromToolbox', this.removeTool);
   }
 
-  removeTool(cell) {
-    const toolToRemove = this.toolState.find(toolset => toolset[0].element === cell.element);
-    const index = this.toolState.indexOf(toolToRemove);
-    const lessenedQuantity = toolToRemove[1] - 1;
-    const smallerToolSet = [toolToRemove[0], lessenedQuantity];
-
-    this.toolState.splice(index, 1, smallerToolSet);
-
+  beforeDestroy() {
+    EventBus.$off('removeFromToolbox')
   }
 
+  // TODO: debounce drops from toolbox earlier:
   handleDrop(e: DragEvent) {
     const dtObj: {
       x: number,
@@ -70,15 +67,15 @@ export default class ToolBox extends Vue {
       originX: -1,
       originY: -1,
     };
-
     const dt = e.dataTransfer;
+
     if (dt) {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));
       dtObj.originX = Number(dt.getData('originX'));
     }
 
-    this.addTool(dtObj)
+    this.addTool(dtObj);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
       EventBus.$emit('removeFromBoard', dtObj);
     }
@@ -95,6 +92,15 @@ export default class ToolBox extends Vue {
 
       this.toolState.splice(toolsetIndex, 1, alteredSet);
     }
+  }
+
+  removeTool(cell) {
+    const toolToRemove = this.toolState.find(toolset => toolset[0].element === cell.element);
+    const index = this.toolState.indexOf(toolToRemove);
+    const lessenedQuantity = toolToRemove[1] - 1;
+    const smallerToolSet = [toolToRemove[0], lessenedQuantity];
+
+    this.toolState.splice(index, 1, smallerToolSet);
   }
 
   handleDragOver(e: DragEvent) {
@@ -119,6 +125,20 @@ export default class ToolBox extends Vue {
     width: 20%;
     margin-left: 10px;
   }
+
+  .tool {
+    width: 70px;
+    height: 100px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    padding-top: 10px;
+    background-color: rgba(5, 108, 121, 0.397);
+  }
+
 
   .active {
     background-color: purple;

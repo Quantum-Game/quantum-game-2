@@ -1,20 +1,17 @@
 <template>
   <div>
-    <h1 v-if="!error">WHAT UP, You're in level number {{stateLevelNumber}}</h1>
+    <button @click="goBack"> Next Level </button>
+    <h1 v-if="!error">WHAT UP, You're in level number {{levelNumber}}</h1>
     <h1 v-else class="error">NO SUCH LEVEL!</h1>
+    <button @click="goOn"> Next Level </button>
     <h2>{{currentLevelData.name}}</h2>
-    <button @click="goBack"> no </button>
-    <button @click="goOn"> yes </button>
     <div class="play-containter">
       <div
         class="placeholder">
         <h1>placeholder</h1>
       </div>
       <board
-        :level="boardData"
-        @dropFromToolbox="handleDropFromToolbox"
-        :dragged-element-status="draggedElementStatus"
-        @draggedElementStatusChange="draggedElementStatusChange"
+        :boardData="boardData"
       />
       <toolbox
         :toolsets="groupedTrayCells"
@@ -34,18 +31,7 @@ import levels from '../levels';
   components: { Board, Toolbox }
 })
 export default class Level extends Vue {
-  get levelNumber() {
-    return parseInt(this.$route.params.id, 10);
-  }
-
-  @Watch('levelNumber')
-  updateLevelData(val: number) {
-    this.loadALevel(val);
-  }
-
-  draggedElementStatus = ''
-
-  error = ''
+  // initial states:
 
   currentLevelData = {
     rows: 0,
@@ -53,38 +39,14 @@ export default class Level extends Vue {
     cells: [],
   }
 
-  handleDropFromToolbox(elementName) {
-    console.log(`handledDropFromToolbox! ${elementName}`)
+  error = ''
+
+  // 1. handle level loading based on the url:
+  get levelNumber() {
+    return parseInt(this.$route.params.id, 10);
   }
 
-  created() {
-    this.loadALevel(this.levelNumber);
-    // console.log(this.boardData)
-  }
-
-  draggedElementStatusChange(payload) {
-    this.draggedElementStatus = payload;
-  }
-
-  get boardData() {
-    const data = {
-      cols: this.currentLevelData.cols,
-      rows: this.currentLevelData.rows,
-      cells: this.boardCells,
-    }
-    return data;
-  }
-
-  get boardCells() {
-    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x > -1 && cell.y > -1);
-  }
-
-  get toolCells() {
-    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x === -1 && cell.y === -1)
-  }
-
-  loadALevel(number): void {
-
+  loadALevel(number: number): void {
     this.error = '';
 
     // See if there's such level:
@@ -112,47 +74,35 @@ export default class Level extends Vue {
 
     const refinedLevel = { ...levelBase, cells: refinedCellSet };
 
-
     this.currentLevelData = refinedLevel;
   }
 
-  mounted() {
-    if (this.queryAndStoreLevelNumbersAreNotTheSame) {
-      console.log('They do not match!');
-      this.$store.dispatch('goToLevel', this.queryLevelNumber);
-    }
+  @Watch('levelNumber')
+  updateLevelData(val: number) {
+    this.loadALevel(val);
   }
 
-  goOn() {
-    const nextLevelNumber = this.levelNumber + 1;
-    if (!levels[nextLevelNumber]) {
-      this.error = 'No such level!';
-      return;
-    }
-    if (this.error) {
-    }
-    this.$router.push(`${this.levelNumber + 1}`)
+  created() {
+    this.loadALevel(this.levelNumber);
   }
 
-  goBack() {
-    const previousLevelNumber = this.levelNumber - 1;
+  // 2. Preparing data for both the board and the toolbox:
 
-    if (!levels[previousLevelNumber]) {
-      this.error = 'where are you going?';
-      return;
-    }
-    // this.$store.dispatch('goToLevel', 'back');
-    this.$router.push(`${this.levelNumber - 1}`)
-
+  get boardCells() {
+    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x > -1 && cell.y > -1);
   }
 
-  // level store data:
-  // get currentLevelData() {
-  //   return this.$store.state.currentLevel;
-  // }
+  get toolCells() {
+    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x === -1 && cell.y === -1)
+  }
 
-  frozenCells() {
-    return this.$store.state.currentLevel.cells.filter(x => x.frozen);
+  get boardData() {
+    const data = {
+      cols: this.currentLevelData.cols,
+      rows: this.currentLevelData.rows,
+      cells: this.boardCells,
+    };
+    return data;
   }
 
   get groupedTrayCells() {
@@ -183,24 +133,29 @@ export default class Level extends Vue {
     return refinedTools;
   }
 
-  // computed properties for proper url/state level number matching
-  get stateLevelNumber() {
-    return this.levelNumber;
-  }
-
-  get queryLevelNumber() {
-    return parseInt(this.$route.params.id, 10);
-  }
-
-  get queryAndStoreLevelNumbersAreNotTheSame() {
-    return this.stateLevelNumber !== this.queryLevelNumber;
-  }
-
-  @Watch('levelNumber')
-  syncPathAndLevel(val) {
-    if (this.queryAndStoreLevelNumbersAreNotTheSame) {
-      this.$router.push(`${val}`);
+  // 3. Level navigation:
+  goOn() {
+    const nextLevelNumber = this.levelNumber + 1;
+    if (!levels[nextLevelNumber]) {
+      this.error = 'No such level!';
+      return;
     }
+    this.$router.push(`${nextLevelNumber}`);
+  }
+
+  goBack() {
+    const previousLevelNumber = this.levelNumber - 1;
+
+    if (!levels[previousLevelNumber]) {
+      this.error = 'where are you going?';
+      return;
+    }
+    // this.$store.dispatch('goToLevel', 'back');
+    this.$router.push(`${previousLevelNumber}`);
+  }
+
+  frozenCells() {
+    return this.$store.state.currentLevel.cells.filter(x => x.frozen);
   }
 }
 </script>
@@ -222,5 +177,11 @@ export default class Level extends Vue {
 
 .error {
   color: red;
+}
+
+/* dev */
+h1,
+button {
+  display: inline;
 }
 </style>

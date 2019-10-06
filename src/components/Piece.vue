@@ -15,6 +15,7 @@
       :style="{
         transform: `rotate(${cell.rotation}deg)`
       }"
+      :opacity="opacity"
       style="enable-background:new 0 0 64 64;"
     >
       <g
@@ -445,27 +446,27 @@ export default class Piece extends Vue {
     rotation: number,
   }
 
+  isBeingDragged: boolean = false
+
+  get opacity() {
+    return this.isBeingDragged ? 0.3 : 1;
+  }
+
   // for toolbox only:
   @Prop() readonly disabled!: boolean
 
   onDragEnd(e) {
     // console.log(e.dataTransfer.getData('Tile'));
+    this.isBeingDragged = false;
     this.$emit('onDragEnd', this.cell)
-  }
-
-  mounted() {
-    // console.log(this.cell);
   }
 
   get isDraggable(): boolean {
     return !this.cell.frozen && !this.disabled;
   }
 
-
   @Emit('pieceDragStart')
   onPieceDragStart(e: DragEvent) {
-    const dt = e.dataTransfer;
-
     const {
       element,
       frozen,
@@ -473,9 +474,9 @@ export default class Piece extends Vue {
       y,
       rotation,
     } = this.cell;
+    const dt = e.dataTransfer;
 
-    // no dragging, in case there is text present
-    if (frozen) {
+    if (!this.isDraggable || frozen ) {
       if (dt) {
         dt.clearData();
       }
@@ -488,11 +489,10 @@ export default class Piece extends Vue {
       dt.setData('originX', String(x));
       dt.setData('rotation', String(rotation));
     }
+    this.isBeingDragged = true;
     return this.cell;
   }
 }
-
-
 </script>
 
 <style lang="scss">

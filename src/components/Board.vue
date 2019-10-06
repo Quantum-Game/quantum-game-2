@@ -2,25 +2,22 @@
   <div
     class="board-container"
   >
-    <pre>{{ `THIS IS BOARD, HELLO with dimentions: ${level.cols} X ${level.rows}` }}</pre>
     <div
-      v-for="(row, yIndex) in level.rows"
+      v-for="(row, yIndex) in boardState.rows"
       :key="`${row}-${yIndex}`"
       class="row"
     >
       <div
-        v-for="(column, xIndex) in level.cols"
+        v-for="(column, xIndex) in boardState.cols"
         :key="xIndex"
         class="tile"
-        @dragover.prevent="tileDragOver($event, {yIndex, xIndex})"
+        @dragover.prevent="tileDragOver"
         @drop.prevent="tileDrop($event, {yIndex, xIndex})"
         @click="tileClick({yIndex, xIndex})"
       >
         <piece
           v-if="isTherePiece(yIndex, xIndex)"
           :cell="isTherePiece(yIndex, xIndex)"
-          @dragend="tileDragEnd"
-          @pieceDragStart="handleDragStart(yIndex, xIndex)"
         />
         <div class="dot top left" />
         <div class="dot top right" />
@@ -32,41 +29,36 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import Tile from '@/components/Tile.vue';
+import {
+  Vue,
+  Component,
+  Prop,
+  Watch,
+} from 'vue-property-decorator';
 import Piece from './Piece.vue';
 import EventBus from '../eventbus';
-
 
 @Component({
   components: {
     Piece,
-    Tile,
   },
 })
 export default class Board extends Vue {
-  @Prop() readonly level!: { cells: Array<Object>, rows: number, cols: number}
+  @Prop() readonly boardData!: { cells: Array<Object>, rows: number, cols: number}
 
-  @Prop() draggedElementStatus!: string
+  boardState = this.boardData
 
-  boardState = this.level
+  @Watch('boardData')
+  updateState() {
+    this.boardState = this.boardData;
+  }
 
-  mounted() {
+  created() {
     EventBus.$on('removeFromBoard', this.removeCell);
   }
 
-  // helps to determine if there is a element present
-  isTherePiece(y: number, x: number) {
-    const possiblePieceArray = this.boardState.cells.filter(cell => cell.x === x && cell.y === y)
-    if (possiblePieceArray.length) {
-      return possiblePieceArray[0];
-    }
-    return false;
-  }
-
-  handleDragStart(y, x) {
-    // const index = this.boardState.cells.indexOf(this.isTherePiece(y, x))
-    // this.boardState.cells.splice(index, 1)x
+  beforeDestroy() {
+    EventBus.$off('removeFromBoard');
   }
 
   tileDrop(e: DragEvent, payload: {yIndex: number, xIndex: number}) {
@@ -78,12 +70,14 @@ export default class Board extends Vue {
       element: string,
       originY?: number,
       originX?: number,
+      rotation: number
     } = {
       x: xIndex,
       y: yIndex,
       element: '',
       originX: -1,
       originY: -1,
+      rotation: 0,
     };
     if (this.isTherePiece(yIndex, xIndex)) {
       return false;
@@ -93,43 +87,20 @@ export default class Board extends Vue {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));
       dtObj.originX = Number(dt.getData('originX'));
+      dtObj.rotation = Number(dt.getData('rotation'));
     }
 
     this.addCell(dtObj);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
-      this.removeCell(dtObj)
+      this.removeCell(dtObj);
     } else {
-      this.$emit('dropFromToolBox', dtObj.element);
+      EventBus.$emit('removeFromToolbox', dtObj);
     }
   }
 
-  removeCell(cell) {
-    const index = this.boardState.cells.indexOf(this.isTherePiece(cell.originY, cell.originX));
-    this.boardState.cells.splice(index, 1)
-  }
-
-  addCell(cell) {
-    const {element, x, y} = cell;
-    const cellToBeAdded = {
-      element,
-      x,
-      y,
-      rotation: 0,
-      frozen: false,
-    };
-    this.boardState.cells.push(cellToBeAdded);
-  }
-
-  tileDragOver(e: DragEvent, payload) {
-    const {yIndex, xIndex} = payload;
-    // console.log(payload)
-    const dt = e.dataTransfer;
-    if (dt) {
-      dt.setData('x', String(xIndex));
-      dt.setData('y', String(yIndex));
-      const variable = dt.getData('x');
-      // does it mean
-    // console.log(variable)
+  tileDragOver(e: DragEvent) {
+    if (e.dataTransfer) {
+      e.dataTransfer.dropEffect = 'move';
     }
   }
 
@@ -156,14 +127,26 @@ export default class Board extends Vue {
     const rotatedCell = { ...thisCell, rotation };
     const index = this.boardState.cells.indexOf(thisCell);
 
-    this.boardState.cells.splice(index, 1, rotatedCell)
-  }
-    tileDragEnd() {
-      console.log('whatever');
-
-// This is what happens with the original element after being dragged:
+    this.boardState.cells.splice(index, 1, rotatedCell);
   }
 
+  // helps to determine if there is a element present
+  isTherePiece(y: number, x: number) {
+    const possiblePieceArray = this.boardState.cells.filter(cell => cell.x === x && cell.y === y)
+    if (possiblePieceArray.length) {
+      return possiblePieceArray[0];
+    }
+    return false;
+  }
+
+  removeCell(cell) {
+    const index = this.boardState.cells.indexOf(this.isTherePiece(cell.originY, cell.originX));
+    this.boardState.cells.splice(index, 1);
+  }
+
+  addCell(cell) {
+    this.boardState.cells.push(cell);
+  }
 }
 </script>
 
