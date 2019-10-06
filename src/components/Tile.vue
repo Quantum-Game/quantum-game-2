@@ -5,10 +5,10 @@
     @click="tileClick"
     @dragover.prevent="tileDragOver"
     @drop.prevent="tileDrop"
-    @dragend="tileDragEnd"
+    @dragend.prevent="tileDragEnd"
   >
     <piece
-      v-if="element"
+      v-if="cell.element"
       :cell="cell"
     />
     <div class="dot top left" />
@@ -95,8 +95,9 @@ export default class Tile extends Vue {
     return tileDataObj;
   }
 
-  tileDragEnd() {
+  tileDragEnd(e) {
     // This is what happens with the original element after being dragged:
+    console.log(e)
   }
 
   get cell() {
@@ -119,7 +120,7 @@ export default class Tile extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tile {
   width: 70px;
   height: 70px;

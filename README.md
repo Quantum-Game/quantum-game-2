@@ -27,8 +27,10 @@ Drag & Drop
 [x] level changing guards
 [x] level loading logic (router/store)
 [x] make it load the level on load
-[ ] deal with substracting tools bug
+[x] deal with substracting tools bug
       turns out it is a matter of from where I derive the cells - dragging from tray means adding a non-frozen cell, wich means it appears in the toolbox etc. In the end, Tile does need to know where cell directly from state, but through props ["plant bug"], level 2
+[x] fix routing
+[ ] cleanup :sweaty-smile:
 [ ] move board actions && mutations to board module
 [ ] move drop logic to components from store
 [ ] Real interfaces

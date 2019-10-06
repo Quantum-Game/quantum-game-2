@@ -2,7 +2,8 @@
   <div
     class="piece-wrapper"
     :draggable="isDraggable"
-    @dragstart="tileDragStart"
+    @dragstart="onPieceDragStart"
+    @dragend="onDragEnd"
   >
     <svg
       v-if="cell.element"
@@ -441,6 +442,15 @@ export default class Piece extends Vue {
     frozen: boolean,
     x: number,
     y: number,
+    rotation: number,
+  }
+
+  // for toolbox only:
+  @Prop() readonly disabled!: boolean
+
+  onDragEnd(e) {
+    // console.log(e.dataTransfer.getData('Tile'));
+    this.$emit('onDragEnd', this.cell)
   }
 
   mounted() {
@@ -448,12 +458,12 @@ export default class Piece extends Vue {
   }
 
   get isDraggable(): boolean {
-    return !this.cell.frozen && !!this.cell.element;
+    return !this.cell.frozen && !this.disabled;
   }
 
 
-  @Emit()
-  tileDragStart(e: DragEvent) {
+  @Emit('pieceDragStart')
+  onPieceDragStart(e: DragEvent) {
     const dt = e.dataTransfer;
 
     const {
@@ -461,6 +471,7 @@ export default class Piece extends Vue {
       frozen,
       x,
       y,
+      rotation,
     } = this.cell;
 
     // no dragging, in case there is text present
@@ -475,8 +486,9 @@ export default class Piece extends Vue {
       dt.setData('text/plain', element);
       dt.setData('originY', String(y));
       dt.setData('originX', String(x));
+      dt.setData('rotation', String(rotation));
     }
-    this.$store.dispatch('startDraggingElement', { x, y });
+    return this.cell;
   }
 }
 
