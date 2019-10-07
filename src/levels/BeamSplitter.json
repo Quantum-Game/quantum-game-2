@@ -1,54 +1,82 @@
 {
     "id": 0,
     "version": 2,
-    "name": "Weasel Beamsplitter Wizardry",
+    "name": "Weasel BeamSplitter Wizardry",
     "group": "Dev",
     "description": "Debugging level",
     "completed": false,
-    "rows": 30,
-    "cols": 20,
+    "rows": 10,
+    "cols": 13,
     "cells": [
         {
             "x": 2,
             "y": 2,
-            "element": "laser",
+            "element": "Emitter",
             "rotation": 90,
             "frozen": true
         },
         {
             "x": 15,
             "y": 2,
-            "element": "laser",
+            "element": "Emitter",
             "rotation": 90,
             "frozen": true
         },
         {
             "x": 4,
             "y": 2,
-            "element": "mirror",
+            "element": "Mirror",
             "rotation": 135,
             "frozen": true
         },
         {
             "x": 2,
             "y": 5,
-            "element": "beamsplitter",
+            "element": "BeamSplitter",
             "rotation": 135,
             "frozen": true
         },
         {
             "x": 2,
             "y": 10,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 0,
             "frozen": true
         },
         {
             "x": 10,
             "y": 5,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 0,
             "frozen": true
+        },
+        {
+            "x": 10,
+            "y": 5,
+            "element": "Detector",
+            "rotation": 0,
+            "frozen": true
+        },
+        {
+            "x": 10,
+            "y": 5,
+            "element": "Detector",
+            "rotation": 0,
+            "frozen": true
+        },
+        {
+            "x": 10,
+            "y": 5,
+            "element": "Detector",
+            "rotation": 0,
+            "frozen": true
+        },
+        {
+            "x": 10,
+            "y": 5,
+            "element": "SugarSolution",
+            "rotation": 0,
+            "frozen": false
         }
     ],
     "goals": [

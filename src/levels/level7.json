@@ -1,0 +1,100 @@
+{
+	"id": 7,
+	"name": "Fading snake",
+	"group": "Game",
+	"description": "Mucalinda protec but he also attac",
+	"cols": 12,
+	"rows": 12,
+	"cells": [
+		{
+			"coord": { "y": 2, "x": 5 },
+			"element": "Detector",
+			"rotation": 90,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 2, "x": 8 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 2 },
+			"element": "Mirror",
+			"rotation": 45,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 4 },
+			"element": "filter",
+			"rotation": 0,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 6 },
+			"element": "filter",
+			"rotation": 0,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 8 },
+			"element": "Mirror",
+			"rotation": 45,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 6, "x": 2 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 6, "x": 4 },
+			"element": "filter",
+			"rotation": 0,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 6, "x": 6 },
+			"element": "filter",
+			"rotation": 0,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 6, "x": 8 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 8, "x": 8 },
+			"element": "Emitter",
+			"rotation": 0,
+			"frozen": true,
+			"active": true,
+			"energized": true
+		}
+	],
+	"hints": [],
+	"goals": []
+}

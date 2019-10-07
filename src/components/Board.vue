@@ -16,6 +16,7 @@
         @click="tileClick({yIndex, xIndex})"
       >
         <piece
+          @dragover.prevent="tileDragOver"
           v-if="isTherePiece(yIndex, xIndex)"
           :cell="isTherePiece(yIndex, xIndex)"
         />
@@ -90,6 +91,8 @@ export default class Board extends Vue {
       dtObj.rotation = Number(dt.getData('rotation'));
     }
 
+    console.log(dtObj)
+
     this.addCell(dtObj);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
       this.removeCell(dtObj);
@@ -111,7 +114,7 @@ export default class Board extends Vue {
       return false;
     }
 
-    const arrayOfOctadirectionalElements = ['mirror', 'beamsplitter'];
+    const arrayOfOctadirectionalElements = ['Mirror', 'BeamSplitter'];
     const isOctaDirectional = arrayOfOctadirectionalElements.indexOf(thisCell.element) > -1;
     const angle = isOctaDirectional ? 45 : 90;
 

@@ -68,7 +68,6 @@ export default class ToolBox extends Vue {
       originY: -1,
     };
     const dt = e.dataTransfer;
-
     if (dt) {
       dtObj.element = dt.getData('text/plain');
       dtObj.originY = Number(dt.getData('originY'));

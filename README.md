@@ -28,8 +28,19 @@ Drag & Drop
 [x] level loading logic (router/store)
 [x] make it load the level on load
 [x] deal with substracting tools bug
-      turns out it is a matter of from where I derive the cells - dragging from tray means adding a non-frozen cell, wich means it appears in the toolbox etc. In the end, Tile does need to know where cell directly from state, but through props ["plant bug"], level 2
+      turns out it is a matter of from where I derive the cells - dragging from tray means adding a non-frozen cell, wich means it appears in the toolbox etc. In the end, Tile does need to know where cell directly from state, but through props ["plant bug"]
 [x] fix routing
+
+
+
+07.10
+[x] make the Piece a general component only importing graphix from other places
+[ ] divide the view
+[ ] Figure out Play button / Frame
+
+[ ] Bachground
+
+
 [ ] add drop event listeners on dots
 [ ] move opacity transition up, as board feature
 [ ] cleanup :sweaty-smile:

@@ -10,77 +10,77 @@
         {
             "x": 6,
             "y": 11,
-            "element": "laser",
+            "element": "Emitter",
             "rotation": 270,
             "frozen": true
         },
         {
             "x": 6,
             "y": 7,
-            "element": "beamsplitter",
+            "element": "BeamSplitter",
             "rotation": 135,
             "frozen": false
         },
         {
             "x": 6,
             "y": 5,
-            "element": "beamsplitter",
+            "element": "BeamSplitter",
             "rotation": 45,
             "frozen": false
         },
         {
             "x": 4,
             "y": 7,
-            "element": "beamsplitter",
+            "element": "BeamSplitter",
             "rotation": 45,
             "frozen": false
         },
         {
             "x": 4,
             "y": 9,
-            "element": "beamsplitter",
+            "element": "BeamSplitter",
             "rotation": 45,
             "frozen": false
         },
         {
             "x": 6,
             "y": 3,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 0,
             "frozen": false
         },
         {
             "x": 8,
             "y": 5,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 270,
             "frozen": true
         },
         {
             "x": 2,
             "y": 7,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 90,
             "frozen": true
         },
         {
             "x": 2,
             "y": 9,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 90,
             "frozen": true
         },
         {
             "x": 4,
             "y": 11,
-            "element": "detector",
+            "element": "Detector",
             "rotation": 0,
             "frozen": true
         },
         {
             "x": 5,
             "y": 9,
-            "element": "rock",
+            "element": "Rock",
             "rotation": 0,
             "frozen": true
         }
@@ -111,7 +111,7 @@
         {
             "x": 8,
             "y": 5,
-            "message": "give each detector some chance of catching a photon"
+            "message": "give each Detector some chance of catching a photon"
         }
     ]
 }

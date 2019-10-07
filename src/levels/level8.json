@@ -1,0 +1,68 @@
+{
+	"id": 8,
+	"name": "Interfere",
+	"group": "Game",
+	"description": "A meter that interferes...",
+	"cols": 12,
+	"rows": 12,
+	"cells": [
+		{
+			"coord": { "y": 3, "x": 1 },
+			"element": "Emitter",
+			"rotation": 90,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 3, "x": 4 },
+			"element": "BeamSplitter",
+			"rotation": 135,
+			"frozen": false,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 3, "x": 8 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 6, "x": 4 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 6, "x": 8 },
+			"element": "BeamSplitter",
+			"rotation": 135,
+			"frozen": false,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 6, "x": 10 },
+			"element": "Detector",
+			"rotation": 270,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 8, "x": 8 },
+			"element": "Detector",
+			"rotation": 0,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		}
+	],
+	"hints": [],
+	"goals": []
+}

@@ -1,0 +1,52 @@
+{
+	"id": 3,
+	"name": "Shine on you crazy diamond",
+	"group": "Game",
+	"description": "Give each plant its light",
+	"cols": 12,
+	"rows": 12,
+	"cells": [
+		{
+			"coord": { "y": 2, "x": 6 },
+			"element": "Detector",
+			"rotation": 180,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 2 },
+			"element": "Emitter",
+			"rotation": 90,
+			"frozen": true,
+			"active": true,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 6 },
+			"element": "BeamSplitter",
+			"rotation": 135,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 4, "x": 8 },
+			"element": "Detector",
+			"rotation": 270,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 6, "x": 6 },
+			"element": "Rock",
+			"rotation": 0,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		}
+	],
+	"hints": [],
+	"goals": []
+}

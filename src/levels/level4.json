@@ -1,0 +1,476 @@
+{
+  "id": 4,
+  "name": "Hall of Mirrors",
+  "group": "Game",
+  "description": "The sun king loves this...",
+  "cols": 20,
+  "rows": 20,
+  "cells": [
+    {
+      "coord": { "y": 1, "x": 1 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 1, "x": 16 },
+      "element": "Mirror",
+      "rotation": 135,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 3, "x": 2 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 3, "x": 14 },
+      "element": "Mirror",
+      "rotation": 135,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 5, "x": 3 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 5, "x": 12 },
+      "element": "Mirror",
+      "rotation": 135,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 8, "x": 0 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 1 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 2 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 3 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 4 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 5 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 6 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 7 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 8 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 9 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 10 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 11 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 12 },
+      "element": "Detector",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 8, "x": 13 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 14 },
+      "element": "Detector",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 8, "x": 15 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 16 },
+      "element": "Detector",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 8, "x": 17 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 18 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 8, "x": 19 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 9, "x": 12 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 9, "x": 14 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 9, "x": 16 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 10, "x": 12 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 10, "x": 14 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 10, "x": 16 },
+      "element": "gate",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 0 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 1 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 2 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 3 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 4 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 5 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 6 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 7 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 8 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 9 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 10 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 11 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 12 },
+      "element": "Detector",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 11, "x": 13 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 14 },
+      "element": "Detector",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 11, "x": 15 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 16 },
+      "element": "Detector",
+      "rotation": 180,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 11, "x": 17 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 18 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 11, "x": 19 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": false,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 14, "x": 3 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 14, "x": 12 },
+      "element": "Mirror",
+      "rotation": 45,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 16, "x": 2 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 16, "x": 14 },
+      "element": "Mirror",
+      "rotation": 45,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 18, "x": 1 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 18, "x": 16 },
+      "element": "Mirror",
+      "rotation": 45,
+      "frozen": false,
+      "active": true,
+      "energized": true
+    }
+  ],
+  "hints": [],
+  "goals": []
+}

@@ -12,7 +12,7 @@ const store: StoreOptions<RootState> = {
     currentLevel: {
       id: 0,
       version: 2,
-      name: 'Weasel Beamsplitter Wizardry',
+      name: 'Weasel BeamSplitter Wizardry',
       group: 'Dev',
       description: 'Debugging level',
       completed: false,

@@ -84,9 +84,24 @@ export default class Level extends Vue {
 
   created() {
     this.loadALevel(this.levelNumber);
+    this.setup();
   }
 
   // 2. Preparing data for both the board and the toolbox:
+
+  setup() {
+    const { cells } = this.currentLevelData;
+    const cellsMovedToTheirPlace = cells.map((cell, index) => {
+      if (cell.x > this.currentLevelData.cols || cell.y > this.currentLevelData.rows) {
+        console.warn(`Cell number ${ index + 1} (${cell.element}) is out of bounds`);
+      }
+      if (!cell.frozen && cell.x > -1 && cell.y > -1) {
+        return { ...cell, x: -1, y: -1 }
+      }
+      return cell;
+    });
+    this.currentLevelData.cells = cellsMovedToTheirPlace;
+  }
 
   get boardCells() {
     return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x > -1 && cell.y > -1);
@@ -106,6 +121,9 @@ export default class Level extends Vue {
   }
 
   get groupedTrayCells() {
+    if (!this.toolCells.length) {
+      return false;
+    }
     const refinedTools: [object, number][] = [];
     const toolNameList: string[] = [];
 
@@ -152,10 +170,6 @@ export default class Level extends Vue {
     }
     // this.$store.dispatch('goToLevel', 'back');
     this.$router.push(`${previousLevelNumber}`);
-  }
-
-  frozenCells() {
-    return this.$store.state.currentLevel.cells.filter(x => x.frozen);
   }
 }
 </script>
