@@ -11,7 +11,7 @@
         v-for="(column, xIndex) in boardState.cols"
         :key="xIndex"
         class="tile"
-        @dragover.prevent="tileDragOver"
+        @dragover.prevent="updateMouseCell($event, {yIndex, xIndex})"
         @drop.prevent="tileDrop($event, {yIndex, xIndex})"
         @click="tileClick({yIndex, xIndex})"
       >
@@ -50,6 +50,8 @@ import {
 } from 'vue-property-decorator';
 import Piece from './Piece.vue';
 import EventBus from '../eventbus';
+import Coord from './game/Coord.ts';
+import ICell from '@/types/types'
 
 @Component({
   components: {
@@ -58,8 +60,11 @@ import EventBus from '../eventbus';
 })
 export default class Board extends Vue {
   @Prop() readonly boardData!: { cells: Array<Object>, rows: number, cols: number}
+  @Prop() readonly draggedElement!: ICell
 
   boardState = this.boardData
+
+  mouseCell: Coord = new Coord(0,0)
 
   @Watch('boardData')
   updateState() {
@@ -77,15 +82,7 @@ export default class Board extends Vue {
 
   tileDrop(e: DragEvent, payload: {yIndex: number, xIndex: number}) {
     const { yIndex, xIndex } = payload;
-    // TODO: outsource to an dtObj-setting function (one with es6 default parameters) for brevity.
-    const dtObj: {
-      x: number,
-      y: number,
-      element: string,
-      originY?: number,
-      originX?: number,
-      rotation: number
-    } = {
+    const dtObj: ICell = {
       x: xIndex,
       y: yIndex,
       element: '',
@@ -104,7 +101,9 @@ export default class Board extends Vue {
       dtObj.rotation = Number(dt.getData('rotation'));
     }
 
-    this.addCell(dtObj);
+    const cellToAdd = {... dtObj, x: xIndex, y: yIndex}
+
+    this.addCell(cellToAdd);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
       this.removeCell(dtObj);
     } else {
@@ -114,9 +113,16 @@ export default class Board extends Vue {
   }
 
   tileDragOver(e: DragEvent) {
-    if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = 'move';
+
     }
+
+  updateMouseCell(e, payload) {
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = 'move';
+      }
+    const {yIndex, xIndex} = payload;
+    this.mouseCell = {y: yIndex, x: xIndex};
+    // console.log(this.mouseCell);
   }
 
   tileClick(payload) {

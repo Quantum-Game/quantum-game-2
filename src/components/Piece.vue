@@ -3,9 +3,8 @@
     class="piece-wrapper"
     :draggable="isDraggable"
     @dragstart="onPieceDragStart"
-    @dragend="onDragEnd"
-    @dragover.prevent="onDragOver"
     @drop.prevent="onDrop"
+    @dragend="onDragEnd"
   >
     <component
       :is="element"
@@ -14,8 +13,6 @@
         transform: `rotate(${cell.rotation}deg)`
       }"
       :class="element"
-      @drop.prevent="onDrop"
-      @dragstart="onPieceDragStart"
     />
   </div>
 </template>
@@ -50,6 +47,7 @@ import {
   WavePlate90,
   WavePlate135,
 } from './pieces';
+import EventBus from '../eventbus';
 
 @Component({
   components: {
@@ -97,7 +95,7 @@ export default class Piece extends Vue {
   onDragEnd(e) {
     this.isBeingDragged = false;
     this.$emit('onDragEnd', this.cell);
-    console.log(e.dataTransfer.dropEffect);
+    console.log(this.cell);
   }
 
   /* eslint-disable class-methods-use-this */
@@ -143,6 +141,7 @@ export default class Piece extends Vue {
       dt.setData('rotation', String(rotation));
       dt.dropEffect = 'move';
     }
+    this.$emit('elementDragging', this.cell)
     this.isBeingDragged = true;
     return this.cell;
   }

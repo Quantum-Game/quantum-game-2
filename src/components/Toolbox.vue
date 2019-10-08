@@ -1,41 +1,42 @@
 <template>
-  <div
-    class="toolbox-container"
-    @drop.prevent="handleDrop"
-    @dragover.prevent="handleDragOver"
-  >
-    <div
-      v-for="set in toolState"
-      :key="set[0].element"
-      class="toolslot"
-      :class="{'tool': true, active: !isSetEmty(set)}"
-    >
-      <piece
-        :disabled="isSetEmty(set)"
-        :cell="set[0]"
-      />
-      x {{ set[1] }}
-    </div>
-  </div>
+	<div
+		class="toolbox-container"
+		@drop.prevent="handleDrop"
+		@dragover.prevent="handleDragOver"
+	>
+	<div
+	v-for="set in toolState"
+	:key="set[0].element"
+	class="toolslot"
+	:class="{'tool': true, active: !isSetEmty(set)}"
+	>
+	<piece
+	:disabled="isSetEmty(set)"
+	:cell="set[0]"
+	@elementDragging="onDrag"
+	/>
+	x {{ set[1] }}
+	</div>
+	</div>
 </template>
 
 <script lang="ts">
 import {
-  Component,
-  Vue,
-  Prop,
-  Watch,
+	Component,
+	Vue,
+	Prop,
+	Watch,
 } from 'vue-property-decorator';
 import Piece from './Piece.vue';
 import EventBus from '../eventbus';
 
 @Component({
-  components: {
-    Piece,
-  },
+	components: {
+	Piece,
+	},
 })
 export default class ToolBox extends Vue {
-  @Prop() readonly toolsets!: Array<Object>
+	@Prop() readonly toolsets!: Array<Object>
 
   toolState = this.toolsets;
 
@@ -47,6 +48,11 @@ export default class ToolBox extends Vue {
   created() {
     EventBus.$on('removeFromToolbox', this.removeTool);
   }
+
+  onDrag(payload) {
+    this.$emit('elementDragging', payload)
+  }
+
 
   /* eslint-disable class-methods-use-this */
   beforeDestroy() {
@@ -61,12 +67,12 @@ export default class ToolBox extends Vue {
       element: string,
       originY: number,
       originX: number,
-    } = {
-      x: -1,
-      y: -1,
-      element: '',
-      originX: -1,
-      originY: -1,
+		} = {
+			x: -1,
+			y: -1,
+			element: '',
+			originX: -1,
+			originY: -1,
     };
     const dt = e.dataTransfer;
     if (dt) {

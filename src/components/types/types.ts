@@ -9,3 +9,12 @@ export interface RootState {
     availableTools: Array<[string, number]>,
   },
 }
+
+export interface ICell {
+  x: number,
+  y: number,
+  originX: number,
+  originY: number,
+  rotation: number,
+  element: string,
+}

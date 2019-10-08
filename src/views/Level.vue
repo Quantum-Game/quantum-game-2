@@ -24,9 +24,11 @@
       </div>
       <board
         :board-data="boardData"
+        :draggedElement="elementBeingDragged"
       />
       <toolbox
         :toolsets="groupedTrayCells"
+        @elementDragging="setDraggedElement"
       />
     </div>
   </div>
@@ -37,7 +39,6 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import Board from '@/components/Board.vue';
 import Toolbox from '@/components/Toolbox.vue';
 import levels from '../levels';
-
 
 @Component({
   components: { Board, Toolbox },
@@ -52,6 +53,8 @@ export default class Level extends Vue {
   }
 
   error = ''
+
+  elementBeingDragged = {}
 
   // 1. handle level loading based on the url:
   get levelNumber() {
@@ -96,7 +99,7 @@ export default class Level extends Vue {
 
   created() {
     this.loadALevel(this.levelNumber);
-    this.setup();
+    // this.setup();
   }
 
   // 2. Preparing data for both the board and the toolbox:
@@ -186,6 +189,9 @@ export default class Level extends Vue {
     }
     // this.$store.dispatch('goToLevel', 'back');
     this.$router.push(`${previousLevelNumber}`);
+  }
+  setDraggedElement(payload) {
+    this.elementBeingDragged = payload;
   }
 }
 </script>

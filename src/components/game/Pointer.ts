@@ -1,12 +1,11 @@
-import { PathPointer } from "./Pointer";
 // POINTER CLASS
 // Describes a vector with an origin, a direction and an unit amplitude.
 // FIXME: Duplicate between path and coord
 // FIXME: Class needs rework
-import Coord from "./Coord";
-import { Cell } from "./Cell";
-import Grid from "./Grid";
-import { toPercent } from "./Helpers";
+import Coord from './Coord';
+import Cell from './Cell';
+import Grid from './Grid';
+import { toPercent } from './Helpers';
 
 export interface PathPointer {
 	coord: Coord;
@@ -27,7 +26,7 @@ export default class Pointer extends Coord {
 	path: PathPointer[];
 
 	constructor(
-		coord: Coord,
+    coord: Coord,
 		direction: number,
 		intensity = 1,
 		phase = 0,
@@ -193,7 +192,7 @@ export default class Pointer extends Coord {
 
 	// USed for debugging
 	static toString(pathPointers: PathPointer[]): string {
-		let result = "";
+		let result = '';
 		pathPointers.forEach(pathPointer => {
 			result += `<li>Laser at ${pathPointer.coord} going ${pathPointer.direction} with ${toPercent(
 				pathPointer.intensity
