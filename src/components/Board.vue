@@ -16,14 +16,26 @@
         @click="tileClick({yIndex, xIndex})"
       >
         <piece
-          @dragover.prevent="tileDragOver"
           v-if="isTherePiece(yIndex, xIndex)"
           :cell="isTherePiece(yIndex, xIndex)"
+          @dragover.prevent="tileDragOver"
         />
-        <div class="dot top left" />
-        <div class="dot top right" />
-        <div class="dot bottom left" />
-        <div class="dot bottom right" />
+        <div
+          class="dot top left"
+          @drop.prevent="tileDrop($event, {yIndex, xIndex})"
+        />
+        <div
+          class="dot top right"
+          @drop.prevent="tileDrop($event, {yIndex, xIndex})"
+        />
+        <div
+          class="dot bottom left"
+          @drop.prevent="tileDrop($event, {yIndex, xIndex})"
+        />
+        <div
+          class="dot bottom right"
+          @drop.prevent="tileDrop($event, {yIndex, xIndex})"
+        />
       </div>
     </div>
   </div>
@@ -58,6 +70,7 @@ export default class Board extends Vue {
     EventBus.$on('removeFromBoard', this.removeCell);
   }
 
+  /* eslint-disable class-methods-use-this */
   beforeDestroy() {
     EventBus.$off('removeFromBoard');
   }
@@ -91,14 +104,13 @@ export default class Board extends Vue {
       dtObj.rotation = Number(dt.getData('rotation'));
     }
 
-    console.log(dtObj)
-
     this.addCell(dtObj);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
       this.removeCell(dtObj);
     } else {
       EventBus.$emit('removeFromToolbox', dtObj);
     }
+    return dtObj;
   }
 
   tileDragOver(e: DragEvent) {
@@ -109,7 +121,7 @@ export default class Board extends Vue {
 
   tileClick(payload) {
     const { yIndex, xIndex } = payload;
-    const thisCell = this.isTherePiece(yIndex, xIndex)
+    const thisCell = this.isTherePiece(yIndex, xIndex);
     if (!thisCell || thisCell.frozen) {
       return false;
     }
@@ -124,18 +136,19 @@ export default class Board extends Vue {
     if ((360 + angle) % rotationAngle !== 0) {
       throw new Error('Error in the supplied angle compared to the element rotation angle.');
     } else {
-      rotation = ((thisCell.rotation + angle) % 360 + 360) % 360;
+      rotation = (((thisCell.rotation + angle) % 360) + 360) % 360;
     }
 
     const rotatedCell = { ...thisCell, rotation };
     const index = this.boardState.cells.indexOf(thisCell);
 
     this.boardState.cells.splice(index, 1, rotatedCell);
+    return rotatedCell;
   }
 
   // helps to determine if there is a element present
   isTherePiece(y: number, x: number) {
-    const possiblePieceArray = this.boardState.cells.filter(cell => cell.x === x && cell.y === y)
+    const possiblePieceArray = this.boardState.cells.filter(cell => cell.x === x && cell.y === y);
     if (possiblePieceArray.length) {
       return possiblePieceArray[0];
     }
@@ -181,8 +194,8 @@ export default class Board extends Vue {
 }
 
 .dot  {
-  width: 5px;
-  height: 5px;
+  width: 2px;
+  height: 2px;
   border-radius: 50%;
   background-color: blue;
   position: absolute;

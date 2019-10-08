@@ -48,8 +48,9 @@ export default class ToolBox extends Vue {
     EventBus.$on('removeFromToolbox', this.removeTool);
   }
 
+  /* eslint-disable class-methods-use-this */
   beforeDestroy() {
-    EventBus.$off('removeFromToolbox')
+    EventBus.$off('removeFromToolbox');
   }
 
   // TODO: debounce drops from toolbox earlier:
@@ -74,20 +75,23 @@ export default class ToolBox extends Vue {
       dtObj.originX = Number(dt.getData('originX'));
     }
 
-    this.addTool(dtObj);
     if (dtObj.originY > -1 && dtObj.originX > -1) {
+      this.addTool(dtObj);
+      console.log('should be removerd');
       EventBus.$emit('removeFromBoard', dtObj);
     }
   }
 
   addTool(tool: {element: string}) {
-    const setToAlter: [{element: string}, number] | undefined = this.toolState.find(set => set[0].element === tool.element);
+    const setToAlter: [{element: string}, number] | undefined = this.toolState.find((set) => {
+      return set[0].element === tool.element;
+    });
     const toolsetIndex = this.toolState.indexOf(setToAlter);
 
     if (setToAlter) {
       const setQuantity = setToAlter[1];
       const alteredQuantity = setQuantity + 1;
-      const alteredSet = [setToAlter[0], alteredQuantity]
+      const alteredSet = [setToAlter[0], alteredQuantity];
 
       this.toolState.splice(toolsetIndex, 1, alteredSet);
     }
@@ -103,9 +107,9 @@ export default class ToolBox extends Vue {
   }
 
   handleDragOver(e: DragEvent) {
-    if (e.dataTransfer) {
-      e.dataTransfer.dropEffect = 'move';
-    }
+    // if (e.dataTransfer) {
+    e.dataTransfer.dropEffect = 'move';
+    // }
   }
 
   get isSetEmty() {

@@ -16,7 +16,7 @@ const moduleProgress = {
     },
   },
   actions: {
-    goToLevel({state, commit, dispatch}, payload) {
+    goToLevel({ state, commit, dispatch }, payload) {
       if (payload) {
         if (typeof payload === 'number') {
           commit('SET_LEVEL_NUMBER', payload);

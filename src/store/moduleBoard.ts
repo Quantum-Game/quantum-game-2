@@ -3,8 +3,7 @@ import levels from '../levels';
 
 const moduleBoard = {
   actions: {
-    loadALevel({commit}, number): void {
-
+    loadALevel({ commit }, number): void {
       // See if there's such level:
       const rawLevel = levels[number];
       if (!rawLevel) {
@@ -19,9 +18,9 @@ const moduleBoard = {
       const rawTrayElements = levelBase.cells.filter(x => !x.frozen);
 
       // Alter them
-      const refinedTrayElements = rawTrayElements.map((cell) => {
-        return { ...cell, x: -1, y: -1, originX: -1, originY: -1 };
-      });
+      const refinedTrayElements = rawTrayElements.map(cell => ({
+        ...cell, x: -1, y: -1, originX: -1, originY: -1,
+      }));
 
       // Get the elements that were not moved and combine them with
       // the altered set for a new cellset:

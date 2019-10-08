@@ -5,6 +5,7 @@
     @dragstart="onPieceDragStart"
     @dragend="onDragEnd"
     @dragover.prevent="onDragOver"
+    @drop.prevent="onDrop"
   >
     <component
       :is="element"
@@ -12,7 +13,8 @@
       :style="{
         transform: `rotate(${cell.rotation}deg)`
       }"
-      @drop.cancel="onDrop"
+      :class="element"
+      @drop.prevent="onDrop"
       @dragstart="onPieceDragStart"
     />
   </div>
@@ -72,7 +74,7 @@ import {
     WavePlate45,
     WavePlate90,
     WavePlate135,
-  }
+  },
 })
 export default class Piece extends Vue {
   @Prop() readonly cell!: {
@@ -95,20 +97,17 @@ export default class Piece extends Vue {
   onDragEnd(e) {
     this.isBeingDragged = false;
     this.$emit('onDragEnd', this.cell);
-    console.log(e)
+    console.log(e.dataTransfer.dropEffect);
   }
 
+  /* eslint-disable class-methods-use-this */
   @Emit('ondrop')
-  onDrop(e) {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+  onDrop(e: MpuseEvent) {
   }
 
   @Emit()
   onDragOver(e: MpuseEvent) {
-    // const dt = e.dataTransfer;
-    // if (dt && this.cell.x < 0 && this.cell.y < 0) {
-    //   dt.dropEffect = 'move';
-    // }
+
   }
 
   get isDraggable(): boolean {

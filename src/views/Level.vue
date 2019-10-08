@@ -1,17 +1,29 @@
 <template>
   <div>
-    <button @click="goBack"> Next Level </button>
-    <h1 v-if="!error">WHAT UP, You're in level number {{levelNumber}}</h1>
-    <h1 v-else class="error">NO SUCH LEVEL!</h1>
-    <button @click="goOn"> Next Level </button>
-    <h2>{{currentLevelData.name}}</h2>
+    <button @click="goBack">
+      Next Level
+    </button>
+    <h1 v-if="!error">
+      WHAT UP, You're in level number {{ levelNumber }}
+    </h1>
+    <h1
+      v-else
+      class="error"
+    >
+      NO SUCH LEVEL!
+    </h1>
+    <button @click="goOn">
+      Next Level
+    </button>
+    <h2>{{ currentLevelData.name }}</h2>
     <div class="play-containter">
       <div
-        class="placeholder">
+        class="placeholder"
+      >
         <h1>placeholder</h1>
       </div>
       <board
-        :boardData="boardData"
+        :board-data="boardData"
       />
       <toolbox
         :toolsets="groupedTrayCells"
@@ -28,7 +40,7 @@ import levels from '../levels';
 
 
 @Component({
-  components: { Board, Toolbox }
+  components: { Board, Toolbox },
 })
 export default class Level extends Vue {
   // initial states:
@@ -63,9 +75,9 @@ export default class Level extends Vue {
     const rawTrayElements = levelBase.cells.filter(x => !x.frozen);
 
     // Alter them
-    const refinedTrayElements = rawTrayElements.map((cell) => {
-      return { ...cell, x: -1, y: -1, originX: -1, originY: -1 };
-    });
+    const refinedTrayElements = rawTrayElements.map(cell => ({
+      ...cell, x: -1, y: -1, originX: -1, originY: -1,
+    }));
 
     // Get the elements that were not moved and combine them with
     // the altered set for a new cellset:
@@ -93,10 +105,10 @@ export default class Level extends Vue {
     const { cells } = this.currentLevelData;
     const cellsMovedToTheirPlace = cells.map((cell, index) => {
       if (cell.x > this.currentLevelData.cols || cell.y > this.currentLevelData.rows) {
-        console.warn(`Cell number ${ index + 1} (${cell.element}) is out of bounds`);
+        console.warn(`Cell number ${index + 1} (${cell.element}) is out of bounds`);
       }
       if (!cell.frozen && cell.x > -1 && cell.y > -1) {
-        return { ...cell, x: -1, y: -1 }
+        return { ...cell, x: -1, y: -1 };
       }
       return cell;
     });
@@ -104,11 +116,15 @@ export default class Level extends Vue {
   }
 
   get boardCells() {
-    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x > -1 && cell.y > -1);
+    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => {
+      return cell.x > -1 && cell.y > -1;
+    });
   }
 
   get toolCells() {
-    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => cell.x === -1 && cell.y === -1)
+    return this.currentLevelData.cells.filter((cell: {x: number, y: number}) => {
+      return cell.x === -1 && cell.y === -1;
+    });
   }
 
   get boardData() {
