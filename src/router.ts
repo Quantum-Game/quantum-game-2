@@ -21,7 +21,7 @@ export default new Router({
     {
       path: '/level/:id',
       name: 'level',
-      component: () => import('./components/ExampleLevel.vue'),
+      component: () => import('./views/Level.vue'),
     },
     {
       path: '/levels',
@@ -37,6 +37,12 @@ export default new Router({
       path: '/info',
       name: 'info',
       component: () => import('./views/Info.vue'),
+    },
+    {
+      path: '/game',
+      name: 'game',
+      component: () => import('./components/game/Game.vue')
+
     },
     {
       path: '*',

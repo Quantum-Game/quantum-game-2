@@ -1,0 +1,45 @@
+{
+  "id": 2,
+  "name": "Reflection",
+  "group": "Game",
+  "description": "Get this Emitter off my face!",
+  "cols": 12,
+  "rows": 12,
+  "cells": [
+    {
+      "coord": { "y": 2, "x": 6 },
+      "element": "Detector",
+      "rotation": 180,
+      "frozen": true,
+      "active": true,
+      "energized": false
+    },
+    {
+      "coord": { "y": 4, "x": 2 },
+      "element": "Emitter",
+      "rotation": 90,
+      "frozen": true,
+      "active": true,
+      "energized": true
+    },
+    {
+      "coord": { "y": 4, "x": 6 },
+      "element": "Mirror",
+      "rotation": 315,
+      "frozen": false,
+      "active": false,
+      "energized": false
+    },
+    {
+      "coord": { "y": 6, "x": 6 },
+      "element": "Rock",
+      "rotation": 0,
+      "frozen": true,
+      "active": false,
+      "energized": true
+    }
+  ],
+  "hints": [
+  ],
+  "goals": []
+}

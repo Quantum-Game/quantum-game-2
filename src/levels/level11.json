@@ -1,0 +1,68 @@
+{
+	"id": 11,
+	"name": "Minesweeper",
+	"group": "Game",
+	"description": "Mine explode, you don't want that.",
+	"cols": 12,
+	"rows": 12,
+	"cells": [
+		{
+			"coord": { "y": 3, "x": 4 },
+			"element": "Mirror",
+			"rotation": 45,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 3, "x": 8 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 5, "x": 1 },
+			"element": "Emitter",
+			"rotation": 90,
+			"frozen": false,
+			"active": true,
+			"energized": true
+		},
+		{
+			"coord": { "y": 5, "x": 4 },
+			"element": "Mirror",
+			"rotation": 45,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 5, "x": 6 },
+			"element": "mine",
+			"rotation": 0,
+			"frozen": true,
+			"active": false,
+			"energized": false
+		},
+		{
+			"coord": { "y": 5, "x": 8 },
+			"element": "Mirror",
+			"rotation": 135,
+			"frozen": false,
+			"active": false,
+			"energized": true
+		},
+		{
+			"coord": { "y": 5, "x": 10 },
+			"element": "Detector",
+			"rotation": 270,
+			"frozen": true,
+			"active": false,
+			"energized": true
+		}
+	],
+	"hints": [],
+	"goals": []
+}

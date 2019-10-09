@@ -12,7 +12,6 @@
       <router-link to="/info">
         Info
       </router-link>
-      <h1>Current Level: {{ $store.state.currentLevel.number }} </h1>
     </div>
     <router-view />
   </div>

@@ -3,7 +3,7 @@
     <h1>{{ msg }}</h1>
     <pre>// These do not lead anywhere yet</pre>
     <resource
-      goto="play"
+      goto="level/0"
       label="Play"
     />
     <resource-container />
