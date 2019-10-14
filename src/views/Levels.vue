@@ -13,11 +13,11 @@ import ResourceContainer from '@/components/ResourceContainer.vue';
 export default Vue.extend({
 	name: 'Levels',
 	components: {
-		ResourceContainer,
+		ResourceContainer
 	},
 	data() {
 		return {
-			levelList: [],
+			levelList: []
 		};
 	},
 	created() {

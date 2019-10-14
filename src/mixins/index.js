@@ -1,3 +1,3 @@
 import setActiveElement from './setActiveElement';
 
-export { setActiveElement }
+export default setActiveElement;

@@ -16,13 +16,16 @@ Quantum Game 2 from CQT
 - [ ] adddrag and drop
 
 ### ENCYCLOPEDIAs
-- [x] make the isOpen in entry section be prop-derived
-- [x] serve images
 - [ ] add inline styling for images
 
 ### LAYOUT
-- [ ] Include Menu button into the layout
-- [ ] Scaffold menu
+- [ ] review push
 
 ### USAGE
 - [ ] Host in on Firebase
+
+14.10:
+- [x] Scaffold menu
+- [x] Include Menu button into the layout
+- [x] serve images in entries
+- [x] make the isOpen in entry section be prop-derived

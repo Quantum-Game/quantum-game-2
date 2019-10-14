@@ -1,7 +1,5 @@
 <template>
-	<div
-		class="piece-wrapper"
-	>
+	<div class="piece-wrapper">
 		<!-- <component
 			:is="element"
 			:opacity="opacity"
@@ -68,7 +66,7 @@ import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 		// WavePlate45,
 		// WavePlate90,
 		// WavePlate135,
-	},
+	}
 })
 export default class Piece extends Vue {
 	// @Prop() readonly cell!: {
@@ -143,7 +141,7 @@ export default class Piece extends Vue {
 	width: 100%;
 
 	// Animation class?
-	 svg {
+	svg {
 		transition: 0.5s;
 	}
 }

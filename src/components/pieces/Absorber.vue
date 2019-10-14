@@ -1,74 +1,52 @@
 <template>
-  <svg
-    x="0px"
-    y="0px"
-    viewBox="0 0 64 64"
-  >
-    <pattern
-      id="New_Pattern_Swatch_2"
-      width="3"
-      height="3"
-      patternUnits="userSpaceOnUse"
-      viewBox="0 -3 3 3"
-      style="overflow:visible;"
-    >
-      <g>
-        <rect
-          y="-3"
-          class="st0"
-          width="3"
-          height="3"
-        />
-        <rect
-          x="1"
-          y="-2"
-          class="st1"
-          width="1"
-          height="1"
-        />
-        <rect
-          x="0"
-          y="-3"
-          class="st0"
-          width="3"
-          height="3"
-        />
-      </g>
-    </pattern>
-    <g>
-      <path
-        class="st2"
-        d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,
+	<svg x="0px" y="0px" viewBox="0 0 64 64">
+		<pattern
+			id="New_Pattern_Swatch_2"
+			width="3"
+			height="3"
+			patternUnits="userSpaceOnUse"
+			viewBox="0 -3 3 3"
+			style="overflow:visible;"
+		>
+			<g>
+				<rect y="-3" class="st0" width="3" height="3" />
+				<rect x="1" y="-2" class="st1" width="1" height="1" />
+				<rect x="0" y="-3" class="st0" width="3" height="3" />
+			</g>
+		</pattern>
+		<g>
+			<path
+				class="st2"
+				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,
         58,58,53.34,58,47.6V16.4 C58,10.66,53.34,6,47.6,6z"
-      />
-      <pattern
-        id="SVGID_1_"
-        xlink:href="#New_Pattern_Swatch_2"
-        patternTransform="matrix(2.08 0 0 2.08 8817.9199 8777)"
-      />
-      <path
-        class="st3"
-        d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,58,
+			/>
+			<pattern id="SVGID_1_" xlink:href="#New_Pattern_Swatch_2" patternTransform="matrix(2.08 0 0 2.08 8817.9199 8777)" />
+			<path
+				class="st3"
+				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,58,
         58,53.34,58,47.6V16.4C58,10.66,53.34,6,47.6,6z"
-      />
-    </g>
-  </svg>
+			/>
+		</g>
+	</svg>
 </template>
 
 <script lang="ts">
-import {
-  Vue,
-  Prop,
-} from 'vue-property-decorator';
+import { Vue, Prop } from 'vue-property-decorator';
 
-export default class Absorber extends Vue {
-
-}
+export default class Absorber extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-  .st0{fill:none;}
-  .st1{fill:#3C2C50;}
-  .st2{fill:#5A4278;}
-  .st3{fill:url(#SVGID_1_);}
+.st0 {
+	fill: none;
+}
+.st1 {
+	fill: #3c2c50;
+}
+.st2 {
+	fill: #5a4278;
+}
+.st3 {
+	fill: url(#SVGID_1_);
+}
 </style>

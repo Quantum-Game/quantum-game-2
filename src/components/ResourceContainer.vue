@@ -16,11 +16,11 @@ export default Vue.extend({
 	props: {
 		type: {
 			type: String,
-			default: 'menu',
+			default: 'menu'
 		},
 		items: {
 			type: [Array, Number],
-			default: () => ['A', 'B', 'C'],
+			default: () => ['A', 'B', 'C']
 		}
 	}
 });
@@ -32,7 +32,7 @@ export default Vue.extend({
 	flex-wrap: wrap;
 }
 .menu {
-	flex-direction: column
+	flex-direction: column;
 }
 .info {
 	flex-direction: row;

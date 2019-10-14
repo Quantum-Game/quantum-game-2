@@ -14,14 +14,15 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import QMenu from '../components/QMenu.vue';
 
-export default Vue.extend({
+@Component({
 	components: {
 		QMenu
 	}
-});
+})
+export default class MainLayout extends Vue {}
 </script>
 
 <style lang="scss">
@@ -39,6 +40,9 @@ export default Vue.extend({
 		&.left,
 		&.right {
 			width: 20%;
+		}
+		&.left {
+			padding-top: 30px;
 		}
 		&.main {
 			display: flex;
