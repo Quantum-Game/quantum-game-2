@@ -28,9 +28,9 @@ export default class Menu extends Vue {
 	.bar2,
 	.bar3 {
 		width: 35px;
-		height: 5px;
+		height: 2px;
 		background-color: rgb(255, 255, 255);
-		margin: 6px 0;
+		margin: 8px 0;
 		transition: 0.4s;
 	}
 

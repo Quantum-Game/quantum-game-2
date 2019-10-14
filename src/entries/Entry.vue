@@ -1,6 +1,6 @@
 <template>
 	<div class="entry">
-		<router-link to="/info"> Back </router-link>
+		<router-link to="/info"> BACK TO GAME </router-link>
 		<article>
 			<h1>{{ entry.title.toUpperCase() }}</h1>
 			<div class="placeholder">
@@ -71,21 +71,22 @@ a {
 
 h1 {
 	padding-bottom: 1rem;
-	border-bottom: 2px solid white;
+	border-bottom: 1px solid white;
 	text-align: center;
 }
 
+
 .placeholder {
 	width: 100%;
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid #8e819d;
 	& .board {
 		width: 90%;
 		margin: 0 auto 1rem;
 		height: 200px;
-		background-color: firebrick;
+		//background-color: firebrick;
 		text-align: center;
 		& span {
-			font-size: 4rem;
+			font-size: 1rem;
 			color: gold;
 		}
 	}

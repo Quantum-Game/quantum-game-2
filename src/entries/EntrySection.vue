@@ -56,9 +56,11 @@ export default class EntrySection extends Vue {
 
 <style lang="scss" scroped>
 section {
-	border-bottom: 1px solid white;
+	border-bottom: 1px solid #8e819d;
 	& .title {
 		padding: 1em 0;
+		font-size: 1em;
+		font-weight:bold;
 		cursor: pointer;
 		transition: 0.4s;
 		margin: 0;
@@ -66,7 +68,8 @@ section {
 	}
 
 	& .content-wrapper {
-		font-weight: 100;
+		font-weight:lighter;
+		font-size: 1rem;
 		max-height: 0;
 		overflow: hidden;
 		transition: max-height 0.2s ease-out;
