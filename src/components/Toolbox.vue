@@ -159,7 +159,7 @@ export default class ToolBox extends Vue {
 		flex-direction: column;
 		justify-content: center;
 		color: white;
-		font-size: 1.3rem;
+		font-size: 10rem;
 		padding-top: 10px;
 		.active {
 			background-color: purple;

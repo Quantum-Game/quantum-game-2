@@ -12,7 +12,7 @@ body {
 	overflow-x: hidden;
 }
 #app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	font-family:  'Montserrat', Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
@@ -23,13 +23,17 @@ body {
 	min-height: 100vh;
 	// min-width: 100vw;
 	// overflow-y: hidden;
-	background: #5000a0; /* Old browsers */
-	background: -moz-radial-gradient(center, ellipse cover, #5000a0 0%, #3c1156 100%); /* FF3.6-15 */
-	background: -webkit-radial-gradient(center, ellipse cover, #5000a0 0%, #3c1156 100%); /* Chrome10-25,Safari5.1-6 */
-	background: radial-gradient(
-		ellipse at center,
-		#5000a0 0%,
-		#3c1156 100%
+	background: #2e006a; /* Old browsers */
+	//TO DO - change first two gradients
+	background: -moz-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* FF3.6-15 */
+	background: -webkit-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(
+		to right,
+		#120223 16%,
+		#2e006a 30%,
+		#2e006a 70%,
+		#120223 84%,
+
 	); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5000a0', endColorstr='#3c1156',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
