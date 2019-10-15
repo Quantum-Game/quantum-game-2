@@ -12,7 +12,7 @@
 				v-for="(section, index) in entry.sections"
 				:key="section.title"
 				:section="section"
-				:should-be-open-on-init="index === 0"
+				:should-be-open-on-init="index === 1"
 			/>
 		</article>
 	</div>
@@ -63,12 +63,6 @@ export default class Entry extends Vue {
 </script>
 
 <style lang="scss" scoped>
-*,
-a {
-	color: white;
-	text-align: justify;
-}
-
 h1 {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid white;
@@ -82,7 +76,6 @@ h1 {
 		width: 90%;
 		margin: 0 auto 1rem;
 		height: 200px;
-		//background-color: firebrick;
 		text-align: center;
 		& span {
 			font-size: 1rem;

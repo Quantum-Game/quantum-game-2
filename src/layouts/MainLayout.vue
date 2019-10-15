@@ -30,8 +30,9 @@ export default class MainLayout extends Vue {}
 	height: 100%;
 	min-height: 100vh;
 	display: flex;
-	flex-direction: row;
 	color: white;
+	max-width: 1400px;
+	justify-content: center;
 	& aside,
 	& main {
 		padding: 20px;
@@ -40,9 +41,6 @@ export default class MainLayout extends Vue {}
 		&.left,
 		&.right {
 			width: 20%;
-		}
-		&.left {
-			padding-top: 30px;
 		}
 		&.main {
 			display: flex;

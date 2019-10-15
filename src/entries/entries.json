@@ -4,8 +4,8 @@
     "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one",
     "sections": [
       {
-        "title": "THE BASICS",
-        "content": "<p>Beamsplitters are optical devices used to split a single beam of laser light into two beams, <em>independent</em> of the polarization of the incoming light. If the two outgoing beams have the same intensity, it is called a 50-50 beamsplitter. This ratio between the two beams intensity can be tuned arbitrarily to obtain more light transmitted than reflected or vice versa. Beamsplitters can also be used in reverse, to recombine two beams into one!</p>"
+        "title": "The basics",
+        "content": "<p>Beamsplitters are optical devices used to split a single beam of laser light into two beams, <em>independent</em> of the polarization of the incoming light. If the two outgoing beams have the same intensity, it is called a 50-50 beamsplitter. This ratio between the two beams intensity can be tuned arbitrarily to obtain more light transmitted than reflected or vice versa. Beamsplitters can also be used in reverse, to recombine two beams into one!"
       },
       {
         "title": "EVERYDAY USE",

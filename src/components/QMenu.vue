@@ -1,19 +1,23 @@
 <template>
-	<div :class="{ open: isMenuOpen, 'menu-icon': true }" @click.stop="openMenu">
-		<div class="bar1"></div>
-		<div class="bar2"></div>
-		<div class="bar3"></div>
-		<div v-if="isMenuOpen" class="menu-overlay">
-			<menu>
-				<span>Quantum Game</span>
-				<span>Continue</span>
-				<span>Levels</span>
-				<span>Sandbox</span>
-				<router-link to="/info" @click.stop.native="closeMenu">Encyclopedia</router-link>
-				<span>Options</span>
-				<span>Blog</span>
-			</menu>
+	<div class="q-menu-wrapper">
+		<div :class="{ open: isMenuOpen, 'menu-icon': true }" @click="toggleMenu">
+			<div class="bar1"></div>
+			<div class="bar2"></div>
+			<div class="bar3"></div>
 		</div>
+		<transition name="fade">
+			<div v-if="isMenuOpen" class="menu-overlay">
+				<menu>
+					<span>Quantum Game</span>
+					<span>Continue</span>
+					<span>Levels</span>
+					<span>Sandbox</span>
+					<router-link to="/info" @click.stop.native="closeMenu">Encyclopedia</router-link>
+					<span>Options</span>
+					<span>Blog</span>
+				</menu>
+			</div>
+		</transition>
 	</div>
 </template>
 
@@ -24,11 +28,25 @@ import { Vue, Component } from 'vue-property-decorator';
 export default class Menu extends Vue {
 	isMenuOpen: boolean = false;
 
+	created() {
+		window.addEventListener('keyup', this.handleEscPress);
+	}
+
 	closeMenu() {
 		this.isMenuOpen = false;
 	}
-	openMenu() {
-		this.isMenuOpen = true;
+	toggleMenu() {
+		this.isMenuOpen = !this.isMenuOpen;
+	}
+
+	handleEscPress(e: { which: number }) {
+		if (e.which === 27) {
+			this.toggleMenu();
+		}
+	}
+
+	beforeDestroy() {
+		window.removeEventListener('keyup', this.handleEscPress);
 	}
 }
 </script>
@@ -39,8 +57,6 @@ export default class Menu extends Vue {
 	position: relative;
 	cursor: pointer;
 	z-index: 2;
-	top: 10px;
-	left: 10px;
 	.bar1,
 	.bar2,
 	.bar3 {
@@ -63,7 +79,7 @@ export default class Menu extends Vue {
 
 	/* Rotate last bar */
 	&.open .bar3 {
-		transform: rotate(45deg) translate(-9px, -8px);
+		transform: rotate(45deg) translate(-11px, -9px);
 	}
 }
 .menu-overlay {
@@ -77,6 +93,7 @@ export default class Menu extends Vue {
 	background-color: rgba(82, 2, 128, 0.87);
 	display: flex;
 	flex-direction: column;
+	cursor: unset;
 	& menu {
 		display: flex;
 		flex-direction: column;
@@ -93,5 +110,15 @@ export default class Menu extends Vue {
 			}
 		}
 	}
+}
+
+// Animation:
+.fade-enter-active,
+.fade-leave-active {
+	transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+	opacity: 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
 	<section>
-		<h2 class="title" @click="handleTitleClick">{{ section.title }}</h2>
-		<div ref="content" class="content-wrapper" :style="style">
+		<h2 :class="{ title: true, active: isOpen }" @click="handleTitleClick">{{ section.title.toUpperCase() }}</h2>
+		<div ref="contentWrapper" class="content-wrapper" :style="style">
 			<div class="content" v-html="section.content" />
 			<img v-for="image in section.pics" :key="image" :src="imageUrl(image)" />
 		</div>
@@ -23,26 +23,25 @@ export default class EntrySection extends Vue {
 	@Prop() readonly shouldBeOpenOnInit!: boolean;
 
 	$refs!: {
-		content: HTMLElement;
+		contentWrapper: HTMLElement;
 	};
 
 	isOpen: boolean = false;
 
+	// hack, as having a computed property that's using refs
+	// as an initial data property causes errors - refs are
+	// not existant then.
 	mounted() {
 		this.isOpen = this.shouldBeOpenOnInit;
-		console.log(this.section.pics);
 	}
 
 	handleTitleClick(e: { target: Element }) {
-		if (e && e.target && e.target.classList) {
-			e.target.classList.toggle('active');
-			this.isOpen = !this.isOpen;
-		}
+		this.isOpen = !this.isOpen;
 	}
 
 	get style() {
 		return {
-			maxHeight: this.isOpen ? `${this.$refs.content.scrollHeight}px` : null
+			maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
 		};
 	}
 
@@ -64,7 +63,31 @@ section {
 		cursor: pointer;
 		transition: 0.4s;
 		margin: 0;
-		cursor: pointer;
+		font-weight: bold;
+		text-align: justify;
+		&:after {
+			display: inline-block;
+			position: relative;
+			content: '';
+			left: 12px;
+			height: 0;
+			border-left: 6px solid #e8e8e8;
+			border-bottom: 6px solid transparent;
+			border-top: 6px solid transparent;
+			clear: both;
+			transition: 0.4s;
+		}
+		&.active:after {
+			transform: rotate(90deg);
+			transition: 0.4s;
+		}
+	}
+	& p {
+		line-height: 2em;
+    text-align: left;
+		& a {
+			color: #ff0055;
+		}
 	}
 
 	& .content-wrapper {
@@ -76,23 +99,6 @@ section {
 		line-height: 1.3rem;
 		letter-spacing: 1px;
 	}
-}
-
-.active,
-.accordion:hover {
-	// background-color: #ccc;
-}
-
-.accordion:after {
-	content: '\002B';
-	color: #777;
-	font-weight: bold;
-	float: right;
-	margin-left: 5px;
-}
-
-.active:after {
-	content: '\2212';
 }
 
 // TEXT STYLING:

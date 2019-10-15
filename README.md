@@ -17,15 +17,27 @@ Quantum Game 2 from CQT
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images
+- [ ] add aria attributes for folded panes
 
 ### LAYOUT
-- [ ] review push
+- [ ] adjustments by from Klem I
 
 ### USAGE
 - [ ] Host in on Firebase
+
+## BUGS
+- [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
 
 14.10:
 - [x] Scaffold menu
 - [x] Include Menu button into the layout
 - [x] serve images in entries
 - [x] make the isOpen in entry section be prop-derived
+
+15.10
+- [x] review push
+- [x] get the menu icon into the foreground
+- [x] make the q-menu listen to enc key press
+- [x] menu enter/leave animation
+- [x] make the entry sections titles uppercase
+- [x] create turning arrows indicating folded panes
