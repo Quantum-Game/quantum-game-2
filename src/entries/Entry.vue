@@ -75,7 +75,6 @@ h1 {
 	text-align: center;
 }
 
-
 .placeholder {
 	width: 100%;
 	border-bottom: 1px solid #8e819d;

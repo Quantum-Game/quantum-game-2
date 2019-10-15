@@ -12,7 +12,7 @@ body {
 	overflow-x: hidden;
 }
 #app {
-	font-family:  'Montserrat', Helvetica, Arial, sans-serif;
+	font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
@@ -32,8 +32,7 @@ body {
 		#120223 16%,
 		#2e006a 30%,
 		#2e006a 70%,
-		#120223 84%,
-
+		#120223 84%
 	); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5000a0', endColorstr='#3c1156',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
