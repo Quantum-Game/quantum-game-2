@@ -1,8 +1,9 @@
 <template>
 	<div class="entry">
-		<router-link to="/info"> BACK TO GAME </router-link>
+		<router-link to="/info" class="go-back"> BACK TO GAME </router-link>
 		<article>
-			<h1>{{ entry.title.toUpperCase() }}</h1>
+			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
+			<h2 class="short">{{ entry.short }}</h2>
 			<div class="placeholder">
 				<div class="board">
 					<span>placeholder </span>
@@ -63,6 +64,23 @@ export default class Entry extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.entry {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	& .title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	& .short {
+		font-size: 1.1rem;
+	}
+	& .go-back {
+		font-weight: bold;
+		text-decoration: none;
+		color: white;
+	}
+}
 h1 {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid white;

@@ -37,7 +37,7 @@ interface IEntry {
 export default class Info extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .upper-border {
 	border-top: 1px solid white;
 	padding: 1rem;

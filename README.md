@@ -20,12 +20,11 @@ Quantum Game 2 from CQT
 - [ ] add aria attributes for folded panes
 
 ### LAYOUT
-- [ ] adjustments by from Klem I
 
 ### USAGE
 - [ ] Host in on Firebase
 
-## BUGS
+### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
 
 14.10:
@@ -41,3 +40,5 @@ Quantum Game 2 from CQT
 - [x] menu enter/leave animation
 - [x] make the entry sections titles uppercase
 - [x] create turning arrows indicating folded panes
+- [x] qMenu items are offsetted right with width of the icon
+- [x] adjustments by from Klem I

@@ -8,7 +8,7 @@
 		<transition name="fade">
 			<div v-if="isMenuOpen" class="menu-overlay">
 				<menu>
-					<span>Quantum Game</span>
+					<router-link to="/level/1" @click.stop.native="closeMenu">Quantum Game</router-link>
 					<span>Continue</span>
 					<span>Levels</span>
 					<span>Sandbox</span>
@@ -54,9 +54,14 @@ export default class Menu extends Vue {
 <style lang="scss" scoped>
 .menu-icon {
 	display: block;
-	position: relative;
+	position: absolute;
+	top: 10px;
+	left: 10px;
 	cursor: pointer;
 	z-index: 2;
+	&.open {
+		position: fixed;
+	}
 	.bar1,
 	.bar2,
 	.bar3 {
@@ -89,18 +94,19 @@ export default class Menu extends Vue {
 	height: 100%;
 	left: 0;
 	top: 0;
-	overflow: auto;
 	background-color: rgba(82, 2, 128, 0.87);
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	cursor: unset;
 	& menu {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		height: 65%;
+		height: 85%;
 		margin: 0;
 		font-size: 2rem;
+		padding-inline-start: 0;
 		a {
 			color: white;
 			text-decoration: none;
@@ -108,6 +114,9 @@ export default class Menu extends Vue {
 				color: white;
 				text-shadow: 1px 1px 2px white, -1px -1px 2px white;
 			}
+		}
+		span {
+			text-decoration: line-through;
 		}
 	}
 }
