@@ -37,15 +37,11 @@ export default class MainLayout extends Vue {}
 	& main {
 		padding: 20px;
 		align-content: center;
-		width: 55%;
+		width: 45%;
 		&.left,
 		&.right {
-			width: 20%;
-		}
-		&.main {
-			display: flex;
-			flex-direction: column;
-			justify-content: space-around;
+			width: 16%;
+			padding: 50px 0 0 0;
 		}
 	}
 }
