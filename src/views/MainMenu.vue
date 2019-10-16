@@ -2,7 +2,7 @@
 	<div class="hello">
 		<h1>{{ msg }}</h1>
 		<pre>// These do not lead anywhere yet</pre>
-		<resource goto="level/0" label="Play" />
+		<resource goto="level/1" label="Play" />
 		<resource goto="info" label="Encyclopedia" />
 	</div>
 </template>

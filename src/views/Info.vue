@@ -2,7 +2,9 @@
 	<main-layout>
 		<div slot="left">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
-			<router-link v-for="entry in entryList" :to="`/info/${entry}`">{{ entry }} </router-link>
+			<router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
+				<div>{{ entry }}</div>
+			</router-link>
 		</div>
 		<div slot="main">
 			<router-view />
@@ -37,11 +39,9 @@ interface IEntry {
 	}
 })
 export default class Info extends Vue {
-	entryList: Array = [];
+	entryList: Array<string> = [];
 	created() {
-		for (let key of Object.keys(entries)) {
-			this.entryList.push(key);
-		}
+		Object.keys(entries).forEach((entryName: string) => this.entryList.push(entryName));
 	}
 }
 </script>

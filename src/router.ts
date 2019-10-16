@@ -18,11 +18,6 @@ export default new Router({
 			component: () => import('./views/GameContainer.vue')
 		},
 		{
-			path: '/levels',
-			name: 'levels',
-			component: () => import('./views/Levels.vue')
-		},
-		{
 			path: '/info',
 			component: () => import('./views/Info.vue'),
 			children: [

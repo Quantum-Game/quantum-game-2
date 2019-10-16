@@ -1,7 +1,7 @@
 <template>
 	<div class="board-container">
-		<!-- <div v-for="(row, yIndex) in initialBoard.rows" :key="`${row}-${yIndex}`" class="row">
-			<div
+		<div v-for="(row, yIndex) in initialBoard.rows" :key="`${row}-${yIndex}`" class="row">
+			<!-- <div
 				v-for="(column, xIndex) in initialBoard.cols"
 				:key="xIndex"
 				class="tile"
@@ -16,8 +16,8 @@
 				<div class="dot top right" @drop.prevent="tileDrop($event, { yIndex, xIndex })" />
 				<div class="dot bottom left" @drop.prevent="tileDrop($event, { yIndex, xIndex })" />
 				<div class="dot bottom right" @drop.prevent="tileDrop($event, { yIndex, xIndex })" />
-			</div>
-		</div> -->
+			</div> -->
+		</div>
 	</div>
 </template>
 
