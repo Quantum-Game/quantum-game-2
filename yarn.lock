@@ -8541,7 +8541,7 @@ qs@~6.5.2:
 
 quantum-tensors@stared/quantum-tensors#JoyOfDependencies:
   version "0.0.2"
-  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/7c38fc5bd25dc397730593cc8276915f402bf58f"
+  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/e7425545c169ad56a7bba0e258f82f51fb449116"
   dependencies:
     "@types/jest" "^24.0.19"
     "@types/lodash" "^4.14.138"
@@ -8549,9 +8549,10 @@ quantum-tensors@stared/quantum-tensors#JoyOfDependencies:
 
 quantumweasel@sneakyweasel/quantumweasel#master:
   version "1.0.2"
-  resolved "https://codeload.github.com/sneakyweasel/quantumweasel/tar.gz/c12d1cca853c075fcf4520649cc29e98ad6d2f82"
+  resolved "https://codeload.github.com/sneakyweasel/quantumweasel/tar.gz/a1450d55add749b81aec56c0801e2b04a5be0601"
   dependencies:
     "@types/file-saver" "^2.0.1"
+    "@types/jest" "^24.0.19"
     file-saver "^2.0.2"
     quantum-tensors stared/quantum-tensors#JoyOfDependencies
     rot-js "^2.1.1"

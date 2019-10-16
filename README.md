@@ -9,19 +9,15 @@ Quantum Game 2 from CQT
 - [ ] Clean up
 
 ### GAME
-- [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
+- [ ] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
 - [ ] Create a working GameContainer - meanning initializing the Game object
 - [ ] Adjust the board
-- [ ] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
 - [ ] adddrag and drop
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images
 - [ ] add aria attributes for folded panes
 
-### LAYOUT
-
-### USAGE
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
@@ -44,3 +40,4 @@ Quantum Game 2 from CQT
 
 16.10
 - [x] Host in on Firebase
+- [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
