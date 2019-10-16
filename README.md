@@ -21,6 +21,7 @@ Quantum Game 2 from CQT
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
+- [ ] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
 
 14.10:
 - [x] Scaffold menu

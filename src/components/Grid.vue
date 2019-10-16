@@ -25,7 +25,7 @@
 
 <script>
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import Cell from './Cell';
+import Cell from './Cell.vue';
 // import Controls from './Controls'
 
 @Component({
@@ -49,9 +49,9 @@ export default class Grid extends Vue {
 	];
 	created() {
 		// Create array of cells with empty elements
-		for (let x = 0; x < this.width; x++) {
+		for (let x = 0; x < this.width; x+1) {
 			this.grid[x] = [];
-			for (let y = 0; y < this.height; y++) {
+			for (let y = 0; y < this.height; y+1) {
 				this.grid[x][y] = { element: 'void', frozen: false, rotation: 0 };
 				const cell = this.isCoordInJson(x, y);
 				if (cell && y === cell.y && x === cell.x) {

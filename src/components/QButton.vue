@@ -1,5 +1,5 @@
 <template>
-  <button class="button" :class="type" :style="{backgroundColor: color}"><slot></slot></button>
+	<button class="button" :class="type"><slot></slot></button>
 </template>
 
 <script lang="ts">
@@ -7,7 +7,6 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 
 @Component
 export default class QButton extends Vue {
-	// @Prop({default: '#5c00d3'}) readonly color!: string;
 	@Prop() readonly hoverColor!: string;
 	@Prop() readonly type!: string;
 
@@ -21,7 +20,7 @@ export default class QButton extends Vue {
 button {
 	text-decoration: none;
 	text-decoration-style: none;
-    text-decoration-color: none; 
+	text-decoration-color: none;
 	padding: 0;
 	border: none;
 	font: inherit;
@@ -35,15 +34,14 @@ button {
 	text-align: center;
 	font-weight: bold;
 	text-decoration: none;
-	display:flex;
+	display: flex;
 	font-size: 0.8rem;
 	transition: 0.5s;
-	
-}	
+}
 
 .basic {
-	background-color:#5c00d3;
-	border-bottom:4px solid #120223;
+	background-color: #5c00d3;
+	border-bottom: 4px solid #120223;
 	&:hover {
 		background-color: #4302bf;
 		transition: 0.5s;
@@ -51,8 +49,8 @@ button {
 }
 
 .special {
-	background-color:#ff0055;
-	border-bottom:4px solid #890236;
+	background-color: #ff0055;
+	border-bottom: 4px solid #890236;
 	&:hover {
 		background-color: #db0356;
 		transition: 0.5s;

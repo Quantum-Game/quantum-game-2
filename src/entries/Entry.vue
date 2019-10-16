@@ -1,13 +1,12 @@
 <template>
 	<div class="entry">
-		<router-link to="/info" > <q-button  type="basic"> ENCYCLOPEDIA </q-button> </router-link>
+		<router-link to="/info"> <q-button type="basic"> ENCYCLOPEDIA </q-button> </router-link>
 		<article>
 			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
 			<h2 class="short">{{ entry.short }}</h2>
 			<div class="placeholder">
-				
 				<div class="board">
-					<img src="@/assets/test_board_en.svg" alt="placeholder">
+					<img src="@/assets/test_board_en.svg" alt="placeholder" />
 					<!-- <span>  </span> -->
 				</div>
 			</div>
@@ -72,7 +71,7 @@ export default class Entry extends Vue {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	align-items:center;
+	align-items: center;
 	& .title {
 		font-size: 2rem;
 		font-weight: bold;
@@ -84,12 +83,8 @@ export default class Entry extends Vue {
 		font-weight: bold;
 		text-decoration: none;
 		color: white;
-	
 	}
-
 }
-
-
 
 h1 {
 	padding-bottom: 1rem;

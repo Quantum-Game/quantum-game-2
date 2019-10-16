@@ -100,7 +100,7 @@ export default class Menu extends Vue {
 	justify-content: center;
 	cursor: unset;
 	& menu {
-		display:flex;
+		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
 		height: 50%;

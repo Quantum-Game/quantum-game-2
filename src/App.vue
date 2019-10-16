@@ -24,7 +24,6 @@ body {
 	height: 100%;
 	min-height: 100vh;
 	background: #2e006a; /* Old browsers */
-	
 	//TO DO - change first two gradients
 	background: -moz-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* FF3.6-15 */
 	background: -webkit-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* Chrome10-25,Safari5.1-6 */
