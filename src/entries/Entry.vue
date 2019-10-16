@@ -1,19 +1,21 @@
 <template>
 	<div class="entry">
-		<router-link to="/info" class="go-back"> BACK TO GAME </router-link>
+		<router-link to="/info" > <q-button  type="basic"> ENCYCLOPEDIA </q-button> </router-link>
 		<article>
 			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
 			<h2 class="short">{{ entry.short }}</h2>
 			<div class="placeholder">
+				
 				<div class="board">
-					<span>placeholder </span>
+					<img src="@/assets/test_board_en.svg" alt="placeholder">
+					<!-- <span>  </span> -->
 				</div>
 			</div>
 			<entry-section
 				v-for="(section, index) in entry.sections"
 				:key="section.title"
 				:section="section"
-				:should-be-open-on-init="index === 1"
+				:should-be-open-on-init="index === 0"
 			/>
 		</article>
 	</div>
@@ -22,6 +24,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
+import QButton from '../components/QButton.vue';
 import entries from './entries.json';
 
 interface IEntryList {
@@ -36,7 +39,8 @@ interface IEntry {
 
 @Component({
 	components: {
-		EntrySection
+		EntrySection,
+		QButton
 	}
 })
 export default class Entry extends Vue {
@@ -68,19 +72,25 @@ export default class Entry extends Vue {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
+	align-items:center;
 	& .title {
 		font-size: 2rem;
 		font-weight: bold;
 	}
 	& .short {
-		font-size: 1.1rem;
+		font-size: 1rem;
 	}
 	& .go-back {
 		font-weight: bold;
 		text-decoration: none;
 		color: white;
+	
 	}
+
 }
+
+
+
 h1 {
 	padding-bottom: 1rem;
 	border-bottom: 1px solid white;
@@ -88,13 +98,15 @@ h1 {
 }
 
 .placeholder {
+	padding-top: 2rem;
 	width: 100%;
 	border-bottom: 1px solid #8e819d;
 	& .board {
-		width: 90%;
-		margin: 0 auto 1rem;
+		width: 100%;
+		margin: 0 auto 0rem;
 		height: 200px;
 		text-align: center;
+		padding-bottom: 4rem;
 		& span {
 			font-size: 1rem;
 			color: gold;

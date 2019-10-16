@@ -10,7 +10,7 @@
 			<router-view />
 		</div>
 		<div slot="right">
-			<p class="upper-border">Related concepts</p>
+			<h3 class="upper-border">RELATED CONCEPTS</h3>
 		</div>
 	</main-layout>
 </template>
@@ -49,6 +49,8 @@ export default class Info extends Vue {
 <style lang="scss" scoped>
 .upper-border {
 	border-top: 1px solid white;
-	padding: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	text-align: left;
 }
 </style>
