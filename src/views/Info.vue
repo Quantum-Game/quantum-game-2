@@ -2,13 +2,13 @@
 	<main-layout>
 		<div slot="left">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
-			<router-link v-for="entry in entryList" :to="`/info/${entry}`">{{ entry }} </router-link>
+			<router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">{{ entry }} </router-link>
 		</div>
 		<div slot="main">
 			<router-view />
 		</div>
 		<div slot="right">
-			<p class="upper-border">Related concepts</p>
+			<h3 class="upper-border">RELATED CONCEPTS</h3>
 		</div>
 	</main-layout>
 </template>
@@ -37,7 +37,7 @@ interface IEntry {
 	}
 })
 export default class Info extends Vue {
-	entryList: Array = [];
+	entryList: Array<string> = [];
 	created() {
 		for (let key of Object.keys(entries)) {
 			this.entryList.push(key);
@@ -49,6 +49,8 @@ export default class Info extends Vue {
 <style lang="scss" scoped>
 .upper-border {
 	border-top: 1px solid white;
-	padding: 1rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	text-align: left;
 }
 </style>

@@ -31,13 +31,13 @@ export default class MainLayout extends Vue {}
 	min-height: 100vh;
 	display: flex;
 	color: white;
-	max-width: 1400px;
+	width: 1400px;
 	justify-content: center;
 	& aside,
 	& main {
 		padding: 20px;
 		align-content: center;
-		width: 45%;
+		width: 65%;
 		&.left,
 		&.right {
 			width: 16%;

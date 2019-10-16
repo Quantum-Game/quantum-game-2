@@ -8,13 +8,13 @@
 		<transition name="fade">
 			<div v-if="isMenuOpen" class="menu-overlay">
 				<menu>
-					<router-link to="/level/1" @click.stop.native="closeMenu">Quantum Game</router-link>
-					<span>Continue</span>
-					<span>Levels</span>
-					<span>Sandbox</span>
-					<router-link to="/info" @click.stop.native="closeMenu">Encyclopedia</router-link>
-					<span>Options</span>
-					<span>Blog</span>
+					<router-link to="/level/1" @click.stop.native="closeMenu">QUANTUM GAME</router-link>
+					<span>CONTINUE</span>
+					<span>LEVELS</span>
+					<span>SANDBOX</span>
+					<router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
+					<span>OPTIONS</span>
+					<span>BLOG</span>
 				</menu>
 			</div>
 		</transition>
@@ -94,16 +94,16 @@ export default class Menu extends Vue {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(82, 2, 128, 0.87);
+	background-color: rgba(33, 2, 53, 0.9);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	cursor: unset;
 	& menu {
-		display: flex;
+		display:flex;
 		flex-direction: column;
 		justify-content: space-around;
-		height: 85%;
+		height: 50%;
 		margin: 0;
 		font-size: 2rem;
 		padding-inline-start: 0;
@@ -112,7 +112,8 @@ export default class Menu extends Vue {
 			text-decoration: none;
 			&:hover {
 				color: white;
-				text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+				font-weight: bold;
+				// text-shadow: 1px 1px 2px white, -1px -1px 2px white;
 			}
 		}
 		span {
