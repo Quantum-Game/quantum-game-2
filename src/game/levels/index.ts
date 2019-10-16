@@ -8,6 +8,7 @@ import level7 from './level7.json';
 import level8 from './level8.json';
 import level9 from './level9.json';
 import level10 from './level10.json';
+import { ILevelList } from '@/types';
 
 export { level1 };
 export { level2 };
@@ -20,7 +21,7 @@ export { level8 };
 export { level9 };
 export { level10 };
 
-const levels = {
+const levels: ILevelList = {
 	level1,
 	level2,
 	level3,

@@ -29,10 +29,10 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Level } from 'quantumweasel';
+import { ICell, ICoord } from '@/types';
 import levelData from '../game/levels';
 import MainLayout from '../layouts/MainLayout.vue';
 import Piece from '../components/Piece.vue';
-import { ICell, ICoord } from '@/types';
 // @ts-ignore
 // import Grid from '../components/Grid.vue';
 // import { Board, Toolbox } from '../components';
@@ -40,17 +40,6 @@ import { ICell, ICoord } from '@/types';
 // import { IPhotonState, IGameState, IFrame, ICell, ILevel } from '@/types';
 // import Game from '../game/Game';
 
-export interface ILevelList {
-	[index: string]: ILevel;
-}
-
-interface ILevel {
-	grid: {
-		cols: number;
-		rows: number;
-		cells: Array<ICell>;
-	};
-}
 
 @Component({
 	components: {
@@ -62,11 +51,21 @@ interface ILevel {
 	}
 })
 export default class GameContainer extends Vue {
-	level: ILevel = {
+	level = {
 		grid: {
 			cols: 0,
 			rows: 0,
-			cells: []
+			cells: [
+				{
+					coord: {
+						x: -1,
+						y: -1
+					},
+					element: '',
+					rotation: 0,
+					frozen: false
+				}
+			]
 		}
 	};
 	error: string = '';
@@ -76,13 +75,13 @@ export default class GameContainer extends Vue {
 	created() {
 		this.loadALevel();
 		const levelX = new Level();
-		console.log(levelX);
+		console.log(levelData);
 	}
 	loadALevel() {
 		this.error = '';
 		// See if there's such level:
-		// const typedLevel:ILevelList = <ILevelList> levelData;
-		const levelToLoad: ILevel = levelData[this.currentLevelName];
+		const typedLevel = levelData;
+		const levelToLoad = typedLevel[this.currentLevelName];
 		if (!levelToLoad) {
 			this.error = 'no such level!';
 			return false;

@@ -42,3 +42,4 @@ Quantum Game 2 from CQT
 16.10
 - [x] Host in on Firebase
 - [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
+- [x] type levelData

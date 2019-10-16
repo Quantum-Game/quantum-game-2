@@ -34,6 +34,18 @@ export interface ICell {
 	originY?: number;
 }
 
+export interface ILevel {
+	grid: {
+		cols: number;
+		rows: number;
+		cells: Array<ICell>;
+	};
+}
+
+export interface ILevelList {
+	[index: string]: ILevel;
+}
+
 export interface IGameState {
 	achievedGoals: boolean;
 	noPointers: boolean;
@@ -55,17 +67,6 @@ export interface IHints {
 	text: string;
 }
 
-export interface ILevel {
-	id: number;
-	name: string;
-	group: string;
-	description: string;
-	cols: number;
-	rows: number;
-	cells: ICell[];
-	goals: IGoals[];
-	hints: IHints[];
-}
 
 export interface IToolset {
 	[key: string]: any;

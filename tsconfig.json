@@ -32,7 +32,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/main.js", "src/game/levels/index.js", "src/game/levels/index.js"
+    "tests/**/*.tsx", "src/main.js", "src/game/levels/index.js", "src/game/levels/index.ts"
   ],
   "exclude": [
     "node_modules"
