@@ -40,7 +40,6 @@ import Piece from '../components/Piece.vue';
 // import { IPhotonState, IGameState, IFrame, ICell, ILevel } from '@/types';
 // import Game from '../game/Game';
 
-
 @Component({
 	components: {
 		MainLayout,
