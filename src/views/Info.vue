@@ -2,6 +2,7 @@
 	<main-layout>
 		<div slot="left">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
+			<router-link v-for="entry in entryList" :to="`/info/${entry}`">{{ entry }} </router-link>
 		</div>
 		<div slot="main">
 			<router-view />
@@ -16,6 +17,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import MainLayout from '../layouts/MainLayout.vue';
 import Entry from '../entries/Entry.vue';
+import entries from '../entries/entries.json';
 
 interface ISection {
 	title: string;
@@ -34,7 +36,14 @@ interface IEntry {
 		Entry
 	}
 })
-export default class Info extends Vue {}
+export default class Info extends Vue {
+	entryList: Array = [];
+	created() {
+		for (let key of Object.keys(entries)) {
+			this.entryList.push(key);
+		}
+	}
+}
 </script>
 
 <style lang="scss" scoped>
