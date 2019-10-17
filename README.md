@@ -5,19 +5,21 @@ Quantum Game 2 from CQT
 `yarn` followed by `yarn serve`
 
 ## TODO:
-### GENERAL
-- [ ] Clean up
 
 ### GAME
-- [ ] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
-- [ ] Create a working GameContainer - meanning initializing the Game object
-- [ ] Adjust the board
 - [ ] adddrag and drop
+
+### BOARD:
+- [ ] click listeners;
+- [ ] drop listeners;
+- [ ] drag
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images
 - [ ] add aria attributes for folded panes
 
+### MAINTENANCE
+- [ ] get rid of conflicting prettier configs, editorconfig
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
@@ -43,3 +45,12 @@ Quantum Game 2 from CQT
 - [x] Host in on Firebase
 - [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
 - [x] type levelData
+
+17.10
+- [x] displaying frames
+- [x] propertly order frames without overwriting the last one (thanks lodash deep clone! :*);
+- [x] Create a working GameContainer - meanning initializing the Game object
+- [x] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
+- [x] Adjust the board
+- [x] display elements graphix;
+- [x] have the simulation going

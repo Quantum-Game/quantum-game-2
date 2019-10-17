@@ -1,19 +1,23 @@
 <template>
 	<div class="game">
-		<main-layout>
+		<game-layout>
 			<section slot="main">
 				<h1 v-if="error" class="error">{{ error }}</h1>
 				<h1 v-else class="title">{{ level.name.toUpperCase() }}</h1>
 				<div class="grid">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
-						<div v-for="(column, x) in level.grid.cols" :key="x" class="tile">
-							<piece v-if="isTherePiece(y, x)" :cell="isTherePiece(y, x)" :disabled="isTherePiece(y, x).frozen" />
-						</div>
+						<tile v-for="(column, x) in level.grid.cols" :key="x" :cell="isTherePiece(y, x)"></tile>
 					</div>
 				</div>
+				<div id="player" />
+				<p id="cell"></p>
+				<p id="quantum"></p>
+				<p id="laser"></p>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
 			</section>
-		</main-layout>
+			<button slot="right" @click="nextFrame">next</button>
+			<simulation-steps-display slot="right" :frames="frames" />
+		</game-layout>
 		<!-- <section class="right">
 			<toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" />
 			<div class="explanation-placeholder">
@@ -27,12 +31,16 @@
 </template>
 
 <script lang="ts">
+import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Level } from 'quantumweasel';
-import { ICell, ICoord } from '@/types';
-import levelData from '../game/levels';
-import MainLayout from '../layouts/MainLayout.vue';
+import { Level, Frame } from 'quantumweasel';
+import GameLayout from '../layouts/GameLayout.vue';
 import Piece from '../components/Piece.vue';
+import SimulationStepsDisplay from '../components/SimulationStepsDisplay.vue';
+import { ICell, ICoord, FrameInterface } from '@/types';
+import levelData from '../game/levels';
+import Tile from '../components/Tile.vue';
+
 // @ts-ignore
 // import Grid from '../components/Grid.vue';
 // import { Board, Toolbox } from '../components';
@@ -42,8 +50,10 @@ import Piece from '../components/Piece.vue';
 
 @Component({
 	components: {
-		MainLayout,
-		Piece
+		GameLayout,
+		Piece,
+		SimulationStepsDisplay,
+		Tile
 		// Grid,
 		// Board,
 		// Toolbox
@@ -70,11 +80,24 @@ export default class GameContainer extends Vue {
 	error: string = '';
 	game = {};
 	activeElement = '';
+	frames: FrameInterface[] = [];
+
+	get lastFrame(): FrameInterface {
+		return this.frames[this.frames.length - 1];
+	}
 
 	created() {
 		this.loadALevel();
-		const levelX = new Level();
-		console.log(levelData);
+		const levelWhatever = Level.importLevel(this.level);
+		const initFrame = new Frame(levelWhatever);
+		const firstFrame: FrameInterface = initFrame.next();
+		this.frames.push(firstFrame);
+	}
+
+	nextFrame() {
+		const lastFrameCopy = cloneDeep(this.lastFrame);
+		const nextFrame: FrameInterface = lastFrameCopy.next();
+		this.frames.push(nextFrame);
 	}
 	loadALevel() {
 		this.error = '';
@@ -138,6 +161,9 @@ export default class GameContainer extends Vue {
 </script>
 
 <style lang="scss">
+.game {
+	width: 100%;
+}
 .grid {
 	width: 100%;
 	max-height: 100vh;

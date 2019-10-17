@@ -71,7 +71,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Emitter extends Vue {}
+export default class Laser extends Vue {}
 </script>
 
 <style lang="scss" scoped>

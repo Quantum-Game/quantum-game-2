@@ -1,5 +1,5 @@
 <template>
-	<div class="entry">
+	<div v-if="entry" class="entry">
 		<router-link to="/info"> <q-button type="basic"> ENCYCLOPEDIA </q-button> </router-link>
 		<article>
 			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
@@ -23,6 +23,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
+import Photon from '../components/Photon.vue';
 import QButton from '../components/QButton.vue';
 import entries from './entries.json';
 
@@ -39,7 +40,8 @@ interface IEntry {
 @Component({
 	components: {
 		EntrySection,
-		QButton
+		QButton,
+		Photon
 	}
 })
 export default class Entry extends Vue {
@@ -57,6 +59,9 @@ export default class Entry extends Vue {
 		const typedEntries: IEntryList = entries;
 		if (this.entryURL) {
 			this.entry = typedEntries[this.entryURL];
+		}
+		if (!this.entry) {
+			this.$router.push({ name: '404' });
 		}
 	}
 

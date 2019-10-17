@@ -18,17 +18,13 @@ export default class QButton extends Vue {
 
 <style lang="scss" scoped>
 button {
-	text-decoration: none;
-	text-decoration-style: none;
-	text-decoration-color: none;
+	display: inline-block;
 	padding: 0;
 	border: none;
 	font: inherit;
 	color: inherit;
 	background-color: transparent;
 	cursor: pointer;
-	/* background-color: #5c00d3;  */
-	// border-bottom: 4px solid #120223;
 	color: white;
 	padding: 8px 20px;
 	text-align: center;
@@ -37,6 +33,7 @@ button {
 	display: flex;
 	font-size: 0.8rem;
 	transition: 0.5s;
+	align-items: center;
 }
 
 .basic {

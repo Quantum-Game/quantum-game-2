@@ -10,7 +10,7 @@
     "cells": [
       {
         "coord": { "y": 4, "x": 2 },
-        "element": "laser",
+        "element": "Laser",
         "rotation": 90,
         "frozen": true,
         "active": true,
@@ -18,7 +18,7 @@
       },
       {
         "coord": { "y": 4, "x": 7 },
-        "element": "detector",
+        "element": "Detector",
         "rotation": 270,
         "frozen": true,
         "active": true,
