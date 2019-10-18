@@ -3,43 +3,71 @@ import BeamSplitter from './BeamSplitter.vue';
 import Bomb from './Bomb.vue';
 import CoatedBeamSplitter from './CoatedBeamSplitter.vue';
 import Detector from './Detector.vue';
-import Emitter from './Emitter.vue';
+import Laser from './Laser.vue';
 import GlassSlab from './GlassSlab.vue';
 import Mirror from './Mirror.vue';
 import OmniDetector from './OmniDetector.vue';
-import Polarizer0 from './Polarizer0.vue';
+import PolarizerV from './PolarizerV.vue';
 import Polarizer45 from './Polarizer45.vue';
-import Polarizer90 from './Polarizer90.vue';
+import PolarizerH from './PolarizerH.vue';
 import Polarizer135 from './Polarizer135.vue';
 import PolarizingBeamSplitter from './PolarizingBeamSplitter.vue';
 import Rock from './Rock.vue';
 import SugarSolution from './SugarSolution.vue';
 import VacuumJar from './VacuumJar.vue';
-import WavePlate0 from './WavePlate0.vue';
+import WavePlateV from './WavePlateV.vue';
 import WavePlate45 from './WavePlate45.vue';
-import WavePlate90 from './WavePlate90.vue';
+import WavePlateH from './WavePlateH.vue';
 import WavePlate135 from './WavePlate135.vue';
 
-export {
+export { Absorber };
+export { BeamSplitter };
+export { Bomb };
+export { CoatedBeamSplitter };
+export { Detector };
+export { Laser };
+export { GlassSlab };
+export { Mirror };
+export { OmniDetector };
+export { PolarizerV };
+export { Polarizer45 };
+export { PolarizerH };
+export { Polarizer135 };
+export { PolarizingBeamSplitter };
+export { Rock };
+export { SugarSolution };
+export { VacuumJar };
+export { WavePlateV };
+export { WavePlate45 };
+export { WavePlateH };
+export { WavePlate135 };
+
+interface IPiecesList {
+	[index: string]: Object;
+}
+
+const PiecesList: IPiecesList = {
 	Absorber,
 	BeamSplitter,
 	Bomb,
 	CoatedBeamSplitter,
 	Detector,
-	Emitter,
+	Laser,
 	GlassSlab,
 	Mirror,
 	OmniDetector,
-	Polarizer0,
+	PolarizerV,
 	Polarizer45,
-	Polarizer90,
+	PolarizerH,
 	Polarizer135,
 	PolarizingBeamSplitter,
 	Rock,
 	SugarSolution,
 	VacuumJar,
-	WavePlate0,
+	WavePlateV,
 	WavePlate45,
-	WavePlate90,
+	WavePlateH,
 	WavePlate135
 };
+
+export default PiecesList;

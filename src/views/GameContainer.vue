@@ -1,18 +1,24 @@
 <template>
 	<div class="game">
-		<!-- <section class="left">
-			<div :class="{ open: menuOpen, 'menu-icon': true }" @click="toggleIcon">
-				<div class="bar1"></div>
-				<div class="bar2"></div>
-				<div class="bar3"></div>
-			</div>
-		</section>
-		<section class="center">
-			<h1 v-if="error" class="error">{{ error }}</h1>
-			<h1 v-else class="title">{{ level.name.toUpperCase() }}</h1>
-			<board :initial-board="initialBoard" @setActiveElement="onActiveElement" />
-		</section>
-		<section class="right">
+		<game-layout>
+			<section slot="main">
+				<h1 v-if="error" class="error">{{ error }}</h1>
+				<h1 v-else class="title">{{ level.name.toUpperCase() }}</h1>
+				<div class="grid">
+					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
+						<tile v-for="(column, x) in level.grid.cols" :key="x" :cell="isTherePiece(y, x)"></tile>
+					</div>
+				</div>
+				<div id="player" />
+				<p id="cell"></p>
+				<p id="quantum"></p>
+				<p id="laser"></p>
+				<!-- <board @setActiveElement="onActiveElement" /> -->
+			</section>
+			<button slot="right" @click="nextFrame">next</button>
+			<simulation-steps-display slot="right" :frames="frames" />
+		</game-layout>
+		<!-- <section class="right">
 			<toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" />
 			<div class="explanation-placeholder">
 				<h3 class="title">stuff will be taking place here<br />⬇ ️ ⬇ ️ ⬇️</h3>
@@ -25,21 +31,101 @@
 </template>
 
 <script lang="ts">
+import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-// import { Game } from 'quantumweasel';
-// import { Photons } from 'quantum-tensors';
-import { IPhotonState, IGameState, IFrame, ICell, ILevel } from '@/types';
+import { Level, Frame } from 'quantumweasel';
+import GameLayout from '../layouts/GameLayout.vue';
+import Piece from '../components/Piece.vue';
+import SimulationStepsDisplay from '../components/SimulationStepsDisplay.vue';
+import { ICell, ICoord, FrameInterface } from '@/types';
+import levelData from '../game/levels';
+import Tile from '../components/Tile.vue';
+
+// @ts-ignore
+// import Grid from '../components/Grid.vue';
 // import { Board, Toolbox } from '../components';
-// import levels from '../levels';
+// import { Photons } from 'quantum-tensors';
+// import { IPhotonState, IGameState, IFrame, ICell, ILevel } from '@/types';
 // import Game from '../game/Game';
 
 @Component({
 	components: {
+		GameLayout,
+		Piece,
+		SimulationStepsDisplay,
+		Tile
+		// Grid,
 		// Board,
 		// Toolbox
 	}
 })
-export default class Container extends Vue {
+export default class GameContainer extends Vue {
+	level = {
+		grid: {
+			cols: 0,
+			rows: 0,
+			cells: [
+				{
+					coord: {
+						x: -1,
+						y: -1
+					},
+					element: '',
+					rotation: 0,
+					frozen: false
+				}
+			]
+		}
+	};
+	error: string = '';
+	game = {};
+	activeElement = '';
+	frames: FrameInterface[] = [];
+
+	get lastFrame(): FrameInterface {
+		return this.frames[this.frames.length - 1];
+	}
+
+	created() {
+		this.loadALevel();
+		const levelWhatever = Level.importLevel(this.level);
+		const initFrame = new Frame(levelWhatever);
+		const firstFrame: FrameInterface = initFrame.next();
+		this.frames.push(firstFrame);
+	}
+
+	nextFrame() {
+		const lastFrameCopy = cloneDeep(this.lastFrame);
+		const nextFrame: FrameInterface = lastFrameCopy.next();
+		this.frames.push(nextFrame);
+	}
+	loadALevel() {
+		this.error = '';
+		// See if there's such level:
+		const typedLevel = levelData;
+		const levelToLoad = typedLevel[this.currentLevelName];
+		if (!levelToLoad) {
+			this.error = 'no such level!';
+			return false;
+		}
+		this.level = levelToLoad;
+		return true;
+	}
+	get currentLevelName() {
+		return `level${parseInt(this.$route.params.id, 10)}`;
+	}
+
+	// helps to determine if there is a element present
+	isTherePiece(y: number, x: number) {
+		if (this.level && this.level.grid) {
+			const possiblePieceArray = this.level.grid.cells.filter((cell: ICell) => cell.coord.x === x && cell.coord.y === y);
+			if (possiblePieceArray.length) {
+				return possiblePieceArray[0];
+			}
+			return false;
+		}
+		return false;
+	}
 	// original Game TS class functionality:
 	// laserPath: Array<IPhotonState> = [];
 	// gameState: IGameState = {
@@ -47,13 +133,9 @@ export default class Container extends Vue {
 	// 	noPointers: false,
 	// 	notEnoughIntensity: false
 	// };
-	// level = {
-	// 	cols: 0,
-	// 	rows: 0,
-	// 	cells: []
-	// };
+	// game = new Game();
+	// game = new Game();
 	// frames: Array<IFrame> = [];
-	// error: string = '';
 	// menuOpen: boolean = false;
 	// initialTools: Array<ICell> = [];
 	// initialBoard: { cells: Array<ICell>; rows: number; cols: number } = {
@@ -61,99 +143,49 @@ export default class Container extends Vue {
 	// 	rows: 0,
 	// 	cols: 0
 	// };
-	// activeElement = '???';
 	// actualGame = {};
-	// created() {
-	// 	this.loadALevel(this.levelNumber);
-	// }
-	// loadALevel(number: number) {
-	// 	this.error = '';
-	// 	// See if there's such level:
-	// 	const rawLevel = levels[number];
-	// 	if (!rawLevel) {
-	// 		this.error = 'no such level!';
-	// 		return false;
-	// 	}
-	// 	this.level = rawLevel.default;
-	// 	this.actualGame = new Game(this.level, 32);
-	// 	console.log(this.actualGame);
-	// 	return true;
-	// }
+	// this.level = new Level();
 	// serveInitialItems() {
 	// 	const { cells, rows, cols } = this.level;
 	// 	this.initialTools = cells.filter((cell: ICell) => !cell.frozen);
 	// 	this.initialBoard = { cells: cells.filter((cell: ICell) => cell.frozen), rows, cols };
 	// }
-	// get levelNumber() {
-	// 	return parseInt(this.$route.params.id, 10);
-	// }
 	// @Watch('levelNumber')
 	// updateLevelData(val: number) {
 	// 	this.loadALevel(val);
 	// }
-	// toggleIcon() {
-	// 	this.menuOpen = !this.menuOpen;
-	// }
-	// onActiveElement(element: string, isDraggable: boolean) {
-	// 	this.activeElement = element;
+	onActiveElement(element: string, isDraggable: boolean) {
+		this.activeElement = element;
+	}
 }
 </script>
 
 <style lang="scss">
 .game {
-	height: 100%;
-	display: flex;
-	flex-direction: row;
-	color: white;
-	& section {
-		padding: 20px;
-		align-content: center;
-		width: 60%;
-		&.left,
-		&.right {
-			width: 20%;
-		}
-		&.right {
-			padding-top: 10%;
-		}
-		&.center {
+	width: 100%;
+}
+.grid {
+	width: 100%;
+	max-height: 100vh;
+	.row {
+		display: flex;
+		flex-direction: row;
+		& .tile {
+			background-color: rgba(0, 98, 255, 0.294);
+			width: 64px;
+			min-height: 64px;
+			// background-color: #0e377815;
+			position: relative;
 			display: flex;
 			flex-direction: column;
-			justify-content: space-around;
+			justify-content: center;
+			color: white;
+			font-size: 1.3rem;
+			&:hover {
+				background-color: yellow;
+				color: black;
+			}
 		}
-	}
-}
-
-// menu-icon stuff
-.menu-icon {
-	display: inline-block;
-	cursor: pointer;
-
-	.bar1,
-	.bar2,
-	.bar3 {
-		width: 35px;
-		height: 5px;
-		background-color: rgb(255, 255, 255);
-		margin: 6px 0;
-		transition: 0.4s;
-	}
-
-	/* Rotate first bar */
-	&.open .bar1 {
-		transform: rotate(-45deg) translate(-9px, 6px);
-		transform: rotate(-45deg) translate(-9px, 6px);
-	}
-
-	/* Fade out the second bar */
-	&.open .bar2 {
-		opacity: 0;
-	}
-
-	/* Rotate last bar */
-	&.open .bar3 {
-		transform: rotate(45deg) translate(-8px, -8px);
-		transform: rotate(45deg) translate(-8px, -8px);
 	}
 }
 </style>

@@ -13,7 +13,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 export interface ISection {
 	title: string;
-	content: string;
+	content?: string;
 	pics?: Array<string>;
 }
 

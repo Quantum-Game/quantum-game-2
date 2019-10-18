@@ -5,27 +5,25 @@ Quantum Game 2 from CQT
 `yarn` followed by `yarn serve`
 
 ## TODO:
-### GENERAL
-- [ ] Clean up
 
 ### GAME
-- [ ] Have as dependency https://github.com/sneakyweasel/quantumweasel;
-- [ ] Create a working GameContainer
-- [ ] Adjust the board
-- [ ] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
 - [ ] adddrag and drop
+
+### BOARD:
+- [ ] click listeners;
+- [ ] drop listeners;
+- [ ] drag
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images
 - [ ] add aria attributes for folded panes
 
-### LAYOUT
-
-### USAGE
-- [ ] Host in on Firebase
+### MAINTENANCE
+- [ ] get rid of conflicting prettier configs, editorconfig
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
+- [ ] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
 
 14.10:
 - [x] Scaffold menu
@@ -42,3 +40,17 @@ Quantum Game 2 from CQT
 - [x] create turning arrows indicating folded panes
 - [x] qMenu items are offsetted right with width of the icon
 - [x] adjustments by from Klem I
+
+16.10
+- [x] Host in on Firebase
+- [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
+- [x] type levelData
+
+17.10
+- [x] displaying frames
+- [x] propertly order frames without overwriting the last one (thanks lodash deep clone! :*);
+- [x] Create a working GameContainer - meanning initializing the Game object
+- [x] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
+- [x] Adjust the board
+- [x] display elements graphix;
+- [x] have the simulation going

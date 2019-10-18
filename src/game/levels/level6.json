@@ -1,0 +1,70 @@
+{
+  "id": 6,
+  "name": "Interference",
+  "group": "Game",
+  "description": "Classical vs Quantum",
+  "grid": {
+    "cols": 10,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 2, "x": 1 },
+        "element": "laser",
+        "rotation": 90,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 3 },
+        "element": "beamsplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 6 },
+        "element": "mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 3 },
+        "element": "mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 6 },
+        "element": "beamsplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 8 },
+        "element": "detector",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 7, "x": 6 },
+        "element": "detector",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [],
+  "goals": []
+}

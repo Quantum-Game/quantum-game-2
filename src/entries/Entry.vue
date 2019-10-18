@@ -1,13 +1,12 @@
 <template>
-	<div class="entry">
-		<router-link to="/info" > <q-button  type="basic"> ENCYCLOPEDIA </q-button> </router-link>
+	<div v-if="entry" class="entry">
+		<router-link to="/info"> <q-button type="basic"> ENCYCLOPEDIA </q-button> </router-link>
 		<article>
 			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
 			<h2 class="short">{{ entry.short }}</h2>
 			<div class="placeholder">
-				
 				<div class="board">
-					<img src="@/assets/test_board_en.svg" alt="placeholder">
+					<img src="@/assets/test_board_en.svg" alt="placeholder" />
 					<!-- <span>  </span> -->
 				</div>
 			</div>
@@ -24,6 +23,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
+import Photon from '../components/Photon.vue';
 import QButton from '../components/QButton.vue';
 import entries from './entries.json';
 
@@ -40,7 +40,8 @@ interface IEntry {
 @Component({
 	components: {
 		EntrySection,
-		QButton
+		QButton,
+		Photon
 	}
 })
 export default class Entry extends Vue {
@@ -59,6 +60,9 @@ export default class Entry extends Vue {
 		if (this.entryURL) {
 			this.entry = typedEntries[this.entryURL];
 		}
+		if (!this.entry) {
+			this.$router.push({ name: '404' });
+		}
 	}
 
 	get entryURL(): string {
@@ -72,7 +76,7 @@ export default class Entry extends Vue {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-	align-items:center;
+	align-items: center;
 	& .title {
 		font-size: 2rem;
 		font-weight: bold;
@@ -84,12 +88,8 @@ export default class Entry extends Vue {
 		font-weight: bold;
 		text-decoration: none;
 		color: white;
-	
 	}
-
 }
-
-
 
 h1 {
 	padding-bottom: 1rem;

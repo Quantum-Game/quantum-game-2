@@ -1,15 +1,9 @@
-<template>
-  
-</template>
+<template> </template>
 
 <script>
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 
-export default class HomePageLayout {
-
-}
+export default class HomePageLayout {}
 </script>
 
-<style>
-
-</style>
+<style></style>

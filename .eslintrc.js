@@ -28,5 +28,12 @@ module.exports = {
 		parser: '@typescript-eslint/parser',
 		sourceType: 'module',
 		ecmaVersion: 2018
+	},
+	settings: {
+		'import/resolver': {
+			node: {
+				extensions: ['.js', '.jsx', '.ts', '.tsx']
+			}
+		}
 	}
 };

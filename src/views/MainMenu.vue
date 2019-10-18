@@ -7,13 +7,10 @@
 	</br>
 	<div class="hello">
 		<h1>A puzzle game with photons, superposition and quantum measurement, right in your browser. With true quantum mechanics underneath!</h1>
-		<!-- <pre>// These do not lead anywhere yet</pre>
-		<resource goto="level/0" label="Play" />
-		<resource goto="info" label="Encyclopedia" /> -->
 		<h1>Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitterl</a>, Facebook, Github and Medium.</h1>
 	</div>
 	<div class="image">
-		<img src="@/assets/rock.svg" alt="rock">
+		<img src="@/assets/rock.svg" alt="rock" />
 	</div>
 	</div>
 </template>
@@ -29,13 +26,10 @@ import QButton from '../components/QButton.vue';
 		Resource
 	}
 })
-export default class MainMenu extends Vue {
-};
+export default class MainMenu extends Vue {}
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
 .home-page-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -55,19 +49,19 @@ h1 {
 	flex-direction: column;
 	align-items: center;
 }
-.row-full{
+.row-full {
 	width: 100vw;
 	min-width: 1200px;
 	position: center;
-//  margin-left: -50vw;
- 	height: 100px;
+	//  margin-left: -50vw;
+	height: 100px;
 	margin-top: 100px;
 	margin-bottom: 12vw;
 	//left: 50%;
- 	align-items: center;
+	align-items: center;
 }
-.image{
-	width:10%;
+.image {
+	width: 10%;
 }
 
 h3 {

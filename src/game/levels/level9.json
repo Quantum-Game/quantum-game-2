@@ -1,0 +1,54 @@
+{
+  "id": 9,
+  "name": "Q for quantum",
+  "group": "Game",
+  "description": "Center for Quantum Technologies",
+  "grid": {
+    "cols": 12,
+    "rows": 12,
+    "cells": [
+      {
+        "coord": { "y": 2, "x": 2 },
+        "element": "mirror",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": true
+      },
+      {
+        "coord": { "y": 2, "x": 6 },
+        "element": "mirror",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": true
+      },
+      {
+        "coord": { "y": 8, "x": 2 },
+        "element": "mirror",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": true
+      },
+      {
+        "coord": { "y": 8, "x": 9 },
+        "element": "laser",
+        "rotation": 270,
+        "frozen": false,
+        "active": true,
+        "energized": true
+      },
+      {
+        "coord": { "y": 9, "x": 6 },
+        "element": "detector",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": true
+      }
+    ]
+  },
+  "hints": [],
+  "goals": []
+}
