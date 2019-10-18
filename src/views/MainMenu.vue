@@ -3,7 +3,7 @@
 	<div class="row-full">
 		<img src="@/assets/QG_logo.svg" alt="QuantumGame">
 	</div>
-	<router-link to="/info" > <q-button  type="special"> PLAY </q-button> </router-link>
+	<router-link to="/level/1" > <q-button  type="big"> PLAY </q-button> </router-link>
 	<br />
 	<div class="hello">
 		<h1>A puzzle game with photons, superposition and quantum measurement, right in your browser. With true quantum mechanics underneath!</h1>
@@ -12,7 +12,16 @@
 			<img src="@/assets/rock.svg" alt="rock" />
 		</div>
 		<div class="blog">
-			blog blog
+			<h2>Wave optics and quantum mechanics as a game</h2>
+				<p>
+				NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter. We will release it late 2019.
+				for fun! Learn quantum mechanics as a side effect.
+				It’s a puzzle game, heavily inspired by The Incredible Machine and Chromatron.
+				All you need is a browser (we recommend recent version of Firefox or Chrome), you don’t need to install anything.
+				It’s open source - so not only you can play it for free, but also lookup the code. Motivation behind the game is in Quantum mechanics for high-school students blog post.
+				It was covered on The Quantum Times (top pick in education for gamifying quantum theory), Motherboard, Scott Aaronson, Cory Doctorow, Hacker News (actually, twice).
+				For more games like this one, see: Science-based games collaborative list.
+			</p>
 		</div>
 	</div>
 	
@@ -46,6 +55,14 @@ h1 {
 	font-weight: normal;
 	line-height: 150%;
 }
+h2 {
+	margin-top: 20px;
+	color: white;
+	font-size: 1rem;
+	font-weight: bold;
+	line-height: 150%;
+  	text-transform: uppercase;
+}
 .hello {
 	width: 35%;
 	display: flex;
@@ -69,7 +86,10 @@ h1 {
 }
 .blog {
 	border-top: 1px solid white;
-	
+	color: white;
+	font-size: 1rem;
+	font-weight: normal;
+	line-height: 150%;
 }
 
 h3 {
