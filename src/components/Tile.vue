@@ -25,8 +25,7 @@ export default class Tile extends Vue {
 	get calculatedStyle() {
 		let styleObj = {};
 		if (this.cell.element) {
-			/* eslint-disable global-require no-dynamic-require */
-			styleObj = { backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})` };
+			styleObj = { backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})` };	// eslint-disable-line
 		}
 		return styleObj;
 	}
