@@ -4,14 +4,18 @@
 		<img src="@/assets/QG_logo.svg" alt="QuantumGame">
 	</div>
 	<router-link to="/info" > <q-button  type="special"> PLAY </q-button> </router-link>
-	</br>
+	<br />
 	<div class="hello">
 		<h1>A puzzle game with photons, superposition and quantum measurement, right in your browser. With true quantum mechanics underneath!</h1>
-		<h1>Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitterl</a>, Facebook, Github and Medium.</h1>
+		<h1>Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>, <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>, <a href="https://github.com/stared/quantum-game" target="_blank">Github</a> and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.</h1>
+		<div class="image">
+			<img src="@/assets/rock.svg" alt="rock" />
+		</div>
+		<div class="blog">
+			blog blog
+		</div>
 	</div>
-	<div class="image">
-		<img src="@/assets/rock.svg" alt="rock" />
-	</div>
+	
 	</div>
 </template>
 
@@ -43,7 +47,7 @@ h1 {
 	line-height: 150%;
 }
 .hello {
-	width: 40%;
+	width: 35%;
 	display: flex;
 	position: center;
 	flex-direction: column;
@@ -61,7 +65,11 @@ h1 {
 	align-items: center;
 }
 .image {
-	width: 10%;
+	width: 30%;
+}
+.blog {
+	border-top: 1px solid white;
+	
 }
 
 h3 {
@@ -78,7 +86,7 @@ li {
 	margin: 0 10px;
 }
 a {
-	color: #42b983;
-	text-decoration: none;
+	color: #9780b5;
+	text-decoration:none;
 }
 </style>

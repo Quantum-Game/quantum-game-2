@@ -1,32 +1,37 @@
 <template>
 	<div class="game">
 		<game-layout>
-			<section slot="main">
-				<h1 v-if="error" class="error">{{ error }}</h1>
-				<h1 v-else class="title">{{ level.name.toUpperCase() }}</h1>
+			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
+			<h1 v-else slot="header-middle" class="title">{{ level.name.toUpperCase() }}</h1>
+			<div slot="main-left" class="goals placeholder">
+				<h3 class="title">GOALS:<br />⬇ ️ ⬇ ️ ⬇️</h3>
+			</div>
+			<section slot="main-middle">
 				<div class="grid">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
 						<tile v-for="(column, x) in level.grid.cols" :key="x" :cell="isTherePiece(y, x)"></tile>
 					</div>
 				</div>
-				<div id="player" />
-				<p id="cell"></p>
-				<p id="quantum"></p>
-				<p id="laser"></p>
-				<!-- <board @setActiveElement="onActiveElement" /> -->
-			</section>
-			<button slot="right" @click="nextFrame">next</button>
-			<simulation-steps-display slot="right" :frames="frames" />
-		</game-layout>
-		<!-- <section class="right">
-			<toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" />
-			<div class="explanation-placeholder">
-				<h3 class="title">stuff will be taking place here<br />⬇ ️ ⬇ ️ ⬇️</h3>
-				<div class="discription">
-					<span>element: {{ activeElement }}</span>
+				<div class="placeholder controls">
+					<h3 class="title">here go the controls<br />⬇ ️ ⬇ ️ ⬇️</h3>
 				</div>
-			</div>
-		</section> -->
+				<!-- <board @setActiveElement="onActiveElement" /> -->
+				<q-button inline @click.native="createNexFrame">create a frame</q-button>
+				<simulation-steps-display :frames="frames" />
+			</section>
+			<section slot="main-right">
+				<div class="toolbox placeholder">
+					<h3 class="title">here's the toolbox!<br />⬇ ️ ⬇ ️ ⬇️</h3>
+				</div>
+				<!-- <toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" /> -->
+				<div class="explanation placeholder">
+					<h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3>
+					<div class="discription">
+						<span>element: {{ activeElement }}</span>
+					</div>
+				</div>
+			</section>
+		</game-layout>
 	</div>
 </template>
 
@@ -40,23 +45,15 @@ import SimulationStepsDisplay from '../components/SimulationStepsDisplay.vue';
 import { ICell, ICoord, FrameInterface } from '@/types';
 import levelData from '../game/levels';
 import Tile from '../components/Tile.vue';
-
-// @ts-ignore
-// import Grid from '../components/Grid.vue';
-// import { Board, Toolbox } from '../components';
-// import { Photons } from 'quantum-tensors';
-// import { IPhotonState, IGameState, IFrame, ICell, ILevel } from '@/types';
-// import Game from '../game/Game';
+import QButton from '../components/QButton.vue';
 
 @Component({
 	components: {
 		GameLayout,
 		Piece,
 		SimulationStepsDisplay,
-		Tile
-		// Grid,
-		// Board,
-		// Toolbox
+		Tile,
+		QButton
 	}
 })
 export default class GameContainer extends Vue {
@@ -81,6 +78,11 @@ export default class GameContainer extends Vue {
 	game = {};
 	activeElement = '';
 	frames: FrameInterface[] = [];
+	activeFrameNumber: number = 0;
+
+	get activeFrame() {
+		return this.frames[this.activeFrameNumber];
+	}
 
 	get lastFrame(): FrameInterface {
 		return this.frames[this.frames.length - 1];
@@ -94,11 +96,12 @@ export default class GameContainer extends Vue {
 		this.frames.push(firstFrame);
 	}
 
-	nextFrame() {
+	createNexFrame() {
 		const lastFrameCopy = cloneDeep(this.lastFrame);
 		const nextFrame: FrameInterface = lastFrameCopy.next();
 		this.frames.push(nextFrame);
 	}
+
 	loadALevel() {
 		this.error = '';
 		// See if there's such level:
@@ -126,34 +129,7 @@ export default class GameContainer extends Vue {
 		}
 		return false;
 	}
-	// original Game TS class functionality:
-	// laserPath: Array<IPhotonState> = [];
-	// gameState: IGameState = {
-	// 	achievedGoals: false,
-	// 	noPointers: false,
-	// 	notEnoughIntensity: false
-	// };
-	// game = new Game();
-	// game = new Game();
-	// frames: Array<IFrame> = [];
-	// menuOpen: boolean = false;
-	// initialTools: Array<ICell> = [];
-	// initialBoard: { cells: Array<ICell>; rows: number; cols: number } = {
-	// 	cells: [],
-	// 	rows: 0,
-	// 	cols: 0
-	// };
-	// actualGame = {};
-	// this.level = new Level();
-	// serveInitialItems() {
-	// 	const { cells, rows, cols } = this.level;
-	// 	this.initialTools = cells.filter((cell: ICell) => !cell.frozen);
-	// 	this.initialBoard = { cells: cells.filter((cell: ICell) => cell.frozen), rows, cols };
-	// }
-	// @Watch('levelNumber')
-	// updateLevelData(val: number) {
-	// 	this.loadALevel(val);
-	// }
+
 	onActiveElement(element: string, isDraggable: boolean) {
 		this.activeElement = element;
 	}
@@ -187,5 +163,33 @@ export default class GameContainer extends Vue {
 			}
 		}
 	}
+}
+
+.placeholder {
+	width: 100%;
+	height: 200px;
+	& h3 {
+		margin: 0;
+	}
+	&.explanation {
+		background-color: rgba(0, 225, 255, 0.349);
+	}
+	&.toolbox {
+		background-color: rgba(255, 187, 0, 0.349);
+	}
+	&.goals {
+		background-color: rgba(255, 0, 85, 0.349);
+		height: 400px;
+	}
+	&.controls {
+		background-color: rgba(179, 255, 0, 0.349);
+		height: 100px;
+	}
+}
+
+.toolbox-container {
+	width: 100%;
+	background-color: rgba(0, 225, 255, 0.349);
+	height: 200px;
 }
 </style>

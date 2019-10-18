@@ -10,6 +10,8 @@ Quantum Game 2 from CQT
 - [ ] adddrag and drop
 
 ### BOARD:
+- [x] enhance q-button with inline,
+- [x] engance simulator viewer with internal viewing control
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag

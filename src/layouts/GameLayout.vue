@@ -1,12 +1,33 @@
 <template>
 	<div class="game-layout">
-		<q-menu />
-		<main class="main">
-			<slot name="main"></slot>
+		<!-- games header: menu and level name -->
+		<header>
+			<div class="left">
+				<q-menu />
+			</div>
+			<div class="middle">
+				<slot name="header-middle"></slot>
+			</div>
+			<div class="right">
+				<slot name="header-right"></slot>
+			</div>
+		</header>
+
+		<!-- games main: goals, board, toolbox and explanations -->
+		<main>
+			<aside class="left">
+				<slot name="main-left"></slot>
+			</aside>
+			<slot name="main-middle"></slot>
+			<aside class="right">
+				<slot name="main-right"></slot>
+			</aside>
 		</main>
-		<aside class="right">
-			<slot name="right"></slot>
-		</aside>
+
+		<!-- a generic footer for now -->
+		<footer>
+			<slot name="footer"></slot>
+		</footer>
 	</div>
 </template>
 
@@ -24,25 +45,24 @@ export default class GameLayout extends Vue {}
 
 <style lang="scss">
 .game-layout {
-	// height: 100%;
 	min-height: 100vh;
 	display: flex;
+	flex-direction: column;
 	color: white;
 	width: 100%;
-	justify-content: center;
-	& aside,
-	& main {
-		padding: 20px;
-		align-content: center;
-		width: 65%;
+}
 
-		&.right {
-			// position: relative;
-			// display: block;
-			height: 100%;
-			// width: 16%;
-			// padding: 50px 0 0 0;
-		}
-	}
+.left,
+.right {
+	height: auto;
+	width: 16%;
+}
+
+main,
+header,
+footer {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
 </style>
