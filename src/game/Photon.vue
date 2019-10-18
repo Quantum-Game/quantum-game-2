@@ -1,6 +1,5 @@
 <template>
-	<svg class="photon" :width="width + 2 * margin" :height="height + 2 * margin">
-		<!-- <text v-once class="text" :x="width / 2" :y="height + 35">{{ name }}</text> -->
+	<svg :class="`photon rotation${direction}`" :width="width + 2 * margin" :height="height + 2 * margin">
 		<g v-if="displayElectric" class="electric">
 			<circle
 				v-for="(z, index) in zs"
@@ -32,8 +31,7 @@
 				class="point gaussian"
 				:cx="xScale(z)"
 				:cy="yScale(gaussian(z))"
-				:r="3"
-				:style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
+				:r="1"
 			/>
 			<circle
 				v-for="(z, index) in zs"
@@ -41,8 +39,7 @@
 				class="point gaussian"
 				:cx="xScale(z)"
 				:cy="yScale(-gaussian(z))"
-				:r="3"
-				:style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
+				:r="1"
 			/>
 		</g>
 	</svg>
@@ -81,6 +78,7 @@ export default class Photon extends Vue {
 	@Prop({ default: true }) readonly displayMagnetic!: boolean;
 	@Prop({ default: true }) readonly displayElectric!: boolean;
 	@Prop({ default: true }) readonly displayGaussian!: boolean;
+	@Prop({ default: 0 }) readonly direction!: number;
 
 	get xScale() {
 		return d3
@@ -88,38 +86,40 @@ export default class Photon extends Vue {
 			.domain([-1, 1])
 			.range([this.margin, this.width - this.margin]);
 	}
-
 	get yScale() {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
 			.range([this.margin, this.height - this.margin]);
 	}
-
+	/**
+	 * Get magnetic scaling
+	 */
 	get mScale() {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
 			.range([1, 3]);
 	}
+	/**
+	 * Get electric scaling
+	 */
 	get eScale() {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([2, 10]);
+			.range([1, 2]);
 	}
 
-	get eColor() {
-		return d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+	/**
+	 * Numbers of points to render, should scale with the width
+	 * @returns a range of steps
+	 */
+	get zs(): number[] {
+		return d3.range(-1, 1, 1 / (this.width * 2));
 	}
-
-	get mColor() {
-		return d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
-	}
-
-	get zs() {
-		return d3.range(-1, 1, this.range);
-	}
+	eColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
+	mColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
 
 	computeComplex(re: number, im: number, z: number, k = 20): number {
 		return re * Math.cos(k * z) + im * Math.sin(k * z);
@@ -137,8 +137,20 @@ export default class Photon extends Vue {
 
 <style lang="scss" scoped>
 .photon {
-	// background-color: black;
-	// padding: 20px;
+	padding: 0px;
+	position: relative;
+	&.rotation0 {
+		transform: rotate(0deg);
+	}
+	&.rotation90 {
+		transform: rotate(90deg);
+	}
+	&.rotation180 {
+		transform: rotate(180deg);
+	}
+	&.rotation270 {
+		transform: rotate(270deg);
+	}
 	.text {
 		fill: lightgrey;
 		stroke: lightgrey;

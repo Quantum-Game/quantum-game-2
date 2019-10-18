@@ -15,16 +15,13 @@
 						></tile>
 					</div>
 				</div>
-				<div class="placeholder controls">
-					<h3 class="title"></h3>
-					<div class="controls">
-						<!-- <q-button inline @click.native="createNextFrame">create a frame</q-button> -->
-						<q-button inline @click.native="createFrames">create frames</q-button>
-						<q-button inline @click.native="showPrevious">show previous frame</q-button>
-						<q-button inline @click.native="showNext">show next frame</q-button>
-						<h3>Total frames: {{ frames.length }}</h3>
-					</div>
-				</div>
+				<controls>
+					<!-- <q-button inline @click.native="createNextFrame">create a frame</q-button> -->
+					<q-button inline @click.native="createFrames">create frames</q-button>
+					<q-button inline @click.native="showPrevious">show previous frame</q-button>
+					<q-button inline @click.native="showNext">show next frame</q-button>
+					<h3>Total frames: {{ frames.length }}</h3>
+				</controls>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
 			</section>
 			<section slot="main-right">
@@ -217,6 +214,7 @@ export default class GameContainer extends Vue {
 <style lang="scss" scoped>
 .game {
 	width: 100%;
+	min-height: 100vh;
 }
 .grid {
 	width: 100%;

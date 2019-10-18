@@ -1,16 +1,38 @@
 <template>
 	<div class="tile" @onclick="rotate">
 		<svg :class="calculatedClass" :style="calculatedStyle" />
+
+		<div v-for="(particle, index) in particles" :key="index" :v-if="particles.length > 0" class="photons">
+			<photon
+				name
+				:are="particle.a.re"
+				:aim="particle.a.im"
+				:bre="particle.b.re"
+				:bim="particle.b.im"
+				:direction="particle.direction"
+				:width="64"
+				:height="64"
+				:margin="0"
+				:display-magnetic="true"
+				:display-electric="false"
+			/>
+		</div>
 	</div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import { ICell } from '@/types';
+import { ICell, Qparticle } from '@/types';
+import Photon from './Photon.vue';
 
-@Component
+@Component({
+	components: {
+		Photon
+	}
+})
 export default class Tile extends Vue {
 	@Prop() readonly cell!: ICell;
+	@Prop() readonly particles!: Qparticle[];
 
 	get calculatedClass() {
 		let classObj = {};
@@ -29,8 +51,8 @@ export default class Tile extends Vue {
 		if (this.cell.element) {
 			styleObj = {
 				backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})`, // eslint-disable-line
-				transform: `rotate(-${this.cell.rotation}deg)` // eslint-disable-line
-   		};
+				transform: `rotate(-${this.cell.rotation}deg)`
+			};
 		}
 		return styleObj;
 	}
@@ -41,11 +63,10 @@ export default class Tile extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .tile {
-	// background-color: rgba(0, 98, 255, 0.294);
 	width: 64px;
-	min-height: 64px;
+	height: 64px;
 	position: relative;
 	display: flex;
 	flex-direction: column;

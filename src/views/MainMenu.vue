@@ -22,13 +22,14 @@
 			<div class="blog">
 				<h2>Wave optics and quantum mechanics as a game</h2>
 				<p>
-					NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter. We will release it late
-					2019. for fun! Learn quantum mechanics as a side effect. It’s a puzzle game, heavily inspired by The Incredible
-					Machine and Chromatron. All you need is a browser (we recommend recent version of Firefox or Chrome), you don’t
-					need to install anything. It’s open source - so not only you can play it for free, but also lookup the code.
-					Motivation behind the game is in Quantum mechanics for high-school students blog post. It was covered on The
-					Quantum Times (top pick in education for gamifying quantum theory), Motherboard, Scott Aaronson, Cory Doctorow,
-					Hacker News (actually, twice). For more games like this one, see: Science-based games collaborative list.
+					NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter. We will release it
+					late 2019. for fun! Learn quantum mechanics as a side effect. It’s a puzzle game, heavily inspired by The
+					Incredible Machine and Chromatron. All you need is a browser (we recommend recent version of Firefox or
+					Chrome), you don’t need to install anything. It’s open source - so not only you can play it for free, but also
+					lookup the code. Motivation behind the game is in Quantum mechanics for high-school students blog post. It was
+					covered on The Quantum Times (top pick in education for gamifying quantum theory), Motherboard, Scott
+					Aaronson, Cory Doctorow, Hacker News (actually, twice). For more games like this one, see: Science-based games
+					collaborative list.
 				</p>
 			</div>
 		</div>
