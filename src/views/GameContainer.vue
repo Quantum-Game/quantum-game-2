@@ -14,9 +14,10 @@
 				<p id="quantum"></p>
 				<p id="laser"></p>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
+				<q-button :inline="true" @click="createNexFrame">create a frame</q-button>
+				<span> number of frames: {{ frames.length }}</span>
+				<simulation-steps-display :frames="frames" />
 			</section>
-			<button slot="right" @click="nextFrame">next</button>
-			<simulation-steps-display slot="right" :frames="frames" />
 		</game-layout>
 		<!-- <section class="right">
 			<toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" />
@@ -40,6 +41,8 @@ import SimulationStepsDisplay from '../components/SimulationStepsDisplay.vue';
 import { ICell, ICoord, FrameInterface } from '@/types';
 import levelData from '../game/levels';
 import Tile from '../components/Tile.vue';
+import QButton from '../components/QButton.vue';
+
 
 // @ts-ignore
 // import Grid from '../components/Grid.vue';
@@ -53,7 +56,8 @@ import Tile from '../components/Tile.vue';
 		GameLayout,
 		Piece,
 		SimulationStepsDisplay,
-		Tile
+		Tile,
+		QButton
 		// Grid,
 		// Board,
 		// Toolbox
@@ -81,6 +85,11 @@ export default class GameContainer extends Vue {
 	game = {};
 	activeElement = '';
 	frames: FrameInterface[] = [];
+	activeFrameNumber: number = 0;
+
+	get activeFrame() {
+		return this.frames[this.activeFrameNumber];
+	}
 
 	get lastFrame(): FrameInterface {
 		return this.frames[this.frames.length - 1];
@@ -94,11 +103,25 @@ export default class GameContainer extends Vue {
 		this.frames.push(firstFrame);
 	}
 
-	nextFrame() {
+	createNexFrame() {
 		const lastFrameCopy = cloneDeep(this.lastFrame);
 		const nextFrame: FrameInterface = lastFrameCopy.next();
 		this.frames.push(nextFrame);
 	}
+
+	showNextFrame() {
+		if (this.activeFrameNumber > this.frames.length) {
+			this.createNexFrame();
+		}
+		this.activeFrameNumber += 1;
+	}
+
+	showPreviousFrame() {
+		const previousFrameNumber = this.activeFrameNumber - 1;
+		if (previousFrameNumber < 0) return;
+		this.activeFrameNumber = previousFrameNumber;
+	}
+
 	loadALevel() {
 		this.error = '';
 		// See if there's such level:

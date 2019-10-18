@@ -1,5 +1,7 @@
 <template>
 	<div class="game-layout">
+		<aside class="left"></aside>
+		<slot name="left"></slot>
 		<q-menu />
 		<main class="main">
 			<slot name="main"></slot>
@@ -34,14 +36,12 @@ export default class GameLayout extends Vue {}
 	& main {
 		padding: 20px;
 		align-content: center;
-		width: 65%;
-
+		// width: 65%;
+		&.left,
 		&.right {
-			// position: relative;
-			// display: block;
 			height: 100%;
-			// width: 16%;
-			// padding: 50px 0 0 0;
+			width: 16%;
+			padding: 50px 0 0 0;
 		}
 	}
 }
