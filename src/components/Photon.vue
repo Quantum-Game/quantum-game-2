@@ -1,6 +1,6 @@
 <template>
 	<svg class="photon" :width="width + 2 * margin" :height="height + 2 * margin">
-		<text v-once class="text" :x="width / 2" :y="height + 35">{{ name }}</text>
+		<!-- <text v-once class="text" :x="width / 2" :y="height + 35">{{ name }}</text> -->
 		<g v-if="displayElectric" class="electric">
 			<circle
 				v-for="(z, index) in zs"
@@ -82,22 +82,30 @@ export default class Photon extends Vue {
 	@Prop({ default: true }) readonly displayElectric!: boolean;
 	@Prop({ default: true }) readonly displayGaussian!: boolean;
 
-	xScale = d3
+	get xScale() {
+	return d3
 		.scaleLinear()
 		.domain([-1, 1])
 		.range([this.margin, this.width - this.margin]);
-	yScale = d3
+	}
+	get yScale() {
+	return d3
 		.scaleLinear()
 		.domain([-1, 1])
 		.range([this.margin, this.height - this.margin]);
-	mScale = d3
+	}
+	get mScale() {
+	return d3
 		.scaleLinear()
 		.domain([-1, 1])
 		.range([1, 3]);
-	eScale = d3
+	}
+	get eScale() {
+	return d3
 		.scaleLinear()
 		.domain([-1, 1])
 		.range([2, 10]);
+	}
 	eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
 	mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
 	zs = d3.range(-1, 1, this.range);

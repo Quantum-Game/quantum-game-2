@@ -14,10 +14,9 @@
 				</div>
 				<div class="placeholder controls">
 					<h3 class="title">here go the controls<br />⬇ ️ ⬇ ️ ⬇️</h3>
+			<q-button inline @click.native="createNexFrame">create a frame</q-button>
 				</div>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
-				<q-button inline @click.native="createNexFrame">create a frame</q-button>
-				<simulation-steps-display :frames="frames" />
 			</section>
 			<section slot="main-right">
 				<div class="toolbox placeholder">
@@ -30,6 +29,7 @@
 						<span>element: {{ activeElement }}</span>
 					</div>
 				</div>
+				<simulation-steps-display :frames="frames" />
 			</section>
 		</game-layout>
 	</div>
@@ -150,7 +150,6 @@ export default class GameContainer extends Vue {
 			background-color: rgba(0, 98, 255, 0.294);
 			width: 64px;
 			min-height: 64px;
-			// background-color: #0e377815;
 			position: relative;
 			display: flex;
 			flex-direction: column;

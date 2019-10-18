@@ -1,25 +1,28 @@
 <template>
-	<div class="simulation-steps-display-wrapper">
+	<div class="simulation-steps-display-wrapper" ref="wrapper">
 		<div class="step">
-			<h3>STEP {{ displayedFrame.step }} / {{ frames.length }}</h3>
+			<h3>YOUR PHOTON: </h3>
+				</h3>
+				<span>STEP {{ displayedFrame.step }} / {{ frames.length }}
+				</span>
+			<photon name="yay" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
+			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
+			<div v-else class="particle">
+				<div>
+					A:
+					{{ `im: ${currentQuantum.a.im}, re: ${currentQuantum.a.re}` }}
+					B:
+					{{ `im: ${currentQuantum.b.im}, re: ${currentQuantum.b.re}` }}
+					Coord: {{ `y: ${currentQuantum.y}, x: ${currentQuantum.x}` }}
+				</div>
+				<div>
+					direction: {{ currentQuantum.direction }} intensity: {{ currentQuantum.intensity }} path length:
+					{{ currentQuantum.path.length }} phase: {{ currentQuantum.phase }}
+				</div>
+			</div>
 			<div class="controls">
 				<q-button inline @click.native="showPrevious">show previous frame</q-button>
 				<q-button inline @click.native="showNext">show next frame</q-button>
-			</div>
-			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
-			<div v-for="(particle, pindex) in displayedFrame.quantum" :key="`particle-${pindex}`" class="particle">
-				<div>
-					A:
-					{{ `im: ${particle.a.im}, re: ${particle.a.re}` }}
-					B:
-					{{ `im: ${particle.b.im}, re: ${particle.b.re}` }}
-					Coord: {{ `y: ${particle.y}, x: ${particle.x}` }}
-				</div>
-				<div>
-					direction: {{ particle.direction }} intensity: {{ particle.intensity }} path length:
-					{{ particle.path.length }} phase: {{ particle.phase }}
-				</div>
-				<photon name="yay" :are="particle.a.re" :aim="particle.a.im" :bre="particle.b.re" :bim="particle.b.im" />
 			</div>
 		</div>
 	</div>
@@ -38,7 +41,16 @@ import QButton from './QButton.vue';
 })
 export default class SimulationStepsDisplay extends Vue {
 	@Prop() readonly frames!: any[];
-	displayedFrameNumber = 0;
+	displayedFrameNumber: number = 0;
+	width: number = 0
+
+	mounted() {
+		this.getElementWidth()
+	}
+
+	getElementWidth() {
+		this.width = this.$refs.wrapper.clientWidth;
+	}
 
 	showNext() {
 		const newFrameNumber = this.displayedFrameNumber + 1;
@@ -56,6 +68,16 @@ export default class SimulationStepsDisplay extends Vue {
 
 	get displayedFrame() {
 		return this.frames[this.displayedFrameNumber];
+	}
+
+	get currentQuantum() {
+		const defaultParticle = {
+			a: {im: 0, re: 0},
+			b: {im: 0, re: 0},
+			path: [],
+			phase: 0
+		};
+		return this.displayedFrame.quantum[0] || defaultParticle;
 	}
 }
 </script>
