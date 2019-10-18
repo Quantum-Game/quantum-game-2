@@ -1,17 +1,10 @@
 <template>
 	<div ref="wrapper" class="simulation-steps-display-wrapper">
 		<div class="step">
-			<h3>YOUR PHOTON:</h3>
-			<span>STEP {{ displayedFrame.step }} / {{ frames.length }} </span>
-			<photon
-				:are="currentQuantum.a.re"
-				:aim="currentQuantum.a.im"
-				:bre="currentQuantum.b.re"
-				:bim="currentQuantum.b.im"
-				:width="width"
-				:height="120"
-				:margin="20"
-			/>
+			<h3>YOUR PHOTON: </h3>
+				<span>STEP {{ displayedFrame.step }} / {{ frames.length }}
+				</span>
+			<photon name="" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
 			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
 			<div v-else class="particle">
 				<div>

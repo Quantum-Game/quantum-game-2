@@ -37,13 +37,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import Resource from '../components/Resource.vue';
 import QButton from '../components/QButton.vue';
 
 @Component({
 	components: {
-		QButton,
-		Resource
+		QButton
 	}
 })
 export default class MainMenu extends Vue {}
