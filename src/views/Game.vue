@@ -1,5 +1,5 @@
 <template>
-	<div class="game">
+	<div class="game" @keyup.left="showPrevious" @keyup.right="showNext">
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">{{ level.name.toUpperCase() }}</h1>
@@ -7,12 +7,23 @@
 			<section slot="main-middle">
 				<div class="grid">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
-						<tile v-for="(column, x) in level.grid.cols" :key="x" :cell="isTherePiece(y, x)"></tile>
+						<tile
+							v-for="(column, x) in level.grid.cols"
+							:key="x"
+							:cell="isTherePiece(y, x)"
+							:particles="isTherePhotons(y, x)"
+						></tile>
 					</div>
 				</div>
 				<div class="placeholder controls">
-					<h3 class="title">here go the controls<br />⬇ ️ ⬇ ️ ⬇️</h3>
-					<q-button inline @click.native="createNexFrame">create a frame</q-button>
+					<h3 class="title"></h3>
+					<div class="controls">
+						<!-- <q-button inline @click.native="createNextFrame">create a frame</q-button> -->
+						<q-button inline @click.native="createFrames">create frames</q-button>
+						<q-button inline @click.native="showPrevious">show previous frame</q-button>
+						<q-button inline @click.native="showNext">show next frame</q-button>
+						<h3>Total frames: {{ frames.length }}</h3>
+					</div>
 				</div>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
 			</section>
@@ -24,7 +35,7 @@
 						<span>element: {{ activeElement }}</span>
 					</div>
 				</explanation>
-				<your-photon :frames="frames" />
+				<your-photon :active-frame="activeFrame" />
 			</section>
 		</game-layout>
 	</div>
@@ -33,7 +44,7 @@
 <script lang="ts">
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Level, Frame } from 'quantumweasel';
+import { Level, Frame, Particle } from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
 import { ICell, ICoord, FrameInterface } from '@/types';
 import levelData from '../game/levels';
@@ -65,7 +76,7 @@ export default class GameContainer extends Vue {
 						x: -1,
 						y: -1
 					},
-					element: '',
+					element: 'Void',
 					rotation: 0,
 					frozen: false
 				}
@@ -76,10 +87,10 @@ export default class GameContainer extends Vue {
 	game = {};
 	activeElement = '';
 	frames: FrameInterface[] = [];
-	activeFrameNumber: number = 0;
+	frameNumber: number = 0;
 
-	get activeFrame() {
-		return this.frames[this.activeFrameNumber];
+	get activeFrame(): FrameInterface {
+		return this.frames[this.frameNumber];
 	}
 
 	get lastFrame(): FrameInterface {
@@ -92,12 +103,61 @@ export default class GameContainer extends Vue {
 		const initFrame = new Frame(levelWhatever);
 		const firstFrame: FrameInterface = initFrame.next();
 		this.frames.push(firstFrame);
+		this.createFrames();
+		window.addEventListener('keyup', this.handleArrowPress);
 	}
 
-	createNexFrame() {
+	createFrames(number = 20) {
+		for (let index = 0; index < number; index += 1) {
+			const lastFrameCopy = cloneDeep(this.lastFrame);
+			const nextFrame: FrameInterface = lastFrameCopy.next();
+			this.frames.push(nextFrame);
+		}
+	}
+
+	createNextFrame() {
 		const lastFrameCopy = cloneDeep(this.lastFrame);
 		const nextFrame: FrameInterface = lastFrameCopy.next();
 		this.frames.push(nextFrame);
+	}
+
+	showNext() {
+		const newFrameNumber = this.frameNumber + 1;
+		if (newFrameNumber > this.frames.length - 1) {
+			console.error("Can't access frames that are not computed yet...");
+			return false;
+		}
+		this.frameNumber = newFrameNumber;
+		return this.frameNumber;
+	}
+
+	handleArrowPress(e: { keyCode: number }) {
+		console.log(e.keyCode);
+
+		switch (e.keyCode) {
+			case 37:
+				this.showPrevious();
+				break;
+			case 39:
+				this.showNext();
+				break;
+			default:
+				break;
+		}
+	}
+
+	beforeDestroy() {
+		window.removeEventListener('keyup', this.handleArrowPress);
+	}
+
+	showPrevious() {
+		const newFrameNumber = this.frameNumber - 1;
+		if (newFrameNumber < 0) {
+			console.error("Can't access frames before simulation...");
+			return false;
+		}
+		this.frameNumber = newFrameNumber;
+		return this.frameNumber;
 	}
 
 	loadALevel() {
@@ -117,16 +177,35 @@ export default class GameContainer extends Vue {
 		return `level${parseInt(this.$route.params.id, 10)}`;
 	}
 
+	get levelLoaded(): boolean {
+		return this.level && this.level.grid.cols !== 0;
+	}
+
+	get particles() {
+		return this.frames[this.frameNumber].quantum;
+	}
+
 	// helps to determine if there is a element present
 	isTherePiece(y: number, x: number) {
-		if (this.level && this.level.grid) {
-			const possiblePieceArray = this.level.grid.cells.filter((cell: ICell) => cell.coord.x === x && cell.coord.y === y);
+		if (this.levelLoaded) {
+			const possiblePieceArray = this.level.grid.cells.filter(
+				(cell: ICell) => cell.coord.x === x && cell.coord.y === y
+			);
 			if (possiblePieceArray.length) {
 				return possiblePieceArray[0];
 			}
 			return false;
 		}
 		return false;
+	}
+
+	// helps to determine if there is a element present
+	isTherePhotons(y: number, x: number) {
+		if (this.levelLoaded) {
+			const particles = this.frames[this.frameNumber].quantum;
+			return particles.filter((particle) => particle.coord.x === x && particle.coord.y === y);
+		}
+		return [];
 	}
 
 	onActiveElement(element: string, isDraggable: boolean) {
@@ -146,7 +225,8 @@ export default class GameContainer extends Vue {
 		display: flex;
 		flex-direction: row;
 		& .tile {
-			background-color: rgba(0, 98, 255, 0.294);
+			// background-color: rgba(0, 98, 255, 0.294);
+			background-color: #280066;
 			width: 64px;
 			min-height: 64px;
 			position: relative;
@@ -156,7 +236,7 @@ export default class GameContainer extends Vue {
 			color: white;
 			font-size: 1.3rem;
 			&:hover {
-				background-color: yellow;
+				background-color: purple;
 				color: black;
 			}
 		}

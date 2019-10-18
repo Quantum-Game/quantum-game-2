@@ -1,6 +1,8 @@
 <template>
 	<section class="entry-section">
-		<h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">{{ section.title.toUpperCase() }}</h2>
+		<h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
+			{{ section.title.toUpperCase() }}
+		</h2>
 		<div ref="contentWrapper" class="content-wrapper" :style="style">
 			<div class="content" v-html="section.content" />
 			<img v-for="image in section.pics" :key="image" :src="imageUrl(image)" />
