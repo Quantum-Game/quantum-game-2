@@ -9,9 +9,14 @@ Quantum Game 2 from CQT
 ### GAME
 - [ ] adddrag and drop
 
-### BOARD:
+### GAME:
 - [x] enhance q-button with inline,
-- [x] engance simulator viewer with internal viewing control
+- [x] enhance simulator viewer with internal viewing control
+- [x] create layout for Game
+- [ ] Turn simulation into Your Photon section;
+- [ ] mock goals;
+- [ ] mock controls
+- [ ] mock tools
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
@@ -21,11 +26,11 @@ Quantum Game 2 from CQT
 - [ ] add aria attributes for folded panes
 
 ### MAINTENANCE
-- [ ] get rid of conflicting prettier configs, editorconfig
+- [x] get rid of conflicting prettier configs, editorconfig
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
-- [ ] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
+- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
 
 14.10:
 - [x] Scaffold menu
