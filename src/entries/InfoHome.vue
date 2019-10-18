@@ -3,7 +3,7 @@
 		<router-link to="/"> <q-button type="basic"> HOMEPAGE </q-button> </router-link>
 		<!-- <router-link to="/info" class="button"> BACK TO GAME </router-link> -->
 		<h1>Welcome to the encyclopedia!</h1>
-		<p>Why don't you check...</p>
+		<img src="@/assets/placeholder_encyclopedia.svg" alt="placeholder" />		
 		<div class="entries">
 			<router-link to="/info/beam-splitter"> <q-button type="basic"> 50-50 BEAM SPLITTER</q-button></router-link>
 			<br />
@@ -27,6 +27,12 @@ export default class InfoHome extends Vue {}
 <style lang="scss" scoped>
 a {
 	color: red;
+}
+
+img{
+	border-top:1px solid white;
+	padding-top:30px;
+	padding-bottom: 30px;
 }
 
 .default-content {
