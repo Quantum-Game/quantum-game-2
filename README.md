@@ -6,10 +6,8 @@ Quantum Game 2 from CQT
 
 ## TODO:
 
-### GAME
-- [ ] adddrag and drop
-
 ### GAME:
+- [ ] RESETTING FUNCTION
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
