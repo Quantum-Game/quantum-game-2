@@ -30,7 +30,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Bomb extends Vue {
+export default class Mine extends Vue {
 	@Prop() readonly active!: boolean;
 }
 </script>

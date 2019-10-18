@@ -114,6 +114,7 @@ export default class GameContainer extends Vue {
 		this.level = levelToLoad;
 		return true;
 	}
+
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
 	}
@@ -136,7 +137,7 @@ export default class GameContainer extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game {
 	width: 100%;
 }

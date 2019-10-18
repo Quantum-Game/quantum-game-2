@@ -205,4 +205,5 @@ interface Complex {
  * @param im - The second input number
  * @returns Creates a complex number `z = z.re + i * z.im `
  */
+// export default function Cx(re: number, im?: number): Complex;
 export declare function Cx(re: number, im?: number): Complex;

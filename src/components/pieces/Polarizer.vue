@@ -114,7 +114,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Polarizer90 extends Vue {}
+export default class Polarizer extends Vue {}
 </script>
 
 <style lang="scss" scoped>

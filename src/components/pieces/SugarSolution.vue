@@ -245,7 +245,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class SugarSolutionSolution extends Vue {}
+export default class SugarSolution extends Vue {}
 </script>
 
 <style lang="scss" scoped>

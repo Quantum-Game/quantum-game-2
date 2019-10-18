@@ -45,21 +45,21 @@ button {
 }
 
 .basic {
-	background-color: #5c00d3;
-	border-bottom: 4px solid #120223;
-	&:hover {
-		background-color: #4302bf;
-		transition: 0.5s;
-	}
+ background-color: #5c00d3;
+ border-bottom: 4px solid #120223;
+ &:hover {
+  background-color: #4302bf;
+  transition: 0.5s;
+ }
 }
 
 .special {
-	background-color: #ff0055;
-	border-bottom: 4px solid #890236;
-	&:hover {
-		background-color: #db0356;
-		transition: 0.5s;
-	}
+ background-color: #ff0055;
+ border-bottom: 4px solid #890236;
+ &:hover {
+  background-color: #db0356;
+  transition: 0.5s;
+ }
 }
 
 .big {

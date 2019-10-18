@@ -2,10 +2,9 @@
 	<div class="simulation-steps-display-wrapper" ref="wrapper">
 		<div class="step">
 			<h3>YOUR PHOTON: </h3>
-				</h3>
 				<span>STEP {{ displayedFrame.step }} / {{ frames.length }}
 				</span>
-			<photon name="yay" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
+			<photon name="" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
 			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
 			<div v-else class="particle">
 				<div>
@@ -82,7 +81,7 @@ export default class SimulationStepsDisplay extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .simulation-steps-display-wrapper {
 	width: 100%;
 	display: block;
