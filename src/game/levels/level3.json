@@ -1,48 +1,56 @@
 {
   "id": 3,
-  "name": "Shine on you crazy diamond",
-  "group": "Game",
-  "description": "Give each plant its light",
+  "name": "Not all but everywhere",
+  "group": "Classic",
+  "description": "Error with 90° beamsplitter",
   "grid": {
     "cols": 10,
     "rows": 10,
     "cells": [
       {
-        "coord": { "y": 2, "x": 6 },
-        "element": "detector",
-        "rotation": 180,
+        "coord": { "y": 2, "x": 4 },
+        "element": "Detector",
+        "rotation": 270,
         "frozen": true,
         "active": false,
-        "energized": true
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 4 },
+        "element": "BeamSplitter",
+        "rotation": 180,
+        "frozen": false,
+        "active": false,
+        "energized": false
       },
       {
         "coord": { "y": 4, "x": 2 },
-        "element": "laser",
-        "rotation": 90,
+        "element": "Laser",
+        "rotation": 0,
         "frozen": true,
         "active": true,
-        "energized": true
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 4 },
+        "element": "BeamSplitter",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": false
       },
       {
         "coord": { "y": 4, "x": 6 },
-        "element": "beamsplitter",
-        "rotation": 135,
-        "frozen": false,
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
         "active": false,
-        "energized": true
+        "energized": false
       },
       {
-        "coord": { "y": 4, "x": 8 },
-        "element": "detector",
-        "rotation": 270,
-        "frozen": false,
-        "active": false,
-        "energized": true
-      },
-      {
-        "coord": { "y": 6, "x": 6 },
-        "element": "rock",
-        "rotation": 0,
+        "coord": { "y": 6, "x": 4 },
+        "element": "Detector",
+        "rotation": 90,
         "frozen": true,
         "active": false,
         "energized": false

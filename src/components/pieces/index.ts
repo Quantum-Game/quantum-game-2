@@ -1,12 +1,12 @@
 import Absorber from './Absorber.vue';
 import BeamSplitter from './BeamSplitter.vue';
-import Bomb from './Bomb.vue';
+import Mine from './Mine.vue';
 import CoatedBeamSplitter from './CoatedBeamSplitter.vue';
 import Detector from './Detector.vue';
 import Laser from './Laser.vue';
-import GlassSlab from './GlassSlab.vue';
+import Glass from './Glass.vue';
 import Mirror from './Mirror.vue';
-import OmniDetector from './OmniDetector.vue';
+import DetectorFour from './DetectorFour.vue';
 import PolarizerV from './PolarizerV.vue';
 import Polarizer45 from './Polarizer45.vue';
 import PolarizerH from './PolarizerH.vue';
@@ -22,13 +22,13 @@ import WavePlate135 from './WavePlate135.vue';
 
 export { Absorber };
 export { BeamSplitter };
-export { Bomb };
+export { Mine };
 export { CoatedBeamSplitter };
 export { Detector };
 export { Laser };
-export { GlassSlab };
+export { Glass };
 export { Mirror };
-export { OmniDetector };
+export { DetectorFour };
 export { PolarizerV };
 export { Polarizer45 };
 export { PolarizerH };
@@ -47,20 +47,20 @@ interface IPiecesList {
 }
 
 const PiecesList: IPiecesList = {
-	Absorber,
-	BeamSplitter,
-	Bomb,
-	CoatedBeamSplitter,
-	Detector,
 	Laser,
-	GlassSlab,
 	Mirror,
-	OmniDetector,
+	BeamSplitter,
+	PolarizingBeamSplitter,
+	CoatedBeamSplitter,
+	Absorber,
+	Mine,
+	Detector,
+	Glass,
+	DetectorFour,
 	PolarizerV,
 	Polarizer45,
 	PolarizerH,
 	Polarizer135,
-	PolarizingBeamSplitter,
 	Rock,
 	SugarSolution,
 	VacuumJar,

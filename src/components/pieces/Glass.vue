@@ -57,7 +57,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class GlassSlab extends Vue {}
+export default class Glass extends Vue {}
 </script>
 
 <style lang="scss" scoped>
