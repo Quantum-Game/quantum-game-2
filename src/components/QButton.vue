@@ -1,7 +1,5 @@
 <template>
- <button class="button" :class="type">
-  <slot></slot>
- </button>
+	<button :class="computedClass"><slot></slot></button>
 </template>
 
 <script lang="ts">
@@ -9,33 +7,41 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 
 @Component
 export default class QButton extends Vue {
- @Prop() readonly hoverColor!: string;
- @Prop() readonly type!: string;
+	@Prop() readonly hoverColor!: string;
+	@Prop({ default: 'basic' }) readonly type!: string;
+	@Prop({ default: false }) readonly inline!: boolean;
 
- get colorClass() {
-  return this.hoverColor;
- }
+	get colorClass() {
+		return this.hoverColor;
+	}
+
+	get computedClass() {
+		return [this.type, this.inline && 'inline'];
+	}
 }
 </script>
 
 <style lang="scss" scoped>
 button {
- display: inline-block;
- padding: 0;
- border: none;
- font: inherit;
- color: inherit;
- background-color: transparent;
- cursor: pointer;
- color: white;
- padding: 8px 20px;
- text-align: center;
- font-weight: bold;
- text-decoration: none;
- display: flex;
- font-size: 0.8rem;
- transition: 0.5s;
- align-items: center;
+	display: inline-block;
+	padding: 0;
+	border: none;
+	font: inherit;
+	color: inherit;
+	background-color: transparent;
+	cursor: pointer;
+	color: white;
+	padding: 8px 20px;
+	text-align: center;
+	font-weight: bold;
+	text-decoration: none;
+	display: flex;
+	font-size: 0.8rem;
+	transition: 0.5s;
+	align-items: center;
+	&.inline {
+		display: inline;
+	}
 }
 
 .basic {

@@ -15,7 +15,7 @@ export default new Router({
 		{
 			path: '/level/:id',
 			name: 'level',
-			component: () => import('./views/GameContainer.vue')
+			component: () => import('./views/Game.vue')
 		},
 		{
 			path: '/info',
