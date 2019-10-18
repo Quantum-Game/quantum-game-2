@@ -1,12 +1,12 @@
 <template>
 	<div class="simulation-steps-display-wrapper">
 		<div class="step">
-			<h3>STEP {{ displayedFrame.step }}</h3>
+			<h3>STEP {{ displayedFrame.step }} / {{ frames.length }}</h3>
 			<div class="controls">
-				<q-button :inline="true" @click.native="showPrevious">show previous frame</q-button>
-				<q-button :inline="true" @click.native="showNext">show next frame</q-button>
+				<q-button inline @click.native="showPrevious">show previous frame</q-button>
+				<q-button inline @click.native="showNext">show next frame</q-button>
 			</div>
-			<h3 v-if="displayedFrame === 1">INIT STEP</h3>
+			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
 			<div v-for="(particle, pindex) in displayedFrame.quantum" :key="`particle-${pindex}`" class="particle">
 				<div>
 					A:
@@ -20,8 +20,6 @@
 					{{ particle.path.length }} phase: {{ particle.phase }}
 				</div>
 				<photon name="yay" :are="particle.a.re" :aim="particle.a.im" :bre="particle.b.re" :bim="particle.b.im" />
-
-				<!-- <photon :are="1" /> -->
 			</div>
 		</div>
 	</div>
