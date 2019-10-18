@@ -155,7 +155,7 @@ export default class Board extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .board-container {
 	width: 100%;
 	max-height: 100vh;

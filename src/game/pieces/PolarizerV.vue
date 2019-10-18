@@ -61,7 +61,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class Polarizer0 extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .st0 {
 	fill: none;
 }

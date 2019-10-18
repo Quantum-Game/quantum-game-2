@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
-import Photon from '../components/Photon.vue';
+import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
 import entries from './entries.json';
 

@@ -32,7 +32,7 @@ export default class Tile extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .tile {
 	background-color: rgba(0, 98, 255, 0.294);
 	width: 64px;

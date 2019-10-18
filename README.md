@@ -10,13 +10,6 @@ Quantum Game 2 from CQT
 - [ ] adddrag and drop
 
 ### GAME:
-- [x] enhance q-button with inline,
-- [x] enhance simulator viewer with internal viewing control
-- [x] create layout for Game
-- [ ] Turn simulation into Your Photon section;
-- [ ] mock goals;
-- [ ] mock controls
-- [ ] mock tools
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
@@ -26,7 +19,6 @@ Quantum Game 2 from CQT
 - [ ] add aria attributes for folded panes
 
 ### MAINTENANCE
-- [x] get rid of conflicting prettier configs, editorconfig
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
@@ -61,3 +53,15 @@ Quantum Game 2 from CQT
 - [x] Adjust the board
 - [x] display elements graphix;
 - [x] have the simulation going
+
+18.10
+- [x] enhance q-button with inline,
+- [x] enhance simulator viewer with internal viewing control
+- [x] create layout for Game
+- [x] Turn simulation into Your Photon section;
+- [x] move components into game directory
+- [x] create a component placeholder for goals;
+- [x] create a component placeholder for controls
+- [x] create a component placeholder for tools
+- [x] get rid of conflicting prettier configs, editorconfig
+- [x] scope styles across the app

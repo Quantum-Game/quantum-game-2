@@ -83,32 +83,43 @@ export default class Photon extends Vue {
 	@Prop({ default: true }) readonly displayGaussian!: boolean;
 
 	get xScale() {
-	return d3
-		.scaleLinear()
-		.domain([-1, 1])
-		.range([this.margin, this.width - this.margin]);
+		return d3
+			.scaleLinear()
+			.domain([-1, 1])
+			.range([this.margin, this.width - this.margin]);
 	}
+
 	get yScale() {
-	return d3
-		.scaleLinear()
-		.domain([-1, 1])
-		.range([this.margin, this.height - this.margin]);
+		return d3
+			.scaleLinear()
+			.domain([-1, 1])
+			.range([this.margin, this.height - this.margin]);
 	}
+
 	get mScale() {
-	return d3
-		.scaleLinear()
-		.domain([-1, 1])
-		.range([1, 3]);
+		return d3
+			.scaleLinear()
+			.domain([-1, 1])
+			.range([1, 3]);
 	}
 	get eScale() {
-	return d3
-		.scaleLinear()
-		.domain([-1, 1])
-		.range([2, 10]);
+		return d3
+			.scaleLinear()
+			.domain([-1, 1])
+			.range([2, 10]);
 	}
-	eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
-	mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
-	zs = d3.range(-1, 1, this.range);
+
+	get eColor() {
+		return d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+	}
+
+	get mColor() {
+		return d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
+	}
+
+	get zs() {
+		return d3.range(-1, 1, this.range);
+	}
 
 	computeComplex(re: number, im: number, z: number, k = 20): number {
 		return re * Math.cos(k * z) + im * Math.sin(k * z);
@@ -124,10 +135,10 @@ export default class Photon extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .photon {
 	// background-color: black;
-	padding: 20px;
+	// padding: 20px;
 	.text {
 		fill: lightgrey;
 		stroke: lightgrey;

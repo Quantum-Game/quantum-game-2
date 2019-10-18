@@ -94,7 +94,7 @@ export default class Grid extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game-grid {
 	// border-top: 1px solid #1a0707;
 	// border-left: 1px solid #1a0707;

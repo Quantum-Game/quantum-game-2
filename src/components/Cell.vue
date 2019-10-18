@@ -49,7 +49,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .frozen {
 	background-color: rgb(0, 104, 189) !important;
 }

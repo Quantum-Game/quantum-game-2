@@ -126,7 +126,7 @@ export default class Piece extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .piece-wrapper {
 	height: 100%;
 	width: 100%;

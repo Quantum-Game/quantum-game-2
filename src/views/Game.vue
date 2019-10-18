@@ -3,9 +3,7 @@
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">{{ level.name.toUpperCase() }}</h1>
-			<div slot="main-left" class="goals placeholder">
-				<h3 class="title">GOALS:<br />⬇ ️ ⬇ ️ ⬇️</h3>
-			</div>
+			<Goals slot="main-left" />
 			<section slot="main-middle">
 				<div class="grid">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
@@ -14,22 +12,19 @@
 				</div>
 				<div class="placeholder controls">
 					<h3 class="title">here go the controls<br />⬇ ️ ⬇ ️ ⬇️</h3>
-			<q-button inline @click.native="createNexFrame">create a frame</q-button>
+					<q-button inline @click.native="createNexFrame">create a frame</q-button>
 				</div>
 				<!-- <board @setActiveElement="onActiveElement" /> -->
 			</section>
 			<section slot="main-right">
-				<div class="toolbox placeholder">
-					<h3 class="title">here's the toolbox!<br />⬇ ️ ⬇ ️ ⬇️</h3>
-				</div>
 				<!-- <toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" /> -->
-				<div class="explanation placeholder">
-					<h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3>
+				<toolbox />
+				<explanation>
 					<div class="discription">
 						<span>element: {{ activeElement }}</span>
 					</div>
-				</div>
-				<simulation-steps-display :frames="frames" />
+				</explanation>
+				<your-photon :frames="frames" />
 			</section>
 		</game-layout>
 	</div>
@@ -40,20 +35,22 @@ import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Level, Frame } from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
-import Piece from '../components/Piece.vue';
-import SimulationStepsDisplay from '../components/SimulationStepsDisplay.vue';
 import { ICell, ICoord, FrameInterface } from '@/types';
 import levelData from '../game/levels';
-import Tile from '../components/Tile.vue';
 import QButton from '../components/QButton.vue';
+import { Goals, Explanation, Toolbox, Controls, Piece, Tile, YourPhoton } from '../game';
 
 @Component({
 	components: {
 		GameLayout,
 		Piece,
-		SimulationStepsDisplay,
+		YourPhoton,
 		Tile,
-		QButton
+		QButton,
+		Goals,
+		Explanation,
+		Toolbox,
+		Controls
 	}
 })
 export default class GameContainer extends Vue {
@@ -136,7 +133,7 @@ export default class GameContainer extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game {
 	width: 100%;
 }
@@ -162,33 +159,5 @@ export default class GameContainer extends Vue {
 			}
 		}
 	}
-}
-
-.placeholder {
-	width: 100%;
-	height: 200px;
-	& h3 {
-		margin: 0;
-	}
-	&.explanation {
-		background-color: rgba(0, 225, 255, 0.349);
-	}
-	&.toolbox {
-		background-color: rgba(255, 187, 0, 0.349);
-	}
-	&.goals {
-		background-color: rgba(255, 0, 85, 0.349);
-		height: 400px;
-	}
-	&.controls {
-		background-color: rgba(179, 255, 0, 0.349);
-		height: 100px;
-	}
-}
-
-.toolbox-container {
-	width: 100%;
-	background-color: rgba(0, 225, 255, 0.349);
-	height: 200px;
 }
 </style>

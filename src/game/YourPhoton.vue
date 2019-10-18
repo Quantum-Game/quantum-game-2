@@ -1,19 +1,23 @@
 <template>
-	<div class="simulation-steps-display-wrapper" ref="wrapper">
+	<div ref="wrapper" class="simulation-steps-display-wrapper">
 		<div class="step">
-			<h3>YOUR PHOTON: </h3>
-				</h3>
-				<span>STEP {{ displayedFrame.step }} / {{ frames.length }}
-				</span>
-			<photon name="yay" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
+			<h3>YOUR PHOTON:</h3>
+			<span>STEP {{ displayedFrame.step }} / {{ frames.length }} </span>
+			<photon
+				:are="currentQuantum.a.re"
+				:aim="currentQuantum.a.im"
+				:bre="currentQuantum.b.re"
+				:bim="currentQuantum.b.im"
+				:width="width"
+				:height="120"
+				:margin="20"
+			/>
 			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
 			<div v-else class="particle">
 				<div>
-					A:
-					{{ `im: ${currentQuantum.a.im}, re: ${currentQuantum.a.re}` }}
-					B:
-					{{ `im: ${currentQuantum.b.im}, re: ${currentQuantum.b.re}` }}
-					Coord: {{ `y: ${currentQuantum.y}, x: ${currentQuantum.x}` }}
+					A: {{ `im: ${currentQuantum.a.im}, re: ${currentQuantum.a.re}` }} B:
+					{{ `im: ${currentQuantum.b.im}, re: ${currentQuantum.b.re}` }} Coord:
+					{{ `y: ${currentQuantum.y}, x: ${currentQuantum.x}` }}
 				</div>
 				<div>
 					direction: {{ currentQuantum.direction }} intensity: {{ currentQuantum.intensity }} path length:
@@ -31,7 +35,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import Photon from './Photon.vue';
-import QButton from './QButton.vue';
+import QButton from '../components/QButton.vue';
 
 @Component({
 	components: {
@@ -42,10 +46,10 @@ import QButton from './QButton.vue';
 export default class SimulationStepsDisplay extends Vue {
 	@Prop() readonly frames!: any[];
 	displayedFrameNumber: number = 0;
-	width: number = 0
+	width: number = 0;
 
 	mounted() {
-		this.getElementWidth()
+		this.getElementWidth();
 	}
 
 	getElementWidth() {
@@ -72,8 +76,8 @@ export default class SimulationStepsDisplay extends Vue {
 
 	get currentQuantum() {
 		const defaultParticle = {
-			a: {im: 0, re: 0},
-			b: {im: 0, re: 0},
+			a: { im: 0, re: 0 },
+			b: { im: 0, re: 0 },
 			path: [],
 			phase: 0
 		};
@@ -82,7 +86,7 @@ export default class SimulationStepsDisplay extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .simulation-steps-display-wrapper {
 	width: 100%;
 	display: block;
