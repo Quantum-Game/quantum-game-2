@@ -10,14 +10,6 @@
   style="enable-background:new 0 0 64 64;"
   xml:space="preserve"
  >
-  <style type="text/css">
- .st0 {
-  fill: #5a4278;
- }
- .st1 {
-  fill: #7858a0;
- }
-  </style>
   <g>
    <polygon class="st0" points="38.15,9.05 32,5.5 9.92,18.25 23.57,26.14 	" />
    <polygon class="st0" points="54.08,18.25 50.15,15.98 42.5,24.94 	" />
@@ -46,15 +38,9 @@ export default class CornerCube extends Vue {}
 
 <style lang="scss" scoped>
 .st0 {
- fill: none;
-}
-.st1 {
- fill: #3c2c50;
-}
-.st2 {
  fill: #5a4278;
 }
-.st3 {
- fill: url(#SVGID_1_);
+.st1 {
+ fill: #7858a0;
 }
 </style>
