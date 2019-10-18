@@ -24,7 +24,7 @@ import QButton from '../components/QButton.vue';
 export default class InfoHome extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 a {
 	color: red;
 }

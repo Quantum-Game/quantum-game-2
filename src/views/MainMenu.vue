@@ -30,7 +30,7 @@ import QButton from '../components/QButton.vue';
 export default class MainMenu extends Vue {}
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .home-page-wrapper {
 	display: flex;
 	flex-direction: column;

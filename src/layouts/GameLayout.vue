@@ -22,7 +22,7 @@ import QMenu from '../components/QMenu.vue';
 export default class GameLayout extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game-layout {
 	// height: 100%;
 	min-height: 100vh;

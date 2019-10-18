@@ -25,7 +25,7 @@ import QMenu from '../components/QMenu.vue';
 export default class MainLayout extends Vue {}
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .layout-container {
 	height: 100%;
 	min-height: 100vh;

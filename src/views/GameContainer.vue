@@ -162,7 +162,7 @@ export default class GameContainer extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .game {
 	width: 100%;
 }
