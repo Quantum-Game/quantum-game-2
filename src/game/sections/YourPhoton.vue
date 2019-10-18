@@ -1,10 +1,17 @@
 <template>
 	<div ref="wrapper" class="simulation-steps-display-wrapper">
 		<div class="step">
-			<h3>YOUR PHOTON: </h3>
-				<span>STEP {{ displayedFrame.step }} / {{ frames.length }}
-				</span>
-			<photon name="" :are="currentQuantum.a.re" :aim="currentQuantum.a.im" :bre="currentQuantum.b.re" :bim="currentQuantum.b.im" :width="width" :height="200" />
+			<h3>YOUR PHOTON:</h3>
+			<span>STEP {{ displayedFrame.step }} / {{ frames.length }} </span>
+			<photon
+				name=""
+				:are="currentQuantum.a.re"
+				:aim="currentQuantum.a.im"
+				:bre="currentQuantum.b.re"
+				:bim="currentQuantum.b.im"
+				:width="width"
+				:height="200"
+			/>
 			<h3 v-if="displayedFrameNumber === 0">INIT STEP</h3>
 			<div v-else class="particle">
 				<div>
@@ -27,8 +34,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import Photon from './Photon.vue';
-import QButton from '../components/QButton.vue';
+import Photon from '../Photon.vue';
+import QButton from '../../components/QButton.vue';
 
 @Component({
 	components: {

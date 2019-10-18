@@ -13,39 +13,39 @@
 			/>
 		</g>
 
-  <g v-if="displayMagnetic" class="magnetic">
-   <circle
-    v-for="(z, index) in zs"
-    :key="`magneticPoint-${index}`"
-    class="point magnetic"
-    :cx="xScale(z)"
-    :cy="yScale(gaussianComplex(bre, bim, z, k, sigma))"
-    :r="mScale(gaussianComplex(are, aim, z, k, sigma))"
-    :style="{ fill: mColor(gaussianComplex(bre, bim, z, k, sigma)) }"
-   />
-  </g>
+		<g v-if="displayMagnetic" class="magnetic">
+			<circle
+				v-for="(z, index) in zs"
+				:key="`magneticPoint-${index}`"
+				class="point magnetic"
+				:cx="xScale(z)"
+				:cy="yScale(gaussianComplex(bre, bim, z, k, sigma))"
+				:r="mScale(gaussianComplex(are, aim, z, k, sigma))"
+				:style="{ fill: mColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+			/>
+		</g>
 
-  <g v-if="displayGaussian" class="gaussian">
-   <circle
-    v-for="(z, index) in zs"
-    :key="`gaussianPointb-${index}`"
-    class="point gaussian"
-    :cx="xScale(z)"
-    :cy="yScale(gaussian(z))"
-    :r="3"
-    :style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
-   />
-   <circle
-    v-for="(z, index) in zs"
-    :key="`gaussianPointt-${index}`"
-    class="point gaussian"
-    :cx="xScale(z)"
-    :cy="yScale(-gaussian(z))"
-    :r="3"
-    :style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
-   />
-  </g>
- </svg>
+		<g v-if="displayGaussian" class="gaussian">
+			<circle
+				v-for="(z, index) in zs"
+				:key="`gaussianPointb-${index}`"
+				class="point gaussian"
+				:cx="xScale(z)"
+				:cy="yScale(gaussian(z))"
+				:r="3"
+				:style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
+			/>
+			<circle
+				v-for="(z, index) in zs"
+				:key="`gaussianPointt-${index}`"
+				class="point gaussian"
+				:cx="xScale(z)"
+				:cy="yScale(-gaussian(z))"
+				:r="3"
+				:style="{ fill: 'hsla(170, 20%, 30%, 0.3)' }"
+			/>
+		</g>
+	</svg>
 </template>
 
 <script lang="ts">
@@ -57,30 +57,30 @@ import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
 import { range } from 'd3-array';
 
 const d3 = {
- scaleLinear,
- scaleSequential,
- select,
- range,
- interpolateInferno,
- interpolateViridis
+	scaleLinear,
+	scaleSequential,
+	select,
+	range,
+	interpolateInferno,
+	interpolateViridis
 };
 
 @Component
 export default class Photon extends Vue {
- @Prop({ default: 'photon' }) readonly name!: string;
- @Prop({ default: 0 }) readonly are!: number;
- @Prop({ default: 0 }) readonly aim!: number;
- @Prop({ default: 0 }) readonly bre!: number;
- @Prop({ default: 0 }) readonly bim!: number;
- @Prop({ default: 300 }) readonly width!: number;
- @Prop({ default: 200 }) readonly height!: number;
- @Prop({ default: 20 }) readonly margin!: number;
- @Prop({ default: 20 }) readonly k!: number;
- @Prop({ default: 0.3 }) readonly sigma!: number;
- @Prop({ default: 0.001 }) readonly range!: number;
- @Prop({ default: true }) readonly displayMagnetic!: boolean;
- @Prop({ default: true }) readonly displayElectric!: boolean;
- @Prop({ default: true }) readonly displayGaussian!: boolean;
+	@Prop({ default: 'photon' }) readonly name!: string;
+	@Prop({ default: 0 }) readonly are!: number;
+	@Prop({ default: 0 }) readonly aim!: number;
+	@Prop({ default: 0 }) readonly bre!: number;
+	@Prop({ default: 0 }) readonly bim!: number;
+	@Prop({ default: 300 }) readonly width!: number;
+	@Prop({ default: 200 }) readonly height!: number;
+	@Prop({ default: 20 }) readonly margin!: number;
+	@Prop({ default: 20 }) readonly k!: number;
+	@Prop({ default: 0.3 }) readonly sigma!: number;
+	@Prop({ default: 0.001 }) readonly range!: number;
+	@Prop({ default: true }) readonly displayMagnetic!: boolean;
+	@Prop({ default: true }) readonly displayElectric!: boolean;
+	@Prop({ default: true }) readonly displayGaussian!: boolean;
 
 	get xScale() {
 		return d3
@@ -121,17 +121,17 @@ export default class Photon extends Vue {
 		return d3.range(-1, 1, this.range);
 	}
 
- computeComplex(re: number, im: number, z: number, k = 20): number {
-  return re * Math.cos(k * z) + im * Math.sin(k * z);
- }
+	computeComplex(re: number, im: number, z: number, k = 20): number {
+		return re * Math.cos(k * z) + im * Math.sin(k * z);
+	}
 
- gaussian(z: number, sigma = 0.3): number {
-  return Math.exp((-z * z) / (2 * sigma * sigma));
- }
+	gaussian(z: number, sigma = 0.3): number {
+		return Math.exp((-z * z) / (2 * sigma * sigma));
+	}
 
- gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
-  return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma));
- }
+	gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
+		return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma));
+	}
 }
 </script>
 
