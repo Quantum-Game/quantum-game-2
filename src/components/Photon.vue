@@ -1,17 +1,17 @@
 <template>
- <svg class="photon" :width="width + 2 * margin" :height="height + 2 * margin">
-  <text v-once class="text" :x="width / 2" :y="height + 35">{{ name }}</text>
-  <g v-if="displayElectric" class="electric">
-   <circle
-    v-for="(z, index) in zs"
-    :key="`electricPoint-${index}`"
-    class="point electric"
-    :cx="xScale(z)"
-    :cy="yScale(gaussianComplex(are, aim, z, k, sigma))"
-    :r="eScale(gaussianComplex(bre, bim, z, k, sigma))"
-    :style="{ fill: eColor(gaussianComplex(bre, bim, z, k, sigma)) }"
-   />
-  </g>
+	<svg class="photon" :width="width + 2 * margin" :height="height + 2 * margin">
+		<!-- <text v-once class="text" :x="width / 2" :y="height + 35">{{ name }}</text> -->
+		<g v-if="displayElectric" class="electric">
+			<circle
+				v-for="(z, index) in zs"
+				:key="`electricPoint-${index}`"
+				class="point electric"
+				:cx="xScale(z)"
+				:cy="yScale(gaussianComplex(are, aim, z, k, sigma))"
+				:r="eScale(gaussianComplex(bre, bim, z, k, sigma))"
+				:style="{ fill: eColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+			/>
+		</g>
 
   <g v-if="displayMagnetic" class="magnetic">
    <circle
@@ -82,25 +82,33 @@ export default class Photon extends Vue {
  @Prop({ default: true }) readonly displayElectric!: boolean;
  @Prop({ default: true }) readonly displayGaussian!: boolean;
 
- xScale = d3
-  .scaleLinear()
-  .domain([-1, 1])
-  .range([this.margin, this.width - this.margin]);
- yScale = d3
-  .scaleLinear()
-  .domain([-1, 1])
-  .range([this.margin, this.height - this.margin]);
- mScale = d3
-  .scaleLinear()
-  .domain([-1, 1])
-  .range([1, 3]);
- eScale = d3
-  .scaleLinear()
-  .domain([-1, 1])
-  .range([2, 10]);
- eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
- mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
- zs = d3.range(-1, 1, this.range);
+	get xScale() {
+	return d3
+		.scaleLinear()
+		.domain([-1, 1])
+		.range([this.margin, this.width - this.margin]);
+	}
+	get yScale() {
+	return d3
+		.scaleLinear()
+		.domain([-1, 1])
+		.range([this.margin, this.height - this.margin]);
+	}
+	get mScale() {
+	return d3
+		.scaleLinear()
+		.domain([-1, 1])
+		.range([1, 3]);
+	}
+	get eScale() {
+	return d3
+		.scaleLinear()
+		.domain([-1, 1])
+		.range([2, 10]);
+	}
+	eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+	mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
+	zs = d3.range(-1, 1, this.range);
 
  computeComplex(re: number, im: number, z: number, k = 20): number {
   return re * Math.cos(k * z) + im * Math.sin(k * z);
