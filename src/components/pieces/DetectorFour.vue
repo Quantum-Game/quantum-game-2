@@ -381,7 +381,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class OmniDetector extends Vue {
+export default class DetectorFour extends Vue {
 	@Prop() readonly active!: boolean;
 }
 </script>

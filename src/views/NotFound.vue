@@ -6,7 +6,7 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import QButton from '../components/QButton.vue';
 

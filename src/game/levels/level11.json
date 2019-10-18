@@ -1,6 +1,6 @@
 {
-  "id": 7,
-  "name": "Breaking interference with a rock",
+  "id": 11,
+  "name": "Attenuate the beam",
   "group": "Classic",
   "description": "",
   "grid": {
@@ -8,65 +8,65 @@
     "rows": 10,
     "cells": [
       {
-        "coord": { "y": 2, "x": 8 },
+        "coord": { "y": 4, "x": 1 },
         "element": "Laser",
-        "rotation": 270,
+        "rotation": 0,
         "frozen": true,
         "active": true,
         "energized": false
       },
       {
         "coord": { "y": 4, "x": 3 },
-        "element": "Mirror",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 8 },
-        "element": "BeamSplitter",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 6, "x": 1 },
-        "element": "Detector",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 6, "x": 3 },
-        "element": "BeamSplitter",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 6, "x": 6 },
-        "element": "Rock",
+        "element": "Absorber",
         "rotation": 0,
         "frozen": false,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 6, "x": 8 },
-        "element": "Mirror",
-        "rotation": 45,
-        "frozen": true,
+        "coord": { "y": 4, "x": 4 },
+        "element": "Absorber",
+        "rotation": 0,
+        "frozen": false,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 8, "x": 3 },
+        "coord": { "y": 4, "x": 5 },
+        "element": "Absorber",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 6 },
+        "element": "Absorber",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 7 },
+        "element": "Absorber",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 8 },
+        "element": "Absorber",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 10 },
         "element": "Detector",
-        "rotation": 90,
+        "rotation": 180,
         "frozen": true,
         "active": false,
         "energized": false

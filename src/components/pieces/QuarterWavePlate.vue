@@ -80,7 +80,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class WavePlate0 extends Vue {}
+export default class QuarterWavePlate extends Vue {}
 </script>
 
 <style lang="scss" scoped>
