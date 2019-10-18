@@ -1,35 +1,40 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">
-        Menu
-      </router-link>
-      |
-      <router-link to="/levels">
-        Levels
-      </router-link>
-      |
-      <router-link to="/info">
-        Info
-      </router-link>
-    </div>
-    <router-view />
-  </div>
+	<div id="app">
+		<router-view />
+	</div>
 </template>
 
 <style lang="scss">
 body {
-  margin: 0;
-  padding: 0;
-  box-sizing: content-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: content-box;
+	overflow-x: hidden;
 }
 #app {
-	font-family: 'Avenir', Helvetica, Arial, sans-serif;
+	display: flex;
+	justify-content: center;
+	font-family: 'Montserrat', Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
 	color: #2c3e50;
-  padding: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+	background: #2e006a; /* Old browsers */
+	//TO DO - change first two gradients
+	background: -moz-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* FF3.6-15 */
+	background: -webkit-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(
+		to right,
+		#210235 16%,
+		#2e006a 30%,
+		#2e006a 70%,
+		#210235 84%
+	); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5000a0', endColorstr='#3c1156',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 }
 #nav {
 	padding: 30px;

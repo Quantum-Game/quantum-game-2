@@ -1,0 +1,94 @@
+{
+  "id": 4,
+  "name": "50 shades of quantum",
+  "group": "Game",
+  "description": "A Christmas tree of probabilities",
+  "grid": {
+    "cols": 11,
+    "rows": 11,
+    "cells": [
+      {
+        "coord": { "y": 0, "x": 5 },
+        "element": "detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 3 },
+        "element": "detector",
+        "rotation": 90,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 5 },
+        "element": "beamsplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 5 },
+        "element": "beamsplitter",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 8 },
+        "element": "detector",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 1 },
+        "element": "detector",
+        "rotation": 90,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 5 },
+        "element": "beamsplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 8, "x": 5 },
+        "element": "beamsplitter",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 8, "x": 9 },
+        "element": "detector",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 10, "x": 5 },
+        "element": "laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [],
+  "goals": []
+}

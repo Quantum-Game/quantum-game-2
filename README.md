@@ -5,50 +5,59 @@ Quantum Game 2 from CQT
 `yarn` followed by `yarn serve`
 
 ## TODO:
-board of tiles:
-- - [x] Tile;
-- [x] customizable dimentions;
-- [x] position tracking system (vuex);
-- [x] fix the `Argument of type 'number' is not assignable to parameter of type 'never'` error in src/views/Levels.vue;
 
-Drag & Drop
-- [x] enable dragging and dropping;
-- [x] ensure the correct data is being passed;
-- [x] define conditions for an allowed drop;
-- [x] verify successful drop before cleaning the Tile;
-- [x] custom DragEvent MIME type?
-- [x] Refactor: give up on emmitting up to Board, let Tiles have full store access;
-- [x] track quantities (still got to track the toolbox);
-- [x] Create elements -> import graphics, extract functionality;
-- [x] Rotation
+### GAME
+- [ ] adddrag and drop
 
+### GAME:
+- [x] enhance q-button with inline,
+- [x] enhance simulator viewer with internal viewing control
+- [x] create layout for Game
+- [ ] Turn simulation into Your Photon section;
+- [ ] mock goals;
+- [ ] mock controls
+- [ ] mock tools
+- [ ] click listeners;
+- [ ] drop listeners;
+- [ ] drag
 
-- [x] limit the ability to take from tray - change architecture so that deagging is a tile / toolslot property, not that of a cell
-- [x] level changing guards
-- [x] level loading logic (router/store)
-- [x] make it load the level on load
-- [x] deal with substracting tools bug
-      turns out it is a matter of from where I derive the cells - dragging from tray means adding a non-frozen cell, wich means it appears in the toolbox etc. In the end, Tile does need to know where cell directly from state, but through props - ["plant bug"]
-- [x] fix routing
+### ENCYCLOPEDIAs
+- [ ] add inline styling for images
+- [ ] add aria attributes for folded panes
 
+### MAINTENANCE
+- [x] get rid of conflicting prettier configs, editorconfig
 
+### BUGS
+- [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
+- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
 
-07.10
-- [x] make the Piece a general component only importing graphix from other places
-- [x] struggle with an issue of toolbox dropping - sometimes, around one in five times, the drop fails. It seems to be related to the Piece, as dropping on a .toolbox-wrapper simply works. Additinaly, one can tell there is something wrong when dragging over the piece in the toolbox, as the cursor flickers. Not solved.
+14.10:
+- [x] Scaffold menu
+- [x] Include Menu button into the layout
+- [x] serve images in entries
+- [x] make the isOpen in entry section be prop-derived
 
-8.10
-- [ ]
-- [ ] divide the view
-- [ ] Figure out Play button / Frame
+15.10
+- [x] review push
+- [x] get the menu icon into the foreground
+- [x] make the q-menu listen to enc key press
+- [x] menu enter/leave animation
+- [x] make the entry sections titles uppercase
+- [x] create turning arrows indicating folded panes
+- [x] qMenu items are offsetted right with width of the icon
+- [x] adjustments by from Klem I
 
-- [ ] Bachground
+16.10
+- [x] Host in on Firebase
+- [x] Have as dependency https://github.com/sneakyweasel/quantumweasel;
+- [x] type levelData
 
-
-- [ ] add drop event listeners on dots
-- [ ] move opacity transition up, as board feature
-- [ ] cleanup :sweaty-smile:
-- [ ] move board actions && mutations to board module
-- [ ] move drop logic to components from store
-- [ ] Real interfaces
-- [ ] RWD
+17.10
+- [x] displaying frames
+- [x] propertly order frames without overwriting the last one (thanks lodash deep clone! :*);
+- [x] Create a working GameContainer - meanning initializing the Game object
+- [x] Simplify Cells as per https://github.com/sneakyweasel/QuantumDisplay
+- [x] Adjust the board
+- [x] display elements graphix;
+- [x] have the simulation going

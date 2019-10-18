@@ -1,0 +1,31 @@
+{
+  "id": 1,
+  "name": "Genesis",
+  "group": "Game",
+  "description": "Let there be light...",
+  "grid": {
+
+    "cols": 10,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 4, "x": 2 },
+        "element": "Laser",
+        "rotation": 90,
+        "frozen": true,
+        "active": true,
+        "energized": true
+      },
+      {
+        "coord": { "y": 4, "x": 7 },
+        "element": "Detector",
+        "rotation": 270,
+        "frozen": true,
+        "active": true,
+        "energized": true
+      }
+    ]
+  },
+  "hints": [],
+  "goals": []
+}
