@@ -36,7 +36,7 @@ button {
 	font-weight: bold;
 	text-decoration: none;
 	display: flex;
-	font-size: 0.8rem;
+	font-size: 1rem;
 	transition: 0.5s;
 	align-items: center;
 	&.inline {
@@ -62,6 +62,15 @@ button {
 	}
 }
 
+.big {
+	background-color: #ff0055;
+	font-size: 1.5rem;
+	border-bottom: 4px solid #890236;
+	&:hover {
+		background-color: #db0356;
+		transition: 0.5s;
+	}
+}
 // button:hover {
 // 	background-color: #4e99c9;
 // 	transition: 0.5s;
