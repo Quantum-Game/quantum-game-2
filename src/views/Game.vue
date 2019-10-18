@@ -1,9 +1,9 @@
 <template>
 	<div class="game">
 		<game-layout>
-			<h1 v-if="error" class="error" slot="header-middle">{{ error }}</h1>
-			<h1 v-else class="title" slot="header-middle">{{ level.name.toUpperCase() }}</h1>
-			<div class="goals placeholder" slot="main-left">
+			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
+			<h1 v-else slot="header-middle" class="title">{{ level.name.toUpperCase() }}</h1>
+			<div slot="main-left" class="goals placeholder">
 				<h3 class="title">GOALS:<br />⬇ ️ ⬇ ️ ⬇️</h3>
 			</div>
 			<section slot="main-middle">
@@ -19,18 +19,18 @@
 				<q-button inline @click.native="createNexFrame">create a frame</q-button>
 				<simulation-steps-display :frames="frames" />
 			</section>
-		<section slot="main-right">
-			<div class="toolbox placeholder">
-				<h3 class="title">here's the toolbox!<br />⬇ ️ ⬇ ️ ⬇️</h3>
-			</div>
-			<!-- <toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" /> -->
-			<div class="explanation placeholder" >
-				<h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3>
-				<div class="discription">
-					<span>element: {{ activeElement }}</span>
+			<section slot="main-right">
+				<div class="toolbox placeholder">
+					<h3 class="title">here's the toolbox!<br />⬇ ️ ⬇ ️ ⬇️</h3>
 				</div>
-			</div>
-		</section>
+				<!-- <toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" /> -->
+				<div class="explanation placeholder">
+					<h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3>
+					<div class="discription">
+						<span>element: {{ activeElement }}</span>
+					</div>
+				</div>
+			</section>
 		</game-layout>
 	</div>
 </template>

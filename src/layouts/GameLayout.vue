@@ -1,12 +1,11 @@
 <template>
 	<div class="game-layout">
-
 		<!-- games header: menu and level name -->
 		<header>
 			<div class="left">
 				<q-menu />
 			</div>
-			<div class="middle" v-if="this.$slots['header-middle']">
+			<div class="middle">
 				<slot name="header-middle"></slot>
 			</div>
 			<div class="right">
@@ -65,7 +64,5 @@ footer {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
-
 }
-
 </style>
