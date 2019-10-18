@@ -48,6 +48,10 @@ export default class SimulationStepsDisplay extends Vue {
 	displayedFrameNumber: number = 0;
 	width: number = 0;
 
+	$refs!: {
+		wrapper: HTMLElement;
+	};
+
 	mounted() {
 		this.getElementWidth();
 	}

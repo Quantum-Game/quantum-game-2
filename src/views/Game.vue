@@ -38,7 +38,8 @@ import GameLayout from '../layouts/GameLayout.vue';
 import { ICell, ICoord, FrameInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
-import { Goals, Explanation, Toolbox, Controls, Piece, Tile, YourPhoton } from '../game';
+import { Piece, Tile } from '../game';
+import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 
 @Component({
 	components: {
