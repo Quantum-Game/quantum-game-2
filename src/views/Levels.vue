@@ -10,12 +10,11 @@ import Vue from 'vue';
 
 export default Vue.extend({
 	name: 'Levels',
-	components: {
-	},
+	components: {},
 	data() {
 		return {
 			levelList: []
 		};
-	},
+	}
 });
 </script>

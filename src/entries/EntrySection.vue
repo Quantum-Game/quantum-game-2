@@ -1,54 +1,53 @@
 <template>
- <section class="entry-section">
-  <h2
-   :class="{ 'entry-title': true, active: isOpen }"
-   @click="handleTitleClick"
-  >{{ section.title.toUpperCase() }}</h2>
-  <div ref="contentWrapper" class="content-wrapper" :style="style">
-   <div class="content" v-html="section.content" />
-   <img v-for="image in section.pics" :key="image" :src="imageUrl(image)" />
-  </div>
- </section>
+	<section class="entry-section">
+		<h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
+			{{ section.title.toUpperCase() }}
+		</h2>
+		<div ref="contentWrapper" class="content-wrapper" :style="style">
+			<div class="content" v-html="section.content" />
+			<img v-for="image in section.pics" :key="image" :src="imageUrl(image)" />
+		</div>
+	</section>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 export interface ISection {
- title: string;
- content?: string;
- pics?: Array<string>;
+	title: string;
+	content?: string;
+	pics?: Array<string>;
 }
 
 @Component
 export default class EntrySection extends Vue {
- @Prop() readonly section!: ISection;
- @Prop() readonly shouldBeOpenOnInit!: boolean;
+	@Prop() readonly section!: ISection;
+	@Prop() readonly shouldBeOpenOnInit!: boolean;
 
- $refs!: {
-  contentWrapper: HTMLElement;
- };
+	$refs!: {
+		contentWrapper: HTMLElement;
+	};
 
- isOpen: boolean = false;
+	isOpen: boolean = false;
 
- // hack, as having a computed property that's using refs
- // as an initial data property causes errors - refs are
- // not existant then.
- mounted() {
-  this.isOpen = this.shouldBeOpenOnInit;
- }
+	// hack, as having a computed property that's using refs
+	// as an initial data property causes errors - refs are
+	// not existant then.
+	mounted() {
+		this.isOpen = this.shouldBeOpenOnInit;
+	}
 
- handleTitleClick(e: { target: Element }) {
-  this.isOpen = !this.isOpen;
- }
+	handleTitleClick(e: { target: Element }) {
+		this.isOpen = !this.isOpen;
+	}
 
- get style() {
-  return {
-   maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
-  };
- }
+	get style() {
+		return {
+			maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
+		};
+	}
 
- /* eslint-disable */
+	/* eslint-disable */
  imageUrl(imageString: string) {
   const images = require.context('../assets');
   return images(`./${imageString}`);
