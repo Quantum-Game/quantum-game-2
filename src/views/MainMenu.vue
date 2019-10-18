@@ -10,7 +10,7 @@
 		<!-- <pre>// These do not lead anywhere yet</pre>
 		<resource goto="level/0" label="Play" />
 		<resource goto="info" label="Encyclopedia" /> -->
-		<h1>Visit us on Twitter, Facebook, Github and Medium.</h1>
+		<h1>Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitterl</a>, Facebook, Github and Medium.</h1>
 	</div>
 	<div class="image">
 		<img src="@/assets/rock.svg" alt="rock">
@@ -40,6 +40,7 @@ export default class MainMenu extends Vue {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background-color: #2e006a;
 }
 h1 {
 	color: white;
