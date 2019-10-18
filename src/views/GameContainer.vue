@@ -99,6 +99,7 @@ export default class GameContainer extends Vue {
 		const nextFrame: FrameInterface = lastFrameCopy.next();
 		this.frames.push(nextFrame);
 	}
+
 	loadALevel() {
 		this.error = '';
 		// See if there's such level:
@@ -111,6 +112,7 @@ export default class GameContainer extends Vue {
 		this.level = levelToLoad;
 		return true;
 	}
+
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
 	}

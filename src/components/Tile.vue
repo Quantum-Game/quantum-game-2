@@ -1,5 +1,5 @@
 <template>
-	<div class="tile">
+	<div class="tile" @onclick="rotate">
 		<svg :class="calculatedClass" :style="calculatedStyle"/>
 	</div>
 </template>
@@ -21,7 +21,6 @@ export default class Tile extends Vue {
 				active: this.cell.active
 			};
 		}
-
 		return classObj;
 	}
 
@@ -30,10 +29,14 @@ export default class Tile extends Vue {
 		if (this.cell.element) {
 			styleObj = {
 				backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})`,
-				transform: `rotate(${this.cell.rotation}deg)`
+				transform: `rotate(-${this.cell.rotation}deg)`
 			};	// eslint-disable-line
 		}
 		return styleObj;
+	}
+
+	rotate() {
+		this.cell.rotation = (this.cell.rotation + 45) % 360
 	}
 }
 </script>
@@ -59,13 +62,13 @@ export default class Tile extends Vue {
 	}
 
 	&.rotate0 svg   { transform: rotate(0deg); }
-	&.rotate45 svg  { transform: rotate(45deg); }
-	&.rotate90 svg  { transform: rotate(90deg); }
-	&.rotate135 svg { transform: rotate(135deg); }
-	&.rotate180 svg { transform: rotate(180deg); }
-	&.rotate225 svg { transform: rotate(225deg); }
-	&.rotate270 svg { transform: rotate(270deg); }
-	&.rotate315 svg { transform: rotate(315deg); }
+	&.rotate45 svg  { transform: rotate(-45deg); }
+	&.rotate90 svg  { transform: rotate(-90deg); }
+	&.rotate135 svg { transform: rotate(-135deg); }
+	&.rotate180 svg { transform: rotate(-180deg); }
+	&.rotate225 svg { transform: rotate(-225deg); }
+	&.rotate270 svg { transform: rotate(-270deg); }
+	&.rotate315 svg { transform: rotate(-315deg); }
 
 	&.element {
 		background-repeat: no-repeat;

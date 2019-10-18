@@ -2,18 +2,18 @@
 	<section>
 		<h2>This is a levels' map</h2>
 		<pre>// Example routing</pre>
-		<resource-container type="level" :items="levelList" />
+		<!-- <resource-container type="level" :items="levelList" /> -->
 	</section>
 </template>
 
 <script>
 import Vue from 'vue';
-import ResourceContainer from '@/components/ResourceContainer.vue';
+// import ResourceContainer from '@/components/ResourceContainer.vue';
 
 export default Vue.extend({
 	name: 'Levels',
 	components: {
-		ResourceContainer
+		// ResourceContainer
 	},
 	data() {
 		return {

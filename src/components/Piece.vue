@@ -1,66 +1,59 @@
 <template>
-	<div class="piece-wrapper">
-		<component :is="element" :class="element" />
-	</div>
+ <div class="piece-wrapper">
+  <component :is="element" :class="element" />
+ </div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import {
-	Absorber,
-	BeamSplitter,
-	Bomb,
-	CoatedBeamSplitter,
-	Detector,
 	Laser,
-	GlassSlab,
 	Mirror,
-	OmniDetector,
-	PolarizerV,
-	Polarizer45,
-	PolarizerH,
-	Polarizer135,
+	BeamSplitter,
 	PolarizingBeamSplitter,
+	CoatedBeamSplitter,
+	CornerCube,
+	Detector,
 	Rock,
+	Mine,
+	Absorber,
+	DetectorFour,
+	Polarizer,
+	QuarterWavePlate,
 	SugarSolution,
+	FaradayRotator,
+	Glass,
 	VacuumJar,
-	WavePlateV,
-	WavePlate45,
-	WavePlateH,
-	WavePlate135
 } from './pieces';
 
 @Component({
 	components: {
-		Absorber,
-		BeamSplitter,
-		Bomb,
-		CoatedBeamSplitter,
-		Detector,
 		Laser,
-		GlassSlab,
 		Mirror,
-		OmniDetector,
-		PolarizerV,
-		Polarizer45,
-		PolarizerH,
-		Polarizer135,
+		BeamSplitter,
 		PolarizingBeamSplitter,
+		CoatedBeamSplitter,
+		CornerCube,
+		Detector,
 		Rock,
+		Mine,
+		Absorber,
+		DetectorFour,
+		Polarizer,
+		QuarterWavePlate,
 		SugarSolution,
-		VacuumJar,
-		WavePlateV,
-		WavePlate45,
-		WavePlateH,
-		WavePlate135
+		FaradayRotator,
+		Glass,
+		VacuumJar
 	}
 })
 export default class Piece extends Vue {
 	@Prop() readonly cell!: {
 		element: string;
-		frozen: boolean;
 		x: number;
 		y: number;
+		active: boolean;
+		frozen: boolean;
 		rotation: number;
 	};
 
@@ -128,12 +121,12 @@ export default class Piece extends Vue {
 
 <style lang="scss">
 .piece-wrapper {
-	height: 100%;
-	width: 100%;
+ height: 100%;
+ width: 100%;
 
-	// Animation class?
-	svg {
-		transition: 0.5s;
-	}
+ // Animation class?
+ svg {
+  transition: 0.5s;
+ }
 }
 </style>
