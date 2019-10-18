@@ -110,6 +110,7 @@ export default class Menu extends Vue {
 		a {
 			color: white;
 			text-decoration: none;
+			text-align: center;
 			&:hover {
 				color: white;
 				font-weight: bold;

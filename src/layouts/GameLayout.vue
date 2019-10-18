@@ -18,7 +18,9 @@
 			<aside class="left">
 				<slot name="main-left"></slot>
 			</aside>
-			<slot name="main-middle"></slot>
+			<article class="middle">	
+				<slot name="main-middle"></slot>
+			</article>
 			<aside class="right">
 				<slot name="main-right"></slot>
 			</aside>
@@ -45,6 +47,7 @@ export default class GameLayout extends Vue {}
 
 <style lang="scss">
 .game-layout {
+	width: 1400px;
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
@@ -64,5 +67,9 @@ footer {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+}
+
+.middle {
+	width: 65%;
 }
 </style>
