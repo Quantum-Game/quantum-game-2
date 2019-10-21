@@ -94,7 +94,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([this.margin, this.height - this.margin]);
+			.range([0, this.height]);
 	}
 	/**
 	 * Get magnetic scaling
@@ -103,7 +103,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([1, 3]);
+			.range([0.5, 3]);
 	}
 	/**
 	 * Get electric scaling

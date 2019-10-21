@@ -38,20 +38,20 @@ export default class Goals extends Vue {
 	}
 
 	&.explanation {
-		background-color: rgba(0, 225, 255, 0.349);
+		//background-color: rgba(0, 225, 255, 0.349);
 	}
 
 	&.toolbox {
-		background-color: rgba(255, 187, 0, 0.349);
+		//background-color: rgba(255, 187, 0, 0.349);
 	}
 
 	&.goals {
-		background-color: rgba(255, 0, 85, 0.349);
+		//background-color: rgba(255, 0, 85, 0.349);
 		height: 400px;
 	}
 
 	&.controls {
-		background-color: rgba(179, 255, 0, 0.349);
+		//background-color: rgba(179, 255, 0, 0.349);
 		height: 100px;
 	}
 }

@@ -74,13 +74,9 @@ export default class SimulationStepsDisplay extends Vue {
 
 <style lang="scss" scoped>
 .simulation-steps-display-wrapper {
+	border-top: 1px solid white;
 	width: 100%;
 	display: block;
 	text-align: left;
-	& .controls {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-	}
 }
 </style>

@@ -4,11 +4,11 @@
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
-					<q-button>Prev Level</q-button>
+					<q-button>+</q-button>
 				</router-link>
 				{{ level.name.toUpperCase() }}
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
-					<q-button>Next Level</q-button>
+					<q-button>+</q-button>
 				</router-link>
 			</h1>
 			<Goals slot="main-left" />
@@ -41,7 +41,7 @@
 				</controls>
 			</section>
 			<section slot="main-right">
-				<toolbox />
+				<toolbox :tools="toolbox" />
 				<explanation>
 					<div class="description">
 						<span>element: {{ activeElement }}</span>
@@ -102,6 +102,7 @@ export default class Game extends Vue {
 	activeElement = '';
 	frames: FrameInterface[] = [];
 	frameNumber: number = 0;
+	toolbox = [];
 
 	// LIFECYCLE
 	created() {
@@ -124,6 +125,7 @@ export default class Game extends Vue {
 			return false;
 		}
 		this.level = levelToLoad;
+		this.getToolboxElements();
 		this.setupInitFrame();
 		this.createFrames();
 		return true;
@@ -215,6 +217,11 @@ export default class Game extends Vue {
 		return [];
 	}
 
+	getToolboxElements() {
+		this.toolbox = [];
+		this.toolbox = this.level.grid.cells.filter((x) => !x.frozen);
+	}
+
 	// GETTERS
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
@@ -251,7 +258,7 @@ export default class Game extends Vue {
 		flex-direction: row;
 		& .tile {
 			// background-color: rgba(0, 98, 255, 0.294);
-			background-color: #280066;
+			//background-color: #280066;
 			width: 64px;
 			min-height: 64px;
 			position: relative;
@@ -259,9 +266,9 @@ export default class Game extends Vue {
 			flex-direction: column;
 			justify-content: center;
 			color: white;
-			font-size: 1.3rem;
+			font-size: 1rem;
 			&:hover {
-				background-color: purple;
+				//background-color: purple;
 				color: black;
 			}
 		}

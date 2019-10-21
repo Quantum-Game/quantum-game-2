@@ -53,17 +53,31 @@ export default class GameLayout extends Vue {}
 	flex-direction: column;
 	color: white;
 	width: 100%;
+	align-items: center;
 }
-
+.middle {
+	padding: 20px;
+	align-content: center;
+	width: 65%;
+}
 .left,
 .right {
 	height: auto;
 	width: 16%;
 }
 
+header {
+	width: 1400px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding: none;
+}
+
 main,
-header,
+//header,
 footer {
+	width: 1400px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -76,17 +90,21 @@ footer {
 		margin: 0;
 	}
 	&.explanation {
-		background-color: rgba(0, 225, 255, 0.349);
+		border-top: 1px solid white;
+		//background-color: rgba(0, 225, 255, 0.349);
 	}
 	&.toolbox {
-		background-color: rgba(255, 187, 0, 0.349);
+		border-top: 1px solid white;
+		//background-color: rgba(255, 187, 0, 0.349);
 	}
 	&.goals {
-		background-color: rgba(255, 0, 85, 0.349);
+		border-top: 1px solid white;
+		//background-color: rgba(255, 0, 85, 0.349);
 		height: 400px;
 	}
 	&.controls {
-		background-color: rgba(179, 255, 0, 0.349);
+		//background-color: rgba(179, 255, 0, 0.349);
+		border-top: 1px solid white;
 		height: 100px;
 	}
 }
