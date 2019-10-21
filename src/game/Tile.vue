@@ -15,6 +15,7 @@
 				:margin="0"
 				:display-magnetic="true"
 				:display-electric="false"
+				:display-gaussian="false"
 			/>
 		</div>
 	</div>
