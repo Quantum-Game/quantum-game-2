@@ -1,6 +1,6 @@
 <template>
 	<main-layout>
-		<div slot="left">
+		<div slot="left" class="element-list">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
 			<router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
 				<div>{{ entry }}</div>
@@ -52,5 +52,15 @@ export default class Info extends Vue {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	text-align: left;
+	color: white;
+	text-decoration: none;
+}
+
+.element-list {
+	a {
+		color: white;
+		text-decoration: none;
+		line-height: 200%;
+	}
 }
 </style>

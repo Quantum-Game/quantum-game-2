@@ -57,51 +57,57 @@ export default class EntrySection extends Vue {
 
 <style lang="scss" scoped>
 section.entry-section {
- border-bottom: 1px solid #8e819d;
- & .entry-title {
-  padding: 1em 0;
-  font-size: 1em;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.4s;
-  margin: 0;
-  font-weight: bold;
-  text-align: justify;
-  &:after {
-   display: inline-block;
-   position: relative;
-   content: '';
-   left: 12px;
-   height: 0;
-   border-left: 6px solid #e8e8e8;
-   border-bottom: 6px solid transparent;
-   border-top: 6px solid transparent;
-   clear: both;
-   transition: 0.4s;
-  }
-  &.active:after {
-   transform: rotate(90deg);
-   transition: 0.4s;
-  }
- }
- & p {
-  line-height: 2em;
-  text-align: left;
-  & a {
-   color: #ff0055;
-  }
- }
-
- & .content-wrapper {
-  font-weight: lighter;
-  font-size: 1rem;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  line-height: 1.3rem;
-  letter-spacing: 1px;
- }
+	border-bottom: 1px solid #8e819d;
+	& .entry-title {
+		padding: 1em 0;
+		font-size: 1em;
+		font-weight: bold;
+		cursor: pointer;
+		transition: 0.4s;
+		margin: 0;
+		font-weight: bold;
+		text-align: justify;
+		&:after {
+			display: inline-block;
+			position: relative;
+			content: '';
+			left: 12px;
+			height: 0;
+			border-left: 6px solid #e8e8e8;
+			border-bottom: 6px solid transparent;
+			border-top: 6px solid transparent;
+			clear: both;
+			transition: 0.4s;
+		}
+	}
+	&.active:after {
+			transform: rotate(90deg);
+			transition: 0.4s;
+	}
+	& .content-wrapper {
+		font-weight: lighter;
+		font-size: 1rem;
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.2s ease-out;
+		line-height: 1.3rem;
+		letter-spacing: 1px;
+		text-align: left;
+		line-height: 1.5em;
+		& div.content {
+			color: white;
+			& p {
+				color: white;
+				& a.link {
+					color: white;
+					text-decoration: none;
+				}
+			}
+		}
+	}
 }
+
+
 
 // TEXT STYLING:
 // key words and phrases

@@ -1,6 +1,6 @@
 <template>
 	<div class="controls placeholder">
-		<h3 class="title">controls<br />⬇ ️ ⬇ ️ ⬇️</h3>
+		<!-- <h3 class="title">controls<br />⬇ ️ ⬇ ️ ⬇️</h3> -->
 		<slot></slot>
 	</div>
 </template>
@@ -21,7 +21,7 @@ export default class Controls extends Vue {}
 	}
 
 	&.controls {
-		background-color: rgba(179, 255, 0, 0.349);
+		//background-color: rgba(179, 255, 0, 0.349);
 		height: 100px;
 		min-height: 200px;
 	}

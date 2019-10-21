@@ -15,6 +15,8 @@
 				:margin="0"
 				:display-magnetic="true"
 				:display-electric="false"
+				:display-gaussian="false"
+				:sigma="0.25"
 			/>
 		</div>
 	</div>
@@ -74,7 +76,7 @@ export default class Tile extends Vue {
 	color: white;
 	font-size: 1.3rem;
 	&:hover {
-		background-color: yellow;
+		background-color: rgba(255, 255, 255, 0.1);
 		color: black;
 	}
 	svg {

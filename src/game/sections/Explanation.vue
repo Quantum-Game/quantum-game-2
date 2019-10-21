@@ -1,6 +1,6 @@
 +<template>
 	<div class="explanation placeholder">
-		<h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3>
+		<!-- <h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3> -->
 		<slot></slot>
 	</div>
 </template>
@@ -21,7 +21,7 @@ export default class Explanation extends Vue {}
 	}
 
 	&.explanation {
-		background-color: rgba(0, 225, 255, 0.349);
+		//background-color: rgba(0, 225, 255, 0.349);
 	}
 }
 </style>

@@ -55,8 +55,8 @@ export default class Menu extends Vue {
 .menu-icon {
 	display: block;
 	position: absolute;
-	top: 10px;
-	left: 10px;
+	top: 20px;
+	left: 20px;
 	cursor: pointer;
 	z-index: 2;
 	&.open {
@@ -98,6 +98,8 @@ export default class Menu extends Vue {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	align-items: center;
+	text-align: center;
 	cursor: unset;
 	& menu {
 		display: flex;

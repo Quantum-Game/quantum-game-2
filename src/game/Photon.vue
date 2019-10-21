@@ -90,7 +90,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([this.margin, this.height - this.margin]);
+			.range([0, this.height]);
 	}
 	/**
 	 * Get magnetic scaling
@@ -99,7 +99,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([1, 3]);
+			.range([0.5, 3]);
 	}
 	/**
 	 * Get electric scaling
@@ -116,7 +116,7 @@ export default class Photon extends Vue {
 	 * @returns a range of steps
 	 */
 	get zs(): number[] {
-		return d3.range(-1, 1, 1 / (this.width * 2));
+		return d3.range(-1, 1, 1 / (this.width * 3));
 	}
 	eColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
 	mColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
