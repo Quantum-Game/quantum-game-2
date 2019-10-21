@@ -26,6 +26,7 @@
 							:key="x"
 							:cell="isTherePiece(y, x)"
 							:particles="isTherePhotons(y, x)"
+							:lasers="isThereLasers(y, x)"
 						></tile>
 					</div>
 				</div>
@@ -54,7 +55,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Level, Frame, Particle } from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
-import { ICell, ICoord, FrameInterface } from '@/types';
+import { ICell, ICoord, FrameInterface, ParticleInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
@@ -98,6 +99,7 @@ export default class Game extends Vue {
 	activeElement = '';
 	frames: FrameInterface[] = [];
 	frameNumber: number = 0;
+	lasers = []
 
 	// LIFECYCLE
 	created() {
@@ -128,14 +130,17 @@ export default class Game extends Vue {
 	setupInitFrame() {
 		this.frames = [];
 		this.frameNumber = 0;
-		const levelWhatever = Level.importLevel(this.level);
-		const initFrame = new Frame(levelWhatever);
+		const loadedLevel = Level.importLevel(this.level);
+		this.lasers = loadedLevel.grid.computePaths();
+		console.log("LASERS: " + this.lasers.length);
+
+		const initFrame = new Frame(loadedLevel);
 		const firstFrame: FrameInterface = initFrame.next();
 		this.frames.push(firstFrame);
 	}
 
 	// FRAME CONTROL
-	createFrames(number = 20) {
+	createFrames(number = 10) {
 		for (let index = 0; index < number; index += 1) {
 			const lastFrameCopy = cloneDeep(this.lastFrame);
 			const nextFrame: FrameInterface = lastFrameCopy.next();
@@ -211,6 +216,13 @@ export default class Game extends Vue {
 		return [];
 	}
 
+	isThereLasers(y: number, x: number) {
+		if (this.levelLoaded) {
+			return this.lasers.filter((particle: any) => particle.coord.x === x && particle.coord.y === y);
+		}
+		return [];
+	}
+
 	// GETTERS
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
@@ -259,6 +271,9 @@ export default class Game extends Vue {
 			&:hover {
 				background-color: purple;
 				color: black;
+			}
+			& .laser {
+				background-color: red;
 			}
 		}
 	}
