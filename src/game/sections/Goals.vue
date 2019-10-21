@@ -1,14 +1,33 @@
 <template>
-	<div class="goals placeholder">
+	<div class="goals placeholder" ref="goals">
 		<h3 class="title">GOALS:<br />⬇ ️ ⬇ ️ ⬇️</h3>
+		<doughnut-chart :percent="percent">Basic donut</doughnut-chart>
 	</div>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import DoughnutChart from 'vue-doughnut-chart'
 
-@Component
-export default class Goals extends Vue {}
+
+@Component({
+	components: {
+		DoughnutChart
+	}
+})
+export default class Goals extends Vue {
+	// @Prop() readonly detectors
+	percent = 10
+	width = 100
+
+	mounted() {
+		this.width = this.componentWidth();
+	}
+
+	get componentWidth() {
+		return this.$refs.goals.clientWidth
+	}
+}
 </script>
 
 <style lang="scss" scoped>

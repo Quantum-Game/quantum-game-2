@@ -10529,6 +10529,11 @@ vue-class-component@^7.1.0:
   resolved "https://registry.npmjs.org/vue-class-component/-/vue-class-component-7.1.0.tgz#b33efcb10e17236d684f70b1e96f1946ec793e87"
   integrity sha512-G9152NzUkz0i0xTfhk0Afc8vzdXxDR1pfN4dTwE72cskkgJtdXfrKBkMfGvDuxUh35U500g5Ve4xL8PEGdWeHg==
 
+vue-doughnut-chart@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/vue-doughnut-chart/-/vue-doughnut-chart-0.1.0.tgz#df51333b30e7ceab25ddca68e02dfd5409930103"
+  integrity sha512-8cegjZYJbVhHY5XAas1vEgHNm+4aU7kXJsbpsaiNr/sNLu6wuCuaKrWi3gm3Ag3LW9KDDGT8bfyTd6p9sA+CMw==
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"

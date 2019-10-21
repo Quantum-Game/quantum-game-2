@@ -14,7 +14,7 @@
 			<Goals slot="main-left" />
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
-				<li v-for="(stuff, i) in Array(34)" :key="i">
+				<li v-for="(stuff, i) in Array(20)" :key="i">
 					<router-link class="level" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
 				</li>
 			</ul>
