@@ -64,7 +64,6 @@ export default class Piece extends Vue {
 	get element() {
 		return this.cell.element;
 	}
-
 }
 </script>
 

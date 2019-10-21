@@ -2,7 +2,12 @@
 	<div class="tile" @onclick="rotate">
 		<svg :class="calculatedClass" :style="calculatedStyle" />
 
-		<div v-for="(particle, index) in particles" :key="index" :v-if="particles.length > 0" class="photons">
+		<div
+			v-for="(particle, index) in particles"
+			:key="index"
+			:v-if="particles.length > 0"
+			class="photons"
+		>
 			<photon
 				name
 				:are="particle.a.re"

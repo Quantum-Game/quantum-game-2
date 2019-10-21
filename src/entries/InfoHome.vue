@@ -5,7 +5,9 @@
 		<h1>Welcome to the encyclopedia!</h1>
 		<img src="@/assets/placeholder_encyclopedia.svg" alt="placeholder" />
 		<div class="entries">
-			<router-link to="/info/beam-splitter"> <q-button type="basic"> 50-50 BEAM SPLITTER</q-button></router-link>
+			<router-link to="/info/beam-splitter">
+				<q-button type="basic"> 50-50 BEAM SPLITTER</q-button></router-link
+			>
 			<br />
 			<router-link to="/info/mirror"><q-button type="basic"> MIRROR</q-button></router-link>
 		</div>

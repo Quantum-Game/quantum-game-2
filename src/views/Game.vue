@@ -30,8 +30,12 @@
 					</div>
 				</div>
 				<controls>
-					<q-button :style="{ margin: '10px' }" @click.native="createFrames">create frames</q-button>
-					<q-button :style="{ margin: '10px' }" @click.native="showPrevious">show previous frame</q-button>
+					<q-button :style="{ margin: '10px' }" @click.native="createFrames"
+						>create frames</q-button
+					>
+					<q-button :style="{ margin: '10px' }" @click.native="showPrevious"
+						>show previous frame</q-button
+					>
 					<q-button :style="{ margin: '10px' }" @click.native="showNext">show next frame</q-button>
 					<h3>Total frames: {{ frames.length }}</h3>
 				</controls>

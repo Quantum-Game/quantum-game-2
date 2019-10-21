@@ -18,7 +18,7 @@
 			<aside class="left">
 				<slot name="main-left"></slot>
 			</aside>
-			<article class="middle">	
+			<article class="middle">
 				<slot name="main-middle"></slot>
 			</article>
 			<aside class="right">
