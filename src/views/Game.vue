@@ -4,17 +4,17 @@
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
-					<q-button>Prev Level</q-button>
+					<q-button>+</q-button>
 				</router-link>
 				{{ level.name.toUpperCase() }}
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
-					<q-button>Next Level</q-button>
+					<q-button>+</q-button>
 				</router-link>
 			</h1>
 			<Goals slot="main-left" />
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
-				<li v-for="(stuff, i) in Array(34)" :key="i">
+				<li v-for="(stuff, i) in Array(20)" :key="i">
 					<router-link class="level" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
 				</li>
 			</ul>
@@ -31,14 +31,18 @@
 					</div>
 				</div>
 				<controls>
-					<q-button :style="{ margin: '10px' }" @click.native="createFrames">create frames</q-button>
-					<q-button :style="{ margin: '10px' }" @click.native="showPrevious">show previous frame</q-button>
+					<q-button :style="{ margin: '10px' }" @click.native="createFrames"
+						>create frames</q-button
+					>
+					<q-button :style="{ margin: '10px' }" @click.native="showPrevious"
+						>show previous frame</q-button
+					>
 					<q-button :style="{ margin: '10px' }" @click.native="showNext">show next frame</q-button>
 					<h3>Total frames: {{ frames.length }}</h3>
 				</controls>
 			</section>
 			<section slot="main-right">
-				<toolbox />
+				<toolbox :tools="toolbox" />
 				<explanation>
 					<div class="description">
 						<span>element: {{ activeElement }}</span>
@@ -100,6 +104,7 @@ export default class Game extends Vue {
 	frames: FrameInterface[] = [];
 	frameNumber: number = 0;
 	lasers = []
+	toolbox = [];
 
 	// LIFECYCLE
 	created() {
@@ -122,6 +127,7 @@ export default class Game extends Vue {
 			return false;
 		}
 		this.level = levelToLoad;
+		this.getToolboxElements();
 		this.setupInitFrame();
 		this.createFrames();
 		return true;
@@ -223,6 +229,11 @@ export default class Game extends Vue {
 		return [];
 	}
 
+	getToolboxElements() {
+		this.toolbox = [];
+		this.toolbox = this.level.grid.cells.filter((x) => !x.frozen);
+	}
+
 	// GETTERS
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
@@ -259,7 +270,7 @@ export default class Game extends Vue {
 		flex-direction: row;
 		& .tile {
 			// background-color: rgba(0, 98, 255, 0.294);
-			background-color: #280066;
+			//background-color: #280066;
 			width: 64px;
 			min-height: 64px;
 			position: relative;
@@ -267,9 +278,9 @@ export default class Game extends Vue {
 			flex-direction: column;
 			justify-content: center;
 			color: white;
-			font-size: 1.3rem;
+			font-size: 1rem;
 			&:hover {
-				background-color: purple;
+				//background-color: purple;
 				color: black;
 			}
 			& .laser {

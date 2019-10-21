@@ -1,5 +1,9 @@
 <template>
-	<svg :class="`photon rotation${direction}`" :width="width + 2 * margin" :height="height + 2 * margin">
+	<svg
+		:class="`photon rotation${direction}`"
+		:width="width + 2 * margin"
+		:height="height + 2 * margin"
+	>
 		<g v-if="displayElectric" class="electric">
 			<circle
 				v-for="(z, index) in zs"
@@ -90,7 +94,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([this.margin, this.height - this.margin]);
+			.range([0, this.height]);
 	}
 	/**
 	 * Get magnetic scaling
@@ -99,7 +103,7 @@ export default class Photon extends Vue {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
-			.range([1, 3]);
+			.range([0.5, 3]);
 	}
 	/**
 	 * Get electric scaling

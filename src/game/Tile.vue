@@ -2,28 +2,29 @@
   <div class="tile" :class="laser" @onclick="rotate">
     <svg :class="calculatedClass" :style="calculatedStyle" />
 
-    <div
-      v-for="(particle, index) in particles"
-      :key="index"
-      :v-if="particles.length > 0"
-      class="photons"
-    >
-      <photon
-        name
-        :are="particle.a.re"
-        :aim="particle.a.im"
-        :bre="particle.b.re"
-        :bim="particle.b.im"
-        :direction="particle.direction"
-        :width="64"
-        :height="64"
-        :margin="0"
-        :display-magnetic="true"
-        :display-electric="false"
-        :display-gaussian="false"
-      />
-    </div>
-  </div>
+		<div
+			v-for="(particle, index) in particles"
+			:key="index"
+			:v-if="particles.length > 0"
+			class="photons"
+		>
+			<photon
+				name
+				:are="particle.a.re"
+				:aim="particle.a.im"
+				:bre="particle.b.re"
+				:bim="particle.b.im"
+				:direction="particle.direction"
+				:width="64"
+				:height="64"
+				:margin="0"
+				:display-magnetic="true"
+				:display-electric="false"
+				:display-gaussian="false"
+				:sigma="0.25"
+			/>
+		</div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -78,22 +79,22 @@ export default class Tile extends Vue {
 
 <style lang="scss">
 .tile {
-  width: 64px;
-  height: 64px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: white;
-  font-size: 1.3rem;
-  &:hover {
-    background-color: yellow;
-    color: black;
-  }
-  svg {
-    width: 64px;
-    height: 64px;
-  }
+	width: 64px;
+	height: 64px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	color: white;
+	font-size: 1.3rem;
+	&:hover {
+		background-color: rgba(255, 255, 255, 0.1);
+		color: black;
+	}
+	svg {
+		width: 64px;
+		height: 64px;
+	}
 
 	&.laser {
 		background-color: red;

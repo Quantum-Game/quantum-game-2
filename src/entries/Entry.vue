@@ -91,6 +91,10 @@ export default class Entry extends Vue {
 		text-decoration: none;
 		color: white;
 	}
+	& p {
+		line-height: 2em;
+		text-align: left;
+	}
 }
 
 h1 {

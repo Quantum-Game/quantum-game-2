@@ -42,6 +42,9 @@ export default class MainLayout extends Vue {}
 		&.right {
 			width: 16%;
 			padding: 50px 0 0 0;
+			text-transform: uppercase;
+			text-align: left;
+			color: white;
 		}
 	}
 }
