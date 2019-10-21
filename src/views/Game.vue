@@ -39,7 +39,7 @@
 			<section slot="main-right">
 				<toolbox />
 				<explanation>
-					<div class="discription">
+					<div class="description">
 						<span>element: {{ activeElement }}</span>
 					</div>
 				</explanation>

@@ -116,7 +116,7 @@ export default class Photon extends Vue {
 	 * @returns a range of steps
 	 */
 	get zs(): number[] {
-		return d3.range(-1, 1, 1 / (this.width * 2));
+		return d3.range(-1, 1, 1 / (this.width * 3));
 	}
 	eColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
 	mColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
