@@ -7,16 +7,11 @@ Quantum Game 2 from CQT
 ## TODO:
 
 ### GAME:
-- [x] Level Changing Buttons on top (for devving)
-- [x] clean up
-- [ ] RESETTING FUNCTION
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
 
 ### GOALS METER
-- [ ] implement the donut
-- [ ] set up Goals props
 
 ### EXPLANATION
 - [ ] set up Exmplanation prop
@@ -24,8 +19,6 @@ Quantum Game 2 from CQT
 ### LEVELS VIEW
 
 ### CONTROLS
-- [ ] General CntrlBtn Component
-- [ ] set up variants
 - [ ] set up Controls props
 
 ### TRAY
@@ -84,3 +77,15 @@ Quantum Game 2 from CQT
 - [x] create a component placeholder for tools
 - [x] get rid of conflicting prettier configs, editorconfig
 - [x] scope styles across the app
+
+
+21.10
+- [x] Level Changing Buttons on top (for devving)
+- [x] clean up
+- [x] RESETTING FUNCTION
+- [x] implement the donut
+- [x] set up Goals props
+- [x] General CntrlBtn Component
+- [x] set up variants
+- [x] start adding handlers
+- [x] prepare tray

@@ -1,23 +1,43 @@
 <template>
-	<div ref="goals" class="goals placeholder">
-		<h3 class="title">GOALS:<br />⬇ ️ ⬇ ️ ⬇️</h3>
-		<doughnut-chart :percent="percent" :width="width">Basic donut</doughnut-chart>
+	<div ref="goals" class="goals-wrapper">
+		<div class="upper-icons">
+			<span>Key Icon</span>
+			<span>Badge Icon</span>
+		</div>
+		<vc-donut
+			class="chart"
+			background="#210235"
+			foreground="#12012480"
+			:size="200"
+			unit="px"
+			:thickness="10"
+			:sections="sections"
+			:total="100"
+			:start-angle="0"
+		>
+			<div class="inner-circle">{{ percentage }}%</div>
+			<div>SUCCESS</div>
+		</vc-donut>
+		<div class="bottom-icons">
+			<div>TWO DETECTOR ICONS</div>
+			<div>DETECTORS</div>
+		</div>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import DoughnutChart from 'vue-doughnut-chart';
 
 @Component({
-	components: {
-		DoughnutChart
-	}
+	components: {}
 })
 export default class Goals extends Vue {
-	// @Prop() readonly detectors
+	@Prop() readonly detectors!: number;
+	@Prop() readonly percentage!: number;
 	percent = 10;
 	width = 100;
+
+	sections = [{ value: this.percentage, color: 'red' }];
 
 	mounted() {
 		// this.width = this.componentWidth();
@@ -30,29 +50,22 @@ export default class Goals extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.placeholder {
+.goals-wrapper {
 	width: 100%;
-	height: 200px;
-	& h3 {
-		margin: 0;
+	height: 320px;
+	display: flex;
+	flex-direction: column;
+	& .upper-icons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-bottom: 2rem;
 	}
-
-	&.explanation {
-		//background-color: rgba(0, 225, 255, 0.349);
-	}
-
-	&.toolbox {
-		//background-color: rgba(255, 187, 0, 0.349);
-	}
-
-	&.goals {
-		//background-color: rgba(255, 0, 85, 0.349);
-		height: 400px;
-	}
-
-	&.controls {
-		//background-color: rgba(179, 255, 0, 0.349);
-		height: 100px;
+	& .chart {
+		& div.inner-circle {
+			font-size: 3rem;
+		}
+		margin-bottom: 2rem;
 	}
 }
 </style>

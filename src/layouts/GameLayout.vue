@@ -58,6 +58,7 @@ export default class GameLayout extends Vue {}
 .middle {
 	padding: 20px;
 	align-content: center;
+	justify-content: center;
 	width: 65%;
 }
 .left,
