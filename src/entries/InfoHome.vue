@@ -26,7 +26,9 @@ export default class InfoHome extends Vue {}
 
 <style lang="scss" scoped>
 a {
-	color: red;
+	color: white;
+	text-align: left;
+	text-decoration: none;
 }
 
 img {
