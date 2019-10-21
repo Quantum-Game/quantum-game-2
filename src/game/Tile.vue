@@ -1,5 +1,5 @@
 <template>
-  <div class="tile" :class="laser" @onclick="rotate">
+  <div class="tile" :class="laserLine" @onclick="rotate">
     <svg :class="calculatedClass" :style="calculatedStyle" />
 
 		<div
@@ -66,7 +66,7 @@ export default class Tile extends Vue {
   }
 
 	get laserLine() {
-		if (this.lasers.length > 0) {
+		if (this.lasers && this.lasers.length > 0) {
 			return "laser"
 		}
 	}
