@@ -9,7 +9,7 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 export default class QButton extends Vue {
 	@Prop() readonly hoverColor!: string;
 	@Prop({ default: 'basic' }) readonly type!: string;
-	@Prop({ default: false }) readonly inline!: boolean;
+	@Prop({ default: true }) readonly inline!: boolean;
 
 	get colorClass() {
 		return this.hoverColor;

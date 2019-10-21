@@ -7,10 +7,31 @@ Quantum Game 2 from CQT
 ## TODO:
 
 ### GAME:
+- [x] Level Changing Buttons on top (for devving)
+- [x] clean up
 - [ ] RESETTING FUNCTION
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
+
+### GOALS METER
+- [ ] implement the donut
+- [ ] set up Goals props
+
+### EXPLANATION
+- [ ] set up Exmplanation prop
+
+### LEVELS VIEW
+
+### CONTROLS
+- [ ] General CntrlBtn Component
+- [ ] set up variants
+- [ ] set up Controls props
+
+### TRAY
+
+### YOUR PHOTON(S)
+- [ ] Style it so it fits in
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images

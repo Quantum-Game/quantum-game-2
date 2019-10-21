@@ -2,9 +2,17 @@
 	<div class="game">
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
-			<h1 v-else slot="header-middle" class="title">{{ level.name.toUpperCase() }}</h1>
+			<h1 v-else slot="header-middle" class="title">
+				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
+					<q-button>Prev Level</q-button>
+				</router-link>
+				{{ level.name.toUpperCase() }}
+				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
+					<q-button>Next Level</q-button>
+				</router-link>
+			</h1>
 			<Goals slot="main-left" />
-			<h3 class="title" slot="main-left">LEVELS:</h3>
+			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
 				<li v-for="(stuff, i) in Array(20)" :key="i">
 					<router-link class="level" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
@@ -22,16 +30,13 @@
 					</div>
 				</div>
 				<controls>
-					<!-- <q-button inline @click.native="createNextFrame">create a frame</q-button> -->
-					<q-button inline @click.native="createFrames">create frames</q-button>
-					<q-button inline @click.native="showPrevious">show previous frame</q-button>
-					<q-button inline @click.native="showNext">show next frame</q-button>
+					<q-button :style="{ margin: '10px' }" @click.native="createFrames">create frames</q-button>
+					<q-button :style="{ margin: '10px' }" @click.native="showPrevious">show previous frame</q-button>
+					<q-button :style="{ margin: '10px' }" @click.native="showNext">show next frame</q-button>
 					<h3>Total frames: {{ frames.length }}</h3>
 				</controls>
-				<!-- <board @setActiveElement="onActiveElement" /> -->
 			</section>
 			<section slot="main-right">
-				<!-- <toolbox :initial-tools="initialTools" @setActiveElement="onActiveElement" /> -->
 				<toolbox />
 				<explanation>
 					<div class="discription">
@@ -55,6 +60,24 @@ import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 
+const emptyLevel = {
+	grid: {
+		cols: 0,
+		rows: 0,
+		cells: [
+			{
+				coord: {
+					x: -1,
+					y: -1
+				},
+				element: 'Void',
+				rotation: 0,
+				frozen: false
+			}
+		]
+	}
+};
+
 @Component({
 	components: {
 		GameLayout,
@@ -68,50 +91,50 @@ import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/secti
 		Controls
 	}
 })
-export default class GameContainer extends Vue {
-	level = {
-		grid: {
-			cols: 0,
-			rows: 0,
-			cells: [
-				{
-					coord: {
-						x: -1,
-						y: -1
-					},
-					element: 'Void',
-					rotation: 0,
-					frozen: false
-				}
-			]
-		}
-	};
+export default class Game extends Vue {
+	level = emptyLevel;
 	error: string = '';
 	game = {};
 	activeElement = '';
 	frames: FrameInterface[] = [];
 	frameNumber: number = 0;
 
-	get activeFrame(): FrameInterface {
-		return this.frames[this.frameNumber];
-	}
-
-	get lastFrame(): FrameInterface {
-		return this.frames[this.frames.length - 1];
-	}
-
+	// LIFECYCLE
 	created() {
 		this.loadALevel();
+		window.addEventListener('keyup', this.handleArrowPress);
+	}
+
+	beforeDestroy() {
+		window.removeEventListener('keyup', this.handleArrowPress);
+	}
+
+	// LEVEL LOADING
+	@Watch('$route')
+	loadALevel() {
+		this.error = '';
+		// See if there's such level:
+		const levelToLoad = levelData[this.currentLevelName];
+		if (!levelToLoad) {
+			this.error = 'no such level!';
+			return false;
+		}
+		this.level = levelToLoad;
+		this.setupInitFrame();
+		this.createFrames();
+		return true;
+	}
+
+	setupInitFrame() {
 		this.frames = [];
 		this.frameNumber = 0;
 		const levelWhatever = Level.importLevel(this.level);
 		const initFrame = new Frame(levelWhatever);
 		const firstFrame: FrameInterface = initFrame.next();
 		this.frames.push(firstFrame);
-		this.createFrames();
-		window.addEventListener('keyup', this.handleArrowPress);
 	}
 
+	// FRAME CONTROL
 	createFrames(number = 20) {
 		for (let index = 0; index < number; index += 1) {
 			const lastFrameCopy = cloneDeep(this.lastFrame);
@@ -136,6 +159,21 @@ export default class GameContainer extends Vue {
 		return this.frameNumber;
 	}
 
+	showPrevious() {
+		const newFrameNumber = this.frameNumber - 1;
+		if (newFrameNumber < 0) {
+			console.error("Can't access frames before simulation...");
+			return false;
+		}
+		this.frameNumber = newFrameNumber;
+		return this.frameNumber;
+	}
+
+	// EVENT HANDLERS
+	onActiveElement(element: string, isDraggable: boolean) {
+		this.activeElement = element;
+	}
+
 	handleArrowPress(e: { keyCode: number }) {
 		console.log(e.keyCode);
 
@@ -151,48 +189,7 @@ export default class GameContainer extends Vue {
 		}
 	}
 
-	beforeDestroy() {
-		window.removeEventListener('keyup', this.handleArrowPress);
-	}
-
-	showPrevious() {
-		const newFrameNumber = this.frameNumber - 1;
-		if (newFrameNumber < 0) {
-			console.error("Can't access frames before simulation...");
-			return false;
-		}
-		this.frameNumber = newFrameNumber;
-		return this.frameNumber;
-	}
-
-	@Watch('$route')
-	loadALevel() {
-		// this.frames = [];
-		this.error = '';
-		// See if there's such level:
-		const typedLevel = levelData;
-		const levelToLoad = typedLevel[this.currentLevelName];
-		if (!levelToLoad) {
-			this.error = 'no such level!';
-			return false;
-		}
-		this.level = levelToLoad;
-		return true;
-	}
-
-	get currentLevelName() {
-		return `level${parseInt(this.$route.params.id, 10)}`;
-	}
-
-	get levelLoaded(): boolean {
-		return this.level && this.level.grid.cols !== 0;
-	}
-
-	get particles() {
-		return this.frames[this.frameNumber].quantum;
-	}
-
-	// helps to determine if there is a element present
+	// HELPING FUNCTIONS
 	isTherePiece(y: number, x: number) {
 		if (this.levelLoaded) {
 			const possiblePieceArray = this.level.grid.cells.filter(
@@ -206,7 +203,6 @@ export default class GameContainer extends Vue {
 		return false;
 	}
 
-	// helps to determine if there is a element present
 	isTherePhotons(y: number, x: number) {
 		if (this.levelLoaded) {
 			const particles = this.frames[this.frameNumber].quantum;
@@ -215,8 +211,25 @@ export default class GameContainer extends Vue {
 		return [];
 	}
 
-	onActiveElement(element: string, isDraggable: boolean) {
-		this.activeElement = element;
+	// GETTERS
+	get currentLevelName() {
+		return `level${parseInt(this.$route.params.id, 10)}`;
+	}
+
+	get levelLoaded(): boolean {
+		return this.level && this.level.grid.cols !== 0;
+	}
+
+	get particles() {
+		return this.frames[this.frameNumber].quantum;
+	}
+
+	get activeFrame(): FrameInterface {
+		return this.frames[this.frameNumber];
+	}
+
+	get lastFrame(): FrameInterface {
+		return this.frames[this.frames.length - 1];
 	}
 }
 </script>
