@@ -20,7 +20,11 @@
 				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,
         58,58,53.34,58,47.6V16.4 C58,10.66,53.34,6,47.6,6z"
 			/>
-			<pattern id="SVGID_1_" xlink:href="#New_Pattern_Swatch_2" patternTransform="matrix(2.08 0 0 2.08 8817.9199 8777)" />
+			<pattern
+				id="SVGID_1_"
+				xlink:href="#New_Pattern_Swatch_2"
+				patternTransform="matrix(2.08 0 0 2.08 8817.9199 8777)"
+			/>
 			<path
 				class="st3"
 				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,58,
