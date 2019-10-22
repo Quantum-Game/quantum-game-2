@@ -18,8 +18,8 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import MainLayout from '../layouts/MainLayout.vue';
-import Entry from '../entries/Entry.vue';
-import entries from '../entries/entries.json';
+import Entry from '../info/Entry.vue';
+import entries from '../info/entries.json';
 
 interface ISection {
 	title: string;

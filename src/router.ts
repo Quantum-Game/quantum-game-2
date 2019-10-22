@@ -23,11 +23,11 @@ export default new Router({
 			children: [
 				{
 					path: '',
-					component: () => import('./entries/InfoHome.vue')
+					component: () => import('./info/InfoHome.vue')
 				},
 				{
 					path: '/info/:entry',
-					component: () => import('./entries/Entry.vue')
+					component: () => import('./info/Entry.vue')
 				}
 			]
 		},
