@@ -10,6 +10,7 @@
 		>
 			<photon
 				name
+				:intensity="particle.intensity"
 				:are="particle.a.re"
 				:aim="particle.a.im"
 				:bre="particle.b.re"

@@ -69,6 +69,7 @@ const d3 = {
 @Component
 export default class Photon extends Vue {
 	@Prop({ default: 'photon' }) readonly name!: string;
+	@Prop({ default: '1' }) readonly intensity!: number;
 	@Prop({ default: 0 }) readonly are!: number;
 	@Prop({ default: 0 }) readonly aim!: number;
 	@Prop({ default: 0 }) readonly bre!: number;
