@@ -69,6 +69,7 @@ export default class Tile extends Vue {
 		if (this.lasers && this.lasers.length > 0) {
 			return 'laser';
 		}
+		return false;
 	}
 
 	rotate() {

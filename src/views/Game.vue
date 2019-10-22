@@ -34,7 +34,7 @@
 				<h3>Total frames: {{ frames.length }}</h3>
 			</section>
 			<section slot="main-right">
-				<toolbox :tools="toolbox" />
+				<toolbox :tools="toolboxElements" />
 				<explanation>
 					<div class="description">
 						<span>element: {{ activeElement }}</span>
@@ -119,7 +119,6 @@ export default class Game extends Vue {
 			return false;
 		}
 		this.level = levelToLoad;
-		this.getToolboxElements();
 		this.setupInitFrame();
 		this.createFrames();
 		return true;
@@ -224,12 +223,11 @@ export default class Game extends Vue {
 		return [];
 	}
 
-	getToolboxElements() {
-		// this.toolbox = [];
-		this.toolbox = this.level.grid.cells.filter((x) => !x.frozen);
+	// GETTERS
+	get toolboxElements() {
+		return this.level.grid.cells.filter((x) => !x.frozen);
 	}
 
-	// GETTERS
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
 	}
