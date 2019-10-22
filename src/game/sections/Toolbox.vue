@@ -67,11 +67,13 @@ export default class Toolbox extends Vue {
 	flex-wrap: wrap;
 	width: 100%;
 	border-top: 1px solid white;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	& h3 {
 		margin: 0;
 	}
 	.tool {
-		width: 30%;
+		width: 33.3%;
 		padding: 0.5rem 0.1rem;
 	}
 }

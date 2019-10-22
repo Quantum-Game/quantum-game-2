@@ -38,14 +38,6 @@ export default class Goals extends Vue {
 	width = 100;
 
 	sections = [{ value: this.percentage, color: 'red' }];
-
-	mounted() {
-		// this.width = this.componentWidth();
-	}
-
-	get componentWidth() {
-		return this.$refs.goals.clientWidth;
-	}
 }
 </script>
 
