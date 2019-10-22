@@ -21,12 +21,12 @@ export default class BButton extends Vue {
 		let styleObj = {};
 		if (this.whichIs) {
 			if (this.whichIs === 'classical' || this.whichIs === 'quantum') {
-				return { backgroundColor: 'red' };
+				return { opacity: 0.3 };
 			}
 
 			styleObj = {
         backgroundImage: `url(${require(`../assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
-				backgroundColor: this.usable ? 'transparent' : 'red',
+				backgroundColor: this.usable ? 'transparent' : 'transparent',
 				border: 'none'
 				// transform: `rotate(-${this.cell.rotation}deg)`
 			};

@@ -99,7 +99,7 @@ export default class Tile extends Vue {
 	}
 
 	&.laser {
-		background-color: red;
+		background-color: rgba(255, 0, 85, 0.1);
 	}
 
 	&.rotate0 svg {

@@ -4,14 +4,14 @@
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
-					<q-button>+</q-button>
+					<img src="@/assets/prevIcon.svg" alt="Previous Level" width="32">
 				</router-link>
 				{{ level.name.toUpperCase() }}
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
-					<q-button>+</q-button>
+					<img src="@/assets/nextIcon.svg" alt="Next Level" width="32">
 				</router-link>
 			</h1>
-			<Goals slot="main-left" :percentage="50" />
+			<Goals slot="main-left" :percentage="70" />
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
 				<li v-for="(stuff, i) in Array(20)" :key="i">
@@ -19,7 +19,7 @@
 				</li>
 			</ul>
 			<section slot="main-middle">
-				<div class="grid">
+				<div class="grid" :style="computedGridStyle">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
 						<tile
 							v-for="(column, x) in level.grid.cols"
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 				<controls @stepBack="showPrevious" @stepForward="showNext" />
-				<h3>Total frames: {{ frames.length }}</h3>
+				<p>Total frames: {{ frames.length }}</p>
 			</section>
 			<section slot="main-right">
 				<toolbox :tools="toolboxElements" />
@@ -56,6 +56,7 @@ import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
+import gridSVG from '../assets/board_dots.svg';
 
 const emptyLevel = {
 	grid: {
@@ -244,17 +245,36 @@ export default class Game extends Vue {
 		return this.frames[this.frameNumber];
 	}
 
+<<<<<<< HEAD
 	get lastFrame(): FrameInterface {
 		return this.frames[this.frames.length - 1];
 	}
+=======
+  get lastFrame(): FrameInterface {
+    return this.frames[this.frames.length - 1];
+  }
+  
+  get computedGridStyle() {
+	  return {
+		backgroundImage: `url(${gridSVG})`
+	}
+  }
+>>>>>>> 385c21d5512a6f4c159cffd69cf915dccc34ef10
 }
 </script>
 
 <style lang="scss" scoped>
 h1 {
-	margin: 0px;
 	//color:crimson;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
+.title {
+	margin-bottom: 30;
+	margin-top: 0;
+}
+
 .game {
 	width: 100%;
 	min-height: 100vh;
@@ -284,13 +304,14 @@ h1 {
 				//background-color: purple;
 				color: black;
 			}
-			& .laser {
-				background-color: red;
-			}
+			// & .laser {
+			// 	//background-color: red;
+			// }
 		}
 	}
 }
 .game {
+<<<<<<< HEAD
 	&.goals {
 		background-color: rgba(255, 0, 85, 0.349);
 		height: 600px;
@@ -301,5 +322,17 @@ h1 {
 			text-decoration: none;
 		}
 	}
+=======
+  &.goals {
+    //background-color: rgba(255, 0, 85, 0.349);
+    height: 600px;
+    a:link,
+    a:visited {
+      color: white;
+      font-size: 12;
+      text-decoration: none;
+    }
+  }
+>>>>>>> 385c21d5512a6f4c159cffd69cf915dccc34ef10
 }
 </style>

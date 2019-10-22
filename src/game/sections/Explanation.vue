@@ -1,7 +1,9 @@
 +<template>
 	<div class="explanation placeholder">
-		<!-- <h3 class="title">stuff will be explained here<br />⬇ ️ ⬇ ️ ⬇️</h3> -->
-		<slot></slot>
+		<h3 class="title">ELEMENT NAME</h3>
+		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+		<slot>
+		</slot>
 	</div>
 </template>
 
@@ -24,6 +26,7 @@ export default class Explanation extends Vue {}
 
 	&.explanation {
 		border-top: 1px solid #8e819d;
+		text-align: left;
 	}
 }
 </style>
