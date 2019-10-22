@@ -1,5 +1,6 @@
 <template>
 	<div class="game">
+		<victory v-if="isVictorius" @click.native="showPrevious"/>
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
@@ -57,6 +58,7 @@ import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
+import Victory from '../game/overlays/Victory.vue';
 
 const emptyLevel = {
 	grid: {
@@ -86,9 +88,11 @@ const emptyLevel = {
 		Goals,
 		Explanation,
 		Toolbox,
-		Controls
+		Controls,
+		Victory
 	}
 })
+
 export default class Game extends Vue {
 	level = emptyLevel;
 	error: string = '';
@@ -253,6 +257,10 @@ export default class Game extends Vue {
 		return {
 			backgroundImage: `url(${gridSVG})`
 		};
+	}
+
+	get isVictorius() {
+		return this.activeFrame.gameState === 'Victory';
 	}
 }
 </script>
