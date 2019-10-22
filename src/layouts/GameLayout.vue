@@ -65,6 +65,7 @@ export default class GameLayout extends Vue {}
 .right {
 	height: auto;
 	width: 16%;
+	padding: 20px;
 }
 
 header {
@@ -78,7 +79,7 @@ header {
 main,
 //header,
 footer {
-	width: 1400px;
+	max-width: 1400px;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
