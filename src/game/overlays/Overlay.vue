@@ -25,15 +25,18 @@ export default class Overlay extends Vue {
 }
 
 .victory {
-	height: 100%;
-	width: 100%;
+	height: 100vh;
+	width: 100vw;
 	background-color: rgba(179, 7, 136, 0.856);
 	position: fixed;
 	z-index: 3;
+	display: flex;
+	align-items: center;
 	h2 {
+		margin: 0;
 		display: block;
 		color: white;
-		font-size: 16rem;
+		font-size: 14rem;
 		transform: rotate(-5deg);
 	}
 }
