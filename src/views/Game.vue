@@ -1,6 +1,6 @@
 <template>
 	<div class="game">
-		<victory v-if="isVictorius" @click.native="showPrevious"/>
+		<overlay :game-state="gameState" @click.native="frameNumber = 0" />
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
@@ -58,7 +58,7 @@ import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
-import Victory from '../game/overlays/Victory.vue';
+import Overlay from '../game/overlays/Overlay.vue';
 
 const emptyLevel = {
 	grid: {
@@ -89,10 +89,9 @@ const emptyLevel = {
 		Explanation,
 		Toolbox,
 		Controls,
-		Victory
+		Overlay
 	}
 })
-
 export default class Game extends Vue {
 	level = emptyLevel;
 	error: string = '';
@@ -259,8 +258,8 @@ export default class Game extends Vue {
 		};
 	}
 
-	get isVictorius() {
-		return this.activeFrame.gameState === 'Victory';
+	get gameState() {
+		return this.activeFrame.gameState;
 	}
 }
 </script>
@@ -291,8 +290,6 @@ h1 {
 		display: flex;
 		flex-direction: row;
 		& .tile {
-			// background-color: rgba(0, 98, 255, 0.294);
-			//background-color: #280066;
 			width: 64px;
 			min-height: 64px;
 			position: relative;
@@ -303,18 +300,13 @@ h1 {
 			font-size: 1rem;
 			margin: none;
 			&:hover {
-				//background-color: purple;
 				color: black;
 			}
-			// & .laser {
-			// 	//background-color: red;
-			// }
 		}
 	}
 }
 .game {
 	&.goals {
-		//background-color: rgba(255, 0, 85, 0.349);
 		height: 600px;
 		a:link,
 		a:visited {
