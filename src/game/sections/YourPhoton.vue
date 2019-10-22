@@ -1,7 +1,7 @@
 <template>
 	<div ref="wrapper" class="simulation-steps-display-wrapper">
 		<div class="step">
-			<h3>PHOTONS:</h3>
+			<h3>YOUR PHOTONS</h3>
 			<span>STEP {{ activeFrame.step }}</span>
 			<div v-for="(particle, index) in particles" :key="index">
 				<photon
@@ -11,7 +11,10 @@
 					:bre="particle.b.re"
 					:bim="particle.b.im"
 					:width="width"
-					:height="150"
+					:height="80"
+					:display-magnetic="true"
+					:display-electric="true"
+					:display-gaussian="false"
 				/>
 				<div>
 					A:
@@ -78,5 +81,10 @@ export default class SimulationStepsDisplay extends Vue {
 	width: 100%;
 	display: block;
 	text-align: left;
+}
+
+.step {
+	font-size: 0.9em;
+	line-height: 150%;
 }
 </style>

@@ -16,12 +16,14 @@ export default class Explanation extends Vue {}
 .placeholder {
 	width: 100%;
 	height: 200px;
+	padding-top: 10px;
+	padding-bottom: 10px;
 	& h3 {
 		margin: 0;
 	}
 
 	&.explanation {
-		//background-color: rgba(0, 225, 255, 0.349);
+		border-top: 1px solid #8e819d;
 	}
 }
 </style>

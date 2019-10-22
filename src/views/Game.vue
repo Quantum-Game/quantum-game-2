@@ -242,6 +242,10 @@ export default class Game extends Vue {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+	margin: 0px;
+	//color:crimson;
+}
 .game {
 	width: 100%;
 	min-height: 100vh;
@@ -263,6 +267,7 @@ export default class Game extends Vue {
 			justify-content: center;
 			color: white;
 			font-size: 1rem;
+			margin: none;
 			&:hover {
 				//background-color: purple;
 				color: black;
