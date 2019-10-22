@@ -74,7 +74,7 @@ export default class Toolbox extends Vue {
 	}
 	.tool {
 		width: 33.3%;
-		padding-bottom: 10px;
+		padding: 0.5rem 0.1rem;
 	}
 }
 </style>

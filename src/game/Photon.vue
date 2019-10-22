@@ -1,5 +1,9 @@
 <template>
-	<svg :class="`photon rotation${direction}`" :width="width + 2 * margin" :height="height + 2 * margin">
+	<svg
+		:class="`photon rotation${direction}`"
+		:width="width + 2 * margin"
+		:height="height + 2 * margin"
+	>
 		<g v-if="displayElectric" class="electric">
 			<circle
 				v-for="(z, index) in zs"

@@ -1,29 +1,46 @@
 <template>
-	<div class="controls placeholder">
-		<!-- <h3 class="title">controls<br />⬇ ️ ⬇ ️ ⬇️</h3> -->
+	<div class="controls">
+		<span class="playback">
+			<b-button :usable="false" which-is="play" @click.native="$emit('play')"/>
+			<b-button which-is="step-back" @click.native="$emit('stepBack')"/>
+			<b-button :usable="false" which-is="pause" @click.native="$emit('pause')"/>
+			<b-button which-is="step-forward" @click.native="$emit('stepForward')"/>
+			<b-button :usable="false" which-is="stop" @click.native="$emit('stop')"/>
+			<b-button :usable="false" which-is="reload" @click.native="$emit('reload')"/>
+		</span>
+		<span class="view-mode">
+			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')"> C </b-button>
+			<b-button :usable="false" which-is="quantum" @click.native="$emit('quantum')"> Q </b-button>
+			<b-button :usable="false" which-is="multiverse" @click.native="$emit('multiverse')"/>
+		</span>
 		<slot></slot>
 	</div>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import BButton from '../BButton.vue';
 
-@Component
+@Component({
+	components: {
+		BButton
+	}
+})
 export default class Controls extends Vue {}
 </script>
 
 <style lang="scss" scoped>
-.placeholder {
+.controls {
 	width: 100%;
-	height: 200px;
-	& h3 {
-		margin: 0;
-	}
-
-	&.controls {
-		//background-color: rgba(179, 255, 0, 0.349);
-		height: 100px;
-		min-height: 200px;
+	border-top: 1px solid white;
+	display: flex;
+	padding-top: 0.7rem;
+	justify-content: space-between;
+	align-items: center;
+	& .view-mode {
+		display: flex;
+		align-items: center;
+		line-height: 20px;
 	}
 }
 </style>
