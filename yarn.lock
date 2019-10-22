@@ -8672,7 +8672,6 @@ quantumweasel@sneakyweasel/quantumweasel#master:
     "@types/file-saver" "^2.0.1"
     "@types/jest" "^24.0.19"
     file-saver "^2.0.2"
-    global "^4.4.0"
     quantum-tensors stared/quantum-tensors#JoyOfDependencies
     rot-js "^2.1.1"
 
