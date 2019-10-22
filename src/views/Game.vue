@@ -11,7 +11,7 @@
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
       </h1>
-      <Goals slot="main-left" :percentage="70" />
+      <Goals slot="main-left" :percentage="probabilitySum" :goals="goals" />
       <h3 slot="main-left" class="title">LEVELS:</h3>
       <ul slot="main-left">
         <li v-for="(stuff, i) in Array(20)" :key="i">
@@ -94,8 +94,9 @@ export default class Game extends Vue {
   error: string = '';
   game = {};
   activeElement = '';
-  frames: FrameInterface[] = [];
   frameNumber: number = 0;
+	frames: FrameInterface[] = [];
+	goals = [];
   lasers = [];
   toolbox = [];
 
@@ -129,7 +130,8 @@ export default class Game extends Vue {
     this.frames = [];
     this.frameNumber = 0;
     const loadedLevel = Level.importLevel(this.level);
-    this.lasers = loadedLevel.grid.computePaths();
+		this.lasers = loadedLevel.grid.computePaths();
+		this.goals = loadedLevel.goals
     console.log(`LASERS: ${this.lasers.length}`);
 
     const initFrame = new Frame(loadedLevel);
@@ -239,6 +241,14 @@ export default class Game extends Vue {
 
   get particles() {
     return this.frames[this.frameNumber].quantum;
+  }
+
+  get probabilitySum(): number {
+    let sum = 0;
+    this.frames[this.frameNumber].quantum.forEach((particle) => {
+      sum += particle.intensity;
+    });
+    return sum;
   }
 
   get activeFrame(): FrameInterface {
