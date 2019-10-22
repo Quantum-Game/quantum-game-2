@@ -10,6 +10,7 @@
 		>
 			<photon
 				name
+				:intensity="particle.intensity"
 				:are="particle.a.re"
 				:aim="particle.a.im"
 				:bre="particle.b.re"
@@ -98,7 +99,7 @@ export default class Tile extends Vue {
 	}
 
 	&.laser {
-		background-color: red;
+		background-color: rgba(255, 0, 85, 0.1);
 	}
 
 	&.rotate0 svg {

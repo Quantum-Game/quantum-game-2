@@ -1,25 +1,37 @@
 <template>
 	<div ref="goals" class="goals-wrapper">
 		<div class="upper-icons">
-			<span>Key Icon</span>
-			<span>Badge Icon</span>
+			<div>
+			<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25">
+			<!-- NUMBER OF KEYS -->
+			<span>  02</span>
+			</div>
+			<div>
+			<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25">
+			<!-- NUMBER OF POINTS? -->
+			<span>  25</span>
+			</div>
 		</div>
-		<vc-donut
+		<svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1"/>
+		</svg>
+		<!-- <vc-donut
 			class="chart"
-			background="#210235"
-			foreground="#12012480"
+			background="inherit"
+			foreground="rgba(255, 255, 255, 0.1)"
 			:size="200"
 			unit="px"
-			:thickness="10"
+			:thickness="30"
 			:sections="sections"
 			:total="100"
 			:start-angle="0"
 		>
 			<div class="inner-circle">{{ percentage }}%</div>
-			<div>SUCCESS</div>
-		</vc-donut>
+			<div>PROBABILITY</div>
+		</vc-donut> -->
 		<div class="bottom-icons">
-			<div>TWO DETECTOR ICONS</div>
+			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30">
+			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30">
 			<div>DETECTORS</div>
 		</div>
 	</div>
@@ -37,21 +49,30 @@ export default class Goals extends Vue {
 	percent = 10;
 	width = 100;
 
-	sections = [{ value: this.percentage, color: 'red' }];
+	sections = [{ value: this.percentage, color: '#FF0055' }];
 }
 </script>
 
 <style lang="scss" scoped>
 .goals-wrapper {
+	border-top: 1px solid white;
+	padding-top: 10px;
+	padding-bottom: 100px;
+	border-bottom: 1px solid white;
 	width: 100%;
 	height: 320px;
 	display: flex;
 	flex-direction: column;
+
 	& .upper-icons {
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		//justify-content: left;
 		margin-bottom: 2rem;
+	}
+	& .bottom-icons{
+		line-height: 150%;
 	}
 	& .chart {
 		& div.inner-circle {
