@@ -1,17 +1,19 @@
 <template>
 	<div class="controls">
 		<span class="playback">
-			<b-button :usable="false" which-is="play" @click.native="$emit('play')"/>
-			<b-button which-is="step-back" @click.native="$emit('stepBack')"/>
-			<b-button :usable="false" which-is="pause" @click.native="$emit('pause')"/>
-			<b-button which-is="step-forward" @click.native="$emit('stepForward')"/>
-			<b-button :usable="false" which-is="stop" @click.native="$emit('stop')"/>
-			<b-button :usable="false" which-is="reload" @click.native="$emit('reload')"/>
+			<b-button :usable="false" which-is="play" @click.native="$emit('play')" />
+			<b-button which-is="step-back" @click.native="$emit('stepBack')" />
+			<b-button :usable="false" which-is="pause" @click.native="$emit('pause')" />
+			<b-button which-is="step-forward" @click.native="$emit('stepForward')" />
+			<b-button :usable="false" which-is="stop" @click.native="$emit('stop')" />
+			<b-button :usable="false" which-is="reload" @click.native="$emit('reload')" />
 		</span>
 		<span class="view-mode">
-			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')"> C </b-button>
+			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')">
+				C
+			</b-button>
 			<b-button :usable="false" which-is="quantum" @click.native="$emit('quantum')"> Q </b-button>
-			<b-button :usable="false" which-is="multiverse" @click.native="$emit('multiverse')"/>
+			<b-button :usable="false" which-is="multiverse" @click.native="$emit('multiverse')" />
 		</span>
 		<slot></slot>
 	</div>

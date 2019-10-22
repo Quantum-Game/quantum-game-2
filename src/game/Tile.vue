@@ -1,6 +1,6 @@
 <template>
-  <div class="tile" :class="laserLine" @onclick="rotate">
-    <svg :class="calculatedClass" :style="calculatedStyle" />
+	<div class="tile" :class="laserLine" @onclick="rotate">
+		<svg :class="calculatedClass" :style="calculatedStyle" />
 
 		<div
 			v-for="(particle, index) in particles"
@@ -33,47 +33,47 @@ import { ICell, Qparticle, ParticleInterface } from '@/types';
 import Photon from './Photon.vue';
 
 @Component({
-  components: {
-    Photon
-  }
+	components: {
+		Photon
+	}
 })
 export default class Tile extends Vue {
-  @Prop() readonly cell!: ICell;
-  @Prop() readonly particles!: Qparticle[];
-  @Prop() readonly lasers!: any[];
+	@Prop() readonly cell!: ICell;
+	@Prop() readonly particles!: Qparticle[];
+	@Prop() readonly lasers!: any[];
 
-  get calculatedClass() {
+	get calculatedClass() {
 		let classObj = {};
-    if (this.cell.element) {
-      classObj = {
-        element: true,
-        [this.cell.element]: true,
+		if (this.cell.element) {
+			classObj = {
+				element: true,
+				[this.cell.element]: true,
 				active: this.cell.active
-      };
-    }
-    return classObj;
-  }
+			};
+		}
+		return classObj;
+	}
 
-  get calculatedStyle() {
-    let styleObj = {};
-    if (this.cell.element) {
-      styleObj = {
+	get calculatedStyle() {
+		let styleObj = {};
+		if (this.cell.element) {
+			styleObj = {
         backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})`, // eslint-disable-line
-        transform: `rotate(-${this.cell.rotation}deg)`
-      };
-    }
-    return styleObj;
-  }
+				transform: `rotate(-${this.cell.rotation}deg)`
+			};
+		}
+		return styleObj;
+	}
 
 	get laserLine() {
 		if (this.lasers && this.lasers.length > 0) {
-			return "laser"
+			return 'laser';
 		}
 	}
 
-  rotate() {
-    this.cell.rotation = (this.cell.rotation + 45) % 360;
-  }
+	rotate() {
+		this.cell.rotation = (this.cell.rotation + 45) % 360;
+	}
 }
 </script>
 
@@ -100,34 +100,34 @@ export default class Tile extends Vue {
 		background-color: red;
 	}
 
-  &.rotate0 svg {
-    transform: rotate(0deg);
-  }
-  &.rotate45 svg {
-    transform: rotate(-45deg);
-  }
-  &.rotate90 svg {
-    transform: rotate(-90deg);
-  }
-  &.rotate135 svg {
-    transform: rotate(-135deg);
-  }
-  &.rotate180 svg {
-    transform: rotate(-180deg);
-  }
-  &.rotate225 svg {
-    transform: rotate(-225deg);
-  }
-  &.rotate270 svg {
-    transform: rotate(-270deg);
-  }
-  &.rotate315 svg {
-    transform: rotate(-315deg);
-  }
+	&.rotate0 svg {
+		transform: rotate(0deg);
+	}
+	&.rotate45 svg {
+		transform: rotate(-45deg);
+	}
+	&.rotate90 svg {
+		transform: rotate(-90deg);
+	}
+	&.rotate135 svg {
+		transform: rotate(-135deg);
+	}
+	&.rotate180 svg {
+		transform: rotate(-180deg);
+	}
+	&.rotate225 svg {
+		transform: rotate(-225deg);
+	}
+	&.rotate270 svg {
+		transform: rotate(-270deg);
+	}
+	&.rotate315 svg {
+		transform: rotate(-315deg);
+	}
 
-  &.element {
-    background-repeat: no-repeat;
-    background-size: contain;
-  }
+	&.element {
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
 }
 </style>

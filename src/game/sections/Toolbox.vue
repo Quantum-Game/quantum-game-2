@@ -18,7 +18,7 @@ import Tile from '@/game/Tile.vue';
 })
 export default class Toolbox extends Vue {
 	@Prop() readonly tools!: Array<any>;
-	refinedTools: [object, number][] = [
+	refinedTools: Array<Array<any>> = [
 		[
 			{
 				element: 'void'
