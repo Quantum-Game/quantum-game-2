@@ -24,7 +24,7 @@
             <li>B: {{ `${particle.b.re.toFixed(2)} + ${particle.b.im.toFixed(2)}i` }}</li>
             <li>Coord: [{{ `X: ${particle.x}, Y: ${particle.y}` }}]</li>
             <li>Direction: {{ particle.direction }}</li>
-            <li>Intensity: {{ particle.intensity.toFixed(2) * 100 }}%</li>
+            <li>Probability: {{ particle.intensity.toFixed(2) * 100 }}%</li>
             <li>Path length: {{ particle.path.length }}</li>
           </ul>
         </div>
