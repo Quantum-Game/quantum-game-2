@@ -9,7 +9,6 @@
 			<div class="placeholder">
 				<div class="board">
 					<img src="@/assets/test_board_en.svg" alt="placeholder" />
-					<!-- <span>  </span> -->
 				</div>
 			</div>
 			<entry-section
@@ -27,7 +26,7 @@ import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
-import entries from './entries.json';
+import { getEntry } from './entries';
 
 interface IEntryList {
 	[index: string]: IEntry;
@@ -58,11 +57,10 @@ export default class Entry extends Vue {
 
 	@Watch('$route')
 	loadEntry() {
-		const typedEntries: IEntryList = entries;
 		if (this.entryURL) {
-			this.entry = typedEntries[this.entryURL];
+			this.entry = getEntry(this.entryURL);
 		}
-		if (!this.entry) {
+		if (!this.entry.title) {
 			this.$router.push({ name: '404' });
 		}
 	}
