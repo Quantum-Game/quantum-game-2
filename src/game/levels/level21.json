@@ -24,6 +24,14 @@
         "energized": false
       },
       {
+        "coord": { "y": 1, "x": 4 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
         "coord": { "y": 1, "x": 6 },
         "element": "Mirror",
         "rotation": 135,
@@ -40,7 +48,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 4 },
+        "coord": { "y": 3, "x": 2 },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": false,
@@ -48,7 +56,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 6 },
+        "coord": { "y": 3, "x": 4 },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": false,
@@ -65,15 +73,7 @@
       },
       {
         "coord": { "y": 5, "x": 2 },
-        "element": "BeamSplitter",
-        "rotation": 135,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 4 },
-        "element": "BeamSplitter",
+        "element": "Mirror",
         "rotation": 135,
         "frozen": false,
         "active": false,
@@ -81,7 +81,7 @@
       },
       {
         "coord": { "y": 5, "x": 6 },
-        "element": "Mirror",
+        "element": "BeamSplitter",
         "rotation": 135,
         "frozen": false,
         "active": false,
