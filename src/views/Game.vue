@@ -245,21 +245,15 @@ export default class Game extends Vue {
 		return this.frames[this.frameNumber];
 	}
 
-<<<<<<< HEAD
-	get lastFrame(): FrameInterface {
-		return this.frames[this.frames.length - 1];
-	}
-=======
   get lastFrame(): FrameInterface {
     return this.frames[this.frames.length - 1];
   }
-  
+
   get computedGridStyle() {
 	  return {
 		backgroundImage: `url(${gridSVG})`
 	}
   }
->>>>>>> 385c21d5512a6f4c159cffd69cf915dccc34ef10
 }
 </script>
 
