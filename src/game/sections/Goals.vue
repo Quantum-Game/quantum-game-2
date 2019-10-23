@@ -66,21 +66,21 @@ export default class Goals extends Vue {
   display: flex;
   flex-direction: column;
 
-  & .upper-icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    //justify-content: left;
-    margin-bottom: 2rem;
-  }
-  & .bottom-icons {
-    line-height: 150%;
-  }
-  & .chart {
-    & div.inner-circle {
-      font-size: 3rem;
-    }
-    margin-bottom: 2rem;
-  }
+	& .upper-icons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		//justify-content: left;
+		margin-bottom: 2rem;
+	}
+	& .bottom-icons {
+		line-height: 150%;
+	}
+	& .chart {
+		& div.inner-circle {
+			font-size: 3rem;
+		}
+		margin-bottom: 2rem;
+	}
 }
 </style>

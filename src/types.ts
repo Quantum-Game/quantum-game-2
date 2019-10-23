@@ -48,6 +48,7 @@ export interface FrameInterface {
 	particles: ParticleInterface[];
 	quantum: ParticleInterface[];
 	end: boolean;
+	gameState: string;
 	next: () => FrameInterface;
 }
 

@@ -4,8 +4,10 @@
 			{{ section.title.toUpperCase() }}
 		</h2>
 		<div ref="contentWrapper" class="content-wrapper" :style="style">
-			<div class="content" v-html="section.content" />
-			<img v-for="image in section.pics" :key="image" :src="imageUrl(image)" />
+			<div v-for="(media, index) in section.contents" :key="index" class="content">
+				<p v-if="!isImg(section.contents[index])" v-html="section.contents[index]"></p>
+				<img v-else :src="imageUrl(section.contents[index])" />
+			</div>
 		</div>
 	</section>
 </template>
@@ -16,7 +18,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 export interface ISection {
 	title: string;
 	content?: string;
-	pics?: Array<string>;
+	// pics?: Array<string>;
 }
 
 @Component
@@ -47,11 +49,14 @@ export default class EntrySection extends Vue {
 		};
 	}
 
-	/* eslint-disable */
- imageUrl(imageString: string) {
-  const images = require.context('../assets');
-  return images(`./${imageString}`);
- }
+	isImg(string: string): boolean {
+		return string.match(/\.(jpeg|jpg|gif|png|svg)$/) != null;
+	}
+
+	imageUrl(imageString: string) {
+		const images = require.context('../assets');
+		return images(`./${imageString}`);
+	}
 }
 </script>
 
@@ -81,8 +86,8 @@ section.entry-section {
 		}
 	}
 	&.active:after {
-			transform: rotate(90deg);
-			transition: 0.4s;
+		transform: rotate(90deg);
+		transition: 0.4s;
 	}
 	& .content-wrapper {
 		font-weight: lighter;
@@ -107,23 +112,21 @@ section.entry-section {
 	}
 }
 
-
-
 // TEXT STYLING:
 // key words and phrases
 em {
- font-style: underline;
+	font-style: underline;
 }
 
 // strong importance
 strong,
 b {
- font-style: bold;
+	font-style: bold;
 }
 
 // emphasis
 em,
 i {
- font-style: italics;
+	font-style: italics;
 }
 </style>
