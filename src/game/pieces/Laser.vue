@@ -1,67 +1,74 @@
 <template>
-	<svg x="0px" y="0px" viewBox="0 0 64 64">
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="60"
+					width="60"
+					x="1.9"
+					y="2"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
-			<circle class="st0" cx="31.93" cy="32.02" r="30" />
-			<polygon class="st1" points="55.69,32.02 18.66,11.02 18.66,53.02 	" />
+			<circle class="st0" cx="31.9" cy="32" r="30" />
+			<polygon class="st1" points="55.7,32 18.7,11 18.7,53 	" />
 			<g>
-				<g>
-					<rect x="21.36" y="31.52" class="st0" width="20.46" height="1" />
-					<rect x="31.09" y="21.79" class="st0" width="1" height="20.46" />
-					<rect
-						x="31.09"
-						y="20.6"
-						transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3869 31.7116)"
-						class="st0"
-						width="1"
-						height="22.84"
-					/>
+				<rect x="21.4" y="31.5" class="st0" width="20.5" height="1" />
+				<rect x="31.1" y="21.8" class="st0" width="1" height="20.5" />
 
-					<rect
-						x="20.17"
-						y="31.51"
-						transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3869 31.7109)"
-						class="st0"
-						width="22.84"
-						height="1"
-					/>
-				</g>
-				<g>
-					<rect
-						x="24.01"
-						y="31.52"
-						transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8513 14.532)"
-						class="st0"
-						width="15.15"
-						height="1"
-					/>
+				<rect
+					x="31.1"
+					y="20.6"
+					transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3855 31.7159)"
+					class="st0"
+					width="1"
+					height="22.8"
+				/>
 
-					<rect
-						x="31.09"
-						y="24.44"
-						transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8504 14.5302)"
-						class="st0"
-						width="1"
-						height="15.15"
-					/>
+				<rect
+					x="20.2"
+					y="31.5"
+					transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3821 31.7086)"
+					class="st0"
+					width="22.8"
+					height="1"
+				/>
+				<rect
+					x="24"
+					y="31.5"
+					transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8522 14.5299)"
+					class="st0"
+					width="15.1"
+					height="1"
+				/>
+				<rect
+					x="31.1"
+					y="24.4"
+					transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8488 14.5307)"
+					class="st0"
+					width="1"
+					height="15.1"
+				/>
 
-					<rect
-						x="31.09"
-						y="24.44"
-						transform="matrix(0.3827 -0.9239 0.9239 0.3827 -10.0825 48.9496)"
-						class="st0"
-						width="1"
-						height="15.15"
-					/>
-
-					<rect
-						x="24.01"
-						y="31.52"
-						transform="matrix(0.3828 -0.9238 0.9238 0.3828 -10.0837 48.946)"
-						class="st0"
-						width="15.15"
-						height="1"
-					/>
-				</g>
+				<rect
+					x="31.1"
+					y="24.4"
+					transform="matrix(0.3827 -0.9239 0.9239 0.3827 -10.0805 48.9449)"
+					class="st0"
+					width="1"
+					height="15.2"
+				/>
+				<rect
+					x="24"
+					y="31.5"
+					transform="matrix(0.3828 -0.9238 0.9238 0.3828 -10.0904 48.9465)"
+					class="st0"
+					width="15.1"
+					height="1"
+				/>
 			</g>
 		</g>
 	</svg>
@@ -71,7 +78,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Laser extends Vue {}
+export default class Laser extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>

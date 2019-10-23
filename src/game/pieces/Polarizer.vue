@@ -1,12 +1,5 @@
 <template>
-	<svg
-		id="Layer_1"
-		x="0px"
-		y="0px"
-		viewBox="0 0 64 64"
-		style="enable-background:new 0 0 64 64;"
-		xml:space="preserve"
-	>
+	<svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
 		<g>
 			<path
 				class="st0"

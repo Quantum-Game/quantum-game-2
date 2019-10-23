@@ -1,31 +1,42 @@
 <template>
-	<svg
-		id="Layer_1"
-		version="1.1"
-		xmlns="http://www.w3.org/2000/svg"
-		xmlns:xlink="http://www.w3.org/1999/xlink"
-		x="0px"
-		y="0px"
-		viewBox="0 0 64 64"
-		style="enable-background:new 0 0 64 64;"
-		xml:space="preserve"
-	>
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="55.2"
+					width="48.2"
+					x="7.9"
+					y="4.5"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
-			<polygon class="st0" points="38.15,9.05 32,5.5 9.92,18.25 23.57,26.14 	" />
-			<polygon class="st0" points="54.08,18.25 50.15,15.98 42.5,24.94 	" />
-			<polygon class="st0" points="41.88,11.21 39.8,10.01 25.22,27.09 27.3,28.29 	" />
-			<polygon class="st1" points="27.3,28.29 32,31 42.5,24.94 50.15,15.98 41.88,11.21 	" />
-			<polygon class="st1" points="39.8,10.01 38.15,9.05 23.57,26.14 25.22,27.09 	" />
-			<polygon class="st0" points="18.01,25.5 8.92,20.25 8.92,25.49 	" />
-			<polygon class="st0" points="31,39.14 8.92,39.11 8.92,45.75 31,58.5 	" />
-			<polygon class="st0" points="31,37.26 31,34.9 8.92,34.88 8.92,37.24 	" />
-			<polygon class="st1" points="31,34.9 31,33 18.01,25.5 8.92,25.49 8.92,34.88 	" />
-			<polygon class="st1" points="31,39.14 31,37.26 8.92,37.24 8.92,39.11 	" />
-			<polygon class="st0" points="33,58.5 37.67,55.8 33,48.7 	" />
-			<polygon class="st0" points="35.7,31.44 33.66,32.62 45.81,51.1 47.86,49.92 	" />
-			<polygon class="st0" points="49.49,48.98 55.08,45.75 55.08,20.25 37.33,30.5 	" />
-			<polygon class="st1" points="33.66,32.62 33,33 33,48.7 37.67,55.8 45.81,51.1 	" />
-			<polygon class="st1" points="37.33,30.5 35.7,31.44 47.86,49.92 49.49,48.98 	" />
+			<g>
+				<polygon class="st0" points="54.1,18.2 32,5.5 9.9,18.2 32,31 		" />
+				<polygon class="st1" points="27.3,28.3 32,31 42.5,24.9 50.2,16 41.9,11.2 		" />
+				<polygon class="st1" points="39.8,10 38.2,9.1 23.6,26.1 25.2,27.1 		" />
+			</g>
+			<g>
+				<polygon class="st0" points="8.9,20.2 8.9,45.8 31,58.5 31,33 		" />
+				<polygon class="st1" points="31,34.9 31,33 18,25.5 8.9,25.5 8.9,34.9 		" />
+				<polygon class="st1" points="31,39.1 31,37.3 8.9,37.2 8.9,39.1 		" />
+			</g>
+			<g>
+				<polygon class="st0" points="33,33 33,58.5 55.1,45.8 55.1,20.2 		" />
+				<polygon class="st1" points="33.7,32.6 33,33 33,48.7 37.7,55.8 45.8,51.1 		" />
+				<polygon class="st1" points="37.3,30.5 35.7,31.4 47.9,49.9 49.5,49 		" />
+			</g>
+		</g>
+		<g v-if="border" id="_x3C_Qoutline_x3E_">
+			<path
+				class="st2"
+				:style="{ fill: border }"
+				d="M32,5.5l22.1,12.8l1,2v25.5L33,58.5h-2L8.9,45.8V20.2l1-2L32,5.5 M32,4.3l-0.5,0.3L9.4,17.4l-0.3,0.2L9,17.8
+				l-1,2L7.9,20v0.2v25.5v0.6l0.5,0.3l22.1,12.8l0.2,0.1H31h2h0.3l0.2-0.1l22.1-12.8l0.5-0.3v-0.6V20.2V20L56,19.8l-1-2l-0.1-0.3
+				l-0.3-0.2L32.5,4.6L32,4.3L32,4.3z"
+			/>
 		</g>
 	</svg>
 </template>
@@ -33,7 +44,9 @@
 <script lang="ts">
 import { Vue, Prop } from 'vue-property-decorator';
 
-export default class CornerCube extends Vue {}
+export default class CornerCube extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -41,6 +54,6 @@ export default class CornerCube extends Vue {}
 	fill: #5a4278;
 }
 .st1 {
-	fill: #7858a0;
+	fill: #aa93cc;
 }
 </style>

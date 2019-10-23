@@ -1,7 +1,7 @@
 +<template>
 	<div class="toolbox">
 		<div v-for="(tool, index) in refinedTools" :key="index" class="tool">
-			<tile :cell="tool[0]" />
+			<cell :cell="tool[0]" />
 			x {{ tool[1] }}
 		</div>
 	</div>
@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import Tile from '@/game/Tile.vue';
+import Cell from '../Cell.vue';
 
 @Component({
 	components: {
-		Tile
+		Cell
 	}
 })
 export default class Toolbox extends Vue {
@@ -33,7 +33,6 @@ export default class Toolbox extends Vue {
 
 	@Watch('tools')
 	setUpTools() {
-		console.log(this.tools);
 		this.refinedTools = [];
 		this.toolNameList = [];
 		// Take every raw cell object and see whether it is included in the toolNameList:

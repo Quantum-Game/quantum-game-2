@@ -1,17 +1,10 @@
 <template>
 	<div class="controls">
 		<span class="playback">
-			<b-button :usable="false" which-is="play" @click.native="$emit('play')" />
-			<b-button which-is="step-back" @click.native="$emit('stepBack')" />
-			<b-button :usable="false" which-is="pause" @click.native="$emit('pause')" />
-			<b-button which-is="step-forward" @click.native="$emit('stepForward')" />
-			<b-button :usable="false" which-is="stop" @click.native="$emit('stop')" />
-			<b-button :usable="false" which-is="reload" @click.native="$emit('reload')" />
+			<b-button v-for="btn in playBackControls" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
 		<span class="view-mode">
-			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')" />
-			<b-button :usable="false" which-is="quantum" @click.native="$emit('quantum')" />
-			<b-button :usable="false" which-is="multiverse" @click.native="$emit('multiverse')" />
+			<b-button v-for="btn in viewControls" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
 		<slot></slot>
 	</div>
@@ -26,7 +19,10 @@ import BButton from '../BButton.vue';
 		BButton
 	}
 })
-export default class Controls extends Vue {}
+export default class Controls extends Vue {
+	playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];
+	viewControls = ['classical', 'quantum', 'multiverse']
+}
 </script>
 
 <style lang="scss" scoped>
