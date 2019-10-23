@@ -1,6 +1,7 @@
 <template>
   <svg @click="rotate">
     <g :style="calculatedStyle">
+      <!-- MIRROR -->
       <path
         d="M32.3 39L19.2 25H16l13.1 14zM62 39V25H21.8l13.1 14zM3.1 25H2v14h14.2z"
         fill="#5a4278"
@@ -50,8 +51,10 @@ export default class Tile extends Vue {
    * onClick rotate the element
    */
   rotate(): void {
-    this.cell.rotation += 45;
-    console.log('CURRENT ROTATION: ' + this.cell.rotation);
+    if (!this.cell.frozen) {
+      this.cell.rotation += 45;
+      console.log('CURRENT ROTATION: ' + this.cell.rotation);
+    }
   }
 
   get translationX(): number {

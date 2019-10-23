@@ -24,6 +24,7 @@
 				<Grid
 					:cellSize="64"
 					:grid="level.grid"
+					:lasers="lasers"
 				/>
 
 				<!-- <div class="grid" :style="computedGridStyle">
