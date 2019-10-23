@@ -18,12 +18,12 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import MainLayout from '../layouts/MainLayout.vue';
-import Entry from '../entries/Entry.vue';
-import entries from '../entries/entries.json';
+import Entry from '../info/Entry.vue';
+import { entriesNameList } from '../info/entries';
 
 interface ISection {
 	title: string;
-	content: string;
+	content: Array<string>;
 }
 
 interface IEntry {
@@ -41,7 +41,7 @@ interface IEntry {
 export default class Info extends Vue {
 	entryList: Array<string> = [];
 	created() {
-		Object.keys(entries).forEach((entryName: string) => this.entryList.push(entryName));
+		entriesNameList.forEach((entryName: string) => this.entryList.push(entryName));
 	}
 }
 </script>

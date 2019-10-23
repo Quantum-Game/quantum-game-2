@@ -48,7 +48,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 10 },
+        "coord": { "y": 3, "x": 11 },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
@@ -98,5 +98,11 @@
     ]
   },
   "hints": [],
-  "goals": []
+  "goals": [
+    {
+      "coord": { "y": 3, "x": 10 },
+      "threshold": 1,
+      "value": 0
+    }
+  ]
 }

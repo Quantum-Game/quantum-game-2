@@ -2,18 +2,18 @@
 	<div ref="goals" class="goals-wrapper">
 		<div class="upper-icons">
 			<div>
-			<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25">
-			<!-- NUMBER OF KEYS -->
-			<span>  02</span>
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<!-- NUMBER OF KEYS -->
+				<span> 02</span>
 			</div>
 			<div>
-			<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25">
-			<!-- NUMBER OF POINTS? -->
-			<span>  25</span>
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<!-- NUMBER OF POINTS? -->
+				<span> 25</span>
 			</div>
 		</div>
 		<svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg">
-			<circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1"/>
+			<circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
 		</svg>
 		<!-- <vc-donut
 			class="chart"
@@ -30,8 +30,8 @@
 			<div>PROBABILITY</div>
 		</vc-donut> -->
 		<div class="bottom-icons">
-			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30">
-			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30">
+			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
+			<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
 			<div>DETECTORS</div>
 		</div>
 	</div>
@@ -71,7 +71,7 @@ export default class Goals extends Vue {
 		//justify-content: left;
 		margin-bottom: 2rem;
 	}
-	& .bottom-icons{
+	& .bottom-icons {
 		line-height: 150%;
 	}
 	& .chart {

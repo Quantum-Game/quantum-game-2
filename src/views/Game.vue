@@ -1,14 +1,15 @@
 <template>
 	<div class="game">
+		<victory v-if="isVictorius" @click.native="showPrevious" />
 		<game-layout>
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
-					<img src="@/assets/prevIcon.svg" alt="Previous Level" width="32">
+					<img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
 				</router-link>
 				{{ level.name.toUpperCase() }}
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
-					<img src="@/assets/nextIcon.svg" alt="Next Level" width="32">
+					<img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
 				</router-link>
 			</h1>
 			<Goals slot="main-left" :percentage="70" />
@@ -57,6 +58,7 @@ import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
+import Victory from '../game/overlays/Victory.vue';
 
 const emptyLevel = {
 	grid: {
@@ -86,7 +88,8 @@ const emptyLevel = {
 		Goals,
 		Explanation,
 		Toolbox,
-		Controls
+		Controls,
+		Victory
 	}
 })
 export default class Game extends Vue {
@@ -245,15 +248,19 @@ export default class Game extends Vue {
 		return this.frames[this.frameNumber];
 	}
 
-  get lastFrame(): FrameInterface {
-    return this.frames[this.frames.length - 1];
-  }
-
-  get computedGridStyle() {
-	  return {
-		backgroundImage: `url(${gridSVG})`
+	get lastFrame(): FrameInterface {
+		return this.frames[this.frames.length - 1];
 	}
-  }
+
+	get computedGridStyle() {
+		return {
+			backgroundImage: `url(${gridSVG})`
+		};
+	}
+
+	get isVictorius() {
+		return this.activeFrame.gameState === 'Victory';
+	}
 }
 </script>
 
@@ -305,15 +312,15 @@ h1 {
 	}
 }
 .game {
-  &.goals {
-    //background-color: rgba(255, 0, 85, 0.349);
-    height: 600px;
-    a:link,
-    a:visited {
-      color: white;
-      font-size: 12;
-      text-decoration: none;
-    }
-  }
+	&.goals {
+		//background-color: rgba(255, 0, 85, 0.349);
+		height: 600px;
+		a:link,
+		a:visited {
+			color: white;
+			font-size: 12;
+			text-decoration: none;
+		}
+	}
 }
 </style>

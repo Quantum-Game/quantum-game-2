@@ -1,9 +1,11 @@
 +<template>
 	<div class="explanation placeholder">
 		<h3 class="title">ELEMENT NAME</h3>
-		<p> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-		
-		<slot></slot>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+			labore et dolore magna aliqua.
+		</p>
+		<slot> </slot>
 	</div>
 </template>
 
@@ -17,7 +19,7 @@ export default class Explanation extends Vue {}
 <style lang="scss" scoped>
 .placeholder {
 	width: 100%;
-	height:fit-content;
+	height: fit-content;
 	padding-top: 10px;
 	padding-bottom: 10px;
 	& h3 {
@@ -29,7 +31,7 @@ export default class Explanation extends Vue {}
 		border-top: 1px solid #8e819d;
 		text-align: left;
 		font-size: 1rem;
-  		line-height: 150%;
+		line-height: 150%;
 	}
 }
 </style>
