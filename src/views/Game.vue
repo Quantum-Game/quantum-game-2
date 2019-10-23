@@ -20,7 +20,13 @@
 				</li>
 			</ul>
 			<section slot="main-middle">
-				<div class="grid" :style="computedGridStyle">
+
+				<Grid
+					:cellSize="64"
+					:grid="level.grid"
+				/>
+
+				<!-- <div class="grid" :style="computedGridStyle">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
 						<tile
 							v-for="(column, x) in level.grid.cols"
@@ -30,7 +36,7 @@
 							:lasers="isThereLasers(y, x)"
 						></tile>
 					</div>
-				</div>
+				</div> -->
 				<controls @stepBack="showPrevious" @stepForward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
@@ -56,6 +62,7 @@ import { ICell, ICoord, FrameInterface, ParticleInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
+import Grid from '../game/Grid.vue'
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
 import Overlay from '../game/overlays/Overlay.vue';
@@ -89,18 +96,20 @@ const emptyLevel = {
 		Explanation,
 		Toolbox,
 		Controls,
-		Overlay
+		Overlay,
+		Grid
 	}
 })
 export default class Game extends Vue {
-	level = emptyLevel;
-	error: string = '';
-	game = {};
-	activeElement = '';
+  level = emptyLevel;
+  error: string = '';
+  game = {};
+  activeElement = '';
+  frameNumber: number = 0;
 	frames: FrameInterface[] = [];
-	frameNumber: number = 0;
-	lasers = [];
-	toolbox = [];
+	goals = [];
+  lasers = [];
+  toolbox = [];
 
 	// LIFECYCLE
 	created() {
@@ -128,12 +137,13 @@ export default class Game extends Vue {
 		return true;
 	}
 
-	setupInitFrame() {
-		this.frames = [];
-		this.frameNumber = 0;
-		const loadedLevel = Level.importLevel(this.level);
+  setupInitFrame() {
+    this.frames = [];
+    this.frameNumber = 0;
+    const loadedLevel = Level.importLevel(this.level);
 		this.lasers = loadedLevel.grid.computePaths();
-		console.log(`LASERS: ${this.lasers.length}`);
+		this.goals = loadedLevel.goals
+    console.log(`LASERS: ${this.lasers.length}`);
 
 		const initFrame = new Frame(loadedLevel);
 		const firstFrame: FrameInterface = initFrame.next();
@@ -244,9 +254,17 @@ export default class Game extends Vue {
 		return this.frames[this.frameNumber].quantum;
 	}
 
-	get activeFrame(): FrameInterface {
-		return this.frames[this.frameNumber];
-	}
+  get probabilitySum(): number {
+    let sum = 0;
+    this.frames[this.frameNumber].quantum.forEach((particle) => {
+      sum += particle.intensity;
+    });
+    return sum;
+  }
+
+  get activeFrame(): FrameInterface {
+    return this.frames[this.frameNumber];
+  }
 
 	get lastFrame(): FrameInterface {
 		return this.frames[this.frames.length - 1];
