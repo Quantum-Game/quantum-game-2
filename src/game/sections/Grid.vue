@@ -10,6 +10,19 @@
 		<!-- CELLS -->
 		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" />
 
+		    <!-- LASER DOTS -->
+    <!-- <g
+      v-for="(laser, index) in this.lasers"
+      :key="'laser' + index"
+      :v-if="lasers.length > 0"
+      class="lasers"
+    >
+      <circle :cx="centerCoord(laser.coord.x)" :cy="centerCoord(laser.coord.y)" r="3" fill="red" />
+    </g> -->
+
+		    <!-- LASER PATH -->
+    <path stroke-dasharray="10,10" :d="laserPath()" fill="transparent" stroke="red" stroke-width="3" />
+
 		<!-- PHOTONS -->
 		<g
 			v-for="(particle, index) in particles"
@@ -51,61 +64,29 @@ import { IGrid, ICell, Qparticle } from '@/types';
 export default class Grid extends Vue {
 	@Prop({ default: 64 }) readonly cellSize!: number;
 	@Prop() readonly grid!: IGrid;
-	// grid: IGrid = {
-	// 	cols: 10,
-	// 	rows: 8,
-	// 	cells: [
-	// 		{
-	// 			coord: {
-	// 				x: 1,
-	// 				y: 1
-	// 			},
-	// 			element: 'Mirror',
-	// 			rotation: 90,
-	// 			frozen: false,
-	// 			active: false
-	// 		},
-	// 		{
-	// 			coord: {
-	// 				x: 5,
-	// 				y: 2
-	// 			},
-	// 			element: 'Mirror',
-	// 			rotation: 0,
-	// 			frozen: false,
-	// 			active: true
-	// 		}
-	// 	]
-	// };
-
-	get totalWidth(): number {
-		return this.grid.cols * this.cellSize;
-	}
-	get totalHeight(): number {
-		return this.grid.rows * this.cellSize;
-	}
+  @Prop({ default: '' }) readonly lasers!: Qparticle[];
 
 	particles(): Qparticle[] {
 		return [
-			{
-				x: 3,
-				y: 3,
-				direction: 0,
-				are: 0,
-				aim: 0,
-				bre: 1,
-				bim: 0
-			},
-			{
-				x: 4,
-				y: 3,
-				direction: 90,
-				are: 0,
-				aim: 0,
-				bre: 1,
-				bim: 0
-			}
-		];
+      {
+        x: 3,
+        y: 3,
+        direction: 0,
+        are: 0,
+        aim: 0,
+        bre: 1,
+        bim: 0
+      },
+      {
+        x: 4,
+        y: 3,
+        direction: 270,
+        are: 0,
+        aim: 0,
+        bre: 1,
+        bim: 0
+      }
+    ];
 	}
 
 	computeParticleStyle(particle: Qparticle): {} {
@@ -127,6 +108,26 @@ export default class Grid extends Vue {
 		return (val + 0.5) * this.cellSize;
 	}
 
+		/**
+	 * Create laser path through the lasers points
+	 * @returns SVG laser path
+	 */
+	laserPath(): string {
+		let pathStr = "";
+		if (this.lasers.length > 0) {
+			const originX = this.centerCoord(this.lasers[0].coord.x)
+			const originY = this.centerCoord(this.lasers[0].coord.y)
+			pathStr += `M ${originX} ${originY} `
+			this.lasers.forEach((laser: any) => {
+				const x = this.centerCoord(laser.coord.x)
+				const y = this.centerCoord(laser.coord.y)
+				pathStr += ` L ${x} ${y} `
+			});
+		}
+		return pathStr
+	}
+
+
 	// HELPING FUNCTIONS
 	element(y: number, x: number): ICell {
 		const cells = this.grid.cells.filter((cell: ICell) => cell.coord.x === x && cell.coord.y === y);
@@ -140,6 +141,15 @@ export default class Grid extends Vue {
 			frozen: false
 		};
 	}
+
+	get totalWidth(): number {
+		return this.grid.cols * this.cellSize;
+	}
+
+	get totalHeight(): number {
+		return this.grid.rows * this.cellSize;
+	}
+
 }
 </script>
 
