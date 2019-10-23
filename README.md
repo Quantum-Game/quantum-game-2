@@ -7,6 +7,8 @@ Quantum Game 2 from CQT
 ## TODO:
 
 ### GAME:
+- [ ] alternative Grid Approach
+- [ ] Defeat Overlay
 - [ ] click listeners;
 - [ ] drop listeners;
 - [ ] drag
@@ -89,3 +91,9 @@ Quantum Game 2 from CQT
 - [x] set up variants
 - [x] start adding handlers
 - [x] prepare tray
+
+22.10
+- [x] board as background
+- [x] enhance entries structure
+- [x] Victory overlay
+- [x] donut chart

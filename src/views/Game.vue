@@ -31,6 +31,7 @@
 						></tile>
 					</div>
 				</div>
+				<grid :gridData="level.grid" />
 				<controls @stepBack="showPrevious" @stepForward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
@@ -55,7 +56,7 @@ import GameLayout from '../layouts/GameLayout.vue';
 import { ICell, ICoord, FrameInterface, ParticleInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
-import { Piece, Tile } from '../game';
+import { Piece, Tile, Grid } from '../game';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
 import Overlay from '../game/overlays/Overlay.vue';
@@ -89,7 +90,8 @@ const emptyLevel = {
 		Explanation,
 		Toolbox,
 		Controls,
-		Overlay
+		Overlay,
+		Grid
 	}
 })
 export default class Game extends Vue {
