@@ -9,10 +9,8 @@
 			<b-button :usable="false" which-is="reload" @click.native="$emit('reload')" />
 		</span>
 		<span class="view-mode">
-			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')">
-				C
-			</b-button>
-			<b-button :usable="false" which-is="quantum" @click.native="$emit('quantum')"> Q </b-button>
+			<b-button :usable="false" which-is="classical" @click.native="$emit('classical')" />
+			<b-button :usable="false" which-is="quantum" @click.native="$emit('quantum')" />
 			<b-button :usable="false" which-is="multiverse" @click.native="$emit('multiverse')" />
 		</span>
 		<slot></slot>
