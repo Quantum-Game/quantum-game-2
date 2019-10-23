@@ -20,7 +20,13 @@
 				</li>
 			</ul>
 			<section slot="main-middle">
-				<div class="grid" :style="computedGridStyle">
+
+				<Grid
+					:cellSize="64"
+					:grid="level.grid"
+				/>
+
+				<!-- <div class="grid" :style="computedGridStyle">
 					<div v-for="(row, y) in level.grid.rows" :key="y" class="row">
 						<tile
 							v-for="(column, x) in level.grid.cols"
@@ -30,7 +36,7 @@
 							:lasers="isThereLasers(y, x)"
 						></tile>
 					</div>
-				</div>
+				</div> -->
 				<controls @stepBack="showPrevious" @stepForward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
@@ -56,6 +62,7 @@ import { ICell, ICoord, FrameInterface, ParticleInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import { Piece, Tile } from '../game';
+import Grid from '../game/Grid.vue'
 import { Goals, Explanation, Toolbox, Controls, YourPhoton } from '../game/sections';
 import gridSVG from '../assets/board_dots.svg';
 import Overlay from '../game/overlays/Overlay.vue';
@@ -89,7 +96,8 @@ const emptyLevel = {
 		Explanation,
 		Toolbox,
 		Controls,
-		Overlay
+		Overlay,
+		Grid
 	}
 })
 export default class Game extends Vue {
