@@ -20,7 +20,11 @@
 				</li>
 			</ul>
 			<section slot="main-middle">
-				<Grid :cell-size="64" :grid="level.grid" />
+				<Grid
+					:cellSize="64"
+					:grid="level.grid"
+					:lasers="lasers"
+				/>
 				<controls @step-back="showPrevious" @step-forward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
