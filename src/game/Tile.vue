@@ -19,6 +19,7 @@
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import { ICell } from '@/types';
+import EventBus from '../eventbus';
 
 @Component({
   components: {}
@@ -50,10 +51,10 @@ export default class Tile extends Vue {
   /**
    * onClick rotate the element
    */
-  rotate(): void {
+  rotate(): number {
     if (!this.cell.frozen) {
-      this.cell.rotation += 45;
-      console.log('CURRENT ROTATION: ' + this.cell.rotation);
+			this.cell.rotation += 45;
+			EventBus.$emit('CELL_ROTATED', this.cell)
     }
   }
 

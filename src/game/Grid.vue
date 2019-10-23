@@ -12,33 +12,31 @@
       <tile :cell="cell" :cellSize="cellSize" />
     </g>
 
-    <!-- LASER DOTS -->
-    <!-- <g
-      v-for="(laser, index) in this.lasers"
-      :key="'laser' + index"
-      :v-if="lasers.length > 0"
-      class="lasers"
-    >
-      <circle :cx="centerCoord(laser.coord.x)" :cy="centerCoord(laser.coord.y)" r="3" fill="red" />
-    </g> -->
     <!-- LASER PATH -->
-    <path stroke-dasharray="10,10" :d="laserPath()" fill="transparent" stroke="red" stroke-width="3" />
+    <path
+      :d="laserPath()"
+      stroke-dasharray="10 10"
+      fill="transparent"
+      stroke="red"
+      stroke-width="3"
+      id="laserPath"
+    />
 
     <!-- PHOTONS -->
     <g
-      v-for="(particle, index) in this.particles()"
+      v-for="(particle, index) in photons"
       :key="'particle' + index"
-      :v-if="particles.length > 0"
+      :v-if="photons.length > 0"
       class="photons"
       :style="computeParticleStyle(particle)"
     >
       <photon
         name
         :intensity="particle.intensity"
-        :are="particle.are"
-        :aim="particle.aim"
-        :bre="particle.bre"
-        :bim="particle.bim"
+        :are="particle.a.re"
+        :aim="particle.a.im"
+        :bre="particle.b.re"
+        :bim="particle.b.im"
         :width="64"
         :height="64"
         :margin="0"
@@ -47,6 +45,10 @@
         :display-gaussian="false"
         :sigma="0.25"
       />
+      <!-- MOTION PATH -->
+      <animate dur="6s" repeatCount="indefinite" begin="click">
+        <mpath xlink:href="#laserPath" />
+      </animate>
     </g>
   </svg>
 </template>
@@ -54,37 +56,10 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import Photon from './Photon.vue';
-import { IGrid, ICell, Qparticle } from '@/types';
+import { IGrid, ICell, Qparticle, ParticleInterface } from '@/types';
 import Mirror from './pieces/Mirror.vue';
 import Tile from './Tile.vue';
-// import { drag } from 'd3-drag';
-// import { select } from 'd3-selection';
-// const d3 = {
-// 	scaleLinear,
-// 	scaleSequential,
-// 	select,
-// 	range,
-// 	interpolateInferno,
-// 	interpolateViridis
-// };
 
-// var svg = d3.select("svg.grid");
-// svg.append("use")
-//     .attr("href", "#pointer")
-//     .attr("x", 50)
-//     .attr("y", 50)
-//     .attr("fill", "#039BE5")
-//     .attr("stroke", "#039BE5")
-//     .attr("stroke-width", "1px");
-
-// var dragHandler = d3.drag()
-//     .on("drag", function () {
-//         d3.select(this)
-//             .attr("x", d3.event.x)
-//             .attr("y", d3.event.y);
-//     });
-
-// dragHandler(svg.selectAll("use"));
 
 @Component({
   components: {
@@ -95,36 +70,14 @@ import Tile from './Tile.vue';
 export default class Grid extends Vue {
   @Prop({ default: '' }) readonly grid!: IGrid;
   @Prop({ default: '64' }) readonly cellSize!: number;
-  @Prop({ default: '' }) readonly lasers!: Qparticle[];
+  @Prop({ default: '' }) readonly lasers!: ParticleInterface[];
+  @Prop({ default: '' }) readonly photons!: ParticleInterface[];
 
   get totalWidth(): number {
     return this.grid.cols * this.cellSize;
   }
   get totalHeight(): number {
     return this.grid.rows * this.cellSize;
-  }
-
-  particles(): Qparticle[] {
-    return [
-      {
-        x: 3,
-        y: 3,
-        direction: 0,
-        are: 0,
-        aim: 0,
-        bre: 1,
-        bim: 0
-      },
-      {
-        x: 4,
-        y: 3,
-        direction: 270,
-        are: 0,
-        aim: 0,
-        bre: 1,
-        bim: 0
-      }
-    ];
   }
 
   computeParticleStyle(particle: Qparticle): {} {
@@ -144,26 +97,46 @@ export default class Grid extends Vue {
    */
   centerCoord(val: number): number {
     return (val + 0.5) * this.cellSize;
-	}
+  }
 
-	/**
-	 * Create laser path through the lasers points
-	 * @returns SVG laser path
-	 */
-	laserPath(): string {
-		let pathStr = "";
-		if (this.lasers.length > 0) {
-			const originX = this.centerCoord(this.lasers[0].coord.x)
-			const originY = this.centerCoord(this.lasers[0].coord.y)
-			pathStr += `M ${originX} ${originY} `
-			this.lasers.forEach((laser: any) => {
-				const x = this.centerCoord(laser.coord.x)
-				const y = this.centerCoord(laser.coord.y)
-				pathStr += ` L ${x} ${y} `
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  laserPath(): string {
+    let pathStr = '';
+    if (this.lasers.length > 0) {
+      const originX = this.centerCoord(this.lasers[0].coord.x);
+      const originY = this.centerCoord(this.lasers[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
 			});
-		}
-		return pathStr
-	}
+			pathStr += " "
+    }
+    return pathStr;
+  }
+
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  photonPath(): string {
+    let pathStr = '';
+    if (this.photons.length > 0) {
+      const originX = this.centerCoord(this.photons[0].coord.x);
+      const originY = this.centerCoord(this.photons[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
+      });
+    }
+    return pathStr;
+  }
 
   // HELPING FUNCTIONS
   element(y: number, x: number): ICell {
@@ -183,4 +156,27 @@ export default class Grid extends Vue {
 </script>
 
 <style lang="scss" scoped>
+#laserPath {
+  stroke-dasharray: 10;
+  animation-name: dash;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: reverse;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 100;
+  }
+}
 </style>
+
+<!-- LASER DOTS -->
+<!-- <g
+	v-for="(laser, index) in this.lasers"
+	:key="'laser' + index"
+	:v-if="lasers.length > 0"
+	class="lasers"
+>
+<circle :cx="centerCoord(laser.coord.x)" :cy="centerCoord(laser.coord.y)" r="3" fill="red" />
+</g> -->

@@ -26,7 +26,7 @@
       :total="100"
       :start-angle="0"
     >
-      <div class="inner-circle">{{ (percentage * 100).toFixed(0) }}%</div>
+      <div class="inner-circle">{{ (percentage).toFixed(0) }}%</div>
       <div>PROBABILITY</div>
     </vc-donut>
     <div class="bottom-icons">
