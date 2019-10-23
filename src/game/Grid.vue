@@ -2,31 +2,31 @@
   <svg class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
     <g v-for="(row, y) in grid.rows" :key="y">
-    	<g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="centerCoord(x)" :cy="centerCoord(y)" r="1" fill="#edeaf4" />
-    	</g>
+      <g v-for="(column, x) in grid.cols" :key="x">
+        <circle :cx="x * cellSize" :cy="y * cellSize" r="1" fill="#edeaf4" />
+      </g>
     </g>
 
-		<!-- TILES -->
+    <!-- TILES -->
     <g class="cells" v-for="(cell, i) in grid.cells" :key="'cell' + i">
       <tile :cell="cell" :cellSize="cellSize" />
     </g>
 
     <!-- PHOTONS -->
     <g
-      v-for="(particle, index) in particles"
-      :key="index"
+      v-for="(particle, index) in this.particles()"
+      :key="'particle' + index"
       :v-if="particles.length > 0"
       class="photons"
+      :style="computeParticleStyle(particle)"
     >
       <photon
         name
         :intensity="particle.intensity"
-        :are="particle.a.re"
-        :aim="particle.a.im"
-        :bre="particle.b.re"
-        :bim="particle.b.im"
-        :direction="particle.direction"
+        :are="particle.are"
+        :aim="particle.aim"
+        :bre="particle.bre"
+        :bim="particle.bim"
         :width="64"
         :height="64"
         :margin="0"
@@ -65,7 +65,7 @@ export default class Grid extends Vue {
           y: 1
         },
         element: 'Mirror',
-        rotation: 0,
+        rotation: 90,
         frozen: false,
         active: false
       },
@@ -92,15 +92,35 @@ export default class Grid extends Vue {
   particles(): Qparticle[] {
     return [
       {
-        x: 4,
+        x: 3,
         y: 3,
         direction: 0,
-        are: 1,
+        are: 0,
         aim: 0,
-        bre: 0,
+        bre: 1,
+        bim: 0
+      },
+      {
+        x: 4,
+        y: 3,
+        direction: 90,
+        are: 0,
+        aim: 0,
+        bre: 1,
         bim: 0
       }
     ];
+  }
+
+  computeParticleStyle(particle: Qparticle): {} {
+    const originX = this.centerCoord(particle.x);
+    const originY = this.centerCoord(particle.y);
+    return {
+			"transform-origin": `${originX}px ${originY}px`,
+			"transform": `
+				rotate(${particle.direction}deg)
+				translate(${particle.x * this.cellSize}px, ${particle.y * this.cellSize}px)`
+    };
   }
 
   /**
