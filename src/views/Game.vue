@@ -305,18 +305,6 @@ h1 {
 	}
 }
 .game {
-<<<<<<< HEAD
-	&.goals {
-		background-color: rgba(255, 0, 85, 0.349);
-		height: 600px;
-		a:link,
-		a:visited {
-			color: white;
-			font-size: 12;
-			text-decoration: none;
-		}
-	}
-=======
   &.goals {
     //background-color: rgba(255, 0, 85, 0.349);
     height: 600px;
@@ -327,6 +315,5 @@ h1 {
       text-decoration: none;
     }
   }
->>>>>>> 385c21d5512a6f4c159cffd69cf915dccc34ef10
 }
 </style>

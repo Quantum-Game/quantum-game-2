@@ -20,9 +20,9 @@ export default class BButton extends Vue {
 	get calculatedStyle() {
 		let styleObj = {};
 		if (this.whichIs) {
-			if (this.whichIs === 'classical' || this.whichIs === 'quantum') {
-				return { opacity: 0.3 };
-			}
+			// if (this.whichIs === 'classical' || this.whichIs === 'quantum') {
+			// 	return { opacity: 0.3 };
+			// }
 
 			styleObj = {
         backgroundImage: `url(${require(`../assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line

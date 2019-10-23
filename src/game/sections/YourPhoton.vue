@@ -85,7 +85,11 @@ export default class SimulationStepsDisplay extends Vue {
 }
 
 .step {
-  font-size: 0.9em;
+  font-size: 0.8rem;
   line-height: 150%;
+}
+
+h3{
+	font-size: 1rem;
 }
 </style>
