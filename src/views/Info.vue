@@ -35,7 +35,7 @@ interface IEntry {
 @Component({
 	components: {
 		MainLayout,
-		Entry,
+		Entry
 	}
 })
 export default class Info extends Vue {

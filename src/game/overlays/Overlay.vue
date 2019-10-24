@@ -46,6 +46,5 @@ export default class Overlay extends Vue {
 	z-index: 3;
 	display: flex;
 	align-items: center;
-
 }
 </style>
