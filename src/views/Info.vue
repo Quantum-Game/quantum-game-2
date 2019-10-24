@@ -11,7 +11,7 @@
 		</div>
 		<div slot="right">
 			<h3 class="upper-border">RELATED CONCEPTS</h3>
-			<Absorber />
+			<!-- <Absorber /> -->
 		</div>
 	</main-layout>
 </template>
