@@ -12,7 +12,8 @@
 				></sliceSourceBounds>
 			</sfw>
 		</metadata>
-		<g id="Qactive">
+		<!-- ACTIVE STATE - AFTER HIT BY PHOTON (ONLY ONE DETECTOR ON THE BOARD)-->
+		<g id="Qactive" class="st0">
 			<path
 				class="st1"
 				d="M7.5,58.5h-3c0-15.1,15.5-18,15.6-18l0.5,3L20.4,42l0.3,1.5C20.1,43.6,7.5,46,7.5,58.5z"
@@ -32,7 +33,7 @@
 			<g class="st2">
 				<g>
 					<linearGradient
-						id="SVGID_2_"
+						id="detectorSVGID_2_"
 						gradientUnits="userSpaceOnUse"
 						x1="169.5468"
 						y1="-119.9468"
@@ -54,7 +55,7 @@
 						<stop offset="1" style="stop-color:#9229ED" />
 					</linearGradient>
 					<path
-						id="SVGID_1_"
+						id="detectorSVGID_1_"
 						class="st4"
 						d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28
 						c9.6,0,18.1-4.9,23.2-12.3L33.9,32z"
@@ -63,26 +64,26 @@
 				<g>
 					<defs>
 						<path
-							id="SVGID_3_"
+							id="detectorSVGID_3_"
 							d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28c9.6,0,18.1-4.9,23.2-12.3
 							L33.9,32z"
 						/>
 					</defs>
-					<clipPath id="SVGID_5_">
-						<use xlink:href="#SVGID_3_" style="overflow:visible;" />
+					<clipPath id="detectorSVGID_5_">
+						<use xlink:href="#detectorSVGID_3_" style="overflow:visible;" />
 					</clipPath>
 					<path class="st5" d="M12,7c0,0-11,48,53,45S47,72,47,72l-32-7L2,29V13L12,7z" />
 				</g>
 				<g>
 					<defs>
 						<path
-							id="SVGID_6_"
+							id="detectorSVGID_6_"
 							d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28c9.6,0,18.1-4.9,23.2-12.3
 							L33.9,32z"
 						/>
 					</defs>
-					<clipPath id="SVGID_7_">
-						<use xlink:href="#SVGID_6_" style="overflow:visible;" />
+					<clipPath id="detectorSVGID_7_">
+						<use xlink:href="#detectorSVGID_6_" style="overflow:visible;" />
 					</clipPath>
 					<polygon class="st6" points="55,10 32,32 56,54 61,47 62,22 60,14 			" />
 				</g>
@@ -108,7 +109,8 @@
 				</g>
 			</g>
 		</g>
-		<g id="Qregular" class="st0">
+		<!-- BASIC STATE -->
+		<g id="Qregular">
 			<g>
 				<path
 					class="st12"
@@ -129,7 +131,7 @@
 				<g>
 					<g>
 						<path
-							id="SVGID_4_"
+							id="detectorSVGID_4_detector"
 							class="st13"
 							d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28
 							c9.6,0,18.1-4.9,23.2-12.3L33.9,32z"
@@ -138,26 +140,26 @@
 					<g>
 						<defs>
 							<path
-								id="SVGID_8_"
+								id="detectorSVGID_8_detector"
 								d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28c9.6,0,18.1-4.9,23.2-12.3
 								L33.9,32z"
 							/>
 						</defs>
-						<clipPath id="SVGID_9_">
-							<use xlink:href="#SVGID_8_" style="overflow:visible;" />
+						<clipPath id="detectorSVGID_9_detector">
+							<use xlink:href="#detectorSVGID_8_detector" style="overflow:visible;" />
 						</clipPath>
 						<path class="st14" d="M12,7c0,0-11,48,53,45S47,72,47,72l-32-7L2,29V13L12,7z" />
 					</g>
 					<g>
 						<defs>
 							<path
-								id="SVGID_10_"
+								id="detectorSVGID_10_"
 								d="M33.9,32l23.3-15.7C52.1,8.9,43.6,4,34,4C18.5,4,6,16.5,6,32s12.5,28,28,28c9.6,0,18.1-4.9,23.2-12.3
 								L33.9,32z"
 							/>
 						</defs>
-						<clipPath id="SVGID_11_">
-							<use xlink:href="#SVGID_10_" style="overflow:visible;" />
+						<clipPath id="detectorSVGID_11_">
+							<use xlink:href="#detectorSVGID_10_" style="overflow:visible;" />
 						</clipPath>
 						<polygon class="st15" points="55,10 32,32 56,54 61,47 62,22 60,14 				" />
 					</g>
@@ -195,7 +197,8 @@
 				</g>
 			</g>
 		</g>
-		<g v-if="border" id="Qoutline" class="st0">
+		<!-- OUTLINE -->
+		<g v-if="border" id="Qoutline" >
 			<path
 				class="st8"
 				:style="{ fill: border }"
@@ -238,16 +241,16 @@ export default class Detector extends Vue {
 	fill: #ffffff;
 }
 .st4 {
-	fill: url(#SVGID_2_);
+	fill: url(#detectorSVGID_2_);
 }
 .st5 {
 	opacity: 0.5;
-	clip-path: url(#SVGID_5_);
+	clip-path: url(#detectorSVGID_5_);
 	fill: #9e005d;
 	enable-background: new;
 }
 .st6 {
-	clip-path: url(#SVGID_7_);
+	clip-path: url(#detectorSVGID_7_);
 	fill: #ff0055;
 }
 .st7 {
@@ -273,11 +276,11 @@ export default class Detector extends Vue {
 	fill: #77d807;
 }
 .st14 {
-	clip-path: url(#SVGID_9_);
+	clip-path: url(#detectorSVGID_9_detector);
 	fill: #57c703;
 }
 .st15 {
-	clip-path: url(#SVGID_11_);
+	clip-path: url(#detectorSVGID_11_);
 	fill: #007f12;
 }
 .st16 {

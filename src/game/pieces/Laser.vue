@@ -12,6 +12,7 @@
 				></sliceSourceBounds>
 			</sfw>
 		</metadata>
+		<!-- BASIC STATE -->
 		<g>
 			<circle class="st0" cx="31.9" cy="32" r="30" />
 			<polygon class="st1" points="55.7,32 18.7,11 18.7,53 	" />
@@ -71,6 +72,12 @@
 				/>
 			</g>
 		</g>
+		<!-- OUTLINE FOR ROTATION (ONLY IN SANDBOX MODE) -->
+		<g class="st3">
+			<path class="st0" d="M31.9,2c16.6,0,30,13.4,30,30s-13.4,30-30,30s-30-13.4-30-30S15.3,2,31.9,2 M31.9,1c-17.1,0-31,13.9-31,31
+				s13.9,31,31,31s31-13.9,31-31S49,1,31.9,1L31.9,1z"/>
+		</g>
+
 	</svg>
 </template>
 
@@ -89,5 +96,8 @@ export default class Laser extends Vue {
 }
 .st1 {
 	fill: #ffffff;
+}
+.st3 {
+	display: none;
 }
 </style>

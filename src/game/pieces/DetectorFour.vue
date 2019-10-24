@@ -12,6 +12,7 @@
 				></sliceSourceBounds>
 			</sfw>
 		</metadata>
+		<!-- HIT BY THE PHOTON STATE - ONLY ONE ON THE BOARD -->
 		<g id="Qactive_1_" class="st0">
 			<g class="st1">
 				<g>
@@ -62,13 +63,13 @@
 			<g class="st1">
 				<defs>
 					<path
-						id="SVGID_1_"
+						id="det4SVGID_1_"
 						d="M38.1,32l19.5-11.5C54.7,14.1,49.5,8.9,43,6.2L31.6,25.5l-11.2-19C14.1,9.4,9.1,14.6,6.4,21l18.7,11
 						L6.4,43c2.7,6.4,7.8,11.5,14.1,14.4l11.2-19L43,57.8c6.5-2.7,11.7-7.9,14.6-14.3L38.1,32z"
 					/>
 				</defs>
 				<linearGradient
-					id="SVGID_2_"
+					id="det4SVGID_2_"
 					gradientUnits="userSpaceOnUse"
 					x1="6.3704"
 					y1="31.996"
@@ -88,9 +89,9 @@
 					<stop offset="0.9392" style="stop-color:#9827E4" />
 					<stop offset="1" style="stop-color:#9229ED" />
 				</linearGradient>
-				<use xlink:href="#SVGID_1_" style="overflow:visible;fill:url(#SVGID_2_);" />
-				<clipPath id="SVGID_3_">
-					<use xlink:href="#SVGID_1_" style="overflow:visible;" />
+				<use xlink:href="#det4SVGID_1_" style="overflow:visible;fill:url(#det4SVGID_2_);" />
+				<clipPath id="det4SVGID_3_">
+					<use xlink:href="#det4SVGID_1_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st3">
 					<polygon class="st4" points="58.1,14 37.1,32 58.1,50 61.1,39 61.1,25 			" />
@@ -121,6 +122,7 @@
 				</g>
 			</g>
 		</g>
+		<!-- BASIC STATE -->
 		<g id="Qregular">
 			<g>
 				<g>
@@ -171,14 +173,14 @@
 			<g>
 				<defs>
 					<path
-						id="SVGID_4_"
+						id="det4SVGID_4_"
 						d="M38.1,32l19.5-11.5C54.7,14.1,49.5,8.9,43,6.2L31.6,25.5l-11.2-19C14.1,9.4,9.1,14.6,6.4,21l18.7,11
 						L6.4,43c2.7,6.4,7.8,11.5,14.1,14.4l11.2-19L43,57.8c6.5-2.7,11.7-7.9,14.6-14.3L38.1,32z"
 					/>
 				</defs>
-				<use xlink:href="#SVGID_4_" style="overflow:visible;fill:#77D807;" />
-				<clipPath id="SVGID_5_">
-					<use xlink:href="#SVGID_4_" style="overflow:visible;" />
+				<use xlink:href="#det4SVGID_4_" style="overflow:visible;fill:#77D807;" />
+				<clipPath id="det4SVGID_5_">
+					<use xlink:href="#det4SVGID_4_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st9">
 					<polygon class="st10" points="58.1,14 37.1,32 58.1,50 61.1,39 61.1,25 			" />
@@ -209,6 +211,7 @@
 				</g>
 			</g>
 		</g>
+		<!-- OUTLINE - WHEN THERE IS PROBABILITY OF BEING HIT, NO ROTATION -->
 		<g v-if="border" id="Qoutline">
 			<path
 				class="st4"
@@ -276,14 +279,14 @@ export default class DetectorFour extends Vue {
 	fill: #ffffff;
 }
 .st3 {
-	clip-path: url(#SVGID_3_);
+	clip-path: url(#det4SVGID_3_);
 }
 .st4 {
 	fill: #ff0055;
 }
 .st5 {
 	opacity: 0.5;
-	clip-path: url(#SVGID_3_);
+	clip-path: url(#det4SVGID_3_);
 	fill: #9e005d;
 	enable-background: new;
 }
@@ -298,14 +301,14 @@ export default class DetectorFour extends Vue {
 	fill: #931948;
 }
 .st9 {
-	clip-path: url(#SVGID_5_);
+	clip-path: url(#det4SVGID_5_);
 }
 .st10 {
 	fill: #007f12;
 }
 .st11 {
 	opacity: 0.5;
-	clip-path: url(#SVGID_5_);
+	clip-path: url(#det4SVGID_5_);
 	fill: #77d807;
 }
 .st12 {
