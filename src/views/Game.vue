@@ -12,7 +12,7 @@
 					<img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
 				</router-link>
 			</h1>
-			<Goals slot="main-left" :percentage="70" />
+			<Goals slot="main-left" :percentage="70" :goals="level.goals"/>
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
 				<li v-for="(stuff, i) in Array(20)" :key="i">
