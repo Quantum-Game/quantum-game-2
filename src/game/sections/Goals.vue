@@ -26,12 +26,12 @@
 			:total="100"
 			:start-angle="0"
 		> -->
-			<svg height="160" width="160" viewBox="0 0 160 160">
+			<!-- <svg height="160" width="160" viewBox="0 0 160 160">
 				<g v-for="(value, index) in initialValues">
 					<circle :cx="cx" :cy="cy" :r="radius" fill="transparent" :stroke="colors[index]" :stroke-width="strokeWidth" ></circle>
 					<text></text>
 				</g>
-			</svg>
+			</svg> -->
 			<div class="inner-circle">{{ (percentage * 100).toFixed(0) }}%</div>
 			<div>PROBABILITY</div>
 		</vc-donut>
