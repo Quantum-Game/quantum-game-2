@@ -96,10 +96,10 @@ export default class Absorber extends Vue {
 <style lang="scss" scoped>
 	.st0{fill:#5A4278;}
 	.st1{fill:#3C2C50;}
+	
 	//OUTLINE CLASS
-	.st2{fill:#FF0055;}
-
-	// svg.isActive {
-	// 	filter: drop-shadow(1px 1px 0px rgb(255, 255, 255)) drop-shadow(-1px 1px 0px #fff) drop-shadow(1px -1px 0px #fff) drop-shadow(-1px -1px 0px #fff);
-	// }
+	.st2{
+		//display:none;
+		fill:#FF0055;
+		}
 </style>

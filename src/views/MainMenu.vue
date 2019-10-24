@@ -54,7 +54,13 @@ export default class MainMenu extends Vue {}
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background-color: #2e006a;
+	background: linear-gradient(#5c00d3, #ff0055 , #fbb03b);
+	//background-color: #2e006a;
+	// background-image: url(~../assets/background_dots.svg);
+	// background-size: 1000px auto; //not responsive
+	// background-repeat: repeat;  
+	// background-position: center;
+
 }
 h1 {
 	color: white;
@@ -113,7 +119,10 @@ li {
 	margin: 0 10px;
 }
 a {
-	color: #9780b5;
+	color: white;
+	opacity: 0.6;
+	//color:ffcfe5;
+	//color: #9780b5;
 	text-decoration: none;
 }
 </style>
