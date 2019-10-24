@@ -1,7 +1,10 @@
 <template>
-	<transition name="bang">
-		<div v-if="gameState === 'Victory'" class="victory">
+	<transition :name="gameState">
+		<div v-if="gameState === 'baba'" :class="gameState" class="wrapper">
 			<h2>THIS IS A WIN</h2>
+		</div>
+		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
+			<h2>DEFEAT</h2>
 		</div>
 	</transition>
 </template>
@@ -16,22 +19,17 @@ export default class Overlay extends Vue {
 </script>
 
 <style lang="scss">
-.bang-enter-active,
-.bang-leave-active {
+.Victory-enter-active,
+.Victory-leave-active {
 	transition: opacity 0.5s;
 }
-.bang-enter, .bang-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.Victory-enter,
+.Victory-leave-to /* .fade-leave-active below version 2.1.8 */ {
 	opacity: 0;
 }
 
-.victory {
-	height: 100vh;
-	width: 100vw;
+.Victory.wrapper {
 	background-color: rgba(179, 7, 136, 0.856);
-	position: fixed;
-	z-index: 3;
-	display: flex;
-	align-items: center;
 	h2 {
 		margin: 0;
 		display: block;
@@ -39,5 +37,15 @@ export default class Overlay extends Vue {
 		font-size: 14rem;
 		transform: rotate(-5deg);
 	}
+}
+
+.wrapper {
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+
 }
 </style>

@@ -10,7 +10,6 @@ Quantum Game 2 from CQT
 - [ ] Defeat Overlay
 
 ### TOOLBOX
-- [ ] fix cell in tray so it displays elements
 
 ### GOALS METER
 - [ ] our own implementation
@@ -20,7 +19,7 @@ Quantum Game 2 from CQT
 
 ### LEVELS VIEW
 
-### CONTROLS
+### Grid
 
 ### YOUR PHOTON(S)
 - [ ] Style it so it fits in
@@ -103,3 +102,6 @@ Quantum Game 2 from CQT
 - [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
 
 24.10
+- [x] fix cell in tray so it displays elements
+- [x] move cells on top of lasers
+
