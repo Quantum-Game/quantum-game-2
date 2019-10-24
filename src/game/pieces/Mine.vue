@@ -1,16 +1,16 @@
 <template>
 	<svg>
 		<g>
-			<!-- ACTIVE RED BOMB -->
+			<!-- ACTIVE RED BOMB - AFTER HIT BY PHOTON -->
 			<path
-				id="_x3C_Qactive_x3E_"
+				id="Qactive"
 				class="st0"
 				d="M59.5,34.5v-5H53c-0.5-4-2-7.6-4.4-10.6l4.6-4.6l-3.5-3.5l-4.6,4.6
 				c-3-2.4-6.6-3.9-10.6-4.4V4.5h-5v6.4c-4,0.5-7.6,2-10.6,4.4l-4.6-4.6l-3.5,3.5l4.6,4.6c-2.4,3-3.9,6.6-4.4,10.6H4.5v5h6.4
 				c0.5,4,2,7.6,4.4,10.6l-4.6,4.6l3.5,3.5l4.6-4.6c3,2.4,6.6,3.9,10.6,4.4v6.5h5v-6.5c4-0.5,7.6-2,10.6-4.4l4.6,4.6l3.5-3.5l-4.6-4.6
 				c2.4-3,3.9-6.6,4.4-10.6L59.5,34.5L59.5,34.5z"
 			/>
-			<!-- NOT ACTIVE -->
+			<!-- BASIC STATE -->
 			<path
 				class="st1"
 				d="M59.5,34.5v-5H53c-0.5-4-2-7.6-4.4-10.6l4.6-4.6l-3.5-3.5l-4.6,4.6c-3-2.4-6.6-3.9-10.6-4.4V4.5h-5v6.4
@@ -24,7 +24,7 @@
 			/>
 		</g>
 		<!-- OUTLINE -->
-		<g id="_x3C_Qoutline_x3E_" v-f="border">
+		<g v-if="border" id="_x3C_Qoutline_x3E_">
 			<path
 				class="st3"
 				:style="{ fill: border }"
@@ -45,7 +45,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Bomb extends Vue {
+export default class Mine extends Vue {
 	@Prop({ default: '' }) readonly border!: string;
 }
 </script>

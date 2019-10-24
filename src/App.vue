@@ -25,12 +25,19 @@ body {
 	min-height: 100vh;
 	background: #2e006a; /* Old browsers */
 	//TO DO - change first two gradients
-	background: -moz-radial-gradient(center, ellipse cover, #5000a0 0%, #f00e0e 100%); /* FF3.6-15 */
-	background: -webkit-radial-gradient(
-		center,
-		ellipse cover,
-		#5000a0 0%,
-		#f00e0e 100%
+	background: -moz-linear-gradient(
+		right,
+		#210235 16%,
+		#2e006a 30%,
+		#2e006a 70%,
+		#210235 84%
+	); /* FF3.6-15 */
+	background: -webkit-linear-gradient(
+		to right,
+		#210235 16%,
+		#2e006a 30%,
+		#2e006a 70%,
+		#210235 84%
 	); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(
 		to right,

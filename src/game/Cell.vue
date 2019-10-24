@@ -1,11 +1,13 @@
 <template>
-	<g
-		:style="positionStyle"
-		@mouseenter="handleMouseEnter"
-		@mouseleave="handleMouseLeave"
-	>
+	<g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
 		<rect :width="cellSize" :height="cellSize" />
-		<component :is="cell.element" :class="cell.element" :cell-size="cellSize" :border="border" />
+		<component
+			:is="cell.element"
+			:cell="cell"
+			:class="cell.element"
+			:cell-size="cellSize"
+			:border="border"
+		/>
 	</g>
 </template>
 

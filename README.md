@@ -9,7 +9,8 @@ Quantum Game 2 from CQT
 ### GAME:
 - [ ] Defeat Overlay
 
-### TOOLBOX
+### Elements
+- [ ] have the elements not leak the attributes
 
 ### GOALS METER
 - [ ] our own implementation
@@ -19,7 +20,6 @@ Quantum Game 2 from CQT
 
 ### LEVELS VIEW
 
-### Grid
 
 ### YOUR PHOTON(S)
 - [ ] Style it so it fits in

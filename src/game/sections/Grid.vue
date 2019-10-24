@@ -25,14 +25,20 @@
 		</g>
 
 		<!-- CELLS -->
-		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" @click="rotate(cell)" />
+		<cell
+			v-for="(cell, i) in grid.exportGrid().cells"
+			:key="'cell' + i"
+			:cell="cell"
+			:cellSize="cellSize"
+			@click.native="rotate(cell)"
+		/>
 
 		<!-- <path
       :d="laserPath()"
       stroke-dasharray="10 10"
       fill="transparent"
       stroke="red"
-      stroke-width="3"
+      stroke-width="2"
       class="laserPath"
     />-->
 
@@ -67,6 +73,7 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import Photon from '../Photon.vue';
 import Cell from '../Cell.vue';
+import * as qw from "quantumweasel";
 import { IGrid, ICell, Qparticle, ParticleInterface } from '@/types';
 
 @Component({
@@ -76,10 +83,13 @@ import { IGrid, ICell, Qparticle, ParticleInterface } from '@/types';
 	}
 })
 export default class Grid extends Vue {
-	@Prop({ default: '' }) readonly grid!: IGrid;
+	@Prop({ default: '' }) readonly grid!: {};
 	@Prop({ default: '64' }) readonly cellSize!: number;
-	@Prop({ default: [] }) readonly lasers!: ParticleInterface[];
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
+
+	get lasers(): ParticleInterface[] {
+		return this.grid.computePaths();
+	}
 
 	get totalWidth(): number {
 		return this.grid.cols * this.cellSize;
@@ -110,10 +120,10 @@ export default class Grid extends Vue {
 	/**
 	 * Cell rotation
 	 */
-	rotate(cell: ICell) {
-		const cellInst = Cell.importCell(cell)
-		console.log(cellInst.toString());
-		// CellInst.rotation += this.cell.element.rotationAngle
+	rotate(cellI: CellInterface) {
+		const cell = qw.Cell.importCell(cellI)
+		cell.rotate()
+		this.grid.set(cell);
 	}
 
 	/**

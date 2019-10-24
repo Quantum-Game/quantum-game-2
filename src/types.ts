@@ -155,12 +155,12 @@ export interface IGrid {
 	cells: Array<ICell>;
 }
 
-export interface ILevel {
-	grid: IGrid;
-}
+// export interface ILevel {
+// 	grid: IGrid;
+// }
 
 export interface ILevelList {
-	[index: string]: ILevel;
+	[index: string]: LevelInterface;
 }
 
 export interface IGameState {
@@ -295,4 +295,4 @@ interface Complex {
  * @returns Creates a complex number `z = z.re + i * z.im `
  */
 // export default function Cx(re: number, im?: number): Complex;
-export declare function Cx(re: number, im?: number): Complex;
+// export declare function Cx(re: number, im?: number): Complex;

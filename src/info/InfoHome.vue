@@ -4,13 +4,13 @@
 		<!-- <router-link to="/info" class="button"> BACK TO GAME </router-link> -->
 		<h1>Welcome to the encyclopedia!</h1>
 		<img src="@/assets/placeholder_encyclopedia.svg" alt="placeholder" />
-		<div class="entries">
+		<!-- <div class="entries">
 			<router-link to="/info/beam-splitter">
 				<q-button type="basic"> 50-50 BEAM SPLITTER</q-button></router-link
 			>
 			<br />
 			<router-link to="/info/mirror"><q-button type="basic"> MIRROR</q-button></router-link>
-		</div>
+		</div> -->
 	</div>
 </template>
 
