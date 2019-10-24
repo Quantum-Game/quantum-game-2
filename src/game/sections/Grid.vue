@@ -7,10 +7,8 @@
 			</g>
 		</g>
 
-		<!-- CELLS -->
-		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" />
 
-		    <!-- LASER DOTS -->
+		<!-- LASER DOTS -->
     <!-- <g
       v-for="(laser, index) in this.lasers"
       :key="'laser' + index"
@@ -47,6 +45,10 @@
 				:sigma="0.25"
 			/>
 		</g>
+
+		<!-- CELLS -->
+		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" />
+
 	</svg>
 </template>
 

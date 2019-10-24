@@ -63,7 +63,8 @@ const borderColors = {
 export default class Cell extends Vue {
 	@Prop() readonly cell!: ICell;
 	@Prop() readonly lasers!: any[];
-	@Prop() readonly toolbox!: boolean;
+	@Prop() readonly tool!: boolean;
+
 	cellSize = 64;
 
 	border = '';
@@ -72,7 +73,7 @@ export default class Cell extends Vue {
 		let styleObj = {};
 		const originX = this.centerCoord(this.cell.coord.x);
 		const originY = this.centerCoord(this.cell.coord.y);
-		if (this.cell.element !== 'Void' && !this.cell.toolbox) {
+		if (this.cell.element !== 'Void' && !this.tool) {
 			styleObj = {
 				'transform-origin': `${originX}px ${originY}px`,
 				transform: `
@@ -91,8 +92,10 @@ export default class Cell extends Vue {
 	 * onClick rotate the element
 	 */
 	rotate(): void {
-		this.cell.rotation += 45;
-		console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
+		if (!this.tool) {
+			this.cell.rotation += 45;
+			console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
+		}
 	}
 
 	handleMouseEnter() {

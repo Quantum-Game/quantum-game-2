@@ -1,9 +1,9 @@
 +<template>
 	<div class="toolbox">
-		<svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
-			<cell :cell="tool[0]" toolbox />
-			x {{ tool[1] }}
-		</svg>
+			<svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
+				<cell :cell="tool[0]" :tool="true" />
+				x {{ tool[1] }}
+			</svg>
 	</div>
 </template>
 
@@ -73,6 +73,7 @@ export default class Toolbox extends Vue {
 	}
 	.tool {
 		width: 33%;
+		min-width: 64px;
 		padding: 0.5rem 0rem;
 	}
 }
