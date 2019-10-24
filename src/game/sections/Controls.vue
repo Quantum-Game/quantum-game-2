@@ -1,10 +1,10 @@
 <template>
 	<div class="controls">
 		<span class="playback">
-			<b-button v-for="btn in playBackControls" :which-is="btn" @click.native="$emit(btn)" />
+			<b-button v-for="btn in playBackControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
 		<span class="view-mode">
-			<b-button v-for="btn in viewControls" :which-is="btn" @click.native="$emit(btn)" />
+			<b-button v-for="btn in viewControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
 		<slot></slot>
 	</div>
