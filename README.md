@@ -6,31 +6,33 @@ Quantum Game 2 from CQT
 
 ## TODO:
 
-### GAME
-- [ ] adddrag and drop
-
 ### GAME:
-- [x] enhance q-button with inline,
-- [x] enhance simulator viewer with internal viewing control
-- [x] create layout for Game
-- [ ] Turn simulation into Your Photon section;
-- [ ] mock goals;
-- [ ] mock controls
-- [ ] mock tools
-- [ ] click listeners;
-- [ ] drop listeners;
-- [ ] drag
+- [ ] Defeat Overlay
+
+### TOOLBOX
+
+### GOALS METER
+- [ ] our own implementation
+
+### EXPLANATION
+- [ ] set up Exmplanation prop
+
+### LEVELS VIEW
+
+### Grid
+
+### YOUR PHOTON(S)
+- [ ] Style it so it fits in
 
 ### ENCYCLOPEDIAs
 - [ ] add inline styling for images
 - [ ] add aria attributes for folded panes
 
 ### MAINTENANCE
-- [x] get rid of conflicting prettier configs, editorconfig
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
-- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
+
 
 14.10:
 - [x] Scaffold menu
@@ -61,3 +63,45 @@ Quantum Game 2 from CQT
 - [x] Adjust the board
 - [x] display elements graphix;
 - [x] have the simulation going
+
+18.10
+- [x] enhance q-button with inline,
+- [x] enhance simulator viewer with internal viewing control
+- [x] create layout for Game
+- [x] Turn simulation into Your Photon section;
+- [x] move components into game directory
+- [x] create a component placeholder for goals;
+- [x] create a component placeholder for controls
+- [x] create a component placeholder for tools
+- [x] get rid of conflicting prettier configs, editorconfig
+- [x] scope styles across the app
+
+
+21.10
+- [x] Level Changing Buttons on top (for devving)
+- [x] clean up
+- [x] RESETTING FUNCTION
+- [x] implement the donut
+- [x] set up Goals props
+- [x] General CntrlBtn Component
+- [x] set up variants
+- [x] start adding handlers
+- [x] prepare tray
+
+22.10
+- [x] board as background
+- [x] enhance entries structure
+- [x] Victory overlay
+- [x] donut chart
+
+23.10
+- [x] refine elements
+- [x] set up Controls props
+- [x] elements' border / roatation
+- [x] laser path
+- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
+
+24.10
+- [x] fix cell in tray so it displays elements
+- [x] move cells on top of lasers
+

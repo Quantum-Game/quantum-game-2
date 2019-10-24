@@ -50,5 +50,11 @@
     ]
   },
   "hints": [],
-  "goals": []
+  "goals": [
+    {
+      "coord": { "y": 5, "x": 7 },
+      "threshold": 1,
+      "value": 0
+    }
+  ]
 }

@@ -48,6 +48,7 @@ export interface FrameInterface {
 	particles: ParticleInterface[];
 	quantum: ParticleInterface[];
 	end: boolean;
+	gameState: string;
 	next: () => FrameInterface;
 }
 
@@ -62,12 +63,14 @@ export interface ICell {
 	originY?: number;
 }
 
+export interface IGrid {
+	cols: number;
+	rows: number;
+	cells: Array<ICell>;
+}
+
 export interface ILevel {
-	grid: {
-		cols: number;
-		rows: number;
-		cells: Array<ICell>;
-	};
+	grid: IGrid;
 }
 
 export interface ILevelList {

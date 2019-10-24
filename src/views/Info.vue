@@ -1,6 +1,6 @@
 <template>
 	<main-layout>
-		<div slot="left">
+		<div slot="left" class="element-list">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
 			<router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
 				<div>{{ entry }}</div>
@@ -11,6 +11,7 @@
 		</div>
 		<div slot="right">
 			<h3 class="upper-border">RELATED CONCEPTS</h3>
+			<Absorber />
 		</div>
 	</main-layout>
 </template>
@@ -18,12 +19,13 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
 import MainLayout from '../layouts/MainLayout.vue';
-import Entry from '../entries/Entry.vue';
-import entries from '../entries/entries.json';
+import Entry from '../info/Entry.vue';
+import { entriesNameList } from '../info/entries';
+import Absorber from '../game/pieces/Absorber.vue';
 
 interface ISection {
 	title: string;
-	content: string;
+	content: Array<string>;
 }
 
 interface IEntry {
@@ -35,13 +37,14 @@ interface IEntry {
 @Component({
 	components: {
 		MainLayout,
-		Entry
+		Entry,
+		Absorber
 	}
 })
 export default class Info extends Vue {
 	entryList: Array<string> = [];
 	created() {
-		Object.keys(entries).forEach((entryName: string) => this.entryList.push(entryName));
+		entriesNameList.forEach((entryName: string) => this.entryList.push(entryName));
 	}
 }
 </script>
@@ -52,5 +55,15 @@ export default class Info extends Vue {
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	text-align: left;
+	color: white;
+	text-decoration: none;
+}
+
+.element-list {
+	a {
+		color: white;
+		text-decoration: none;
+		line-height: 200%;
+	}
 }
 </style>
