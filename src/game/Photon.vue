@@ -85,12 +85,18 @@ export default class Photon extends Vue {
 	@Prop({ default: true }) readonly displayGaussian!: boolean;
 	@Prop({ default: 0 }) readonly direction!: number;
 
+	/**
+	 * Get horizontal scaling
+	 */
 	get xScale() {
 		return d3
 			.scaleLinear()
 			.domain([-1, 1])
 			.range([this.margin, this.width - this.margin]);
 	}
+	/**
+	 * Get vertical scaling
+	 */
 	get yScale() {
 		return d3
 			.scaleLinear()
@@ -126,14 +132,22 @@ export default class Photon extends Vue {
 	eColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
 	mColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
 
+	/**
+	 * Compute graph properties from complex values
+	 */
 	computeComplex(re: number, im: number, z: number, k = 20): number {
 		return re * Math.cos(k * z) + im * Math.sin(k * z);
 	}
 
+	/**
+	 * Gaussian scaling
+	 */
 	gaussian(z: number, sigma = 0.3): number {
 		return Math.exp((-z * z) / (2 * sigma * sigma));
 	}
-
+	/**
+	 * Gaussian scaling of the graph
+	 */
 	gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
 		return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma));
 	}

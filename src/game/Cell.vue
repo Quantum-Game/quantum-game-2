@@ -1,7 +1,6 @@
 <template>
 	<g
 		:style="positionStyle"
-		@click="rotate"
 		@mouseenter="handleMouseEnter"
 		@mouseleave="handleMouseLeave"
 	>
@@ -91,12 +90,12 @@ export default class Cell extends Vue {
 	/**
 	 * onClick rotate the element
 	 */
-	rotate(): void {
-		if (!this.tool) {
-			this.cell.rotation += 45;
-			console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
-		}
-	}
+	// rotate(): void {
+	// 	if (!this.tool) {
+	// 		this.cell.rotation += 45;
+	// 		console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
+	// 	}
+	// }
 
 	handleMouseEnter() {
 		this.border = borderColors.rotable;

@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="69"
-					width="87.4"
-					x="2"
-					y="-8"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g id="Qactive">
 			<path
 				class="st1"

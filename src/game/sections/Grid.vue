@@ -25,7 +25,7 @@
 		</g>
 
 		<!-- CELLS -->
-		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" />
+		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" @click="rotate(cell)" />
 
 		<!-- <path
       :d="laserPath()"
@@ -105,6 +105,15 @@ export default class Grid extends Vue {
 	 */
 	centerCoord(val: number): number {
 		return (val + 0.5) * this.cellSize;
+	}
+
+	/**
+	 * Cell rotation
+	 */
+	rotate(cell: ICell) {
+		const cellInst = Cell.importCell(cell)
+		console.log(cellInst.toString());
+		// CellInst.rotation += this.cell.element.rotationAngle
 	}
 
 	/**
@@ -196,7 +205,7 @@ export default class Grid extends Vue {
 .laserPath {
 	stroke-dasharray: 8;
 	animation-name: dash;
-	animation-duration: 5s;
+	animation-duration: 4s;
 	animation-timing-function: linear;
 	animation-iteration-count: infinite;
 	animation-direction: reverse;
