@@ -144,18 +144,6 @@ export default class Photon extends Vue {
 .photon {
 	padding: 0px;
 	position: relative;
-	&.rotation0 {
-		transform: rotate(0deg);
-	}
-	&.rotation90 {
-		transform: rotate(90deg);
-	}
-	&.rotation180 {
-		transform: rotate(180deg);
-	}
-	&.rotation270 {
-		transform: rotate(270deg);
-	}
 	.text {
 		fill: lightgrey;
 		stroke: lightgrey;

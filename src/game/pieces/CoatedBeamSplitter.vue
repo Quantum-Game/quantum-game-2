@@ -1,17 +1,29 @@
 <template>
-	<svg x="0px" y="0px" viewBox="0 0 64 64">
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="18"
+					width="62"
+					x="1"
+					y="23"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
-			<g>
-				<rect x="26" y="2" class="st0" width="14" height="60" />
-				<g>
-					<path
-						class="st1"
-						d="M40,36.4v16c-7.8-9.46-11.91-18.35-14-24.24v-16C28.09,18.05,32.2,26.94,40,36.4z"
-					/>
-					<path class="st2" d="M40,52.4V62H26V28.16C28.09,34.05,32.2,42.94,40,52.4z" />
-				</g>
-			</g>
-			<rect x="24" y="2" class="st3" width="2" height="60" />
+			<rect x="2" y="24" class="st0" width="60" height="16" />
+			<path class="st1" d="M36.4,24h16c-9.5,7.8-18.3,11.9-24.2,14h-16C18,35.9,26.9,31.8,36.4,24z" />
+			<path class="st2" d="M52.4,24H62v14H28.2C34,35.9,42.9,31.8,52.4,24z" />
+			<rect x="2" y="38" class="st3" width="60" height="2" />
+		</g>
+		<g v-if="border" id="_x3C_Qoutline_x3E_">
+			<path
+				class="st4"
+				:style="{ fill: border }"
+				d="M62,24v16H2V24H62 M63,23h-1H2H1v1v16v1h1h60h1v-1V24V23L63,23z"
+			/>
 		</g>
 	</svg>
 </template>
@@ -20,7 +32,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class CoatedBeamSplitter extends Vue {}
+export default class CoatedBeamSplitter extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>

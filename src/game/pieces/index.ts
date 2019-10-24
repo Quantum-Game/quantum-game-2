@@ -34,11 +34,11 @@ export { VacuumJar };
 export { QuarterWavePlate };
 export { FaradayRotator };
 
-interface IPiecesList {
+interface ICellList {
 	[index: string]: Object;
 }
 
-const PiecesList: IPiecesList = {
+const CellList: ICellList = {
 	Laser,
 	Mirror,
 	BeamSplitter,
@@ -58,4 +58,4 @@ const PiecesList: IPiecesList = {
 	FaradayRotator
 };
 
-export default PiecesList;
+export default CellList;

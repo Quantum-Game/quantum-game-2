@@ -1,11 +1,28 @@
 <template>
-	<svg x="0px" y="0px" viewBox="0 0 64 64">
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="16"
+					width="62"
+					x="1"
+					y="24"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
-			<polygon class="st0" points="39,31.65 25,44.81 25,48.04 39,34.89 	" />
-			<polygon class="st0" points="39,2 25,2 25,42.24 39,29.08 	" />
-			<polygon class="st0" points="25,60.92 25,62 39,62 39,47.77 	" />
-			<polygon class="st1" points="39,34.89 25,48.04 25,60.92 39,47.77 	" />
-			<polygon class="st1" points="39,29.08 25,42.24 25,44.81 39,31.65 	" />
+			<rect x="2" y="25" class="st0" width="60" height="14" />
+			<polygon class="st1" points="29.1,39 16,25 3.1,25 16.2,39 	" />
+			<polygon class="st1" points="34.9,39 21.8,25 19.2,25 32.3,39 	" />
+		</g>
+		<g v-if="border" id="Qoutline">
+			<path
+				class="st2"
+				:style="{ fill: border }"
+				d="M62,25v14H2V25H62 M63,24h-1H2H1v1v14v1h1h60h1v-1V25V24L63,24z"
+			/>
 		</g>
 	</svg>
 </template>
@@ -14,7 +31,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Mirror extends Vue {}
+export default class Mirror extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -22,6 +41,6 @@ export default class Mirror extends Vue {}
 	fill: #5a4278;
 }
 .st1 {
-	fill: #7858a0;
+	fill: #aa93cc;
 }
 </style>

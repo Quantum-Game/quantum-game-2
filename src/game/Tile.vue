@@ -1,135 +1,70 @@
 <template>
-	<div class="tile" :class="laserLine" @onclick="rotate">
-		<svg :class="calculatedClass" :style="calculatedStyle" />
-
-		<div
-			v-for="(particle, index) in particles"
-			:key="index"
-			:v-if="particles.length > 0"
-			class="photons"
-		>
-			<photon
-				name
-				:intensity="particle.intensity"
-				:are="particle.a.re"
-				:aim="particle.a.im"
-				:bre="particle.b.re"
-				:bim="particle.b.im"
-				:direction="particle.direction"
-				:width="64"
-				:height="64"
-				:margin="0"
-				:display-magnetic="true"
-				:display-electric="false"
-				:display-gaussian="false"
-				:sigma="0.25"
-			/>
-		</div>
-	</div>
+  <svg @click="rotate">
+    <g :style="calculatedStyle">
+      <!-- MIRROR -->
+      <path
+        d="M32.3 39L19.2 25H16l13.1 14zM62 39V25H21.8l13.1 14zM3.1 25H2v14h14.2z"
+        fill="#5a4278"
+      />
+      <path
+        v-if="cell.active"
+        d="M29.1 39L16 25H3.1l13.1 14zm5.8 0L21.8 25h-2.6l13.1 14z"
+        fill="red"
+      />
+      <path v-else d="M29.1 39L16 25H3.1l13.1 14zm5.8 0L21.8 25h-2.6l13.1 14z" fill="#7858a0" />
+    </g>
+  </svg>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import { ICell, Qparticle, ParticleInterface } from '@/types';
-import Photon from './Photon.vue';
+import { ICell } from '@/types';
 
 @Component({
-	components: {
-		Photon
-	}
+  components: {}
 })
 export default class Tile extends Vue {
-	@Prop() readonly cell!: ICell;
-	@Prop() readonly particles!: Qparticle[];
-	@Prop() readonly lasers!: any[];
+  @Prop() readonly cell!: ICell;
+  @Prop() readonly lasers!: any[];
+  cellSize = 64;
 
-	get calculatedClass() {
-		let classObj = {};
-		if (this.cell.element) {
-			classObj = {
-				element: true,
-				[this.cell.element]: true,
-				active: this.cell.active
-			};
-		}
-		return classObj;
-	}
+  get calculatedStyle() {
+    let styleObj = {};
+    const originX = this.centerCoord(this.cell.coord.x);
+    const originY = this.centerCoord(this.cell.coord.y);
+    if (this.cell.element !== 'Void') {
+      styleObj = {
+        'transform-origin': `${originX}px ${originY}px`,
+        transform: `
+				rotate(-${this.cell.rotation}deg)
+				translate(${this.cell.coord.x * this.cellSize}px, ${this.cell.coord.y * this.cellSize}px)`
+      };
+    }
+    return styleObj;
+  }
 
-	get calculatedStyle() {
-		let styleObj = {};
-		if (this.cell.element) {
-			styleObj = {
-        backgroundImage: `url(${require(`../assets/pieces/${this.cell.element}.svg`)})`, // eslint-disable-line
-				transform: `rotate(-${this.cell.rotation}deg)`
-			};
-		}
-		return styleObj;
-	}
+  centerCoord(val: number) {
+    return (val + 0.5) * this.cellSize;
+  }
 
-	get laserLine() {
-		if (this.lasers && this.lasers.length > 0) {
-			return 'laser';
-		}
-		return false;
-	}
+  /**
+   * onClick rotate the element
+   */
+  rotate(): void {
+    if (!this.cell.frozen) {
+      this.cell.rotation += 45;
+      console.log('CURRENT ROTATION: ' + this.cell.rotation);
+    }
+  }
 
-	rotate() {
-		this.cell.rotation = (this.cell.rotation + 45) % 360;
-	}
+  get translationX(): number {
+    return this.cell.coord.x * this.cellSize;
+  }
+  get translationY(): number {
+    return this.cell.coord.y * this.cellSize;
+  }
 }
 </script>
 
 <style lang="scss">
-.tile {
-	width: 64px;
-	height: 64px;
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	color: white;
-	font-size: 1.3rem;
-	&:hover {
-		background-color: rgba(255, 255, 255, 0.1);
-		color: black;
-	}
-	svg {
-		width: 64px;
-		height: 64px;
-	}
-
-	&.laser {
-		background-color: rgba(255, 0, 85, 0.1);
-	}
-
-	&.rotate0 svg {
-		transform: rotate(0deg);
-	}
-	&.rotate45 svg {
-		transform: rotate(-45deg);
-	}
-	&.rotate90 svg {
-		transform: rotate(-90deg);
-	}
-	&.rotate135 svg {
-		transform: rotate(-135deg);
-	}
-	&.rotate180 svg {
-		transform: rotate(-180deg);
-	}
-	&.rotate225 svg {
-		transform: rotate(-225deg);
-	}
-	&.rotate270 svg {
-		transform: rotate(-270deg);
-	}
-	&.rotate315 svg {
-		transform: rotate(-315deg);
-	}
-
-	&.element {
-		background-repeat: no-repeat;
-		background-size: contain;
-	}
-}
 </style>
