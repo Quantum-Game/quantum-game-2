@@ -12,10 +12,7 @@
 				<span>25</span>
 			</div>
 		</div>
-		<!-- <svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg"> -->
-			<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
-		</svg> -->
-		<!-- <vc-donut
+		<vc-donut
 			class="chart"
 			background="inherit"
 			foreground="rgba(255, 255, 255, 0.1)"
@@ -25,14 +22,8 @@
 			:sections="sections"
 			:total="100"
 			:start-angle="0"
-		> -->
-			<!-- <svg height="160" width="160" viewBox="0 0 160 160">
-				<g v-for="(value, index) in initialValues">
-					<circle :cx="cx" :cy="cy" :r="radius" fill="transparent" :stroke="colors[index]" :stroke-width="strokeWidth" ></circle>
-					<text></text>
-				</g>
-			</svg> -->
-			<div class="inner-circle">{{ (percentage * 100).toFixed(0) }}%</div>
+		>
+			<div class="inner-circle">{{ percentage.toFixed(0) }}%</div>
 			<div>PROBABILITY</div>
 		</vc-donut>
 		<div class="bottom-icons">
