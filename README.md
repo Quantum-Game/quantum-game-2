@@ -7,11 +7,13 @@ Quantum Game 2 from CQT
 ## TODO:
 
 ### GAME:
-- [ ] click listeners;
-- [ ] drop listeners;
-- [ ] drag
+- [ ] Defeat Overlay
+
+### TOOLBOX
+- [ ] fix cell in tray so it displays elements
 
 ### GOALS METER
+- [ ] our own implementation
 
 ### EXPLANATION
 - [ ] set up Exmplanation prop
@@ -19,9 +21,6 @@ Quantum Game 2 from CQT
 ### LEVELS VIEW
 
 ### CONTROLS
-- [ ] set up Controls props
-
-### TRAY
 
 ### YOUR PHOTON(S)
 - [ ] Style it so it fits in
@@ -34,7 +33,7 @@ Quantum Game 2 from CQT
 
 ### BUGS
 - [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
-- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
+
 
 14.10:
 - [x] Scaffold menu
@@ -89,3 +88,18 @@ Quantum Game 2 from CQT
 - [x] set up variants
 - [x] start adding handlers
 - [x] prepare tray
+
+22.10
+- [x] board as background
+- [x] enhance entries structure
+- [x] Victory overlay
+- [x] donut chart
+
+23.10
+- [x] refine elements
+- [x] set up Controls props
+- [x] elements' border / roatation
+- [x] laser path
+- [x] ERROR in /home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/views/GameContainer.vue 32:23 Could not find a declaration file for module '../game/levels'. '/home/kuba/Desktop/190913QUANTUM/quantum-game-2/src/game/levels/index.js' implicitly has an 'any' type.
+
+24.10

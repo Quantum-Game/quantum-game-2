@@ -1,3 +1,4 @@
-import Toolbox from './Toolbox.vue';
+import QButton from './QButton.vue';
+import QMenu from './QMenu.vue';
 
-export default { Toolbox };
+export default { QButton, QMenu };

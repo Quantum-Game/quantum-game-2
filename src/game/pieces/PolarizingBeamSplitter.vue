@@ -1,8 +1,28 @@
 <template>
-	<svg x="0px" y="0px" viewBox="0 0 64 64">
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="56"
+					width="56"
+					x="4"
+					y="4"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
-			<polygon class="st0" points="5,5 5,57.59 57.59,5 	" />
-			<polygon class="st1" points="59,6.41 6.41,59 59,59 	" />
+			<polygon class="st0" points="5,5 5,57.6 57.6,5 	" />
+			<polygon class="st1" points="59,6.4 6.4,59 59,59 	" />
+		</g>
+		<g v-if="border" id="Qoutlinr">
+			<path
+				class="st2"
+				:style="{ fill: border }"
+				d="M57.6,5L59,6.4V59H6.4L5,57.6V5H57.6 M58,4h-0.4H5H4v1v52.6V58l0.3,0.3l1.4,1.4L6,60h0.4H59h1v-1V6.4V6
+				l-0.3-0.3l-1.4-1.4L58,4L58,4z"
+			/>
 		</g>
 	</svg>
 </template>
@@ -11,7 +31,9 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class PolarizingBeamSplitter extends Vue {}
+export default class PolarizingBeamSplitter extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>

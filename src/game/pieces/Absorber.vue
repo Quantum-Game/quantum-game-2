@@ -1,56 +1,117 @@
 <template>
-	<svg x="0px" y="0px" viewBox="0 0 64 64">
-		<pattern
-			id="New_Pattern_Swatch_2"
-			width="3"
-			height="3"
-			patternUnits="userSpaceOnUse"
-			viewBox="0 -3 3 3"
-			style="overflow:visible;"
-		>
-			<g>
-				<rect y="-3" class="st0" width="3" height="3" />
-				<rect x="1" y="-2" class="st1" width="1" height="1" />
-				<rect x="0" y="-3" class="st0" width="3" height="3" />
-			</g>
-		</pattern>
+	<svg>
+		<metadata>
+			<sfw xmlns="&ns_sfw;">
+				<slices></slices>
+				<sliceSourceBounds
+					bottomLeftOrigin="true"
+					height="54"
+					width="54"
+					x="5"
+					y="5"
+				></sliceSourceBounds>
+			</sfw>
+		</metadata>
 		<g>
 			<path
-				class="st2"
-				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,
-        58,58,53.34,58,47.6V16.4 C58,10.66,53.34,6,47.6,6z"
+				id="_x3C_Qbackground_x3E_"
+				class="st0"
+				d="M47.6,6H16.4C10.7,6,6,10.7,6,16.4v31.2C6,53.3,10.7,58,16.4,58h31.2
+			C53.3,58,58,53.3,58,47.6V16.4C58,10.7,53.3,6,47.6,6z"
 			/>
-			<pattern
-				id="SVGID_1_"
-				xlink:href="#New_Pattern_Swatch_2"
-				patternTransform="matrix(2.08 0 0 2.08 8817.9199 8777)"
-			/>
+			<g id="_x3C_Qdots_x3E_">
+				<rect x="52.8" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="52.8" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="46.6" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="40.3" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="34.1" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="27.8" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="21.6" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="15.4" y="9.1" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="52.8" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="46.6" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="40.3" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="34.1" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="27.8" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="21.6" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="15.4" class="st1" width="2.1" height="2.1" />
+				<rect x="9.1" y="9.1" class="st1" width="2.1" height="2.1" />
+			</g>
+		</g>
+		<g v-if="border" id="_x3C_Qbackground_x3E__1_">
 			<path
-				class="st3"
-				d="M47.6,6H16.4C10.66,6,6,10.66,6,16.4v31.2C6,53.34,10.66,58,16.4,58h31.2C53.34,58,
-        58,53.34,58,47.6V16.4C58,10.66,53.34,6,47.6,6z"
+				class="st2"
+				:style="{ fill: border }"
+				d="M47.6,6C53.3,6,58,10.7,58,16.4v31.2C58,53.3,53.3,58,47.6,58H16.4C10.7,58,6,53.3,6,47.6V16.4
+			C6,10.7,10.7,6,16.4,6H47.6 M47.6,5H16.4C10.1,5,5,10.1,5,16.4v31.2C5,53.9,10.1,59,16.4,59h31.2C53.9,59,59,53.9,59,47.6V16.4
+			C59,10.1,53.9,5,47.6,5L47.6,5z"
 			/>
 		</g>
 	</svg>
 </template>
 
 <script lang="ts">
-import { Vue, Prop } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 
-export default class Absorber extends Vue {}
+@Component
+export default class Absorber extends Vue {
+	@Prop({ default: '' }) readonly border!: string;
+}
 </script>
 
 <style lang="scss" scoped>
 .st0 {
-	fill: none;
+	fill: #5a4278;
 }
 .st1 {
 	fill: #3c2c50;
-}
-.st2 {
-	fill: #5a4278;
-}
-.st3 {
-	fill: url(#SVGID_1_);
 }
 </style>
