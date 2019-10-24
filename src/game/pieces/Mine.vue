@@ -36,7 +36,7 @@
 			/>
 		</g>
 		<!-- OUTLINE -->
-		<g id="_x3C_Qoutline_x3E_" v-f="border">
+		<g id="_x3C_Qoutline_x3E_" v-if="border">
 			<path
 				class="st3"
 				:style="{ fill: border }"
@@ -57,7 +57,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component
-export default class Bomb extends Vue {
+export default class Mine extends Vue {
 	@Prop({ default: '' }) readonly border!: string;
 }
 </script>

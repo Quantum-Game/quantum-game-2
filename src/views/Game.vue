@@ -30,7 +30,17 @@
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
 			<section slot="main-right">
-				<toolbox :tools="toolboxElements" />
+				<toolbox :tools="[
+              {
+                coord: {
+                  x: -1,
+                  y: -1
+                },
+                element: 'Detector',
+                rotation: 0,
+                frozen: false
+              }
+        ]" />
 				<explanation>
 					<div class="description">
 						<span>element: {{ activeElement }}</span>
