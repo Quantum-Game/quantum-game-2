@@ -20,7 +20,7 @@
       stroke-dasharray="10 10"
       fill="transparent"
       stroke="red"
-      stroke-width="3"
+      stroke-width="2"
       class="laserPath"
     />
 
@@ -154,7 +154,7 @@ export default class Grid extends Vue {
 
 <style lang="scss" scoped>
 .laserPath {
-  stroke-dasharray: 10;
+  stroke-dasharray: 4 8;
   animation-name: dash;
   animation-duration: 5s;
   animation-timing-function: linear;
