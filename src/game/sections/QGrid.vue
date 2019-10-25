@@ -11,7 +11,7 @@
     <g
       v-for="(laser, index) in individualLaserPath"
       :key="'laser' + index"
-      :v-if="individualLaserPath.length > 0"
+      v-if="individualLaserPath.length > 0"
       class="lasers"
     >
       <path
