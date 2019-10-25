@@ -1,9 +1,9 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight">
+  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
     <!-- DOTS -->
     <g v-for="(row, y) in grid.rows" :key="y">
       <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * cellSize" :cy="y * cellSize" r="1" fill="#edeaf4" />
+        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>
 
@@ -29,18 +29,9 @@
       v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
-      :cellSize="cellSize"
+      :tileSize="tileSize"
       @click.native="rotate(cell)"
     />
-
-    <!-- <path
-      :d="laserPath()"
-      stroke-dasharray="10 10"
-      fill="transparent"
-      stroke="red"
-      stroke-width="2"
-      class="laserPath"
-    />-->
 
 		<!-- PHOTONS -->
 		<g
@@ -74,7 +65,6 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';
-import { Qparticle } from '@/types';
 
 @Component({
 	components: {
@@ -84,8 +74,8 @@ import { Qparticle } from '@/types';
 })
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
-	// @Prop({ default: '64' }) readonly tileSize!: number;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
+	// @Prop({ default: '64' }) readonly tileSize!: number;
 
 	tileSize: number = 64;
 
@@ -117,14 +107,14 @@ export default class QGrid extends Vue {
 		return this.grid.rows * this.tileSize;
 	}
 
-	computeParticleStyle(particle: Qparticle): {} {
-		const originX = this.centerCoord(particle.x);
-		const originY = this.centerCoord(particle.y);
+	computeParticleStyle(particle: ParticleInterface): {} {
+		const originX = this.centerCoord(particle.coord.x);
+		const originY = this.centerCoord(particle.coord.y);
 		return {
 			'transform-origin': `${originX}px ${originY}px`,
 			transform: `
 				rotate(${particle.direction}deg)
-				translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`
+				translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y * this.tileSize}px)`
 		};
 	}
 
@@ -139,9 +129,9 @@ export default class QGrid extends Vue {
 	/**
 	 * Cell rotation
 	 */
-	rotate(cellI: CellInterface) {
-		const cell = Cell.importCell(cellI);
+	rotate(cell: Cell) {
 		cell.rotate();
+		console.log(cell.toString());
 		this.grid.set(cell);
 	}
 

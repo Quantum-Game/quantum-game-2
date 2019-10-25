@@ -242,7 +242,7 @@ declare module 'quantumweasel' {
 		rows: number;
 		cols: number;
 		paths: Particle[];
-		// cells: Cell[];
+		cells: Cell[];
 
 		set(cell: Cell): boolean;
 		get(coord: Coord): Cell;

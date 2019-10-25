@@ -28,7 +28,7 @@
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<Grid :grid="level.grid" :lasers="lasers" :photons="activeFrame.quantum" />
+				<q-grid :grid="level.grid" :photons="activeFrame.quantum" />
 				<controls @step-back="showPrevious" @step-forward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
@@ -123,8 +123,6 @@ export default class Game extends Vue {
   level: Level = Level.importLevel(this.levelObj);
   frameNumber: number = 0;
   frames: Frame[] = [];
-  // goals: GoalInterface[] = [];
-  // lasers = [];
   toolbox = [];
   error: string = '';
   activeElement = '';
