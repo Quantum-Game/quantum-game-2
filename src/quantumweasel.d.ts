@@ -134,8 +134,8 @@ declare module 'quantumweasel' {
 
 		uid(rows: number): number;
 		static fromId(index: number, cols: number): Coord;
-		pos(cellSize: number): CoordInterface;
-		center(cellSize: number): CoordInterface;
+		pos(tileSize: number): CoordInterface;
+		center(tileSize: number): CoordInterface;
 
 		toArray(): [number, number];
 		toString(): string;

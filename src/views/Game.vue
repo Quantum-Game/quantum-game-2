@@ -63,7 +63,6 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import {
-	Cell,
 	Level,
 	Frame,
 	Particle,
