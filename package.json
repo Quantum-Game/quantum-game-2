@@ -25,6 +25,7 @@
     "quantumweasel": "sneakyweasel/quantumweasel#master",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.10",
+    "vue-confetti": "^2.0.5",
     "vue-css-donut-chart": "^1.1.6",
     "vue-router": "^3.0.3",
     "vuex": "^3.0.1"

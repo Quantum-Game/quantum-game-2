@@ -1,11 +1,13 @@
-import Donut from 'vue-css-donut-chart';
-import 'vue-css-donut-chart/dist/vcdonut.css';
 import Vue from 'vue';
+import Donut from 'vue-css-donut-chart';
+import VueConfetti from 'vue-confetti';
+import 'vue-css-donut-chart/dist/vcdonut.css';
 import App from './App.vue';
 import router from './router';
 import store from './store/store';
 import './registerServiceWorker';
 Vue.use(Donut);
+Vue.use(VueConfetti);
 
 Vue.config.productionTip = false;
 
