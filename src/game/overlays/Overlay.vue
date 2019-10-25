@@ -1,21 +1,31 @@
 <template>
 	<transition :name="gameState">
 		<div v-if="gameState === 'baba'" :class="gameState" class="wrapper">
-			<h2>THIS IS A WIN</h2>
+			<h2>:(</h2>
 		</div>
+
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
-			<h2>DEFEAT</h2>
+			<h2>You won!<br><slot></slot></h2>
+
+
 		</div>
 	</transition>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import QButton from '@/components/QButton.vue';
 
-@Component
+@Component({
+	components: {
+		QButton
+	}
+})
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
 }
+
+
 </script>
 
 <style lang="scss">
@@ -29,13 +39,20 @@ export default class Overlay extends Vue {
 }
 
 .Victory.wrapper {
-	background-color: rgba(179, 7, 136, 0.856);
+	//background-color: rgba(179, 7, 136, 0);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	h2 {
-		margin: 0;
-		display: block;
+		//THIS IS A DRAFT VERSION OF POP-UP
+		width:12rem;
+		height:10rem;
+		padding:1rem;
+		background: linear-gradient(#5c00d3, #ff0055 , #fbb03b);
+		//margin: 50;
 		color: white;
-		font-size: 14rem;
-		transform: rotate(-5deg);
+		font-size: 2rem;
+		//transform: rotate(-5deg);
 	}
 }
 
@@ -48,3 +65,4 @@ export default class Overlay extends Vue {
 	align-items: center;
 }
 </style>
+
