@@ -48,7 +48,8 @@ import {
   CellInterface,
   FrameInterface,
   LevelInterface,
-  ParticleInterface
+  ParticleInterface,
+  GoalInterface
 } from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
 import levelData from '../game/levels';
@@ -102,7 +103,7 @@ export default class Game extends Vue {
   activeElement = '';
   frameNumber: number = 0;
   frames: Frame[] = [];
-  goals = [];
+  goals: GoalInterface[] = [];
   lasers = [];
   toolbox = [];
 
@@ -135,7 +136,7 @@ export default class Game extends Vue {
   /**
    * Update grid from player events
    */
-  updateGrid(objCell: ICell) {
+  updateGrid(objCell: CellInterface) {
     const cell = Cell.importCell(objCell);
     this.level.grid.set(cell);
   }
@@ -227,7 +228,7 @@ export default class Game extends Vue {
     return this.level && this.level.grid.cols !== 0;
   }
 
-  get particles(): ParticleInterface[] {
+  get particles(): Particle[] {
     return this.frames[this.frameNumber].quantum;
   }
 

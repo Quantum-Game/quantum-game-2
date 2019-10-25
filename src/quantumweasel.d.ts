@@ -1,3 +1,4 @@
+import { ParticleInterface } from './quantumweasel.d';
 declare module 'quantumweasel' {
 	/**
 	 * FRAME INTERFACE
@@ -114,22 +115,137 @@ declare module 'quantumweasel' {
 		y: number;
 	}
 
+	/**
+	 * CLASSES
+	 */
+	class Coord {
+		x: number;
+		y: number;
+
+		up(): Coord;
+		down(): Coord;
+		left(): Coord;
+		right(): Coord;
+		adjacent(): Coord[];
+		isAdjacent(coord: Coord): boolean;
+		fromAngle(directionAngle: number): Coord;
+
+		equal(coord: Coord): boolean;
+		isIncludedIn(coords: Coord[]): boolean;
+
+		uid(rows: number): number;
+		static fromId(index: number, cols: number): Coord;
+		pos(cellSize: number): CoordInterface;
+		center(cellSize: number): CoordInterface;
+
+		toArray(): [number, number];
+		toString(): string;
+		exportCoord(): CoordInterface;
+		static importCoord(obj: CoordInterface): Coord;
+	}
+
 	class Cell {
-		coord: CoordInterface;
-		static importCell(cell: CellInterface): Cell;
+		coord: Coord;
+		element: Element;
+		rotation: number;
+		frozen: boolean;
+		active: boolean;
+		energized: boolean;
+
+		ascii(): string;
+		isVoid(): boolean;
+		rotationAscii(): string;
 		rotate(angle?: number): void;
+		toggleFreeze(): void;
+		toggleActive(): void;
+		toggleEnergized(): void;
+		fire(): Particle;
+
+		toString(): string;
+		static importCell(cell: CellInterface): Cell;
 		exportCell(): CellInterface;
 	}
 
-	class Grid {
-		rows: number;
-		cols: number;
+	class Cluster {
 		cells: Cell[];
-		set(cell: Cell): void;
-		computePaths(): ParticleInterface[];
+
+		coords(): Coord[];
+		elements(): Element[];
+		origin(): Coord;
+		compress(): Cluster;
+
+		filteredBy(name: string): Cluster;
+		filteredByNot(name: string): Cluster;
+		unvoid(): Cluster;
+		active(): Cluster;
+		inactive(): Cluster;
+		energized(): Cluster;
+		unenergized(): Cluster;
+		frozen(): Cluster;
+		unfrozen(): Cluster;
+
+		lasers(): Cluster;
+
+		mirrors(): Cluster;
+		beamsplitters(): Cluster;
+		coatedbeamsplitters(): Cluster;
+		polarbeamsplitters(): Cluster;
+		cornercubes(): Cluster;
+		reflectors(): Cluster;
+
+		detectors(): Cluster;
+		mines(): Cluster;
+		rocks(): Cluster;
+		fourdetectors(): Cluster;
+		filters(): Cluster;
+		walls(): Cluster;
+		gates(): Cluster;
+		closedGates(): Cluster;
+		openedGates(): Cluster;
+		absorbers(): Cluster;
+
+		polarizersH(): Cluster;
+		polarizersV(): Cluster;
+		waveplatesH(): Cluster;
+		waveplatesV(): Cluster;
+		sugars(): Cluster;
+		faradays(): Cluster;
+		polarizers(): Cluster;
+
+		vacuumjars(): Cluster;
+		glasses(): Cluster;
+		phaseshifters(): Cluster;
+
+		toString(): string;
+		exportCluster(): ClusterInterface;
+		static importCluster(cells: CellInterface[]): Cluster;
 	}
 
-	class Particle {}
+	class Grid extends Cluster {
+		rows: number;
+		cols: number;
+		paths: Particle[];
+		cells: Cell[];
+
+		set(cell: Cell): boolean;
+		get(coord: Coord): Cell;
+		center(): Coord;
+		operatorList(): [number, number, any][];
+		includes(coord: Coord): boolean;
+		move(src: Coord, dst: Coord): boolean;
+		moveAll(directionAngle: number): void;
+		fireLasers(): Particle[];
+		coordIntensitySum(coord: Coord): number;
+		laserPath(particle: Particle, maxFrames?: number): Particle[][];
+		computePaths(): ParticleInterface[];
+		energizeCells(paths: ParticleInterface[]): void;
+		activateCells(): void;
+		adjacentCells(coord: Coord): Cell[];
+		// Should be static?
+		ascii(): string;
+		exportGrid(): GridInterface;
+		importGrid(cells: CellInterface[]): void;
+	}
 
 	class Level {
 		id: number;
@@ -139,8 +255,41 @@ declare module 'quantumweasel' {
 		grid: Grid;
 		goals: Goal[];
 		hints: Hint[];
-		// toolbox: Toolbox;
 		completed: boolean;
+
+		toString(): string;
+		exportLevel(): LevelInterface;
+		static importLevel(level: LevelInterface): Level;
+	}
+
+	class Particle {
+		coord: Coord;
+		direction: number;
+		intensity: number;
+		phase: number;
+		// TODO: Declared as complex see this more
+		a: any;
+		b: any;
+		path: ParticleInterface[];
+
+		origin(): Coord;
+		alive(): boolean;
+		are(): number;
+		aim(): number;
+		bre(): number;
+		bim(): number;
+		clone(): Particle;
+		isVertical(): boolean;
+		opacity(): number;
+		setIntensity(): void;
+		pathParticle(): Particle;
+		on(cell: Cell): boolean;
+		stepsToExit(cols: number, rows: number): number;
+		next(): Particle;
+		toString(): string;
+		static manyToString(particles: Particle[]): string;
+		exportParticle(): ParticleInterface;
+		static importParticle(obj: ParticleInterface): Particle;
 	}
 
 	class Frame {
@@ -150,17 +299,24 @@ declare module 'quantumweasel' {
 		quantum: Particle[];
 		gameState: GameState;
 		end: boolean;
+
+		next(): Frame;
+		nextQuantum(): Particle[];
+		nextClassical(): Particle[];
+		toString(): string;
+		exportFrame(): FrameInterface;
+		processGameState(): GameState;
+		updateGoals(): void;
+		completedGoals(): Goal[];
+		victory(): boolean;
+		getParticleCells(particles?: Particle[]): Cluster;
+		explodingMines(threshold?: number): boolean;
 	}
 
 	class Goal {
 		coord: Coord;
 		threshold: number;
 		value: number;
-	}
-
-	class Coord {
-		x: number;
-		y: number;
 	}
 
 	class Hint {}
