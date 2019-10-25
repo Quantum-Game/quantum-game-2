@@ -18,7 +18,8 @@
 			</h1>
 
 			<!-- MAIN-LEFT -->
-			<Goals slot="main-left" :percentage="70" :goals="level.goals" />
+			<Goals slot="main-left" :percentage="70" :goals="activeFrame.level.goals" />
+
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
 				<li v-for="(stuff, i) in Array(20)" :key="i">
@@ -122,8 +123,6 @@ export default class Game extends Vue {
   level: Level = Level.importLevel(this.levelObj);
   frameNumber: number = 0;
   frames: Frame[] = [];
-  // goals: GoalInterface[] = [];
-  // lasers = [];
   toolbox = [];
   error: string = '';
   activeElement = '';
@@ -154,14 +153,6 @@ export default class Game extends Vue {
     this.createFrames();
     return true;
   }
-
-	/**
-	 * Update grid from player events
-	 */
-	updateGrid(objCell: CellInterface) {
-		const cell = Cell.importCell(objCell);
-		this.level.grid.set(cell);
-	}
 
   setupInitFrame() {
     this.frames = [];
