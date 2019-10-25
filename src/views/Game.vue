@@ -28,7 +28,7 @@
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<Grid :grid="level.grid" :lasers="lasers" :photons="activeFrame.quantum" />
+				<QGrid :grid="level.grid" :photons="activeFrame.quantum" />
 				<controls @step-back="showPrevious" @step-forward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>

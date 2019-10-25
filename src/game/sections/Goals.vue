@@ -26,6 +26,7 @@
 			<div class="inner-circle">{{ percentage.toFixed(0) }}%</div>
 			<div>PROBABILITY</div>
 		</vc-donut>
+		-->
 		<div class="bottom-icons">
 			<span v-for="(goal, index) in goals" :key="index">
 				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
