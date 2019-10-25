@@ -1,9 +1,9 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight">
+  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
     <!-- DOTS -->
     <g v-for="(row, y) in grid.rows" :key="y">
       <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * cellSize" :cy="y * cellSize" r="1" fill="#edeaf4" />
+        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>
 
@@ -29,7 +29,7 @@
       v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
-      :cellSize="cellSize"
+      :tileSize="tileSize"
       @click.native="rotate(cell)"
     />
 

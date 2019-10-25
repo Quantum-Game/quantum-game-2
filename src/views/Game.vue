@@ -28,7 +28,7 @@
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<Grid :grid="level.grid" :lasers="lasers" :photons="activeFrame.quantum" />
+				<q-grid :grid="level.grid" :photons="activeFrame.quantum" />
 				<controls @step-back="showPrevious" @step-forward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
@@ -63,7 +63,6 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import {
-	Cell,
 	Level,
 	Frame,
 	Particle,
