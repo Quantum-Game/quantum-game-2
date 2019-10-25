@@ -1,30 +1,32 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <!-- <div class="upper-icons">
+    <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-        <span>02</span>
+        <span> 02</span>
       </div>
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-        <span>25</span>
+        <span> 25</span>
       </div>
-    </div>-->
+    </div>
     <vc-donut
       class="chart"
       background="inherit"
       foreground="rgba(255, 255, 255, 0.1)"
       unit="px"
+      has-legend
+      legend-placement="bottom"
       :size="200"
       :thickness="30"
       :sections="generateSections()"
-      :total="100"
+      :total="totalGoal()"
       :start-angle="0"
     >
-      <div class="inner-circle">{{ 100 - totalPercentage().toFixed(0) }}%</div>
+      <div class="inner-circle">{{ totalParticle().toFixed(0) }}%</div>
       <div>PROBABILITY</div>
     </vc-donut>
-    <div class="bottom-icons">
+    <!-- <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
         <div v-if="goal.value >= goal.threshold">
           <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" class="happy" />
@@ -35,32 +37,40 @@
         </div>
       </span>
       <div>DETECTORS</div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { Goal } from 'quantumweasel';
+import { Goal, ParticleInterface } from 'quantumweasel';
+
+interface SectionInterface {
+  label: string;
+  value: number;
+  color: string;
+}
 
 @Component({
   components: {}
 })
 export default class Goals extends Vue {
   @Prop() readonly goals!: Goal[];
+  @Prop() readonly particles!: ParticleInterface[];
 
   /**
    * Generate sections for the donut
    */
-  generateSections(): { value: number; color: string }[] {
-    let result: { value: number; color: string }[] = [];
-    var letters = '0123456789ABCDEF';
-    this.goals.forEach((goal: Goal) => {
-      let color = '#';
-      for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      result.push({ value: goal.value * 100, color: color });
+  generateSections(): SectionInterface[] {
+    let result: SectionInterface[] = [];
+    this.goals.forEach((goal: Goal, index: number) => {
+			if (!goal.completed) {
+				const label = `Goal ${index}: ${(goal.threshold * 100).toFixed(0) } %`;
+				result.push({ label: label, value: goal.value * 100, color: "green" });
+			} else {
+				const label = `Goal completed`;
+				result.push({ label: label, value: goal.value * 100, color: "purple" });
+			}
     });
     return result;
   }
@@ -69,7 +79,19 @@ export default class Goals extends Vue {
     let sum = 0;
     this.goals.map((goal: Goal) => (sum += goal.value));
     return (1 - sum) * 100;
-  }
+	}
+
+	totalGoal(): number {
+    let sum = 0;
+    this.goals.map((goal: Goal) => (sum += goal.threshold));
+    return sum * 100;
+	}
+
+	totalParticle(): number {
+    let sum = 0;
+    this.particles.map((particle) => (sum += particle.opacity));
+    return sum * 100;
+	}
 }
 </script>
 

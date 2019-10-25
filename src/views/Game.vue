@@ -18,7 +18,7 @@
 			</h1>
 
 			<!-- MAIN-LEFT -->
-			<Goals slot="main-left" :percentage="70" :goals="activeFrame.level.goals" />
+			<Goals slot="main-left" :percentage="70" :goals="activeFrame.level.goals" :particles="activeFrame.quantum" />
 
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
