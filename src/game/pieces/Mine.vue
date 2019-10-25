@@ -36,7 +36,7 @@
 			/>
 		</g>
 		<!-- OUTLINE -->
-		<g id="_x3C_Qoutline_x3E_" v-if="border">
+		<g v-if="border" id="_x3C_Qoutline_x3E_">
 			<path
 				class="st3"
 				:style="{ fill: border }"
@@ -54,12 +54,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Mine extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Mine extends Piece {}
 </script>
 
 <style lang="scss" scoped>

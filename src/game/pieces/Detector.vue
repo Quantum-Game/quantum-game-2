@@ -198,7 +198,7 @@
 			</g>
 		</g>
 		<!-- OUTLINE -->
-		<g v-if="border" id="Qoutline" >
+		<g v-if="border" id="Qoutline">
 			<path
 				class="st8"
 				:style="{ fill: border }"
@@ -217,13 +217,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Detector extends Vue {
-	@Prop({ default: false }) readonly active!: boolean;
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Detector extends Piece {}
 </script>
 
 <style lang="scss" scoped>

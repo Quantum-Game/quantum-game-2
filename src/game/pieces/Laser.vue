@@ -74,20 +74,21 @@
 		</g>
 		<!-- OUTLINE FOR ROTATION (ONLY IN SANDBOX MODE) -->
 		<g class="st3">
-			<path class="st0" d="M31.9,2c16.6,0,30,13.4,30,30s-13.4,30-30,30s-30-13.4-30-30S15.3,2,31.9,2 M31.9,1c-17.1,0-31,13.9-31,31
-				s13.9,31,31,31s31-13.9,31-31S49,1,31.9,1L31.9,1z"/>
+			<path
+				class="st0"
+				d="M31.9,2c16.6,0,30,13.4,30,30s-13.4,30-30,30s-30-13.4-30-30S15.3,2,31.9,2 M31.9,1c-17.1,0-31,13.9-31,31
+				s13.9,31,31,31s31-13.9,31-31S49,1,31.9,1L31.9,1z"
+			/>
 		</g>
-
 	</svg>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Laser extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Laser extends Piece {}
 </script>
 
 <style lang="scss" scoped>

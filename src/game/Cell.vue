@@ -115,6 +115,7 @@ export default class Cell extends Vue {
 	get translationX(): number {
 		return this.cell.coord.x * this.cellSize;
 	}
+
 	get translationY(): number {
 		return this.cell.coord.y * this.cellSize;
 	}

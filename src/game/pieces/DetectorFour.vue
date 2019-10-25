@@ -259,13 +259,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class DetectorFour extends Vue {
-	@Prop() readonly active!: boolean;
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class DetectorFour extends Piece {}
 </script>
 
 <style lang="scss" scoped>
