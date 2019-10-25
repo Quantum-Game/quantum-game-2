@@ -41,14 +41,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Polarizer extends Vue {
-	@Prop() readonly rotation!: number;
-	@Prop() readonly energized!: boolean;
-	@Prop() readonly cell!: object;
-}
+export default class Polarizer extends Piece {}
 </script>
 
 <style lang="scss" scoped>

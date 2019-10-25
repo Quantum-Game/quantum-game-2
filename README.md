@@ -4,36 +4,6 @@ Quantum Game 2 from CQT
 ## develop
 `yarn` followed by `yarn serve`
 
-## TODO:
-
-### GAME:
-- [ ] Defeat Overlay
-
-### Elements
-- [ ] have the elements not leak the attributes
-
-### GOALS METER
-- [ ] our own implementation
-
-### EXPLANATION
-- [ ] set up Exmplanation prop
-
-### LEVELS VIEW
-
-
-### YOUR PHOTON(S)
-- [ ] Style it so it fits in
-
-### ENCYCLOPEDIAs
-- [ ] add inline styling for images
-- [ ] add aria attributes for folded panes
-
-### MAINTENANCE
-
-### BUGS
-- [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;
-
-
 14.10:
 - [x] Scaffold menu
 - [x] Include Menu button into the layout
@@ -104,4 +74,42 @@ Quantum Game 2 from CQT
 24.10
 - [x] fix cell in tray so it displays elements
 - [x] move cells on top of lasers
+- [x] Defeat Overlay
+- [x] Style it so it fits in
 
+
+25.10
+
+
+## TODO:
+
+### GAME:
+### GRID
+- [ ] Add common ancestor for all the elements
+- [ ] have the elements not leak the attributes
+- [ ] make the grid responsive by passing the cell-size prop on resize
+- [ ] Polarizer functiobality
+- [ ] Speech Bubble
+
+after talk:
+- [ ] photon dispersing animation
+- [ ] key concepts
+- [ ] make levels same size?
+
+### GOALS METER
+- [ ] our own implementation
+
+### EXPLANATION
+- reimplement activeElement logic
+
+
+### YOUR PHOTON(S)
+
+### ENCYCLOPEDIAs
+- [ ] add inline styling for images
+- [ ] add aria attributes for folded panes
+
+### MAINTENANCE
+
+### BUGS
+- [ ] entry seciton scrollHeight bug, where the open entry section max height is ill-calculated, resulting in the text not fitting in. Might be correlated to flex / screen width;

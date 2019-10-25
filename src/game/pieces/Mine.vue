@@ -42,12 +42,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Mine extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Mine extends Piece {}
 </script>
 
 <style lang="scss" scoped>

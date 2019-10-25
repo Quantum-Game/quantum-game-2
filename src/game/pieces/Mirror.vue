@@ -16,12 +16,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Mirror extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Mirror extends Piece {}
 </script>
 
 <style lang="scss" scoped>

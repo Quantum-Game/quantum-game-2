@@ -87,12 +87,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Absorber extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Absorber extends Piece {}
 </script>
 
 <style lang="scss" scoped>

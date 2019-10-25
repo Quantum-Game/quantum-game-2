@@ -71,9 +71,9 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
+import * as qw from 'quantumweasel';
 import Photon from '../Photon.vue';
 import Cell from '../Cell.vue';
-import * as qw from "quantumweasel";
 import { IGrid, ICell, Qparticle, ParticleInterface } from '@/types';
 
 @Component({
@@ -121,8 +121,8 @@ export default class Grid extends Vue {
 	 * Cell rotation
 	 */
 	rotate(cellI: CellInterface) {
-		const cell = qw.Cell.importCell(cellI)
-		cell.rotate()
+		const cell = qw.Cell.importCell(cellI);
+		cell.rotate();
 		this.grid.set(cell);
 	}
 
