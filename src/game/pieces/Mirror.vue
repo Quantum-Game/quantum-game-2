@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="16"
-					width="62"
-					x="1"
-					y="24"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<rect x="2" y="25" class="st0" width="60" height="14" />
 			<polygon class="st1" points="29.1,39 16,25 3.1,25 16.2,39 	" />

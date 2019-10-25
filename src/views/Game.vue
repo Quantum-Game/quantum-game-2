@@ -65,261 +65,262 @@
 <script lang="ts">
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Level, Frame, Particle } from 'quantumweasel';
+import {
+  Cell,
+  Level,
+  Frame,
+  Particle,
+  CellInterface,
+  FrameInterface,
+  LevelInterface,
+  ParticleInterface,
+  GoalInterface
+} from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
-import { ICell, ICoord, FrameInterface, ParticleInterface } from '@/types';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, Grid } from '../game/sections';
 import Overlay from '../game/overlays/Overlay.vue';
-import EventBus from '../eventbus';
+// import EventBus from '../eventbus';
 
-const emptyLevel = {
-	grid: {
-		cols: 0,
-		rows: 0,
-		cells: [
-			{
-				coord: {
-					x: -1,
-					y: -1
-				},
-				element: 'Void',
-				rotation: 0,
-				frozen: false
-			}
-		]
-	}
+const emptyLevelObj = {
+	id: 0,
+	name: "default",
+	group: "default",
+	description: "default level",
+  grid: {
+    cols: 0,
+    rows: 0,
+    cells: [
+      {
+        coord: {
+          x: -1,
+          y: -1
+        },
+        element: 'Void',
+        rotation: 0,
+        frozen: false
+      }
+    ]
+  },
+  goals: [],
+  hints: []
 };
 
 @Component({
-	components: {
-		GameLayout,
-		YourPhoton,
-		QButton,
-		Goals,
-		Explanation,
-		Toolbox,
-		Controls,
-		Overlay,
-		Grid
-	}
+  components: {
+    GameLayout,
+    YourPhoton,
+    QButton,
+    Goals,
+    Explanation,
+    Toolbox,
+    Controls,
+    Overlay,
+    Grid
+  }
 })
 export default class Game extends Vue {
-	level = emptyLevel;
-	error: string = '';
-	game = {};
-	activeElement = '';
-	frameNumber: number = 0;
-	frames: FrameInterface[] = [];
-	goals = [];
-	lasers = [];
-	toolbox = [];
+  levelObj: LevelInterface = emptyLevelObj;
+  level: Level = {};
+  error: string = '';
+  game = {};
+  activeElement = '';
+  frameNumber: number = 0;
+  frames: Frame[] = [];
+  goals: GoalInterface[] = [];
+  lasers = [];
+  toolbox = [];
 
-	// LIFECYCLE
-	created() {
-		this.loadALevel();
-		window.addEventListener('keyup', this.handleArrowPress);
-	}
+  // LIFECYCLE
+  created() {
+    this.loadALevel();
+    window.addEventListener('keyup', this.handleArrowPress);
+  }
 
-	mounted() {
-		EventBus.$on('CELL_ROTATED', (cell: ICell) => {
-			console.log(cell);
-			this.updateGrid(cell);
-		});
-	}
+  beforeDestroy() {
+    window.removeEventListener('keyup', this.handleArrowPress);
+  }
 
-	beforeDestroy() {
-		window.removeEventListener('keyup', this.handleArrowPress);
-	}
+  // LEVEL LOADING
+  @Watch('$route')
+  loadALevel() {
+    this.error = '';
+    // See if there's such level:
+    const levelObjToLoad: LevelInterface = levelData[this.currentLevelName];
+    if (!levelObjToLoad) {
+      this.error = 'no such level!';
+      return false;
+    }
+    this.levelObj = levelObjToLoad;
+    this.setupInitFrame();
+    this.createFrames();
+    return true;
+  }
 
-	// LEVEL LOADING
-	@Watch('$route')
-	loadALevel() {
-		this.error = '';
-		// See if there's such level:
-		const levelToLoad = levelData[this.currentLevelName];
-		if (!levelToLoad) {
-			this.error = 'no such level!';
-			return false;
-		}
-		this.level = levelToLoad;
-		this.setupInitFrame();
-		this.createFrames();
-		return true;
-	}
+  /**
+   * Update grid from player events
+   */
+  updateGrid(objCell: CellInterface) {
+    const cell = Cell.importCell(objCell);
+    this.level.grid.set(cell);
+  }
 
-	/**
-	 * Update grid from player events
-	 */
-	updateGrid(objCell: ICell) {
-		// const cell = Cell.importCell(objCell)
-		// this.level.grid.set(cell)
-	}
+  setupInitFrame() {
+    this.frames = [];
+    this.frameNumber = 0;
+    this.level = Level.importLevel(this.levelObj);
+    this.goals = this.levelObj.goals;
+    // this.lasers = this.level.grid.computePaths();
 
-	setupInitFrame() {
-		this.frames = [];
-		this.frameNumber = 0;
-		const loadedLevel = Level.importLevel(this.level);
-		this.lasers = loadedLevel.grid.computePaths();
-		this.goals = loadedLevel.goals;
-		console.log(`LASERS: ${this.lasers.length}`);
+    const initFrame = new Frame(this.level);
+    this.frames.push(initFrame);
+  }
 
-		const initFrame = new Frame(loadedLevel);
-		const firstFrame: FrameInterface = initFrame.next();
-		this.frames.push(firstFrame);
-	}
+  // FRAME CONTROL
+  // TODO: Find the correct amount of frames to compute for the simulation
+  createFrames(number = 25) {
+    for (let index = 0; index < number; index += 1) {
+      const lastFrameCopy = cloneDeep(this.lastFrame);
+      const nextFrame = lastFrameCopy.next();
+      this.frames.push(nextFrame);
+    }
+  }
 
-	// FRAME CONTROL
-	// TODO: Find the correct amount of frames to compute for the simulation
-	createFrames(number = 25) {
-		for (let index = 0; index < number; index += 1) {
-			const lastFrameCopy = cloneDeep(this.lastFrame);
-			const nextFrame: FrameInterface = lastFrameCopy.next();
-			this.frames.push(nextFrame);
-		}
-	}
+  get activeFrame() {
+    return this.frames[this.frameNumber];
+  }
 
-	createNextFrame() {
-		const lastFrameCopy = cloneDeep(this.lastFrame);
-		const nextFrame: FrameInterface = lastFrameCopy.next();
-		this.frames.push(nextFrame);
-	}
+  get lastFrame() {
+    return this.frames[this.frames.length - 1];
+  }
 
-	showNext() {
-		const newFrameNumber = this.frameNumber + 1;
-		if (newFrameNumber > this.frames.length - 1) {
-			console.error("Can't access frames that are not computed yet...");
-			return false;
-		}
-		this.frameNumber = newFrameNumber;
-		return this.frameNumber;
-	}
+  createNextFrame() {
+    const lastFrameCopy = cloneDeep(this.lastFrame);
+    const nextFrame = lastFrameCopy.next();
+    this.frames.push(nextFrame);
+  }
 
-	showPrevious() {
-		const newFrameNumber = this.frameNumber - 1;
-		if (newFrameNumber < 0) {
-			console.error("Can't access frames before simulation...");
-			return false;
-		}
-		this.frameNumber = newFrameNumber;
-		return this.frameNumber;
-	}
+  showNext() {
+    const newFrameNumber = this.frameNumber + 1;
+    if (newFrameNumber > this.frames.length - 1) {
+      console.error("Can't access frames that are not computed yet...");
+      return false;
+    }
+    this.frameNumber = newFrameNumber;
+    return this.frameNumber;
+  }
 
-	// EVENT HANDLERS
-	onActiveElement(element: string, isDraggable: boolean) {
-		this.activeElement = element;
-	}
+  showPrevious() {
+    const newFrameNumber = this.frameNumber - 1;
+    if (newFrameNumber < 0) {
+      console.error("Can't access frames before simulation...");
+      return false;
+    }
+    this.frameNumber = newFrameNumber;
+    return this.frameNumber;
+  }
 
-	handleArrowPress(e: { keyCode: number }): void {
-		// console.log(e.keyCode);
-		switch (e.keyCode) {
-			case 37:
-				this.showPrevious();
-				break;
-			case 39:
-				this.showNext();
-				break;
-			default:
-				break;
-		}
-	}
+  // EVENT HANDLERS
+  onActiveElement(element: string, isDraggable: boolean) {
+    this.activeElement = element;
+  }
 
-	// GETTERS
-	get toolboxElements() {
-		return this.level.grid.cells.filter((x) => !x.frozen);
-	}
+  handleArrowPress(e: { keyCode: number }): void {
+    // console.log(e.keyCode);
+    switch (e.keyCode) {
+      case 37:
+        this.showPrevious();
+        break;
+      case 39:
+        this.showNext();
+        break;
+      default:
+        break;
+    }
+  }
 
-	get currentLevelName() {
-		return `level${parseInt(this.$route.params.id, 10)}`;
-	}
+  // GETTERS
+  get toolboxElements(): CellInterface[] {
+    return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
+  }
 
-	get levelLoaded(): boolean {
-		return this.level && this.level.grid.cols !== 0;
-	}
+  get currentLevelName() {
+    return `level${parseInt(this.$route.params.id, 10)}`;
+  }
 
-	get particles() {
-		return this.frames[this.frameNumber].quantum;
-	}
+  get levelLoaded(): boolean {
+    return this.level && this.level.grid.cols !== 0;
+  }
 
-	get probabilitySum(): number {
-		let sum = 0;
-		this.frames[this.frameNumber].quantum.forEach((particle: any) => {
-			sum += particle.intensity;
-		});
-		return sum;
-	}
+  get particles(): Particle[] {
+    return this.frames[this.frameNumber].quantum;
+  }
 
-	get activeFrame(): FrameInterface {
-		return this.frames[this.frameNumber];
-	}
+  get probabilitySum(): number {
+    let sum = 0;
+    this.frames[this.frameNumber].quantum.forEach((particle: any) => {
+      sum += particle.intensity;
+    });
+    return sum;
+  }
 
-	get lastFrame(): FrameInterface {
-		return this.frames[this.frames.length - 1];
-	}
-
-	get computedGridStyle() {
-		return {
-			backgroundImage: `url(${gridSVG})`
-		};
-	}
-
-	get gameState() {
-		return this.activeFrame.gameState;
-	}
+  get gameState() {
+    return this.activeFrame.gameState;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 h1 {
-	//color:crimson;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+  //color:crimson;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .title {
-	margin-bottom: 30;
-	margin-top: 0;
+  margin-bottom: 30;
+  margin-top: 0;
 }
 
 .game {
-	width: 100%;
-	min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
 }
 .grid {
-	width: 100%;
-	max-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	.row {
-		display: flex;
-		flex-direction: row;
-		& .tile {
-			width: 64px;
-			min-height: 64px;
-			position: relative;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			color: white;
-			font-size: 1rem;
-			margin: none;
-			&:hover {
-				color: black;
-			}
-		}
-	}
+  width: 100%;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .row {
+    display: flex;
+    flex-direction: row;
+    & .tile {
+      width: 64px;
+      min-height: 64px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+      margin: none;
+      &:hover {
+        color: black;
+      }
+    }
+  }
 }
 .game {
-	&.goals {
-		height: 600px;
-		a:link,
-		a:visited {
-			color: white;
-			font-size: 12;
-			text-decoration: none;
-		}
-	}
+  &.goals {
+    height: 600px;
+    a:link,
+    a:visited {
+      color: white;
+      font-size: 12;
+      text-decoration: none;
+    }
+  }
 }
 </style>

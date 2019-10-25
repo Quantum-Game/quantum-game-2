@@ -8680,7 +8680,7 @@ quantum-tensors@stared/quantum-tensors#JoyOfDependencies:
 
 quantumweasel@sneakyweasel/quantumweasel#master:
   version "1.0.2"
-  resolved "https://codeload.github.com/sneakyweasel/quantumweasel/tar.gz/3ed74348862d2bda0416cb50dfb5db745747c95d"
+  resolved "https://codeload.github.com/sneakyweasel/quantumweasel/tar.gz/61647acf02c9f7db6766d9e845954856454b8efb"
   dependencies:
     "@types/file-saver" "^2.0.1"
     "@types/jest" "^24.0.19"

@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="57"
-					width="57"
-					x="3.5"
-					y="3.5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<!-- ACTIVE RED BOMB - AFTER HIT BY PHOTON -->
 			<path

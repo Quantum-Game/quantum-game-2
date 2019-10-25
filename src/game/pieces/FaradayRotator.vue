@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="31.4"
-					width="58.1"
-					x="3"
-					y="13"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<path
 				class="st0"

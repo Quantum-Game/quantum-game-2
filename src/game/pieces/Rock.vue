@@ -1,19 +1,6 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="48.5"
-					width="61.8"
-					x="1.1"
-					y="6"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
-		<!-- HIT BY THE PHOTON STATE -->
-		<g class="st0">
+		<g id="Qactive" class="st0">
 			<g class="st1">
 				<defs>
 					<path

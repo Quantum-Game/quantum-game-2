@@ -9,13 +9,99 @@ export interface RootState {
 		availableTools: Array<[string, number]>;
 	};
 }
+/**
+ * LEVEL INTERFACE
+ * level interface in primitives
+ */
+export interface LevelInterface {
+	id: number;
+	name: string;
+	group: string;
+	description: string;
+	grid: GridInterface;
+	goals: GoalInterface[];
+	hints: HintInterface[];
+}
+
+/**
+ * GOAL INTERFACE
+ * Goal interface in primitives
+ */
+export interface GoalInterface {
+	coord: CoordInterface;
+	threshold: number;
+	value: number;
+}
+
+/**
+ * HINT INTERFACE
+ * Hint interface in primitives
+ */
+export interface HintInterface {
+	coord: CoordInterface;
+	text: string;
+}
+/**
+ * GRID INTERFACE
+ * Grid interface in primitives
+ */
+export interface GridInterface {
+	cols: number;
+	rows: number;
+	cells: CellInterface[];
+}
+
+/**
+ * CLUSTER INTERFACE
+ * Cluster of cells in primitives
+ */
+export interface ClusterInterface {
+	cells: CellInterface[];
+}
+
+/**
+ * CELL INTERFACE
+ * A cell interface composed of primitives
+ */
+export interface CellInterface {
+	coord: CoordInterface;
+	element: string;
+	rotation: number;
+	frozen: boolean;
+	active?: boolean;
+	energized?: boolean;
+}
+
+/**
+ * ELEMENT INTERFACE
+ * Element interface composed of primitive types
+ */
+export interface ElementInterface {
+	id: number;
+	name: string;
+	group: string;
+	description: string;
+	active: boolean;
+	absorption: number;
+	phase: number;
+	ascii: string[];
+	tiles: number[][];
+}
+
+/**
+ * COORDINATE INTERFACE
+ * A coordinates interface of primitives
+ */
+export interface CoordInterface {
+	x: number;
+	y: number;
+}
 
 export interface ICoord {
 	x: number;
 	y: number;
 }
 
-// "PathPointer"
 export interface IPhotonState {
 	coord: ICoord;
 	direction: number;
@@ -42,61 +128,61 @@ export interface Qparticle {
 	bim: number;
 }
 
-export interface FrameInterface {
-	level: ILevel;
-	step: number;
-	particles: ParticleInterface[];
-	quantum: ParticleInterface[];
-	end: boolean;
-	gameState: string;
-	next: () => FrameInterface;
-}
+// export interface Frame {
+// 	level: ILevel;
+// 	step: number;
+// 	particles: ParticleInterface[];
+// 	quantum: ParticleInterface[];
+// 	end: boolean;
+// 	gameState: string;
+// 	next: () => Frame;
+// }
 
-export interface ICell {
-	coord: ICoord;
-	element: string;
-	rotation: number;
-	frozen: boolean;
-	active?: boolean;
-	energized?: boolean;
-	originX?: number;
-	originY?: number;
-}
+// export interface ICell {
+// 	coord: ICoord;
+// 	element: string;
+// 	rotation: number;
+// 	frozen: boolean;
+// 	active?: boolean;
+// 	energized?: boolean;
+// 	originX?: number;
+// 	originY?: number;
+// }
 
-export interface IGrid {
-	cols: number;
-	rows: number;
-	cells: Array<ICell>;
-}
+// export interface IGrid {
+// 	cols: number;
+// 	rows: number;
+// 	cells: Array<ICell>;
+// }
 
-export interface ILevel {
-	grid: IGrid;
-}
+// export interface ILevel {
+// 	grid: IGrid;
+// }
 
 export interface ILevelList {
-	[index: string]: ILevel;
+	[index: string]: LevelInterface;
 }
 
-export interface IGameState {
-	achievedGoals: boolean;
-	noPointers: boolean;
-	notEnoughIntensity: boolean;
-}
+// export interface IGameState {
+// 	achievedGoals: boolean;
+// 	noPointers: boolean;
+// 	notEnoughIntensity: boolean;
+// }
 
-export interface IFrame {
-	step: number;
-}
+// export interface IFrame {
+// 	step: number;
+// }
 
-export interface IGoals {
-	coord: ICoord;
-	threshold: number;
-	value: number;
-}
+// export interface IGoals {
+// 	coord: ICoord;
+// 	threshold: number;
+// 	value: number;
+// }
 
-export interface IHints {
-	coord: ICoord;
-	text: string;
-}
+// export interface IHints {
+// 	coord: ICoord;
+// 	text: string;
+// }
 
 export interface IToolset {
 	[key: string]: any;
@@ -209,4 +295,4 @@ interface Complex {
  * @returns Creates a complex number `z = z.re + i * z.im `
  */
 // export default function Cx(re: number, im?: number): Complex;
-export declare function Cx(re: number, im?: number): Complex;
+// export declare function Cx(re: number, im?: number): Complex;
