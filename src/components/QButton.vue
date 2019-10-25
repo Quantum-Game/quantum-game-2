@@ -57,17 +57,17 @@ button {
 	background-color: #ff0055;
 	border-bottom: 4px solid #890236;
 	&:hover {
-		background-color: #db0356;
+		background-color: #e80054;
 		transition: 0.5s;
 	}
 }
 
 .big {
-	background-color: #ff0055;
+	background-color: #5c00d3;
 	font-size: 1.5rem;
-	border-bottom: 4px solid #890236;
+	border-bottom: 4px solid #120223;
 	&:hover {
-		background-color: #db0356;
+		background-color: #4302bf;
 		transition: 0.5s;
 	}
 }

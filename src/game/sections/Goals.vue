@@ -1,17 +1,17 @@
 <template>
 	<div ref="goals" class="goals-wrapper">
-		<div class="upper-icons">
+		<!-- <div class="upper-icons">
 			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" /> -->
 				<!-- NUMBER OF KEYS -->
-				<span>02</span>
+				<!-- <span>02</span>
 			</div>
 			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" /> -->
 				<!-- NUMBER OF POINTS? -->
-				<span>25</span>
+				<!-- <span>25</span>
 			</div>
-		</div>
+		</div> -->
 		<!-- <svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg"> -->
 			<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
 		</svg> -->
