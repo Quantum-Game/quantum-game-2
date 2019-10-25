@@ -1,4 +1,5 @@
 import { ParticleInterface } from './quantumweasel.d';
+
 declare module 'quantumweasel' {
 	/**
 	 * FRAME INTERFACE

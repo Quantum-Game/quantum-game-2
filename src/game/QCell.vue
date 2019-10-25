@@ -1,9 +1,5 @@
 <template>
-	<g
-		:style="positionStyle"
-		@mouseenter="handleMouseEnter"
-		@mouseleave="handleMouseLeave"
-	>
+	<g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
 		<rect :width="tileSize" :height="tileSize" />
 		<component
 			:is="cell.element"
@@ -19,70 +15,70 @@
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import { CellInterface } from '@/types';
 import {
-  Laser,
-  Mirror,
-  BeamSplitter,
-  PolarizingBeamSplitter,
-  CoatedBeamSplitter,
-  CornerCube,
-  Detector,
-  Rock,
-  Mine,
-  Absorber,
-  DetectorFour,
-  Polarizer,
-  QuarterWavePlate,
-  SugarSolution,
-  FaradayRotator,
-  Glass,
-  VacuumJar
+	Laser,
+	Mirror,
+	BeamSplitter,
+	PolarizingBeamSplitter,
+	CoatedBeamSplitter,
+	CornerCube,
+	Detector,
+	Rock,
+	Mine,
+	Absorber,
+	DetectorFour,
+	Polarizer,
+	QuarterWavePlate,
+	SugarSolution,
+	FaradayRotator,
+	Glass,
+	VacuumJar
 } from './pieces';
 
 const borderColors = {
-  active: '#FF0055',
-  rotable: 'yellow',
-  energized: 'blue'
+	active: '#FF0055',
+	rotable: 'yellow',
+	energized: 'blue'
 };
 
 @Component({
-  components: {
-    Laser,
-    Mirror,
-    BeamSplitter,
-    PolarizingBeamSplitter,
-    CoatedBeamSplitter,
-    CornerCube,
-    Detector,
-    Rock,
-    Mine,
-    Absorber,
-    DetectorFour,
-    Polarizer,
-    QuarterWavePlate,
-    SugarSolution,
-    FaradayRotator,
-    Glass,
-    VacuumJar
-  }
+	components: {
+		Laser,
+		Mirror,
+		BeamSplitter,
+		PolarizingBeamSplitter,
+		CoatedBeamSplitter,
+		CornerCube,
+		Detector,
+		Rock,
+		Mine,
+		Absorber,
+		DetectorFour,
+		Polarizer,
+		QuarterWavePlate,
+		SugarSolution,
+		FaradayRotator,
+		Glass,
+		VacuumJar
+	}
 })
 export default class QCell extends Vue {
 	@Prop() readonly cell!: CellInterface;
 	@Prop() readonly lasers!: any[];
 	@Prop() readonly tool!: boolean;
-	@Prop({default: 64}) readonly tileSize!: number;
+	@Prop({ default: 64 }) readonly tileSize!: number;
 
 	// tileSize = 64;
 
-  border = '';
+	border = '';
 
-  get positionStyle() {
-    let styleObj = {};
-    const originX = this.centerCoord(this.cell.coord.x);
-    const originY = this.centerCoord(this.cell.coord.y);
-    if (this.cell.element !== 'Void' && !this.tool) {
-      styleObj = {
-        'transform-origin': `${originX}px ${originY}px`,
-        transform: `
+	get positionStyle() {
+		let styleObj = {};
+		const originX = this.centerCoord(this.cell.coord.x);
+		const originY = this.centerCoord(this.cell.coord.y);
+		if (this.cell.element !== 'Void' && !this.tool) {
+			styleObj = {
+				'transform-origin': `${originX}px ${originY}px`,
+				transform: `
 				rotate(-${this.cell.rotation}deg)
 				translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
 			};
@@ -94,13 +90,13 @@ export default class QCell extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
-  handleMouseEnter() {
-    this.border = borderColors.rotable;
-  }
+	handleMouseEnter() {
+		this.border = borderColors.rotable;
+	}
 
-  handleMouseLeave() {
-    this.border = '';
-  }
+	handleMouseLeave() {
+		this.border = '';
+	}
 
 	get translationX(): number {
 		return this.cell.coord.x * this.tileSize;
@@ -114,6 +110,6 @@ export default class QCell extends Vue {
 
 <style lang="scss">
 rect {
-  fill: transparent;
+	fill: transparent;
 }
 </style>
