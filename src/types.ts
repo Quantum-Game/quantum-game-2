@@ -128,32 +128,32 @@ export interface Qparticle {
 	bim: number;
 }
 
-export interface Frame {
-	level: ILevel;
-	step: number;
-	particles: ParticleInterface[];
-	quantum: ParticleInterface[];
-	end: boolean;
-	gameState: string;
-	next: () => Frame;
-}
+// export interface Frame {
+// 	level: ILevel;
+// 	step: number;
+// 	particles: ParticleInterface[];
+// 	quantum: ParticleInterface[];
+// 	end: boolean;
+// 	gameState: string;
+// 	next: () => Frame;
+// }
 
-export interface ICell {
-	coord: ICoord;
-	element: string;
-	rotation: number;
-	frozen: boolean;
-	active?: boolean;
-	energized?: boolean;
-	originX?: number;
-	originY?: number;
-}
+// export interface ICell {
+// 	coord: ICoord;
+// 	element: string;
+// 	rotation: number;
+// 	frozen: boolean;
+// 	active?: boolean;
+// 	energized?: boolean;
+// 	originX?: number;
+// 	originY?: number;
+// }
 
-export interface IGrid {
-	cols: number;
-	rows: number;
-	cells: Array<ICell>;
-}
+// export interface IGrid {
+// 	cols: number;
+// 	rows: number;
+// 	cells: Array<ICell>;
+// }
 
 // export interface ILevel {
 // 	grid: IGrid;
@@ -163,26 +163,26 @@ export interface ILevelList {
 	[index: string]: LevelInterface;
 }
 
-export interface IGameState {
-	achievedGoals: boolean;
-	noPointers: boolean;
-	notEnoughIntensity: boolean;
-}
+// export interface IGameState {
+// 	achievedGoals: boolean;
+// 	noPointers: boolean;
+// 	notEnoughIntensity: boolean;
+// }
 
-export interface IFrame {
-	step: number;
-}
+// export interface IFrame {
+// 	step: number;
+// }
 
-export interface IGoals {
-	coord: ICoord;
-	threshold: number;
-	value: number;
-}
+// export interface IGoals {
+// 	coord: ICoord;
+// 	threshold: number;
+// 	value: number;
+// }
 
-export interface IHints {
-	coord: ICoord;
-	text: string;
-}
+// export interface IHints {
+// 	coord: ICoord;
+// 	text: string;
+// }
 
 export interface IToolset {
 	[key: string]: any;
