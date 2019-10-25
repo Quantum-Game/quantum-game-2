@@ -32,15 +32,19 @@
       <h3 slot="main-left" class="title">LEVELS:</h3>
       <ul slot="main-left">
         <li v-for="(stuff, i) in Array(20)" :key="i">
-          <router-link class="level" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
+          <router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
         </li>
       </ul>
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
         <q-grid :grid="level.grid" :photons="activeFrame.quantum" />
-        <controls @step-back="showPrevious" @step-forward="showNext" />
-        <p>Total frames: {{ frames.length }}</p>
+        <controls
+          @step-back="showPrevious"
+          @step-forward="showNext"
+          :activeFrame="activeFrame"
+          :totalFrames="frames.length"
+        />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -320,5 +324,8 @@ h1 {
       text-decoration: none;
     }
   }
+}
+.levelLink {
+	text-decoration: none;
 }
 </style>

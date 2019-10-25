@@ -1,19 +1,18 @@
 <template>
 	<transition :name="gameState">
 		<div v-if="gameState === 'baba'" :class="gameState" class="wrapper">
-			<h2>:(</h2>
+			<h2>
+				:(
+			</h2>
 		</div>
 
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
 			<h2>
 				You won!
-				<br>
 				<slot>
 
 				</slot>
 			</h2>
-
-
 		</div>
 	</transition>
 </template>
