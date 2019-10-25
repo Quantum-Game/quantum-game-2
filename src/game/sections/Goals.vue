@@ -11,16 +11,8 @@
 				<!-- NUMBER OF POINTS? -->
 				<!-- <span>25</span>
 			</div>
-<<<<<<< HEAD
-		</div> -->
-		<!-- <svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg"> -->
-			<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
-		</svg> -->
-		<!-- <vc-donut
-=======
 		</div>
 		<vc-donut
->>>>>>> 3b1a931057ca28aa408c5ac7f40ea8ce5833ef8b
 			class="chart"
 			background="inherit"
 			foreground="rgba(255, 255, 255, 0.1)"
