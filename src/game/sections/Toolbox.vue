@@ -1,7 +1,7 @@
 +<template>
 	<div class="toolbox">
 		<svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
-			<cell :cell="tool[0]" :tool="true" />
+			<q-cell :cell="tool[0]" :tool="true" />
 			x {{ tool[1] }}
 		</svg>
 	</div>

@@ -79,15 +79,15 @@ Quantum Game 2 from CQT
 
 
 25.10
+- [x] Add common ancestor for all the elements
 
 
 ## TODO:
 
 ### GAME:
 ### GRID
-- [ ] Add common ancestor for all the elements
 - [ ] have the elements not leak the attributes
-- [ ] make the grid responsive by passing the cell-size prop on resize
+- [ ] make the grid responsive by passing the tile-size prop on resize
 - [ ] Polarizer functiobality
 - [ ] Speech Bubble
 
