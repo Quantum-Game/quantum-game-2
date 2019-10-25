@@ -17,10 +17,10 @@
 				<a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
 			</h1>
 			<!-- newsletter -->
-			<div class="newsletter" id="content">
+			<div id="content" class="newsletter">
 				<h1>Sign up for our newsletter now!</h1>
-				<input type="email" placeholder="Email"/>
-				<q-button type="special" href="#" >SIGN UP</q-button>
+				<input type="email" placeholder="Email" />
+				<q-button type="special" href="#">SIGN UP</q-button>
 			</div>
 
 			<div class="image">
@@ -130,13 +130,13 @@ h2 {
 }
 .image {
 	width: 30%;
-	padding:30px;
+	padding: 30px;
 }
 .blog {
 	border-top: 1px solid white;
 	color: white;
 	font-size: 1rem;
-	font-weight:normal;
+	font-weight: normal;
 	line-height: 150%;
 }
 
@@ -160,58 +160,57 @@ a {
 	text-decoration: none;
 }
 ///////////
-*{
-    transition: all 0.6s;
+* {
+	transition: all 0.6s;
 }
 // .newsletter{
 // 	padding-bottom:30px;
 // }
-input[type='email']{
-    outline: none;
-    display: inline-block;
-    width: 60%;
-    padding: 10px;
-	background:none;
-    border-top: none;
+input[type='email'] {
+	outline: none;
+	display: inline-block;
+	width: 60%;
+	padding: 10px;
+	background: none;
+	border-top: none;
 	border-right: none;
 	border-left: none;
 	border-bottom: 1px solid white;
-    box-sizing: border-box;
+	box-sizing: border-box;
 	color: white;
 	font-size: 1rem;
 	font-weight: normal;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	margin-right: 20px;
 }
 
-
-input[type='email']:focus{
+input[type='email']:focus {
 	color: white;
 	font-family: Montserrat, Arial, Helvetica, sans-serif;
 	font-size: 1rem;
-	font-weight:normal;
-    border-top: none;
+	font-weight: normal;
+	border-top: none;
 	border-right: none;
 	border-left: none;
 	border-bottom: 1px solid white;
 }
 
 ::placeholder {
-  color: white;
-  font-family: Montserrat, Arial, Helvetica, sans-serif
+	color: white;
+	font-family: Montserrat, Arial, Helvetica, sans-serif;
 }
 
-@media screen and (max-width: 736px){
-    input[type='email']{
+@media screen and (max-width: 736px) {
+	input[type='email'] {
 		color: white;
 		font-size: 1rem;
-		font-weight:normal;
-        display: block;
-        width: 100%;
-    }
+		font-weight: normal;
+		display: block;
+		width: 100%;
+	}
 }
 ////////////
 </style>

@@ -1,5 +1,5 @@
 {
-  "beam-splitter": {
+  "BeamSplitter": {
     "title": "50-50 Beamsplitter",
     "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one",
     "sections": [
@@ -48,7 +48,7 @@
       }
     ]
   },
-  "mirror": {
+  "Mirror": {
     "title": "Mirror",
     "short": "A mirror is an object that reflects incident light preserving its properties.",
     "sections": [

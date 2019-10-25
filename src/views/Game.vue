@@ -49,11 +49,7 @@
 						}
 					]"
 				/>
-				<explanation>
-					<div class="description">
-						<span>element: {{ activeElement }}</span>
-					</div>
-				</explanation>
+				<explanation />
 				<your-photon :active-frame="activeFrame" />
 			</section>
 		</game-layout>
@@ -82,50 +78,50 @@ import Overlay from '../game/overlays/Overlay.vue';
 
 const emptyLevelObj = {
 	id: 0,
-	name: "default",
-	group: "default",
-	description: "default level",
-  grid: {
-    cols: 2,
-    rows: 2,
-    cells: [
-      {
-        coord: {
-          x: 1,
-          y: 1
-        },
-        element: 'Void',
-        rotation: 0,
-        frozen: false
-      }
-    ]
-  },
-  goals: [],
-  hints: []
+	name: 'default',
+	group: 'default',
+	description: 'default level',
+	grid: {
+		cols: 2,
+		rows: 2,
+		cells: [
+			{
+				coord: {
+					x: 1,
+					y: 1
+				},
+				element: 'Void',
+				rotation: 0,
+				frozen: false
+			}
+		]
+	},
+	goals: [],
+	hints: []
 };
 
 @Component({
-  components: {
-    GameLayout,
-    YourPhoton,
-    QButton,
-    Goals,
-    Explanation,
-    Toolbox,
-    Controls,
-    Overlay,
-    QGrid
-  }
+	components: {
+		GameLayout,
+		YourPhoton,
+		QButton,
+		Goals,
+		Explanation,
+		Toolbox,
+		Controls,
+		Overlay,
+		QGrid
+	}
 })
 export default class Game extends Vue {
 	// Level interface and instance
 	levelObj: LevelInterface = emptyLevelObj;
-  level: Level = Level.importLevel(this.levelObj);
-  frameNumber: number = 0;
-  frames: Frame[] = [];
-  toolbox = [];
-  error: string = '';
-  activeElement = '';
+	level: Level = Level.importLevel(this.levelObj);
+	frameNumber: number = 0;
+	frames: Frame[] = [];
+	toolbox = [];
+	error: string = '';
+	activeElement = '';
 
 	// LIFECYCLE
 	created() {
@@ -137,30 +133,30 @@ export default class Game extends Vue {
 		window.removeEventListener('keyup', this.handleArrowPress);
 	}
 
-  // LEVEL LOADING
-  @Watch('$route')
-  loadALevel() {
-    this.error = '';
-    // See if there's such level:
-    const levelObjToLoad: LevelInterface = levelData[this.currentLevelName];
-    if (!levelObjToLoad) {
-      this.error = 'no such level!';
-      return false;
-    }
+	// LEVEL LOADING
+	@Watch('$route')
+	loadALevel() {
+		this.error = '';
+		// See if there's such level:
+		const levelObjToLoad: LevelInterface = levelData[this.currentLevelName];
+		if (!levelObjToLoad) {
+			this.error = 'no such level!';
+			return false;
+		}
 		this.levelObj = levelObjToLoad;
 		this.level = Level.importLevel(levelObjToLoad);
-    this.setupInitFrame();
-    this.createFrames();
-    return true;
-  }
+		this.setupInitFrame();
+		this.createFrames();
+		return true;
+	}
 
-  setupInitFrame() {
-    this.frames = [];
-    this.frameNumber = 0;
-    this.level = Level.importLevel(this.levelObj);
-    const initFrame = new Frame(this.level);
-    this.frames.push(initFrame);
-  }
+	setupInitFrame() {
+		this.frames = [];
+		this.frameNumber = 0;
+		this.level = Level.importLevel(this.levelObj);
+		const initFrame = new Frame(this.level);
+		this.frames.push(initFrame);
+	}
 
 	// FRAME CONTROL
 	// TODO: Find the correct amount of frames to compute for the simulation

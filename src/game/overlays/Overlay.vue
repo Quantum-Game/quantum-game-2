@@ -5,9 +5,7 @@
 		</div>
 
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
-			<h2>You won!<br><slot></slot></h2>
-
-
+			<h2>You won!<br /><slot></slot></h2>
 		</div>
 	</transition>
 </template>
@@ -24,8 +22,6 @@ import QButton from '@/components/QButton.vue';
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
 }
-
-
 </script>
 
 <style lang="scss">
@@ -45,10 +41,10 @@ export default class Overlay extends Vue {
 	justify-content: center;
 	h2 {
 		//THIS IS A DRAFT VERSION OF POP-UP
-		width:12rem;
-		height:10rem;
-		padding:1rem;
-		background: linear-gradient(#5c00d3, #ff0055 , #fbb03b);
+		width: 12rem;
+		height: 10rem;
+		padding: 1rem;
+		background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
 		//margin: 50;
 		color: white;
 		font-size: 2rem;
@@ -65,4 +61,3 @@ export default class Overlay extends Vue {
 	align-items: center;
 }
 </style>
-
