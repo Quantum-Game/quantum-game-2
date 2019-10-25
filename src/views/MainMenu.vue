@@ -19,7 +19,7 @@
 			<!-- newsletter -->
 			<div class="newsletter" id="content">
 				<h1>Sign up for our newsletter now!</h1>
-				<input type="email" placeholder="Email"></input>
+				<input type="email" placeholder="Email"/>
 				<q-button type="special" href="#" >SIGN UP</q-button>
 			</div>
 
