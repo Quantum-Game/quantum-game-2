@@ -1,5 +1,5 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight">
+  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
     <!-- DOTS -->
     <g v-for="(row, y) in grid.rows" :key="y">
       <g v-for="(column, x) in grid.cols" :key="x">
@@ -25,7 +25,7 @@
     </g>
 
     <!-- CELLS -->
-    <cell
+    <q-cell
       v-for="(cell, i) in grid.exportGrid().cells"
       :key="'cell' + i"
       :cell="cell"
@@ -73,7 +73,7 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface } from 'quantumweasel';
 import Photon from '../Photon.vue';
-import QCell from '../Cell.vue';
+import QCell from '../QCell.vue';
 import { Qparticle } from '@/types';
 
 @Component({
@@ -84,8 +84,28 @@ import { Qparticle } from '@/types';
 })
 export default class QGrid extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
-  @Prop({ default: '64' }) readonly tileSize!: number;
+  // @Prop({ default: '64' }) readonly tileSize!: number;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
+
+  tileSize: number = 64;
+
+	$refs!: {
+		grid: HTMLElement;
+  };
+
+	created() {
+		window.addEventListener('resize', this.assessTileSize);
+  }
+
+	mounted() {
+		this.assessTileSize();
+  }
+
+	assessTileSize() {
+		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
+		this.tileSize = currentWidth / this.grid.cols;
+	}
+
 
   get lasers(): ParticleInterface[] {
     return this.grid.computePaths();

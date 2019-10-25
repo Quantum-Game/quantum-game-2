@@ -1,7 +1,6 @@
 <template>
 	<g
 		:style="positionStyle"
-		@click="rotate"
 		@mouseenter="handleMouseEnter"
 		@mouseleave="handleMouseLeave"
 	>
@@ -66,7 +65,7 @@ const borderColors = {
     VacuumJar
   }
 })
-export default class Cell extends Vue {
+export default class QCell extends Vue {
 	@Prop() readonly cell!: CellInterface;
 	@Prop() readonly lasers!: any[];
 	@Prop() readonly tool!: boolean;
@@ -94,16 +93,6 @@ export default class Cell extends Vue {
 	centerCoord(val: number) {
 		return (val + 0.5) * this.tileSize;
 	}
-
-  /**
-   * onClick rotate the element
-   */
-  // rotate(): void {
-  // 	if (!this.tool) {
-  // 		this.cell.rotation += 45;
-  // 		console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
-  // 	}
-  // }
 
   handleMouseEnter() {
     this.border = borderColors.rotable;
