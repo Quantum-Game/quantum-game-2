@@ -1,14 +1,14 @@
 <template>
-	<svg class="grid" :width="totalWidth" :height="totalHeight">
+	<svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
 		<!-- DOTS -->
 		<g v-for="(row, y) in grid.rows" :key="y">
 			<g v-for="(column, x) in grid.cols" :key="x">
-				<circle :cx="x * cellSize" :cy="y * cellSize" r="1" fill="#edeaf4" />
+				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
 			</g>
 		</g>
 
 		<!-- CELLS -->
-		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :cellSize="cellSize" />
+		<cell v-for="(cell, i) in grid.cells" :key="'cell' + i" :cell="cell" :tileSize="tileSize" />
 
 		<!-- LASER PATH -->
 		<path
@@ -61,15 +61,33 @@ import { IGrid, ICell, Qparticle, ParticleInterface } from '@/types';
 })
 export default class Grid extends Vue {
 	@Prop({ default: '' }) readonly grid!: IGrid;
-	@Prop({ default: '64' }) readonly cellSize!: number;
 	@Prop({ default: [] }) readonly lasers!: ParticleInterface[];
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 
+	tileSize: number = 64;
+
+	$refs!: {
+		grid: HTMLElement;
+	};
+
+	created() {
+		window.addEventListener('resize', this.assessTileSize);
+	}
+
+	mounted() {
+		this.assessTileSize();
+	}
+
+	assessTileSize() {
+		const currentWidth = this.$refs.grid.getBoundingClientRect().width
+		this.tileSize = currentWidth / this.grid.cols
+	}
+
 	get totalWidth(): number {
-		return this.grid.cols * this.cellSize;
+		return this.grid.cols * this.tileSize;
 	}
 	get totalHeight(): number {
-		return this.grid.rows * this.cellSize;
+		return this.grid.rows * this.tileSize;
 	}
 
 	computeParticleStyle(particle: Qparticle): {} {
@@ -79,7 +97,7 @@ export default class Grid extends Vue {
 			'transform-origin': `${originX}px ${originY}px`,
 			transform: `
 				rotate(${particle.direction}deg)
-				translate(${particle.x * this.cellSize}px, ${particle.y * this.cellSize}px)`
+				translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`
 		};
 	}
 
@@ -88,7 +106,7 @@ export default class Grid extends Vue {
 	 * @returns x, y pixel coordinates
 	 */
 	centerCoord(val: number): number {
-		return (val + 0.5) * this.cellSize;
+		return (val + 0.5) * this.tileSize;
 	}
 
 	/**

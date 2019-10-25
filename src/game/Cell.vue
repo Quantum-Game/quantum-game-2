@@ -5,12 +5,12 @@
 		@mouseenter="handleMouseEnter"
 		@mouseleave="handleMouseLeave"
 	>
-		<rect :width="cellSize" :height="cellSize" />
+		<rect :width="tileSize" :height="tileSize" />
 		<component
 			:is="cell.element"
 			:cell="cell"
 			:class="cell.element"
-			:cell-size="cellSize"
+			:cell-size="tileSize"
 			:border="border"
 		/>
 	</g>
@@ -70,8 +70,9 @@ export default class Cell extends Vue {
 	@Prop() readonly cell!: ICell;
 	@Prop() readonly lasers!: any[];
 	@Prop() readonly tool!: boolean;
+	@Prop({default: 64}) readonly tileSize!: number;
 
-	cellSize = 64;
+	tileSize = 64;
 
 	border = '';
 
@@ -84,14 +85,14 @@ export default class Cell extends Vue {
 				'transform-origin': `${originX}px ${originY}px`,
 				transform: `
 				rotate(-${this.cell.rotation}deg)
-				translate(${this.cell.coord.x * this.cellSize}px, ${this.cell.coord.y * this.cellSize}px)`
+				translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
 			};
 		}
 		return styleObj;
 	}
 
 	centerCoord(val: number) {
-		return (val + 0.5) * this.cellSize;
+		return (val + 0.5) * this.tileSize;
 	}
 
 	/**
@@ -113,11 +114,11 @@ export default class Cell extends Vue {
 	}
 
 	get translationX(): number {
-		return this.cell.coord.x * this.cellSize;
+		return this.cell.coord.x * this.tileSize;
 	}
 
 	get translationY(): number {
-		return this.cell.coord.y * this.cellSize;
+		return this.cell.coord.y * this.tileSize;
 	}
 }
 </script>

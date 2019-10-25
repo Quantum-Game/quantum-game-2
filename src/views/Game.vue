@@ -1,7 +1,13 @@
 <template>
 	<div class="game">
+
+		<!-- OVERLAY -->
 		<overlay :game-state="gameState" @click.native="frameNumber = 0" />
+
+		<!-- GENERAL LAYOUT -->
 		<game-layout>
+
+			<!-- HEADER-MIDDLE -->
 			<h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
 			<h1 v-else slot="header-middle" class="title">
 				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
@@ -12,6 +18,8 @@
 					<img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
 				</router-link>
 			</h1>
+
+			<!-- MAIN-LEFT -->
 			<Goals slot="main-left" :percentage="70" :goals="level.goals" />
 			<h3 slot="main-left" class="title">LEVELS:</h3>
 			<ul slot="main-left">
@@ -19,11 +27,15 @@
 					<router-link class="level" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
 				</li>
 			</ul>
+
+			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<Grid :cell-size="64" :grid="level.grid" :lasers="lasers" :photons="activeFrame.quantum" />
+				<Grid :grid="level.grid" :lasers="lasers" :photons="activeFrame.quantum" />
 				<controls @step-back="showPrevious" @step-forward="showNext" />
 				<p>Total frames: {{ frames.length }}</p>
 			</section>
+
+			<!-- MAIN-RIGHT -->
 			<section slot="main-right">
 				<toolbox
 					:tools="[
@@ -45,6 +57,7 @@
 				</explanation>
 				<your-photon :active-frame="activeFrame" />
 			</section>
+
 		</game-layout>
 	</div>
 </template>
