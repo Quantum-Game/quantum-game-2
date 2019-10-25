@@ -93,7 +93,8 @@ export default class QGrid extends Vue {
 
 	assessTileSize() {
 		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
-		this.tileSize = currentWidth / this.grid.cols;
+		// this.tileSize = currentWidth / this.grid.cols;
+		this.tileSize = 64;
 	}
 
 	get lasers(): ParticleInterface[] {

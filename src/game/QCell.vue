@@ -5,7 +5,7 @@
       :is="cell.element.name"
       :cell="cell"
       :class="cell.element.name"
-      :tile-size="tileSize"
+      :cell-size="tileSize"
       :border="border"
     />
   </g>
@@ -64,9 +64,8 @@ const borderColors = {
 export default class QCell extends Vue {
   @Prop() readonly cell!: Cell;
   @Prop() readonly lasers!: any[];
-  @Prop() readonly tool!: boolean;
-
-  tileSize = 64;
+  @Prop({ default: false}) readonly tool!: boolean;
+  @Prop() readonly tileSize!: number;
 
   border = '';
 
