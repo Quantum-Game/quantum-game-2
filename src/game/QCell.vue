@@ -64,7 +64,7 @@ const borderColors = {
 export default class QCell extends Vue {
   @Prop() readonly cell!: Cell;
   @Prop() readonly lasers!: any[];
-  @Prop() readonly tool!: boolean;
+  @Prop({ default: false}) readonly tool!: boolean;
   @Prop() readonly tileSize!: number;
 
   border = '';
