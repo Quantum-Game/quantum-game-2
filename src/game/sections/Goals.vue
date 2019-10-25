@@ -1,15 +1,15 @@
 <template>
 	<div ref="goals" class="goals-wrapper">
-		<div class="upper-icons">
+		<!-- <div class="upper-icons">
 			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" /> -->
 				<!-- NUMBER OF KEYS -->
-				<span>02</span>
+				<!-- <span>02</span>
 			</div>
 			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" /> -->
 				<!-- NUMBER OF POINTS? -->
-				<span>25</span>
+				<!-- <span>25</span>
 			</div>
 		</div>
 		<vc-donut
