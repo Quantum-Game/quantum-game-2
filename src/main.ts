@@ -6,7 +6,6 @@ import router from './router';
 import store from './store/store';
 import './registerServiceWorker';
 
-
 Vue.use(Donut);
 
 Vue.config.productionTip = false;

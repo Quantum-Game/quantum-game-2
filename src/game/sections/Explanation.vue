@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Cell } from 'quantumweasel';
 import QButton from '@/components/QButton.vue';
 import bus from '@/eventbus';
 
@@ -26,7 +27,7 @@ export default class Explanation extends Vue {
 	name = '';
 
 	created() {
-		bus.$on('setActiveElement', (cell) => {
+		bus.$on('setActiveElement', (cell: Cell) => {
 			this.desc = cell.element.description;
 			this.name = cell.element.name;
 		});

@@ -1,4 +1,5 @@
 declare module 'vue-css-donut-chart';
+declare module '@/eventbus';
 declare module 'quantumweasel' {
 	/**
 	 * FRAME INTERFACE
