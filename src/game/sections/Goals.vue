@@ -17,12 +17,12 @@
       unit="px"
       :size="200"
       :thickness="30"
-      :sections="sections"
+      :sections="generateSections()"
       :total="100"
       :start-angle="0"
     >
-      <div class="inner-circle">{{ this.totalPercentage() }}%</div>
-      <div>TO GO</div>
+      <div class="inner-circle">{{ 100 - totalPercentage().toFixed(0) }}%</div>
+      <div>PROBABILITY</div>
     </vc-donut>
     <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
@@ -47,21 +47,28 @@ import { Goal } from 'quantumweasel';
   components: {}
 })
 export default class Goals extends Vue {
-  @Prop() readonly detectors!: number;
-  @Prop() readonly percentage!: number;
   @Prop() readonly goals!: Goal[];
-  // percent = 10;
-  width = 100;
 
-  sections = [
-    { value: this.totalPercentage(), color: '#FF0055' },
-    { value: 100 - this.totalPercentage(), color: '#FFEEEE' }
-  ];
+  /**
+   * Generate sections for the donut
+   */
+  generateSections(): { value: number; color: string }[] {
+    let result: { value: number; color: string }[] = [];
+    var letters = '0123456789ABCDEF';
+    this.goals.forEach((goal: Goal) => {
+      let color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      result.push({ value: goal.value * 100, color: color });
+    });
+    return result;
+  }
 
   totalPercentage(): number {
     let sum = 0;
     this.goals.map((goal: Goal) => (sum += goal.value));
-    return sum * 100;
+    return (1 - sum) * 100;
   }
 }
 </script>
