@@ -20,8 +20,10 @@
         </li>
       </ul>
       <section slot="main-middle">
-        <Grid :cell-size="64" :grid="level.grid" :photons="activeFrame.quantum" />
-        <controls @step-back="showPrevious" @step-forward="showNext" />
+				<!-- Grid -->
+        <QGrid :cell-size="64" :grid="level.grid" :photons="activeFrame.quantum" />
+				<!-- Controls -->
+		    <controls @step-back="showPrevious" @step-forward="showNext" />
         <p>Total frames: {{ frames.length }}</p>
       </section>
       <section slot="main-right">
@@ -51,10 +53,10 @@ import {
   ParticleInterface,
   GoalInterface
 } from 'quantumweasel';
+import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
 import GameLayout from '../layouts/GameLayout.vue';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
-import { Goals, Explanation, Toolbox, Controls, YourPhoton, Grid } from '../game/sections';
 import Overlay from '../game/overlays/Overlay.vue';
 // import EventBus from '../eventbus';
 
@@ -64,13 +66,13 @@ const emptyLevelObj = {
 	group: "default",
 	description: "default level",
   grid: {
-    cols: 0,
-    rows: 0,
+    cols: 2,
+    rows: 2,
     cells: [
       {
         coord: {
-          x: -1,
-          y: -1
+          x: 1,
+          y: 1
         },
         element: 'Void',
         rotation: 0,
@@ -92,20 +94,20 @@ const emptyLevelObj = {
     Toolbox,
     Controls,
     Overlay,
-    Grid
+    QGrid
   }
 })
 export default class Game extends Vue {
-  levelObj: LevelInterface = emptyLevelObj;
-  level: Level = {};
-  error: string = '';
-  game = {};
-  activeElement = '';
+	// Level interface and instance
+	levelObj: LevelInterface = emptyLevelObj;
+  level: Level = Level.importLevel(this.levelObj);
   frameNumber: number = 0;
   frames: Frame[] = [];
-  goals: GoalInterface[] = [];
-  lasers = [];
+  // goals: GoalInterface[] = [];
+  // lasers = [];
   toolbox = [];
+  error: string = '';
+  activeElement = '';
 
   // LIFECYCLE
   created() {
@@ -127,7 +129,8 @@ export default class Game extends Vue {
       this.error = 'no such level!';
       return false;
     }
-    this.levelObj = levelObjToLoad;
+		this.levelObj = levelObjToLoad;
+		this.level = Level.importLevel(levelObjToLoad);
     this.setupInitFrame();
     this.createFrames();
     return true;
@@ -145,9 +148,6 @@ export default class Game extends Vue {
     this.frames = [];
     this.frameNumber = 0;
     this.level = Level.importLevel(this.levelObj);
-    this.goals = this.levelObj.goals;
-    // this.lasers = this.level.grid.computePaths();
-
     const initFrame = new Frame(this.level);
     this.frames.push(initFrame);
   }
@@ -217,6 +217,7 @@ export default class Game extends Vue {
 
   // GETTERS
   get toolboxElements(): CellInterface[] {
+    // return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
     return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
   }
 

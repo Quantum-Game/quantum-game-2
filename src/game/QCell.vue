@@ -2,9 +2,9 @@
   <g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
     <rect :width="cellSize" :height="cellSize" />
     <component
-      :is="cell.element"
+      :is="cell.element.name"
       :cell="cell"
-      :class="cell.element"
+      :class="cell.element.name"
       :cell-size="cellSize"
       :border="border"
     />
@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import { CellInterface } from '@/types';
+import { Cell } from 'quantumweasel';
 import {
   Laser,
   Mirror,
@@ -62,7 +62,7 @@ const borderColors = {
   }
 })
 export default class QCell extends Vue {
-  @Prop() readonly cell!: CellInterface;
+  @Prop() readonly cell!: Cell;
   @Prop() readonly lasers!: any[];
   @Prop() readonly tool!: boolean;
 
@@ -74,7 +74,7 @@ export default class QCell extends Vue {
     let styleObj = {};
     const originX = this.centerCoord(this.cell.coord.x);
     const originY = this.centerCoord(this.cell.coord.y);
-    if (this.cell.element !== 'Void' && !this.tool) {
+    if (this.cell.element.name !== 'Void' && !this.tool) {
       styleObj = {
         'transform-origin': `${originX}px ${originY}px`,
         transform: `
@@ -88,16 +88,6 @@ export default class QCell extends Vue {
   centerCoord(val: number) {
     return (val + 0.5) * this.cellSize;
   }
-
-  /**
-   * onClick rotate the element
-   */
-  // rotate(): void {
-  // 	if (!this.tool) {
-  // 		this.cell.rotation += 45;
-  // 		console.log(`CURRENT ROTATION: ${this.cell.rotation}`);
-  // 	}
-  // }
 
   handleMouseEnter() {
     this.border = borderColors.rotable;

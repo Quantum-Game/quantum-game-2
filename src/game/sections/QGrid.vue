@@ -25,8 +25,8 @@
     </g>
 
     <!-- CELLS -->
-    <cell
-      v-for="(cell, i) in grid.exportGrid().cells"
+    <QCell
+      v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :cellSize="cellSize"
@@ -71,9 +71,9 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface } from 'quantumweasel';
+import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import Photon from '../Photon.vue';
-import QCell from '../Cell.vue';
+import QCell from '../QCell.vue';
 import { Qparticle } from '@/types';
 
 @Component({
@@ -197,18 +197,19 @@ export default class QGrid extends Vue {
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.grid.cells.filter(
-      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
-    );
-    if (cells.length > 0) {
-      return cells[0].exportCell();
-    }
-    return {
-      coord: { x, y },
-      element: 'Void',
-      rotation: 0,
-      frozen: false
-    };
+		return this.grid.get(Coord.importCoord({y, x})).exportCell()
+		// const cells = this.grid.cells.filter(
+    //   (cell: Cell) => cell.coord.x === x && cell.coord.y === y
+    // );
+    // if (cells.length > 0) {
+    //   return cells[0].exportCell();
+    // }
+    // return {
+    //   coord: { x, y },
+    //   element: 'Void',
+    //   rotation: 0,
+    //   frozen: false
+    // };
   }
 }
 </script>

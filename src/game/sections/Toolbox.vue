@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import Cell from '../Cell.vue';
+import QCell from '../QCell.vue';
 
 @Component({
 	components: {
-		Cell
+		QCell
 	}
 })
 export default class Toolbox extends Vue {

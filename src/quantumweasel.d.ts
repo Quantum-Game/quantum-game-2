@@ -1,4 +1,3 @@
-import { ParticleInterface } from './quantumweasel.d';
 declare module 'quantumweasel' {
 	/**
 	 * FRAME INTERFACE
@@ -144,6 +143,24 @@ declare module 'quantumweasel' {
 		static importCoord(obj: CoordInterface): Coord;
 	}
 
+	class Element {
+		id: number;
+		name: string;
+		group: string;
+		description: string;
+		active: boolean;
+		absorption: number;
+		phase: number;
+		ascii: string[];
+
+		transition(param: number): any;
+		rotationAngle(): number;
+		toString(): string;
+		fromName(name: string): Element;
+		exportElement(): ElementInterface;
+		static importElement(obj: ElementInterface): Element;
+	}
+
 	class Cell {
 		coord: Coord;
 		element: Element;
@@ -225,7 +242,7 @@ declare module 'quantumweasel' {
 		rows: number;
 		cols: number;
 		paths: Particle[];
-		cells: Cell[];
+		// cells: Cell[];
 
 		set(cell: Cell): boolean;
 		get(coord: Coord): Cell;
@@ -313,13 +330,30 @@ declare module 'quantumweasel' {
 		explodingMines(threshold?: number): boolean;
 	}
 
-	class Goal {
+	class Goal extends Coord {
 		coord: Coord;
 		threshold: number;
 		value: number;
+
+		completed(): boolean;
+		percentage(): number;
+		toString(): string;
+		static manyToString(goals: Goal[]): string;
+		exportGoal(): GoalInterface;
+		static importGoal(goals: GoalInterface[]): Goal[];
 	}
 
-	class Hint {}
+	class Hint extends Coord {
+		coord: Coord;
+		width: number;
+		text: string;
+		direction: string;
+		active: boolean;
+
+		toString(): string;
+		exportHint(): HintInterface;
+		static importHint(hints: HintInterface[]): Hint[];
+	}
 
 	/**
 	 * List of element names
