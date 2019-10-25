@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="54"
-					width="54"
-					x="5"
-					y="5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<path
 				id="_x3C_Qbackground_x3E_"
@@ -99,12 +87,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Absorber extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Absorber extends Piece {}
 </script>
 
 <style lang="scss" scoped>

@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="54"
-					width="54"
-					x="5"
-					y="5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<g>
 				<g class="st0">
@@ -69,12 +57,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Glass extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Glass extends Piece {}
 </script>
 
 <style lang="scss" scoped>

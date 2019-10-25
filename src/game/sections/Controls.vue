@@ -1,7 +1,12 @@
 <template>
 	<div class="controls">
 		<span class="playback">
-			<b-button v-for="btn in playBackControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
+			<b-button
+				v-for="btn in playBackControls"
+				:key="btn"
+				:which-is="btn"
+				@click.native="$emit(btn)"
+			/>
 		</span>
 		<span class="view-mode">
 			<b-button v-for="btn in viewControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
@@ -21,7 +26,7 @@ import BButton from '../BButton.vue';
 })
 export default class Controls extends Vue {
 	playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];
-	viewControls = ['classical', 'quantum', 'multiverse']
+	viewControls = ['classical', 'quantum', 'multiverse'];
 }
 </script>
 

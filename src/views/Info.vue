@@ -11,7 +11,6 @@
 		</div>
 		<div slot="right">
 			<h3 class="upper-border">RELATED CONCEPTS</h3>
-			<!-- <Absorber /> -->
 		</div>
 	</main-layout>
 </template>
@@ -21,7 +20,6 @@ import { Vue, Component } from 'vue-property-decorator';
 import MainLayout from '../layouts/MainLayout.vue';
 import Entry from '../info/Entry.vue';
 import { entriesNameList } from '../info/entries';
-import Absorber from '../game/pieces/Absorber.vue';
 
 interface ISection {
 	title: string;
@@ -37,8 +35,7 @@ interface IEntry {
 @Component({
 	components: {
 		MainLayout,
-		Entry,
-		Absorber
+		Entry
 	}
 })
 export default class Info extends Vue {

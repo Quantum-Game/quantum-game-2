@@ -1,19 +1,6 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="48.5"
-					width="61.8"
-					x="1.1"
-					y="6"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
-		<!-- HIT BY THE PHOTON STATE -->
-		<g class="st0">
+		<g id="Qactive" class="st0">
 			<g class="st1">
 				<defs>
 					<path
@@ -95,7 +82,7 @@
 			</g>
 		</g>
 		<!-- BASIC STATE -->
-		<g >
+		<g>
 			<g>
 				<defs>
 					<path
@@ -168,14 +155,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Rock extends Vue {
-	@Prop() readonly active!: boolean;
-	@Prop({ default: '' }) readonly border!: string;
-	energized: boolean = false;
-}
+export default class Rock extends Piece {}
 </script>
 
 <style lang="scss" scoped>

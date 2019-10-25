@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="57"
-					width="57"
-					x="3.5"
-					y="3.5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<!-- ACTIVE RED BOMB - AFTER HIT BY PHOTON -->
 			<path
@@ -35,8 +23,8 @@
 				d="M27,22.6v-5.9c-4.9,1.5-8.8,5.4-10.3,10.3h5.9C23.7,25.2,25.2,23.7,27,22.6z"
 			/>
 		</g>
-		<!-- OUTLINE - FOR PROBABILITY OF BEING HIT ONLY, NO ROTATION -->
-		<g id="Qoutline" v-f="border">
+		<!-- OUTLINE -->
+		<g v-if="border" id="_x3C_Qoutline_x3E_">
 			<path
 				class="st3"
 				:style="{ fill: border }"
@@ -54,12 +42,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Bomb extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class Mine extends Piece {}
 </script>
 
 <style lang="scss" scoped>

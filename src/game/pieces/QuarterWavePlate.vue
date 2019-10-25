@@ -1,20 +1,7 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="59"
-					width="68.8"
-					x="-6.8"
-					y="2.5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
-		<!-- MAIN BODY -->
 		<g>
-			<g >
+			<g>
 				<path
 					class="st0"
 					d="M37.8,3.5H28V9c9,1.2,16,11.1,16,23s-7,21.9-16,23v5.5h9.9C50.6,60.5,61,47.7,61,32S50.6,3.5,37.8,3.5z"
@@ -31,7 +18,7 @@
 				/>
 			</g>
 			<!-- BARS INSIDE -->
-			<g >
+			<g>
 				<g>
 					<defs>
 						<ellipse id="QWPSVGID_1_" cx="28" cy="32" rx="16" ry="23" />
@@ -137,12 +124,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class QuarterWavePlate extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class QuarterWavePlate extends Piece {}
 </script>
 
 <style lang="scss" scoped>

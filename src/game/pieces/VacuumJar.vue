@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="59.5"
-					width="54"
-					x="5.1"
-					y="2.1"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<path
 				class="st0"
@@ -45,12 +33,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class VacuumJar extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class VacuumJar extends Piece {}
 </script>
 
 <style lang="scss" scoped>

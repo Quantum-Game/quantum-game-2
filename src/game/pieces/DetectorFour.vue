@@ -1,18 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="69.5"
-					width="87.4"
-					x="1.1"
-					y="-8"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
-		<!-- HIT BY THE PHOTON STATE - ONLY ONE ON THE BOARD -->
 		<g id="Qactive_1_" class="st0">
 			<g class="st1">
 				<g>
@@ -259,13 +246,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class DetectorFour extends Vue {
-	@Prop() readonly active!: boolean;
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class DetectorFour extends Piece {}
 </script>
 
 <style lang="scss" scoped>
