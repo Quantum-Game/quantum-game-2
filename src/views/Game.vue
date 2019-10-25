@@ -1,8 +1,15 @@
 <template>
 	<div class="game">
 		<!-- OVERLAY -->
-		<overlay :game-state="gameState" @click.native="frameNumber = 0" />
+		<overlay :game-state="gameState" @click.native="frameNumber = 0" >
+    <router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
+					<q-button> GO BACK </q-button>
+				</router-link>
+				<router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
+					<q-button> NEXT LEVEL </q-button>
+				</router-link>
 
+    </overlay>
 		<!-- GENERAL LAYOUT -->
 		<game-layout>
 			<!-- HEADER-MIDDLE -->
