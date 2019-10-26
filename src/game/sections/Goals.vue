@@ -13,28 +13,24 @@
 			</div>
 		</div>
 		<!-- <svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg"> -->
-			<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
+		<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
 		</svg> -->
-		<!-- <vc-donut
+		<vc-donut
 			class="chart"
-			background="inherit"
-			foreground="rgba(255, 255, 255, 0.1)"
+			:class="{ highscore: isHighScore }"
+			background="#210235"
+			foreground="inherit"
 			unit="px"
-			:size="200"
-			:thickness="30"
+			:size="150"
+			:thickness="5"
 			:sections="sections"
 			:total="100"
 			:start-angle="0"
-		> -->
-			<svg height="160" width="160" viewBox="0 0 160 160">
-				<g v-for="(value, index) in initialValues">
-					<circle :cx="cx" :cy="cy" :r="radius" fill="transparent" :stroke="colors[index]" :stroke-width="strokeWidth" ></circle>
-					<text></text>
-				</g>
-			</svg>
-			<div class="inner-circle">{{ (percentage * 100).toFixed(0) }}%</div>
-			<div>PROBABILITY</div>
+		>
+			<div class="inner-circle">{{ animatedPercent }}%</div>
+			<div>SUCCESS</div>
 		</vc-donut>
+		<div class="btn-fake" @click="fakeClick">Click me</div>
 		<div class="bottom-icons">
 			<span v-for="(goal, index) in goals" :key="index">
 				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
@@ -45,7 +41,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component, Prop, Watch, NoCache } from 'vue-property-decorator';
+import { TweenLite } from 'gsap';
 
 @Component({
 	components: {}
@@ -54,10 +51,27 @@ export default class Goals extends Vue {
 	@Prop() readonly detectors!: number;
 	@Prop() readonly percentage!: number;
 	@Prop() readonly goals!: any;
-	percent = 10;
+	percent: number = 0;
+	tweenedPercent: number = this.percentage;
+	isHighScore: boolean = false;
 	width = 100;
 
-	sections = [{ value: this.percentage, color: '#FF0055' }];
+	fakeClick() {
+		this.percent = Math.random() * 100;
+		this.isHighScore = this.percent > 50;
+	}
+
+	get animatedPercent() {
+		return Number(this.tweenedPercent.toFixed(1));
+	}
+	get sections() {
+		return [{ value: Number(this.tweenedPercent.toFixed(1)), color: '#5D00D5' }];
+	}
+
+	@Watch('percent')
+	onPercentChanged(val) {
+		TweenLite.to(this.$data, 0.5, { tweenedPercent: val });
+	}
 }
 </script>
 
@@ -84,9 +98,28 @@ export default class Goals extends Vue {
 	}
 	& .chart {
 		& div.inner-circle {
-			font-size: 3rem;
+			font-size: 2rem;
 		}
 		margin-bottom: 2rem;
+
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 155px;
+			height: 155px;
+			border: 2px solid rgba(255, 255, 255, 0.6);
+			border-radius: 50%;
+		}
+	}
+
+	& .btn-fake {
+		border: 1px solid;
+		width: 50%;
+		margin: 0 auto 50px;
+		padding: 10px;
+		cursor: pointer;
 	}
 }
 </style>
