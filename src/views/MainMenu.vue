@@ -118,6 +118,9 @@ p {
 	margin-bottom: 12vw;
 	//left: 50%;
 	align-items: center;
+	@media screen and (max-width: 1200px) {
+		margin-bottom: 20vw;
+	}
 }
 .image {
 	width: 40%;
