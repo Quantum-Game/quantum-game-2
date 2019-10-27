@@ -110,13 +110,6 @@ h1 {
   text-align: center;
 }
 
-.board {
-  display: inline;
-	border-style: solid;
-  border-color: grey;
-
-}
-
 .placeholder {
   padding-top: 2rem;
   width: 100%;
