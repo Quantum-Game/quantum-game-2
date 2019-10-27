@@ -1,19 +1,19 @@
 +<template>
 	<div class="toolbox">
-			<svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
-				<cell :cell="tool[0]" :tool="true" />
-				x {{ tool[1] }}
-			</svg>
+		<svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
+			<q-cell :cell="tool[0]" :tool="true" />
+			x {{ tool[1] }}
+		</svg>
 	</div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import Cell from '../Cell.vue';
+import QCell from '../QCell.vue';
 
 @Component({
 	components: {
-		Cell
+		QCell
 	}
 })
 export default class Toolbox extends Vue {

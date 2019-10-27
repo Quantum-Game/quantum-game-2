@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="51.8"
-					width="53.6"
-					x="3.3"
-					y="6"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<g id="lemon">
 				<g>
@@ -79,12 +67,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class SugarSolution extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class SugarSolution extends Piece {}
 </script>
 
 <style lang="scss" scoped>

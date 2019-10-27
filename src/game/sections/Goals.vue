@@ -1,20 +1,15 @@
 <template>
-	<div ref="goals" class="goals-wrapper">
-		<div class="upper-icons">
-			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-				<!-- NUMBER OF KEYS -->
-				<span>02</span>
-			</div>
-			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-				<!-- NUMBER OF POINTS? -->
-				<span>25</span>
-			</div>
-		</div>
-		<!-- <svg height="210" width="100%" xmlns="http://www.w3.org/2000/svg"> -->
-		<!-- <circle cx="105" cy="105" r="80%" stroke="white" fill="transparent" stroke-width="1" />
-		</svg> -->
+  <div ref="goals" class="goals-wrapper">
+    <div class="upper-icons">
+      <div>
+        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+        <span> 02</span>
+      </div>
+      <div>
+        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+        <span> 25</span>
+      </div>
+    </div>
 		<vc-donut
 			class="chart"
 			:class="{ highscore: isHighScore }"
@@ -31,6 +26,7 @@
 			<div>SUCCESS</div>
 		</vc-donut>
 		<div class="btn-fake" @click="fakeClick">Click me</div>
+    </vc-donut>
 		<div class="bottom-icons">
 			<span v-for="(goal, index) in goals" :key="index">
 				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
@@ -38,6 +34,19 @@
 			<div>DETECTORS</div>
 		</div>
 	</div>
+    <!-- <div class="bottom-icons">
+      <span v-for="(goal, index) in goals" :key="index">
+        <div v-if="goal.value >= goal.threshold">
+          <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" class="happy" />
+        </div>
+        <div v-else>
+          <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
+          {{goal.value * 100 }} / {{goal.threshold * 100}} %
+        </div>
+      </span>
+      <div>DETECTORS</div>
+    </div> -->
+  </div>
 </template>
 
 <script lang="ts">
@@ -45,7 +54,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { TweenLite } from 'gsap/TweenLite';
 
 @Component({
-	components: {}
+  components: {}
 })
 export default class Goals extends Vue {
 	@Prop() readonly detectors!: number;
@@ -77,14 +86,14 @@ export default class Goals extends Vue {
 
 <style lang="scss" scoped>
 .goals-wrapper {
-	border-top: 1px solid white;
-	padding-top: 10px;
-	padding-bottom: 100px;
-	border-bottom: 1px solid white;
-	width: 100%;
-	height: 320px;
-	display: flex;
-	flex-direction: column;
+  border-top: 1px solid white;
+  padding-top: 10px;
+  padding-bottom: 100px;
+  border-bottom: 1px solid white;
+  width: 100%;
+  // height: 320px;
+  display: flex;
+  flex-direction: column;
 
 	& .upper-icons {
 		display: flex;

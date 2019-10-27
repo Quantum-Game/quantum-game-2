@@ -1,3 +1,5 @@
+import { LevelInterface } from 'quantumweasel';
+
 export interface RootState {
 	currentLevel: {
 		number?: number;
@@ -10,92 +12,8 @@ export interface RootState {
 	};
 }
 
-export interface ICoord {
-	x: number;
-	y: number;
-}
-
-// "PathPointer"
-export interface IPhotonState {
-	coord: ICoord;
-	direction: number;
-	intensity: number;
-	phase: number;
-}
-
-export interface ParticleInterface {
-	coord: ICoord;
-	direction: number;
-	intensity: number;
-	phase: number;
-	a: Complex;
-	b: Complex;
-}
-
-export interface Qparticle {
-	x: number;
-	y: number;
-	direction: number;
-	are: number;
-	aim: number;
-	bre: number;
-	bim: number;
-}
-
-export interface FrameInterface {
-	level: ILevel;
-	step: number;
-	particles: ParticleInterface[];
-	quantum: ParticleInterface[];
-	end: boolean;
-	gameState: string;
-	next: () => FrameInterface;
-}
-
-export interface ICell {
-	coord: ICoord;
-	element: string;
-	rotation: number;
-	frozen: boolean;
-	active?: boolean;
-	energized?: boolean;
-	originX?: number;
-	originY?: number;
-}
-
-export interface IGrid {
-	cols: number;
-	rows: number;
-	cells: Array<ICell>;
-}
-
-export interface ILevel {
-	grid: IGrid;
-}
-
 export interface ILevelList {
-	[index: string]: ILevel;
-}
-
-export interface IGameState {
-	achievedGoals: boolean;
-	noPointers: boolean;
-	notEnoughIntensity: boolean;
-}
-
-export interface IFrame {
-	step: number;
-}
-
-export interface IGoals {
-	coord: ICoord;
-	threshold: number;
-	value: number;
-}
-
-export interface IHints {
-	coord: ICoord;
-	text: string;
+	[index: string]: LevelInterface;
 }
 
 export interface IToolset {
@@ -209,4 +127,4 @@ interface Complex {
  * @returns Creates a complex number `z = z.re + i * z.im `
  */
 // export default function Cx(re: number, im?: number): Complex;
-export declare function Cx(re: number, im?: number): Complex;
+// export declare function Cx(re: number, im?: number): Complex;
