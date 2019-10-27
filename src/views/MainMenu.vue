@@ -68,6 +68,9 @@ export default class MainMenu extends Vue {}
 	flex-direction: column;
 	align-items: center;
 	background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
+	@media screen and (max-width: 1200px) {
+		width: 100%;
+	}
 	//background-color: #2e006a;
 	// background-image: url(~../assets/background_dots.svg);
 	// background-size: 1000px auto; //not responsive
@@ -79,6 +82,9 @@ h1 {
 	font-size: 1.4rem;
 	font-weight: normal;
 	line-height: 150%;
+	@media screen and (max-width: 1200px) {
+		padding: 0 5%;
+	}
 }
 h2 {
 	margin-top: 20px;
@@ -98,6 +104,9 @@ p {
 	position: center;
 	flex-direction: column;
 	align-items: center;
+	@media screen and (max-width: 1200px) {
+		width: 100%;
+	}
 }
 .row-full {
 	width: 100vw;
@@ -109,6 +118,9 @@ p {
 	margin-bottom: 12vw;
 	//left: 50%;
 	align-items: center;
+	@media screen and (max-width: 1200px) {
+		margin-bottom: 20vw;
+	}
 }
 .image {
 	width: 40%;
@@ -120,6 +132,9 @@ p {
 	font-size: 1rem;
 	font-weight: normal;
 	line-height: 150%;
+	@media screen and (max-width: 1200px) {
+		padding: 0 5%;
+	}
 }
 
 h3 {
