@@ -1,68 +1,74 @@
 <template>
-  <div>
-    <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
-      <!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
-      <!-- DOTS -->
-      <g v-for="(row, y) in level.grid.rows + 1" :key="y">
-        <g v-for="(column, x) in level.grid.cols + 1" :key="x">
-          <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+  <div class="container">
+    <div class="svg-container">
+      <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
+        <!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
+        <!-- DOTS -->
+        <g v-for="(row, y) in level.grid.rows + 1" :key="y">
+          <g v-for="(column, x) in level.grid.cols + 1" :key="x">
+            <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+          </g>
         </g>
-      </g>
 
-      <!-- LASER PATH -->
-      <g
-        v-for="(laser, index) in individualLaserPath"
-        :key="'laser' + index"
-        :v-if="individualLaserPath.length > 0"
-        class="lasers"
-      >
-        <path :d="laser" stroke-dasharray="8 8" fill="transparent" stroke="red" stroke-width="3" />
-      </g>
+        <!-- LASER PATH -->
+        <g
+          v-for="(laser, index) in individualLaserPath"
+          :key="'laser' + index"
+          :v-if="individualLaserPath.length > 0"
+          class="lasers"
+        >
+          <path :d="laser" stroke-dasharray="8 8" fill="transparent" stroke="red" stroke-width="3" />
+        </g>
 
-      <!-- CELLS -->
-      <QCell
-        v-for="(cell, i) in level.grid.cells"
-        :key="'cell' + i"
-        :cell="cell"
-        :tileSize="tileSize"
-        @click.native="rotate(cell)"
-      />
-
-      <!-- PHOTONS -->
-      <g
-        v-for="(particle, index) in activeFrame.quantum"
-        :key="'particle' + index"
-        :v-if="frame.quantum.length > 0"
-        :style="computeParticleStyle(particle)"
-        class="photons"
-      >
-        <photon
-          name
-          :intensity="particle.intensity"
-          :are="particle.a.re"
-          :aim="particle.a.im"
-          :bre="particle.b.re"
-          :bim="particle.b.im"
-          :width="64"
-          :height="64"
-          :margin="0"
-          :display-magnetic="true"
-          :display-electric="false"
-          :display-gaussian="false"
-          :sigma="0.25"
+        <!-- CELLS -->
+        <QCell
+          v-for="(cell, i) in level.grid.cells"
+          :key="'cell' + i"
+          :cell="cell"
+          :tileSize="tileSize"
+          @click.native="rotate(cell)"
         />
-      </g>
-    </svg>
-    <ul class="circle">
-      <li v-for="(frame, index) in frames" :key="'frame' + index" @mouseover="setFrame(frame.step)">
-        <span v-if="frameNumber === frame.step" @mouseover="setFrame(frame.step)" class="selected">
-					{{frame.step}}
-				</span>
-        <span v-else @mouseover="setFrame(frame.step)">
-					{{frame.step}}
-				</span>
-      </li>
-    </ul>
+
+        <!-- PHOTONS -->
+        <g
+          v-for="(particle, index) in activeFrame.quantum"
+          :key="'particle' + index"
+          :v-if="frame.quantum.length > 0"
+          :style="computeParticleStyle(particle)"
+          class="photons"
+        >
+          <photon
+            name
+            :intensity="particle.intensity"
+            :are="particle.a.re"
+            :aim="particle.a.im"
+            :bre="particle.b.re"
+            :bim="particle.b.im"
+            :width="64"
+            :height="64"
+            :margin="0"
+            :display-magnetic="true"
+            :display-electric="false"
+            :display-gaussian="false"
+            :sigma="0.25"
+          />
+        </g>
+      </svg>
+    </div>
+    <div class="btn-group">
+      <span
+        v-for="(frame, index) in frames"
+        :key="'frame' + index"
+        @mouseover="setFrame(frame.step)"
+      >
+        <button
+          v-if="frameNumber === frame.step"
+          @mouseover="setFrame(frame.step)"
+          class="selected"
+        >{{frame.step}}</button>
+        <button v-else @mouseover="setFrame(frame.step)">{{frame.step}}</button>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -95,7 +101,7 @@ export default class EGrid extends Vue {
   tileSize: number = 64;
   level: Level = Level.importLevel(this.levelObj);
   frame: Frame = new Frame(this.level);
-  frames: Frame[] = [this.frame];
+  frames: Frame[] = [this.frame.next()];
   frameNumber: number = 0;
 
   $refs!: {
@@ -104,11 +110,20 @@ export default class EGrid extends Vue {
 
   created() {
     this.createFrames(10);
-    this.frameNumber = this.step;
+    this.setFrame(this.step);
     window.addEventListener('resize', this.assessTileSize);
   }
 
+  /**
+   * Clipping the value of the frameNumber to be displayed
+   */
   setFrame(val: number) {
+    if (val < 0) {
+      val = 0;
+    }
+    if (val >= this.frames.length - 1) {
+      val = this.frames.length - 1;
+    }
     this.frameNumber = val;
   }
 
@@ -120,7 +135,11 @@ export default class EGrid extends Vue {
     for (let index = 0; index < number; index += 1) {
       const lastFrameCopy = cloneDeep(this.lastFrame);
       const nextFrame = lastFrameCopy.next();
-      this.frames.push(nextFrame);
+      if (nextFrame.quantum.length > 0) {
+        this.frames.push(nextFrame);
+      } else {
+        break;
+      }
     }
   }
 
@@ -180,8 +199,19 @@ export default class EGrid extends Vue {
   rotate(cell: Cell) {
     cell.rotate();
     console.log(cell.toString());
-    this.level.grid.set(cell);
-  }
+		this.level.grid.set(cell);
+		this.reset()
+	}
+
+	reset() {
+		const levelObj = this.level.exportLevel();
+		this.level = Level.importLevel(levelObj);
+		this.frame = new Frame(this.level);
+		this.frames = [this.frame.next()];
+		this.frameNumber = 0
+		this.createFrames(10);
+    this.setFrame(this.step);
+	}
 
   /**
    * Create laser path through the lasers points
@@ -285,12 +315,42 @@ export default class EGrid extends Vue {
   }
 }
 
-.circle {
-	li {
-		display: inline;
-		span.selected {
-			color: red;
-		}
-	}
+.container {
+	display: inline-block;
+  margin-bottom: 30px;
+  .svg-container {
+    border: 5px solid #666;
+  }
+}
+
+.btn-group {
+  text-align: center;
+  width: 100%;
+
+  button {
+    background-color: darkmagenta;
+    border: 1px solid darkorchid;
+    color: white;
+    padding: 5px 14px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-right: none;
+    }
+  }
+
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+
+  button:hover {
+    background-color: darkorchid;
+  }
+
+  .selected {
+    background-color: darkred;
+  }
 }
 </style>
