@@ -41,8 +41,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch, NoCache } from 'vue-property-decorator';
-import { TweenLite } from 'gsap';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { TweenLite } from 'gsap/TweenLite';
 
 @Component({
 	components: {}
