@@ -1,12 +1,12 @@
 import Photon from './Photon.vue';
-import Cell from './Cell.vue';
+import QCell from './QCell.vue';
 
 interface IComponentsList {
 	[index: string]: Object;
 }
 
-export { Cell, Photon };
+export { QCell, Photon };
 
-const typedComponentsList: IComponentsList = { Cell, Photon };
+const typedComponentsList: IComponentsList = { QCell, Photon };
 
 export default typedComponentsList;

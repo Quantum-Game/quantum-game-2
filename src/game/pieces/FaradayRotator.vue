@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="31.4"
-					width="58.1"
-					x="3"
-					y="13"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<path
 				class="st0"
@@ -127,12 +115,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class FaradayRotator extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class FaradayRotator extends Piece {}
 </script>
 
 <style lang="scss" scoped>

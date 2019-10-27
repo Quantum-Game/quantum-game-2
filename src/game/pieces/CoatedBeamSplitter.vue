@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="18"
-					width="62"
-					x="1"
-					y="23"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<rect x="2" y="24" class="st0" width="60" height="16" />
 			<path class="st1" d="M36.4,24h16c-9.5,7.8-18.3,11.9-24.2,14h-16C18,35.9,26.9,31.8,36.4,24z" />
@@ -29,12 +17,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class CoatedBeamSplitter extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class CoatedBeamSplitter extends Piece {}
 </script>
 
 <style lang="scss" scoped>

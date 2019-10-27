@@ -1,17 +1,5 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="56"
-					width="56"
-					x="4"
-					y="4"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
 			<polygon class="st0" points="5,5 5,57.6 57.6,5 	" />
 			<polygon class="st1" points="59,6.4 6.4,59 59,59 	" />
@@ -28,12 +16,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class PolarizingBeamSplitter extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class PolarizingBeamSplitter extends Piece {}
 </script>
 
 <style lang="scss" scoped>

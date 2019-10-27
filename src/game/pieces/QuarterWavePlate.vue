@@ -1,19 +1,7 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="59"
-					width="68.8"
-					x="-6.8"
-					y="2.5"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g>
-			<g id="_x3C_Qmain_x3E_">
+			<g>
 				<path
 					class="st0"
 					d="M37.8,3.5H28V9c9,1.2,16,11.1,16,23s-7,21.9-16,23v5.5h9.9C50.6,60.5,61,47.7,61,32S50.6,3.5,37.8,3.5z"
@@ -29,13 +17,14 @@
 					c0.6,0,1.2,0,1.8-0.1C19,53.9,11.9,44,11.9,32z"
 				/>
 			</g>
-			<g id="_x3C_Qinside_x3E_">
+			<!-- BARS INSIDE -->
+			<g>
 				<g>
 					<defs>
-						<ellipse id="SVGID_1_" cx="28" cy="32" rx="16" ry="23" />
+						<ellipse id="QWPSVGID_1_" cx="28" cy="32" rx="16" ry="23" />
 					</defs>
-					<clipPath id="SVGID_2_">
-						<use xlink:href="#SVGID_1_" style="overflow:visible;" />
+					<clipPath id="QWPSVGID_2_">
+						<use xlink:href="#QWPSVGID_1_" style="overflow:visible;" />
 					</clipPath>
 					<g class="st2">
 						<rect x="-5.8" y="10.2" class="st3" width="66.7" height="2.9" />
@@ -50,7 +39,8 @@
 				</g>
 			</g>
 		</g>
-		<g id="Qoutline">
+		<!-- OUTLINE MAIN BODY -->
+		<g>
 			<path
 				class="st4"
 				d="M37.8,3.5C50.6,3.5,61,16.3,61,32S50.6,60.5,37.8,60.5H28c0,0-1.2,0-1.8,0C13.4,60.5,3,47.7,3,32
@@ -58,14 +48,15 @@
 				C51.1,61.5,62,48.3,62,32S51.1,2.5,37.8,2.5L37.8,2.5z"
 			/>
 		</g>
-		<g id="QoutlineInside">
-			<g id="_x3C_Qinside_x3E__1_">
+		<!-- OUTLINE BARS INSIDE -->
+		<g>
+			<g>
 				<g>
 					<defs>
-						<ellipse id="SVGID_3_" cx="28" cy="32" rx="16" ry="23" />
+						<ellipse id="QWPSVGID_3_" cx="28" cy="32" rx="16" ry="23" />
 					</defs>
-					<clipPath id="SVGID_4_">
-						<use xlink:href="#SVGID_3_" style="overflow:visible;" />
+					<clipPath id="QWPSVGID_4_">
+						<use xlink:href="#QWPSVGID_3_" style="overflow:visible;" />
 					</clipPath>
 					<g class="st5">
 						<g>
@@ -133,12 +124,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class QuarterWavePlate extends Vue {
-	@Prop({ default: '' }) readonly border!: string;
-}
+export default class QuarterWavePlate extends Piece {}
 </script>
 
 <style lang="scss" scoped>
@@ -149,12 +139,12 @@ export default class QuarterWavePlate extends Vue {
 	fill: #4ac4d1;
 }
 .st2 {
-	clip-path: url(#SVGID_2_);
+	clip-path: url(#QWPSVGID_2_);
 }
 .st3 {
 	fill: #61dbef;
 }
 .st5 {
-	clip-path: url(#SVGID_4_);
+	clip-path: url(#QWPSVGID_4_);
 }
 </style>

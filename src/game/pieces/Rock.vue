@@ -1,30 +1,18 @@
 <template>
 	<svg>
-		<metadata>
-			<sfw xmlns="&ns_sfw;">
-				<slices></slices>
-				<sliceSourceBounds
-					bottomLeftOrigin="true"
-					height="48.5"
-					width="61.8"
-					x="1.1"
-					y="6"
-				></sliceSourceBounds>
-			</sfw>
-		</metadata>
 		<g id="Qactive" class="st0">
 			<g class="st1">
 				<defs>
 					<path
-						id="SVGID_1_"
+						id="rockSVGID_1_"
 						d="M12.2,55.7L3.7,43.2c-0.5-0.7-0.7-1.6-0.5-2.5l6-20.5c1.6-6.5,7.5-9.2,14.2-9.2l14.3,0.7
 					c1.3,0.1,2.5,0.6,3.5,1.5l14.3,12.9c2.1,1.9,3.5,4.4,4.1,7.2L61.8,44c0.1,0.6,0,1.3-0.3,1.9l-4,9.4c-0.5,1.1-1.6,1.7-2.8,1.7
 					H14.8C13.8,57,12.8,56.5,12.2,55.7z"
 					/>
 				</defs>
-				<use xlink:href="#SVGID_1_" style="overflow:visible;fill:#FF0055;" />
-				<clipPath id="SVGID_2_">
-					<use xlink:href="#SVGID_1_" style="overflow:visible;" />
+				<use xlink:href="#rockSVGID_1_" style="overflow:visible;fill:#FF0055;" />
+				<clipPath id="rockSVGID_2_">
+					<use xlink:href="#rockSVGID_1_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st2">
 					<polygon class="st3" points="11,55 12.3,57 54,57 56.6,57 58,55 			" />
@@ -52,19 +40,20 @@
 				</g>
 			</g>
 		</g>
-		<g id="Qenergized_1_" class="st0">
+		<!-- PROBABILITY OH BEING HIT STATE -->
+		<g class="st0">
 			<g class="st1">
 				<defs>
 					<path
-						id="SVGID_3_"
+						id="rockSVGID_3_"
 						d="M12.2,55.7L3.7,43.2c-0.5-0.7-0.7-1.6-0.5-2.5l6-20.5c1.6-6.5,7.5-9.2,14.2-9.2l14.3,0.7
 					c1.3,0.1,2.5,0.6,3.5,1.5l14.3,12.9c2.1,1.9,3.5,4.4,4.1,7.2L61.8,44c0.1,0.6,0,1.3-0.3,1.9l-4,9.4c-0.5,1.1-1.6,1.7-2.8,1.7
 					H14.8C13.8,57,12.8,56.5,12.2,55.7z"
 					/>
 				</defs>
-				<use xlink:href="#SVGID_3_" style="overflow:visible;fill:#44375E;" />
-				<clipPath id="SVGID_4_">
-					<use xlink:href="#SVGID_3_" style="overflow:visible;" />
+				<use xlink:href="#rockSVGID_3_" style="overflow:visible;fill:#44375E;" />
+				<clipPath id="rockSVGID_4_">
+					<use xlink:href="#rockSVGID_3_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st10">
 					<polygon class="st8" points="11,55 11.9,57 54,57 57.2,57 58.5,55 			" />
@@ -92,19 +81,20 @@
 				</g>
 			</g>
 		</g>
-		<g id="Qregular">
+		<!-- BASIC STATE -->
+		<g>
 			<g>
 				<defs>
 					<path
-						id="SVGID_5_"
+						id="rockSVGID_5_"
 						d="M12.2,55.7L3.7,43.2c-0.5-0.7-0.7-1.6-0.5-2.5l6-20.5c1.6-6.5,7.5-9.2,14.2-9.2l14.3,0.7
 					c1.3,0.1,2.5,0.6,3.5,1.5l14.3,12.9c2.1,1.9,3.5,4.4,4.1,7.2L61.8,44c0.1,0.6,0,1.3-0.3,1.9l-4,9.4c-0.5,1.1-1.6,1.7-2.8,1.7
 					H14.8C13.8,57,12.8,56.5,12.2,55.7z"
 					/>
 				</defs>
-				<use xlink:href="#SVGID_5_" style="overflow:visible;fill:#44375E;" />
-				<clipPath id="SVGID_6_">
-					<use xlink:href="#SVGID_5_" style="overflow:visible;" />
+				<use xlink:href="#rockSVGID_5_" style="overflow:visible;fill:#44375E;" />
+				<clipPath id="rockSVGID_6_">
+					<use xlink:href="#rockSVGID_5_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st13">
 					<polygon class="st8" points="11,55 12.3,57 54,57 57.2,57 58.5,55 			" />
@@ -123,10 +113,10 @@
 			</g>
 			<g id="EyesOpen">
 				<defs>
-					<rect id="SVGID_7_" x="10.9" y="29" width="36" height="8.9" />
+					<rect id="rockSVGID_7_" x="10.9" y="29" width="36" height="8.9" />
 				</defs>
-				<clipPath id="SVGID_8_">
-					<use xlink:href="#SVGID_7_" style="overflow:visible;" />
+				<clipPath id="rockSVGID_8_">
+					<use xlink:href="#rockSVGID_7_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st14">
 					<circle class="st7" cx="19.7" cy="30.3" r="6.5" />
@@ -139,10 +129,10 @@
 			</g>
 			<g id="EyesClosed">
 				<defs>
-					<rect id="SVGID_9_" x="10.9" y="21" width="36" height="8" />
+					<rect id="rockSVGID_9_" x="10.9" y="21" width="36" height="8" />
 				</defs>
-				<clipPath id="SVGID_10_">
-					<use xlink:href="#SVGID_9_" style="overflow:visible;" />
+				<clipPath id="rockSVGID_10_">
+					<use xlink:href="#rockSVGID_9_" style="overflow:visible;" />
 				</clipPath>
 				<g class="st15">
 					<circle class="st16" cx="19.7" cy="30.3" r="6.5" />
@@ -150,7 +140,8 @@
 				</g>
 			</g>
 		</g>
-		<g id="Qoutline">
+		<!-- OUTLINE FOR PROBABILITY OF BEING HIT ONLY - NO ROTATION -->
+		<g class="st0">
 			<path
 				class="st17"
 				d="M23.4,11l14.3,0.7c1.3,0.1,2.5,0.6,3.5,1.5l14.3,12.9c2.1,1.9,3.5,4.4,4.1,7.2L61.8,44c0.1,0.6,0,1.3-0.3,1.9
@@ -164,14 +155,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
+import Piece from './Piece';
 
 @Component
-export default class Rock extends Vue {
-	@Prop() readonly active!: boolean;
-	@Prop({ default: '' }) readonly border!: string;
-	energized: boolean = false;
-}
+export default class Rock extends Piece {}
 </script>
 
 <style lang="scss" scoped>
@@ -182,7 +170,7 @@ export default class Rock extends Vue {
 	display: inline;
 }
 .st2 {
-	clip-path: url(#SVGID_2_);
+	clip-path: url(#rockSVGID_2_);
 }
 .st3 {
 	fill: #8c0033;
@@ -211,7 +199,7 @@ export default class Rock extends Vue {
 	fill: #5c00d3;
 }
 .st10 {
-	clip-path: url(#SVGID_4_);
+	clip-path: url(#rockSVGID_4_);
 }
 .st11 {
 	fill: #615777;
@@ -220,13 +208,13 @@ export default class Rock extends Vue {
 	fill: #2f2549;
 }
 .st13 {
-	clip-path: url(#SVGID_6_);
+	clip-path: url(#rockSVGID_6_);
 }
 .st14 {
-	clip-path: url(#SVGID_8_);
+	clip-path: url(#rockSVGID_8_);
 }
 .st15 {
-	clip-path: url(#SVGID_10_);
+	clip-path: url(#rockSVGID_10_);
 }
 .st16 {
 	opacity: 0.2;
