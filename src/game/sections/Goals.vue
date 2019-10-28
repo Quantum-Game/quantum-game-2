@@ -1,10 +1,11 @@
 <template>
-  <div ref="goals" class="goals-wrapper">
+  <div ref="goals" class="goals-wrapper" :class="{collapsed: !expandGoals}">
     <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
       </div>
+      <span class="goalsExpand" @click="handleExpandGoals">{{expandGoals ? 'COLLAPSE' : 'EXPAND'}}</span>
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 25</span>
@@ -54,6 +55,13 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import {Tween, update as updateTween} from 'es6-tween';
 
 @Component({
+  data() {
+    return {
+      goalHeight: '25px',
+      expandGoals: false,
+      expandLabel: 'EXPAND'
+    }
+  },
   components: {}
 })
 export default class Goals extends Vue {
@@ -97,6 +105,23 @@ export default class Goals extends Vue {
 		.start();
 	}
 					
+	totalParticle(): number {
+    let sum = 0;
+    this.particles.map((particle) => (sum += particle.opacity));
+    return sum * 100;
+  }
+  
+  handleExpandGoals() {
+    this.goalHeight = this.expandGoals ? 'auto' : '25px';
+    this.expandGoals = !this.expandGoals;
+  }
+
+  get goalStyle() {
+    return {
+      height: this.goalHeight
+    }
+  }
+
 }
 </script>
 
@@ -107,44 +132,38 @@ export default class Goals extends Vue {
   padding-bottom: 100px;
   border-bottom: 1px solid white;
   width: 100%;
-  // height: 320px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  transition-timing-function: ease-in-out;
+  transition: 0.5s 0.1s height;
+  height: 350px;
+  &.collapsed {
+    height: 25px;
+  }
+  @media screen and (max-width: 1200px) {
+    padding-bottom: 0;
+  }
 
-	& .upper-icons {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		//justify-content: left;
-		margin-bottom: 2rem;
-	}
-	& .bottom-icons {
-		line-height: 150%;
-	}
-	& .chart {
-		& div.inner-circle {
-			font-size: 2rem;
-		}
-		margin-bottom: 2rem;
+  & .upper-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    //justify-content: left;
+    margin-bottom: 2rem;
+  }
+  & .bottom-icons {
+    line-height: 150%;
+    & .happy {
+      background-color: green;
+    }
+  }
+  & .chart {
+    & div.inner-circle {
+      font-size: 3rem;
+    }
+    margin-bottom: 2rem;
+  }
 
-		position: relative;
-
-		&::after {
-			content: '';
-			position: absolute;
-			width: 155px;
-			height: 155px;
-			border: 2px solid rgba(255, 255, 255, 0.6);
-			border-radius: 50%;
-		}
-	}
-
-	& .btn-fake {
-		border: 1px solid;
-		width: 50%;
-		margin: 0 auto 50px;
-		padding: 10px;
-		cursor: pointer;
-	}
 }
 </style>
