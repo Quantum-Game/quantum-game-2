@@ -1,3 +1,3 @@
-import setActiveElement from './setActiveElement';
+import setactiveCell from './setActiveCell';
 
-export default setActiveElement;
+export default setactiveCell;

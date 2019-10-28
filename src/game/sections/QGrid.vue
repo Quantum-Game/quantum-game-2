@@ -11,7 +11,7 @@
     <g
       v-for="(laser, index) in individualLaserPath"
       :key="'laser' + index"
-      :v-if="individualLaserPath.length > 0"
+      v-if="individualLaserPath.length > 0"
       class="lasers"
     >
       <path
@@ -30,7 +30,7 @@
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
-      @click.native="rotate(cell)"
+      @click.native="handleClick(cell)"
     />
 
 		<!-- PHOTONS -->
@@ -75,6 +75,7 @@ import QCell from '../QCell.vue';
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
+	@Prop({ default: '' }) readonly activeCell!: Cell;
 	// @Prop({ default: '64' }) readonly tileSize!: number;
 
 	tileSize: number = 64;
@@ -130,6 +131,30 @@ export default class QGrid extends Vue {
 	/**
 	 * Cell rotation
 	 */
+	handleClick(cell: Cell) {
+		if (cell.element.name === "Void" && this.activeCell.element.name) {
+			const voidCell = cell
+			const activeCell = this.activeCell
+			// Active cell gets coordinate of the void cell
+			const newCoord = voidCell.coord
+			const oldCoord = activeCell.coord
+			// The active cell is replaced by a blank cell
+			this.activeCell.coord = newCoord
+			voidCell.coord = oldCoord
+
+			// Cell comes from toolbox
+			if (activeCell.coord.x === -1) {
+				console.log("Tool");
+			} else {
+				this.grid.set(activeCell)
+				this.grid.set(voidCell)
+			}
+
+		} else {
+			this.rotate(cell)
+		}
+	}
+
 	rotate(cell: Cell) {
 		cell.rotate();
 		console.debug(cell.toString());

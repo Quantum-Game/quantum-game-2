@@ -86,10 +86,11 @@ Quantum Game 2 from CQT
 
 ### GAME:
 ### GRID
+- [ ] Speech Bubble
+- [ ] active element
 - [ ] have the elements not leak the attributes
 - [ ] make the grid responsive by passing the tile-size prop on resize
 - [ ] Polarizer functiobality
-- [ ] Speech Bubble
 
 after talk:
 - [ ] photon dispersing animation
@@ -100,7 +101,7 @@ after talk:
 - [ ] our own implementation
 
 ### EXPLANATION
-- reimplement activeElement logic
+- reimplement activeCell logic
 
 
 ### YOUR PHOTON(S)

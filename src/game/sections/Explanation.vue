@@ -3,7 +3,7 @@
     <h3 class="title">{{ name }}</h3>
     <p>{{ desc }}</p>
     <router-link :to="url">
-      <a>LEARN MORE</a>
+      LEARN MORE
       <!-- <a>LEARN MORE about {{ name }} >> </a> -->
     </router-link>
     <!-- <slot></slot> -->
@@ -26,7 +26,7 @@ export default class Explanation extends Vue {
   name = '';
 
   created() {
-    bus.$on('setActiveElement', (cell: Cell) => {
+    bus.$on('setActiveCell', (cell: Cell) => {
       this.desc = cell.element.description;
       this.name = cell.element.name;
     });
