@@ -198,7 +198,7 @@ export default class EGrid extends Vue {
    */
   rotate(cell: Cell) {
     cell.rotate();
-    console.log(cell.toString());
+    console.debug(cell.toString());
 		this.level.grid.set(cell);
 		this.reset()
 	}

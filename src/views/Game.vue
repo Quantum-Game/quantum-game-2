@@ -225,7 +225,7 @@ export default class Game extends Vue {
   }
 
   handleArrowPress(e: { keyCode: number }): void {
-    // console.log(e.keyCode);
+    // console.debug(e.keyCode);
     switch (e.keyCode) {
       case 37:
         this.showPrevious();
