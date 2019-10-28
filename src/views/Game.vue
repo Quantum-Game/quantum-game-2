@@ -38,7 +38,7 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <q-grid :grid="level.grid" :photons="activeFrame.quantum" />
+        <q-grid :grid="level.grid" :photons="activeFrame.quantum" :activeCell="activeCell" />
         <controls
           @step-back="showPrevious"
           @step-forward="showNext"
@@ -49,24 +49,16 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <toolbox
-          :tools="[
-						{
-							coord: {
-								x: -1,
-								y: -1
-							},
-							element: 'Detector',
-							rotation: 0,
-							frozen: false
-						}
-					]"
-				/>
-				<explanation />
-				<your-photon :active-frame="activeFrame" />
-			</section>
-		</game-layout>
-	</div>
+        <toolbox :tools="level.grid.unvoid.unfrozen.cells" />
+        <explanation>
+          <div class="description">
+            <!-- <span>active cell: {{ activeCell.element.description }}</span> -->
+          </div>
+        </explanation>
+        <your-photon :active-frame="activeFrame" />
+      </section>
+    </game-layout>
+  </div>
 </template>
 
 <script lang="ts">
@@ -83,11 +75,12 @@ import {
   GoalInterface
 } from 'quantumweasel';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
+import { Cell, Coord, Element } from 'quantumweasel';
 import GameLayout from '../layouts/GameLayout.vue';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import Overlay from '../game/overlays/Overlay.vue';
-// import EventBus from '../eventbus';
+import bus from '../eventbus';
 
 const emptyLevelObj = {
   id: 0,
@@ -134,10 +127,11 @@ export default class Game extends Vue {
   frames: Frame[] = [];
   toolbox = [];
   error: string = '';
-  activeElement = '';
+  activeCell: Cell = new Cell(new Coord(0, 0), Element.fromName("Void"));
 
   // LIFECYCLE
   created() {
+		bus.$on("setActiveCell", this.activateCell)
     this.loadALevel();
     window.addEventListener('keyup', this.handleArrowPress);
   }
@@ -163,13 +157,17 @@ export default class Game extends Vue {
     return true;
   }
 
-	setupInitFrame() {
-		this.frames = [];
-		this.frameNumber = 0;
-		this.level = Level.importLevel(this.levelObj);
-		const initFrame = new Frame(this.level);
-		this.frames.push(initFrame);
+	activateCell(cell: Cell) {
+		this.activeCell = cell;
 	}
+
+  setupInitFrame() {
+    this.frames = [];
+    this.frameNumber = 0;
+    this.level = Level.importLevel(this.levelObj);
+    const initFrame = new Frame(this.level);
+    this.frames.push(initFrame);
+  }
 
   // FRAME CONTROL
   // TODO: Find the correct amount of frames to compute for the simulation
@@ -216,8 +214,8 @@ export default class Game extends Vue {
   }
 
   // EVENT HANDLERS
-  onActiveElement(element: string, isDraggable: boolean) {
-    this.activeElement = element;
+  onActiveCell(cell: Cell, isDraggable: boolean) {
+		this.activeCell = cell;
   }
 
   handleArrowPress(e: { keyCode: number }): void {
@@ -322,6 +320,6 @@ h1 {
   }
 }
 .levelLink {
-	text-decoration: none;
+  text-decoration: none;
 }
 </style>

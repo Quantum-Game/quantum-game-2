@@ -33,7 +33,7 @@ import {
 	Glass,
 	VacuumJar
 } from './pieces';
-import setActiveElement from '../mixins/setActiveElement';
+import setActiveCell from '../mixins/setActiveCell';
 
 const borderColors = {
 	active: '#FF0055',
@@ -62,23 +62,22 @@ const borderColors = {
 		VacuumJar
 	}
 })
-export default class QCell extends Mixins(setActiveElement) {
+export default class QCell extends Mixins(setActiveCell) {
   @Prop() readonly cell!: Cell;
   @Prop({ default: false }) readonly tool!: boolean;
   @Prop() readonly tileSize!: number;
 
 	border = '';
 
-	get positionStyle() {
-		let styleObj = {};
-		const originX = this.centerCoord(this.cell.coord.x);
-		const originY = this.centerCoord(this.cell.coord.y);
-		if (this.cell.element.name !== 'Void' && !this.tool) {
-			styleObj = {
-				'transform-origin': `${originX}px ${originY}px`,
-				transform: `
-				rotate(-${this.cell.rotation}deg)
-				translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
+  get positionStyle(): {} {
+    let styleObj = {};
+    const originX = this.centerCoord(this.cell.coord.x);
+    const originY = this.centerCoord(this.cell.coord.y);
+    if (!this.tool) {
+      styleObj = {
+        transformOrigin: `${originX}px ${originY}px`,
+        transform: `rotate(-${this.cell.rotation}deg)
+										translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
 			};
 		}
 		return styleObj;
@@ -90,7 +89,9 @@ export default class QCell extends Mixins(setActiveElement) {
 
   handleMouseEnter(): void {
 		this.border = borderColors.rotable;
-		this.setActiveElement(this.cell);
+		if (this.cell.element.name !== "Void") {
+			this.setActiveCell(this.cell);
+		}
   }
 
   handleMouseLeave(): void {
