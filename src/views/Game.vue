@@ -49,19 +49,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <toolbox
-          :tools="[
-						{
-							coord: {
-								x: -1,
-								y: -1
-							},
-							element: 'Detector',
-							rotation: 0,
-							frozen: false
-						}
-					]"
-        />
+        <toolbox :tools="level.grid.unfrozen.cells" />
         <explanation>
           <div class="description">
             <span>element: {{ activeElement }}</span>
@@ -326,6 +314,6 @@ h1 {
   }
 }
 .levelLink {
-	text-decoration: none;
+  text-decoration: none;
 }
 </style>

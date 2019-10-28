@@ -111,7 +111,7 @@ export default class EGrid extends Vue {
   created() {
     this.createFrames(10);
     this.setFrame(this.step);
-    window.addEventListener('resize', this.assessTileSize);
+    // window.addEventListener('resize', this.assessTileSize);
   }
 
   /**
