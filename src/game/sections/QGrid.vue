@@ -1,37 +1,41 @@
 <template>
-	<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
-		<!-- DOTS -->
-		<g v-for="(row, y) in grid.rows" :key="y">
-			<g v-for="(column, x) in grid.cols" :key="x">
-				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-			</g>
-		</g>
+  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
+    <!-- DOTS -->
+    <g v-for="(row, y) in grid.rows" :key="y">
+      <g v-for="(column, x) in grid.cols" :key="x">
+        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+      </g>
+    </g>
 
-		<!-- LASER PATH -->
-		<g
-			v-for="(laser, index) in individualLaserPath"
-			:key="'laser' + index"
-			:v-if="individualLaserPath.length > 0"
-			class="lasers"
-		>
-			<path
-				:d="laser"
-				stroke-dasharray="8 8"
-				fill="transparent"
-				stroke="red"
-				stroke-width="3"
-				class="laserPath"
-			/>
-		</g>
+    <!-- LASER PATH -->
+    <g
+      v-for="(laser, index) in individualLaserPath"
+      :key="'laser' + index"
+      :v-if="individualLaserPath.length > 0"
+      class="lasers"
+    >
+      <path
+        :d="laser"
+        stroke-dasharray="8 8"
+        fill="transparent"
+        stroke="red"
+        stroke-width="3"
+        class="laserPath"
+      />
+    </g>
 
-		<!-- CELLS -->
-		<QCell
-			v-for="(cell, i) in grid.cells"
-			:key="'cell' + i"
-			:cell="cell"
-			:tileSize="tileSize"
-			@click.native="rotate(cell)"
-		/>
+    <!-- CELLS -->
+    <QCell
+      v-for="(cell, i) in grid.cells"
+      :key="'cell' + i"
+      :cell="cell"
+      :tileSize="tileSize"
+	  class="cell"
+      @click.native="rotate(cell)"
+	  @mousedown.native="setDrag()"
+	  @mousemove.native="handleDrag(cell,$event)"
+	  @mouseup.native="dragEnd(cell, $event)"
+    />
 
 		<!-- PHOTONS -->
 		<g
@@ -67,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
+import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
@@ -83,8 +87,11 @@ export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop() readonly hints!: IHintList;
+	
 
 	tileSize: number = 64;
+	isDrag: boolean = false;
+
 
 	$refs!: {
 		grid: HTMLElement;
@@ -139,6 +146,37 @@ export default class QGrid extends Vue {
 		cell.rotate();
 		console.log(cell.toString());
 		this.grid.set(cell);
+	}
+
+	/**
+	 * Cell drag and drop
+	 */
+	setDrag(){
+		this.isDrag = true;
+	}
+
+	handleDrag(cell: Cell,event: any) {
+    	if(this.isDrag) {
+			const leftPosition = +this.$refs.grid.getBoundingClientRect().left.toFixed(0)
+			const topPosition = +this.$refs.grid.getBoundingClientRect().top.toFixed(0)
+ 			let x = event.screenX - leftPosition 
+			let y = event.screenY - topPosition 
+			console.log(x,y)
+			event.target.closest(".cell").style.transform=`translate(${x- 52}px, ${y- 170}px)`
+      }
+	}
+	
+	dragEnd(cell: Cell, event: any){
+		const leftPosition = +this.$refs.grid.getBoundingClientRect().left.toFixed(0)
+		const positionScreenX = event.screenX - leftPosition;
+		const topPosition = +this.$refs.grid.getBoundingClientRect().top.toFixed(0)
+		const positionScreenY = event.screenY - topPosition;
+		const currentX = Math.ceil(positionScreenX/this.tileSize)-1;
+		const currentY = Math.ceil(positionScreenY/this.tileSize)-3;
+		event.target.closest(".cell").style.transform =`translate(${currentX*this.tileSize}px, ${currentY*this.tileSize}px)`
+		cell.coord.x = currentX;
+		cell.coord.y = currentY;
+		this.isDrag = false;
 	}
 
 	/**
