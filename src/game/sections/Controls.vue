@@ -8,6 +8,8 @@
 				@click.native="$emit(btn)"
 			/>
 		</span>
+
+		<span><b>STEP {{ activeFrame.step }} / {{totalFrames}}</b></span>
 		<span class="view-mode">
 			<b-button v-for="btn in viewControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
@@ -15,9 +17,10 @@
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import BButton from '../BButton.vue';
+import { FrameInterface } from 'quantumweasel';
 
 @Component({
 	components: {
@@ -25,6 +28,8 @@ import BButton from '../BButton.vue';
 	}
 })
 export default class Controls extends Vue {
+	@Prop() readonly activeFrame!: FrameInterface;
+	@Prop() readonly totalFrames!: number;
 	playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];
 	viewControls = ['classical', 'quantum', 'multiverse'];
 }

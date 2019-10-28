@@ -1,14 +1,14 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { ICell } from '@/types';
+import { CellInterface } from 'quantumweasel';
 
 @Component
 export default class Piece extends Vue {
-	@Prop() readonly cell!: ICell;
+	@Prop() readonly cell!: CellInterface;
 	@Prop({ default: '' }) readonly border!: string;
 	@Prop({ default: 64 }) readonly tileSize!: number;
 
 	created() {
-		console.log(this.cell);
+		console.debug(this.cell);
 	}
 
 	get energized() {

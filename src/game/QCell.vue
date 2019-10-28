@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
+import { Component, Emit, Vue, Prop, Mixins } from 'vue-property-decorator';
 import { Cell } from 'quantumweasel';
 import {
   Laser,
@@ -33,6 +33,7 @@ import {
   Glass,
   VacuumJar
 } from './pieces';
+import setActiveElement from '../mixins/setActiveElement';
 
 const borderColors = {
   active: '#FF0055',
@@ -61,15 +62,14 @@ const borderColors = {
     VacuumJar
   }
 })
-export default class QCell extends Vue {
+export default class QCell extends Mixins(setActiveElement) {
   @Prop() readonly cell!: Cell;
-  @Prop() readonly lasers!: any[];
-  @Prop() readonly tool!: boolean;
+  @Prop({ default: false }) readonly tool!: boolean;
   @Prop() readonly tileSize!: number;
 
   border = '';
 
-  get positionStyle() {
+  get positionStyle(): {} {
     let styleObj = {};
     const originX = this.centerCoord(this.cell.coord.x);
     const originY = this.centerCoord(this.cell.coord.y);
@@ -84,15 +84,16 @@ export default class QCell extends Vue {
     return styleObj;
   }
 
-  centerCoord(val: number) {
+  centerCoord(val: number): number {
     return (val + 0.5) * this.tileSize;
   }
 
-  handleMouseEnter() {
-    this.border = borderColors.rotable;
+  handleMouseEnter(): void {
+		this.border = borderColors.rotable;
+		this.setActiveElement(this.cell);
   }
 
-  handleMouseLeave() {
+  handleMouseLeave(): void {
     this.border = '';
   }
 

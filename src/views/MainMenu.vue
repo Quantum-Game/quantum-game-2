@@ -19,8 +19,8 @@
 			<!-- newsletter -->
 			<div class="newsletter" id="content">
 				<h1>Sign up for our newsletter now!</h1>
-				<input type="email" placeholder="Email"></input>
-				<q-button type="special" href="#" >SIGN UP</q-button>	
+				<input type="email" placeholder="Email"/>
+				<q-button type="special" href="#" >SIGN UP</q-button>
 			</div>
 
 			<div class="image">
@@ -91,11 +91,10 @@ export default class MainMenu extends Vue {}
 	align-items: center;
 	background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
 	//background-color: #2e006a;
-	//background-image: url(~../assets/background_dots.svg);
-	//background-size: 1000px auto; //not responsive
-	//background-repeat: repeat;  
-	//background-position: center;
-
+	// background-image: url(~../assets/background_dots.svg);
+	// background-size: 1000px auto; //not responsive
+	// background-repeat: repeat;
+	// background-position: center;
 }
 h1 {
 	color: white;
@@ -190,7 +189,7 @@ input[type='email']{
 
 
 input[type='email']:focus{
-	color: white; 
+	color: white;
 	font-family: Montserrat, Arial, Helvetica, sans-serif;
 	font-size: 1rem;
 	font-weight:normal;
