@@ -1,83 +1,84 @@
 <template>
-	<div class="container">
-		<div class="svg-container">
-			<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
-				<!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
-				<!-- DOTS -->
-				<g v-for="(row, y) in level.grid.rows + 1" :key="y">
-					<g v-for="(column, x) in level.grid.cols + 1" :key="x">
-						<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-					</g>
-				</g>
+  <div class="container">
+    <div class="svg-container">
+      <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
+        <!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
+        <!-- DOTS -->
+        <g v-for="(row, y) in level.grid.rows + 1" :key="y">
+          <g v-for="(column, x) in level.grid.cols + 1" :key="x">
+            <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+          </g>
+        </g>
 
-				<!-- LASER PATH -->
-				<g
-					v-for="(laser, index) in individualLaserPath"
-					:key="'laser' + index"
-					:v-if="individualLaserPath.length > 0"
-					class="lasers"
-				>
-					<path
-						:d="laser"
-						stroke-dasharray="8 8"
-						fill="transparent"
-						stroke="red"
-						stroke-width="3"
-					/>
-				</g>
+        <!-- LASER PATH -->
+        <g
+          v-for="(laser, index) in individualLaserPath"
+          :key="'laser' + index"
+          :v-if="individualLaserPath.length > 0"
+          class="lasers"
+        >
+          <path :d="laser" stroke-dasharray="8 8" fill="transparent" stroke="red" stroke-width="3" />
+        </g>
 
-				<!-- CELLS -->
-				<QCell
-					v-for="(cell, i) in level.grid.cells"
-					:key="'cell' + i"
-					:cell="cell"
-					:tileSize="tileSize"
-					@click.native="rotate(cell)"
-				/>
+        <!-- CELLS -->
+        <QCell
+          v-for="(cell, i) in level.grid.cells"
+          :key="'cell' + i"
+          :cell="cell"
+          :tileSize="tileSize"
+          @click.native="rotate(cell)"
+        />
 
-				<!-- PHOTONS -->
-				<g
-					v-for="(particle, index) in activeFrame.quantum"
-					:key="'particle' + index"
-					:v-if="frame.quantum.length > 0"
-					:style="computeParticleStyle(particle)"
-					class="photons"
-				>
-					<photon
-						name
-						:intensity="particle.intensity"
-						:are="particle.a.re"
-						:aim="particle.a.im"
-						:bre="particle.b.re"
-						:bim="particle.b.im"
-						:width="64"
-						:height="64"
-						:margin="0"
-						:display-magnetic="true"
-						:display-electric="false"
-						:display-gaussian="false"
-						:sigma="0.25"
-					/>
-				</g>
-			</svg>
-		</div>
-		<div class="btn-group">
-			<span
-				v-for="(frame, index) in frames"
-				:key="'frame' + index"
-				@mouseover="setFrame(frame.step)"
-			>
-				<button
-					v-if="frameNumber === frame.step"
-					class="selected"
-					@mouseover="setFrame(frame.step)"
-				>
-					{{ frame.step }}
-				</button>
-				<button v-else @mouseover="setFrame(frame.step)">{{ frame.step }}</button>
-			</span>
-		</div>
-	</div>
+        <!-- PHOTONS -->
+        <g
+          v-for="(particle, index) in activeFrame.quantum"
+          :key="'particle' + index"
+          :v-if="frame.quantum.length > 0"
+          :style="computeParticleStyle(particle)"
+          class="photons"
+        >
+          <photon
+            name
+            :intensity="particle.intensity"
+            :are="particle.a.re"
+            :aim="particle.a.im"
+            :bre="particle.b.re"
+            :bim="particle.b.im"
+            :width="64"
+            :height="64"
+            :margin="0"
+            :display-magnetic="true"
+            :display-electric="false"
+            :display-gaussian="false"
+            :sigma="0.25"
+          />
+        </g>
+      </svg>
+    </div>
+    <div class="btn-group">
+      <span
+        v-for="(frame, index) in frames"
+        :key="'frame' + index"
+        @mouseover="setFrame(frame.step)"
+      >
+        <button
+          v-if="frameNumber === frame.step"
+          @mouseover="setFrame(frame.step)"
+          class="selected"
+        >{{frame.step}}</button>
+        <button v-else @mouseover="setFrame(frame.step)">{{frame.step}}</button>
+      </span>
+    </div>
+    <ol class="kets">
+      <li
+        v-for="(frame, index) in frames"
+        :key="'frame-ket-' + index"
+        @mouseover="setFrame(frame.step)"
+      >
+        {{ frameToKet(frame) }}
+      </li>
+    </ol>
+  </div>
 </template>
 
 <script lang="ts">
@@ -221,90 +222,115 @@ export default class EGrid extends Vue {
 		this.setFrame(this.step);
 	}
 
-	/**
-	 * Create laser path through the lasers points
-	 * @returns SVG laser path
-	 */
-	laserPath(): string {
-		let pathStr = '';
-		if (this.lasers.length > 0) {
-			const originX = this.centerCoord(this.lasers[0].coord.x);
-			const originY = this.centerCoord(this.lasers[0].coord.y);
-			pathStr += `M ${originX} ${originY} `;
-			this.lasers.forEach((laser: any) => {
-				const x = this.centerCoord(laser.coord.x);
-				const y = this.centerCoord(laser.coord.y);
-				pathStr += ` L ${x} ${y} `;
-			});
-			pathStr += ' ';
-		}
-		return pathStr;
-	}
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  laserPath(): string {
+    let pathStr = '';
+    if (this.lasers.length > 0) {
+      const originX = this.centerCoord(this.lasers[0].coord.x);
+      const originY = this.centerCoord(this.lasers[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
+      });
+      pathStr += ' ';
+    }
+    return pathStr;
+  }
 
-	get individualLaserPath(): string[] {
-		const pathsStr: string[] = [];
-		if (this.lasers.length > 0) {
-			this.lasers.forEach((laser: any) => {
-				let pathStr = '';
-				const originX = this.centerCoord(laser.coord.x);
-				const originY = this.centerCoord(laser.coord.y);
-				pathStr += `M ${originX} ${originY} `;
-				switch (laser.direction) {
-					case 0:
-						pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
-						break;
-					case 90:
-						pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
-						break;
-					case 180:
-						pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
-						break;
-					case 270:
-						pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
-						break;
-					default:
-						throw new Error(`Laser has wrong direction: ${laser.direction}°`);
-				}
-				pathsStr.push(pathStr);
-			});
-		}
-		return pathsStr;
-	}
+  get individualLaserPath(): string[] {
+    const pathsStr: string[] = [];
+    if (this.lasers.length > 0) {
+      this.lasers.forEach((laser: any) => {
+        let pathStr = '';
+        const originX = this.centerCoord(laser.coord.x);
+        const originY = this.centerCoord(laser.coord.y);
+        pathStr += `M ${originX} ${originY} `;
+        switch (laser.direction) {
+          case 0:
+            pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
+            break;
+          case 90:
+            pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
+            break;
+          case 180:
+            pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
+            break;
+          case 270:
+            pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
+            break;
+          default:
+            throw new Error(`Laser has wrong direction: ${laser.direction}°`);
+        }
+        pathsStr.push(pathStr);
+      });
+    }
+    return pathsStr;
+  }
 
-	/**
-	 * Create laser path through the lasers points
-	 * @returns SVG laser path
-	 */
-	photonPath(): string {
-		let pathStr = '';
-		if (this.frame.quantum.length > 0) {
-			const originX = this.centerCoord(this.frame.quantum[0].coord.x);
-			const originY = this.centerCoord(this.frame.quantum[0].coord.y);
-			pathStr += `M ${originX} ${originY} `;
-			this.lasers.forEach((laser: any) => {
-				const x = this.centerCoord(laser.coord.x);
-				const y = this.centerCoord(laser.coord.y);
-				pathStr += ` L ${x} ${y} `;
-			});
-		}
-		return pathStr;
-	}
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  photonPath(): string {
+    let pathStr = '';
+    if (this.frame.quantum.length > 0) {
+      const originX = this.centerCoord(this.frame.quantum[0].coord.x);
+      const originY = this.centerCoord(this.frame.quantum[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
+      });
+    }
+    return pathStr;
+  }
 
-	// HELPING FUNCTIONS
-	element(y: number, x: number): CellInterface {
-		const cells = this.level.grid.cells.filter(
-			(cell: Cell) => cell.coord.x === x && cell.coord.y === y
-		);
-		if (cells.length > 0) {
-			return cells[0].exportCell();
-		}
-		return {
-			coord: { x, y },
-			element: 'Void',
-			rotation: 0,
-			frozen: false
-		};
-	}
+  // HELPING FUNCTIONS
+  element(y: number, x: number): CellInterface {
+    const cells = this.level.grid.cells.filter(
+      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
+    );
+    if (cells.length > 0) {
+      return cells[0].exportCell();
+    }
+    return {
+      coord: { x, y },
+      element: 'Void',
+      rotation: 0,
+      frozen: false
+    };
+  }
+
+  /**
+   * Temporary! I want to work with actual quantum states.
+   * Also - quick, dirty, no-LaTeX and pure string
+   */
+  frameToKet(frame: Frame): string {
+    const dirVis = new Map<number, string>()
+    dirVis.set(0, "⇢")
+    dirVis.set(90, "⇡")
+    dirVis.set(180, "⇠")
+    dirVis.set(270, "⇣")
+
+    return frame.quantum
+      .flatMap((d) => {
+        const res = []
+        if (d.a.re !== 0 || d.a.im !== 0) {
+          res.push(`(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} H⟩`)
+        }
+        if (d.b.re !== 0 || d.b.im !== 0) {
+          res.push(`(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} V⟩`)
+        }
+        return res
+      })
+      .join(" + ")
+  }
 }
 </script>
 
