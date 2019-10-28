@@ -61,6 +61,7 @@ export default class GameLayout extends Vue {}
 	justify-content: center;
 	width: 65%;
 	@media screen and (max-width: 1200px) {
+		display: flex;
 		width: 100%;
 		padding: 0;
 	}

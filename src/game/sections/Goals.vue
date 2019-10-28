@@ -1,10 +1,11 @@
 <template>
-  <div ref="goals" class="goals-wrapper">
+  <div ref="goals" class="goals-wrapper" :class="{collapsed: !expandGoals}">
     <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
       </div>
+      <span class="goalsExpand" @click="handleExpandGoals">{{expandGoals ? 'COLLAPSE' : 'EXPAND'}}</span>
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 25</span>
@@ -52,6 +53,13 @@ interface SectionInterface {
 }
 
 @Component({
+  data() {
+    return {
+      goalHeight: '25px',
+      expandGoals: false,
+      expandLabel: 'EXPAND'
+    }
+  },
   components: {}
 })
 export default class Goals extends Vue {
@@ -91,7 +99,19 @@ export default class Goals extends Vue {
     let sum = 0;
     this.particles.map((particle) => (sum += particle.opacity));
     return sum * 100;
-	}
+  }
+  
+  handleExpandGoals() {
+    this.goalHeight = this.expandGoals ? 'auto' : '25px';
+    this.expandGoals = !this.expandGoals;
+  }
+
+  get goalStyle() {
+    return {
+      height: this.goalHeight
+    }
+  }
+
 }
 </script>
 
@@ -102,9 +122,18 @@ export default class Goals extends Vue {
   padding-bottom: 100px;
   border-bottom: 1px solid white;
   width: 100%;
-  // height: 320px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  transition-timing-function: ease-in-out;
+  transition: 0.5s 0.1s height;
+  height: 350px;
+  &.collapsed {
+    height: 25px;
+  }
+  @media screen and (max-width: 1200px) {
+    padding-bottom: 0;
+  }
 
   & .upper-icons {
     display: flex;
@@ -125,5 +154,6 @@ export default class Goals extends Vue {
     }
     margin-bottom: 2rem;
   }
+
 }
 </style>
