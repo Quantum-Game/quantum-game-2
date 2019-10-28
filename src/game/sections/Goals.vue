@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { TweenLite } from 'gsap/TweenLite';
+import {Tween, update as updateTween} from 'es6-tween';
 
 @Component({
   components: {}
@@ -60,7 +60,7 @@ export default class Goals extends Vue {
 	@Prop() readonly detectors!: number;
 	@Prop() readonly percentage!: number;
 	@Prop() readonly goals!: any;
-	percent: number = 0;
+	percent: number = this.percentage;
 	tweenedPercent: number = this.percentage;
 	isHighScore: boolean = false;
 	width = 100;
@@ -68,19 +68,35 @@ export default class Goals extends Vue {
 	fakeClick() {
 		this.percent = Math.random() * 100;
 		this.isHighScore = this.percent > 50;
+
+		requestAnimationFrame(this.animateTween);
+	}
+
+	animateTween(time) {
+		const id = requestAnimationFrame(this.animateTween);				
+		const result = updateTween(time);
+		if(!result) cancelAnimationFrame(id);
 	}
 
 	get animatedPercent() {
-		return Number(this.tweenedPercent.toFixed(1));
+		return Number(this.tweenedPercent).toFixed(1);
 	}
 	get sections() {
 		return [{ value: Number(this.tweenedPercent.toFixed(1)), color: '#5D00D5' }];
 	}
 
 	@Watch('percent')
-	onPercentChanged(val) {
-		TweenLite.to(this.$data, 0.5, { tweenedPercent: val });
+	onPercentChanged(val, oldVal) {
+		console.log(oldVal, val)
+		const vm = this;
+		new Tween({value: oldVal})
+		.to({ value: val }, 500)
+		.on('update', ({value}) => {
+			vm.tweenedPercent = value;
+		})
+		.start();
 	}
+					
 }
 </script>
 
