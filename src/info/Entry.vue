@@ -31,6 +31,9 @@
           :labelsOut="basis"
           :matrixElements="matrixElements"
         />
+        <span>{{ matrixLevel.grid.cells[1].element}} at {{ matrixLevel.grid.cells[1].rotation }}° (warning: does not update)</span>
+        <Egrid :levelObj="matrixLevel" :step="matrixStep" class="board" />
+        
       </div>
 
     </article>
@@ -101,6 +104,46 @@ export default class Entry extends Vue {
 
   dimOrder = "dir pol"
   operator = qt.beamSplitter(45)
+  matrixStep = 3
+  matrixLevel = {
+    "id": 137,
+    "name": "N/A",
+    "group": "N/A",
+    "description": "N/A",
+    "grid": {
+      "cols": 3,
+      "rows": 3,
+      "cells": [
+        {
+          "coord": { "x": 0, "y": 1 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": {  "x": 1, "y": 1 },
+          "element": "BeamSplitter",
+          "rotation": 45,
+          "frozen": false,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [
+      {
+        "coord": {
+          "y": 1,
+          "x": 2
+        },
+        "content": "YES\n\nNo",
+        "color": "red"
+      }
+    ],
+    "goals": []
+  }
 
   // XXX: both below are quick and dirty, hardcoded or semi-hardcoded
   // TODO: make in quantum-tensors
@@ -133,7 +176,6 @@ export default class Entry extends Vue {
       })
     }
   }
-
 }
 </script>
 
