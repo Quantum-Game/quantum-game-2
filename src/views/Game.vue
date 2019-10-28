@@ -281,8 +281,11 @@ h1 {
 	justify-content: space-between;
 }
 .title {
-	margin-bottom: 30;
-	margin-top: 0;
+  margin-bottom: 30;
+  margin-top: 0;
+  @media screen and (max-width: 1200px) {
+    padding: 0 20px;
+  }
 }
 
 .game {
