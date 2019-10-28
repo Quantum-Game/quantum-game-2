@@ -1,8 +1,8 @@
-+<template>
+<template>
   <div class="toolbox">
-    <svg v-for="(tool, index) in refinedTools" :key="index" class="tool">
-      <q-cell :cell="tool[0]" :tool="true" />
-      x {{ tool[1] }}
+    <svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
+      <q-cell :cell="getFakeCell(toolName)" :tool="true" />
+      <text class="counter" x="25" y="64">x{{ toolbox[toolName] }}</text>
     </svg>
   </div>
 </template>
@@ -10,12 +10,11 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
-import { Cell } from 'quantumweasel';
+import { Cell, Element, Coord } from 'quantumweasel';
 import QCell from '../QCell.vue';
 
 interface Tool {
-  element: string;
-  count: number;
+  [symbol: string]: number;
 }
 
 @Component({
@@ -25,14 +24,27 @@ interface Tool {
 })
 export default class Toolbox extends Vue {
   @Prop() readonly tools!: Cell[];
+  toolbox: Tool = {};
+
   created() {
-		this.processTools();
+    this.processTools();
   }
 
-	processTools() {
-		const elements = this.tools.map(cell => cell.element.name);
-		console.log(countBy(elements));
-	}
+  getFakeCell(name: string) {
+    const coord = new Coord(0, 0);
+    const element = Element.fromName(name);
+    return new Cell(coord, element);
+  }
+
+  get toolboxKeys(): string[] {
+    return Object.keys(this.toolbox);
+  }
+
+  processTools() {
+    const elements = this.tools.map((cell) => cell.element.name);
+    this.toolbox = countBy(elements);
+    console.log(JSON.stringify(this.toolbox));
+  }
 }
 //   @Watch('tools')
 //   setUpTools() {
@@ -78,6 +90,10 @@ export default class Toolbox extends Vue {
     width: 33%;
     min-width: 64px;
     padding: 0.5rem 0rem;
+  }
+  .counter {
+    fill: white;
+    stroke: white;
   }
 }
 </style>

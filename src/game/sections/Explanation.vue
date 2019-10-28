@@ -25,7 +25,7 @@ export default class Explanation extends Vue {
   name = '';
 
   created() {
-    bus.$on('setActiveElement', (cell: Cell) => {
+    bus.$on('setactiveCell', (cell: Cell) => {
       this.desc = cell.element.description;
       this.name = cell.element.name;
     });
