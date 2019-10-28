@@ -128,7 +128,7 @@ h2 {
 }
 .row-full {
 	width: 100vw;
-	min-width: 1300px;
+	//min-width: 1300px;
 	position: center;
 	//  margin-left: -50vw;
 	height: 100px;
@@ -136,9 +136,6 @@ h2 {
 	margin-bottom: 12vw;
 	//left: 50%;
 	align-items: center;
-	@media screen and (max-width: 1200px) {
-		margin-bottom: 20vw;
-	}
 }
 .image {
 	width: 30%;

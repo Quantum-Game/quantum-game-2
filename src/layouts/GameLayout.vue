@@ -60,6 +60,10 @@ export default class GameLayout extends Vue {}
 	align-content: center;
 	justify-content: center;
 	width: 65%;
+	@media screen and (max-width: 1200px) {
+		width: 100%;
+		padding: 0;
+	}
 }
 .left,
 .right {
@@ -68,15 +72,25 @@ export default class GameLayout extends Vue {}
 	padding: 20px;
 	@media screen and (max-width: 1200px) {
 		width: 100%;
+		padding: 0;
 	}
 }
 
+
 header {
-	width: 1400px;
+	width: 100%;
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
 	padding: none;
+	@media screen and (max-width: 1200px) {
+		flex-direction: column;
+	}
+	.left {
+		@media screen and (max-width: 1200px) {
+			height: 10vh;
+		}
+	}
 }
 
 main,
@@ -92,6 +106,7 @@ main {
 	@media screen and (max-width: 1200px) {
 		flex-direction: column;
 		align-items: center;
+		padding: 0 20px;
 	}
 }
 
