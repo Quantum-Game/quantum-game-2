@@ -46,14 +46,4 @@ export default class Explanation extends Vue {
   line-height: 150%;
 	max-width: 250px;
 }
-</script>
-
-<style lang="scss" scoped>
-.explanation {
-	border-top: 1px solid #8e819d;
-	text-align: left;
-	font-size: 1rem;
-	line-height: 150%;
-	max-width: 200px;
-}
 </style>

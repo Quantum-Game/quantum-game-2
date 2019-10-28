@@ -8694,7 +8694,6 @@ quantumweasel@sneakyweasel/quantumweasel#master:
     "@types/file-saver" "^2.0.1"
     "@types/jest" "^24.0.19"
     file-saver "^2.0.2"
-    global "^4.4.0"
     quantum-tensors stared/quantum-tensors#JoyOfDependencies
     rot-js "^2.1.1"
 
@@ -10566,6 +10565,11 @@ vue-class-component@^7.1.0:
   version "7.1.0"
   resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.1.0.tgz#b33efcb10e17236d684f70b1e96f1946ec793e87"
   integrity sha512-G9152NzUkz0i0xTfhk0Afc8vzdXxDR1pfN4dTwE72cskkgJtdXfrKBkMfGvDuxUh35U500g5Ve4xL8PEGdWeHg==
+
+vue-confetti@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/vue-confetti/-/vue-confetti-2.0.5.tgz#99a8c5aa4d6505c7a8f07a1ff63d4bd217596051"
+  integrity sha512-UNIu8baNPSCNkQ2ZpFFy9PA034nEXGuYXx9GQ8IEUlOUroTmlNymuHlSyFu8mK3VsU/XajvHOstcOoxRrWKkxw==
 
 vue-css-donut-chart@^1.1.6:
   version "1.1.6"
