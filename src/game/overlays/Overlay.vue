@@ -14,8 +14,9 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import QButton from '@/components/QButton.vue';
 import VueConfetti from 'vue-confetti';
+import QButton from '@/components/QButton.vue';
+
 Vue.use(VueConfetti);
 
 @Component({
@@ -26,9 +27,9 @@ Vue.use(VueConfetti);
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
 
-	@Watch("gameState")
+	@Watch('gameState')
 	startConfetti(val: string) {
-		if (val === "Victory") {
+		if (val === 'Victory') {
 			this.$confetti.start();
 		} else {
 			this.$confetti.stop();

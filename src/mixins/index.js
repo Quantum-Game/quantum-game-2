@@ -1,3 +1,4 @@
-import setactiveCell from './setActiveCell';
+import setActiveCell from './setActiveCell';
+import getPositionStyle from './getPositionStyle';
 
-export default setactiveCell;
+export { setActiveCell, getPositionStyle };

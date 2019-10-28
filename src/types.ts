@@ -12,6 +12,17 @@ export interface RootState {
 	};
 }
 
+export interface IHint {
+	coord: Coord;
+	content: string;
+	color?: string;
+	rotation?: number;
+}
+
+export interface IHintList {
+	[index: number]: IHint;
+}
+
 export interface ILevelList {
 	[index: string]: LevelInterface;
 }

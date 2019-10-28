@@ -80,29 +80,32 @@ Quantum Game 2 from CQT
 
 25.10
 - [x] Add common ancestor for all the elements
+- [x] reimplement activeCell logic
 
+26.10
+- [x]  get rid of explanation grid-stretching bug;
+- [x] have elements move by activeCell logic
+- [x] Speech Bubble
+
+27.10
+- [ ] active element refinement
+
+
+### EXPLANATION
 
 ## TODO:
 
-### GAME:
 ### GRID
-- [ ] Speech Bubble
-- [ ] active element
 - [ ] have the elements not leak the attributes
-- [ ] make the grid responsive by passing the tile-size prop on resize
 - [ ] Polarizer functiobality
-
-after talk:
 - [ ] photon dispersing animation
 - [ ] key concepts
-- [ ] make levels same size?
+
+### RWD
+- [ ] make the grid responsive by passing the tile-size prop on resize
 
 ### GOALS METER
 - [ ] our own implementation
-
-### EXPLANATION
-- reimplement activeCell logic
-
 
 ### YOUR PHOTON(S)
 
