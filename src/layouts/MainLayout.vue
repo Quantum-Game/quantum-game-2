@@ -31,7 +31,7 @@ export default class MainLayout extends Vue {}
 	min-height: 100vh;
 	display: flex;
 	color: white;
-	width: 1400px;
+	width: 100%;
 	justify-content: center;
 	& aside,
 	& main {
@@ -47,6 +47,19 @@ export default class MainLayout extends Vue {}
 			text-transform: uppercase;
 			text-align: left;
 			color: white;
+		}
+	}
+	@media screen and (max-width: 1200px) {
+		flex-direction: column;
+		padding: 20px;
+		& main {
+			width: 100%;
+			padding: 0;
+		}
+		& aside {
+			&.left, &.right {
+				width: 100%;
+			}
 		}
 	}
 }
