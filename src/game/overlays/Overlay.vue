@@ -1,7 +1,9 @@
 <template>
 	<transition :name="gameState">
 		<div v-if="gameState === 'baba'" :class="gameState" class="wrapper">
-			<h2>:(</h2>
+			<h2>
+				:(
+			</h2>
 		</div>
 
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
@@ -13,6 +15,8 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import QButton from '@/components/QButton.vue';
+import VueConfetti from 'vue-confetti';
+Vue.use(VueConfetti);
 
 @Component({
 	components: {
@@ -21,6 +25,15 @@ import QButton from '@/components/QButton.vue';
 })
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
+
+	@Watch("gameState")
+	startConfetti(val: string) {
+		if (val === "Victory") {
+			this.$confetti.start();
+		} else {
+			this.$confetti.stop();
+		}
+	}
 }
 </script>
 

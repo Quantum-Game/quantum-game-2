@@ -63,10 +63,9 @@ const borderColors = {
 	}
 })
 export default class QCell extends Mixins(setActiveElement) {
-	@Prop() readonly cell!: Cell;
-	@Prop() readonly lasers!: any[];
-	@Prop({ default: false }) readonly tool!: boolean;
-	@Prop() readonly tileSize!: number;
+  @Prop() readonly cell!: Cell;
+  @Prop({ default: false }) readonly tool!: boolean;
+  @Prop() readonly tileSize!: number;
 
 	border = '';
 
@@ -85,18 +84,18 @@ export default class QCell extends Mixins(setActiveElement) {
 		return styleObj;
 	}
 
-	centerCoord(val: number) {
-		return (val + 0.5) * this.tileSize;
-	}
+  centerCoord(val: number): number {
+    return (val + 0.5) * this.tileSize;
+  }
 
-	handleMouseEnter() {
+  handleMouseEnter(): void {
 		this.border = borderColors.rotable;
 		this.setActiveElement(this.cell);
-	}
+  }
 
-	handleMouseLeave() {
-		this.border = '';
-	}
+  handleMouseLeave(): void {
+    this.border = '';
+  }
 
 	get translationX(): number {
 		return this.cell.coord.x * this.tileSize;

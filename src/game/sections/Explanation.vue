@@ -18,25 +18,33 @@ import QButton from '@/components/QButton.vue';
 import bus from '@/eventbus';
 
 @Component({
-	components: {
-		QButton
-	}
+  components: {
+    QButton
+  }
 })
 export default class Explanation extends Vue {
-	desc = '';
-	name = '';
+  desc = '';
+  name = '';
 
-	created() {
-		bus.$on('setActiveElement', (cell: Cell) => {
-			const { name, description } = cell.element;
-			this.desc = description;
-			this.name = name;
-		});
-	}
+  created() {
+    bus.$on('setActiveElement', (cell: Cell) => {
+      this.desc = cell.element.description;
+      this.name = cell.element.name;
+    });
+  }
+  get url() {
+    return `/info/${this.name}`;
+  }
+}
+</script>
 
-	get url() {
-		return `/info/${this.name}`
-	}
+<style lang="scss" scoped>
+.explanation {
+  border-top: 1px solid #8e819d;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 150%;
+	max-width: 250px;
 }
 </script>
 

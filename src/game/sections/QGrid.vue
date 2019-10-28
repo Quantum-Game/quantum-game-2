@@ -132,7 +132,7 @@ export default class QGrid extends Vue {
 	 */
 	rotate(cell: Cell) {
 		cell.rotate();
-		console.log(cell.toString());
+		console.debug(cell.toString());
 		this.grid.set(cell);
 	}
 

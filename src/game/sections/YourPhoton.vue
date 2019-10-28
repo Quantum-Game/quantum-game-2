@@ -2,9 +2,8 @@
 	<div ref="wrapper" class="simulation-steps-display-wrapper">
 		<div class="step">
 			<h3>YOUR PHOTONS</h3>
-			<span>STEP {{ activeFrame.step }}</span>
-			<br />
-			<span>STATUS: {{ activeFrame.gameState }}</span>
+			<!-- <span>STEP {{ activeFrame.step }}</span> -->
+			<!-- <span>STATUS: {{ activeFrame.gameState }}</span> -->
 			<div v-for="(particle, index) in particles" :key="index">
 				<photon
 					name

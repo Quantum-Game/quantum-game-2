@@ -84,7 +84,7 @@ export default class Goals extends Vue {
 	totalGoal(): number {
     let sum = 0;
     this.goals.map((goal: Goal) => (sum += goal.threshold));
-    return sum * 100;
+    return sum * 100 + 1;
 	}
 
 	totalParticle(): number {
