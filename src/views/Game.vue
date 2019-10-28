@@ -52,7 +52,7 @@
         <toolbox :tools="level.grid.unvoid.unfrozen.cells" />
         <explanation>
           <div class="description">
-            <span>active cell: {{ activeCell.element.description }}</span>
+            <!-- <span>active cell: {{ activeCell.element.description }}</span> -->
           </div>
         </explanation>
         <your-photon :active-frame="activeFrame" />

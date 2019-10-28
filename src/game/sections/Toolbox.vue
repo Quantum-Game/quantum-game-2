@@ -30,8 +30,8 @@ export default class Toolbox extends Vue {
     this.processTools();
   }
 
-  getFakeCell(name: string) {
-    const coord = new Coord(0, 0);
+  getFakeCell(name: string): Cell {
+    const coord = new Coord(-1, -1);
     const element = Element.fromName(name);
     return new Cell(coord, element);
   }

@@ -142,8 +142,14 @@ export default class QGrid extends Vue {
 			this.activeCell.coord = newCoord
 			voidCell.coord = oldCoord
 
-			this.grid.set(activeCell)
-			this.grid.set(voidCell)
+			// Cell comes from toolbox
+			if (activeCell.coord.x === -1) {
+				console.log("Tool");
+			} else {
+				this.grid.set(activeCell)
+				this.grid.set(voidCell)
+			}
+
 		} else {
 			this.rotate(cell)
 		}
