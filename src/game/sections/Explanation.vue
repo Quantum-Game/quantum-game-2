@@ -28,8 +28,9 @@ export default class Explanation extends Vue {
 
 	created() {
 		bus.$on('setActiveElement', (cell: Cell) => {
-			this.desc = cell.element.description;
-			this.name = cell.element.name;
+			const { name, description } = cell.element;
+			this.desc = description;
+			this.name = name;
 		});
 	}
 
@@ -45,5 +46,6 @@ export default class Explanation extends Vue {
 	text-align: left;
 	font-size: 1rem;
 	line-height: 150%;
+	max-width: 200px;
 }
 </style>

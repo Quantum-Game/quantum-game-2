@@ -7,7 +7,6 @@
 			:class="cell.element.name"
 			:cell-size="tileSize"
 			:border="border"
-			@mouseenter="setActiveElement(cell.element.description)"
 		/>
 	</g>
 </template>
