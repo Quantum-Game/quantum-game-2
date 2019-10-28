@@ -3,21 +3,22 @@
     <h3 class="title">{{ name }}</h3>
     <p>{{ desc }}</p>
     <router-link :to="url">
-      <q-button>see {{ name }} in the encyclopedia!</q-button>
+      <a>LEARN MORE</a>
+      <!-- <a>LEARN MORE about {{ name }} >> </a> -->
     </router-link>
-    <slot></slot>
+    <!-- <slot></slot> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Cell } from 'quantumweasel';
-import QButton from '@/components/QButton.vue';
+//import QButton from '@/components/QButton.vue';
 import bus from '@/eventbus';
 
 @Component({
   components: {
-    QButton
+    //QButton
   }
 })
 export default class Explanation extends Vue {
@@ -43,5 +44,11 @@ export default class Explanation extends Vue {
   font-size: 1rem;
   line-height: 150%;
 	max-width: 250px;
+}
+
+a {
+  color: #837e9b;
+  font-size: 0.8rem;
+  //text-decoration: none;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <div class="upper-icons">
+    <!-- <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
@@ -9,13 +9,12 @@
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 25</span>
       </div>
-    </div>
+    </div> -->
     <vc-donut
       class="chart"
       background="inherit"
       foreground="rgba(255, 255, 255, 0.1)"
       unit="px"
-      has-legend
       legend-placement="bottom"
       :size="200"
       :thickness="30"
@@ -26,7 +25,8 @@
       <div class="inner-circle">{{ totalParticle().toFixed(0) }}%</div>
       <div>PROBABILITY</div>
     </vc-donut>
-    <!-- <div class="bottom-icons">
+	<!-- BOTTOM ICONS -->
+    <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
         <div v-if="goal.value >= goal.threshold">
           <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" class="happy" />
@@ -37,7 +37,7 @@
         </div>
       </span>
       <div>DETECTORS</div>
-    </div> -->
+    </div>
   </div>
 </template>
 

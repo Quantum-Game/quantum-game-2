@@ -109,7 +109,12 @@ h1 {
   border-bottom: 1px solid white;
   text-align: center;
 }
-
+.boards {
+  display: flex;
+  // flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
 .placeholder {
   padding-top: 2rem;
   width: 100%;

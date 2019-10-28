@@ -319,7 +319,8 @@ export default class EGrid extends Vue {
 	display: inline-block;
   margin-bottom: 30px;
   .svg-container {
-    border: 5px solid #666;
+    // border: 5px solid #666;
+    padding: 20px;
   }
 }
 
@@ -328,9 +329,9 @@ export default class EGrid extends Vue {
   width: 100%;
 
   button {
-    background-color: darkmagenta;
-    border: 1px solid darkorchid;
-    color: white;
+    //background-color: darkmagenta;
+    //border: 1px solid darkorchid;
+    //color: white;
     padding: 5px 14px;
     cursor: pointer;
 
@@ -346,7 +347,8 @@ export default class EGrid extends Vue {
   }
 
   button:hover {
-    background-color: darkorchid;
+    //background-color: darkorchid;
+    font-weight: bold;
   }
 
   .selected {
