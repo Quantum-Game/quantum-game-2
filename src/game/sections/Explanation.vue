@@ -42,5 +42,6 @@ export default class Explanation extends Vue {
   text-align: left;
   font-size: 1rem;
   line-height: 150%;
+	max-width: 250px;
 }
 </style>
