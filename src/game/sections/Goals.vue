@@ -140,11 +140,49 @@ export default class Goals extends Vue {
   height: 350px;
   &.collapsed {
     height: 25px;
+    @media screen and (min-width: 1201px) {
+      height: auto;
+    }
   }
   @media screen and (max-width: 1200px) {
     padding-bottom: 0;
   }
 
+	& .upper-icons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		//justify-content: left;
+		margin-bottom: 2rem;
+	}
+	& .bottom-icons {
+		line-height: 150%;
+	}
+	& .chart {
+		& div.inner-circle {
+			font-size: 2rem;
+		}
+		margin-bottom: 2rem;
+
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 155px;
+			height: 155px;
+			border: 2px solid rgba(255, 255, 255, 0.6);
+			border-radius: 50%;
+		}
+	}
+
+	& .btn-fake {
+		border: 1px solid;
+		width: 50%;
+		margin: 0 auto 50px;
+		padding: 10px;
+		cursor: pointer;
+	}
   & .upper-icons {
     display: flex;
     flex-direction: row;
@@ -163,6 +201,12 @@ export default class Goals extends Vue {
       font-size: 3rem;
     }
     margin-bottom: 2rem;
+  }
+
+  .goalsExpand {
+    @media screen and (min-width: 1201px) {
+       display: none;
+    }
   }
 
 }
