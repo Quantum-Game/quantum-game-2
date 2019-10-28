@@ -154,6 +154,7 @@ export default class QGrid extends Vue {
 	}
 
 	handleDrag(cell: Cell,event: any) {
+		if(cell.frozen){ return false}
 		this.isDragMove = true;
     	if(this.isDrag) {
 			const cellRef = event.target.closest(".cell");
