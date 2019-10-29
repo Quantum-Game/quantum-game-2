@@ -31,7 +31,7 @@
       :cell="cell"
       :tileSize="tileSize"
 	  class="cell"
-	  @mousedown.native="!isDrag ? setDrag() : null"
+	  @mousedown.native="!isDrag ? setDrag($event) : null"
 	  @mousemove.native="handleDrag(cell,$event)"
 	  @mouseup.native="dragEnd(cell, $event)" 
     />
@@ -148,9 +148,14 @@ export default class QGrid extends Vue {
 	/**
 	 * Cell drag and drop
 	 */
-	setDrag(){
+	setDrag(event: any){
 		this.isDragMove = false;
 		this.isDrag = true;
+		
+		const { grid } = this.$refs;
+		const cellRef = event.target.closest(".cell");
+
+		grid.appendChild(cellRef)
 	}
 
 	handleDrag(cell: Cell,event: any) {
@@ -166,7 +171,6 @@ export default class QGrid extends Vue {
 			cellRef.querySelector("rect").style.transform = "scale(5) translate(-3%, -3%)"
 			cellRef.style.transform=`rotate(-${cell.rotation}deg) translate(${x-centerDrag}px, ${y-centerDrag}px)`;
 			cellRef.style.transformOrigin= `${x}px ${y}px`;
-			event.target.style.padding="400px";
       }
 	}
 	
@@ -190,8 +194,8 @@ export default class QGrid extends Vue {
 			const originX = this.centerCoord(currentX);
 			const originY = this.centerCoord(currentY);
 
-			cellRef.style.transform =` rotate(-${cell.rotation}deg) translate(${currentX*this.tileSize}px, ${currentY*this.tileSize}px)`
-			cellRef.style.transformOrigin= `${originX}px ${originY}px`
+			cellRef.style.transform =` rotate(-${cell.rotation}deg) translate(${currentX*this.tileSize}px, ${currentY*this.tileSize}px)`;
+			cellRef.style.transformOrigin= `${originX}px ${originY}px`;
 			cell.coord.x = currentX;
 			cell.coord.y = currentY;
 		}

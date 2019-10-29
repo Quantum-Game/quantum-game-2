@@ -43,7 +43,7 @@
         "coord": { "y": 5, "x": 3 },
         "element": "Mirror",
         "rotation": 135,
-        "frozen": true,
+        "frozen": false,
         "active": false,
         "energized": false
       },
