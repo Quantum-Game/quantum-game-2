@@ -63,7 +63,7 @@
         "y": 1,
         "x": 1
       },
-      "content": "So this is an Emitter...",
+      "content": "Here is a Emitter",
       "color": "purple"
     },
     {
@@ -71,7 +71,15 @@
         "y": 1,
         "x": 7
       },
-      "content": "...and this is a Detector",
+      "content": "...and here comes the Detector",
+      "color": "red"
+    },
+    {
+      "coord": {
+        "y": 8,
+        "x": 8
+      },
+      "content": "test test test",
       "color": "red"
     }
   ],
