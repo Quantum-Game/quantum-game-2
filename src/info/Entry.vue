@@ -9,9 +9,11 @@
 
       <div class="boards">
         <div v-for="(level, i) in levels" :key="'level' + i">
-          <Egrid :levelObj="level.levelObj" :step="level.step" class="board" />
+          <!-- <Egrid :levelObj="level.levelObj" :step="level.step" class="board" /> -->
         </div>
       </div>
+
+			<EquationGrid elementName="BeamSplitter" rotation="45" step="3" />
 
       <entry-section
         v-for="(section, index) in entry.sections"
@@ -20,8 +22,10 @@
         :should-be-open-on-init="index === 0"
       />
 
+
+
       <!-- I will but things below in a separate component -->
-      <div>
+      <!-- <div>
         <select v-model="dimOrder">
           <option value="dir pol">dir pol</option>
           <option value="pol dir">pol dir</option>
@@ -31,10 +35,10 @@
           :labelsOut="basis"
           :matrixElements="matrixElements"
         />
-        <span>{{ matrixLevel.grid.cells[1].element}} at {{ matrixLevel.grid.cells[1].rotation }}° (warning: does not update)</span>
+        <span>{{ matrixLevel.grid.cells[1].element.name}} at {{ matrixLevel.grid.cells[1].rotation }}° (warning: does not update)</span>
         <Egrid :levelObj="matrixLevel" :step="matrixStep" class="board" />
-        
-      </div>
+
+      </div> -->
 
     </article>
   </div>
@@ -43,15 +47,17 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import EntrySection, { ISection } from './EntrySection.vue';
-import OperatorViewer from './OperatorViewer.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
 import { getEntry } from './entries';
 import { Level } from 'quantumweasel';
 import Egrid from '../game/sections/EGrid.vue';
+import EquationGrid from './EquationGrid.vue';
 import BeamSplitterLevel1 from '../game/levels/encyclopedia/BeamSplitterLevel1.json';
 import BeamSplitterLevel2 from '../game/levels/encyclopedia/BeamSplitterLevel2.json';
-import * as qt from 'quantum-tensors';
+// import EquationViewerLevel from '../game/levels/encyclopedia/EquationViewer.json';
+// import OperatorViewer from './OperatorViewer.vue';
+// import * as qt from 'quantum-tensors';
 
 interface IEntryList {
   [index: string]: IEntry;
@@ -69,7 +75,7 @@ interface IEntry {
     Egrid,
     QButton,
     Photon,
-    OperatorViewer,
+    EquationGrid,
   }
 })
 export default class Entry extends Vue {
@@ -98,84 +104,84 @@ export default class Entry extends Vue {
     return this.$route.params.entry;
   }
 
-  // 
+  //
   // matrix viewer
   //
 
-  dimOrder = "dir pol"
-  operator = qt.beamSplitter(45)
-  matrixStep = 3
-  matrixLevel = {
-    "id": 137,
-    "name": "N/A",
-    "group": "N/A",
-    "description": "N/A",
-    "grid": {
-      "cols": 3,
-      "rows": 3,
-      "cells": [
-        {
-          "coord": { "x": 0, "y": 1 },
-          "element": "Laser",
-          "rotation": 0,
-          "frozen": true,
-          "active": true,
-          "energized": false
-        },
-        {
-          "coord": {  "x": 1, "y": 1 },
-          "element": "BeamSplitter",
-          "rotation": 45,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        }
-      ]
-    },
-    "hints": [
-      {
-        "coord": {
-          "y": 1,
-          "x": 2
-        },
-        "content": "YES\n\nNo",
-        "color": "red"
-      }
-    ],
-    "goals": []
-  }
+  // dimOrder = "dir pol"
+  // operator = qt.beamSplitter(45)
+  // matrixStep = 3
+  // matrixLevel = {
+  //   "id": 137,
+  //   "name": "N/A",
+  //   "group": "N/A",
+  //   "description": "N/A",
+  //   "grid": {
+  //     "cols": 3,
+  //     "rows": 3,
+  //     "cells": [
+  //       {
+  //         "coord": { "x": 0, "y": 1 },
+  //         "element": "Laser",
+  //         "rotation": 0,
+  //         "frozen": true,
+  //         "active": true,
+  //         "energized": false
+  //       },
+  //       {
+  //         "coord": {  "x": 1, "y": 1 },
+  //         "element": "BeamSplitter",
+  //         "rotation": 45,
+  //         "frozen": false,
+  //         "active": false,
+  //         "energized": false
+  //       }
+  //     ]
+  //   },
+  //   "hints": [
+  //     {
+  //       "coord": {
+  //         "y": 1,
+  //         "x": 2
+  //       },
+  //       "content": "YES\n\nNo",
+  //       "color": "red"
+  //     }
+  //   ],
+  //   "goals": []
+  // }
 
   // XXX: both below are quick and dirty, hardcoded or semi-hardcoded
   // TODO: make in quantum-tensors
-  get basis() { 
-    if (this.dimOrder === "dir pol") {
-      return ["⇢↔", "⇢↕", "⇡↔", "⇡↕", "⇠↔", "⇠↕", "⇣↔", "⇣↕"]
-    } else {
-      return ["↔⇢", "↔⇡", "↔⇠", "↔⇣", "↕⇢", "↕⇡", "↕⇠", "↕⇣"]
-    }
-  }
+  // get basis() {
+  //   if (this.dimOrder === "dir pol") {
+  //     return ["⇢↔", "⇢↕", "⇡↔", "⇡↕", "⇠↔", "⇠↕", "⇣↔", "⇣↕"]
+  //   } else {
+  //     return ["↔⇢", "↔⇡", "↔⇠", "↔⇣", "↕⇢", "↕⇡", "↕⇠", "↕⇣"]
+  //   }
+  // }
 
-  get matrixElements() {
-    if (this.dimOrder === "dir pol") {
-      return this.operator.entries.map((entry) => {
-        return {
-          i: 2 * entry.coordIn[0] + entry.coordIn[1],
-          j: 2 * entry.coordOut[0] + entry.coordOut[1],
-          re: entry.value.re,
-          im: entry.value.im,
-        }
-      })
-    } else {
-      return this.operator.entries.map((entry) => {
-        return {
-          i: entry.coordIn[0] + 4 * entry.coordIn[1],
-          j: entry.coordOut[0] + 4 * entry.coordOut[1],
-          re: entry.value.re,
-          im: entry.value.im,
-        }
-      })
-    }
-  }
+  // get matrixElements() {
+  //   if (this.dimOrder === "dir pol") {
+  //     return this.operator.entries.map((entry) => {
+  //       return {
+  //         i: 2 * entry.coordIn[0] + entry.coordIn[1],
+  //         j: 2 * entry.coordOut[0] + entry.coordOut[1],
+  //         re: entry.value.re,
+  //         im: entry.value.im,
+  //       }
+  //     })
+  //   } else {
+  //     return this.operator.entries.map((entry) => {
+  //       return {
+  //         i: entry.coordIn[0] + 4 * entry.coordIn[1],
+  //         j: entry.coordOut[0] + 4 * entry.coordOut[1],
+  //         re: entry.value.re,
+  //         im: entry.value.im,
+  //       }
+  //     })
+  //   }
+  // }
 }
 </script>
 
