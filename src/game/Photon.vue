@@ -3,6 +3,8 @@
 		:class="`photon rotation${direction}`"
 		:width="width + 2 * margin"
 		:height="height + 2 * margin"
+		@mouseenter="showPhotonInfo"
+		@mouseleave="hidePhotonInfo"
 	>
 		<g v-if="displayElectric" class="electric">
 			<circle
@@ -51,7 +53,7 @@
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-
+import {EventBus} from '../eventbus';
 import { select } from 'd3-selection';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
@@ -84,7 +86,7 @@ export default class Photon extends Vue {
 	@Prop({ default: true }) readonly displayElectric!: boolean;
 	@Prop({ default: true }) readonly displayGaussian!: boolean;
 	@Prop({ default: 0 }) readonly direction!: number;
-
+	@Prop({ default: -1}) readonly photonIndex!: number;
 	/**
 	 * Get horizontal scaling
 	 */
@@ -150,6 +152,14 @@ export default class Photon extends Vue {
 	 */
 	gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
 		return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma));
+	}
+
+	showPhotonInfo() {
+		EventBus.$emit('showPhotonInfo', this.photonIndex);
+	}
+
+	hidePhotonInfo() {
+		EventBus.$emit('showPhotonInfo', this.photonIndex);
 	}
 }
 </script>
