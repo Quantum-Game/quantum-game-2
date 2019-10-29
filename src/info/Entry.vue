@@ -20,7 +20,7 @@
         :should-be-open-on-init="index === 0"
       />
 
-      <EquationGrid elementName="BeamSplitter" rotation="45" step="3" />
+      <EquationGrid :elementName="entry.elementName" rotation="45" step="3" />
 
     </article>
   </div>
@@ -32,11 +32,9 @@ import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
 import { getEntry } from './entries';
-import { Level } from 'quantumweasel';
+import { Level, GridInterface } from 'quantumweasel';
 import Egrid from '../game/sections/EGrid.vue';
 import EquationGrid from './EquationGrid.vue';
-import BeamSplitterLevel1 from '../game/levels/encyclopedia/BeamSplitterLevel1.json';
-import BeamSplitterLevel2 from '../game/levels/encyclopedia/BeamSplitterLevel2.json';
 
 interface IEntryList {
   [index: string]: IEntry;
@@ -44,7 +42,9 @@ interface IEntryList {
 
 interface IEntry {
   title: string;
+  elementName: string;
   short?: string;
+  grids: Array<GridInterface>;
   sections: Array<ISection>;
 }
 
@@ -58,21 +58,45 @@ interface IEntry {
   }
 })
 
+// XXX this thing produces an error - by definition, not even execution
+// const expandGridToLevel = (grid: GridInterface): Level => Level.importLevel({
+//   id: 1345,
+//   name: "sdf",
+//   group: "sg",
+//   description: "sdgsd",
+//   grid: grid,
+//   hints: [],
+//   goals: []
+// })
+
 export default class Entry extends Vue {
   entry: IEntry = {
     title: '',
+    elementName: "Mirror",  // XXX suck at reloading, vide router and params
+    grids: [],
     sections: []
   };
 
-  levels = [
-    { level: Level.importLevel(BeamSplitterLevel1), step: 4 },
-    { level: Level.importLevel(BeamSplitterLevel2), step: 3 }
-  ];
+  get levels(): {level: Level, step: number}[] {
+    return this.entry.grids.map((grid) => {
+      const level = Level.importLevel({
+        id: -1,
+        name: "",
+        group: "",
+        description: "",
+        grid: grid,
+        hints: [],
+        goals: []
+      })
+      return { level: level, step: 3}
+    })
+  }
 
   created() {
     this.loadEntry();
   }
 
+  // XXX Are we really sure we want to use watch in route, and not - pass in router via params?
   @Watch('$route')
   loadEntry() {
     if (this.entryURL) {
