@@ -74,7 +74,7 @@ import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
-import Toolbox from '../sections/Toolbox.vue';
+// import Toolbox from '../sections/Toolbox.vue';
 
 @Component({
 	components: {
