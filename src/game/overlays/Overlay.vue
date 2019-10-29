@@ -14,6 +14,9 @@
 				</slot>
 			</h2>
 		</div>
+		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
+			<h2>DEFEAT</h2>
+		</div>
 	</transition>
 </template>
 
@@ -79,6 +82,16 @@ export default class Overlay extends Vue {
 	z-index: 3;
 	display: flex;
 	align-items: center;
+}
+
+.wrapper {
+	height: 100vh;
+	width: 100vw;
+	position: fixed;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+
 }
 </style>
 

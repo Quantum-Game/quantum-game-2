@@ -136,9 +136,9 @@ export default class Game extends Vue {
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
-  beforeDestroy() {
-    window.removeEventListener('keyup', this.handleArrowPress);
-  }
+	beforeDestroy() {
+		window.removeEventListener('keyup', this.handleArrowPress);
+	}
 
   // LEVEL LOADING
   @Watch('$route')
@@ -193,25 +193,25 @@ export default class Game extends Vue {
     this.frames.push(nextFrame);
   }
 
-  showNext() {
-    const newFrameNumber = this.frameNumber + 1;
-    if (newFrameNumber > this.frames.length - 1) {
-      console.error("Can't access frames that are not computed yet...");
-      return false;
-    }
-    this.frameNumber = newFrameNumber;
-    return this.frameNumber;
-  }
+	showNext() {
+		const newFrameNumber = this.frameNumber + 1;
+		if (newFrameNumber > this.frames.length - 1) {
+			console.error("Can't access frames that are not computed yet...");
+			return false;
+		}
+		this.frameNumber = newFrameNumber;
+		return this.frameNumber;
+	}
 
-  showPrevious() {
-    const newFrameNumber = this.frameNumber - 1;
-    if (newFrameNumber < 0) {
-      console.error("Can't access frames before simulation...");
-      return false;
-    }
-    this.frameNumber = newFrameNumber;
-    return this.frameNumber;
-  }
+	showPrevious() {
+		const newFrameNumber = this.frameNumber - 1;
+		if (newFrameNumber < 0) {
+			console.error("Can't access frames before simulation...");
+			return false;
+		}
+		this.frameNumber = newFrameNumber;
+		return this.frameNumber;
+	}
 
   // EVENT HANDLERS
   onActiveCell(cell: Cell, isDraggable: boolean) {
@@ -237,25 +237,25 @@ export default class Game extends Vue {
     return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
   }
 
-  get currentLevelName() {
-    return `level${parseInt(this.$route.params.id, 10)}`;
-  }
+	get currentLevelName() {
+		return `level${parseInt(this.$route.params.id, 10)}`;
+	}
 
-  get levelLoaded(): boolean {
-    return this.level && this.level.grid.cols !== 0;
-  }
+	get levelLoaded(): boolean {
+		return this.level && this.level.grid.cols !== 0;
+	}
 
   get particles(): Particle[] {
     return this.frames[this.frameNumber].quantum;
   }
 
-  get probabilitySum(): number {
-    let sum = 0;
-    this.frames[this.frameNumber].quantum.forEach((particle: any) => {
-      sum += particle.intensity;
-    });
-    return sum;
-  }
+	get probabilitySum(): number {
+		let sum = 0;
+		this.frames[this.frameNumber].quantum.forEach((particle: any) => {
+			sum += particle.intensity;
+		});
+		return sum;
+	}
 
   get gameState() {
     return this.activeFrame.gameState;
@@ -269,55 +269,55 @@ export default class Game extends Vue {
 
 <style lang="scss" scoped>
 h1 {
-  //color:crimson;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+	//color:crimson;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
 }
 .title {
-  margin-bottom: 30;
-  margin-top: 0;
+	margin-bottom: 30;
+	margin-top: 0;
 }
 
 .game {
-  width: 100%;
-  min-height: 100vh;
+	width: 100%;
+	min-height: 100vh;
 }
 .grid {
-  width: 100%;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .row {
-    display: flex;
-    flex-direction: row;
-    & .tile {
-      width: 64px;
-      min-height: 64px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-      margin: none;
-      &:hover {
-        color: black;
-      }
-    }
-  }
+	width: 100%;
+	max-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	.row {
+		display: flex;
+		flex-direction: row;
+		& .tile {
+			width: 64px;
+			min-height: 64px;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			color: white;
+			font-size: 1rem;
+			margin: none;
+			&:hover {
+				color: black;
+			}
+		}
+	}
 }
 .game {
-  &.goals {
-    height: 600px;
-    a:link,
-    a:visited {
-      color: white;
-      font-size: 12;
-      text-decoration: none;
-    }
-  }
+	&.goals {
+		height: 600px;
+		a:link,
+		a:visited {
+			color: white;
+			font-size: 12;
+			text-decoration: none;
+		}
+	}
 }
 .levelLink {
   text-decoration: none;
