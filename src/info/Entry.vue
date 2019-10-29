@@ -9,11 +9,9 @@
 
       <div class="boards">
         <div v-for="(level, i) in levels" :key="'level' + i">
-          <!-- <Egrid :levelObj="level.levelObj" :step="level.step" class="board" /> -->
+          <Egrid :level="level.level" :step="level.step" class="board" />
         </div>
       </div>
-
-			<EquationGrid elementName="BeamSplitter" rotation="45" step="3" />
 
       <entry-section
         v-for="(section, index) in entry.sections"
@@ -22,23 +20,7 @@
         :should-be-open-on-init="index === 0"
       />
 
-
-
-      <!-- I will but things below in a separate component -->
-      <!-- <div>
-        <select v-model="dimOrder">
-          <option value="dir pol">dir pol</option>
-          <option value="pol dir">pol dir</option>
-        </select>
-        <OperatorViewer
-          :labelsIn="basis"
-          :labelsOut="basis"
-          :matrixElements="matrixElements"
-        />
-        <span>{{ matrixLevel.grid.cells[1].element.name}} at {{ matrixLevel.grid.cells[1].rotation }}° (warning: does not update)</span>
-        <Egrid :levelObj="matrixLevel" :step="matrixStep" class="board" />
-
-      </div> -->
+      <EquationGrid elementName="BeamSplitter" rotation="45" step="3" />
 
     </article>
   </div>
@@ -55,9 +37,6 @@ import Egrid from '../game/sections/EGrid.vue';
 import EquationGrid from './EquationGrid.vue';
 import BeamSplitterLevel1 from '../game/levels/encyclopedia/BeamSplitterLevel1.json';
 import BeamSplitterLevel2 from '../game/levels/encyclopedia/BeamSplitterLevel2.json';
-// import EquationViewerLevel from '../game/levels/encyclopedia/EquationViewer.json';
-// import OperatorViewer from './OperatorViewer.vue';
-// import * as qt from 'quantum-tensors';
 
 interface IEntryList {
 	[index: string]: IEntry;
@@ -80,26 +59,29 @@ interface IEntry {
 })
 
 export default class Entry extends Vue {
-	entry: IEntry = {
-		title: '',
-		sections: []
-	};
+  entry: IEntry = {
+    title: '',
+    sections: []
+  };
 
-	levels = [{ levelObj: BeamSplitterLevel1, step: 4 }, { levelObj: BeamSplitterLevel2, step: 3 }];
+  levels = [
+    { level: Level.importLevel(BeamSplitterLevel1), step: 4 },
+    { level: Level.importLevel(BeamSplitterLevel2), step: 3 }
+  ];
 
-	created() {
-		this.loadEntry();
-	}
+  created() {
+    this.loadEntry();
+  }
 
-	@Watch('$route')
-	loadEntry() {
-		if (this.entryURL) {
-			this.entry = getEntry(this.entryURL);
-		}
-		if (!this.entry.title) {
-			this.$router.push({ name: '404' });
-		}
-	}
+  @Watch('$route')
+  loadEntry() {
+    if (this.entryURL) {
+      this.entry = getEntry(this.entryURL);
+    }
+    if (!this.entry.title) {
+      this.$router.push({ name: '404' });
+    }
+  }
 
   get entryURL(): string {
     return this.$route.params.entry;
