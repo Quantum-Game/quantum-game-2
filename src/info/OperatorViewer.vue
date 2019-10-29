@@ -110,6 +110,10 @@ export default class OperatorViewer extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+.operator-viewer {
+	display: inline-block;
+}
+
 .label-in, .label-out, .description {
   font-size: 16px;
   text-align: center;
