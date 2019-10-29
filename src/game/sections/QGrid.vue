@@ -239,12 +239,6 @@ export default class QGrid extends Vue {
 			positionTransform(cellRef, cell, this.tileSize, currentX, currentY);
 		}
 
-		// const gridWidth = this.$refs.grid.getBoundingClientRect().width;
-		// const gridHeight = this.$refs.grid.getBoundingClientRect().height;
-		// if(correctX > gridWidth-this.tileSize || correctY > gridHeight-this.tileSize){
-		// 	console.log(this.toToolbox)
-		// }
-
 		paddingElement.style.transform = ""
 		cell.coord.x = currentX;
 		cell.coord.y = currentY;
