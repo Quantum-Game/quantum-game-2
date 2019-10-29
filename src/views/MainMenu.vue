@@ -8,25 +8,30 @@
 		<div class="hello">
 			<h1>
 				A puzzle game with photons, superposition and quantum measurement, right in your browser.
-				With true quantum mechanics underneath!
+				With true quantum mechanics underneath! <br>
+				
 			</h1>
 			<h1>
 				Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
 				<a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
-				<a href="https://github.com/stared/quantum-game" target="_blank">Github</a> and
+				<a href="https://github.com/stared/quantum-game-2" target="_blank">Github</a> and
 				<a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
 			</h1>
+			<p>	This version of the game was funded by the <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a> 
+					of the National University of Singapore.
+			</p>
+			<img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo"/>
 			<!-- newsletter -->
-			<div class="newsletter" id="content">
+			<!-- <div id="content" class="newsletter">
 				<h1>Sign up for our newsletter now!</h1>
-				<input type="email" placeholder="Email"/>
-				<q-button type="special" href="#" >SIGN UP</q-button>
-			</div>
+				<input type="email" placeholder="Email" />
+				<q-button type="special" href="#">SIGN UP</q-button>
+			</div> -->
 
 			<div class="image">
-				<img src="@/assets/rock.svg" alt="rock" />
+				<img src="@/assets/Rock.svg" alt="rock" />
 			</div>
-			<div class="blog">
+			<!-- <div class="blog">
 				<h2>Wave optics and quantum mechanics as a game</h2>
 				<p>
 					NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter.
@@ -39,35 +44,8 @@
 					theory), Motherboard, Scott Aaronson, Cory Doctorow, Hacker News (actually, twice). For
 					more games like this one, see: Science-based games collaborative list.
 				</p>
-			</div>
-			<div class="blog">
-				<h2>Wave optics and quantum mechanics as a game</h2>
-				<p>
-					NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter.
-					We will release it late 2019. for fun! Learn quantum mechanics as a side effect. It’s a
-					puzzle game, heavily inspired by The Incredible Machine and Chromatron. All you need is a
-					browser (we recommend recent version of Firefox or Chrome), you don’t need to install
-					anything. It’s open source - so not only you can play it for free, but also lookup the
-					code. Motivation behind the game is in Quantum mechanics for high-school students blog
-					post. It was covered on The Quantum Times (top pick in education for gamifying quantum
-					theory), Motherboard, Scott Aaronson, Cory Doctorow, Hacker News (actually, twice). For
-					more games like this one, see: Science-based games collaborative list.
-				</p>
-			</div>
-			<div class="blog">
-				<h2>Wave optics and quantum mechanics as a game</h2>
-				<p>
-					NEWS: We develop Quantum Game v 2.0 at CQT, Singapore. See updates at Medium or Twitter.
-					We will release it late 2019. for fun! Learn quantum mechanics as a side effect. It’s a
-					puzzle game, heavily inspired by The Incredible Machine and Chromatron. All you need is a
-					browser (we recommend recent version of Firefox or Chrome), you don’t need to install
-					anything. It’s open source - so not only you can play it for free, but also lookup the
-					code. Motivation behind the game is in Quantum mechanics for high-school students blog
-					post. It was covered on The Quantum Times (top pick in education for gamifying quantum
-					theory), Motherboard, Scott Aaronson, Cory Doctorow, Hacker News (actually, twice). For
-					more games like this one, see: Science-based games collaborative list.
-				</p>
-			</div>
+			</div> -->
+			
 		</div>
 	</div>
 </template>
@@ -110,6 +88,10 @@ h2 {
 	line-height: 150%;
 	text-transform: uppercase;
 }
+p {
+	color: white;
+	line-height: 150%;
+}
 .hello {
 	width: 35%;
 	display: flex;
@@ -129,14 +111,14 @@ h2 {
 	align-items: center;
 }
 .image {
-	width: 30%;
-	padding:30px;
+	width: 40%;
+	padding-bottom: 10px;
 }
 .blog {
 	border-top: 1px solid white;
 	color: white;
 	font-size: 1rem;
-	font-weight:normal;
+	font-weight: normal;
 	line-height: 150%;
 }
 
@@ -154,64 +136,70 @@ li {
 	margin: 0 10px;
 }
 a {
-	color: rgb(255, 158, 195);
+	color: rgb(255, 181, 209);
 	//color:ffcfe5;
 	//color: #9780b5;
 	text-decoration: none;
 }
+a:hover{
+		color: white;
+}
+
+.CQTlogo {
+	max-width: 250px;
+}
 ///////////
-*{
-    transition: all 0.6s;
+* {
+	transition: all 0.6s;
 }
 // .newsletter{
 // 	padding-bottom:30px;
 // }
-input[type='email']{
-    outline: none;
-    display: inline-block;
-    width: 60%;
-    padding: 10px;
-	background:none;
-    border-top: none;
+input[type='email'] {
+	outline: none;
+	display: inline-block;
+	width: 60%;
+	padding: 10px;
+	background: none;
+	border-top: none;
 	border-right: none;
 	border-left: none;
 	border-bottom: 1px solid white;
-    box-sizing: border-box;
+	box-sizing: border-box;
 	color: white;
 	font-size: 1rem;
 	font-weight: normal;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -o-box-sizing: border-box;
-    -ms-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-ms-box-sizing: border-box;
 	margin-right: 20px;
 }
 
-
-input[type='email']:focus{
+input[type='email']:focus {
 	color: white;
 	font-family: Montserrat, Arial, Helvetica, sans-serif;
 	font-size: 1rem;
-	font-weight:normal;
-    border-top: none;
+	font-weight: normal;
+	border-top: none;
 	border-right: none;
 	border-left: none;
 	border-bottom: 1px solid white;
 }
 
 ::placeholder {
-  color: white;
-  font-family: Montserrat, Arial, Helvetica, sans-serif
+	color: white;
+	font-family: Montserrat, Arial, Helvetica, sans-serif;
 }
 
-@media screen and (max-width: 736px){
-    input[type='email']{
+@media screen and (max-width: 736px) {
+	input[type='email'] {
 		color: white;
 		font-size: 1rem;
-		font-weight:normal;
-        display: block;
-        width: 100%;
-    }
+		font-weight: normal;
+		display: block;
+		width: 100%;
+	}
 }
 ////////////
 </style>
