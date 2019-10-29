@@ -1,83 +1,81 @@
 <template>
-	<div class="container">
-		<div class="svg-container">
-			<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
-				<!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
-				<!-- DOTS -->
-				<g v-for="(row, y) in level.grid.rows + 1" :key="y">
-					<g v-for="(column, x) in level.grid.cols + 1" :key="x">
-						<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-					</g>
-				</g>
+  <div class="container">
+    <div class="svg-container">
+      <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
+        <!-- DOTS -->
+        <g v-for="(row, y) in level.grid.rows + 1" :key="y">
+          <g v-for="(column, x) in level.grid.cols + 1" :key="x">
+            <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+          </g>
+        </g>
 
-				<!-- LASER PATH -->
-				<g
-					v-for="(laser, index) in individualLaserPath"
-					:key="'laser' + index"
-					:v-if="individualLaserPath.length > 0"
-					class="lasers"
-				>
-					<path
-						:d="laser"
-						stroke-dasharray="8 8"
-						fill="transparent"
-						stroke="red"
-						stroke-width="3"
-					/>
-				</g>
+        <!-- LASER PATH -->
+        <g
+          v-for="(laser, index) in individualLaserPath"
+          :key="'laser' + index"
+          :v-if="individualLaserPath.length > 0"
+          class="lasers"
+        >
+          <path :d="laser" stroke-dasharray="8 8" fill="transparent" stroke="red" stroke-width="3" />
+        </g>
 
-				<!-- CELLS -->
-				<QCell
-					v-for="(cell, i) in level.grid.cells"
-					:key="'cell' + i"
-					:cell="cell"
-					:tileSize="tileSize"
-					@click.native="rotate(cell)"
-				/>
+        <!-- CELLS -->
+        <QCell
+          v-for="(cell, i) in level.grid.cells"
+          :key="'cell' + i"
+          :cell="cell"
+          :tileSize="tileSize"
+          @click.native="rotate(cell)"
+        />
 
-				<!-- PHOTONS -->
-				<g
-					v-for="(particle, index) in activeFrame.quantum"
-					:key="'particle' + index"
-					:v-if="frame.quantum.length > 0"
-					:style="computeParticleStyle(particle)"
-					class="photons"
-				>
-					<photon
-						name
-						:intensity="particle.intensity"
-						:are="particle.a.re"
-						:aim="particle.a.im"
-						:bre="particle.b.re"
-						:bim="particle.b.im"
-						:width="64"
-						:height="64"
-						:margin="0"
-						:display-magnetic="true"
-						:display-electric="false"
-						:display-gaussian="false"
-						:sigma="0.25"
-					/>
-				</g>
-			</svg>
-		</div>
-		<div class="btn-group">
-			<span
-				v-for="(frame, index) in frames"
-				:key="'frame' + index"
-				@mouseover="setFrame(frame.step)"
-			>
-				<button
-					v-if="frameNumber === frame.step"
-					class="selected"
-					@mouseover="setFrame(frame.step)"
-				>
-					{{ frame.step }}
-				</button>
-				<button v-else @mouseover="setFrame(frame.step)">{{ frame.step }}</button>
-			</span>
-		</div>
-	</div>
+        <!-- PHOTONS -->
+        <g
+          v-for="(particle, index) in activeFrame.quantum"
+          :key="'particle' + index"
+          :v-if="frame.quantum.length > 0"
+          :style="computeParticleStyle(particle)"
+          class="photons"
+        >
+          <photon
+            name
+            :intensity="particle.intensity"
+            :are="particle.a.re"
+            :aim="particle.a.im"
+            :bre="particle.b.re"
+            :bim="particle.b.im"
+            :width="64"
+            :height="64"
+            :margin="0"
+            :display-magnetic="true"
+            :display-electric="false"
+            :display-gaussian="false"
+            :sigma="0.25"
+          />
+        </g>
+      </svg>
+    </div>
+    <div class="btn-group">
+      <span
+        v-for="(frame, index) in frames"
+        :key="'frame' + index"
+        @mouseover="setFrame(frame.step)"
+      >
+        <button
+          v-if="frameNumber === frame.step"
+          @mouseover="setFrame(frame.step)"
+          class="selected"
+        >{{frame.step}}</button>
+        <button v-else @mouseover="setFrame(frame.step)">{{frame.step}}</button>
+      </span>
+    </div>
+    <ol class="kets">
+      <li
+        v-for="(frame, index) in frames"
+        :key="'frame-ket-' + index"
+        @mouseover="setFrame(frame.step)"
+      >{{ frameToKet(frame) }}</li>
+    </ol>
+  </div>
 </template>
 
 <script lang="ts">
@@ -97,6 +95,28 @@ import {
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';
 
+const defaultLevel: Level = Level.importLevel({
+  id: 1337,
+  name: 'default',
+  group: 'Encyclopedia',
+  description: 'default',
+  grid: {
+    cols: 3,
+    rows: 3,
+    cells: [
+      {
+        coord: { x: 0, y: 1 },
+        element: 'Laser',
+        rotation: 0,
+        active: true,
+        frozen: true
+      }
+    ]
+  },
+  hints: [],
+  goals: []
+});
+
 @Component({
 	components: {
 		Photon,
@@ -104,23 +124,23 @@ import QCell from '../QCell.vue';
 	}
 })
 export default class EGrid extends Vue {
-	@Prop({ default: {} }) readonly levelObj!: LevelInterface;
-	@Prop({ default: 4 }) readonly step!: number;
-	tileSize: number = 64;
-	level: Level = Level.importLevel(this.levelObj);
-	frame: Frame = new Frame(this.level);
-	frames: Frame[] = [this.frame.next()];
-	frameNumber: number = 0;
+  @Prop({ default: () => defaultLevel }) readonly level!: Level;
+  @Prop({ default: 4 }) readonly step!: number;
 
-	$refs!: {
-		grid: HTMLElement;
-	};
+  tileSize: number = 64;
+  frame: Frame = new Frame(this.level);
+  frames: Frame[] = [this.frame];
+  frameNumber: number = 0;
 
-	created() {
-		this.createFrames(10);
-		this.setFrame(this.step);
-		window.addEventListener('resize', this.assessTileSize);
-	}
+  $refs!: {
+    grid: HTMLElement;
+  };
+
+  created() {
+    this.createFrames(10);
+    this.setFrame(this.step);
+    window.addEventListener('resize', this.assessTileSize);
+  }
 
 	/**
 	 * Clipping the value of the frameNumber to be displayed
@@ -139,17 +159,17 @@ export default class EGrid extends Vue {
 		this.assessTileSize();
 	}
 
-	createFrames(number = 25) {
-		for (let index = 0; index < number; index += 1) {
+  createFrames(number = 25) {
+    for (let index = 0; index < number; index += 1) {
 			const lastFrameCopy = cloneDeep(this.lastFrame);
-			const nextFrame = lastFrameCopy.next();
-			if (nextFrame.quantum.length > 0) {
-				this.frames.push(nextFrame);
-			} else {
-				break;
-			}
-		}
-	}
+      const nextFrame = lastFrameCopy.next();
+      if (nextFrame.quantum.length > 0) {
+        this.frames.push(nextFrame);
+      } else {
+        break;
+      }
+    }
+  }
 
 	createNextFrame() {
 		const lastFrameCopy = cloneDeep(this.lastFrame);
@@ -201,110 +221,140 @@ export default class EGrid extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
-	/**
-	 * Cell rotation
-	 */
-	rotate(cell: Cell) {
-		cell.rotate();
-		console.log(cell.toString());
-		this.level.grid.set(cell);
-		this.reset();
-	}
+  /**
+   * Cell rotation
+   */
+  rotate(cell: Cell) {
+    cell.rotate();
+    this.level.grid.set(cell);
+    this.reset();
+  }
 
-	reset() {
-		const levelObj = this.level.exportLevel();
-		this.level = Level.importLevel(levelObj);
-		this.frame = new Frame(this.level);
-		this.frames = [this.frame.next()];
-		this.frameNumber = 0;
-		this.createFrames(10);
-		this.setFrame(this.step);
-	}
+  reset() {
+    this.frame = new Frame(this.level);
+    this.frames = [this.frame.next()];
+    this.frameNumber = 0;
+    this.createFrames(10);
+    this.setFrame(this.step);
+  }
 
-	/**
-	 * Create laser path through the lasers points
-	 * @returns SVG laser path
-	 */
-	laserPath(): string {
-		let pathStr = '';
-		if (this.lasers.length > 0) {
-			const originX = this.centerCoord(this.lasers[0].coord.x);
-			const originY = this.centerCoord(this.lasers[0].coord.y);
-			pathStr += `M ${originX} ${originY} `;
-			this.lasers.forEach((laser: any) => {
-				const x = this.centerCoord(laser.coord.x);
-				const y = this.centerCoord(laser.coord.y);
-				pathStr += ` L ${x} ${y} `;
-			});
-			pathStr += ' ';
-		}
-		return pathStr;
-	}
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  laserPath(): string {
+    let pathStr = '';
+    if (this.lasers.length > 0) {
+      const originX = this.centerCoord(this.lasers[0].coord.x);
+      const originY = this.centerCoord(this.lasers[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
+      });
+      pathStr += ' ';
+    }
+    return pathStr;
+  }
 
-	get individualLaserPath(): string[] {
-		const pathsStr: string[] = [];
-		if (this.lasers.length > 0) {
-			this.lasers.forEach((laser: any) => {
-				let pathStr = '';
-				const originX = this.centerCoord(laser.coord.x);
-				const originY = this.centerCoord(laser.coord.y);
-				pathStr += `M ${originX} ${originY} `;
-				switch (laser.direction) {
-					case 0:
-						pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
-						break;
-					case 90:
-						pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
-						break;
-					case 180:
-						pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
-						break;
-					case 270:
-						pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
-						break;
-					default:
-						throw new Error(`Laser has wrong direction: ${laser.direction}°`);
-				}
-				pathsStr.push(pathStr);
-			});
-		}
-		return pathsStr;
-	}
+  get individualLaserPath(): string[] {
+    const pathsStr: string[] = [];
+    if (this.lasers.length > 0) {
+      this.lasers.forEach((laser: any) => {
+        let pathStr = '';
+        const originX = this.centerCoord(laser.coord.x);
+        const originY = this.centerCoord(laser.coord.y);
+        pathStr += `M ${originX} ${originY} `;
+        switch (laser.direction) {
+          case 0:
+            pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
+            break;
+          case 90:
+            pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
+            break;
+          case 180:
+            pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
+            break;
+          case 270:
+            pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
+            break;
+          default:
+            throw new Error(`Laser has wrong direction: ${laser.direction}°`);
+        }
+        pathsStr.push(pathStr);
+      });
+    }
+    return pathsStr;
+  }
 
-	/**
-	 * Create laser path through the lasers points
-	 * @returns SVG laser path
-	 */
-	photonPath(): string {
-		let pathStr = '';
-		if (this.frame.quantum.length > 0) {
-			const originX = this.centerCoord(this.frame.quantum[0].coord.x);
-			const originY = this.centerCoord(this.frame.quantum[0].coord.y);
-			pathStr += `M ${originX} ${originY} `;
-			this.lasers.forEach((laser: any) => {
-				const x = this.centerCoord(laser.coord.x);
-				const y = this.centerCoord(laser.coord.y);
-				pathStr += ` L ${x} ${y} `;
-			});
-		}
-		return pathStr;
-	}
+  /**
+   * Create laser path through the lasers points
+   * @returns SVG laser path
+   */
+  photonPath(): string {
+    let pathStr = '';
+    if (this.frame.quantum.length > 0) {
+      const originX = this.centerCoord(this.frame.quantum[0].coord.x);
+      const originY = this.centerCoord(this.frame.quantum[0].coord.y);
+      pathStr += `M ${originX} ${originY} `;
+      this.lasers.forEach((laser: any) => {
+        const x = this.centerCoord(laser.coord.x);
+        const y = this.centerCoord(laser.coord.y);
+        pathStr += ` L ${x} ${y} `;
+      });
+    }
+    return pathStr;
+  }
 
-	// HELPING FUNCTIONS
-	element(y: number, x: number): CellInterface {
-		const cells = this.level.grid.cells.filter(
-			(cell: Cell) => cell.coord.x === x && cell.coord.y === y
-		);
-		if (cells.length > 0) {
-			return cells[0].exportCell();
-		}
-		return {
-			coord: { x, y },
-			element: 'Void',
-			rotation: 0,
-			frozen: false
-		};
-	}
+  // HELPING FUNCTIONS
+  element(y: number, x: number): CellInterface {
+    const cells = this.level.grid.cells.filter(
+      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
+    );
+    if (cells.length > 0) {
+      return cells[0].exportCell();
+    }
+    return {
+      coord: { x, y },
+      element: 'Void',
+      rotation: 0,
+      frozen: false
+    };
+  }
+
+  /**
+   * Temporary! I want to work with actual quantum states.
+   * Also - quick, dirty, no-LaTeX and pure string
+   */
+  frameToKet(frame: Frame): string {
+    const dirVis = new Map<number, string>();
+    dirVis.set(0, '⇢');
+    dirVis.set(90, '⇡');
+    dirVis.set(180, '⇠');
+    dirVis.set(270, '⇣');
+
+    return frame.quantum
+      .flatMap((d) => {
+        const res = [];
+        if (d.a.re !== 0 || d.a.im !== 0) {
+          res.push(
+            `(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${
+              d.coord.y
+            } ${dirVis.get(d.direction)} H⟩`
+          );
+        }
+        if (d.b.re !== 0 || d.b.im !== 0) {
+          res.push(
+            `(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${
+              d.coord.y
+            } ${dirVis.get(d.direction)} V⟩`
+          );
+        }
+        return res;
+      })
+      .join(' + ');
+  }
 }
 </script>
 
@@ -324,28 +374,28 @@ export default class EGrid extends Vue {
 }
 
 .container {
-	display: inline-block;
-	margin-bottom: 30px;
-	.svg-container {
-		border: 5px solid #666;
-	}
+  display: inline-block;
+  margin-bottom: 30px;
+  .svg-container {
+    border: 5px solid #666;
+  }
 }
 
 .btn-group {
-	text-align: center;
-	width: 100%;
+  text-align: center;
+  width: 100%;
 
-	button {
-		background-color: darkmagenta;
-		border: 1px solid darkorchid;
-		color: white;
-		padding: 5px 14px;
-		cursor: pointer;
+  button {
+    background-color: darkmagenta;
+    border: 1px solid darko drchid;
+    color: white;
+    padding: 5px 14px;
+    cursor: pointer;
 
-		&:not(:last-child) {
-			border-right: none;
-		}
-	}
+    &:not(:last-child) {
+      border-right: none;
+    }
+  }
 
 	&:after {
 		content: '';

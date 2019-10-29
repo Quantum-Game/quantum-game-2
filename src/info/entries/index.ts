@@ -1,4 +1,5 @@
 import entries from './entries.json';
+import { GridInterface } from 'quantumweasel';
 
 interface IEntryList {
 	[index: string]: IEntry;
@@ -12,7 +13,9 @@ export interface ISection {
 
 interface IEntry {
 	title: string;
+	elementName: string;
 	short?: string;
+	grids: Array<GridInterface>;
 	sections: Array<ISection>;
 }
 export const typedEntries: IEntryList = entries;
