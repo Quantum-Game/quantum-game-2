@@ -327,12 +327,18 @@ export default class EGrid extends Vue {
 .btn-group {
   text-align: center;
   width: 100%;
+  display: flex;
+  justify-content: center;
 
   button {
-    //background-color: darkmagenta;
-    //border: 1px solid darkorchid;
-    //color: white;
-    padding: 5px 14px;
+    font-size: 0.8rem;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: #5c00d3;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin:5px;
     cursor: pointer;
 
     &:not(:last-child) {
@@ -347,12 +353,13 @@ export default class EGrid extends Vue {
   }
 
   button:hover {
-    //background-color: darkorchid;
-    font-weight: bold;
+    background-color: white;
+    color: #5c00d3;
   }
 
   .selected {
-    background-color: darkred;
+    background-color: white;
+    color: #5c00d3;
   }
 }
 </style>

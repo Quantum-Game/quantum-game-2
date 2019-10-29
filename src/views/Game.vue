@@ -2,6 +2,7 @@
   <div class="game">
     <!-- OVERLAY -->
     <overlay :game-state="gameState" @click.native="frameNumber = 0">
+        <q-button>GO BACK</q-button>
       <router-link :to="nextLevel">
         <q-button>NEXT LEVEL</q-button>
       </router-link>

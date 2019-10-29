@@ -33,11 +33,11 @@
         </div>
         <div v-else>
           <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
-          {{goal.value * 100 }} / {{goal.threshold * 100}} %
+          <!-- {{goal.value * 100 }} / {{goal.threshold * 100}} % -->
         </div>
       </span>
-      <div>DETECTORS</div>
     </div>
+    <div>DETECTORS</div>
   </div>
 </template>
 
@@ -114,9 +114,12 @@ export default class Goals extends Vue {
     margin-bottom: 2rem;
   }
   & .bottom-icons {
+	display: flex;
     line-height: 150%;
+	justify-content: center;
+	padding: 5px;
     & .happy {
-      background-color: green;
+      background-color: white;
     }
   }
   & .chart {
@@ -124,6 +127,7 @@ export default class Goals extends Vue {
       font-size: 3rem;
     }
     margin-bottom: 2rem;
+	padding-top: 10px;
   }
 }
 </style>
