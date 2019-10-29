@@ -38,7 +38,7 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <q-grid :grid="level.grid" :photons="activeFrame.quantum" />
+        <q-grid :grid="level.grid" :photons="activeFrame.quantum" :toToolbox="handleToolboxElements"/>
         <controls
           @step-back="showPrevious"
           @step-forward="showNext"
@@ -50,17 +50,7 @@
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
         <toolbox
-          :tools="[
-						{
-							coord: {
-								x: -1,
-								y: -1
-							},
-							element: 'Detector',
-							rotation: 0,
-							frozen: false
-						}
-					]"
+          :tools="toolbox"
         />
         <explanation>
           <div class="description">
@@ -236,7 +226,13 @@ export default class Game extends Vue {
 			default:
 				break;
 		}
-	}
+  }
+  
+  handleToolboxElements(tool: object){
+    
+    this.toolbox.push(tool);
+    console.log(this.toolbox)
+  }
 
   // GETTERS
   get toolboxElements(): CellInterface[] {
