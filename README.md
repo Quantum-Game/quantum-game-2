@@ -88,6 +88,7 @@ Quantum Game 2 from CQT
 - [x] Speech Bubble
 
 27.10
+- [ ] refine bubble -> from svg to actual div?
 - [ ] active element refinement
 
 
