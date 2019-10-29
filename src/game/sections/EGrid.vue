@@ -126,6 +126,7 @@ const defaultLevel: Level = Level.importLevel({
 export default class EGrid extends Vue {
   @Prop({ default: () => defaultLevel }) readonly level!: Level;
   @Prop({ default: 4 }) readonly step!: number;
+
   tileSize: number = 64;
   frame: Frame = new Frame(this.level);
   frames: Frame[] = [this.frame];
