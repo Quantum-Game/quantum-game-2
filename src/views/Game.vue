@@ -253,6 +253,7 @@ export default class Game extends Vue {
 		return this.level && this.level.grid.cols !== 0;
 	}
 
+
 	get particles(): Particle[] {
 		return this.frames[this.frameNumber].quantum;
 	}
@@ -276,6 +277,7 @@ export default class Game extends Vue {
 	get hints() {
 		return this.levelObj.hints;
 	}
+
 }
 </script>
 

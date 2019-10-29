@@ -1,32 +1,40 @@
 <template>
-	<div ref="goals" class="goals-wrapper">
-		<div class="upper-icons">
-			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-				<span> 02</span>
-			</div>
-			<div>
-				<img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-				<span> 25</span>
-			</div>
-		</div>
+  <div ref="goals" class="goals-wrapper">
+    <div class="upper-icons">
+      <div>
+        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+        <span> 02</span>
+      </div>
+      <div>
+        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
+        <span> 25</span>
+      </div>
+    </div>
 		<vc-donut
 			class="chart"
-			background="inherit"
-			foreground="rgba(255, 255, 255, 0.1)"
+			:class="{ highscore: isHighScore }"
+			background="#210235"
+			foreground="inherit"
 			unit="px"
-			has-legend
-			legend-placement="bottom"
-			:size="200"
-			:thickness="30"
-			:sections="generateSections()"
-			:total="totalGoal()"
+			:size="150"
+			:thickness="5"
+			:sections="sections"
+			:total="100"
 			:start-angle="0"
 		>
-			<div class="inner-circle">{{ totalParticle().toFixed(0) }}%</div>
-			<div>PROBABILITY</div>
+			<div class="inner-circle">{{ animatedPercent }}%</div>
+			<div>SUCCESS</div>
 		</vc-donut>
-		<!-- <div class="bottom-icons">
+		<div class="btn-fake" @click="fakeClick">Click me</div>
+    </vc-donut>
+		<div class="bottom-icons">
+			<span v-for="(goal, index) in goals" :key="index">
+				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
+			</span>
+			<div>DETECTORS</div>
+		</div>
+	</div>
+    <!-- <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
         <div v-if="goal.value >= goal.threshold">
           <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" class="happy" />
@@ -43,6 +51,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import {Tween, update as updateTween} from 'es6-tween';
 import { Goal, ParticleInterface } from 'quantumweasel';
 
 interface SectionInterface {
@@ -55,43 +64,46 @@ interface SectionInterface {
 	components: {}
 })
 export default class Goals extends Vue {
-	@Prop() readonly goals!: Goal[];
-	@Prop() readonly particles!: ParticleInterface[];
+	@Prop() readonly detectors!: number;
+	@Prop() readonly percentage!: number;
+	@Prop() readonly goals!: any;
+	percent: number = this.percentage;
+	tweenedPercent: number = this.percentage;
+	isHighScore: boolean = false;
+	width = 100;
 
-	/**
-	 * Generate sections for the donut
-	 */
-	generateSections(): SectionInterface[] {
-		const result: SectionInterface[] = [];
-		this.goals.forEach((goal: Goal, index: number) => {
-			if (!goal.completed) {
-				const label = `Goal ${index}: ${(goal.threshold * 100).toFixed(0)} %`;
-				result.push({ label, value: goal.value * 100, color: 'green' });
-			} else {
-				const label = `Goal completed`;
-				result.push({ label, value: goal.value * 100, color: 'purple' });
-			}
-		});
-		return result;
+	fakeClick() {
+		this.percent = Math.random() * 100;
+		this.isHighScore = this.percent > 50;
+
+		requestAnimationFrame(this.animateTween);
 	}
 
-	totalPercentage(): number {
-		let sum = 0;
-		this.goals.map((goal: Goal) => (sum += goal.value));
-		return (1 - sum) * 100;
+	animateTween(time) {
+		const id = requestAnimationFrame(this.animateTween);				
+		const result = updateTween(time);
+		if(!result) cancelAnimationFrame(id);
 	}
 
-	totalGoal(): number {
-		let sum = 0;
-		this.goals.map((goal: Goal) => (sum += goal.threshold));
-		return sum * 100 + 1;
+	get animatedPercent() {
+		return Number(this.tweenedPercent).toFixed(1);
+	}
+	get sections() {
+		return [{ value: Number(this.tweenedPercent.toFixed(1)), color: '#5D00D5' }];
 	}
 
-	totalParticle(): number {
-		let sum = 0;
-		this.particles.map((particle) => (sum += particle.opacity));
-		return sum * 100;
+	@Watch('percent')
+	onPercentChanged(val, oldVal) {
+		console.log(oldVal, val)
+		const vm = this;
+		new Tween({value: oldVal})
+		.to({ value: val }, 500)
+		.on('update', ({value}) => {
+			vm.tweenedPercent = value;
+		})
+		.start();
 	}
+					
 }
 </script>
 
@@ -115,15 +127,31 @@ export default class Goals extends Vue {
 	}
 	& .bottom-icons {
 		line-height: 150%;
-		& .happy {
-			background-color: green;
-		}
 	}
 	& .chart {
 		& div.inner-circle {
-			font-size: 3rem;
+			font-size: 2rem;
 		}
 		margin-bottom: 2rem;
+
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 155px;
+			height: 155px;
+			border: 2px solid rgba(255, 255, 255, 0.6);
+			border-radius: 50%;
+		}
+	}
+
+	& .btn-fake {
+		border: 1px solid;
+		width: 50%;
+		margin: 0 auto 50px;
+		padding: 10px;
+		cursor: pointer;
 	}
 }
 </style>

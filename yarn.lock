@@ -4031,6 +4031,11 @@ es-to-primitive@^1.2.0:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
+es6-tween@^5.5.10:
+  version "5.5.10"
+  resolved "https://registry.yarnpkg.com/es6-tween/-/es6-tween-5.5.10.tgz#1267d602279fe0fcb98f796f05e745945b04c1ed"
+  integrity sha512-nzhoX7JX+U936ksm7aok9CYsl5Y4rGOzt/6hFTOUmoVjO8bjQAsh+Adqqnl6EKoRCI02Jr0/0OVuwHOotEYzwg==
+
 escape-html@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
