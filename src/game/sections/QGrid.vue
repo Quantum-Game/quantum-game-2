@@ -153,6 +153,22 @@ export default class QGrid extends Vue {
 	/**
 	 * Cell drag and drop
 	 */
+
+	// function used in events
+	dragPositionX(event: any){
+		const leftPosition = +this.$refs.grid.getBoundingClientRect().left.toFixed(0);
+		const correctX = event.clientX - leftPosition
+		return correctX; 
+	}
+
+	dragPositionY(event: any){
+		const topPosition = +this.$refs.grid.getBoundingClientRect().top.toFixed(0);
+		const correctY = event.clientY - topPosition; 
+		return correctY
+	}
+	
+
+
 	setDrag(event: any){
 		this.isDragMove = false;
 		this.isDrag = true;
@@ -164,47 +180,62 @@ export default class QGrid extends Vue {
 	}
 
 	handleDrag(cell: Cell,event: any) {
-		if(cell.frozen){ return false}
+		if(cell.frozen){ return false };
+
 		this.isDragMove = true;
+
     	if(this.isDrag) {
 			const cellRef = event.target.closest(".cell");
-			const leftPosition = +this.$refs.grid.getBoundingClientRect().left.toFixed(0);
-			const topPosition = +this.$refs.grid.getBoundingClientRect().top.toFixed(0);
- 			const x = event.clientX - leftPosition; 
-			const y = event.clientY - topPosition; 
+			const correctX = this.dragPositionX(event)
+			const correctY = this.dragPositionY(event)
 			const centerDrag = this.tileSize/2;
-			cellRef.querySelector("rect").style.transform = "scale(5) translate(-3%, -3%)"
-			cellRef.style.transform=`rotate(-${cell.rotation}deg) translate(${x-centerDrag}px, ${y-centerDrag}px)`;
-			cellRef.style.transformOrigin= `${x}px ${y}px`;
+			const paddingElement = cellRef.querySelector("rect")
+
+			paddingElement.style.transform = "scale(5) translate(-3%, -3%)"
+			cellRef.style.transform=`rotate(-${cell.rotation}deg) translate(${correctX-centerDrag}px, ${correctY-centerDrag}px)`;
+			cellRef.style.transformOrigin= `${correctX}px ${correctY}px`;
       }
 	}
 	
 	dragEnd(cell: Cell, event: any){
 		const cellRef = event.target.closest(".cell");
+		const paddingElement = cellRef.querySelector("rect");
 		const centerDrag = this.tileSize/2;
-		const leftPosition = +this.$refs.grid.getBoundingClientRect().left.toFixed(0);
-		const topPosition = +this.$refs.grid.getBoundingClientRect().top.toFixed(0);
 
-		const correctX = event.clientX - leftPosition;
-		const correctY = event.clientY - topPosition;
+		const correctX = this.dragPositionX(event);
+		const correctY = this.dragPositionY(event);
 
-		const currentX = Math.ceil(correctX/this.tileSize)-1;
-		const currentY = Math.ceil(correctY/this.tileSize)-1;
+		let currentX = Math.ceil(correctX/this.tileSize)-1;
+		let currentY = Math.ceil(correctY/this.tileSize)-1;
+	
+		const occupiedList = this.grid.cells.filter(el => el.element.name !== "Void");
+		const isOccupied = occupiedList.filter(el => el.coord.x === currentX && el.coord.y === currentY).length;
+
+		const positionTransform = (element: any, cell: Cell, tileSize:number, currentX:number, currentY:number) => {
+			const originX = this.centerCoord(currentX);
+			const originY = this.centerCoord(currentY);
+			element.style.transform =` rotate(-${cell.rotation}deg) translate(${currentX*tileSize}px, ${currentY*tileSize}px)`;
+			element.style.transformOrigin= `${originX}px ${originY}px`;
+		}
+
 
 		if(!this.isDragMove){
 			this.rotate(cell);
-			cell.coord.x = currentX;
-			cell.coord.y = currentY;
-		} else {
-			const originX = this.centerCoord(currentX);
-			const originY = this.centerCoord(currentY);
+		
+		} else if(cell.coord.x == currentX && cell.coord.y == currentY) {
 
-			cellRef.style.transform =` rotate(-${cell.rotation}deg) translate(${currentX*this.tileSize}px, ${currentY*this.tileSize}px)`;
-			cellRef.style.transformOrigin= `${originX}px ${originY}px`;
-			cell.coord.x = currentX;
-			cell.coord.y = currentY;
+			positionTransform(cellRef, cell, this.tileSize, currentX, currentY);
+			this.isDrag = false;
+
+		} else {
+			
+			isOccupied ? currentX++ : null;
+			positionTransform(cellRef, cell, this.tileSize, currentX, currentY);
 		}
-		cellRef.querySelector("rect").style.transform = ""
+
+		paddingElement.style.transform = ""
+		cell.coord.x = currentX;
+		cell.coord.y = currentY;
 		this.isDrag = false;
 	}
 
