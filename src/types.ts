@@ -1,7 +1,18 @@
-import { LevelInterface, Cell } from 'quantumweasel';
+import { LevelInterface, Cell, Coord } from 'quantumweasel';
 
 export interface RootState {
 	activeCell: Cell;
+}
+
+export interface IHint {
+	coord: Coord;
+	content: string;
+	color?: string;
+	rotation?: number;
+}
+
+export interface IHintList {
+	[index: number]: IHint;
 }
 
 export interface ILevelList {

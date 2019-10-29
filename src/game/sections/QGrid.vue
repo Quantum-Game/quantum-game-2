@@ -57,25 +57,32 @@
 				:sigma="0.25"
 			/>
 		</g>
+		<speech-bubble
+			v-for="(hint, index) in hints"
+			:key="`hint${index}`"
+			:hint="hint"
+			:tileSize="tileSize"
+		/>
 	</svg>
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
-import Photon from '../Photon.vue';
-import QCell from '../QCell.vue';
+import { IHintList } from '@/types';
+import { Photon, QCell, SpeechBubble } from '..';
 
 @Component({
 	components: {
 		Photon,
-		QCell
+		QCell,
+		SpeechBubble
 	}
 })
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
-	// @Prop({ default: '64' }) readonly tileSize!: number;
+	@Prop() readonly hints!: IHintList;
 
 	tileSize: number = 64;
 
@@ -86,10 +93,11 @@ export default class QGrid extends Vue {
 	mounted() {
 		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
+		console.log(this.grid);
 	}
 
 	assessTileSize() {
-		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
+		// const currentWidth = this.$refs.grid.getBoundingClientRect().width;
 		// this.tileSize = currentWidth / this.grid.cols;
 		this.tileSize = 64;
 	}
