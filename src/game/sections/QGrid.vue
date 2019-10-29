@@ -31,6 +31,7 @@
       :cell="cell"
       :tileSize="tileSize"
       @click.native="rotate(cell)"
+			@mouseenter.native="setActiveCell(cell)"
     />
 
 		<!-- PHOTONS -->
@@ -134,6 +135,13 @@ export default class QGrid extends Vue {
 		cell.rotate();
 		console.log(cell.toString());
 		this.grid.set(cell);
+	}
+
+	/*
+		set cell as active
+	*/
+	setActiveCell(cell: Cell) {
+		this.$store.commit('SET_ACTIVE_CELL', cell)
 	}
 
 	/**
