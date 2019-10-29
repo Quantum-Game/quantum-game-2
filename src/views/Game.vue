@@ -220,7 +220,13 @@ export default class Game extends Vue {
 			default:
 				break;
 		}
-	}
+  }
+  
+  handleToolboxElements(tool: object){
+    
+    this.toolbox.push(tool);
+    console.log(this.toolbox)
+  }
 
 	// GETTERS
 	get toolboxElements(): Cell[] {

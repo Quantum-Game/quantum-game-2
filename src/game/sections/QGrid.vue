@@ -74,6 +74,7 @@ import { Vue, Prop, Component, Watch } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
+import Toolbox from '../sections/Toolbox.vue';
 
 @Component({
 	components: {
@@ -87,6 +88,8 @@ export default class QGrid extends Vue {
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop() readonly hints!: IHintList;
 	
+	@Prop() readonly toToolbox!: Function;
+	// @Prop({ default: '64' }) readonly tileSize!: number;
 
 	tileSize: number = 64;
 
@@ -175,7 +178,7 @@ export default class QGrid extends Vue {
 		
 		const { grid } = this.$refs;
 		const cellRef = event.target.closest(".cell");
-
+	
 		grid.appendChild(cellRef)
 	}
 
@@ -184,17 +187,20 @@ export default class QGrid extends Vue {
 
 		this.isDragMove = true;
 
+		const correctX = this.dragPositionX(event)
+		const correctY = this.dragPositionY(event)
+
     	if(this.isDrag) {
 			const cellRef = event.target.closest(".cell");
-			const correctX = this.dragPositionX(event)
-			const correctY = this.dragPositionY(event)
+			
 			const centerDrag = this.tileSize/2;
 			const paddingElement = cellRef.querySelector("rect")
 
 			paddingElement.style.transform = "scale(5) translate(-3%, -3%)"
 			cellRef.style.transform=`rotate(-${cell.rotation}deg) translate(${correctX-centerDrag}px, ${correctY-centerDrag}px)`;
 			cellRef.style.transformOrigin= `${correctX}px ${correctY}px`;
-      }
+	  }
+
 	}
 	
 	dragEnd(cell: Cell, event: any){
@@ -231,6 +237,12 @@ export default class QGrid extends Vue {
 			
 			isOccupied ? currentX++ : null;
 			positionTransform(cellRef, cell, this.tileSize, currentX, currentY);
+		}
+
+		const gridWidth = this.$refs.grid.getBoundingClientRect().width;
+		const gridHeight = this.$refs.grid.getBoundingClientRect().height;
+		if(correctX > gridWidth-this.tileSize || correctY > gridHeight-this.tileSize){
+			this.toToolbox(cell)
 		}
 
 		paddingElement.style.transform = ""
