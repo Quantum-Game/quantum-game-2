@@ -1,15 +1,15 @@
 +<template>
 	<div class="explanation">
-		<h3 class="explanation__title">{{name}}</h3>
+		<h3 class="explanation__title">{{ spacedName }}</h3>
 		<p class="explanation__description">
-			{{activeCell.element.description}}
+			{{ activeCell.element.description }}
 		</p>
-		<router-link :to="entryURL" class="explanation__link">LEARN MORE</router-link>
+		<router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
 		<slot> </slot>
 	</div>
 </template>
 
-<script>
+<script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 @Component
@@ -30,12 +30,18 @@ export default class Explanation extends Vue {
 		with hyphened ones, as this is how the entries
 		are stored.
 	*/
-	get entryURL() {
+	get hyphenedEntryURL() {
 		const addressName = this.name
-    .replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
-		.replace(/([A-Z])/g, ([letter]) => `-${letter.toLowerCase()}`)
+			.replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
+			.replace(/([A-Z])/g, ([letter]) => `-${letter.toLowerCase()}`);
 
-		return `/info/${addressName}`
+		return `/info/${addressName}`;
+	}
+
+	get spacedName() {
+		const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
+		const nameCopy = this.name;
+		return nameCopy.replace(regexp, '$1$4 $2$3$5');
 	}
 }
 </script>
@@ -43,6 +49,7 @@ export default class Explanation extends Vue {
 <style lang="scss" scoped>
 .explanation {
 	width: 100%;
+	max-width: 130px;
 	text-align: left;
 	padding-top: 10px;
 	padding-bottom: 10px;

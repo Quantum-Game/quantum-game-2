@@ -8,8 +8,7 @@
 		<div class="hello">
 			<h1>
 				A puzzle game with photons, superposition and quantum measurement, right in your browser.
-				With true quantum mechanics underneath! <br>
-
+				With true quantum mechanics underneath! <br />
 			</h1>
 			<h1>
 				Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
@@ -17,10 +16,12 @@
 				<a href="https://github.com/stared/quantum-game-2" target="_blank">Github</a> and
 				<a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
 			</h1>
-			<p>	This version of the game was funded by the <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
-					of the National University of Singapore.
+			<p>
+				This version of the game was funded by the
+				<a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
+				of the National University of Singapore.
 			</p>
-			<img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo"/>
+			<img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
 			<!-- newsletter -->
 			<!-- <div id="content" class="newsletter">
 				<h1>Sign up for our newsletter now!</h1>
@@ -45,7 +46,6 @@
 					more games like this one, see: Science-based games collaborative list.
 				</p>
 			</div> -->
-
 		</div>
 	</div>
 </template>
@@ -141,8 +141,8 @@ a {
 	//color: #9780b5;
 	text-decoration: none;
 }
-a:hover{
-		color: white;
+a:hover {
+	color: white;
 }
 
 .CQTlogo {

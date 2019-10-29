@@ -88,7 +88,11 @@ export default class QCell extends Vue {
     return (val + 0.5) * this.tileSize;
   }
 
+	/*
+		set cell as active
+	*/
   handleMouseEnter() {
+    this.$store.commit('SET_ACTIVE_CELL', this.cell)
     this.border = borderColors.rotable;
   }
 
