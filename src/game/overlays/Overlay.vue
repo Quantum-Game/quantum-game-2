@@ -32,8 +32,32 @@ export default class Overlay extends Vue {
 
 	@Watch('gameState')
 	startConfetti(val: string) {
-		if (val === 'Victory') {
-			this.$confetti.start();
+		if (val === "Victory") {
+			this.$confetti.start({
+				particlesPerFrame: 3,
+				defaultSize: 8,
+				particles: [
+					{
+					dropRate: 15,
+					//type:'rect',
+					}
+				],
+				defaultColors: [
+					'#ffbb3b', //Q yellow
+					'#5c00d3', //Q purple
+					'#ff0055', //Q red
+					'#ff8b00', // orange 01
+					'#ff5d15', // orange 02
+					'#ba00ff', // purple 02
+					'#ffbb3b', //Q yellow
+					'#5c00d3', //Q purple
+					'#ff0055', //Q red
+					'#ff8b00', // orange 01
+					'#ff5d15', // orange 02
+					'#ba00ff', // purple 02
+
+				],
+			});
 		} else {
 			this.$confetti.stop();
 		}

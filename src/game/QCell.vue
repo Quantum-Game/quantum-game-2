@@ -36,9 +36,9 @@ import {
 import { setActiveCell, getPosition } from '../mixins';
 
 const borderColors = {
-	active: '#FF0055',
-	rotable: 'yellow',
-	energized: 'blue'
+  active: '#FF0055', //Q pink
+  rotable: 'white', 
+  energized: 'blue' 
 };
 
 @Component({

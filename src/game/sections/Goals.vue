@@ -1,6 +1,6 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <div class="upper-icons">
+    <!-- <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
@@ -9,7 +9,7 @@
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 25</span>
       </div>
-    </div>
+    </div> -->
 		<vc-donut
 			class="chart"
 			:class="{ highscore: isHighScore }"
@@ -31,7 +31,7 @@
 			<span v-for="(goal, index) in goals" :key="index">
 				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
 			</span>
-			<div>DETECTORS</div>
+			<!-- <div>DETECTORS</div> -->
 		</div>
 	</div>
     <!-- <div class="bottom-icons">
@@ -41,12 +41,7 @@
         </div>
         <div v-else>
           <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
-          {{goal.value * 100 }} / {{goal.threshold * 100}} %
-        </div>
-      </span>
-      <div>DETECTORS</div>
-    </div> -->
-	</div>
+          <!-- {{goal.value * 100 }} / {{goal.threshold * 100}} % -->
 </template>
 
 <script lang="ts">
@@ -80,7 +75,7 @@ export default class Goals extends Vue {
 	}
 
 	animateTween(time) {
-		const id = requestAnimationFrame(this.animateTween);				
+		const id = requestAnimationFrame(this.animateTween);
 		const result = updateTween(time);
 		if(!result) cancelAnimationFrame(id);
 	}
@@ -103,7 +98,7 @@ export default class Goals extends Vue {
 		})
 		.start();
 	}
-					
+
 }
 </script>
 
@@ -126,7 +121,13 @@ export default class Goals extends Vue {
 		margin-bottom: 2rem;
 	}
 	& .bottom-icons {
+		display: flex;
 		line-height: 150%;
+		justify-content: center;
+		padding: 5px;
+		// & .happy {
+		// 	background-color: white;
+		// }
 	}
 	& .chart {
 		& div.inner-circle {

@@ -4,7 +4,7 @@
   "group": "Classic",
   "description": "",
   "grid": {
-    "cols": 4,
+    "cols": 5,
     "rows": 3,
     "cells": [
       {
@@ -17,7 +17,7 @@
       },
       {
         "coord": { "y": 0, "x": 2 },
-        "element": "Mirror",
+        "element": "BeamSplitter",
         "rotation": 135,
         "frozen": false,
         "active": false,
