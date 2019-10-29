@@ -62,11 +62,7 @@
 						}
 					]"
         />
-        <explanation>
-          <div class="description">
-            <span>element: {{ activeElement }}</span>
-          </div>
-        </explanation>
+        <explanation />
         <your-photon :active-frame="activeFrame" />
       </section>
     </game-layout>
@@ -91,7 +87,6 @@ import GameLayout from '../layouts/GameLayout.vue';
 import levelData from '../game/levels';
 import QButton from '../components/QButton.vue';
 import Overlay from '../game/overlays/Overlay.vue';
-// import EventBus from '../eventbus';
 
 const emptyLevelObj = {
   id: 0,
