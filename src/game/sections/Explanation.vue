@@ -1,13 +1,15 @@
-<template>
-  <div class="explanation" v-if="name">
-    <h3 class="title">{{ name }}</h3>
-    <p>{{ desc }}</p>
-    <router-link :to="url">
++<template>
+	<div v-if="name" class="explanation">
+		<h3 class="title">{{ name }}</h3>
+		<p>
+			{{ desc }}
+		</p>
+		<router-link :to="url">
       LEARN MORE
       <!-- <a>LEARN MORE about {{ name }} >> </a> -->
     </router-link>
     <!-- <slot></slot> -->
-  </div>
+	</div>
 </template>
 
 <script lang="ts">
@@ -17,32 +19,32 @@ import { Cell } from 'quantumweasel';
 import bus from '@/eventbus';
 
 @Component({
-  components: {
-    //QButton
-  }
+	components: {
+		// QButton
+	}
 })
 export default class Explanation extends Vue {
-  desc = '';
-  name = '';
+	desc = '';
+	name = '';
 
-  created() {
-    bus.$on('setActiveCell', (cell: Cell) => {
-      this.desc = cell.element.description;
-      this.name = cell.element.name;
-    });
-  }
-  get url() {
-    return `/info/${this.name}`;
-  }
+	created() {
+		bus.$on('setActiveCell', (cell: Cell) => {
+			this.desc = cell.element.description;
+			this.name = cell.element.name;
+		});
+	}
+	get url() {
+		return `/info/${this.name}`;
+	}
 }
 </script>
 
 <style lang="scss" scoped>
 .explanation {
-  border-top: 1px solid #8e819d;
-  text-align: left;
-  font-size: 1rem;
-  line-height: 150%;
+	border-top: 1px solid #8e819d;
+	text-align: left;
+	font-size: 1rem;
+	line-height: 150%;
 	max-width: 250px;
 }
 

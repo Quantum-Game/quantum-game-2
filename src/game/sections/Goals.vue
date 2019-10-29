@@ -46,88 +46,88 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Goal, ParticleInterface } from 'quantumweasel';
 
 interface SectionInterface {
-  label: string;
-  value: number;
-  color: string;
+	label: string;
+	value: number;
+	color: string;
 }
 
 @Component({
-  components: {}
+	components: {}
 })
 export default class Goals extends Vue {
-  @Prop() readonly goals!: Goal[];
-  @Prop() readonly particles!: ParticleInterface[];
+	@Prop() readonly goals!: Goal[];
+	@Prop() readonly particles!: ParticleInterface[];
 
-  /**
-   * Generate sections for the donut
-   */
-  generateSections(): SectionInterface[] {
-    let result: SectionInterface[] = [];
-    this.goals.forEach((goal: Goal, index: number) => {
+	/**
+	 * Generate sections for the donut
+	 */
+	generateSections(): SectionInterface[] {
+		const result: SectionInterface[] = [];
+		this.goals.forEach((goal: Goal, index: number) => {
 			if (!goal.completed) {
-				const label = `Goal ${index}: ${(goal.threshold * 100).toFixed(0) } %`;
-				result.push({ label: label, value: goal.value * 100, color: "green" });
+				const label = `Goal ${index}: ${(goal.threshold * 100).toFixed(0)} %`;
+				result.push({ label, value: goal.value * 100, color: 'green' });
 			} else {
 				const label = `Goal completed`;
-				result.push({ label: label, value: goal.value * 100, color: "purple" });
+				result.push({ label, value: goal.value * 100, color: 'purple' });
 			}
-    });
-    return result;
-  }
+		});
+		return result;
+	}
 
-  totalPercentage(): number {
-    let sum = 0;
-    this.goals.map((goal: Goal) => (sum += goal.value));
-    return (1 - sum) * 100;
+	totalPercentage(): number {
+		let sum = 0;
+		this.goals.map((goal: Goal) => (sum += goal.value));
+		return (1 - sum) * 100;
 	}
 
 	totalGoal(): number {
-    let sum = 0;
-    this.goals.map((goal: Goal) => (sum += goal.threshold));
-    return sum * 100 + 1;
+		let sum = 0;
+		this.goals.map((goal: Goal) => (sum += goal.threshold));
+		return sum * 100 + 1;
 	}
 
 	totalParticle(): number {
-    let sum = 0;
-    this.particles.map((particle) => (sum += particle.opacity));
-    return sum * 100;
+		let sum = 0;
+		this.particles.map((particle) => (sum += particle.opacity));
+		return sum * 100;
 	}
 }
 </script>
 
 <style lang="scss" scoped>
 .goals-wrapper {
-  border-top: 1px solid white;
-  padding-top: 10px;
-  padding-bottom: 100px;
-  border-bottom: 1px solid white;
-  width: 100%;
-  // height: 320px;
-  display: flex;
-  flex-direction: column;
-
-  & .upper-icons {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    //justify-content: left;
-    margin-bottom: 2rem;
-  }
-  & .bottom-icons {
-	display: flex;
-    line-height: 150%;
-	justify-content: center;
-	padding: 5px;
-    & .happy {
-      background-color: white;
-    }
-  }
-  & .chart {
-    & div.inner-circle {
-      font-size: 3rem;
-    }
-    margin-bottom: 2rem;
+	border-top: 1px solid white;
 	padding-top: 10px;
-  }
+	padding-bottom: 100px;
+	border-bottom: 1px solid white;
+	width: 100%;
+	// height: 320px;
+	display: flex;
+	flex-direction: column;
+
+	& .upper-icons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		//justify-content: left;
+		margin-bottom: 2rem;
+	}
+	& .bottom-icons {
+		display: flex;
+		line-height: 150%;
+		justify-content: center;
+		padding: 5px;
+		& .happy {
+			background-color: white;
+		}
+	}
+	& .chart {
+		& div.inner-circle {
+			font-size: 3rem;
+		}
+		margin-bottom: 2rem;
+		padding-top: 10px;
+	}
 }
 </style>

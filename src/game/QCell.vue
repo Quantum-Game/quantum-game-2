@@ -1,5 +1,5 @@
 <template>
-	<g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+	<g :style="getPositionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
 		<rect :width="tileSize" :height="tileSize" />
 		<component
 			:is="cell.element.name"
@@ -33,7 +33,7 @@ import {
 	Glass,
 	VacuumJar
 } from './pieces';
-import setActiveCell from '../mixins/setActiveCell';
+import { setActiveCell, getPositionStyle } from '../mixins';
 
 const borderColors = {
   active: '#FF0055', //Q pink
@@ -62,41 +62,39 @@ const borderColors = {
 		VacuumJar
 	}
 })
-export default class QCell extends Mixins(setActiveCell) {
-  @Prop() readonly cell!: Cell;
-  @Prop({ default: false }) readonly tool!: boolean;
-  @Prop() readonly tileSize!: number;
+export default class QCell extends Mixins(setActiveCell, getPositionStyle) {
+	@Prop() readonly cell!: Cell;
+	@Prop({ default: false }) readonly tool!: boolean;
+	@Prop() readonly tileSize!: number;
 
 	border = '';
 
-  get positionStyle(): {} {
-    let styleObj = {};
-    const originX = this.centerCoord(this.cell.coord.x);
-    const originY = this.centerCoord(this.cell.coord.y);
-    if (!this.tool) {
-      styleObj = {
-        transformOrigin: `${originX}px ${originY}px`,
-        transform: `rotate(-${this.cell.rotation}deg)
-										translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
+	get getPositionStyle(): {} {
+		let styleObj = {};
+		if (!this.tool) {
+			styleObj = {
+				transformOrigin: `${this.rotationOriginX}px ${this.rotationOriginY}px`,
+				transform: `rotate(-${this.rotation}deg)
+										translate(${this.positionX}px, ${this.positionY}px)`
 			};
 		}
 		return styleObj;
 	}
 
-  centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
-  }
+	// centerCoord(val: number): number {
+	//   return (val + 0.5) * this.tileSize;
+	// }
 
-  handleMouseEnter(): void {
+	handleMouseEnter(): void {
 		this.border = borderColors.rotable;
-		if (this.cell.element.name !== "Void") {
+		if (this.cell.element.name !== 'Void') {
 			this.setActiveCell(this.cell);
 		}
-  }
+	}
 
-  handleMouseLeave(): void {
-    this.border = '';
-  }
+	handleMouseLeave(): void {
+		this.border = '';
+	}
 
 	get translationX(): number {
 		return this.cell.coord.x * this.tileSize;

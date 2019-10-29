@@ -1,37 +1,37 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
-    <!-- DOTS -->
-    <g v-for="(row, y) in grid.rows" :key="y">
-      <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-      </g>
-    </g>
+	<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+		<!-- DOTS -->
+		<g v-for="(row, y) in grid.rows" :key="y">
+			<g v-for="(column, x) in grid.cols" :key="x">
+				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+			</g>
+		</g>
 
-    <!-- LASER PATH -->
-    <g
-      v-for="(laser, index) in individualLaserPath"
-      :key="'laser' + index"
-      v-if="individualLaserPath.length > 0"
-      class="lasers"
-    >
-      <path
-        :d="laser"
-        stroke-dasharray="8 8"
-        fill="transparent"
-        stroke="red"
-        stroke-width="3"
-        class="laserPath"
-      />
-    </g>
+		<!-- LASER PATH -->
+		<g
+			v-for="(laser, index) in individualLaserPath"
+			v-if="individualLaserPath.length > 0"
+			:key="'laser' + index"
+			class="lasers"
+		>
+			<path
+				:d="laser"
+				stroke-dasharray="8 8"
+				fill="transparent"
+				stroke="red"
+				stroke-width="3"
+				class="laserPath"
+			/>
+		</g>
 
-    <!-- CELLS -->
-    <QCell
-      v-for="(cell, i) in grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @click.native="handleClick(cell)"
-    />
+		<!-- CELLS -->
+		<QCell
+			v-for="(cell, i) in grid.cells"
+			:key="'cell' + i"
+			:cell="cell"
+			:tileSize="tileSize"
+			@click.native="handleClick(cell)"
+		/>
 
 		<!-- PHOTONS -->
 		<g
@@ -57,6 +57,12 @@
 				:sigma="0.25"
 			/>
 		</g>
+		<speech-bubble
+			v-for="(hint, index) in hints"
+			:key="`hint${index}`"
+			:hint="hint"
+			:tileSize="tileSize"
+		/>
 	</svg>
 </template>
 
@@ -65,17 +71,21 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';
+import SpeechBubble from '../SpeechBubble.vue';
+import { IHintList } from '@/types';
 
 @Component({
 	components: {
 		Photon,
-		QCell
+		QCell,
+		SpeechBubble
 	}
 })
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop({ default: '' }) readonly activeCell!: Cell;
+	@Prop({ default: [] }) readonly hints!: IHintList;
 	// @Prop({ default: '64' }) readonly tileSize!: number;
 
 	tileSize: number = 64;
@@ -132,26 +142,25 @@ export default class QGrid extends Vue {
 	 * Cell rotation
 	 */
 	handleClick(cell: Cell) {
-		if (cell.element.name === "Void" && this.activeCell.element.name) {
-			const voidCell = cell
-			const activeCell = this.activeCell
+		if (cell.element.name === 'Void' && this.activeCell.element.name) {
+			const voidCell = cell;
+			const { activeCell } = this;
 			// Active cell gets coordinate of the void cell
-			const newCoord = voidCell.coord
-			const oldCoord = activeCell.coord
+			const newCoord = voidCell.coord;
+			const oldCoord = activeCell.coord;
 			// The active cell is replaced by a blank cell
-			this.activeCell.coord = newCoord
-			voidCell.coord = oldCoord
+			this.activeCell.coord = newCoord;
+			voidCell.coord = oldCoord;
 
 			// Cell comes from toolbox
 			if (activeCell.coord.x === -1) {
-				console.log("Tool");
+				console.log('Tool');
 			} else {
-				this.grid.set(activeCell)
-				this.grid.set(voidCell)
+				this.grid.set(activeCell);
+				this.grid.set(voidCell);
 			}
-
 		} else {
-			this.rotate(cell)
+			this.rotate(cell);
 		}
 	}
 
