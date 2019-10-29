@@ -1,13 +1,12 @@
 import Photon from './Photon.vue';
 import QCell from './QCell.vue';
-import SpeechBubble from './SpeechBubble.vue';
 
 interface IComponentsList {
 	[index: string]: Object;
 }
 
-export { QCell, Photon, SpeechBubble };
+export { QCell, Photon };
 
-const typedComponentsList: IComponentsList = { QCell, Photon, SpeechBubble };
+const typedComponentsList: IComponentsList = { QCell, Photon };
 
 export default typedComponentsList;

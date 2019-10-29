@@ -13,11 +13,6 @@ export default new Router({
 			component: () => import('./views/MainMenu.vue')
 		},
 		{
-			path: '/levels',
-			name: 'levels',
-			component: () => import('./views/Levels.vue')
-		},
-		{
 			path: '/level/:id',
 			name: 'level',
 			component: () => import('./views/Game.vue')

@@ -18,7 +18,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	text-align: center;
-	color: white;
+	color: #2c3e50;
 	padding: 0;
 	width: 100%;
 	height: 100%;

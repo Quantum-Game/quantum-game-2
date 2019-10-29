@@ -66,14 +66,13 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
-import { IHintList } from '@/types';
-import { Photon, QCell, SpeechBubble } from '..';
+import Photon from '../Photon.vue';
+import QCell from '../QCell.vue';
 
 @Component({
 	components: {
 		Photon,
-		QCell,
-		SpeechBubble
+		QCell
 	},
 	data( ){
 		return {
@@ -85,7 +84,7 @@ import { Photon, QCell, SpeechBubble } from '..';
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
-	@Prop() readonly hints!: IHintList;
+	// @Prop({ default: '64' }) readonly tileSize!: number;
 
 	tileSize: number = 64;
 
@@ -93,14 +92,16 @@ export default class QGrid extends Vue {
 		grid: HTMLElement;
 	};
 
-	mounted() {
+	created() {
 		window.addEventListener('resize', this.assessTileSize);
+	}
+
+	mounted() {
 		this.assessTileSize();
-		console.log(this.grid);
 	}
 
 	assessTileSize() {
-		// const currentWidth = this.$refs.grid.getBoundingClientRect().width;
+		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
 		// this.tileSize = currentWidth / this.grid.cols;
 		if (window.innerWidth < 680) {
 			this.gridScale = window.innerWidth / 700;

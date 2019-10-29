@@ -9,7 +9,9 @@
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
 			<h2>
 				You won!
-				<slot> </slot>
+				<slot>
+
+				</slot>
 			</h2>
 		</div>
 		<div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
@@ -20,9 +22,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import VueConfetti from 'vue-confetti';
 import QButton from '@/components/QButton.vue';
-
+import VueConfetti from 'vue-confetti';
 Vue.use(VueConfetti);
 
 @Component({
@@ -33,15 +34,17 @@ Vue.use(VueConfetti);
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
 
-	@Watch('gameState')
+	@Watch("gameState")
 	startConfetti(val: string) {
-		if (val === 'Victory') {
+		if (val === "Victory") {
 			this.$confetti.start();
 		} else {
 			this.$confetti.stop();
 		}
 	}
 }
+
+
 </script>
 
 <style lang="scss">
@@ -61,10 +64,10 @@ export default class Overlay extends Vue {
 	justify-content: center;
 	h2 {
 		//THIS IS A DRAFT VERSION OF POP-UP
-		width: 12rem;
-		height: 10rem;
-		padding: 1rem;
-		background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
+		width:12rem;
+		height:10rem;
+		padding:1rem;
+		background: linear-gradient(#5c00d3, #ff0055 , #fbb03b);
 		//margin: 50;
 		color: white;
 		font-size: 2rem;
@@ -88,5 +91,7 @@ export default class Overlay extends Vue {
 	z-index: 3;
 	display: flex;
 	align-items: center;
+
 }
 </style>
+
