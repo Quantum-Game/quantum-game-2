@@ -4,7 +4,7 @@ import { Coord, Element, Cell } from 'quantumweasel';
 import { RootState } from '@/types';
 import { SET_ACTIVE_CELL, RESET_ACTIVE_CELL } from './mutation-types';
 
-const initialCell = new Cell(new Coord(0,0), Element.fromName('Void'));
+const initialCell = new Cell(new Coord(0, 0), Element.fromName('Void'));
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {

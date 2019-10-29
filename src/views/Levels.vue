@@ -19,9 +19,7 @@ import MainLayout from '@/layouts/MainLayout.vue';
 		MainLayout
 	}
 })
-export default class Levels extends Vue {
-
-};
+export default class Levels extends Vue {}
 </script>
 
 <style lang="scss">

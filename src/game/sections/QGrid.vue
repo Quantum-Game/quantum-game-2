@@ -1,38 +1,37 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
-    <!-- DOTS -->
-    <g v-for="(row, y) in grid.rows" :key="y">
-      <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-      </g>
-    </g>
+	<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+		<!-- DOTS -->
+		<g v-for="(row, y) in grid.rows" :key="y">
+			<g v-for="(column, x) in grid.cols" :key="x">
+				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+			</g>
+		</g>
 
-    <!-- LASER PATH -->
-    <g
-      v-for="(laser, index) in individualLaserPath"
-      :key="'laser' + index"
-      :v-if="individualLaserPath.length > 0"
-      class="lasers"
-    >
-      <path
-        :d="laser"
-        stroke-dasharray="8 8"
-        fill="transparent"
-        stroke="red"
-        stroke-width="3"
-        class="laserPath"
-      />
-    </g>
+		<!-- LASER PATH -->
+		<g
+			v-for="(laser, index) in individualLaserPath"
+			:key="'laser' + index"
+			:v-if="individualLaserPath.length > 0"
+			class="lasers"
+		>
+			<path
+				:d="laser"
+				stroke-dasharray="8 8"
+				fill="transparent"
+				stroke="red"
+				stroke-width="3"
+				class="laserPath"
+			/>
+		</g>
 
-    <!-- CELLS -->
-    <QCell
-      v-for="(cell, i) in grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @click.native="rotate(cell)"
-			@mouseenter.native="setActiveCell(cell)"
-    />
+		<!-- CELLS -->
+		<QCell
+			v-for="(cell, i) in grid.cells"
+			:key="'cell' + i"
+			:cell="cell"
+			:tileSize="tileSize"
+			@click.native="rotate(cell)"
+		/>
 
 		<!-- PHOTONS -->
 		<g
@@ -84,11 +83,8 @@ export default class QGrid extends Vue {
 		grid: HTMLElement;
 	};
 
-	created() {
-		window.addEventListener('resize', this.assessTileSize);
-	}
-
 	mounted() {
+		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
 	}
 
@@ -135,13 +131,6 @@ export default class QGrid extends Vue {
 		cell.rotate();
 		console.log(cell.toString());
 		this.grid.set(cell);
-	}
-
-	/*
-		set cell as active
-	*/
-	setActiveCell(cell: Cell) {
-		this.$store.commit('SET_ACTIVE_CELL', cell)
 	}
 
 	/**
