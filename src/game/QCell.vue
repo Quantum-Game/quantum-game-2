@@ -33,7 +33,7 @@ import {
 	Glass,
 	VacuumJar
 } from './pieces';
-import { setActiveCell, getPositionStyle } from '../mixins';
+import { setActiveCell, getPosition } from '../mixins';
 
 const borderColors = {
 	active: '#FF0055',
@@ -62,7 +62,7 @@ const borderColors = {
 		VacuumJar
 	}
 })
-export default class QCell extends Mixins(setActiveCell, getPositionStyle) {
+export default class QCell extends Mixins(setActiveCell, getPosition) {
 	@Prop() readonly cell!: Cell;
 	@Prop({ default: false }) readonly tool!: boolean;
 	@Prop() readonly tileSize!: number;
@@ -80,10 +80,6 @@ export default class QCell extends Mixins(setActiveCell, getPositionStyle) {
 		}
 		return styleObj;
 	}
-
-	// centerCoord(val: number): number {
-	//   return (val + 0.5) * this.tileSize;
-	// }
 
 	handleMouseEnter(): void {
 		this.border = borderColors.rotable;

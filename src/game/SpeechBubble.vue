@@ -20,10 +20,10 @@
 <script lang="ts">
 import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
 import { IHint } from '@/types';
-import { getPositionStyle } from '../mixins';
+import { getPosition } from '../mixins';
 
 @Component
-export default class SpeechBubble extends Mixins(getPositionStyle) {
+export default class SpeechBubble extends Mixins(getPosition) {
 	@Prop({ default: { type: 'regular' } }) readonly hint!: IHint;
 	@Prop({ default: 64 }) readonly tileSize!: number;
 
@@ -63,6 +63,10 @@ export default class SpeechBubble extends Mixins(getPositionStyle) {
 	}
 
 	get hintPosition() {
+		/* 	the bubble is positioned within a tile using a mixin,
+		 		but it can be of different sizes, so we should consider
+				it, too.
+		*/
 		const offsetX = this.wrapperWidth / 2;
 		const offsetY = (this.wrapperHeight - 5) / 2;
 		const styleObj = {
