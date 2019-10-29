@@ -62,11 +62,7 @@
 						}
 					]"
         />
-        <explanation>
-          <div class="description">
-            <span>element: {{ activeElement }}</span>
-          </div>
-        </explanation>
+        <explanation />
         <your-photon :active-frame="activeFrame" />
       </section>
     </game-layout>
