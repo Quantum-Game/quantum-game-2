@@ -38,7 +38,7 @@
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<q-grid :grid="level.grid" :photons="activeFrame.quantum" />
+				<q-grid :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
 				<controls
 					:active-frame="activeFrame"
 					:total-frames="frames.length"
@@ -68,7 +68,8 @@ import {
 	FrameInterface,
 	LevelInterface,
 	ParticleInterface,
-	GoalInterface
+	GoalInterface,
+	Cell
 } from 'quantumweasel';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
 import GameLayout from '../layouts/GameLayout.vue';
@@ -231,6 +232,7 @@ export default class Game extends Vue {
 			if (cell.element.name !== 'Void' && !cell.frozen) {
 				return cell;
 			}
+			return false;
 		});
 		return arrayOfUnfrozenCells;
 	}
@@ -261,6 +263,11 @@ export default class Game extends Vue {
 
 	get nextLevel() {
 		return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
+	}
+
+	get hints() {
+		// console.log(this.levelObj.hints)
+		return this.levelObj.hints;
 	}
 }
 </script>
