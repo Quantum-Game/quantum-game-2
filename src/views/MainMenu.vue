@@ -8,7 +8,9 @@
 		<div class="hello">
 			<h1>
 				A puzzle game with photons, superposition and quantum measurement, right in your browser.
-				With true quantum mechanics underneath!
+				With true quantum mechanics underneath! <br>
+				This version of the game was brought to live with a huge help of the Center for Quantum Technologies from the National University of Singapore.
+				<img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" />
 			</h1>
 			<h1>
 				Visit us on <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
