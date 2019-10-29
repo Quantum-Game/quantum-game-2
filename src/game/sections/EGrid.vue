@@ -2,7 +2,6 @@
   <div class="container">
     <div class="svg-container">
       <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
-        <!-- <svg class="grid" :width="totalWidth" :height="totalHeight"> -->
         <!-- DOTS -->
         <g v-for="(row, y) in level.grid.rows + 1" :key="y">
           <g v-for="(column, x) in level.grid.cols + 1" :key="x">
@@ -74,9 +73,7 @@
         v-for="(frame, index) in frames"
         :key="'frame-ket-' + index"
         @mouseover="setFrame(frame.step)"
-      >
-        {{ frameToKet(frame) }}
-      </li>
+      >{{ frameToKet(frame) }}</li>
     </ol>
   </div>
 </template>
@@ -98,6 +95,28 @@ import {
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';
 
+const defaultLevel: Level = Level.importLevel({
+  id: 1337,
+  name: 'default',
+  group: 'Encyclopedia',
+  description: 'default',
+  grid: {
+    cols: 3,
+    rows: 3,
+    cells: [
+      {
+        coord: { x: 0, y: 1 },
+        element: 'Laser',
+        rotation: 0,
+        active: true,
+        frozen: true
+      }
+    ]
+  },
+  hints: [],
+  goals: []
+});
+
 @Component({
   components: {
     Photon,
@@ -105,12 +124,11 @@ import QCell from '../QCell.vue';
   }
 })
 export default class EGrid extends Vue {
-  @Prop({ default: {} }) readonly levelObj!: LevelInterface;
+  @Prop({ default: () => defaultLevel }) readonly level!: Level;
   @Prop({ default: 4 }) readonly step!: number;
   tileSize: number = 64;
-  level: Level = Level.importLevel(this.levelObj);
   frame: Frame = new Frame(this.level);
-  frames: Frame[] = [this.frame.next()];
+  frames: Frame[] = [this.frame];
   frameNumber: number = 0;
 
   $refs!: {
@@ -142,7 +160,7 @@ export default class EGrid extends Vue {
 
   createFrames(number = 25) {
     for (let index = 0; index < number; index += 1) {
-      const lastFrameCopy = cloneDeep(this.lastFrame);
+			const lastFrameCopy = cloneDeep(this.lastFrame);
       const nextFrame = lastFrameCopy.next();
       if (nextFrame.quantum.length > 0) {
         this.frames.push(nextFrame);
@@ -207,20 +225,17 @@ export default class EGrid extends Vue {
    */
   rotate(cell: Cell) {
     cell.rotate();
-    console.log(cell.toString());
-		this.level.grid.set(cell);
-		this.reset()
-	}
+    this.level.grid.set(cell);
+    this.reset();
+  }
 
-	reset() {
-		const levelObj = this.level.exportLevel();
-		this.level = Level.importLevel(levelObj);
-		this.frame = new Frame(this.level);
-		this.frames = [this.frame.next()];
-		this.frameNumber = 0
-		this.createFrames(10);
+  reset() {
+    this.frame = new Frame(this.level);
+    this.frames = [this.frame.next()];
+    this.frameNumber = 0;
+    this.createFrames(10);
     this.setFrame(this.step);
-	}
+  }
 
   /**
    * Create laser path through the lasers points
@@ -312,24 +327,32 @@ export default class EGrid extends Vue {
    * Also - quick, dirty, no-LaTeX and pure string
    */
   frameToKet(frame: Frame): string {
-    const dirVis = new Map<number, string>()
-    dirVis.set(0, "⇢")
-    dirVis.set(90, "⇡")
-    dirVis.set(180, "⇠")
-    dirVis.set(270, "⇣")
+    const dirVis = new Map<number, string>();
+    dirVis.set(0, '⇢');
+    dirVis.set(90, '⇡');
+    dirVis.set(180, '⇠');
+    dirVis.set(270, '⇣');
 
     return frame.quantum
       .flatMap((d) => {
-        const res = []
+        const res = [];
         if (d.a.re !== 0 || d.a.im !== 0) {
-          res.push(`(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} H⟩`)
+          res.push(
+            `(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${
+              d.coord.y
+            } ${dirVis.get(d.direction)} H⟩`
+          );
         }
         if (d.b.re !== 0 || d.b.im !== 0) {
-          res.push(`(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} V⟩`)
+          res.push(
+            `(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${
+              d.coord.y
+            } ${dirVis.get(d.direction)} V⟩`
+          );
         }
-        return res
+        return res;
       })
-      .join(" + ")
+      .join(' + ');
   }
 }
 </script>
@@ -350,7 +373,7 @@ export default class EGrid extends Vue {
 }
 
 .container {
-	display: inline-block;
+  display: inline-block;
   margin-bottom: 30px;
   .svg-container {
     border: 5px solid #666;
@@ -363,7 +386,7 @@ export default class EGrid extends Vue {
 
   button {
     background-color: darkmagenta;
-    border: 1px solid darkorchid;
+    border: 1px solid darko drchid;
     color: white;
     padding: 5px 14px;
     cursor: pointer;
