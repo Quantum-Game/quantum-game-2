@@ -1,69 +1,65 @@
 <template>
-	<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
-		<!-- DOTS -->
-		<g v-for="(row, y) in grid.rows" :key="y">
-			<g v-for="(column, x) in grid.cols" :key="x">
-				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-			</g>
-		</g>
-
-		<!-- LASER PATH -->
-		<g
-			v-for="(laser, index) in individualLaserPath"
-			:key="'laser' + index"
-			:v-if="individualLaserPath.length > 0"
-			class="lasers"
-		>
-			<path
-				:d="laser"
-				stroke-dasharray="8 8"
-				fill="transparent"
-				stroke="red"
-				stroke-width="3"
-				class="laserPath"
-			/>
-		</g>
-
-		<!-- CELLS -->
-		<QCell
-			v-for="(cell, i) in grid.cells"
-			:key="'cell' + i"
-			:cell="cell"
-			:tileSize="tileSize"
-			@click.native="rotate(cell)"
-		/>
-
-		<!-- PHOTONS -->
-		<g
-			v-for="(particle, index) in photons"
-			:key="'particle' + index"
-			:v-if="photons.length > 0"
-			:style="computeParticleStyle(particle)"
-			class="photons"
-		>
-			<photon
-				name
-				:intensity="particle.intensity"
-				:are="particle.a.re"
-				:aim="particle.a.im"
-				:bre="particle.b.re"
-				:bim="particle.b.im"
-				:width="64"
-				:height="64"
-				:margin="0"
-				:display-magnetic="true"
-				:display-electric="false"
-				:display-gaussian="false"
-				:sigma="0.25"
-			/>
-		</g>
-		<speech-bubble
-			v-for="(hint, index) in hints"
-			:key="`hint${index}`"
-			:hint="hint"
-			:tileSize="tileSize"
-		/>
-	</svg>
+  <div class="resizer" :style="{transform: 'scale(' + gridScale + ') translateY(' + gridOffset / 2 + 'px)', marginBottom: gridOffset / 2 + 'px', marginLeft: gridOffset /3 + 'px'}">
+	  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
+	      <!-- DOTS -->
+	      <g v-for="(row, y) in grid.rows" :key="y">
+	        <g v-for="(column, x) in grid.cols" :key="x">
+	          <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+	        </g>
+	      </g>
+	  
+	      <!-- LASER PATH -->
+	      <g
+	        v-for="(laser, index) in individualLaserPath"
+	        :key="'laser' + index"
+	        :v-if="individualLaserPath.length > 0"
+	        class="lasers"
+	      >
+	        <path
+	          :d="laser"
+	          stroke-dasharray="8 8"
+	          fill="transparent"
+	          stroke="red"
+	          stroke-width="3"
+	          class="laserPath"
+	        />
+	      </g>
+	  
+	      <!-- CELLS -->
+	      <QCell
+	        v-for="(cell, i) in grid.cells"
+	        :key="'cell' + i"
+	        :cell="cell"
+	        :tileSize="tileSize"
+	        @click.native="rotate(cell)"
+	      />
+	  
+	  		<!-- PHOTONS -->
+	  		<g
+	  			v-for="(particle, index) in photons"
+	  			:key="'particle' + index"
+	  			:v-if="photons.length > 0"
+	  			:style="computeParticleStyle(particle)"
+	  			class="photons"
+	  		>
+	  			<photon
+	  				name
+	  				:intensity="particle.intensity"
+	  				:are="particle.a.re"
+	  				:aim="particle.a.im"
+	  				:bre="particle.b.re"
+	  				:bim="particle.b.im"
+	  				:width="64"
+	  				:height="64"
+	  				:margin="0"
+	  				:display-magnetic="true"
+	  				:display-electric="false"
+	  				:display-gaussian="false"
+	  				:sigma="0.25"
+	  			/>
+	  		</g>
+	  	</svg>
+  </div>
 </template>
 
 <script lang="ts">
@@ -77,6 +73,12 @@ import { Photon, QCell, SpeechBubble } from '..';
 		Photon,
 		QCell,
 		SpeechBubble
+	},
+	data( ){
+		return {
+			gridScale: 1,
+			gridOffset: 0,
+		}
 	}
 })
 export default class QGrid extends Vue {
@@ -99,6 +101,10 @@ export default class QGrid extends Vue {
 	assessTileSize() {
 		// const currentWidth = this.$refs.grid.getBoundingClientRect().width;
 		// this.tileSize = currentWidth / this.grid.cols;
+		if (window.innerWidth < 680) {
+			this.gridScale = window.innerWidth / 700;
+			this.gridOffset = window.innerWidth - 680;
+		}
 		this.tileSize = 64;
 	}
 

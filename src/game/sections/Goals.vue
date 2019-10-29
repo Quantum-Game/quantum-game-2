@@ -137,15 +137,20 @@ export default class Goals extends Vue {
   overflow: hidden;
   transition-timing-function: ease-in-out;
   transition: 0.5s 0.1s height;
-  height: 350px;
+  height: 400px;
   &.collapsed {
     height: 25px;
     @media screen and (min-width: 1201px) {
       height: auto;
+
     }
   }
   @media screen and (max-width: 1200px) {
     padding-bottom: 0;
+      padding-left:20px;
+      padding-right:20px;
+      padding-bottom: 25px;
+      box-sizing: border-box;
   }
 
 	& .upper-icons {

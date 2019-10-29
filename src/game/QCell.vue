@@ -77,11 +77,13 @@ export default class QCell extends Mixins(getPosition) {
 				'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
 				transform: `
 				rotate(-${this.cell.rotation}deg)
-				translate(${this.positionX}px, ${this.positionY}px)`
-			};
-		}
-		return styleObj;
-	}
+        translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)
+        `
+        //scale(this.tileSize / 64)
+      };
+    }
+    return styleObj;
+  }
 
 	centerCoord(val: number) {
 		return (val + 0.5) * this.tileSize;
