@@ -69,6 +69,15 @@
         <button v-else @mouseover="setFrame(frame.step)">{{frame.step}}</button>
       </span>
     </div>
+    <ol class="kets">
+      <li
+        v-for="(frame, index) in frames"
+        :key="'frame-ket-' + index"
+        @mouseover="setFrame(frame.step)"
+      >
+        {{ frameToKet(frame) }}
+      </li>
+    </ol>
   </div>
 </template>
 
@@ -296,6 +305,31 @@ export default class EGrid extends Vue {
       rotation: 0,
       frozen: false
     };
+  }
+
+  /**
+   * Temporary! I want to work with actual quantum states.
+   * Also - quick, dirty, no-LaTeX and pure string
+   */
+  frameToKet(frame: Frame): string {
+    const dirVis = new Map<number, string>()
+    dirVis.set(0, "⇢")
+    dirVis.set(90, "⇡")
+    dirVis.set(180, "⇠")
+    dirVis.set(270, "⇣")
+
+    return frame.quantum
+      .flatMap((d) => {
+        const res = []
+        if (d.a.re !== 0 || d.a.im !== 0) {
+          res.push(`(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} H⟩`)
+        }
+        if (d.b.re !== 0 || d.b.im !== 0) {
+          res.push(`(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${d.coord.y} ${dirVis.get(d.direction)} V⟩`)
+        }
+        return res
+      })
+      .join(" + ")
   }
 }
 </script>
