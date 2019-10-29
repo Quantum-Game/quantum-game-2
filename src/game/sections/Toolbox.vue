@@ -36,6 +36,8 @@ export default class Toolbox extends Vue {
 		return new Cell(coord, element);
 	}
 
+	
+
 	get toolboxKeys(): string[] {
 		return Object.keys(this.toolbox);
 	}

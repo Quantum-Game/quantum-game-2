@@ -38,7 +38,7 @@
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
-				<q-grid :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
+				<q-grid :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" :toToolBox="handleToolboxElements"/>
 				<controls
 					:active-frame="activeFrame"
 					:total-frames="frames.length"
@@ -222,11 +222,10 @@ export default class Game extends Vue {
 		}
   }
   
-  handleToolboxElements(tool: object){
-    
-    this.toolbox.push(tool);
-    console.log(this.toolbox)
-  }
+  // handleToolboxElements(tool: object){
+  //   console.log(tool)
+  //   this.toolbox.push(tool);
+  // }
 
 	// GETTERS
 	get toolboxElements(): Cell[] {

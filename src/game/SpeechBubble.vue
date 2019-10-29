@@ -1,7 +1,7 @@
 <template>
 	<transition name="hint">
 		<!-- TOOLTIP ITSELF -->
-		<foreignObject v-if="shown" :x="offsetX" :y="offsetY" height="500" width="500">
+		<foreignObject v-if="shown" :x="offsetX" :y="offsetY" height="200" width="200">
 			<div ref="hint" class="hint" :class="hintClass" @click="hide">
 				<span>{{ hint.content }}</span>
 			</div>
