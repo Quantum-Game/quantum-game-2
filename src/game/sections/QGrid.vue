@@ -43,6 +43,7 @@
 	  			class="photons"
 	  		>
 	  			<photon
+				  	:photonIndex="index"
 	  				name
 	  				:intensity="particle.intensity"
 	  				:are="particle.a.re"
