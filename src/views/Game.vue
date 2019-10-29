@@ -29,8 +29,8 @@
         :particles="activeFrame.quantum"
       />
 
-      <h3 slot="main-left" class="title">LEVELS:</h3>
-      <ul slot="main-left">
+      <h3 style="display: none" slot="main-left" class="title">LEVELS:</h3>
+      <ul style="display: none" slot="main-left">
         <li v-for="(stuff, i) in Array(20)" :key="i">
           <router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
         </li>
@@ -283,6 +283,7 @@ h1 {
 .title {
   margin-bottom: 30;
   margin-top: 0;
+  box-sizing: border-box;
   @media screen and (max-width: 1200px) {
     padding: 0 20px;
     width: 100%;
@@ -331,5 +332,9 @@ h1 {
 }
 .levelLink {
 	text-decoration: none;
+}
+
+.controls {
+  box-sizing: border-box;
 }
 </style>

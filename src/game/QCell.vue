@@ -78,7 +78,9 @@ export default class QCell extends Vue {
         'transform-origin': `${originX}px ${originY}px`,
         transform: `
 				rotate(-${this.cell.rotation}deg)
-				translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)`
+        translate(${this.cell.coord.x * this.tileSize}px, ${this.cell.coord.y * this.tileSize}px)
+        `
+        //scale(this.tileSize / 64)
       };
     }
     return styleObj;
