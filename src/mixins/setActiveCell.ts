@@ -6,6 +6,6 @@ import { Cell } from '@/engine/classes';
 @Component
 export default class setActiveCell extends Vue {
 	setActiveCell(cell: Cell) {
-		// console.log(cell.toString());
+		// console.debug(cell.toString());
 	}
 }
