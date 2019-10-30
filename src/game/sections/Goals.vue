@@ -1,6 +1,6 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <div class="upper-icons">
+    <!-- <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
@@ -9,7 +9,7 @@
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 25</span>
       </div>
-    </div>
+    </div> -->
 		<vc-donut
 			class="chart"
 			:class="{ highscore: isHighScore }"
@@ -102,7 +102,8 @@ export default class Goals extends Vue {
 
 <style lang="scss" scoped>
 .goals-wrapper {
-  border-top: 1px solid white;
+  // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS 
+  //border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 100px;
   border-bottom: 1px solid white;
