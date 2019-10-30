@@ -100,7 +100,7 @@ after talk:
 - [ ] our own implementation
 
 ### EXPLANATION
-- reimplement activeElement logic
+- reimplement activeCell logic
 
 
 ### YOUR PHOTON(S)

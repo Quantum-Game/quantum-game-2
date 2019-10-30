@@ -2,11 +2,11 @@
 	<main-layout>
 		<article slot="main" class="main">
 			<div class="container">
-			<ul class="main__level-list">
-				<li v-for="(stuff, i) in Array(34)" :key="i">
-					<router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
-				</li>
-			</ul>
+				<ul class="main__level-list">
+					<li v-for="(stuff, i) in Array(34)" :key="i">
+						<router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
+					</li>
+				</ul>
 			</div>
 		</article>
 	</main-layout>
@@ -30,7 +30,6 @@ export default class Levels extends Vue {}
 	padding: 5em;
 }
 .main {
-
 	& .main__level-list {
 		height: 100vh;
 		display: flex;

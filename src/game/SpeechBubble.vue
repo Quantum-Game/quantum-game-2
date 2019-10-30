@@ -67,7 +67,7 @@ export default class SpeechBubble extends Mixins(getPosition) {
 	max-width: 120px;
 	z-index: 2;
 	position: absolute;
-	color:#120223;
+	color: #120223;
 	&::after {
 		content: ' ';
 		position: absolute;

@@ -70,7 +70,9 @@ import {
 	LevelInterface,
 	ParticleInterface,
 	GoalInterface,
-	Cell
+	Cell,
+	Coord,
+	Element
 } from 'quantumweasel';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
 import GameLayout from '../layouts/GameLayout.vue';
@@ -205,12 +207,12 @@ export default class Game extends Vue {
 	}
 
 	// EVENT HANDLERS
-	onActiveElement(element: string, isDraggable: boolean) {
-		this.activeElement = element;
-	}
+	// onActiveCell(cell: Cell, isDraggable: boolean) {
+	// 	this.activeCell = cell;
+	// }
 
 	handleArrowPress(e: { keyCode: number }): void {
-		// console.log(e.keyCode);
+		// console.debug(e.keyCode);
 		switch (e.keyCode) {
 			case 37:
 				this.showPrevious();

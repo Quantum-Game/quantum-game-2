@@ -132,12 +132,39 @@ export default class QGrid extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
+	get activeCell() {
+		return this.$store.state.activeCell;
+	}
+
 	/**
 	 * Cell rotation
 	 */
+	handleClick(cell: Cell) {
+		if (cell.element.name === 'Void' && this.activeCell.element.name) {
+			const voidCell = cell;
+			const { activeCell } = this;
+			// Active cell gets coordinate of the void cell
+			const newCoord = voidCell.coord;
+			const oldCoord = activeCell.coord;
+			// The active cell is replaced by a blank cell
+			this.activeCell.coord = newCoord;
+			voidCell.coord = oldCoord;
+
+			// Cell comes from toolbox
+			if (activeCell.coord.x === -1) {
+				console.log('Tool');
+			} else {
+				this.grid.set(activeCell);
+				this.grid.set(voidCell);
+			}
+		} else {
+			this.rotate(cell);
+		}
+	}
+
 	rotate(cell: Cell) {
 		cell.rotate();
-		console.log(cell.toString());
+		console.debug(cell.toString());
 		this.grid.set(cell);
 	}
 

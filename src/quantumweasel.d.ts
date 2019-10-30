@@ -159,7 +159,7 @@ declare module 'quantumweasel' {
 		transition(param: number): any;
 		rotationAngle(): number;
 		toString(): string;
-		fromName(name: string): Element;
+		static fromName(name: string): Element;
 		exportElement(): ElementInterface;
 		static importElement(obj: ElementInterface): Element;
 	}
@@ -172,7 +172,9 @@ declare module 'quantumweasel' {
 		active: boolean;
 		energized: boolean;
 
-		ascii(): string;
+		// computed
+		ascii: string;
+
 		isVoid(): boolean;
 		rotationAscii(): string;
 		rotate(angle?: number): void;
@@ -276,6 +278,7 @@ declare module 'quantumweasel' {
 		goals: Goal[];
 		hints: Hint[];
 		completed: boolean;
+		state: any;
 
 		toString(): string;
 		exportLevel(): LevelInterface;

@@ -9,7 +9,7 @@
 
 			<div class="boards">
 				<div v-for="(level, i) in levels" :key="'level' + i">
-					<Egrid :level="level.level" :step="level.step" class="board" />
+					<Egrid :level="level.levelInst" :step="level.step" class="board" />
 				</div>
 			</div>
 
@@ -20,14 +20,14 @@
 				:should-be-open-on-init="index === 0"
 			/>
 
-			<EquationGrid :element-name="entry.elementName" rotation="45" step="3" />
+			<EquationGrid :element-name="entry.elementName" :rotation="entry.defaultRotation" step="3" />
 		</article>
 	</div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { Level, Level, GridInterface } from 'quantumweasel';
+import { Level, GridInterface } from 'quantumweasel';
 import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
@@ -76,9 +76,9 @@ export default class Entry extends Vue {
 		sections: []
 	};
 
-	get levels(): { level: Level; step: number }[] {
+	get levels(): { levelInst: Level; step: number }[] {
 		return this.entry.grids.map((grid) => {
-			const level = Level.importLevel({
+			const levelInst = Level.importLevel({
 				id: -1,
 				name: '',
 				group: '',
@@ -87,7 +87,7 @@ export default class Entry extends Vue {
 				hints: [],
 				goals: []
 			});
-			return { level, step: 3 };
+			return { levelInst, step: 3 };
 		});
 	}
 
