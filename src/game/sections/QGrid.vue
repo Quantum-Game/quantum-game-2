@@ -68,7 +68,8 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
+import { Grid, Cell, Coord } from '@/engine/main';
+import { ParticleInterface, CellInterface } from '@/engine/interfaces';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
 

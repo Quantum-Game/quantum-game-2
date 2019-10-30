@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { FrameInterface } from 'quantumweasel';
+import { FrameInterface } from '@/engine/interfaces';
 import BButton from '../BButton.vue';
 
 @Component({

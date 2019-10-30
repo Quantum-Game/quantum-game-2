@@ -27,7 +27,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { Level, GridInterface } from 'quantumweasel';
+import { Level } from '@/engine/main';
+import { GridInterface } from '@/engine/interfaces';
 import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
@@ -124,10 +125,9 @@ export default class Entry extends Vue {
 	}
 	& .short {
 		font-size: 1rem;
-    padding-right:20%;
-    padding-left:20%;
-    padding-bottom: 20px;
-
+		padding-right: 20%;
+		padding-left: 20%;
+		padding-bottom: 20px;
 	}
 	& .go-back {
 		font-weight: bold;
@@ -146,10 +146,10 @@ h1 {
 	text-align: center;
 }
 .boards {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  border-bottom: 1px solid #8e819d;
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	border-bottom: 1px solid #8e819d;
 }
 .placeholder {
 	padding-top: 2rem;

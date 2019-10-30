@@ -1,4 +1,5 @@
-import { LevelInterface, Cell, Coord } from 'quantumweasel';
+import { LevelInterface } from '@/engine/interfaces';
+import { Cell, Coord } from '@/engine/main';
 
 export interface RootState {
 	activeCell: Cell;

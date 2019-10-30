@@ -1,5 +1,5 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { CellInterface } from 'quantumweasel';
+import { CellInterface } from '@/engine/interfaces';
 
 @Component
 export default class Piece extends Vue {

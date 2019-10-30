@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from 'vue-property-decorator';
-import { Cell } from 'quantumweasel';
+import { Cell } from '@/engine/main';
 import {
 	Laser,
 	Mirror,
