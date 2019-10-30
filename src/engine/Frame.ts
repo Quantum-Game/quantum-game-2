@@ -2,8 +2,11 @@
 // TODO: Frame could extend Level class
 import * as qt from 'quantum-tensors';
 import { FrameInterface, GameState } from './interfaces';
-import { Coord, Cluster, Level, Goal, Particle } from './main';
-import { Qparticle } from './Particle';
+import Coord from './Coord';
+import Cluster from './Cluster';
+import Level from './Level';
+import Goal from './Goal';
+import Particle, { Qparticle } from './Particle';
 
 /**
  * TIME FRAME CLASS

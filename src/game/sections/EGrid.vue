@@ -91,7 +91,7 @@
 <script lang="ts">
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Level, Particle, Frame, Grid, Cell, Coord } from '@/engine/main';
+import { Level, Particle, Frame, Grid, Cell, Coord } from '@/engine/classes';
 import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';

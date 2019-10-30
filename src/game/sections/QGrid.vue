@@ -70,7 +70,7 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
-import { Grid, Cell, Coord } from '@/engine/main';
+import { Grid, Cell, Coord } from '@/engine/classes';
 import { ParticleInterface, CellInterface } from '@/engine/interfaces';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';

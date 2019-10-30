@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { Coord, Element, Cell } from '@/engine/main';
+import { Coord, Element, Cell } from '@/engine/classes';
 import { RootState } from '@/types';
 import {
 	SET_ACTIVE_CELL,

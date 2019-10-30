@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Cell } from '@/engine/main';
+import { Cell } from '@/engine/classes';
 import { IHint } from '@/types';
 
 @Component

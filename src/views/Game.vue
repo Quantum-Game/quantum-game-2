@@ -54,7 +54,7 @@
 <script lang="ts">
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/main';
+import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
 import {
 	CellInterface,
 	FrameInterface,

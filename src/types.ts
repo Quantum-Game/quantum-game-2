@@ -1,5 +1,6 @@
 import { LevelInterface } from '@/engine/interfaces';
-import { Cell, Coord } from '@/engine/main';
+import Coord from '@/engine/Coord';
+import Cell from '@/engine/Cell';
 
 export interface RootState {
 	activeCell: Cell;
