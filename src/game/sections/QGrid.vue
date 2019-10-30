@@ -74,8 +74,6 @@ import { Mutation, State } from 'vuex-class';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
 
-// import { SET_ACTIVE_CELL_COORDINATES } from '../../store/mutation-types';
-
 @Component({
 	components: {
 		Photon,
@@ -138,10 +136,6 @@ export default class QGrid extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
-	get activeCell() {
-		return this.$store.state.activeCell;
-	}
-
 	/**
 	 * Used to move a cell
 	 * @params coord to move to
@@ -162,26 +156,12 @@ export default class QGrid extends Vue {
 
 	/**
 	 * Cell rotation
+	 * @returns void
 	 */
-
-	handleCellClick(cell: Cell) {
-		const isVoid = cell.element.name === 'Void';
-		const isThereAMovableActiveCell =
-			this.activeCell.element.cell !== 'Void' && !this.activeCell.frozen;
-		// rotate
-		if (!isVoid && !cell.frozen) {
-			cell.rotate();
-			this.grid.set(cell);
-		}
-	}
-	rotateCell(cell: Cell) {
+	rotateCell(cell: Cell): void {
 		cell.rotate();
 		this.grid.set(cell);
 	}
-
-	// get activeCell() {
-	// 	return this.$store.state.activeCell;
-	// }
 
 	/**
 	 * Create laser path through the lasers points

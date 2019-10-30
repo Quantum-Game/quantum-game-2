@@ -52,7 +52,7 @@ const TAU = 2 * Math.PI;
 function hslToHex(hParam: number, sParam: number, lParam: number) {
 	let h = hParam;
 	let s = sParam;
-	let l= lParam;
+	let l = lParam;
 	h /= 360;
 	s /= 100;
 	l /= 100;
