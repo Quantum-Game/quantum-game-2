@@ -148,6 +148,7 @@ export default class Game extends Vue {
 		this.level = Level.importLevel(levelObjToLoad);
 		this.setupInitFrame();
 		this.createFrames();
+		this.setUpToolboxElements();
 		return true;
 	}
 
@@ -222,21 +223,26 @@ export default class Game extends Vue {
 		}
 	}
 
-	// GETTERS
-	get toolboxElements(): Cell[] {
+	setUpToolboxElements(): void {
 		/*  sorry Philippe
         return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
         PLEASE MAKE SURE THAT ROUTE CHANGE ALLOWS FOR AUTOMATIC TOOLBOX PROCESSING
     */
-		const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
-			if (cell.element.name !== 'Void' && !cell.frozen) {
-				return cell;
+	 const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
+		 if (cell.element.name !== 'Void' && !cell.frozen) {
+			 return cell;
 			}
 			return false;
 		});
-		return arrayOfUnfrozenCells;
+
+		this.$store.commit('SET_CURRENT_TOOLS', arrayOfUnfrozenCells);
 	}
 
+	get toolboxElements() {
+		return this.$store.state.currentTools;
+	}
+
+	// GETTERS
 	get currentLevelName() {
 		return `level${parseInt(this.$route.params.id, 10)}`;
 	}

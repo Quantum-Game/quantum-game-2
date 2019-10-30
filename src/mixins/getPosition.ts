@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Cell } from 'quantumweasel';
+import { CellInterface } from 'quantumweasel';
 import { IHint } from '@/types';
 
 @Component
 export default class getPostion extends Vue {
-	cell!: Cell;
+	cell!: CellInterface;
 	hint!: IHint;
 	tileSize!: number;
 

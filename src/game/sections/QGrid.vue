@@ -30,7 +30,8 @@
 			:key="'cell' + i"
 			:cell="cell"
 			:tileSize="tileSize"
-			@click.native="rotate(cell)"
+			@add-cell-here="moveCell"
+			@rotate="rotateCell"
 		/>
 
 		<!-- PHOTONS -->
@@ -68,9 +69,12 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
+import { Grid, Cell, ParticleInterface, CellInterface, Coord, Element } from 'quantumweasel';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
+import { Mutation, State } from 'vuex-class'
+
+// import { SET_ACTIVE_CELL_COORDINATES } from '../../store/mutation-types';
 
 @Component({
 	components: {
@@ -83,6 +87,9 @@ export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop() readonly hints!: IHintList;
+	@State activeCell!: Cell;
+	@Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
+	@Mutation('STOP_MOVING') mutationStopMoving!: () => void;
 
 	tileSize: number = 64;
 
@@ -93,7 +100,6 @@ export default class QGrid extends Vue {
 	mounted() {
 		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
-		console.log(this.grid);
 	}
 
 	assessTileSize() {
@@ -133,13 +139,43 @@ export default class QGrid extends Vue {
 	}
 
 	/**
+	 * Used to move a cell
+	 * @params coord to move to
+	 * @returns boolean
+	 */
+	moveCell(coord: Coord): boolean {
+		const destinationCell = this.grid.get(coord);
+		if (!destinationCell.frozen && !this.activeCell.frozen) {
+			destinationCell.coord = this.activeCell.coord;
+			const sourceCell = this.activeCell;
+			sourceCell.coord = coord;
+			this.grid.set(sourceCell);
+			this.grid.set(destinationCell);
+			return true
+		}
+		return false;
+	}
+
+	/**
 	 * Cell rotation
 	 */
-	rotate(cell: Cell) {
+	handleCellClick(cell: Cell) {
+		const isVoid = cell.element.name === 'Void';
+		const isThereAMovableActiveCell = ((this.activeCell.element.cell !== 'Void') && !this.activeCell.frozen);
+		// rotate
+		if (!isVoid && !cell.frozen) {
+			cell.rotate();
+			this.grid.set(cell);
+		}
+	}
+	rotateCell(cell: Cell) {
 		cell.rotate();
-		console.log(cell.toString());
 		this.grid.set(cell);
 	}
+
+	// get activeCell() {
+	// 	return this.$store.state.activeCell;
+	// }
 
 	/**
 	 * Create laser path through the lasers points
