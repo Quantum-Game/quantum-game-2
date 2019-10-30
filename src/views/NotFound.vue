@@ -2,6 +2,7 @@
 	<div class="not-found">
 		<h1>404</h1>
 		<p>OH NO :(</p>
+		<img src="@/assets/rock_weasel.svg" alt="weasel" />
 		<router-link to="/"> <q-button type="basic">Take me back!</q-button></router-link>
 	</div>
 </template>
@@ -25,7 +26,7 @@ export default class NotFound extends Vue {}
 	display: flex;
 	flex-direction: column;
 	& h1 {
-		font-size: 12rem;
+		font-size: 10rem;
 		margin-bottom: 2rem;
 	}
 }
