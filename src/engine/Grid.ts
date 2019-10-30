@@ -1,6 +1,6 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Figure out blank cells in constructor
-import { Operator } from 'quantum-tensors';
+import * as qt from 'quantum-tensors';
 import { CellInterface, GridInterface, ParticleInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
@@ -94,7 +94,7 @@ export default class Grid extends Cluster {
 	 * Retrieve the list of quantum operators from the elements
 	 * @returns list of operators
 	 */
-	get operatorList(): [number, number, Operator][] {
+	get operatorList(): [number, number, qt.Operator][] {
 		return this.unvoid.cells.map((cell) => {
 			return [cell.coord.x, cell.coord.y, cell.element.transition(cell.rotation)];
 		});
