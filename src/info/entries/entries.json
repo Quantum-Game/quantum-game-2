@@ -9,40 +9,18 @@
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 0, "x": 0 },
+            "coord": { "y": 1, "x": 0 },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 0, "x": 2 },
+            "coord": { "y": 1, "x": 2 },
             "element": "BeamSplitter",
             "rotation": 135,
             "frozen": false,
             "active": false
-          }
-        ]
-      },
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true,
-            "energized": false
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "BeamSplitter",
-            "rotation": 45,
-            "frozen": false,
-            "active": false,
-            "energized": false
           }
         ]
       }
@@ -103,40 +81,18 @@
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 0, "x": 0 },
+            "coord": { "y": 1, "x": 0 },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 0, "x": 2 },
+            "coord": { "y": 1, "x": 2 },
             "element": "Mirror",
             "rotation": 135,
             "frozen": false,
             "active": false
-          }
-        ]
-      },
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true,
-            "energized": false
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "Mirror",
-            "rotation": 90,
-            "frozen": false,
-            "active": false,
-            "energized": false
           }
         ]
       }
@@ -149,6 +105,861 @@
           "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
         ]
 
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Detector": {
+    "title": "Detector",
+    "elementName": "Detector",
+    "short": "A detector lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 3 },
+            "element": "Detector",
+            "rotation": 180,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Mine": {
+    "title": "Mine",
+    "elementName": "Mine",
+    "short": "A Mine lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 3 },
+            "element": "Mine",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "PolarizingBeamSplitter": {
+    "title": "PolarizingBeamSplitter",
+    "elementName": "PolarizingBeamSplitter",
+    "short": "PolarizingBeamSplitter lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "PolarizingBeamSplitter",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "CoatedBeamSplitter": {
+    "title": "CoatedBeamSplitter",
+    "elementName": "CoatedBeamSplitter",
+    "short": "CoatedBeamSplitter lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "CoatedBeamSplitter",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "CornerCube": {
+    "title": "CornerCube",
+    "elementName": "CornerCube",
+    "short": "CornerCube lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "CornerCube",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Rock": {
+    "title": "Rock",
+    "elementName": "Rock",
+    "short": "Rock lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "Rock",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Absorber": {
+    "title": "Absorber",
+    "elementName": "Absorber",
+    "short": "Absorber lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "Absorber",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "DetectorFour": {
+    "title": "DetectorFour",
+    "elementName": "DetectorFour",
+    "short": "DetectorFour lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "DetectorFour",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Polarizer": {
+    "title": "Polarizer",
+    "elementName": "Polarizer",
+    "short": "Polarizer lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "PolarizerH",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "QuarterWavePlate": {
+    "title": "QuarterWavePlate",
+    "elementName": "QuarterWavePlate",
+    "short": "QuarterWavePlate lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "QuarterWavePlateH",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "SugarSolution": {
+    "title": "SugarSolution",
+    "elementName": "SugarSolution",
+    "short": "SugarSolution lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "SugarSolution",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "FaradayRotator": {
+    "title": "FaradayRotator",
+    "elementName": "FaradayRotator",
+    "short": "FaradayRotator lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "FaradayRotator",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "Glass": {
+    "title": "Glass",
+    "elementName": "Glass",
+    "short": "Glass lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "Glass",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
+      },
+      {
+        "title": "TRICKS WITH PHASE!",
+        "contents": [
+          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+        ]
+      },
+      {
+        "title": "EVERYDAY LIFE",
+        "contents": [
+          "“Mirror mirror on the wall who's the fairest of them all?”",
+          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+        ]
+      },
+      {
+        "title": "FURTHER RESOURCES",
+        "contents": [
+          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
+          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+        ]
+      },
+      {
+        "title": "TRANSITIONS MAP",
+        "content": []
+      }
+    ]
+  },
+  "VacuumJar": {
+    "title": "VacuumJar",
+    "elementName": "VacuumJar",
+    "short": "VacuumJar lorem ipusm.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": { "y": 1, "x": 0 },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": { "y": 1, "x": 2 },
+            "element": "VacuumJar",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "DIG DEEPER",
+        "contents": [
+          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
+          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
+        ]
       },
       {
         "title": "TRICKS WITH PHASE!",

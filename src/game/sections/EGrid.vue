@@ -134,7 +134,7 @@ const defaultLevel: Level = Level.importLevel({
 	}
 })
 export default class EGrid extends Vue {
-	@Prop({ default: () => defaultLevel }) readonly level!: Level;
+	@Prop({ default: () => defaultLevel }) level!: Level;
 	@Prop({ default: 4 }) readonly step!: number;
 
 	tileSize: number = 64;
@@ -147,7 +147,7 @@ export default class EGrid extends Vue {
 	};
 
 	created() {
-		this.createFrames(10);
+		this.reset();
 		this.setFrame(this.step);
 		window.addEventListener('resize', this.assessTileSize);
 	}
@@ -163,6 +163,16 @@ export default class EGrid extends Vue {
 			val = this.frames.length - 1;
 		}
 		this.frameNumber = val;
+	}
+
+	reset() {
+		const levelObj = this.level.exportLevel();
+		this.level = Level.importLevel(levelObj);
+		this.frame = new Frame(this.level);
+		this.frames = [this.frame.next()];
+		this.frameNumber = 0;
+		this.createFrames(10);
+		this.setFrame(this.step);
 	}
 
 	mounted() {
@@ -240,13 +250,6 @@ export default class EGrid extends Vue {
 		this.reset();
 	}
 
-	reset() {
-		this.frame = new Frame(this.level);
-		this.frames = [this.frame.next()];
-		this.frameNumber = 0;
-		this.createFrames(10);
-		this.setFrame(this.step);
-	}
 
 	/**
 	 * Create laser path through the lasers points
