@@ -9,7 +9,7 @@
 
       <div class="boards">
         <div v-for="(level, i) in levels" :key="'level' + i">
-          <!-- <Egrid :levelObj="level.levelObj" :step="level.step" class="board" /> -->
+          <Egrid :level="level.level" :step="level.step" class="board" />
         </div>
       </div>
 
@@ -22,23 +22,7 @@
         :should-be-open-on-init="index === 0"
       />
 
-
-
-      <!-- I will but things below in a separate component -->
-      <!-- <div>
-        <select v-model="dimOrder">
-          <option value="dir pol">dir pol</option>
-          <option value="pol dir">pol dir</option>
-        </select>
-        <OperatorViewer
-          :labelsIn="basis"
-          :labelsOut="basis"
-          :matrixElements="matrixElements"
-        />
-        <span>{{ matrixLevel.grid.cells[1].element.name}} at {{ matrixLevel.grid.cells[1].rotation }}° (warning: does not update)</span>
-        <Egrid :levelObj="matrixLevel" :step="matrixStep" class="board" />
-
-      </div> -->
+      <EquationGrid :elementName="entry.elementName" rotation="45" step="3" />
 
     </article>
   </div>
@@ -50,22 +34,19 @@ import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
 import { getEntry } from './entries';
-import { Level } from 'quantumweasel';
+import { Level, GridInterface } from 'quantumweasel';
 import Egrid from '../game/sections/EGrid.vue';
 import EquationGrid from './EquationGrid.vue';
-import BeamSplitterLevel1 from '../game/levels/encyclopedia/BeamSplitterLevel1.json';
-import BeamSplitterLevel2 from '../game/levels/encyclopedia/BeamSplitterLevel2.json';
-// import EquationViewerLevel from '../game/levels/encyclopedia/EquationViewer.json';
-// import OperatorViewer from './OperatorViewer.vue';
-// import * as qt from 'quantum-tensors';
 
 interface IEntryList {
-  [index: string]: IEntry;
+	[index: string]: IEntry;
 }
 
 interface IEntry {
   title: string;
+  elementName: string;
   short?: string;
+  grids: Array<GridInterface>;
   sections: Array<ISection>;
 }
 
@@ -78,18 +59,46 @@ interface IEntry {
     EquationGrid,
   }
 })
+
+// XXX this thing produces an error - by definition, not even execution
+// const expandGridToLevel = (grid: GridInterface): Level => Level.importLevel({
+//   id: 1345,
+//   name: "sdf",
+//   group: "sg",
+//   description: "sdgsd",
+//   grid: grid,
+//   hints: [],
+//   goals: []
+// })
+
 export default class Entry extends Vue {
   entry: IEntry = {
     title: '',
+    elementName: "Mirror",  // XXX suck at reloading, vide router and params
+    grids: [],
     sections: []
   };
 
-  levels = [{ levelObj: BeamSplitterLevel1, step: 4 }, { levelObj: BeamSplitterLevel2, step: 3 }];
+  get levels(): {level: Level, step: number}[] {
+    return this.entry.grids.map((grid) => {
+      const level = Level.importLevel({
+        id: -1,
+        name: "",
+        group: "",
+        description: "",
+        grid: grid,
+        hints: [],
+        goals: []
+      })
+      return { level: level, step: 3}
+    })
+  }
 
   created() {
     this.loadEntry();
   }
 
+  // XXX Are we really sure we want to use watch in route, and not - pass in router via params?
   @Watch('$route')
   loadEntry() {
     if (this.entryURL) {
@@ -187,48 +196,48 @@ export default class Entry extends Vue {
 
 <style lang="scss" scoped>
 .entry {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  & .title {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  & .short {
-    font-size: 1rem;
-  }
-  & .go-back {
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-  }
-  & p {
-    line-height: 2em;
-    text-align: left;
-  }
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	& .title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	& .short {
+		font-size: 1rem;
+	}
+	& .go-back {
+		font-weight: bold;
+		text-decoration: none;
+		color: white;
+	}
+	& p {
+		line-height: 2em;
+		text-align: left;
+	}
 }
 
 h1 {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid white;
-  text-align: center;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid white;
+	text-align: center;
 }
 
 .placeholder {
-  padding-top: 2rem;
-  width: 100%;
-  border-bottom: 1px solid #8e819d;
-  & .board {
-    width: 100%;
-    margin: 0 auto 0rem;
-    height: 200px;
-    text-align: center;
-    padding-bottom: 4rem;
-    & span {
-      font-size: 1rem;
-      color: gold;
-    }
-  }
+	padding-top: 2rem;
+	width: 100%;
+	border-bottom: 1px solid #8e819d;
+	& .board {
+		width: 100%;
+		margin: 0 auto 0rem;
+		height: 200px;
+		text-align: center;
+		padding-bottom: 4rem;
+		& span {
+			font-size: 1rem;
+			color: gold;
+		}
+	}
 }
 </style>

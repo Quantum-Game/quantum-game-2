@@ -82,15 +82,15 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import {
-  Level,
-  Particle,
-  Frame,
-  Grid,
-  Cell,
-  ParticleInterface,
-  CellInterface,
-  Coord,
-  LevelInterface
+	Level,
+	Particle,
+	Frame,
+	Grid,
+	Cell,
+	ParticleInterface,
+	CellInterface,
+	Coord,
+	LevelInterface
 } from 'quantumweasel';
 import Photon from '../Photon.vue';
 import QCell from '../QCell.vue';
@@ -118,14 +118,15 @@ const defaultLevel: Level = Level.importLevel({
 });
 
 @Component({
-  components: {
-    Photon,
-    QCell
-  }
+	components: {
+		Photon,
+		QCell
+	}
 })
 export default class EGrid extends Vue {
   @Prop({ default: () => defaultLevel }) readonly level!: Level;
   @Prop({ default: 4 }) readonly step!: number;
+
   tileSize: number = 64;
   frame: Frame = new Frame(this.level);
   frames: Frame[] = [this.frame];
@@ -141,22 +142,22 @@ export default class EGrid extends Vue {
     // window.addEventListener('resize', this.assessTileSize);
   }
 
-  /**
-   * Clipping the value of the frameNumber to be displayed
-   */
-  setFrame(val: number) {
-    if (val < 0) {
-      val = 0;
-    }
-    if (val >= this.frames.length - 1) {
-      val = this.frames.length - 1;
-    }
-    this.frameNumber = val;
-  }
+	/**
+	 * Clipping the value of the frameNumber to be displayed
+	 */
+	setFrame(val: number) {
+		if (val < 0) {
+			val = 0;
+		}
+		if (val >= this.frames.length - 1) {
+			val = this.frames.length - 1;
+		}
+		this.frameNumber = val;
+	}
 
-  mounted() {
-    this.assessTileSize();
-  }
+	mounted() {
+		this.assessTileSize();
+	}
 
   createFrames(number = 25) {
     for (let index = 0; index < number; index += 1) {
@@ -170,69 +171,66 @@ export default class EGrid extends Vue {
     }
   }
 
-  createNextFrame() {
-    const lastFrameCopy = cloneDeep(this.lastFrame);
-    const nextFrame = lastFrameCopy.next();
-    this.frames.push(nextFrame);
-  }
+	createNextFrame() {
+		const lastFrameCopy = cloneDeep(this.lastFrame);
+		const nextFrame = lastFrameCopy.next();
+		this.frames.push(nextFrame);
+	}
 
-  get activeFrame(): Frame {
-    return this.frames[this.frameNumber];
-  }
+	get activeFrame(): Frame {
+		return this.frames[this.frameNumber];
+	}
 
-  get lastFrame(): Frame {
-    return this.frames[this.frames.length - 1];
-  }
+	get lastFrame(): Frame {
+		return this.frames[this.frames.length - 1];
+	}
 
-  assessTileSize() {
-    const currentWidth = this.$refs.grid.getBoundingClientRect().width;
-    // this.tileSize = currentWidth / this.grid.cols;
-    this.tileSize = 64;
-  }
+	assessTileSize() {
+		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
+		// this.tileSize = currentWidth / this.grid.cols;
+		this.tileSize = 64;
+	}
 
-  get lasers(): ParticleInterface[] {
-    return this.level.grid.computePaths();
-  }
+	get lasers(): ParticleInterface[] {
+		return this.level.grid.computePaths();
+	}
 
-  get totalWidth(): number {
-    return this.level.grid.cols * this.tileSize;
-  }
-  get totalHeight(): number {
-    return this.level.grid.rows * this.tileSize;
-  }
+	get totalWidth(): number {
+		return this.level.grid.cols * this.tileSize;
+	}
+	get totalHeight(): number {
+		return this.level.grid.rows * this.tileSize;
+	}
 
-  computeParticleStyle(particle: ParticleInterface): {} {
-    const originX = this.centerCoord(particle.coord.x);
-    const originY = this.centerCoord(particle.coord.y);
-    return {
-      'transform-origin': `${originX}px ${originY}px`,
-      transform: `
+	computeParticleStyle(particle: ParticleInterface): {} {
+		const originX = this.centerCoord(particle.coord.x);
+		const originY = this.centerCoord(particle.coord.y);
+		return {
+			'transform-origin': `${originX}px ${originY}px`,
+			transform: `
 				rotate(${particle.direction}deg)
 				translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y * this.tileSize}px)`
-    };
-  }
+		};
+	}
 
-  /**
-   * Compute the cell center at a specific coordinate for grid dots
-   * @returns x, y pixel coordinates
-   */
-  centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
-  }
+	/**
+	 * Compute the cell center at a specific coordinate for grid dots
+	 * @returns x, y pixel coordinates
+	 */
+	centerCoord(val: number): number {
+		return (val + 0.5) * this.tileSize;
+	}
 
   /**
    * Cell rotation
    */
   rotate(cell: Cell) {
     cell.rotate();
-    console.debug(cell.toString());
     this.level.grid.set(cell);
     this.reset();
   }
 
   reset() {
-    // const levelObj = this.level.exportLevel();
-    // this.level = Level.importLevel(levelObj);
     this.frame = new Frame(this.level);
     this.frames = [this.frame.next()];
     this.frameNumber = 0;
@@ -362,17 +360,17 @@ export default class EGrid extends Vue {
 
 <style lang="scss" scoped>
 .laserPath {
-  stroke-dasharray: 8;
-  animation-name: dash;
-  animation-duration: 4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: reverse;
+	stroke-dasharray: 8;
+	animation-name: dash;
+	animation-duration: 4s;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	animation-direction: reverse;
 }
 @keyframes dash {
-  to {
-    stroke-dashoffset: 64;
-  }
+	to {
+		stroke-dashoffset: 64;
+	}
 }
 
 .container {
@@ -389,7 +387,7 @@ export default class EGrid extends Vue {
 
   button {
     background-color: darkmagenta;
-    border: 1px solid darkorchid;
+    border: 1px solid darko drchid;
     color: white;
     padding: 5px 14px;
     cursor: pointer;
@@ -399,18 +397,18 @@ export default class EGrid extends Vue {
     }
   }
 
-  &:after {
-    content: '';
-    clear: both;
-    display: table;
-  }
+	&:after {
+		content: '';
+		clear: both;
+		display: table;
+	}
 
-  button:hover {
-    background-color: darkorchid;
-  }
+	button:hover {
+		background-color: darkorchid;
+	}
 
-  .selected {
-    background-color: darkred;
-  }
+	.selected {
+		background-color: darkred;
+	}
 }
 </style>

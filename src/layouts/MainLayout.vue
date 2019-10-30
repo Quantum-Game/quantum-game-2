@@ -38,6 +38,8 @@ export default class MainLayout extends Vue {}
 		padding: 20px;
 		align-content: center;
 		width: 65%;
+		margin: 0;
+		padding: 0;
 		&.left,
 		&.right {
 			width: 16%;

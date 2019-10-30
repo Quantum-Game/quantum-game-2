@@ -8,13 +8,13 @@
 		<transition name="fade">
 			<div v-if="isMenuOpen" class="menu-overlay">
 				<menu>
-					<router-link to="/level/1" @click.stop.native="closeMenu">QUANTUM GAME</router-link>
-					<span>CONTINUE</span>
-					<span>LEVELS</span>
+					<router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
+					<router-link to="/level/1" @click.stop.native="closeMenu">CONTINUE</router-link>
+					<router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
 					<span>SANDBOX</span>
 					<router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
 					<span>OPTIONS</span>
-					<span>BLOG</span>
+					<a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
 				</menu>
 			</div>
 		</transition>
