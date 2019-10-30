@@ -1,5 +1,5 @@
-import entries from './entries.json';
 import { GridInterface } from 'quantumweasel';
+import entries from './entries.json';
 
 interface IEntryList {
 	[index: string]: IEntry;
