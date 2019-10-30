@@ -63,34 +63,33 @@ export default class SpeechBubble extends Mixins(getPosition) {
 
 <style lang="scss">
 .hint {
-	border-radius: 10px;
 	padding: 12px;
 	max-width: 120px;
 	z-index: 2;
 	position: absolute;
-	box-shadow: 1px 1px 1px black;
+	color:#120223;
 	&::after {
 		content: ' ';
 		position: absolute;
 		top: 100%; /* At the bottom of the tooltip */
 		left: 50%;
-		margin-left: -5px;
-		border-width: 5px;
+		margin-left: -10px;
+		border-width: 10px;
 		border-style: solid;
 	}
 }
-
+//FOR VERY IMPORTANT THINGS NOT TO BE MISSED
 .hint--red {
-	background-color: red;
+	background-color: #ff0055;
 	&::after {
-		border-color: red transparent transparent transparent;
+		border-color: #ff0055 transparent transparent transparent;
 	}
 }
-
+//BASIC STYLE, NOT TOO INTRUSIVE
 .hint--purple {
-	background-color: purple;
+	background-color: #5c00d3;
 	&::after {
-		border-color: purple transparent transparent transparent;
+		border-color: #5c00d3 transparent transparent transparent;
 	}
 }
 
