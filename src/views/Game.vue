@@ -30,13 +30,6 @@
 				:particles="activeFrame.quantum"
 			/>
 
-			<h3 slot="main-left" class="title">LEVELS:</h3>
-			<ul slot="main-left">
-				<li v-for="(stuff, i) in Array(20)" :key="i">
-					<router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
-				</li>
-			</ul>
-
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
 				<q-grid :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
@@ -206,11 +199,6 @@ export default class Game extends Vue {
 		return this.frameNumber;
 	}
 
-	// EVENT HANDLERS
-	// onActiveCell(cell: Cell, isDraggable: boolean) {
-	// 	this.activeCell = cell;
-	// }
-
 	handleArrowPress(e: { keyCode: number }): void {
 		// console.debug(e.keyCode);
 		switch (e.keyCode) {
@@ -269,7 +257,6 @@ export default class Game extends Vue {
 	}
 
 	get hints() {
-		// console.log(this.levelObj.hints)
 		return this.levelObj.hints;
 	}
 }
