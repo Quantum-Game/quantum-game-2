@@ -134,7 +134,7 @@ export default class Grid extends Cluster {
 	 * @param direction direction string
 	 */
 	public moveAll(direction: number): void {
-		console.log(`Moving all in direction: ${direction}`);
+		console.debug(`Moving all in direction: ${direction}`);
 		this.cells.map((cell) => {
 			cell.coord = cell.coord.fromAngle(direction);
 		});
@@ -301,7 +301,7 @@ export default class Grid extends Cluster {
 				return adjacent.energized && adjacent.element.name === 'detector';
 			});
 			if (energizedAdjacent.length > 0) {
-				console.log(`Cell ${cell.toString()} has 1+ active detectors as adjacent cell.`);
+				console.debug(`Cell ${cell.toString()} has 1+ active detectors as adjacent cell.`);
 				cell.active = true;
 			}
 		});

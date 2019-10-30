@@ -73,7 +73,7 @@ export default class Goals extends Vue {
 
 	@Watch('percent')
 	onPercentChanged(val: number, oldVal: number) {
-		console.log(oldVal, val);
+		console.debug(oldVal, val);
 		const vm = this;
 		new Tween({ value: oldVal })
 			.to({ value: val }, 500)

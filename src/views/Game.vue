@@ -264,7 +264,7 @@ export default class Game extends Vue {
 	}
 
 	get hints() {
-		// console.log(this.levelObj.hints)
+		// console.debug(this.levelObj.hints)
 		return this.levelObj.hints;
 	}
 }

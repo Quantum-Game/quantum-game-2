@@ -68,7 +68,9 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, Coord } from '@/engine/classes';
+import Coord from '@/engine/Coord';
+import Cell from '@/engine/Cell';
+import Grid from '@/engine/Grid';
 import { ParticleInterface, CellInterface } from '@/engine/interfaces';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
@@ -94,7 +96,7 @@ export default class QGrid extends Vue {
 	mounted() {
 		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
-		console.log(this.grid);
+		console.debug(this.grid);
 	}
 
 	assessTileSize() {
@@ -153,7 +155,7 @@ export default class QGrid extends Vue {
 
 			// Cell comes from toolbox
 			if (activeCell.coord.x === -1) {
-				console.log('Tool');
+				console.debug('Tool');
 			} else {
 				this.grid.set(activeCell);
 				this.grid.set(voidCell);
