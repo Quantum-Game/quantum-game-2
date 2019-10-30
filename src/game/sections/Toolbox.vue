@@ -1,13 +1,10 @@
 <template>
 	<div class="toolbox">
 		<svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
-			<q-cell :cell="getFakeCell(toolName)" :tool="true"/>
+			<q-cell :cell="getFakeCell(toolName)" :tool="true" />
 			<text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
 		</svg>
-		<slot>
-			isMoving: {{isMoving}}
-			activeCell: {{activeCell.toString()}}
-		</slot>
+		<slot> isMoving: {{ isMoving }} activeCell: {{ activeCell.toString() }} </slot>
 	</div>
 </template>
 
@@ -15,9 +12,9 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { Cell, Element, Coord } from 'quantumweasel';
+import { State } from 'vuex-class';
 import QCell from '../QCell.vue';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
-import {State} from 'vuex-class';
 
 interface Tool {
 	[symbol: string]: number;
@@ -32,14 +29,14 @@ export default class Toolbox extends Vue {
 	@Prop() readonly tools!: Cell[];
 	toolbox: Tool = {};
 	@State isMoving!: boolean;
-	@State activeCell!: Cell
+	@State activeCell!: Cell;
 
 	created() {
 		this.processTools();
 	}
 
 	addTool(cell: Cell) {
-		const name = cell.element.name;
+		const { name } = cell.element;
 		this.toolbox[name] += 1;
 	}
 
@@ -63,7 +60,7 @@ export default class Toolbox extends Vue {
 	}
 
 	removeTool(cell: Cell) {
-		const name = cell.element.name;
+		const { name } = cell.element;
 		this.toolbox[name] -= 1;
 	}
 }

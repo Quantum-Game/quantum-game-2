@@ -1,5 +1,10 @@
 <template>
-	<g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave" @click="handleCellClick">
+	<g
+		:style="positionStyle"
+		@mouseenter="handleMouseEnter"
+		@mouseleave="handleMouseLeave"
+		@click="handleCellClick"
+	>
 		<rect :width="tileSize" :height="tileSize" />
 		<component
 			:is="cell.element.name"
@@ -13,7 +18,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from 'vue-property-decorator';
-import { Mutation, State } from 'vuex-class'
+import { Mutation, State } from 'vuex-class';
 import { Cell, CellInterface } from 'quantumweasel';
 import {
 	Laser,
@@ -104,7 +109,7 @@ export default class QCell extends Mixins(getPosition) {
 	}
 
 	get validDrop() {
-		return (this.cell.element.name === 'Void') && !this.cell.frozen;
+		return this.cell.element.name === 'Void' && !this.cell.frozen;
 	}
 
 	handleCellClick() {
@@ -117,11 +122,11 @@ export default class QCell extends Mixins(getPosition) {
 			// second click:
 		} else {
 			if (this.cell === this.activeCell) {
-				this.$emit('rotate', this.cell)
+				this.$emit('rotate', this.cell);
 				return;
 			}
 			if (this.validDrop) {
-				this.$emit('add-cell-here', this.cell.coord)
+				this.$emit('add-cell-here', this.cell.coord);
 				this.mutationStopMoving();
 			} else {
 				this.mutationSetActiveCell(this.cell);

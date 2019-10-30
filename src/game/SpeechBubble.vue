@@ -66,7 +66,7 @@ export default class SpeechBubble extends Mixins(getPosition) {
 	}
 
 	get wrapperWidth() {
-    return this.contentRect.width + 15;
+		return this.contentRect.width + 15;
 	}
 
 	// used for internal positioning with regard to hint's size

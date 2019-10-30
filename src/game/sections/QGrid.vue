@@ -70,9 +70,9 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord, Element } from 'quantumweasel';
+import { Mutation, State } from 'vuex-class';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
-import { Mutation, State } from 'vuex-class'
 
 // import { SET_ACTIVE_CELL_COORDINATES } from '../../store/mutation-types';
 
@@ -151,7 +151,7 @@ export default class QGrid extends Vue {
 			sourceCell.coord = coord;
 			this.grid.set(sourceCell);
 			this.grid.set(destinationCell);
-			return true
+			return true;
 		}
 		return false;
 	}
@@ -161,7 +161,8 @@ export default class QGrid extends Vue {
 	 */
 	handleCellClick(cell: Cell) {
 		const isVoid = cell.element.name === 'Void';
-		const isThereAMovableActiveCell = ((this.activeCell.element.cell !== 'Void') && !this.activeCell.frozen);
+		const isThereAMovableActiveCell =
+			this.activeCell.element.cell !== 'Void' && !this.activeCell.frozen;
 		// rotate
 		if (!isVoid && !cell.frozen) {
 			cell.rotate();

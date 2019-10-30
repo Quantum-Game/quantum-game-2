@@ -228,9 +228,9 @@ export default class Game extends Vue {
         return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
         PLEASE MAKE SURE THAT ROUTE CHANGE ALLOWS FOR AUTOMATIC TOOLBOX PROCESSING
     */
-	 const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
-		 if (cell.element.name !== 'Void' && !cell.frozen) {
-			 return cell;
+		const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
+			if (cell.element.name !== 'Void' && !cell.frozen) {
+				return cell;
 			}
 			return false;
 		});
