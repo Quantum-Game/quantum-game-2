@@ -1,7 +1,12 @@
 // TODO: work on the toolbox
 import { Photons } from 'quantum-tensors';
 import { LevelInterface } from './interfaces';
-import { Grid, Coord, Cell, Element, Goal, Hint } from './main';
+import Grid from './Grid';
+import Coord from './Coord';
+import Cell from './Cell';
+import Element from './Element';
+import Goal from './Goal';
+import Hint from './Hint';
 import Toolbox from './Toolbox';
 import { convertFromClassicNames } from './Helpers';
 

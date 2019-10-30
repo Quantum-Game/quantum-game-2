@@ -10,7 +10,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
-import { Cell, Element, Coord } from '@/engine/main';
+import { Cell, Element, Coord } from '@/engine/classes';
 import QCell from '../QCell.vue';
 
 interface Tool {

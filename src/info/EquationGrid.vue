@@ -31,7 +31,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import * as qt from 'quantum-tensors';
 import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
-import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/main';
+import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
 import OperatorViewer from './OperatorViewer.vue';
 import Egrid from '../game/sections/EGrid.vue';
 
