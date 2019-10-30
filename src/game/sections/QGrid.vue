@@ -132,6 +132,10 @@ export default class QGrid extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
+	get activeCell() {
+		return this.$store.state.activeCell
+	}
+
 	/**
 	 * Cell rotation
 	 */

@@ -1,4 +1,4 @@
-import setActiveElement from './setActiveElement';
+import setActiveCell from './setActiveCell';
 import getPosition from './getPosition';
 
-export { setActiveElement, getPosition };
+export { setActiveCell, getPosition };
