@@ -222,6 +222,17 @@ export default class Game extends Vue {
 		}
   }
   
+  handleToolboxElements(tool: object){
+    
+    this.toolbox.push(tool);
+    console.log(this.toolbox)
+  }
+
+  // GETTERS
+  get toolboxElements(): CellInterface[] {
+    return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
+  }
+  
   // handleToolboxElements(tool: object){
   //   console.log(tool)
   //   this.toolbox.push(tool);
