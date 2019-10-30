@@ -3,7 +3,7 @@
 		<div slot="main">
 			<h1>My Account</h1>
 			<h2>Hello, {{ user }}</h2>
-			<q-button type="special"> <a @click.prevent="signOut">Sign Out!</a> </q-button>
+			<a @click.prevent="signOut"><q-button type="special"> Sign Out! </q-button></a>
 		</div>
 	</main-layout>
 </template>

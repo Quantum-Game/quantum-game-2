@@ -6,9 +6,11 @@
 			</h1>
 			<p>Login with your social account</p>
 			<div class="social-login">
-				<div class="social-login__btn social-login__gh">Github</div>
-				<div class="social-login__btn social-login__fb">Facebook</div>
-				<div class="social-login__btn social-login__g">Google</div>
+				<div class="social-login__btn social-login__gh" @click="signInSocial('github')">Github</div>
+				<div class="social-login__btn social-login__fb " @click="signInSocial('facebook')">
+					Facebook
+				</div>
+				<div class="social-login__btn social-login__g" @click="signInSocial('google')">Google</div>
 			</div>
 			<p class="separator">or</p>
 			<div v-if="error" class="alert alert-danger">{{ error }}</div>
@@ -74,6 +76,26 @@ export default class Login extends Vue {
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(this.user.email, this.user.password)
+			.then((data) => {
+				this.$router.replace({ name: 'myaccount' });
+			})
+			.catch((err) => {
+				this.error = err.message;
+			});
+	}
+	signInSocial(social) {
+		let provider = null;
+		if (social === 'github') {
+			provider = new firebase.auth.GithubAuthProvider();
+		} else if (social === 'facebook') {
+			provider = new firebase.auth.FacebookAuthProvider();
+		} else if (social === 'google') {
+			provider = new firebase.auth.FacebookAuthProvider();
+		}
+
+		firebase
+			.auth()
+			.signInWithPopup(provider)
 			.then((data) => {
 				this.$router.replace({ name: 'myaccount' });
 			})

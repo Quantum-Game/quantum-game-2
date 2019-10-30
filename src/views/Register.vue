@@ -82,13 +82,11 @@ export default class Register extends Vue {
 			.auth()
 			.createUserWithEmailAndPassword(this.user.email, this.user.password)
 			.then((data) => {
-				data.user
-					.updateProfile({
-						displayName: this.user.name
-					})
-					.then(() => {});
+				data.user.updateProfile({
+					displayName: this.user.name
+				});
 			})
-			.then(() => {
+			.then((data) => {
 				this.$router.replace({ name: 'myaccount' });
 			})
 			.catch((err) => {
