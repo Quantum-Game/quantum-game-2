@@ -9,7 +9,7 @@
 
       <div class="boards">
         <div v-for="(level, i) in levels" :key="'level' + i">
-          <Egrid :levelObj="level.levelObj" :step="level.step" class="board" />
+          <Egrid :level="level.level" :step="level.step" class="board" />
         </div>
       </div>
 
@@ -19,28 +19,33 @@
         :section="section"
         :should-be-open-on-init="index === 0"
       />
+
+      <EquationGrid :elementName="entry.elementName" rotation="45" step="3" />
+
     </article>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { Level } from 'quantumweasel';
 import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';
 import { getEntry } from './entries';
-import { Level } from 'quantumweasel';
+import { Level, GridInterface } from 'quantumweasel';
 import Egrid from '../game/sections/EGrid.vue';
-import BeamSplitterLevel1 from '../game/levels/encyclopedia/BeamSplitterLevel1.json';
-import BeamSplitterLevel2 from '../game/levels/encyclopedia/BeamSplitterLevel2.json';
+import EquationGrid from './EquationGrid.vue';
 
 interface IEntryList {
-  [index: string]: IEntry;
+	[index: string]: IEntry;
 }
 
 interface IEntry {
   title: string;
+  elementName: string;
   short?: string;
+  grids: Array<GridInterface>;
   sections: Array<ISection>;
 }
 
@@ -49,21 +54,50 @@ interface IEntry {
     EntrySection,
     Egrid,
     QButton,
-    Photon
+    Photon,
+    EquationGrid,
   }
 })
+
+// XXX this thing produces an error - by definition, not even execution
+// const expandGridToLevel = (grid: GridInterface): Level => Level.importLevel({
+//   id: 1345,
+//   name: "sdf",
+//   group: "sg",
+//   description: "sdgsd",
+//   grid: grid,
+//   hints: [],
+//   goals: []
+// })
+
 export default class Entry extends Vue {
   entry: IEntry = {
     title: '',
+    elementName: "Mirror",  // XXX suck at reloading, vide router and params
+    grids: [],
     sections: []
   };
 
-  levels = [{ levelObj: BeamSplitterLevel1, step: 4 }, { levelObj: BeamSplitterLevel2, step: 3 }];
+  get levels(): {level: Level, step: number}[] {
+    return this.entry.grids.map((grid) => {
+      const level = Level.importLevel({
+        id: -1,
+        name: "",
+        group: "",
+        description: "",
+        grid: grid,
+        hints: [],
+        goals: []
+      })
+      return { level: level, step: 3}
+    })
+  }
 
   created() {
     this.loadEntry();
   }
 
+  // XXX Are we really sure we want to use watch in route, and not - pass in router via params?
   @Watch('$route')
   loadEntry() {
     if (this.entryURL) {
@@ -82,48 +116,48 @@ export default class Entry extends Vue {
 
 <style lang="scss" scoped>
 .entry {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  & .title {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  & .short {
-    font-size: 1rem;
-  }
-  & .go-back {
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-  }
-  & p {
-    line-height: 2em;
-    text-align: left;
-  }
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+	& .title {
+		font-size: 2rem;
+		font-weight: bold;
+	}
+	& .short {
+		font-size: 1rem;
+	}
+	& .go-back {
+		font-weight: bold;
+		text-decoration: none;
+		color: white;
+	}
+	& p {
+		line-height: 2em;
+		text-align: left;
+	}
 }
 
 h1 {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid white;
-  text-align: center;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid white;
+	text-align: center;
 }
 
 .placeholder {
-  padding-top: 2rem;
-  width: 100%;
-  border-bottom: 1px solid #8e819d;
-  & .board {
-    width: 100%;
-    margin: 0 auto 0rem;
-    height: 200px;
-    text-align: center;
-    padding-bottom: 4rem;
-    & span {
-      font-size: 1rem;
-      color: gold;
-    }
-  }
+	padding-top: 2rem;
+	width: 100%;
+	border-bottom: 1px solid #8e819d;
+	& .board {
+		width: 100%;
+		margin: 0 auto 0rem;
+		height: 200px;
+		text-align: center;
+		padding-bottom: 4rem;
+		& span {
+			font-size: 1rem;
+			color: gold;
+		}
+	}
 }
 </style>

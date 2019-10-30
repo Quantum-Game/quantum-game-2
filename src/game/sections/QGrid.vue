@@ -1,37 +1,37 @@
 <template>
-  <svg class="grid" :width="totalWidth" :height="totalHeight" ref="grid">
-    <!-- DOTS -->
-    <g v-for="(row, y) in grid.rows" :key="y">
-      <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-      </g>
-    </g>
+	<svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+		<!-- DOTS -->
+		<g v-for="(row, y) in grid.rows" :key="y">
+			<g v-for="(column, x) in grid.cols" :key="x">
+				<circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+			</g>
+		</g>
 
-    <!-- LASER PATH -->
-    <g
-      v-for="(laser, index) in individualLaserPath"
-      :key="'laser' + index"
-      :v-if="individualLaserPath.length > 0"
-      class="lasers"
-    >
-      <path
-        :d="laser"
-        stroke-dasharray="8 8"
-        fill="transparent"
-        stroke="red"
-        stroke-width="3"
-        class="laserPath"
-      />
-    </g>
+		<!-- LASER PATH -->
+		<g
+			v-for="(laser, index) in individualLaserPath"
+			:key="'laser' + index"
+			:v-if="individualLaserPath.length > 0"
+			class="lasers"
+		>
+			<path
+				:d="laser"
+				stroke-dasharray="8 8"
+				fill="transparent"
+				stroke="red"
+				stroke-width="3"
+				class="laserPath"
+			/>
+		</g>
 
-    <!-- CELLS -->
-    <QCell
-      v-for="(cell, i) in grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @click.native="rotate(cell)"
-    />
+		<!-- CELLS -->
+		<QCell
+			v-for="(cell, i) in grid.cells"
+			:key="'cell' + i"
+			:cell="cell"
+			:tileSize="tileSize"
+			@click.native="rotate(cell)"
+		/>
 
 		<!-- PHOTONS -->
 		<g
@@ -57,25 +57,32 @@
 				:sigma="0.25"
 			/>
 		</g>
+		<speech-bubble
+			v-for="(hint, index) in hints"
+			:key="`hint${index}`"
+			:hint="hint"
+			:tileSize="tileSize"
+		/>
 	</svg>
 </template>
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
-import Photon from '../Photon.vue';
-import QCell from '../QCell.vue';
+import { IHintList } from '@/types';
+import { Photon, QCell, SpeechBubble } from '..';
 
 @Component({
 	components: {
 		Photon,
-		QCell
+		QCell,
+		SpeechBubble
 	}
 })
 export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
-	// @Prop({ default: '64' }) readonly tileSize!: number;
+	@Prop() readonly hints!: IHintList;
 
 	tileSize: number = 64;
 
@@ -83,16 +90,14 @@ export default class QGrid extends Vue {
 		grid: HTMLElement;
 	};
 
-	created() {
-		window.addEventListener('resize', this.assessTileSize);
-	}
-
 	mounted() {
+		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
+		console.log(this.grid);
 	}
 
 	assessTileSize() {
-		const currentWidth = this.$refs.grid.getBoundingClientRect().width;
+		// const currentWidth = this.$refs.grid.getBoundingClientRect().width;
 		// this.tileSize = currentWidth / this.grid.cols;
 		this.tileSize = 64;
 	}
