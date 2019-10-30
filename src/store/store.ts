@@ -2,14 +2,26 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { Coord, Element, Cell } from 'quantumweasel';
 import { RootState } from '@/types';
-import { SET_ACTIVE_CELL, RESET_ACTIVE_CELL } from './mutation-types';
+import {
+	SET_ACTIVE_CELL,
+	RESET_ACTIVE_CELL,
+	START_MOVING,
+	STOP_MOVING,
+	SET_CURRENT_TOOLS,
+	RESET_CURRENT_TOOLS,
+	ADD_TO_CURRENT_TOOLS,
+	REMOVE_FROM_CURRENT_TOOLS,
+	SET_ACTIVE_CELL_COORDINATES
+} from './mutation-types';
 
 const initialCell = new Cell(new Coord(0, 0), Element.fromName('Void'));
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
 	state: {
-		activeCell: initialCell
+		activeCell: initialCell,
+		currentTools: [],
+		isMoving: false
 	},
 	mutations: {
 		[SET_ACTIVE_CELL](state, cell) {
@@ -17,7 +29,35 @@ const store: StoreOptions<RootState> = {
 		},
 		[RESET_ACTIVE_CELL](state) {
 			state.activeCell = initialCell;
+		},
+		[SET_ACTIVE_CELL_COORDINATES](state, coord) {
+			state.activeCell.coord = coord;
+		},
+		[START_MOVING](state) {
+			state.isMoving = true;
+		},
+		[STOP_MOVING](state) {
+			state.isMoving = false;
+		},
+		[SET_CURRENT_TOOLS](state, cells) {
+			state.currentTools = cells;
+		},
+		[RESET_CURRENT_TOOLS](state) {
+			state.currentTools = [];
+		},
+		[ADD_TO_CURRENT_TOOLS](state, cell) {
+			state.currentTools = [...state.currentTools, cell];
+		},
+		[REMOVE_FROM_CURRENT_TOOLS](state, cell) {
+			const index = state.currentTools.indexOf(cell);
+			state.currentTools.splice(index, 1);
 		}
+	},
+	getters: {
+		activeCell: (state) => state.activeCell,
+		isMoving: (state) => state.isMoving,
+		currentTools: (state) => state.currentTools,
+		isActiveCellMovable: (state) => !state.activeCell.frozen
 	}
 };
 

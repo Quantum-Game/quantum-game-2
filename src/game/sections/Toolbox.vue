@@ -4,6 +4,7 @@
 			<q-cell :cell="getFakeCell(toolName)" :tool="true" />
 			<text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
 		</svg>
+		<slot> isMoving: {{ isMoving }} activeCell: {{ activeCell.toString() }} </slot>
 	</div>
 </template>
 
@@ -11,7 +12,9 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { Cell, Element, Coord } from 'quantumweasel';
+import { State } from 'vuex-class';
 import QCell from '../QCell.vue';
+import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 
 interface Tool {
 	[symbol: string]: number;
@@ -25,9 +28,16 @@ interface Tool {
 export default class Toolbox extends Vue {
 	@Prop() readonly tools!: Cell[];
 	toolbox: Tool = {};
+	@State isMoving!: boolean;
+	@State activeCell!: Cell;
 
 	created() {
 		this.processTools();
+	}
+
+	addTool(cell: Cell) {
+		const { name } = cell.element;
+		this.toolbox[name] += 1;
 	}
 
 	getFakeCell(name: string): Cell {
@@ -47,6 +57,11 @@ export default class Toolbox extends Vue {
 	processTools() {
 		const elements = this.tools.map((cell) => cell.element.name);
 		this.toolbox = countBy(elements);
+	}
+
+	removeTool(cell: Cell) {
+		const { name } = cell.element;
+		this.toolbox[name] -= 1;
 	}
 }
 //   @Watch('tools')

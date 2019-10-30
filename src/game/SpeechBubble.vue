@@ -1,8 +1,15 @@
 <template>
 	<transition name="hint">
-		<!-- TOOLTIP ITSELF -->
-		<foreignObject v-if="shown" :x="offsetX" :y="offsetY" height="500" width="500">
-			<div ref="hint" class="hint" :class="hintClass" @click="hide">
+		<!-- WRAPPER -->
+		<foreignObject
+			v-if="shown"
+			:x="offsetX"
+			:y="offsetY"
+			:height="wrapperHeight"
+			:width="wrapperWidth"
+		>
+			<!-- TOOLTIP ITSELF -->
+			<div ref="hint" class="hint" :class="hintClass" :style="{ maxWidth: maxWidth }" @click="hide">
 				<span>{{ hint.content }}</span>
 			</div>
 		</foreignObject>
@@ -18,9 +25,11 @@ import { getPosition } from '../mixins';
 export default class SpeechBubble extends Mixins(getPosition) {
 	@Prop() readonly hint!: IHint;
 	@Prop({ default: 64 }) readonly tileSize!: number;
-
 	positionX!: number;
 	positionY!: number;
+
+	// this is where the tooltips width is set:
+	maxWidth = '120px';
 
 	contentRect = {
 		width: 0,
@@ -36,6 +45,9 @@ export default class SpeechBubble extends Mixins(getPosition) {
 		this.assessDimensions();
 	}
 
+	/* 	used to measure the HTML elements dimensions to
+			appropriatly wrap it and position
+	*/
 	assessDimensions() {
 		this.contentRect = this.$refs.hint.getBoundingClientRect();
 	}
@@ -48,15 +60,22 @@ export default class SpeechBubble extends Mixins(getPosition) {
 		return `hint--${this.hint.color}`;
 	}
 
+	// used to give a bit of margins to the foreginObject
 	get wrapperHeight() {
-		return this.contentRect.height;
+		return this.contentRect.height + 15;
 	}
 
-	get offsetX() {
-		return this.positionX - this.contentRect.width / 2 + this.tileSize / 2;
+	get wrapperWidth() {
+		return this.contentRect.width + 15;
 	}
+
+	// used for internal positioning with regard to hint's size
+	get offsetX() {
+		return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2;
+	}
+
 	get offsetY() {
-		return this.positionY - this.contentRect.height / 2;
+		return this.positionY - this.wrapperHeight / 2;
 	}
 }
 </script>
@@ -64,14 +83,13 @@ export default class SpeechBubble extends Mixins(getPosition) {
 <style lang="scss">
 .hint {
 	padding: 12px;
-	max-width: 120px;
 	z-index: 2;
 	position: absolute;
 	color: #120223;
 	&::after {
 		content: ' ';
 		position: absolute;
-		top: 100%; /* At the bottom of the tooltip */
+		top: 100%;
 		left: 50%;
 		margin-left: -10px;
 		border-width: 10px;
@@ -85,7 +103,7 @@ export default class SpeechBubble extends Mixins(getPosition) {
 		border-color: #ff0055 transparent transparent transparent;
 	}
 }
-//BASIC STYLE, NOT TOO INTRUSIVE
+
 .hint--purple {
 	background-color: #5c00d3;
 	&::after {

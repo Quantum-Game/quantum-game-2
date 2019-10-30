@@ -1,5 +1,10 @@
 <template>
-	<g :style="positionStyle" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave">
+	<g
+		:style="positionStyle"
+		@mouseenter="handleMouseEnter"
+		@mouseleave="handleMouseLeave"
+		@click="handleCellClick"
+	>
 		<rect :width="tileSize" :height="tileSize" />
 		<component
 			:is="cell.element.name"
@@ -13,7 +18,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Mixins } from 'vue-property-decorator';
-import { Cell } from 'quantumweasel';
+import { Mutation, State } from 'vuex-class';
+import { Cell, CellInterface } from 'quantumweasel';
 import {
 	Laser,
 	Mirror,
@@ -67,12 +73,16 @@ export default class QCell extends Mixins(getPosition) {
 	@Prop() readonly lasers!: any[];
 	@Prop({ default: false }) readonly tool!: boolean;
 	@Prop() readonly tileSize!: number;
+	@Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
+	@Mutation('START_MOVING') mutationStartMoving!: () => void;
+	@Mutation('STOP_MOVING') mutationStopMoving!: () => void;
+	@State isMoving!: boolean;
 
 	border = '';
 
 	get positionStyle() {
 		let styleObj = {};
-		if (this.cell.element.name !== 'Void' && !this.tool) {
+		if (!this.tool) {
 			styleObj = {
 				'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
 				transform: `
@@ -87,13 +97,47 @@ export default class QCell extends Mixins(getPosition) {
 		set cell as active
 	*/
 	handleMouseEnter() {
-		this.$store.commit('SET_ACTIVE_CELL', this.cell);
 		this.border = borderColors.rotable;
+	}
+
+	get validDrag() {
+		return !this.cell.frozen && this.cell.element.name !== 'Void';
+	}
+
+	get validDrop() {
+		return this.cell.element.name === 'Void' && !this.cell.frozen;
+	}
+
+	handleCellClick() {
+		// first click: see if valid drag target;
+		if (!this.isMoving) {
+			this.mutationSetActiveCell(this.cell);
+			if (this.validDrag) {
+				this.mutationStartMoving();
+			}
+			// second click:
+		} else {
+			if (this.cell === this.activeCell) {
+				this.$emit('rotate', this.cell);
+				return;
+			}
+			if (this.validDrop) {
+				this.$emit('add-cell-here', this.cell.coord);
+				this.mutationStopMoving();
+			} else {
+				this.mutationSetActiveCell(this.cell);
+			}
+		}
+	}
+
+	get activeCell() {
+		return this.$store.state.activeCell;
 	}
 
 	handleMouseLeave() {
 		this.border = '';
 	}
+
 }
 </script>
 
