@@ -235,7 +235,10 @@ export default class QGrid extends Vue {
 
 		} else {
 			
-			isOccupied ? currentX++ : null;
+			if(isOccupied){
+				currentX = cell.coord.x;
+				currentY = cell.coord.y;
+			}
 			positionTransform(cellRef, cell, this.tileSize, currentX, currentY);
 		}
 
