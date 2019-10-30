@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
-import { Cell, Element, Coord } from 'quantumweasel';
+import { Cell, Element, Coord } from '@/engine/main';
 import { State } from 'vuex-class';
 import QCell from '../QCell.vue';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';

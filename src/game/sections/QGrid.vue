@@ -69,8 +69,9 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface, Coord, Element } from 'quantumweasel';
 import { Mutation, State } from 'vuex-class';
+import { Grid, Cell, Coord } from '@/engine/main';
+import { ParticleInterface, CellInterface } from '@/engine/interfaces';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
 

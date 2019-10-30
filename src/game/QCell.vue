@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
-import { Cell, CellInterface } from 'quantumweasel';
+import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
+import { Cell } from '@/engine/main';
 import {
 	Laser,
 	Mirror,
