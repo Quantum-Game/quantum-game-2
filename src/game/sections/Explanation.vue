@@ -11,6 +11,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Cell } from 'quantumweasel';
+import QButton from '@/components/QButton.vue';
 
 @Component
 export default class Explanation extends Vue {
@@ -32,8 +34,8 @@ export default class Explanation extends Vue {
 	*/
 	get hyphenedEntryURL() {
 		const addressName = this.name
-			.replace(/(^[A-Z])/, ([first]) => first.toLowerCase())
-			.replace(/([A-Z])/g, ([letter]) => `-${letter.toLowerCase()}`);
+			.replace(/(^[A-Z])/, ([first]: [string]) => first.toLowerCase())
+			.replace(/([A-Z])/g, ([letter]: [string]) => `-${letter.toLowerCase()}`);
 
 		return `/info/${addressName}`;
 	}

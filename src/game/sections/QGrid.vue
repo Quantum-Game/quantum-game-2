@@ -30,7 +30,8 @@
 			:key="'cell' + i"
 			:cell="cell"
 			:tileSize="tileSize"
-			@click.native="rotate(cell)"
+			@add-cell-here="moveCell"
+			@rotate="rotateCell"
 		/>
 
 		<!-- PHOTONS -->
@@ -68,7 +69,8 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface, Coord } from 'quantumweasel';
+import { Grid, Cell, ParticleInterface, CellInterface, Coord, Element } from 'quantumweasel';
+import { Mutation, State } from 'vuex-class';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
 
@@ -83,6 +85,9 @@ export default class QGrid extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop() readonly hints!: IHintList;
+	@State activeCell!: Cell;
+	@Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
+	@Mutation('STOP_MOVING') mutationStopMoving!: () => void;
 
 	tileSize: number = 64;
 
@@ -93,7 +98,6 @@ export default class QGrid extends Vue {
 	mounted() {
 		window.addEventListener('resize', this.assessTileSize);
 		this.assessTileSize();
-		console.log(this.grid);
 	}
 
 	assessTileSize() {
@@ -133,11 +137,29 @@ export default class QGrid extends Vue {
 	}
 
 	/**
-	 * Cell rotation
+	 * Used to move a cell
+	 * @params coord to move to
+	 * @returns boolean
 	 */
-	rotate(cell: Cell) {
+	moveCell(coord: Coord): boolean {
+		const destinationCell = this.grid.get(coord);
+		if (!destinationCell.frozen && !this.activeCell.frozen) {
+			destinationCell.coord = this.activeCell.coord;
+			const sourceCell = this.activeCell;
+			sourceCell.coord = coord;
+			this.grid.set(sourceCell);
+			this.grid.set(destinationCell);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Cell rotation
+	 * @returns void
+	 */
+	rotateCell(cell: Cell): void {
 		cell.rotate();
-		console.log(cell.toString());
 		this.grid.set(cell);
 	}
 

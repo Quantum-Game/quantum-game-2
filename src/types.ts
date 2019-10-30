@@ -2,6 +2,8 @@ import { LevelInterface, Cell, Coord } from 'quantumweasel';
 
 export interface RootState {
 	activeCell: Cell;
+	currentTools: Cell[];
+	isMoving: boolean;
 }
 
 export interface IHint {

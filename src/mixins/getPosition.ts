@@ -15,6 +15,14 @@ export default class getPostion extends Vue {
 	};
 
 	created() {
+		this.setCoordOrigin();
+	}
+
+	updated() {
+		this.setCoordOrigin();
+	}
+
+	setCoordOrigin() {
 		if (this.hint) {
 			this.coord = this.hint.coord;
 		} else {
@@ -32,6 +40,14 @@ export default class getPostion extends Vue {
 
 	get positionY() {
 		return this.coord.y * this.tileSize;
+	}
+
+	get translationX(): number {
+		return this.cell.coord.x * this.tileSize;
+	}
+
+	get translationY(): number {
+		return this.cell.coord.y * this.tileSize;
 	}
 
 	get transformOriginX() {

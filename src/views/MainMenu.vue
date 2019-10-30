@@ -30,7 +30,7 @@
 			</div> -->
 
 			<div class="image">
-				<img src="@/assets/rock.svg" alt="rock" />
+				<img src="@/assets/Rock.svg" alt="Rock" />
 			</div>
 			<!-- <div class="blog">
 				<h2>Wave optics and quantum mechanics as a game</h2>

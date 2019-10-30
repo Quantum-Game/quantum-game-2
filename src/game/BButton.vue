@@ -13,7 +13,7 @@ export default class BButton extends Vue {
 	@Prop({ default: true }) readonly usable!: boolean;
 
 	handleClick() {
-		console.log(this.whichIs);
+		console.debug(this.whichIs);
 		this.$emit(this.whichIs);
 	}
 
