@@ -18,9 +18,9 @@ interface Tool {
 }
 
 @Component({
-  components: {
-    QCell
-  }
+	components: {
+		QCell
+	}
 })
 export default class Toolbox extends Vue {
 	@Prop() readonly tools!: Cell[];

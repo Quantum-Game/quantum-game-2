@@ -1,6 +1,6 @@
 <template>
 	<transition :name="gameState">
-		<div v-if="gameState === 'baba'" :class="gameState" class="wrapper">
+		<div v-if="gameState === 'Defeat'" :class="gameState" class="wrapper">
 			<h2>
 				:(
 			</h2>
@@ -12,9 +12,6 @@
 				<slot> </slot>
 			</h2>
 		</div>
-		<!-- <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
-			<h2>DEFEAT</h2>
-		</div> -->
 	</transition>
 </template>
 
@@ -32,34 +29,37 @@ Vue.use(VueConfetti);
 })
 export default class Overlay extends Vue {
 	@Prop() readonly gameState!: string;
+	$confetti!: {
+		start: (params: any) => void;
+		stop: () => void;
+	};
 
 	@Watch('gameState')
-	startConfetti(val: string) {
-		if (val === "Victory") {
+	startConfetti(gameState: string) {
+		if (gameState === 'Victory') {
 			this.$confetti.start({
 				particlesPerFrame: 3,
 				defaultSize: 8,
 				particles: [
 					{
-					dropRate: 15,
-					//type:'rect',
+						dropRate: 15
+						// type:'rect',
 					}
 				],
 				defaultColors: [
-					'#ffbb3b', //Q yellow
-					'#5c00d3', //Q purple
-					'#ff0055', //Q red
+					'#ffbb3b', // Q yellow
+					'#5c00d3', // Q purple
+					'#ff0055', // Q red
 					'#ff8b00', // orange 01
 					'#ff5d15', // orange 02
 					'#ba00ff', // purple 02
-					'#ffbb3b', //Q yellow
-					'#5c00d3', //Q purple
-					'#ff0055', //Q red
+					'#ffbb3b', // Q yellow
+					'#5c00d3', // Q purple
+					'#ff0055', // Q red
 					'#ff8b00', // orange 01
 					'#ff5d15', // orange 02
-					'#ba00ff', // purple 02
-
-				],
+					'#ba00ff' // purple 02
+				]
 			});
 		} else {
 			this.$confetti.stop();

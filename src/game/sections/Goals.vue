@@ -1,6 +1,6 @@
 <template>
-  <div ref="goals" class="goals-wrapper">
-    <!-- <div class="upper-icons">
+	<div ref="goals" class="goals-wrapper">
+		<!-- <div class="upper-icons">
       <div>
         <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
         <span> 02</span>
@@ -26,7 +26,6 @@
 			<div>SUCCESS</div>
 		</vc-donut>
 		<div class="btn-fake" @click="fakeClick">Click me</div>
-    </vc-donut>
 		<div class="bottom-icons">
 			<span v-for="(goal, index) in goals" :key="index">
 				<img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
@@ -34,27 +33,14 @@
 			<div>DETECTORS</div>
 		</div>
 	</div>
-    <!-- <div class="bottom-icons">
-      <span v-for="(goal, index) in goals" :key="index">
-        <div v-if="goal.value >= goal.threshold">
-          <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" class="happy" />
-        </div>
-        <div v-else>
-          <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
-          {{goal.value * 100 }} / {{goal.threshold * 100}} %
-        </div>
-      </span>
-      <div>DETECTORS</div>
-    </div> -->
-  </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import {Tween, update as updateTween} from 'es6-tween';
+import { Tween, update as updateTween } from 'es6-tween';
 
 @Component({
-  components: {}
+	components: {}
 })
 export default class Goals extends Vue {
 	@Prop() readonly detectors!: number;
@@ -72,10 +58,10 @@ export default class Goals extends Vue {
 		requestAnimationFrame(this.animateTween);
 	}
 
-	animateTween(time) {
-		const id = requestAnimationFrame(this.animateTween);				
+	animateTween(time: number) {
+		const id = requestAnimationFrame(this.animateTween);
 		const result = updateTween(time);
-		if(!result) cancelAnimationFrame(id);
+		if (!result) cancelAnimationFrame(id);
 	}
 
 	get animatedPercent() {
@@ -86,31 +72,30 @@ export default class Goals extends Vue {
 	}
 
 	@Watch('percent')
-	onPercentChanged(val, oldVal) {
-		console.log(oldVal, val)
+	onPercentChanged(val: number, oldVal: number) {
+		console.log(oldVal, val);
 		const vm = this;
-		new Tween({value: oldVal})
-		.to({ value: val }, 500)
-		.on('update', ({value}) => {
-			vm.tweenedPercent = value;
-		})
-		.start();
+		new Tween({ value: oldVal })
+			.to({ value: val }, 500)
+			.on('update', ({ value }: { value: number }) => {
+				vm.tweenedPercent = value;
+			})
+			.start();
 	}
-					
 }
 </script>
 
 <style lang="scss" scoped>
 .goals-wrapper {
-  // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS 
-  //border-top: 1px solid white;
-  padding-top: 10px;
-  padding-bottom: 100px;
-  border-bottom: 1px solid white;
-  width: 100%;
-  // height: 320px;
-  display: flex;
-  flex-direction: column;
+	// BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS
+	//border-top: 1px solid white;
+	padding-top: 10px;
+	padding-bottom: 100px;
+	border-bottom: 1px solid white;
+	width: 100%;
+	// height: 320px;
+	display: flex;
+	flex-direction: column;
 
 	& .upper-icons {
 		display: flex;

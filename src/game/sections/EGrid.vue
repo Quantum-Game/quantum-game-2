@@ -156,6 +156,7 @@ export default class EGrid extends Vue {
 	 * Clipping the value of the frameNumber to be displayed
 	 */
 	setFrame(val: number) {
+		let value = val
 		if (val < 0) {
 			val = 0;
 		}
@@ -249,7 +250,6 @@ export default class EGrid extends Vue {
 		this.level.grid.set(cell);
 		this.reset();
 	}
-
 
 	/**
 	 * Create laser path through the lasers points

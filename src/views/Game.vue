@@ -206,24 +206,24 @@ export default class Game extends Vue {
 		return this.frameNumber;
 	}
 
-  // EVENT HANDLERS
-  onActiveCell(cell: Cell, isDraggable: boolean) {
-		this.activeCell = cell;
-  }
+	// EVENT HANDLERS
+	// onActiveCell(cell: Cell, isDraggable: boolean) {
+	// 	this.activeCell = cell;
+	// }
 
-  handleArrowPress(e: { keyCode: number }): void {
-    // console.debug(e.keyCode);
-    switch (e.keyCode) {
-      case 37:
-        this.showPrevious();
-        break;
-      case 39:
-        this.showNext();
-        break;
-      default:
-        break;
-    }
-  }
+	handleArrowPress(e: { keyCode: number }): void {
+		// console.debug(e.keyCode);
+		switch (e.keyCode) {
+			case 37:
+				this.showPrevious();
+				break;
+			case 39:
+				this.showNext();
+				break;
+			default:
+				break;
+		}
+	}
 
 	// GETTERS
 	get toolboxElements(): Cell[] {
@@ -328,6 +328,6 @@ h1 {
 	}
 }
 .levelLink {
-  text-decoration: none;
+	text-decoration: none;
 }
 </style>
