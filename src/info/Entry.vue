@@ -124,6 +124,10 @@ export default class Entry extends Vue {
 	}
 	& .short {
 		font-size: 1rem;
+    padding-right:20%;
+    padding-left:20%;
+    padding-bottom: 20px;
+
 	}
 	& .go-back {
 		font-weight: bold;
@@ -141,7 +145,12 @@ h1 {
 	border-bottom: 1px solid white;
 	text-align: center;
 }
-
+.boards {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  border-bottom: 1px solid #8e819d;
+}
 .placeholder {
 	padding-top: 2rem;
 	width: 100%;
