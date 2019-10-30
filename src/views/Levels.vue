@@ -26,6 +26,7 @@ export default class Levels extends Vue {
 
 <style lang="scss">
 .main {
+	padding: 10em;
 	& .main__level-list {
 		height: 100vh;
 		display: flex;
