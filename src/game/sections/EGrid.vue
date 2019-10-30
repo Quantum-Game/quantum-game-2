@@ -156,7 +156,7 @@ export default class EGrid extends Vue {
 	 * Clipping the value of the frameNumber to be displayed
 	 */
 	setFrame(val: number) {
-		let value = val
+		const value = val;
 		if (val < 0) {
 			val = 0;
 		}
@@ -397,39 +397,39 @@ export default class EGrid extends Vue {
 .btn-group {
 	text-align: center;
 	width: 100%;
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
 
 	button {
-    font-size: 0.8rem;
-    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    background-color: #5c00d3;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    margin:5px;
-    cursor: pointer;
+		font-size: 0.8rem;
+		font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+		font-weight: bold;
+		background-color: #5c00d3;
+		border: none;
+		color: white;
+		padding: 5px 10px;
+		margin: 5px;
+		cursor: pointer;
 
-    &:not(:last-child) {
-      border-right: none;
-    }
-  }
+		&:not(:last-child) {
+			border-right: none;
+		}
+	}
 
-  &:after {
-    content: '';
-    clear: both;
-    display: table;
-  }
+	&:after {
+		content: '';
+		clear: both;
+		display: table;
+	}
 
-  button:hover {
-    background-color: white;
-    color: #5c00d3;
-  }
+	button:hover {
+		background-color: white;
+		color: #5c00d3;
+	}
 
-  .selected {
-    background-color: white;
-    color: #5c00d3;
-  }
+	.selected {
+		background-color: white;
+		color: #5c00d3;
+	}
 }
 </style>
