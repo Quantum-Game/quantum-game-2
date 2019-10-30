@@ -138,6 +138,10 @@ export default class QGrid extends Vue {
 		return (val + 0.5) * this.tileSize;
 	}
 
+	get activeCell() {
+		return this.$store.state.activeCell;
+	}
+
 	/**
 	 * Used to move a cell
 	 * @params coord to move to
@@ -159,6 +163,7 @@ export default class QGrid extends Vue {
 	/**
 	 * Cell rotation
 	 */
+
 	handleCellClick(cell: Cell) {
 		const isVoid = cell.element.name === 'Void';
 		const isThereAMovableActiveCell =

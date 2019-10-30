@@ -64,6 +64,31 @@ export default class Toolbox extends Vue {
 		this.toolbox[name] -= 1;
 	}
 }
+//   @Watch('tools')
+//   setUpTools() {
+//     this.refinedTools = [];
+//     this.toolNameList = [];
+//     // Take every raw cell object and see whether it is included in the toolNameList:
+//     this.tools.forEach((toolObj: { element: string }) => {
+//       const isAlreadyTooolboxed = this.toolNameList.includes(toolObj.element);
+//       // if it is not on the list, add it to it, additionally
+//       // add it to refinedTools with quantity of 1.
+//       if (!isAlreadyTooolboxed) {
+//         this.toolNameList.push(toolObj.element);
+//         this.refinedTools.push([toolObj, 1]);
+//         // If the this.toolNameList consists element's name,
+//         // find its index and assess its quantity
+//       } else {
+//         const index = this.toolNameList.indexOf(toolObj.element);
+//         const quantity = this.refinedTools[index][1];
+//         // Update the refinedTools array entry:
+//         const updatedRefinedTool = [this.refinedTools[index][0], quantity + 1];
+//         this.refinedTools[index] = updatedRefinedTool;
+//       }
+//     });
+//     return this.refinedTools;
+//   }
+// }
 </script>
 
 <style lang="scss" scoped>

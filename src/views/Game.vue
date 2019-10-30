@@ -2,6 +2,7 @@
 	<div class="game">
 		<!-- OVERLAY -->
 		<overlay :game-state="gameState" @click.native="frameNumber = 0">
+			<q-button>GO BACK</q-button>
 			<router-link :to="nextLevel">
 				<q-button>NEXT LEVEL</q-button>
 			</router-link>
@@ -28,13 +29,6 @@
 				:goals="activeFrame.level.goals"
 				:particles="activeFrame.quantum"
 			/>
-
-			<h3 slot="main-left" class="title">LEVELS:</h3>
-			<ul slot="main-left">
-				<li v-for="(stuff, i) in Array(20)" :key="i">
-					<router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
-				</li>
-			</ul>
 
 			<!-- MAIN-MIDDLE -->
 			<section slot="main-middle">
@@ -69,7 +63,9 @@ import {
 	LevelInterface,
 	ParticleInterface,
 	GoalInterface,
-	Cell
+	Cell,
+	Coord,
+	Element
 } from 'quantumweasel';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
 import GameLayout from '../layouts/GameLayout.vue';
@@ -204,13 +200,8 @@ export default class Game extends Vue {
 		return this.frameNumber;
 	}
 
-	// EVENT HANDLERS
-	onActiveElement(element: string, isDraggable: boolean) {
-		this.activeElement = element;
-	}
-
 	handleArrowPress(e: { keyCode: number }): void {
-		// console.log(e.keyCode);
+		// console.debug(e.keyCode);
 		switch (e.keyCode) {
 			case 37:
 				this.showPrevious();
@@ -272,7 +263,6 @@ export default class Game extends Vue {
 	}
 
 	get hints() {
-		// console.log(this.levelObj.hints)
 		return this.levelObj.hints;
 	}
 }

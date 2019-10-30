@@ -134,7 +134,7 @@ const defaultLevel: Level = Level.importLevel({
 	}
 })
 export default class EGrid extends Vue {
-	@Prop({ default: () => defaultLevel }) readonly level!: Level;
+	@Prop({ default: () => defaultLevel }) level!: Level;
 	@Prop({ default: 4 }) readonly step!: number;
 
 	tileSize: number = 64;
@@ -147,7 +147,7 @@ export default class EGrid extends Vue {
 	};
 
 	created() {
-		this.createFrames(10);
+		this.reset();
 		this.setFrame(this.step);
 		window.addEventListener('resize', this.assessTileSize);
 	}
@@ -156,6 +156,7 @@ export default class EGrid extends Vue {
 	 * Clipping the value of the frameNumber to be displayed
 	 */
 	setFrame(val: number) {
+		let value = val
 		if (val < 0) {
 			val = 0;
 		}
@@ -163,6 +164,16 @@ export default class EGrid extends Vue {
 			val = this.frames.length - 1;
 		}
 		this.frameNumber = val;
+	}
+
+	reset() {
+		const levelObj = this.level.exportLevel();
+		this.level = Level.importLevel(levelObj);
+		this.frame = new Frame(this.level);
+		this.frames = [this.frame.next()];
+		this.frameNumber = 0;
+		this.createFrames(10);
+		this.setFrame(this.step);
 	}
 
 	mounted() {
@@ -238,14 +249,6 @@ export default class EGrid extends Vue {
 		cell.rotate();
 		this.level.grid.set(cell);
 		this.reset();
-	}
-
-	reset() {
-		this.frame = new Frame(this.level);
-		this.frames = [this.frame.next()];
-		this.frameNumber = 0;
-		this.createFrames(10);
-		this.setFrame(this.step);
 	}
 
 	/**
@@ -387,38 +390,46 @@ export default class EGrid extends Vue {
 	display: inline-block;
 	margin-bottom: 30px;
 	.svg-container {
-		border: 5px solid #666;
+		padding: 20px;
 	}
 }
 
 .btn-group {
 	text-align: center;
 	width: 100%;
+  display: flex;
+  justify-content: center;
 
 	button {
-		background-color: darkmagenta;
-		border: 1px solid darko drchid;
-		color: white;
-		padding: 5px 14px;
-		cursor: pointer;
+    font-size: 0.8rem;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    background-color: #5c00d3;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin:5px;
+    cursor: pointer;
 
-		&:not(:last-child) {
-			border-right: none;
-		}
-	}
+    &:not(:last-child) {
+      border-right: none;
+    }
+  }
 
-	&:after {
-		content: '';
-		clear: both;
-		display: table;
-	}
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
 
-	button:hover {
-		background-color: darkorchid;
-	}
+  button:hover {
+    background-color: white;
+    color: #5c00d3;
+  }
 
-	.selected {
-		background-color: darkred;
-	}
+  .selected {
+    background-color: white;
+    color: #5c00d3;
+  }
 }
 </style>

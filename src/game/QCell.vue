@@ -93,10 +93,6 @@ export default class QCell extends Mixins(getPosition) {
 		return styleObj;
 	}
 
-	centerCoord(val: number) {
-		return (val + 0.5) * this.tileSize;
-	}
-
 	/*
 		set cell as active
 	*/
@@ -141,6 +137,7 @@ export default class QCell extends Mixins(getPosition) {
 	handleMouseLeave() {
 		this.border = '';
 	}
+
 }
 </script>
 

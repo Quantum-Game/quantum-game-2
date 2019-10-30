@@ -49,7 +49,10 @@ const TAU = 2 * Math.PI;
  * Stolen from https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
  * Alternatively: d3.hsl
  */
-function hslToHex(h: number, s: number, l: number) {
+function hslToHex(hParam: number, sParam: number, lParam: number) {
+	let h = hParam;
+	let s = sParam;
+	let l= lParam;
 	h /= 360;
 	s /= 100;
 	l /= 100;
