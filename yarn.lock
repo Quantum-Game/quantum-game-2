@@ -3450,19 +3450,6 @@ d3-color@1:
   resolved "https://registry.npmjs.org/d3-color/-/d3-color-1.4.0.tgz#89c45a995ed773b13314f06460df26d60ba0ecaf"
   integrity sha512-TzNPeJy2+iEepfiL92LAAB7fvnp/dV2YwANPVHdDWmYMm23qIJBYww3qT8I8C1wXrmrg4UWs7BKc2tKIgyjzHg==
 
-d3-dispatch@1:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/d3-dispatch/-/d3-dispatch-1.0.5.tgz#e25c10a186517cd6c82dd19ea018f07e01e39015"
-  integrity sha512-vwKx+lAqB1UuCeklr6Jh1bvC4SZgbSqbkGBLClItFBIYH4vqDJCA7qfoy14lXmJdnBOdxndAMxjCbImJYW7e6g==
-
-d3-drag@^1.2.4:
-  version "1.2.4"
-  resolved "https://registry.npmjs.org/d3-drag/-/d3-drag-1.2.4.tgz#ba9331d68158ad14cf0b4b28a8afa9e78c7d99ad"
-  integrity sha512-ICPurDETFAelF1CTHdIyiUM4PsyZLaM+7oIBhmyP+cuVjze5vDZ8V//LdOFjg0jGnFIZD/Sfmk0r95PSiu78rw==
-  dependencies:
-    d3-dispatch "1"
-    d3-selection "1"
-
 d3-format@1:
   version "1.4.1"
   resolved "https://registry.npmjs.org/d3-format/-/d3-format-1.4.1.tgz#c45f74b17c5a290c072a4ba7039dd19662cd5ce6"
@@ -3494,7 +3481,7 @@ d3-scale@^3.1.0:
     d3-time "1"
     d3-time-format "2"
 
-d3-selection@1, d3-selection@^1.4.0:
+d3-selection@^1.4.0:
   version "1.4.0"
   resolved "https://registry.npmjs.org/d3-selection/-/d3-selection-1.4.0.tgz#ab9ac1e664cf967ebf1b479cc07e28ce9908c474"
   integrity sha512-EYVwBxQGEjLCKF2pJ4+yrErskDnz5v403qvAid96cNdCMr8rmCYfY5RGzWz24mdIbxmDf6/4EAH+K9xperD5jg==
@@ -8650,6 +8637,7 @@ quantum-tensors@stared/quantum-tensors:
   version "0.0.2"
   resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/62c886d25e37e3d57fe45ef53a8d68557415299b"
   dependencies:
+    "@types/jest" "^24.0.19"
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
 
