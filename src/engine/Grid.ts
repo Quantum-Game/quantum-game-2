@@ -180,7 +180,7 @@ export default class Grid extends Cluster {
 		// Simulate path with a specific number of frames
 		for (let i = 0; i < maxFrames; i += 1) {
 			// Propagate each living particle
-			alive.forEach((particle) => {
+			alive.forEach((particle: Particle) => {
 				particle.next;
 
 				// Zero the intensity of escaping particles
@@ -198,6 +198,7 @@ export default class Grid extends Cluster {
 				// Reflection
 				this.mirrors.cells.forEach((mirror: Cell) => {
 					if (particle.on(mirror)) {
+						// eslint-disable-next-line no-param-reassign
 						particle.direction = (2 * mirror.rotation - particle.direction + 360) % 360;
 					}
 				});
@@ -226,6 +227,7 @@ export default class Grid extends Cluster {
 				// Phase shifters
 				this.phaseshifters.cells.forEach((phaseshifter: Cell) => {
 					if (particle.on(phaseshifter)) {
+						// eslint-disable-next-line no-param-reassign
 						particle.phase = (particle.phase + phaseshifter.element.phase) % 1;
 					}
 				});
@@ -273,8 +275,10 @@ export default class Grid extends Cluster {
 		const pathCoords: Coord[] = paths.map((pathParticle) => Coord.importCoord(pathParticle.coord));
 		this.cells.forEach((cell: Cell) => {
 			if (cell.coord.isIncludedIn(pathCoords) && cell.element.name !== 'Void') {
+				// eslint-disable-next-line no-param-reassign
 				cell.energized = true;
 			} else {
+				// eslint-disable-next-line no-param-reassign
 				cell.energized = false;
 			}
 		});
@@ -286,6 +290,7 @@ export default class Grid extends Cluster {
 	activateCells(): void {
 		this.unvoid.cells.forEach((cell) => {
 			if (cell.element.name !== 'laser') {
+				// eslint-disable-next-line no-param-reassign
 				cell.active = false;
 			}
 			const energizedAdjacent = this.adjacentCells(cell.coord).filter((adjacent) => {
@@ -293,6 +298,7 @@ export default class Grid extends Cluster {
 			});
 			if (energizedAdjacent.length > 0) {
 				console.debug(`Cell ${cell.toString()} has 1+ active detectors as adjacent cell.`);
+				// eslint-disable-next-line no-param-reassign
 				cell.active = true;
 			}
 		});
