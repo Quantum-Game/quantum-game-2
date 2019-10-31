@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
-import { Cell, CellInterface } from 'quantumweasel';
+import { Cell } from '@/engine/classes';
 import {
 	Laser,
 	Mirror,
