@@ -1,4 +1,4 @@
-import { GridInterface } from 'quantumweasel';
+import { GridInterface } from '@/engine/interfaces';
 import entries from './entries.json';
 
 interface IEntryList {

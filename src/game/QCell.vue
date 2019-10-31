@@ -14,7 +14,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
-import { Cell, CellInterface } from 'quantumweasel';
+import { Cell } from '@/engine/classes';
 import {
 	Laser,
 	Mirror,
@@ -71,6 +71,7 @@ export default class QCell extends Mixins(getPosition) {
 	@Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
 	@Mutation('START_MOVING') mutationStartMoving!: () => void;
 	@Mutation('STOP_MOVING') mutationStopMoving!: () => void;
+	@Mutation('SET_MOVE_SOURCE') mutationSetMoveSource!: (source: string) => void;
 	@State isMoving!: boolean;
 	@State activeCell!: Cell;
 
@@ -90,6 +91,13 @@ export default class QCell extends Mixins(getPosition) {
 				// can drag
 				this.mutationStartMoving();
 				this.indicateMovable();
+				// set the vuex property indicating the
+				// movement source
+				if (this.tool) {
+					this.mutationSetMoveSource('toolbox');
+				} else {
+					this.mutationSetMoveSource('grid');
+				}
 			} else {
 				this.indicateUnmovable();
 			}

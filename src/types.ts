@@ -1,9 +1,12 @@
-import { LevelInterface, Cell, Coord } from 'quantumweasel';
+import { LevelInterface } from '@/engine/interfaces';
+import Coord from '@/engine/Coord';
+import Cell from '@/engine/Cell';
 
 export interface RootState {
 	activeCell: Cell;
 	currentTools: Cell[];
 	isMoving: boolean;
+	moveSource: string;
 }
 
 export interface IHint {

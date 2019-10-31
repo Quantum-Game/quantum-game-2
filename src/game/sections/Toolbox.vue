@@ -1,5 +1,5 @@
 <template>
-	<div class="toolbox">
+	<div class="toolbox" @click="handleToolboxClick">
 		<svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
 			<q-cell :cell="getFakeCell(toolName)" :tool="true" />
 			<text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
@@ -11,8 +11,8 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
-import { Cell, Element, Coord } from 'quantumweasel';
-import { State } from 'vuex-class';
+import { State, Mutation } from 'vuex-class';
+import { Cell, Element, Coord } from '@/engine/classes';
 import QCell from '../QCell.vue';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 
@@ -30,6 +30,7 @@ export default class Toolbox extends Vue {
 	toolbox: Tool = {};
 	@State isMoving!: boolean;
 	@State activeCell!: Cell;
+	@Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
 
 	created() {
 		this.processTools();
@@ -44,6 +45,12 @@ export default class Toolbox extends Vue {
 		const coord = new Coord(-1, -1);
 		const element = Element.fromName(name);
 		return new Cell(coord, element);
+	}
+
+	handleToolboxClick() {
+		if (this.isMoving && !this.activeCell.frozen && this.activeCell.coord.x > -1) {
+			this.mutationAddToCurrentTools(this.activeCell);
+		}
 	}
 
 	get toolboxKeys(): string[] {
@@ -64,31 +71,6 @@ export default class Toolbox extends Vue {
 		this.toolbox[name] -= 1;
 	}
 }
-//   @Watch('tools')
-//   setUpTools() {
-//     this.refinedTools = [];
-//     this.toolNameList = [];
-//     // Take every raw cell object and see whether it is included in the toolNameList:
-//     this.tools.forEach((toolObj: { element: string }) => {
-//       const isAlreadyTooolboxed = this.toolNameList.includes(toolObj.element);
-//       // if it is not on the list, add it to it, additionally
-//       // add it to refinedTools with quantity of 1.
-//       if (!isAlreadyTooolboxed) {
-//         this.toolNameList.push(toolObj.element);
-//         this.refinedTools.push([toolObj, 1]);
-//         // If the this.toolNameList consists element's name,
-//         // find its index and assess its quantity
-//       } else {
-//         const index = this.toolNameList.indexOf(toolObj.element);
-//         const quantity = this.refinedTools[index][1];
-//         // Update the refinedTools array entry:
-//         const updatedRefinedTool = [this.refinedTools[index][0], quantity + 1];
-//         this.refinedTools[index] = updatedRefinedTool;
-//       }
-//     });
-//     return this.refinedTools;
-//   }
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -101,6 +83,7 @@ export default class Toolbox extends Vue {
 	border-top: 1px solid white;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	min-height: 300px;
 	& h3 {
 		margin: 0;
 	}
