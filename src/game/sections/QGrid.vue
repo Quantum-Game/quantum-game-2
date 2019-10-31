@@ -91,6 +91,9 @@ export default class QGrid extends Vue {
 	@State activeCell!: Cell;
 	@Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
 	@Mutation('STOP_MOVING') mutationStopMoving!: () => void;
+	@Mutation('RESET_MOVE_SOURCE') mutationResetMoveSource!: () => void;
+	@Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
+	@State moveSource!: string;
 
 	tileSize: number = 64;
 
@@ -147,11 +150,15 @@ export default class QGrid extends Vue {
 	moveCell(coord: Coord): boolean {
 		const destinationCell = this.grid.get(coord);
 		if (!destinationCell.frozen && !this.activeCell.frozen) {
+			if (this.moveSource === 'toolbox') {
+				this.mutationRemoveFromCurrentTools(this.activeCell);
+			}
 			destinationCell.coord = this.activeCell.coord;
 			const sourceCell = this.activeCell;
 			sourceCell.coord = coord;
 			this.grid.set(sourceCell);
 			this.grid.set(destinationCell);
+			this.mutationResetMoveSource();
 			return true;
 		}
 		return false;
