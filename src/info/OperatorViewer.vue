@@ -60,9 +60,14 @@ function hslToHex(hParam: number, sParam: number, lParam: number) {
 	let g;
 	let b;
 	if (s === 0) {
-		r = g = b = l; // achromatic
+		r = l;
+		g = l;
+		b = l; // achromatic
 	} else {
-		const hue2rgb = (p: number, q: number, t: number) => {
+		const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
+			const p = pParam;
+			const q = qParam;
+			let t = tParam;
 			if (t < 0) t += 1;
 			if (t > 1) t -= 1;
 			if (t < 1 / 6) return p + (q - p) * 6 * t;
