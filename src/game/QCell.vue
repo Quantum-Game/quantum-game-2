@@ -38,7 +38,7 @@ import { getPosition } from '@/mixins';
 
 const borderColors = {
 	active: '#FF0055',
-	rotable: 'yellow',
+	rotable: 'white',
 	energized: 'blue'
 };
 
@@ -133,10 +133,11 @@ export default class QCell extends Mixins(getPosition) {
 	 * @returns void
 	 */
 	indicateUnmovable(): void {
-		this.border = borderColors.active;
-		const timeout = setTimeout(() => {
-			this.border = '';
-		}, 200);
+		// this.border = borderColors.active;
+		// const timeout = setTimeout(() => {
+		// 	this.border = '';
+		// }, 200);
+		this.border = '';
 	}
 
 	/**
@@ -144,7 +145,7 @@ export default class QCell extends Mixins(getPosition) {
 	 * @returns a boolean
 	 */
 	get validDrag(): boolean {
-		return !this.cell.frozen && this.cell.element.name !== 'Void';
+		return !this.cell.frozen && (this.cell.element.name !== 'Void');
 	}
 
 	/**
@@ -210,7 +211,11 @@ rect {
 	fill: transparent;
 }
 .movable-space:hover {
-	fill: yellow;
+	fill: rgba(255, 255, 255, 0.1);
 	transition: 0.3s;
+}
+
+.is-movable {
+	fill: red; 
 }
 </style>
