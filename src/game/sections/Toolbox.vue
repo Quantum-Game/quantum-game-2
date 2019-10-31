@@ -30,7 +30,6 @@ export default class Toolbox extends Vue {
 	toolbox: Tool = {};
 	@State isMoving!: boolean;
 	@State activeCell!: Cell;
-	@State moveSource!: string;
 	@Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
 
 	created() {
@@ -49,7 +48,7 @@ export default class Toolbox extends Vue {
 	}
 
 	handleToolboxClick() {
-		if (this.isMoving && !this.activeCell.frozen && this.moveSource !== 'toolbox') {
+		if (this.isMoving && !this.activeCell.frozen && this.activeCell.coord.x > -1) {
 			this.mutationAddToCurrentTools(this.activeCell);
 		}
 	}

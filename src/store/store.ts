@@ -61,7 +61,7 @@ const store: StoreOptions<RootState> = {
 			state.currentTools = [...state.currentTools, cell];
 		},
 		[REMOVE_FROM_CURRENT_TOOLS](state, cell) {
-			const index = state.currentTools.indexOf(cell);
+			const index = state.currentTools.findIndex((tool) => tool.element.name === cell.element.name);
 			state.currentTools.splice(index, 1);
 		}
 	},

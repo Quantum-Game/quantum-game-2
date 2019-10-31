@@ -150,15 +150,18 @@ export default class QGrid extends Vue {
 	moveCell(coord: Coord): boolean {
 		const destinationCell = this.grid.get(coord);
 		if (!destinationCell.frozen && !this.activeCell.frozen) {
-			if (this.moveSource === 'toolbox') {
+			// the cell is coming from the toolbox,
+			// delete it from there
+			if (this.activeCell.coord.x === -1) {
 				this.mutationRemoveFromCurrentTools(this.activeCell);
+			}	else {
+			// ...othersie, put void on active cell coords:
+				destinationCell.coord = this.activeCell.coord;
+				this.grid.set(destinationCell);
 			}
-			destinationCell.coord = this.activeCell.coord;
-			const sourceCell = this.activeCell;
-			sourceCell.coord = coord;
-			this.grid.set(sourceCell);
-			this.grid.set(destinationCell);
-			this.mutationResetMoveSource();
+			// place the activeCell on the new cords
+			this.activeCell.coord = coord;
+			this.grid.set(this.activeCell);
 			return true;
 		}
 		return false;
