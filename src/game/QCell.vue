@@ -12,9 +12,9 @@
 </template>
 
 <script lang="ts">
-import { Mutation, State } from 'vuex-class';
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
-import { Cell } from '@/engine/classes';
+import { Mutation, State } from 'vuex-class';
+import { Cell, CellInterface } from 'quantumweasel';
 import {
 	Laser,
 	Mirror,
@@ -38,7 +38,7 @@ import { getPosition } from '@/mixins';
 
 const borderColors = {
 	active: '#FF0055',
-	rotable: 'white',
+	rotable: 'yellow',
 	energized: 'blue'
 };
 
@@ -94,9 +94,9 @@ export default class QCell extends Mixins(getPosition) {
 				// set the vuex property indicating the
 				// movement source
 				if (this.tool) {
-					this.mutationSetMoveSource('toolbox')
+					this.mutationSetMoveSource('toolbox');
 				} else {
-					this.mutationSetMoveSource('grid')
+					this.mutationSetMoveSource('grid');
 				}
 			} else {
 				this.indicateUnmovable();
@@ -141,11 +141,10 @@ export default class QCell extends Mixins(getPosition) {
 	 * @returns void
 	 */
 	indicateUnmovable(): void {
-		// this.border = borderColors.active;
-		// const timeout = setTimeout(() => {
-		// 	this.border = '';
-		// }, 200);
-		this.border = '';
+		this.border = borderColors.active;
+		const timeout = setTimeout(() => {
+			this.border = '';
+		}, 200);
 	}
 
 	/**
@@ -153,7 +152,7 @@ export default class QCell extends Mixins(getPosition) {
 	 * @returns a boolean
 	 */
 	get validDrag(): boolean {
-		return !this.cell.frozen && (this.cell.element.name !== 'Void');
+		return !this.cell.frozen && this.cell.element.name !== 'Void';
 	}
 
 	/**
@@ -219,11 +218,7 @@ rect {
 	fill: transparent;
 }
 .movable-space:hover {
-	fill: rgba(255, 255, 255, 0.1);
+	fill: yellow;
 	transition: 0.3s;
-}
-
-.is-movable {
-	fill: red; 
 }
 </style>

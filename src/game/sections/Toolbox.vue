@@ -1,5 +1,5 @@
 <template>
-	<div class="toolbox">
+	<div class="toolbox" @click="handleToolboxClick">
 		<svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
 			<q-cell :cell="getFakeCell(toolName)" :tool="true" />
 			<text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
@@ -11,7 +11,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
-import { State } from 'vuex-class';
+import { State, Mutation } from 'vuex-class';
 import { Cell, Element, Coord } from '@/engine/classes';
 import QCell from '../QCell.vue';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
@@ -30,6 +30,8 @@ export default class Toolbox extends Vue {
 	toolbox: Tool = {};
 	@State isMoving!: boolean;
 	@State activeCell!: Cell;
+	@State moveSource!: string;
+	@Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
 
 	created() {
 		this.processTools();
@@ -44,6 +46,12 @@ export default class Toolbox extends Vue {
 		const coord = new Coord(-1, -1);
 		const element = Element.fromName(name);
 		return new Cell(coord, element);
+	}
+
+	handleToolboxClick() {
+		if (this.isMoving && !this.activeCell.frozen && this.moveSource !== 'toolbox') {
+			this.mutationAddToCurrentTools(this.activeCell);
+		}
 	}
 
 	get toolboxKeys(): string[] {
@@ -76,6 +84,7 @@ export default class Toolbox extends Vue {
 	border-top: 1px solid white;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	min-height: 300px;
 	& h3 {
 		margin: 0;
 	}
