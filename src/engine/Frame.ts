@@ -175,6 +175,7 @@ export default class Frame {
 		this.level.goals.forEach((goal) =>
 			this.quantum.forEach((particle) => {
 				if (particle.coord.equal(goal.coord)) {
+					// eslint-disable-next-line no-param-reassign
 					goal.value += particle.probability;
 				}
 			})
