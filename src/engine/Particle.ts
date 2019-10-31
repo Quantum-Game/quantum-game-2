@@ -26,6 +26,7 @@ export interface Qparticle {
 export default class Particle extends Coord {
 	coord: Coord;
 	direction: number;
+	intensity: number;
 	phase: number;
 	a: Complex;
 	b: Complex;
@@ -56,6 +57,7 @@ export default class Particle extends Coord {
 		super(coord.y, coord.x);
 		this.coord = coord;
 		this.direction = direction;
+		this.intensity = intensity;
 		this.phase = phase;
 		this.a = new Complex(are, aim);
 		this.b = new Complex(bre, bim);
@@ -70,9 +72,9 @@ export default class Particle extends Coord {
 		return Coord.importCoord(this.path[0].coord);
 	}
 
-	get intensity(): number {
-		return this.probability;
-	}
+	// get intensity(): number {
+	// 	return this.probability;
+	// }
 
 	/**
 	 * Check if the particle has any intensity
@@ -179,7 +181,7 @@ export default class Particle extends Coord {
 	 *  Propagate the particle in a classical simulation
 	 * @returns updated Particle
 	 */
-	get next(): Particle {
+	next(): Particle {
 		this.path.push(this.exportParticle());
 		this.coord = this.coord.fromAngle(this.direction);
 		return this;
