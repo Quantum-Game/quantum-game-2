@@ -4,6 +4,7 @@ export interface RootState {
 	activeCell: Cell;
 	currentTools: Cell[];
 	isMoving: boolean;
+	moveSource: string;
 }
 
 export interface IHint {

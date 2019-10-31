@@ -11,7 +11,9 @@ import {
 	RESET_CURRENT_TOOLS,
 	ADD_TO_CURRENT_TOOLS,
 	REMOVE_FROM_CURRENT_TOOLS,
-	SET_ACTIVE_CELL_COORDINATES
+	SET_ACTIVE_CELL_COORDINATES,
+	SET_MOVE_SOURCE,
+	RESET_MOVE_SOURCE
 } from './mutation-types';
 
 const initialCell = new Cell(new Coord(0, 0), Element.fromName('Void'));
@@ -21,9 +23,11 @@ const store: StoreOptions<RootState> = {
 	state: {
 		activeCell: initialCell,
 		currentTools: [],
-		isMoving: false
+		isMoving: false,
+		moveSource: ''
 	},
 	mutations: {
+		// active cell functional
 		[SET_ACTIVE_CELL](state, cell) {
 			state.activeCell = cell;
 		},
@@ -33,12 +37,20 @@ const store: StoreOptions<RootState> = {
 		[SET_ACTIVE_CELL_COORDINATES](state, coord) {
 			state.activeCell.coord = coord;
 		},
+		// moving functionality
 		[START_MOVING](state) {
 			state.isMoving = true;
 		},
 		[STOP_MOVING](state) {
 			state.isMoving = false;
 		},
+		[SET_MOVE_SOURCE](state, source) {
+			state.moveSource = source;
+		},
+		[RESET_MOVE_SOURCE](state) {
+			state.moveSource = '';
+		},
+		// toolbox functionality
 		[SET_CURRENT_TOOLS](state, cells) {
 			state.currentTools = cells;
 		},

@@ -223,10 +223,14 @@ export default class Game extends Vue {
 			if (cell.element.name !== 'Void' && !cell.frozen) {
 				return cell;
 			}
-			return false;
 		});
+		this.$store.commit('SET_CURRENT_TOOLS', cloneDeep(arrayOfUnfrozenCells));
 
-		this.$store.commit('SET_CURRENT_TOOLS', arrayOfUnfrozenCells);
+		arrayOfUnfrozenCells.map((cell: Cell) => {
+			const element = Element.fromName('Void');
+			cell.element = element;
+			cell.rotation = 0;
+		})
 	}
 
 	get toolboxElements() {
