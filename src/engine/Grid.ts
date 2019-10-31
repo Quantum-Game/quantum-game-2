@@ -180,18 +180,21 @@ export default class Grid extends Cluster {
 		// Simulate path with a specific number of frames
 		for (let i = 0; i < maxFrames; i += 1) {
 			// Propagate each living particle
+			// eslint-disable-next-line
 			alive.forEach((particle: Particle) => {
-				particle.next;
+				particle.next();
 
 				// Zero the intensity of escaping particles
 				if (!this.includes(particle.coord)) {
-					// particle.intensity = 0
+					// eslint-disable-next-line no-param-reassign
+					particle.intensity = 0;
 				}
 
 				// Absorption
 				this.absorbers.cells.forEach((absorber: Cell) => {
 					if (particle.on(absorber)) {
-						// particle.intensity -= particle.intensity * absorber.element.absorption
+						// eslint-disable-next-line no-param-reassign
+						particle.intensity -= particle.intensity * absorber.element.absorption;
 					}
 				});
 
@@ -217,18 +220,11 @@ export default class Grid extends Cluster {
 				this.beamsplitters.cells.forEach((beamsplitter: Cell) => {
 					if (particle.on(beamsplitter)) {
 						// Dim the current particle intensity
-						// particle.intensity /= 2
+						// eslint-disable-next-line no-param-reassign
+						particle.intensity /= 2;
 						// Reflecting particle (create new reflected faded particle)
 						const direction = (2 * beamsplitter.rotation - particle.direction + 360) % 360;
 						alive.push(new Particle(particle.coord, direction, particle.intensity));
-					}
-				});
-
-				// Phase shifters
-				this.phaseshifters.cells.forEach((phaseshifter: Cell) => {
-					if (particle.on(phaseshifter)) {
-						// eslint-disable-next-line no-param-reassign
-						particle.phase = (particle.phase + phaseshifter.element.phase) % 1;
 					}
 				});
 			});
