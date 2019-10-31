@@ -1,7 +1,6 @@
 import { CellInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
-import Particle from './Particle';
 import { angleToSymbol } from './Helpers';
 /**
  * CELL CLASS
@@ -93,17 +92,17 @@ export default class Cell {
 		this.energized = !this.energized;
 	}
 
-	/**
-	 * Fire the laser
-	 * Convert the laser direction and position into a photon
-	 * @returns Particle
-	 */
-	fire(): Particle {
-		if (this.active) {
-			return new Particle(this.coord, this.rotation, 1, 0);
-		}
-		throw Error('Laser is inactive...');
-	}
+	// /**
+	//  * Fire the laser
+	//  * Convert the laser direction and position into a photon
+	//  * @returns Particle
+	//  */
+	// fire(): Particle {
+	// 	if (this.active) {
+	// 		return new Particle(this.coord, this.rotation, 1, 0);
+	// 	}
+	// 	throw Error('Laser is inactive...');
+	// }
 
 	/**
 	 * Output a string describing the cell, overrides toString() method

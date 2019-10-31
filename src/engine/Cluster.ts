@@ -35,8 +35,9 @@ export default class Cluster {
 	 * Trim the void around the cells and return the smallest level container
 	 * @returns a list of cells with trimmed coordinates
 	 */
-	public compress(): Cluster {
+	public trim(): Cluster {
 		const cluster = this.unvoid;
+		const trimmed: Cell[] = [];
 		const minX = Math.min(...cluster.cells.map((cell) => cell.coord.x));
 		const minY = Math.min(...cluster.cells.map((cell) => cell.coord.y));
 		const maxX = Math.max(...cluster.cells.map((cell) => cell.coord.x));
@@ -46,11 +47,13 @@ export default class Cluster {
 		console.debug(`The most compressed version is: X:${sizeX} Y: ${sizeY}`);
 
 		cluster.cells.forEach((cell) => {
-			cell.coord.x -= minX;
-			cell.coord.y -= minY;
+			const trimmedCell = cell;
+			trimmedCell.coord.x -= minX;
+			trimmedCell.coord.y -= minY;
+			trimmed.push(trimmedCell);
 		});
 
-		return cluster;
+		return new Cluster(trimmed);
 	}
 
 	/**

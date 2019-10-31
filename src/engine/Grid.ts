@@ -136,7 +136,7 @@ export default class Grid extends Cluster {
 	public moveAll(direction: number): void {
 		console.debug(`Moving all in direction: ${direction}`);
 		this.cells.map((cell) => {
-			cell.coord = cell.coord.fromAngle(direction);
+			return cell.coord.fromAngle(direction);
 		});
 	}
 
@@ -146,7 +146,10 @@ export default class Grid extends Cluster {
 	 */
 	public fireLasers(): Particle[] {
 		return this.lasers.active.cells.map((laser) => {
-			return laser.fire();
+			if (laser.active) {
+				return new Particle(laser.coord, laser.rotation, 1, 0);
+			}
+			throw Error('Laser is inactive...');
 		});
 	}
 
@@ -156,15 +159,11 @@ export default class Grid extends Cluster {
 	 * @param coord Coordinate
 	 */
 	coordIntensitySum(coord: Coord): number {
-		let sum = 0;
-		this.paths
+		return this.paths
 			.filter((particleInterface) => {
 				return coord.equal(particleInterface.coord);
 			})
-			.map((particle) => {
-				sum += particle.intensity;
-			});
-		return sum;
+			.reduce((a, b) => a + b.probability, 0);
 	}
 
 	/**
@@ -259,19 +258,11 @@ export default class Grid extends Cluster {
 	 * @returns a list of coordinates
 	 * */
 	computePaths(): Particle[] {
-		const laserCoords: Particle[] = [];
-		this.lasers.active.cells
-			.map((laser) => {
-				return laser.fire();
-			})
-			.map((particle) => {
-				[...new Set(flatDeep(this.laserPath(particle, 40)))].map((particle: Particle) => {
-					if (particle.coord.isIncludedIn(this.coords)) {
-						laserCoords.push(particle);
-					}
-				});
-			});
-		return laserCoords;
+		const laserParticles = this.fireLasers();
+		const particles = laserParticles.map((laserParticle: Particle) => {
+			return [...new Set(this.laserPath(laserParticle, 40).flat())];
+		});
+		return particles.flat();
 	}
 
 	/**
@@ -280,7 +271,7 @@ export default class Grid extends Cluster {
 	 */
 	energizeCells(paths: ParticleInterface[]): void {
 		const pathCoords: Coord[] = paths.map((pathParticle) => Coord.importCoord(pathParticle.coord));
-		this.cells.forEach((cell) => {
+		this.cells.forEach((cell: Cell) => {
 			if (cell.coord.isIncludedIn(pathCoords) && cell.element.name !== 'Void') {
 				cell.energized = true;
 			} else {

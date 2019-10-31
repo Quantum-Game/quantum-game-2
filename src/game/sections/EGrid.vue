@@ -147,14 +147,14 @@ export default class EGrid extends Vue {
 	 * Clipping the value of the frameNumber to be displayed
 	 */
 	setFrame(val: number) {
-		const value = val;
-		if (val < 0) {
-			val = 0;
+		let value = val;
+		if (value < 0) {
+			value = 0;
 		}
-		if (val >= this.frames.length - 1) {
-			val = this.frames.length - 1;
+		if (value >= this.frames.length - 1) {
+			value = this.frames.length - 1;
 		}
-		this.frameNumber = val;
+		this.frameNumber = value;
 	}
 
 	reset() {

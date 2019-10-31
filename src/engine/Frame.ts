@@ -43,7 +43,7 @@ export default class Frame {
 	 * @returns Frame
 	 */
 	next(): Frame {
-		let classical: Particle[] = [];
+		const classical: Particle[] = [];
 		let quantum: Particle[] = [];
 		const end = false;
 
@@ -51,7 +51,7 @@ export default class Frame {
 		if (this.step === 0) {
 			this.level.grid.lasers.active.cells.forEach((laser) => {
 				// Classical code
-				classical.push(laser.fire());
+				// classical.push(laser.fire());
 				// Quantum code
 				this.level.state.addPhotonIndicator(laser.coord.x, laser.coord.y, laser.ascii, 'V');
 				console.debug('quantum', this.level.state.vector.toString());
@@ -61,7 +61,7 @@ export default class Frame {
 			// Compute frames
 		}
 		quantum = this.nextQuantum();
-		classical = this.nextClassical();
+		// classical = this.nextClassical();
 		// const gameState = this.processGameState()
 
 		// Compute current gameState
