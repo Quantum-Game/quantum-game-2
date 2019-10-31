@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { CellInterface, CoordInterface, FrameInterface } from 'quantumweasel';
+import { CellInterface, CoordInterface, FrameInterface } from '@/engine/interfaces';
 import Photon from '../Photon.vue';
 import QButton from '../../components/QButton.vue';
 

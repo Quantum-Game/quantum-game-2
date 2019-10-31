@@ -27,7 +27,8 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { Level, GridInterface } from 'quantumweasel';
+import { Level } from '@/engine/classes';
+import { GridInterface } from '@/engine/interfaces';
 import EntrySection, { ISection } from './EntrySection.vue';
 import Photon from '../game/Photon.vue';
 import QButton from '../components/QButton.vue';

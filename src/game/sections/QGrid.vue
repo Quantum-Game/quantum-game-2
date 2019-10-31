@@ -69,8 +69,11 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell, ParticleInterface, CellInterface, Coord, Element } from 'quantumweasel';
 import { Mutation, State } from 'vuex-class';
+import Coord from '@/engine/Coord';
+import Cell from '@/engine/Cell';
+import Grid from '@/engine/Grid';
+import { ParticleInterface, CellInterface } from '@/engine/interfaces';
 import { IHintList } from '@/types';
 import { Photon, QCell, SpeechBubble } from '..';
 
@@ -150,6 +153,35 @@ export default class QGrid extends Vue {
 			this.grid.set(sourceCell);
 			this.grid.set(destinationCell);
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Used to move a cell
+	 * @params coord to move to
+	 * @returns boolean
+	 */
+	handleClick(cell: Cell) {
+		if (cell.element.name === 'Void' && this.activeCell.element.name) {
+			const voidCell = cell;
+			const { activeCell } = this;
+			// Active cell gets coordinate of the void cell
+			const newCoord = voidCell.coord;
+			const oldCoord = activeCell.coord;
+			// The active cell is replaced by a blank cell
+			this.activeCell.coord = newCoord;
+			voidCell.coord = oldCoord;
+
+			// Cell comes from toolbox
+			if (activeCell.coord.x === -1) {
+				console.debug('Tool');
+			} else {
+				this.grid.set(activeCell);
+				this.grid.set(voidCell);
+			}
+		} else {
+			this.rotateCell(cell);
 		}
 		return false;
 	}

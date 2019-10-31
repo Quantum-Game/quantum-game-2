@@ -54,19 +54,14 @@
 <script lang="ts">
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
 import {
-	Level,
-	Frame,
-	Particle,
 	CellInterface,
 	FrameInterface,
 	LevelInterface,
 	ParticleInterface,
-	GoalInterface,
-	Cell,
-	Coord,
-	Element
-} from 'quantumweasel';
+	GoalInterface
+} from '@/engine/interfaces';
 import { Goals, Explanation, Toolbox, Controls, YourPhoton, QGrid } from '../game/sections';
 import GameLayout from '../layouts/GameLayout.vue';
 import levelData from '../game/levels';
