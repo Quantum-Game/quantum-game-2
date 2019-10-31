@@ -144,6 +144,24 @@ export default class QGrid extends Vue {
 	 * @params coord to move to
 	 * @returns boolean
 	 */
+	moveCell(coord: Coord): boolean {
+		const destinationCell = this.grid.get(coord);
+		if (!destinationCell.frozen && !this.activeCell.frozen) {
+			destinationCell.coord = this.activeCell.coord;
+			const sourceCell = this.activeCell;
+			sourceCell.coord = coord;
+			this.grid.set(sourceCell);
+			this.grid.set(destinationCell);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Used to move a cell
+	 * @params coord to move to
+	 * @returns boolean
+	 */
 	handleClick(cell: Cell) {
 		if (cell.element.name === 'Void' && this.activeCell.element.name) {
 			const voidCell = cell;
@@ -163,7 +181,7 @@ export default class QGrid extends Vue {
 				this.grid.set(voidCell);
 			}
 		} else {
-			this.rotate(cell);
+			this.rotateCell(cell);
 		}
 		return false;
 	}
