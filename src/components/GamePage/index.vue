@@ -1,12 +1,12 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <overlay :game-state="gameState" @click.native="frameNumber = 0">
+    <app-overlay :game-state="gameState" @click.native="frameNumber = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
       </router-link>
-    </overlay>
+    </app-overlay>
 
     <!-- GENERAL LAYOUT -->
     <game-layout>

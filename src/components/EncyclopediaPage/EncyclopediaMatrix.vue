@@ -1,161 +1,143 @@
 <template>
-	<div class="container">
-		<div>
-			<h2>{{ elementName }} at {{ rotation }}°</h2>
-			<encyclopedia-operator-viewer
-				:labels-in="basis"
-				:labels-out="basis"
-				:matrix-elements="matrixElements"
-				:height="300"
-				:width="300"
-				:size="30"
-				:margin="20"
+	<svg class="operator-viewer" :width="width" :height="height">
+		<g class="labels-in" :transform="`translate(${1.5 * margin}, ${0.5 * margin})`">
+			<text
+				v-for="(label, i) in labelsIn"
+				:key="`label-in-${label}`"
+				class="label-in"
+				:x="scale(i)"
+				:y="0"
+			>
+				⟨{{ label }}|
+			</text>
+		</g>
+		<g class="labels-out" :transform="`translate(${0.5 * margin}, ${1.5 * margin})`">
+			<text
+				v-for="(label, i) in labelsOut"
+				:key="`label-out-${label}`"
+				class="label-out"
+				:x="0"
+				:y="scale(i)"
+				dy="0.5em"
+			>
+				|{{ label }}⟩
+			</text>
+		</g>
+		<g :transform="`translate(${margin}, ${margin})`">
+			<rect
+				v-for="(d, i) in matrixElements"
+				:key="i"
+				class="tile"
+				:x="scale(d.i)"
+				:y="scale(d.j)"
+				:width="size"
+				:height="size"
+				:style="{ fill: colorComplex(d.re, d.im) }"
+				@mouseover="tileMouseOver(d)"
 			/>
-			<div class="eboard">
-				<encyclopedia-board :level="level" :step="step" class="board" />
-			</div>
-			<div>
-				<span>Select dimension order:</span>
-				<select v-model="dimOrder">
-					<option value="dir pol">dir pol</option>
-					<option value="pol dir">pol dir</option>
-				</select>
-				<div class="operatorText">{{ operator }}</div>
-			</div>
-		</div>
-	</div>
+		</g>
+		<text class="description" :x="scale(4.5)" :y="scale(10)">{{ description }}</text>
+	</svg>
 </template>
 
 <script lang="ts">
-import cloneDeep from 'lodash.clonedeep';
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import * as qt from 'quantum-tensors';
-import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
-import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
-import EncyclopediaOperatorViewer from '@/components/EncyclopediaPage/EncyclopediaOperatorViewer.vue';
-import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component({
-	components: {
-		EncyclopediaBoard,
-		EncyclopediaOperatorViewer
+const TAU = 2 * Math.PI;
+
+/**
+ * Stolen from https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
+ * Alternatively: d3.hsl
+ */
+function hslToHex(hParam: number, sParam: number, lParam: number) {
+	let h = hParam;
+	let s = sParam;
+	let l = lParam;
+	h /= 360;
+	s /= 100;
+	l /= 100;
+	let r;
+	let g;
+	let b;
+	if (s === 0) {
+		r = l;
+		g = l;
+		b = l; // achromatic
+	} else {
+		const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
+			const p = pParam;
+			const q = qParam;
+			let t = tParam;
+			if (t < 0) t += 1;
+			if (t > 1) t -= 1;
+			if (t < 1 / 6) return p + (q - p) * 6 * t;
+			if (t < 1 / 2) return q;
+			if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+			return p;
+		};
+		const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+		const p = 2 * l - q;
+		r = hue2rgb(p, q, h + 1 / 3);
+		g = hue2rgb(p, q, h);
+		b = hue2rgb(p, q, h - 1 / 3);
 	}
-})
-export default class EncyclopediaMatrix extends Vue {
-	@Prop({ default: 'Mirror' }) readonly elementName!: string;
-	@Prop({ default: '0' }) readonly rotation!: number;
-	@Prop({ default: 5 }) readonly step!: number;
-	element = Element.fromName(this.elementName);
-	coord = new Coord(1, 1);
-	cell = new Cell(this.coord, this.element, this.rotation);
-	level: Level = Level.importLevel({
-		id: 1337,
-		name: this.elementName,
-		group: 'Encyclopedia',
-		description: this.elementName,
-		grid: {
-			cols: 3,
-			rows: 3,
-			cells: [
-				{
-					coord: { x: 0, y: 1 },
-					element: 'Laser',
-					rotation: 0,
-					active: true,
-					frozen: true
-				},
-				{
-					coord: { x: 1, y: 1 },
-					element: this.elementName,
-					rotation: this.rotation,
-					active: false,
-					frozen: false
-				}
-			]
-		},
-		hints: [],
-		goals: []
-	});
-	dimOrder = 'dir pol';
+	const toHex = (x: number) => {
+		const hex = Math.round(x * 255).toString(16);
+		return hex.length === 1 ? `0${hex}` : hex;
+	};
+	return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 
-	$refs!: {
-		grid: HTMLElement;
+@Component
+export default class EncyclopediaOperatorViewer extends Vue {
+	@Prop({ default: () => 800 }) private width!: number;
+	@Prop({ default: () => 600 }) private height!: number;
+	@Prop({ default: () => 40 }) private size!: number;
+	@Prop({ default: () => 40 }) private margin!: number;
+	// @Prop() private height = 600  // generates error
+	@Prop({ default: () => [] }) private matrixElements!: {
+		i: number;
+		j: number;
+		re: number;
+		im: number;
+	}[];
+	@Prop({ default: () => [] }) private labelsIn!: number[];
+	@Prop({ default: () => [] }) private labelsOut!: number[];
+
+	scale = (i: number) => i * this.size;
+	description = '';
+
+	// https://github.com/stared/quantum-game/blob/master/js/transition_heatmap.js
+	colorComplex = (re: number, im: number) => {
+		const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360;
+		const r = Math.sqrt(re * re + im * im); // for pure color it should be always 1
+		return hslToHex(angleInDegrees, 100, 100 - 50 * r);
 	};
 
-	get operator() {
-		const cell = this.level.grid.get(this.coord);
-		return cell.element.transition(cell.rotation);
-	}
-
-	get basis() {
-		if (this.dimOrder === 'dir pol') {
-			return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
-		}
-		return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣'];
-	}
-
-	get matrixElements() {
-		if (this.dimOrder === 'dir pol') {
-			return this.operator.entries.map((entry) => {
-				return {
-					i: 2 * entry.coordIn[0] + entry.coordIn[1],
-					j: 2 * entry.coordOut[0] + entry.coordOut[1],
-					re: entry.value.re,
-					im: entry.value.im
-				};
-			});
-		}
-		return this.operator.entries.map((entry) => {
-			return {
-				i: entry.coordIn[0] + 4 * entry.coordIn[1],
-				j: entry.coordOut[0] + 4 * entry.coordOut[1],
-				re: entry.value.re,
-				im: entry.value.im
-			};
-		});
-	}
-
-	/**
-	 * Temporary! I want to work with actual quantum states.
-	 * Also - quick, dirty, no-LaTeX and pure string
-	 */
-	frameToKet(frame: Frame): string {
-		const dirVis = new Map<number, string>();
-		dirVis.set(0, '⇢');
-		dirVis.set(90, '⇡');
-		dirVis.set(180, '⇠');
-		dirVis.set(270, '⇣');
-
-		return frame.quantum
-			.flatMap((d) => {
-				const res = [];
-				if (d.a.re !== 0 || d.a.im !== 0) {
-					res.push(
-						`(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${
-							d.coord.y
-						} ${dirVis.get(d.direction)} H⟩`
-					);
-				}
-				if (d.b.re !== 0 || d.b.im !== 0) {
-					res.push(
-						`(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${
-							d.coord.y
-						} ${dirVis.get(d.direction)} V⟩`
-					);
-				}
-				return res;
-			})
-			.join(' + ');
+	tileMouseOver(d: { i: number; j: number; re: number; im: number }) {
+		this.description = `i: ${d.i}, j: ${d.j}:   (${d.re.toFixed(2)} + ${d.im.toFixed(2)} i)|${
+			this.labelsOut[d.i]
+		}⟩⟨${this.labelsIn[d.j]}|`;
 	}
 }
 </script>
 
-<style lang="scss" scoped>
-.eboard {
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped lang="scss">
+.operator-viewer {
 	display: inline-block;
 }
-.operatorText {
-	padding: 10px;
-	font-size: 10px;
+
+.label-in,
+.label-out,
+.description {
+	font-size: 16px;
+	text-align: center;
+	text-anchor: middle;
+	fill: white;
+}
+
+.tile {
+	cursor: pointer;
 }
 </style>

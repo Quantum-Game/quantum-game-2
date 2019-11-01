@@ -33,7 +33,7 @@ import {
 	FaradayRotatorCell,
 	GlassCell,
 	VacuumJarCell
-} from './index';
+} from '@/components/Board/Cell/index';
 import { getPosition } from '@/mixins';
 
 const borderColors = {
