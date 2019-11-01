@@ -155,6 +155,21 @@ export interface EntrySectionInterface {
 	pics?: string[];
 }
 
+export interface RootState {
+	activeCell: CellInterface;
+	currentTools: CellInterface[];
+	isMoving: boolean;
+	moveSource: string;
+}
+
+export interface LevelListInterface {
+	[index: string]: LevelInterface;
+}
+
+export interface IToolset {
+	[key: string]: any;
+}
+
 /**
  * List of element names
  */

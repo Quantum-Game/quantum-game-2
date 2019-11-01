@@ -1,9 +1,9 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
-import { CellInterface } from '@/engine/interfaces';
+import { Cell } from '@/engine/classes';
 
 @Component
 export default class Piece extends Vue {
-	@Prop() readonly cell!: CellInterface;
+	@Prop() readonly cell!: Cell;
 	@Prop({ default: '' }) readonly border!: string;
 	@Prop({ default: 64 }) readonly tileSize!: number;
 
