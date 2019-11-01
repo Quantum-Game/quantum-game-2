@@ -4,7 +4,7 @@
   "group": "Classic",
   "description": "",
   "grid": {
-    "cols": 10,
+    "cols": 13,
     "rows": 10,
     "cells": [
       {
