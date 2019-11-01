@@ -37,8 +37,8 @@ import {
 import { getPosition } from '@/mixins';
 
 const borderColors = {
-	active: '#FF0055',
-	rotable: 'yellow',
+	active: "transparent",
+	rotable: 'white',
 	energized: 'blue'
 };
 
@@ -218,7 +218,8 @@ rect {
 	fill: transparent;
 }
 .movable-space:hover {
-	fill: yellow;
+	fill: white;
+	opacity: 0.1;
 	transition: 0.3s;
 }
 </style>
