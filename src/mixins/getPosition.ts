@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Cell } from '@/engine/classes';
-import { IHint } from '@/types';
+import { IHint } from '@/engine/interfaces';
 
 @Component
 export default class getPostion extends Vue {

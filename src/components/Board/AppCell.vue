@@ -2,7 +2,7 @@
 	<g :style="positionStyle" @click="handleCellClick">
 		<rect :width="tileSize" :height="tileSize" :class="rectBackgroundClass" />
 		<component
-			:is="cell.element.name"
+			:is="computedCellName"
 			:cell="cell"
 			:class="cell.element.name"
 			:cell-size="tileSize"
@@ -76,6 +76,10 @@ export default class AppCell extends Mixins(getPosition) {
 	@State activeCell!: Cell;
 
 	border = '';
+
+	get computedCellName() {
+		return `${this.cell.element.name}Cell`;
+	}
 
 	/**
 	 * used to handle clicking,

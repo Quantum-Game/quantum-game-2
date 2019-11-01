@@ -32,7 +32,7 @@ import level31 from './level31.json';
 import level32 from './level32.json';
 import level33 from './level33.json';
 import level34 from './level34.json';
-import { ILevelList } from '@/types';
+import { LevelListInterface } from '@/engine/interfaces';
 
 export {
 	level1,
@@ -71,7 +71,7 @@ export {
 	level34
 };
 
-const levels: ILevelList = {
+const levels: LevelListInterface = {
 	level1,
 	level2,
 	level3,
