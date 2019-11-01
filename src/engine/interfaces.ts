@@ -114,6 +114,33 @@ export interface CoordInterface {
 }
 
 /**
+ * Encyclopedia entry list
+ */
+export interface EntryListInterface {
+	[index: string]: EntryInterface;
+}
+
+/**
+ * Encyclopedia entry interface
+ */
+export interface EntryInterface {
+	title: string;
+	elementName: string;
+	short?: string;
+	grids: GridInterface[];
+	sections: EntrySectionInterface[];
+}
+
+/**
+ * Encyclopedia entry section interface
+ */
+export interface EntrySectionInterface {
+	title: string;
+	content?: string;
+	pics?: string[];
+}
+
+/**
  * List of element names
  */
 export const enum Elem {
@@ -145,6 +172,40 @@ export const enum Elem {
 	// Phase
 	Glass = 'Glass',
 	VacuumJar = 'VacuumJar'
+}
+
+/**
+ * List of element names in url compatible format
+ */
+export const enum ElemLower {
+	// Basic
+	Void = 'void',
+	Wall = 'wall',
+	Gate = 'gate',
+	// Source
+	Laser = 'laser',
+	// Direction
+	Mirror = 'mirror',
+	BeamSplitter = 'beam-splitter',
+	PolarizingBeamSplitter = 'polarizing-beam-splitter',
+	CoatedBeamSplitter = 'coated-beam-splitter',
+	CornerCube = 'corner-cube',
+	// Absorption
+	Detector = 'detector',
+	Rock = 'rock',
+	Mine = 'mine',
+	Absorber = 'absorber',
+	DetectorFour = 'detector-four',
+	// Polarization
+	PolarizerH = 'polarizer-h',
+	PolarizerV = 'polarizer-v',
+	QuarterWavePlateH = 'quarter-wave-plate-h',
+	QuarterWavePlateV = 'quarter-wave-plate-v',
+	SugarSolution = 'sugar-solution',
+	FaradayRotator = 'faraday-rotator',
+	// Phase
+	Glass = 'glass',
+	VacuumJar = 'vacuum-jar'
 }
 
 /**

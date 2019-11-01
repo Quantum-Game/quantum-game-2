@@ -4,15 +4,18 @@
 			<q-button type="basic">ENCYCLOPEDIA</q-button>
 		</router-link>
 		<article>
+			<!-- TITLE -->
 			<h1 class="title">{{ entry.title.toUpperCase() }}</h1>
 			<h2 class="short">{{ entry.short }}</h2>
 
-			<div class="boards">
+			<!-- GRIDS -->
+			<div class="grids">
 				<div v-for="(level, i) in levels" :key="'level' + i">
-					<Egrid :level="level.levelInst" :step="level.step" class="board" />
+					<Egrid :level="level.levelInst" :step="level.step" class="grid" />
 				</div>
 			</div>
 
+			<!-- SECTIONS -->
 			<entry-section
 				v-for="(section, index) in entry.sections"
 				:key="section.title"
@@ -20,6 +23,7 @@
 				:should-be-open-on-init="index === 0"
 			/>
 
+			<!-- EQUATION GRID -->
 			<EquationGrid :element-name="entry.elementName" :rotation="entry.defaultRotation" step="3" />
 		</article>
 	</div>
@@ -27,52 +31,26 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces';
 import { Level } from '@/engine/classes';
-import { GridInterface } from '@/engine/interfaces';
-import EntrySection, { ISection } from './EntrySection.vue';
-import Photon from '../game/Photon.vue';
-import QButton from '../components/QButton.vue';
 import { getEntry } from './entries';
-
+import EntrySection from './EntrySection.vue';
 import Egrid from '../game/sections/EGrid.vue';
+import QButton from '../components/QButton.vue';
 import EquationGrid from './EquationGrid.vue';
-
-interface IEntryList {
-	[index: string]: IEntry;
-}
-
-interface IEntry {
-	title: string;
-	elementName: string;
-	short?: string;
-	grids: Array<GridInterface>;
-	sections: Array<ISection>;
-}
 
 @Component({
 	components: {
+		QButton,
 		EntrySection,
 		Egrid,
-		QButton,
-		Photon,
 		EquationGrid
 	}
 })
-
-// XXX this thing produces an error - by definition, not even execution
-// const expandGridToLevel = (grid: GridInterface): Level => Level.importLevel({
-//   id: 1345,
-//   name: "sdf",
-//   group: "sg",
-//   description: "sdgsd",
-//   grid: grid,
-//   hints: [],
-//   goals: []
-// })
 export default class Entry extends Vue {
-	entry: IEntry = {
+	entry: EntryInterface = {
 		title: '',
-		elementName: 'Mirror', // XXX suck at reloading, vide router and params
+		elementName: 'Mirror',
 		grids: [],
 		sections: []
 	};
@@ -145,7 +123,7 @@ h1 {
 	border-bottom: 1px solid white;
 	text-align: center;
 }
-.boards {
+.grids {
 	display: flex;
 	justify-content: space-around;
 	width: 100%;
@@ -155,7 +133,7 @@ h1 {
 	padding-top: 2rem;
 	width: 100%;
 	border-bottom: 1px solid #8e819d;
-	& .board {
+	& .grid {
 		width: 100%;
 		margin: 0 auto 0rem;
 		height: 200px;

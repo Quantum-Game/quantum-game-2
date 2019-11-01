@@ -1,5 +1,5 @@
 {
-  "BeamSplitter": {
+  "beam-splitter": {
     "title": "50-50 Beamsplitter",
     "elementName": "BeamSplitter",
     "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one",
@@ -35,7 +35,7 @@
       {
         "title": "EVERYDAY USE",
         "contents": [
-          "Beamsplitters can come in two forms: a cube or a thin slab (like shown in the figure above).</p><p><strong>Beamsplitters cubes</strong> are made of two prisms glued to each other. Using a phenomenon called <em><a href=\"https://en.wikipedia.org/wiki/Total_internal_reflection#Frustrated_total_internal_reflection\" target=\"_blank\">frustrated total internal reflection</a></em> half of the initial beam is reflected, the other half is transmitted. This ratio depends on the gap between the two prisms, which is chosen and manufactured extremely carefully.</p><p>[You can experiment with frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing"
+          "Beamsplitters can come in two forms: a cube or a thin slab (like shown in the figure above).</p><p><strong>Beamsplitters cubes</strong> are made of two prisms glued to each other. Using a phenomenon called <em><a href='https://en.wikipedia.org/wiki/Total_internal_reflection#Frustrated_total_internal_reflection' target='_blank'>frustrated total internal reflection</a></em> half of the initial beam is reflected, the other half is transmitted. This ratio depends on the gap between the two prisms, which is chosen and manufactured extremely carefully.</p><p>[You can experiment with frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing"
         ]
       },
       {
@@ -54,24 +54,24 @@
         "title": "FURTHER RESOURCES",
         "contents": [
           "Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:<br/>-Michelson-Morley interferometers<br/>-Mach-Zehnder interferometers<br/>",
-          "Beamsplitter-1.png",
+          "encyclopedia/Beamsplitter-1.png",
           "Famous experiments that used beamsplitters are:<br/>-The Fizeau experiment of 1851 to measure the speeds of light in water<br/>-The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light<br/>-Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories<br/>-Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens"
         ]
       },
       {
         "title": "TRANSITIONS MAP",
         "contents": [
-          "<a href=\"https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/\" target=\"_blank\">What are Beamsplitters?</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Beam_splitter\" target=\"_blank\">Beamsplitters on Wikipedia</a>",
-          "<a href=\"https://www.rp-photonics.com/beam_splitters.html\" target=\"_blank\">Beamsplitters on RP Photonics Encyclopedia</a>",
+          "<a href='https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/' target='_blank'>What are Beamsplitters?</a>",
+          "<a href='https://en.wikipedia.org/wiki/Beam_splitter' target='_blank'>Beamsplitters on Wikipedia</a>",
+          "<a href='https://www.rp-photonics.com/beam_splitters.html' target='_blank'>Beamsplitters on RP Photonics Encyclopedia</a>",
           "Videos on hommade beamsplitters:",
-          "<a href=\"https://www.youtube.com/watch?v=P1n3hizj3c4\" target=\"_blank\">What is a beam splitter and how do you make one?</a>",
-          "<a href=\"https://www.youtube.com/watch?v=C7edG13kzgU\" target=\"_blank\">Playing with beamsplitters</a>"
+          "<a href='https://www.youtube.com/watch?v=P1n3hizj3c4' target='_blank'>What is a beam splitter and how do you make one?</a>",
+          "<a href='https://www.youtube.com/watch?v=C7edG13kzgU' target='_blank'>Playing with beamsplitters</a>"
         ]
       }
     ]
   },
-  "Mirror": {
+  "mirror": {
     "title": "Mirror",
     "elementName": "Mirror",
     "short": "A mirror is an object that reflects incident light preserving its properties.",
@@ -104,7 +104,6 @@
           "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
           "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
         ]
-
       },
       {
         "title": "TRICKS WITH PHASE!",
@@ -133,10 +132,10 @@
       }
     ]
   },
-  "Detector": {
-    "title": "Detector",
+  "detector": {
+    "title": "Photon Detector",
     "elementName": "Detector",
-    "short": "A detector lorem ipusm.",
+    "short": "It detects any photon which is incident on it by transforming it into an electrical signal. To win the game, you want to feed as many carnivorous plants as possible! They are hungry!",
     "grids": [
       {
         "cols": 4,
@@ -161,32 +160,54 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
+        "title": "BASICS",
         "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
+          "Some people argue that us humans, if we really stretch our eyes, can detect even single photons. (<a href='https://www.nature.com/news/people-can-sense-single-photons-1.20282'>People can sense single photons - Nature</a>) “The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”. Catching a single photon is an enormous challenge! Luckily scientists have worked for us and have come up with many devices which can sense as little as one photon!",
+          "One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely."
         ]
       },
       {
-        "title": "EVERYDAY LIFE",
+        "title": "EVERYDAY USE",
         "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
+          "Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory!",
+          "And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!"
+        ]
+      },
+      {
+        "title": "DIGGING DEEPER",
+        "contents": [
+          "How does a photomultiplier tube work?",
+          "These devices are a tube filled with vacuum. Inside, the photons hit a cathode, here, by the photoelectric effect, they are transformed into electrons.",
+          "The electrons are they guided down along the tube and, as they hit other electrons, they create more and more electrons. The original electron from the photon is multiplied to create a flow of electrons, or a current, high enough to be measured precisely.",
+          "encyclopedia/detector-photomultiplier.jpg",
+          "Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!",
+          "Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!"
+        ]
+      },
+      {
+        "title": "LABORATORY USE",
+        "contents": [
+          "PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!",
+          "detector-superkami.jpg"
         ]
       },
       {
         "title": "FURTHER RESOURCES",
         "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
+          "<a href='https://en.wikipedia.org/wiki/Photodetector' target='_blank'>Photodetector - Wikipedia</a>",
+          "<a href='https://en.wikipedia.org/wiki/Photon_counting' target='_blank'>Photon counting - Wikipedia</a>",
+          "<a href='https://en.wikipedia.org/wiki/Photomultiplier_tube' target='_blank'>Photomultiplier tube - Wikipedia</a>",
+          "<a href='https://www.nature.com/news/people-can-sense-single-photons-1.20282' target='_blank'>People can sense single photons - Nature</a>",
+          "<a href='http://math.ucr.edu/home/baez/physics/Quantum/see_a_photon.html' target='_blank'>See a photon</a>",
+          "<a href='https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html' target='_blank'>Awaiting neutrino supernova</a>"
+        ]
+      },
+      {
+        "title": "RELATED CONCEPTS",
+        "contents": [
+          "Photoelectric effect",
+          "Single photon source",
+          "Spontaneous emission / absorption / stimulated  emission"
         ]
       },
       {
@@ -195,7 +216,7 @@
       }
     ]
   },
-  "Mine": {
+  "mine": {
     "title": "Mine",
     "elementName": "Mine",
     "short": "A Mine lorem ipusm.",
@@ -256,7 +277,7 @@
       }
     ]
   },
-  "PolarizingBeamSplitter": {
+  "polarizing-beam-splitter": {
     "title": "PolarizingBeamSplitter",
     "elementName": "PolarizingBeamSplitter",
     "short": "PolarizingBeamSplitter lorem ipusm.",
@@ -317,7 +338,7 @@
       }
     ]
   },
-  "CoatedBeamSplitter": {
+  "coated-beam-splitter": {
     "title": "CoatedBeamSplitter",
     "elementName": "CoatedBeamSplitter",
     "short": "CoatedBeamSplitter lorem ipusm.",
@@ -378,7 +399,7 @@
       }
     ]
   },
-  "CornerCube": {
+  "corner-cube": {
     "title": "CornerCube",
     "elementName": "CornerCube",
     "short": "CornerCube lorem ipusm.",
@@ -500,7 +521,7 @@
       }
     ]
   },
-  "Absorber": {
+  "absorber": {
     "title": "Absorber",
     "elementName": "Absorber",
     "short": "Absorber lorem ipusm.",
@@ -561,7 +582,7 @@
       }
     ]
   },
-  "DetectorFour": {
+  "detector-four": {
     "title": "DetectorFour",
     "elementName": "DetectorFour",
     "short": "DetectorFour lorem ipusm.",
@@ -622,7 +643,7 @@
       }
     ]
   },
-  "Polarizer": {
+  "polarizer": {
     "title": "Polarizer",
     "elementName": "Polarizer",
     "short": "Polarizer lorem ipusm.",
@@ -683,7 +704,7 @@
       }
     ]
   },
-  "QuarterWavePlate": {
+  "quarter-wave-plate": {
     "title": "QuarterWavePlate",
     "elementName": "QuarterWavePlate",
     "short": "QuarterWavePlate lorem ipusm.",
@@ -744,7 +765,7 @@
       }
     ]
   },
-  "SugarSolution": {
+  "sugar-solution": {
     "title": "SugarSolution",
     "elementName": "SugarSolution",
     "short": "SugarSolution lorem ipusm.",
@@ -805,7 +826,7 @@
       }
     ]
   },
-  "FaradayRotator": {
+  "faraday-rotator": {
     "title": "FaradayRotator",
     "elementName": "FaradayRotator",
     "short": "FaradayRotator lorem ipusm.",
@@ -866,7 +887,7 @@
       }
     ]
   },
-  "Glass": {
+  "glass": {
     "title": "Glass",
     "elementName": "Glass",
     "short": "Glass lorem ipusm.",
@@ -927,7 +948,7 @@
       }
     ]
   },
-  "VacuumJar": {
+  "vacuum-jar": {
     "title": "VacuumJar",
     "elementName": "VacuumJar",
     "short": "VacuumJar lorem ipusm.",

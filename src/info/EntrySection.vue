@@ -14,16 +14,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator';
-
-export interface ISection {
-	title: string;
-	content?: string;
-	// pics?: Array<string>;
-}
+import { EntrySectionInterface } from '@/engine/interfaces';
 
 @Component
 export default class EntrySection extends Vue {
-	@Prop() readonly section!: ISection;
+	@Prop() readonly section!: EntrySectionInterface;
 	@Prop() readonly shouldBeOpenOnInit!: boolean;
 
 	$refs!: {
