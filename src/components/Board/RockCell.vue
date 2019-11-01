@@ -159,7 +159,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Rock extends Piece {}
+export default class RockCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

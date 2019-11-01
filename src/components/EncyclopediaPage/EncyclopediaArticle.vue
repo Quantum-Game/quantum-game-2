@@ -11,12 +11,12 @@
 			<!-- GRIDS -->
 			<div class="grids">
 				<div v-for="(level, i) in levels" :key="'level' + i">
-					<Egrid :level="level.levelInst" :step="level.step" class="grid" />
+					<encyclopedia-board :level="level.levelInst" :step="level.step" class="grid" />
 				</div>
 			</div>
 
 			<!-- SECTIONS -->
-			<entry-section
+			<encyclopedia-article-section
 				v-for="(section, index) in entry.sections"
 				:key="section.title"
 				:section="section"
@@ -24,7 +24,7 @@
 			/>
 
 			<!-- EQUATION GRID -->
-			<EquationGrid :element-name="entry.elementName" :rotation="entry.defaultRotation" step="3" />
+			<encyclopedia-operator-viewer :element-name="entry.elementName" :rotation="entry.defaultRotation" step="3" />
 		</article>
 	</div>
 </template>
@@ -33,21 +33,21 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces';
 import { Level } from '@/engine/classes';
-import { getEntry } from './entries';
-import EntrySection from './EntrySection.vue';
-import Egrid from '../game/sections/EGrid.vue';
-import QButton from '../components/QButton.vue';
-import EquationGrid from './EquationGrid.vue';
+import { getEntry } from '@/assets/data/entries/index';
+import AppButton from '@/components/AppButton.vue';
+import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue';
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
+import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
 
 @Component({
 	components: {
-		QButton,
-		EntrySection,
-		Egrid,
-		EquationGrid
+		AppButton,
+		EncyclopediaArticleSection,
+		EncyclopediaBoard,
+		EncyclopediaMatrix
 	}
 })
-export default class Entry extends Vue {
+export default class EncyclopediaArticle extends Vue {
 	entry: EntryInterface = {
 		title: '',
 		elementName: 'Mirror',

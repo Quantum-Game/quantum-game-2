@@ -46,7 +46,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Mine extends Piece {}
+export default class MineCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

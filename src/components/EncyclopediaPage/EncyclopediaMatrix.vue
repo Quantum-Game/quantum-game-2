@@ -2,7 +2,7 @@
 	<div class="container">
 		<div>
 			<h2>{{ elementName }} at {{ rotation }}°</h2>
-			<OperatorViewer
+			<encyclopedia-operator-viewer
 				:labels-in="basis"
 				:labels-out="basis"
 				:matrix-elements="matrixElements"
@@ -11,8 +11,8 @@
 				:size="30"
 				:margin="20"
 			/>
-			<div class="egrid">
-				<Egrid :level="level" :step="step" class="board" />
+			<div class="eboard">
+				<encyclopedia-board :level="level" :step="step" class="board" />
 			</div>
 			<div>
 				<span>Select dimension order:</span>
@@ -32,16 +32,16 @@ import { Vue, Prop, Component } from 'vue-property-decorator';
 import * as qt from 'quantum-tensors';
 import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
 import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
-import OperatorViewer from './OperatorViewer.vue';
-import Egrid from '../game/sections/EGrid.vue';
+import EncyclopediaOperatorViewer from '@/components/EncyclopediaPage/EncyclopediaOperatorViewer.vue';
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
 
 @Component({
 	components: {
-		Egrid,
-		OperatorViewer
+		EncyclopediaBoard,
+		EncyclopediaOperatorViewer
 	}
 })
-export default class EquationGrid extends Vue {
+export default class EncyclopediaMatrix extends Vue {
 	@Prop({ default: 'Mirror' }) readonly elementName!: string;
 	@Prop({ default: '0' }) readonly rotation!: number;
 	@Prop({ default: 5 }) readonly step!: number;
@@ -151,7 +151,7 @@ export default class EquationGrid extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.egrid {
+.eboard {
 	display: inline-block;
 }
 .operatorText {

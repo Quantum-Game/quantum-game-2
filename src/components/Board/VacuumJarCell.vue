@@ -37,7 +37,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class VacuumJar extends Piece {}
+export default class VacuumJarCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

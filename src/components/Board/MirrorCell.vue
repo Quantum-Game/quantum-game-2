@@ -20,7 +20,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Mirror extends Piece {}
+export default class MirrorCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

@@ -25,7 +25,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 
 @Component
-export default class Menu extends Vue {
+export default class AppMenu extends Vue {
 	isMenuOpen: boolean = false;
 
 	created() {

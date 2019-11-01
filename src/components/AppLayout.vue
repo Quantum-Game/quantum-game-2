@@ -15,14 +15,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import QMenu from '../components/QMenu.vue';
+import AppMenu from '@/components/AppMenu.vue';
 
 @Component({
 	components: {
-		QMenu
+		AppMenu
 	}
 })
-export default class MainLayout extends Vue {}
+export default class AppLayout extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -208,7 +208,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Detector extends Piece {}
+export default class DetectorCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

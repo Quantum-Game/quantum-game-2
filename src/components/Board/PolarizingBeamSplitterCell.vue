@@ -20,7 +20,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class PolarizingBeamSplitter extends Piece {}
+export default class PolarizingBeamSplitterCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

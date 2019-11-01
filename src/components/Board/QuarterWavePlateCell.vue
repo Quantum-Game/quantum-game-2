@@ -128,7 +128,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class QuarterWavePlate extends Piece {}
+export default class QuarterWavePlateCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

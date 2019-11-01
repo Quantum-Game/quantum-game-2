@@ -42,7 +42,7 @@ import { Tween, update as updateTween } from 'es6-tween';
 @Component({
 	components: {}
 })
-export default class Goals extends Vue {
+export default class GameGoals extends Vue {
 	@Prop() readonly detectors!: number;
 	@Prop() readonly percentage!: number;
 	@Prop() readonly goals!: any;

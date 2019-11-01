@@ -71,7 +71,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class SugarSolution extends Piece {}
+export default class SugarSolutionCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

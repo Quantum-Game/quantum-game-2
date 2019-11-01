@@ -119,7 +119,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class FaradayRotator extends Piece {}
+export default class FaradayRotatorCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>
