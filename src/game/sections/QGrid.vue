@@ -154,8 +154,8 @@ export default class QGrid extends Vue {
 			// delete it from there
 			if (this.activeCell.coord.x === -1) {
 				this.mutationRemoveFromCurrentTools(this.activeCell);
-			}	else {
-			// ...othersie, put void on active cell coords:
+			} else {
+				// ...othersie, put void on active cell coords:
 				destinationCell.coord = this.activeCell.coord;
 				this.grid.set(destinationCell);
 			}
