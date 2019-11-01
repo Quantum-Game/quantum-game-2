@@ -4,7 +4,7 @@
   "group": "Classic",
   "description": "Wrong right beamsplitter",
   "grid": {
-    "cols": 11,
+    "cols": 13,
     "rows": 10,
     "cells": [
       {

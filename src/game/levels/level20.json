@@ -1,10 +1,10 @@
 {
-  "id": 18,
+  "id": 20,
   "name": "Perpendicular are different",
   "group": "Classic",
   "description": "",
   "grid": {
-    "cols": 12,
+    "cols": 13,
     "rows": 10,
     "cells": [
       {

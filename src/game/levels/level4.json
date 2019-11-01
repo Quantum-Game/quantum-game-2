@@ -4,7 +4,7 @@
   "group": "Classic",
   "description": "",
   "grid": {
-    "cols": 12,
+    "cols": 13,
     "rows": 10,
     "cells": [
       {
@@ -91,7 +91,7 @@
         "coord": { "y": 5, "x": 10 },
         "element": "Rock",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       }

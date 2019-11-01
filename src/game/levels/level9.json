@@ -4,7 +4,7 @@
   "group": "Classic",
   "description": "",
   "grid": {
-    "cols": 12,
+    "cols": 13,
     "rows": 10,
     "cells": [
       {
@@ -19,7 +19,7 @@
         "coord": { "y": 3, "x": 1 },
         "element": "Glass",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -35,7 +35,7 @@
         "coord": { "y": 3, "x": 3 },
         "element": "Glass",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -43,7 +43,7 @@
         "coord": { "y": 3, "x": 5 },
         "element": "Glass",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -51,7 +51,7 @@
         "coord": { "y": 3, "x": 7 },
         "element": "Glass",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -59,7 +59,7 @@
         "coord": { "y": 3, "x": 8 },
         "element": "BeamSplitter",
         "rotation": 45,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -67,7 +67,7 @@
         "coord": { "y": 3, "x": 10 },
         "element": "Detector",
         "rotation": 180,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -75,7 +75,7 @@
         "coord": { "y": 3, "x": 10 },
         "element": "Detector",
         "rotation": 180,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -83,7 +83,7 @@
         "coord": { "y": 6, "x": 8 },
         "element": "Glass",
         "rotation": 0,
-        "frozen": false,
+        "frozen": true,
         "active": false,
         "energized": false
       },
