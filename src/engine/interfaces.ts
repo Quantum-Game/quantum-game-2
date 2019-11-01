@@ -59,6 +59,21 @@ export interface HintInterface {
 }
 
 /**
+ * IHINT KUBA
+ * TODO: Refactor
+ */
+export interface IHint {
+	coord: CoordInterface;
+	content: string;
+	color?: string;
+	rotation?: number;
+}
+
+export interface IHintList {
+	[index: number]: IHint;
+}
+
+/**
  * GRID INTERFACE
  * Grid interface in primitives
  */

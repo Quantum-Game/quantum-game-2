@@ -1,7 +1,7 @@
 <template>
 	<div class="toolbox" @click="handleToolboxClick">
 		<svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
-			<q-cell :cell="getFakeCell(toolName)" :tool="true" />
+			<app-cell :cell="getFakeCell(toolName)" :tool="true" />
 			<text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
 		</svg>
 		<slot> isMoving: {{ isMoving }} activeCell: {{ activeCell.toString() }} </slot>
@@ -13,8 +13,8 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
 import { Cell, Element, Coord } from '@/engine/classes';
-import QCell from '../QCell.vue';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
+import AppCell from '@/components/Board/AppCell.vue';
 
 interface Tool {
 	[symbol: string]: number;
@@ -22,10 +22,10 @@ interface Tool {
 
 @Component({
 	components: {
-		QCell
+		AppCell
 	}
 })
-export default class Toolbox extends Vue {
+export default class GameToolbox extends Vue {
 	@Prop() readonly tools!: Cell[];
 	toolbox: Tool = {};
 	@State isMoving!: boolean;

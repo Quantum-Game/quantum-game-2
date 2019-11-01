@@ -75,7 +75,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Laser extends Piece {}
+export default class LaserCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

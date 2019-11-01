@@ -21,7 +21,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class CoatedBeamSplitter extends Piece {}
+export default class CoatedBeamSplitterCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

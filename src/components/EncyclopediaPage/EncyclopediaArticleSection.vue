@@ -17,7 +17,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 import { EntrySectionInterface } from '@/engine/interfaces';
 
 @Component
-export default class EntrySection extends Vue {
+export default class EncyclopediaArticleSection extends Vue {
 	@Prop() readonly section!: EntrySectionInterface;
 	@Prop() readonly shouldBeOpenOnInit!: boolean;
 
@@ -49,7 +49,7 @@ export default class EntrySection extends Vue {
 	}
 
 	imageUrl(imageString: string) {
-		const images = require.context('../assets');
+		const images = require.context('@/assets');
 		return images(`./${imageString}`);
 	}
 }

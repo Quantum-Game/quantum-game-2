@@ -5,7 +5,7 @@
 			<!-- <span>STEP {{ activeFrame.step }}</span> -->
 			<!-- <span>STATUS: {{ activeFrame.gameState }}</span> -->
 			<div v-for="(particle, index) in particles" :key="index">
-				<photon
+				<app-photon
 					name
 					:are="particle.a.re"
 					:aim="particle.a.im"
@@ -35,16 +35,16 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { CellInterface, CoordInterface, FrameInterface } from '@/engine/interfaces';
-import Photon from '../Photon.vue';
-import QButton from '../../components/QButton.vue';
+import AppPhoton from '@/components/AppPhoton.vue';
+import AppButton from '@/components/AppButton.vue';
 
 @Component({
 	components: {
-		Photon,
-		QButton
+		AppPhoton,
+		AppButton
 	}
 })
-export default class SimulationStepsDisplay extends Vue {
+export default class GamePhotons extends Vue {
 	@Prop() readonly activeFrame!: FrameInterface;
 	width: number = 0;
 	$refs!: {

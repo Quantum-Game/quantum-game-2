@@ -1,5 +1,5 @@
 <template>
-	<main-layout>
+	<app-layout>
 		<div slot="left" class="element-list">
 			<h3 class="upper-border">ALL ELEMENTS</h3>
 			<router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
@@ -12,30 +12,19 @@
 		<div slot="right">
 			<h3 class="upper-border">RELATED CONCEPTS</h3>
 		</div>
-	</main-layout>
+	</app-layout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import MainLayout from '../layouts/MainLayout.vue';
-import Entry from '../info/Entry.vue';
-import { entriesNameList } from '../info/entries';
-
-interface ISection {
-	title: string;
-	content: Array<string>;
-}
-
-interface IEntry {
-	title: string;
-	short?: string;
-	sections: Array<ISection>;
-}
+import { entriesNameList } from '@/assets/data/entries';
+import AppLayout from '@/components/AppLayout.vue';
+import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
 
 @Component({
 	components: {
-		MainLayout,
-		Entry
+		AppLayout,
+		EncyclopediaArticle
 	}
 })
 export default class Info extends Vue {

@@ -13,7 +13,7 @@
 			><b>STEP {{ activeFrame.step }} / {{ totalFrames }}</b></span
 		>
 		<span class="view-mode">
-			<b-button v-for="btn in viewControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
+			<game-controls-button v-for="btn in viewControls" :key="btn" :which-is="btn" @click.native="$emit(btn)" />
 		</span>
 		<slot></slot>
 	</div>
@@ -22,14 +22,14 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { FrameInterface } from '@/engine/interfaces';
-import BButton from '../BButton.vue';
+import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 
 @Component({
 	components: {
-		BButton
+		GameControlsButton
 	}
 })
-export default class Controls extends Vue {
+export default class GameControls extends Vue {
 	@Prop() readonly activeFrame!: FrameInterface;
 	@Prop() readonly totalFrames!: number;
 	playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];

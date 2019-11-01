@@ -18,16 +18,16 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import VueConfetti from 'vue-confetti';
-import QButton from '@/components/QButton.vue';
+import AppButton from '@/components/AppButton.vue';
 
 Vue.use(VueConfetti);
 
 @Component({
 	components: {
-		QButton
+		AppButton
 	}
 })
-export default class Overlay extends Vue {
+export default class AppOverlay extends Vue {
 	@Prop() readonly gameState!: string;
 	$confetti!: {
 		start: (params: any) => void;

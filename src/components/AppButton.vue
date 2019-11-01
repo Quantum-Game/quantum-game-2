@@ -6,7 +6,7 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 
 @Component
-export default class QButton extends Vue {
+export default class AppButton extends Vue {
 	@Prop() readonly hoverColor!: string;
 	@Prop({ default: 'basic' }) readonly type!: string;
 	@Prop({ default: true }) readonly inline!: boolean;

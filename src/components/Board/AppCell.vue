@@ -16,24 +16,24 @@ import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
 import { Cell } from '@/engine/classes';
 import {
-	Laser,
-	Mirror,
-	BeamSplitter,
-	PolarizingBeamSplitter,
-	CoatedBeamSplitter,
-	CornerCube,
-	Detector,
-	Rock,
-	Mine,
-	Absorber,
-	DetectorFour,
-	Polarizer,
-	QuarterWavePlate,
-	SugarSolution,
-	FaradayRotator,
-	Glass,
-	VacuumJar
-} from '../cell';
+	LaserCell,
+	MirrorCell,
+	BeamSplitterCell,
+	PolarizingBeamSplitterCell,
+	CoatedBeamSplitterCell,
+	CornerCubeCell,
+	DetectorCell,
+	RockCell,
+	MineCell,
+	AbsorberCell,
+	DetectorFourCell,
+	PolarizerCell,
+	QuarterWavePlateCell,
+	SugarSolutionCell,
+	FaradayRotatorCell,
+	GlassCell,
+	VacuumJarCell
+} from './index';
 import { getPosition } from '@/mixins';
 
 const borderColors = {
@@ -44,26 +44,26 @@ const borderColors = {
 
 @Component({
 	components: {
-		Laser,
-		Mirror,
-		BeamSplitter,
-		PolarizingBeamSplitter,
-		CoatedBeamSplitter,
-		CornerCube,
-		Detector,
-		Rock,
-		Mine,
-		Absorber,
-		DetectorFour,
-		Polarizer,
-		QuarterWavePlate,
-		SugarSolution,
-		FaradayRotator,
-		Glass,
-		VacuumJar
+		LaserCell,
+		MirrorCell,
+		BeamSplitterCell,
+		PolarizingBeamSplitterCell,
+		CoatedBeamSplitterCell,
+		CornerCubeCell,
+		DetectorCell,
+		RockCell,
+		MineCell,
+		AbsorberCell,
+		DetectorFourCell,
+		PolarizerCell,
+		QuarterWavePlateCell,
+		SugarSolutionCell,
+		FaradayRotatorCell,
+		GlassCell,
+		VacuumJarCell
 	}
 })
-export default class QCell extends Mixins(getPosition) {
+export default class AppCell extends Mixins(getPosition) {
 	@Prop() readonly cell!: Cell;
 	@Prop() readonly lasers!: any[];
 	@Prop({ default: false }) readonly tool!: boolean;

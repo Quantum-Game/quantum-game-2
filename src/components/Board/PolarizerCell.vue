@@ -45,7 +45,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Polarizer extends Piece {}
+export default class PolarizerCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

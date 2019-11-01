@@ -12,10 +12,10 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import Cell from '@/engine/Cell';
-import QButton from '@/components/QButton.vue';
+import AppButton from '@/components/AppButton.vue';
 
 @Component
-export default class Explanation extends Vue {
+export default class GameActiveCell extends Vue {
 	get activeCell() {
 		return this.$store.state.activeCell;
 	}

@@ -18,8 +18,8 @@
 
 <script lang="ts">
 import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
-import { IHint } from '@/types';
-import { getPosition } from '../mixins';
+import { IHint } from '@/engine/interfaces';
+import { getPosition } from '@/mixins';
 
 @Component
 export default class SpeechBubble extends Mixins(getPosition) {

@@ -34,7 +34,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class CornerCube extends Piece {}
+export default class CornerCubeCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

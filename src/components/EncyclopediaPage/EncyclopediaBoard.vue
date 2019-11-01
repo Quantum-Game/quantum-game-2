@@ -26,7 +26,7 @@
 				</g>
 
 				<!-- CELLS -->
-				<QCell
+				<app-cell
 					v-for="(cell, i) in level.grid.cells"
 					:key="'cell' + i"
 					:cell="cell"
@@ -42,7 +42,7 @@
 					:style="computeParticleStyle(particle)"
 					class="photons"
 				>
-					<photon
+					<app-photon
 						name
 						:intensity="particle.intensity"
 						:are="particle.a.re"
@@ -93,8 +93,8 @@ import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Level, Particle, Frame, Grid, Cell, Coord } from '@/engine/classes';
 import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
-import Photon from '../Photon.vue';
-import QCell from '../QCell.vue';
+import AppPhoton from '@/components/AppPhoton.vue';
+import AppCell from '@/components/Board/AppCell.vue';
 
 const defaultLevel: Level = Level.importLevel({
 	id: 1337,
@@ -120,8 +120,8 @@ const defaultLevel: Level = Level.importLevel({
 
 @Component({
 	components: {
-		Photon,
-		QCell
+		AppPhoton,
+		AppCell
 	}
 })
 export default class EGrid extends Vue {

@@ -8,7 +8,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 
 @Component
-export default class BButton extends Vue {
+export default class GameControlsButton extends Vue {
 	@Prop() readonly whichIs!: string;
 	@Prop({ default: true }) readonly usable!: boolean;
 
@@ -25,7 +25,7 @@ export default class BButton extends Vue {
 			// }
 
 			styleObj = {
-        backgroundImage: `url(${require(`../assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
 				backgroundColor: this.usable ? 'transparent' : 'transparent',
 				border: 'none'
 				// transform: `rotate(-${this.cell.rotation}deg)`

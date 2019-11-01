@@ -61,7 +61,7 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class Glass extends Piece {}
+export default class GlassCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>

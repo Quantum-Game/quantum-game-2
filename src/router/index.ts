@@ -10,36 +10,36 @@ export default new Router({
 		{
 			path: '/',
 			name: 'menu',
-			component: () => import('./views/MainMenu.vue')
+			component: () => import('@/components/HomePage/index.vue')
 		},
 		{
 			path: '/levels',
 			name: 'levels',
-			component: () => import('./views/Levels.vue')
+			component: () => import('@/components/LevelMapPage/index.vue')
 		},
 		{
 			path: '/level/:id',
 			name: 'level',
-			component: () => import('./views/Game.vue')
+			component: () => import('@/components/GamePage/index.vue')
 		},
 		{
 			path: '/info',
-			component: () => import('./views/Info.vue'),
+			component: () => import('@/components/EncyclopediaPage/index.vue'),
 			children: [
 				{
 					path: '',
-					component: () => import('./info/InfoHome.vue')
+					component: () => import('@/components/EncyclopediaPage/EncyclopediaDefaultArticle.vue')
 				},
 				{
 					path: '/info/:entry',
-					component: () => import('./info/Entry.vue')
+					component: () => import('@/components/EncyclopediaPage/EncyclopediaArticle.vue')
 				}
 			]
 		},
 		{
 			path: '*',
 			name: '404',
-			component: () => import('./views/NotFound.vue')
+			component: () => import('@/components/NotFoundPage/index.vue')
 		}
 	]
 });

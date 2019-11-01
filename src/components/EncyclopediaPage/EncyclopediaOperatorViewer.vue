@@ -89,7 +89,7 @@ function hslToHex(hParam: number, sParam: number, lParam: number) {
 }
 
 @Component
-export default class OperatorViewer extends Vue {
+export default class EncyclopediaOperatorViewer extends Vue {
 	@Prop({ default: () => 800 }) private width!: number;
 	@Prop({ default: () => 600 }) private height!: number;
 	@Prop({ default: () => 40 }) private size!: number;

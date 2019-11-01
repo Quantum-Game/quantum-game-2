@@ -1,5 +1,5 @@
 <template>
-	<main-layout>
+	<app-layout>
 		<article slot="main" class="main">
 			<div class="container">
 				<ul class="main__level-list">
@@ -9,19 +9,19 @@
 				</ul>
 			</div>
 		</article>
-	</main-layout>
+	</app-layout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import MainLayout from '@/layouts/MainLayout.vue';
+import AppLayout from '@/components/AppLayout.vue';
 
 @Component({
 	components: {
-		MainLayout
+		AppLayout
 	}
 })
-export default class Levels extends Vue {}
+export default class LevelMapPage extends Vue {}
 </script>
 
 <style lang="scss">
