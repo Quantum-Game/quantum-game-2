@@ -14,7 +14,7 @@
 			</div>
 			<p class="separator">or</p>
 			<div v-if="error" class="alert alert-danger">{{ error }}</div>
-			<form class="email-login" action="#" @submit.prevent="submit">
+			<form class="email-login" action="#" @submit.prevent="signIn">
 				<div class="email-login__email">
 					<input
 						id="email"
@@ -55,7 +55,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import firebase from 'firebase';
+import $userStore from '@/store/userStore';
 import MainLayout from '../layouts/MainLayout.vue';
 import QButton from '../components/QButton.vue';
 
@@ -70,38 +70,16 @@ export default class Login extends Vue {
 		email: '',
 		password: ''
 	};
-	error: string = '';
 
-	submit() {
-		firebase
-			.auth()
-			.signInWithEmailAndPassword(this.user.email, this.user.password)
-			.then((data) => {
-				this.$router.replace({ name: 'myaccount' });
-			})
-			.catch((err) => {
-				this.error = err.message;
-			});
+	get error() {
+		return $userStore.getters.error;
+	}
+
+	signIn() {
+		$userStore.dispatch('SIGN_IN', this.user);
 	}
 	signInSocial(social) {
-		let provider = null;
-		if (social === 'github') {
-			provider = new firebase.auth.GithubAuthProvider();
-		} else if (social === 'facebook') {
-			provider = new firebase.auth.FacebookAuthProvider();
-		} else if (social === 'google') {
-			provider = new firebase.auth.FacebookAuthProvider();
-		}
-
-		firebase
-			.auth()
-			.signInWithPopup(provider)
-			.then((data) => {
-				this.$router.replace({ name: 'myaccount' });
-			})
-			.catch((err) => {
-				this.error = err.message;
-			});
+		$userStore.dispatch('SIGN_IN_SOCIAL', social);
 	}
 }
 </script>

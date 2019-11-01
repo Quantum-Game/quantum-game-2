@@ -1,37 +1,57 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import router from '@/router';
+import firebase, {db, auth} from '@/config/firebase';
 
 Vue.use(Vuex);
 
 const userStore = {
   state: {
+    // user: null,
     user: {
       loggedIn: false,
       data: {
-        displayName: ''
+        displayName: '',
+        email: ''
       }
-    }
+    },
+    progressArr:  [{id: 1, status: 'solved', score: 150}, {id: 2, status: 'solved', score: 100}],
+    error: null
   },
   getters: {
     user(state){
-      return state.user;
+        return state.user;    
     },
     userName(state) {
-      return state.user.data.displayName
+        return state.user.data.displayName;    
+    },
+    progressArr(state) {
+      return state.progressArr;
+    },
+    error(state) {
+      return state.error;
     }
   },
   mutations: {
-    SET_LOGGED_IN(state, value) {
-      state.user.loggedIn = value;
+    SET_LOGGED_IN(state, payload) {
+      state.user.loggedIn = payload;    
     },
-    SET_USER(state, data) {
-      state.user.data = data;
+    SET_USER(state, payload) {
+      state.user.data = payload;
+    },
+    SET_ERROR(state, payload) {
+      state.error = payload;
+    },
+    SET_PROGRESS(state, payload) {
+      state.progressArr = payload
     }
   },
   actions: {
-    fetchUser({ commit }, user) {
+    FETCH_USER({ commit, dispatch }, user) {
       commit("SET_LOGGED_IN", user !== null);
       if (user) {
+        dispatch("GET_PROGRESS");
+        commit("SET_ERROR", null);
         commit("SET_USER", {
           displayName: user.displayName,
           email: user.email
@@ -39,6 +59,86 @@ const userStore = {
       } else {
         commit("SET_USER", null);
       }
+    },
+    SIGN_IN({commit}, user) {
+      auth
+        .signInWithEmailAndPassword(user.email, user.password)
+        .then(() => {
+          router.replace({ name: 'myaccount' });
+        })
+        .catch((err) => {
+          commit("SET_ERROR", err.message);
+        });
+    },
+    SIGN_IN_SOCIAL({commit}, social) {
+      let self = this
+      let provider = null;
+      if (social === 'github') {
+        provider = new firebase.auth.GithubAuthProvider();
+      } else if (social === 'facebook') {
+        provider = new firebase.auth.FacebookAuthProvider();
+      } else if (social === 'google') {
+        provider = new firebase.auth.FacebookAuthProvider();
+      }
+  
+      auth
+        .signInWithPopup(provider)
+        .then(() => {
+          router.replace({ name: 'myaccount' });
+        })
+        .catch((err) => {
+          commit("SET_ERROR", err.message);
+        });
+    },
+    SIGN_UP({commit}, user) {
+      auth
+			.createUserWithEmailAndPassword(user.email, user.password)
+			.then((data) => {
+				data.user.updateProfile({
+					displayName: user.name
+				});
+			})
+			.then((data) => {
+				router.replace({ name: 'myaccount' });
+			})
+			.catch((err) => {
+				commit("SET_ERROR", err.message);
+			});
+    },
+    SIGN_OUT({commit}) {
+      auth
+        .signOut()
+        .then(() => {
+          router.replace({
+            name: 'login'
+          });
+        });
+    },
+    SAVE_PROGRESS({commit, getters, dispatch}) {
+      const progressArr = getters.progressArr
+      const dbRef = db.collection("users").doc(auth.currentUser.uid);
+      const data = {uid: auth.currentUser.uid, progress:progressArr};
+
+        dbRef.set(data)
+          .then(()=> {
+            console.log('Data stored: ', data)
+          }).catch((err) => {
+            commit("SET_ERROR", err.message);
+          })      
+    },
+    GET_PROGRESS({commit}) {
+      const dbRef = db.collection("users").doc(auth.currentUser.uid);
+      dbRef.get().then((doc) => {
+        const progress = doc.data().progress;
+          if (doc.exists) {
+              console.log("Document data:", progress);
+              commit("SET_PROGRESS", progress)
+          } else {
+              console.log("No such document!");
+          }
+      }).catch(function(error) {
+        commit("SET_ERROR", err.message);
+      });
     }
   }
 };

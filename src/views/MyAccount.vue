@@ -2,7 +2,26 @@
 	<main-layout>
 		<div slot="main">
 			<h1>My Account</h1>
-			<h2>Hello, {{ user }}</h2>
+			<h2>Hello {{ user }}</h2>
+			<div>
+				<label>Status: </label>
+				<input v-model="level.status" type="text" />
+				<label> Score: </label>
+				<input v-model="level.score" type="text" />
+			</div>
+			<br />
+			<br />
+			<ul class="levels-progress">
+				<li v-for="(lvl, index) in progressArr" :key="index">
+					Level: {{ lvl.id }} Status: {{ lvl.status }} Score: {{ lvl.score }}
+					<span class="edit-level" @click="editLevel(lvl)"> >>>> Edit</span>
+				</li>
+			</ul>
+			<a @click.prevent="saveProgressToDB"
+				><q-button type="special"> Save data to Firestore!!! </q-button></a
+			>
+		</div>
+		<div slot="right">
 			<a @click.prevent="signOut"><q-button type="special"> Sign Out! </q-button></a>
 		</div>
 	</main-layout>
@@ -10,7 +29,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import firebase from 'firebase';
 import $userStore from '@/store/userStore';
 import MainLayout from '../layouts/MainLayout.vue';
 import QButton from '../components/QButton.vue';
@@ -22,22 +40,28 @@ import QButton from '../components/QButton.vue';
 	}
 })
 export default class MyAccount extends Vue {
-	error: string = '';
+	level = {
+		id: null,
+		status: '',
+		score: null
+	};
 
 	get user() {
 		return $userStore.getters.userName;
 	}
+	get progressArr() {
+		return $userStore.getters.progressArr;
+	}
 
 	signOut() {
-		console.log(this);
-		firebase
-			.auth()
-			.signOut()
-			.then(() => {
-				this.$router.replace({
-					name: 'login'
-				});
-			});
+		$userStore.dispatch('SIGN_OUT', this.user);
+	}
+	saveProgressToDB() {
+		$userStore.commit('SET_PROGRESS', this.progressArr);
+		$userStore.dispatch('SAVE_PROGRESS');
+	}
+	editLevel(lvl) {
+		this.level = lvl;
 	}
 }
 </script>
@@ -53,5 +77,16 @@ h1 {
 p {
 	color: rgba(255, 255, 255, 0.7);
 	// line-height: 150%;
+}
+.levels-progress {
+	list-style: none;
+	li {
+		margin: 5px auto;
+	}
+}
+.edit-level {
+	cursor: pointer;
+	border: 1px solid #fff;
+	margin: 10px;
 }
 </style>

@@ -5,7 +5,7 @@
 				User Registration
 			</h1>
 			<div v-if="error" class="alert alert-danger">{{ error }}</div>
-			<form class="email-login" action="#" @submit.prevent="submit">
+			<form class="email-login" action="#" @submit.prevent="signUp">
 				<div class="col-md-6">
 					<input
 						id="name"
@@ -59,7 +59,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import firebase from 'firebase';
+import $userStore from '@/store/userStore';
 import MainLayout from '../layouts/MainLayout.vue';
 import QButton from '../components/QButton.vue';
 
@@ -75,23 +75,12 @@ export default class Register extends Vue {
 		password: '',
 		name: ''
 	};
-	error: string = '';
+	get error() {
+		return $userStore.getters.error;
+	}
 
-	submit() {
-		firebase
-			.auth()
-			.createUserWithEmailAndPassword(this.user.email, this.user.password)
-			.then((data) => {
-				data.user.updateProfile({
-					displayName: this.user.name
-				});
-			})
-			.then((data) => {
-				this.$router.replace({ name: 'myaccount' });
-			})
-			.catch((err) => {
-				this.error = err.message;
-			});
+	signUp() {
+		$userStore.dispatch('SIGN_UP', this.user);
 	}
 }
 </script>
