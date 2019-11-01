@@ -25,7 +25,7 @@
 		</g>
 
 		<!-- CELLS -->
-		<QCell
+		<app-cell
 			v-for="(cell, i) in grid.cells"
 			:key="'cell' + i"
 			:cell="cell"
@@ -42,7 +42,7 @@
 			:style="computeParticleStyle(particle)"
 			class="photons"
 		>
-			<photon
+			<app-photon
 				name
 				:intensity="particle.intensity"
 				:are="particle.a.re"
@@ -85,7 +85,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 		SpeechBubble
 	}
 })
-export default class QGrid extends Vue {
+export default class Board extends Vue {
 	@Prop({ default: '' }) readonly grid!: Grid;
 	@Prop({ default: [] }) readonly photons!: ParticleInterface[];
 	@Prop() readonly hints!: IHintList;

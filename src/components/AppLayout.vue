@@ -1,7 +1,7 @@
 <template>
 	<div class="layout-container">
 		<aside class="left">
-			<q-menu />
+			<app-menu />
 			<slot name="left"></slot>
 		</aside>
 		<main class="main">
