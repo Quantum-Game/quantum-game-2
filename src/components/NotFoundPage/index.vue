@@ -9,14 +9,14 @@
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import QButton from '../components/QButton.vue';
+import AppButton from '../components/AppButton.vue';
 
 @Component({
 	components: {
-		QButton
+		AppButton
 	}
 })
-export default class NotFound extends Vue {}
+export default class NotFoundPage extends Vue {}
 </script>
 
 <style lang="scss" scoped>
