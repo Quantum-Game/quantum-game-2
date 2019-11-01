@@ -37,7 +37,7 @@ import {
 import { getPosition } from '@/mixins';
 
 const borderColors = {
-	//active: '#FF0055',
+	active: "transparent",
 	rotable: 'white',
 	energized: 'blue'
 };
