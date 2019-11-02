@@ -49,8 +49,8 @@ export default new Router({
 		{
 			path: '/myaccount',
 			name: 'myaccount',
-			component: () => import('@/components/MyAccountPage/index.vue')
-		},
+      component: () => import('@/components/MyAccountPage/index.vue')
+    },
     {
       path: '*',
       name: '404',

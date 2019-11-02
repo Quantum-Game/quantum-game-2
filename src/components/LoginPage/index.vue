@@ -57,7 +57,7 @@
 import { Vue, Component } from 'vue-property-decorator';
 import $userStore from '@/store/userStore';
 import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton';
+import AppButton from '@/components/AppButton.vue';
 
 @Component({
   components: {
@@ -79,7 +79,7 @@ export default class Login extends Vue {
   signIn() {
     $userStore.dispatch('SIGN_IN', this.user);
   }
-  signInSocial(social) {
+  signInSocial(social: string) {
     $userStore.dispatch('SIGN_IN_SOCIAL', social);
   }
 }
