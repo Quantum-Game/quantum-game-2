@@ -1,6 +1,5 @@
-// TODO: work on the toolbox
 import { Photons } from 'quantum-tensors';
-import { LevelInterface } from './interfaces';
+import { LevelInterface, ClassicLevelInterface } from './interfaces';
 import Grid from './Grid';
 import Coord from './Coord';
 import Cell from './Cell';
@@ -9,24 +8,6 @@ import Goal from './Goal';
 import Hint from './Hint';
 import Toolbox from './Toolbox';
 import { convertFromClassicNames } from './Helpers';
-
-/**
- * CLASSICAL LEVEL INTERFACE
- * original level structure for importing V1 levels
- */
-export interface ClassicLevelInterface {
-  name: string;
-  group: string;
-  width: number;
-  height: number;
-  tiles: {
-    i: number;
-    j: number;
-    name: string;
-    rotation: number;
-    frozen: boolean;
-  }[];
-}
 
 /**
  * LEVEL CLASS
