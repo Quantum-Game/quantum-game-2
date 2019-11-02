@@ -143,7 +143,7 @@ export default class Cell {
    * Toggle the energized status of the cell, cells are energized around an activated detector
    */
   toggleTool(): void {
-    this.energized = !this.energized;
+    this.tool = !this.tool;
   }
 
   /**
@@ -151,11 +151,13 @@ export default class Cell {
    * @returns string describing the cell status
    */
   toString(): string {
-    return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} Cell @ ${this.coord.toString()} is ${
-      this.frozen ? 'frozen' : 'unfrozen'
-    } ${this.active ? 'active' : 'inactive'} and ${
-      this.energized ? 'powered' : 'unpowered'
-    } ${this.element.toString()} rotated ${this.rotation}°`;
+    return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} ${
+      this.tool ? 'Tool' : 'Nothing'
+    } Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
+      this.active ? 'active' : 'inactive'
+    } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
+      this.rotation
+    }°`;
   }
 
   /**
