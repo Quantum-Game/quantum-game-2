@@ -12,7 +12,7 @@
         :margin="20"
       />
       <div class="eboard">
-        <encyclopedia-board :level="level" :step="step" class="board" />
+        <encyclopedia-board :gridObj="gridObj" class="board" />
       </div>
       <div>
         <span>Select dimension order:</span>
@@ -30,7 +30,7 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import * as qt from 'quantum-tensors';
-import { ParticleInterface, CellInterface, LevelInterface } from '@/engine/interfaces';
+import { ParticleInterface, CellInterface, LevelInterface, GridInterface } from '@/engine/interfaces';
 import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
@@ -48,6 +48,30 @@ export default class EncyclopediaMatrixBoard extends Vue {
   element = Element.fromName(this.elementName);
   coord = new Coord(1, 1);
   cell = new Cell(this.coord, this.element, this.rotation);
+  gridObj: GridInterface = {
+    cols: 3,
+    rows: 3,
+    cells: [
+      {
+        coord: { x: 0, y: 1 },
+        element: 'Laser',
+        rotation: 0,
+        active: true,
+        frozen: true
+      },
+      {
+        coord: { x: 1, y: 1 },
+        element: this.elementName,
+        rotation: this.rotation,
+        active: false,
+        frozen: false
+      }
+    ]
+  }
+
+  // XXX
+  // XXX To be removed
+  // XXX
   level: Level = Level.importLevel({
     id: 1337,
     name: this.elementName,
