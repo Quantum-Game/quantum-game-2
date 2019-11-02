@@ -52,6 +52,9 @@ export default class Level {
 
     // Populate toolbox
     this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);
+
+    // Remove toolbox cells from grid
+    this.grid.resetUnfrozen();
   }
 
   /**
