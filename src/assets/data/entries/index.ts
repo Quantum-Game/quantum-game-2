@@ -8,5 +8,5 @@ export const entriesNameList = Object.keys(typedEntries);
 
 // used by info/Entry
 export function getEntry(name: string): EntryInterface {
-	return typedEntries[name];
+  return typedEntries[name];
 }

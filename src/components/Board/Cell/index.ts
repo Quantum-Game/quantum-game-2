@@ -35,27 +35,27 @@ export { QuarterWavePlateCell };
 export { FaradayRotatorCell };
 
 interface ICellList {
-	[index: string]: Object;
+  [index: string]: Object;
 }
 
 const CellList: ICellList = {
-	LaserCell,
-	MirrorCell,
-	BeamSplitterCell,
-	PolarizingBeamSplitterCell,
-	CoatedBeamSplitterCell,
-	CornerCubeCell,
-	DetectorCell,
-	RockCell,
-	MineCell,
-	AbsorberCell,
-	DetectorFourCell,
-	PolarizerCell,
-	QuarterWavePlateCell,
-	SugarSolutionCell,
-	GlassCell,
-	VacuumJarCell,
-	FaradayRotatorCell
+  LaserCell,
+  MirrorCell,
+  BeamSplitterCell,
+  PolarizingBeamSplitterCell,
+  CoatedBeamSplitterCell,
+  CornerCubeCell,
+  DetectorCell,
+  RockCell,
+  MineCell,
+  AbsorberCell,
+  DetectorFourCell,
+  PolarizerCell,
+  QuarterWavePlateCell,
+  SugarSolutionCell,
+  GlassCell,
+  VacuumJarCell,
+  FaradayRotatorCell
 };
 
 export default CellList;
