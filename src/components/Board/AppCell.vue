@@ -35,6 +35,7 @@ import {
   GlassCell,
   VacuumJarCell
 } from '@/components/Board/Cell/index';
+import { CELL_SELECTED } from '../../store/mutation-types';
 
 const borderColors = {
   active: 'transparent',
@@ -70,69 +71,120 @@ export default class AppCell extends Mixins(getPosition) {
   @Prop({ default: false }) readonly tool!: boolean;
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
-  @Mutation('START_MOVING') mutationStartMoving!: () => void;
-  @Mutation('STOP_MOVING') mutationStopMoving!: () => void;
-  @Mutation('SET_MOVE_SOURCE') mutationSetMoveSource!: (source: string) => void;
-  @State isMoving!: boolean;
+  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
+  @Mutation('CELL_SELECTED') mutationCellSelected!: () => void;
+  @Mutation('CELL_UNSELECTED') mutationCellUnselected!: () => void;
+  @State cellSelected!: boolean;
   @State activeCell!: Cell;
 
   border = '';
+
+  handleCellClick(): void {
+    // First click unselected tool
+    if (!this.cellSelected) {
+      if (this.cell.tool) {
+        this.indicateMovable();
+        this.mutationSetActiveCell(this.cell);
+        this.mutationCellSelected();
+      } else {
+        this.indicateUnmovable();
+        this.mutationResetActiveCell();
+        this.mutationCellUnselected();
+      }
+    } else {
+      // SOURCE: TOOLBOX - TARGET: GRID
+      // eslint-disable-next-line
+      if (this.cell.isValidTarget()) {
+        if (this.activeCell.isFromToolbox && this.cell.isFromGrid) {
+          console.log(`FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          this.$emit('add-cell-here', this.cell.coord);
+          this.mutationResetActiveCell();
+        }
+        // SOURCE: GRID - TARGET: GRID
+        else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
+          console.log(`FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          this.$emit('add-cell-here', this.cell.coord);
+          this.mutationResetActiveCell();
+        }
+        // SOURCE: GRID - TARGET: TOOLBOX
+        else if (this.activeCell.isFromGrid && this.cell.isFromToolbox) {
+          console.log(`FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          this.$emit('add-cell-here', this.cell.coord);
+          this.mutationResetActiveCell();
+          // FALLBACK
+        } else {
+          console.log(`FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          this.mutationResetActiveCell();
+          this.mutationCellUnselected();
+        }
+      } else {
+        // INVALID TARGET
+        console.log(`Invalid target: ${this.cell.toString()}`);
+      }
+    }
+  }
+
+  /**
+   * Moving logic
+   */
+  // handleCellClick(): void {
+  //   this.indicateMovable();
+  //   this.$emit('rotate', this.cell);
+  // }
+  //   // Only void and tool are valid cells
+  //   if (this.cell.isValidTarget()) {
+  //       // activecell is another tool
+  //     } else if (!this.isMoving) {
+  //       this.handleFirstClick();
+  //     } else {
+  //       this.handleSecondClick();
+  //     }
+  //   }
+  // }
+
+  // /**
+  //  * Handle first click
+  //  */
+  // handleFirstClick(): void {
+  //   console.log('First click!');
+  //   if (this.cell.tool) {
+  //     console.log(`Valid source cell: ${this.cell.toString()}`);
+  //     this.mutationSetActiveCell(this.cell);
+  //     this.mutationStartMoving();
+  //   } else {
+  //     console.log(`Invalid source cell: ${this.cell.toString()}`);
+  //     this.indicateUnmovable();
+  //     this.mutationResetActiveCell();
+  //     this.mutationStopMoving();
+  //   }
+  // }
+
+  // handleSecondClick(): void {
+  //   console.log('Second click!');
+  //   if (!this.cell.isValidTarget()) {
+  //     console.log(`Invalid target cell: ${this.cell.toString()}`);
+  //   } else {
+  //     if (this.cell.isFromToolbox()) {
+  //       this.mutationSetMoveSource('toolbox');
+  //     } else {
+  //       this.mutationSetMoveSource('grid');
+  //     }
+  //     console.log(`Valid target cell: ${this.cell.toString()}`);
+  //     this.$emit('add-cell-here', this.cell.coord);
+  //     this.mutationResetActiveCell();
+  //     this.mutationStopMoving();
+  //   }
+  // }
+
+  get isActiveCell(): boolean {
+    return this.activeCell === this.cell;
+  }
 
   /**
    * Compute the cell class
    */
   get computedCellName(): string {
     return `${this.cell.element.name}Cell`;
-  }
-
-  /**
-   * used to handle clicking,
-   * including setting an active cell,
-   * rotation, border color changes
-   * @returns void
-   */
-  handleCellClick(): void {
-    // first click: see if valid drag target;
-    if (!this.isMoving) {
-      this.mutationSetActiveCell(this.cell);
-      if (this.validDrag) {
-        // can drag
-        this.mutationStartMoving();
-        this.indicateMovable();
-        // set the vuex property indicating the
-        // movement source
-        if (this.tool) {
-          this.mutationSetMoveSource('toolbox');
-        } else {
-          this.mutationSetMoveSource('grid');
-        }
-      } else {
-        this.indicateUnmovable();
-      }
-
-      // second click:
-    } else {
-      if (this.cell === this.activeCell) {
-        // same cell click - rotate
-        this.$emit('rotate', this.cell);
-        return;
-      }
-      // emit event for moving
-      if (this.validDrop) {
-        this.$emit('add-cell-here', this.cell.coord);
-        this.mutationStopMoving();
-      } else {
-        /*  the tile is taken;
-            indicate kind - frozen or not
-        */
-        if (this.validDrag) {
-          this.indicateMovable();
-        } else {
-          this.indicateUnmovable();
-        }
-        this.mutationSetActiveCell(this.cell);
-      }
-    }
   }
 
   /**
@@ -153,22 +205,6 @@ export default class AppCell extends Mixins(getPosition) {
     const timeout = setTimeout(() => {
       this.border = '';
     }, 200);
-  }
-
-  /**
-   * is the cell a valiable drag target?
-   * @returns a boolean
-   */
-  get validDrag(): boolean {
-    return !this.cell.frozen && this.cell.element.name !== 'Void';
-  }
-
-  /**
-   * is the cell a valiable drop target?
-   * @returns a boolean
-   */
-  get validDrop(): boolean {
-    return this.cell.element.name === 'Void' && !this.cell.frozen;
   }
 
   /**
@@ -203,7 +239,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns boolean
    */
   get shouldTileChangeColor() {
-    return this.isMoving && this.cell.isVoid;
+    return this.cellSelected && this.cell.isVoid;
   }
 
   /**
@@ -219,6 +255,55 @@ export default class AppCell extends Mixins(getPosition) {
     }
   }
 }
+// /**
+//  * used to handle clicking,
+//  * including setting an active cell,
+//  * rotation, border color changes
+//  * @returns void
+//  */
+// handleCellClick(): void {
+//   // first click: see if valid drag target;
+//   if (!this.isMoving) {
+//     this.mutationSetActiveCell(this.cell);
+//     if (this.cell.validSource) {
+//       // can drag
+//       this.mutationStartMoving();
+//       this.indicateMovable();
+//       // set the vuex property indicating the
+//       // movement source
+//       if (this.tool) {
+//         this.mutationSetMoveSource('toolbox');
+//       } else {
+//         this.mutationSetMoveSource('grid');
+//       }
+//     } else {
+//       this.indicateUnmovable();
+//     }
+
+//     // second click:
+//   } else {
+//     if (this.cell === this.activeCell) {
+//       // same cell click - rotate
+//       this.$emit('rotate', this.cell);
+//       return;
+//     }
+//     // emit event for moving
+//     if (this.cell.validTarget) {
+//       this.$emit('add-cell-here', this.cell.coord);
+//       this.mutationStopMoving();
+//     } else {
+//       /*  the tile is taken;
+//           indicate kind - frozen or not
+//       */
+//       if (this.cell.validSource) {
+//         this.indicateMovable();
+//       } else {
+//         this.indicateUnmovable();
+//       }
+//       this.mutationSetActiveCell(this.cell);
+//     }
+//   }
+// }
 </script>
 
 <style lang="scss">

@@ -31,6 +31,13 @@ export default class Toolbox {
   }
 
   /**
+   * Reset toolbox to original state
+   */
+  reset(): void {
+    this.toolbox = this.originalToolbox;
+  }
+
+  /**
    * @params name
    * @returns count of available elements in toolbox
    */

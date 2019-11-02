@@ -92,11 +92,7 @@ export default class Board extends Vue {
   @Prop() readonly hints!: Record<number, HintInterface>;
   @State activeCell!: Cell;
   @State activeLevel!: Level;
-  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
-  @Mutation('STOP_MOVING') mutationStopMoving!: () => void;
-  @Mutation('RESET_MOVE_SOURCE') mutationResetMoveSource!: () => void;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @State moveSource!: string;
 
   tileSize: number = 64;
 
@@ -150,24 +146,35 @@ export default class Board extends Vue {
    * @params coord to move to
    * @returns boolean
    */
-  moveCell(coord: Coord): boolean {
-    const destinationCell = this.grid.get(coord);
-    if (!destinationCell.frozen && !this.activeCell.frozen) {
-      // the cell is coming from the toolbox,
-      // delete it from there
-      if (this.activeCell.coord.x === -1) {
-        this.mutationRemoveFromCurrentTools(this.activeCell);
-      } else {
-        // ...othersie, put void on active cell coords:
-        destinationCell.coord = this.activeCell.coord;
-        this.grid.set(destinationCell);
-      }
-      // place the activeCell on the new cords
-      this.activeCell.coord = coord;
-      this.grid.set(this.activeCell);
-      return true;
+  moveCell(coord: Coord): void {
+    const sourceCell = this.activeCell;
+    const targetCell = this.grid.get(coord);
+
+    // MOVE GRID TOOL TO GRID VOID
+    // SWAP GRID TOOL TO GRID TOOL
+    // eslint-disable-next-line prettier/prettier
+    if (
+      sourceCell.isFromGrid &&
+      sourceCell.tool &&
+      targetCell.isFromGrid &&
+      (targetCell.isVoid || targetCell.tool)
+    ) {
+      const tempCoord = sourceCell.coord;
+      sourceCell.coord = targetCell.coord;
+      targetCell.coord = tempCoord;
+      this.grid.set(sourceCell);
+      this.grid.set(targetCell);
+
+      // MOVE GRID TOOL TO TOOLBOX
+    } else if (
+      sourceCell.isFromToolbox &&
+      sourceCell.tool &&
+      targetCell.isFromGrid &&
+      targetCell.isVoid
+    ) {
+      sourceCell.coord = targetCell.coord;
+      this.grid.set(sourceCell);
     }
-    return false;
   }
 
   /**

@@ -3,12 +3,13 @@ import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/types';
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
+import Toolbox from '@/engine/Toolbox';
 import {
   SET_ACTIVE_LEVEL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
-  START_MOVING,
-  STOP_MOVING,
+  CELL_SELECTED,
+  CELL_UNSELECTED,
   SET_CURRENT_TOOLS,
   RESET_CURRENT_TOOLS,
   ADD_TO_CURRENT_TOOLS,
@@ -26,12 +27,11 @@ const store: StoreOptions<RootState> = {
   state: {
     activeLevel: initialLevel,
     activeCell: initialCell,
-    currentTools: [],
-    isMoving: false,
+    cellSelected: false,
     moveSource: ''
   },
   mutations: {
-    // set level
+    // set active level
     [SET_ACTIVE_LEVEL](state, level) {
       state.activeLevel = level;
     },
@@ -46,11 +46,11 @@ const store: StoreOptions<RootState> = {
       state.activeCell.coord = coord;
     },
     // moving functionality
-    [START_MOVING](state) {
-      state.isMoving = true;
+    [CELL_SELECTED](state) {
+      state.cellSelected = true;
     },
-    [STOP_MOVING](state) {
-      state.isMoving = false;
+    [CELL_UNSELECTED](state) {
+      state.cellSelected = false;
     },
     [SET_MOVE_SOURCE](state, source) {
       state.moveSource = source;
@@ -60,24 +60,23 @@ const store: StoreOptions<RootState> = {
     },
     // toolbox functionality
     [SET_CURRENT_TOOLS](state, cells) {
-      state.currentTools = cells;
+      state.activeLevel.toolbox = new Toolbox(cells);
     },
     [RESET_CURRENT_TOOLS](state) {
-      state.currentTools = [];
+      state.activeLevel.toolbox.reset();
     },
     [ADD_TO_CURRENT_TOOLS](state, cell) {
-      state.currentTools = [...state.currentTools, cell];
+      state.activeLevel.toolbox.addTool(cell);
     },
     [REMOVE_FROM_CURRENT_TOOLS](state, cell) {
-      const index = state.currentTools.findIndex((tool) => tool.element.name === cell.element.name);
-      state.currentTools.splice(index, 1);
+      state.activeLevel.toolbox.removeTool(cell);
     }
   },
   getters: {
     activeCell: (state) => state.activeCell,
-    isMoving: (state) => state.isMoving,
-    currentTools: (state) => state.currentTools,
-    isActiveCellMovable: (state) => !state.activeCell.frozen
+    cellSelected: (state) => state.cellSelected,
+    toolbox: (state) => state.activeLevel.toolbox,
+    isActiveCellMovable: (state) => state.activeCell.tool
   }
 };
 
