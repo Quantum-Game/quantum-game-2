@@ -59,7 +59,7 @@
       />
     </g>
     <speech-bubble
-      v-for="(hint, index) in hints"
+      v-for="(hint, index) in activeLevel.hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -89,7 +89,6 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
-  @Prop() readonly hints!: Record<number, HintInterface>;
   @State activeCell!: Cell;
   @State activeLevel!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;

@@ -4,7 +4,7 @@ import { Cell } from '@/engine/classes';
 import { HintInterface } from '@/engine/interfaces';
 
 @Component
-export default class getPostion extends Vue {
+export default class getPosition extends Vue {
   cell!: Cell;
   hint!: HintInterface;
   tileSize!: number;
