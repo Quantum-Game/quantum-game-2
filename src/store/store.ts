@@ -8,6 +8,7 @@ import {
   SET_ACTIVE_LEVEL,
   UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
+  SET_HOVERED_CELL,
   RESET_ACTIVE_CELL,
   CELL_SELECTED,
   CELL_UNSELECTED,
@@ -15,9 +16,7 @@ import {
   RESET_CURRENT_TOOLS,
   ADD_TO_CURRENT_TOOLS,
   REMOVE_FROM_CURRENT_TOOLS,
-  SET_ACTIVE_CELL_COORDINATES,
-  SET_MOVE_SOURCE,
-  RESET_MOVE_SOURCE
+  SET_ACTIVE_CELL_COORDINATES
 } from './mutation-types';
 
 const initialCell = Cell.createDummy();
@@ -28,6 +27,7 @@ const store: StoreOptions<RootState> = {
   state: {
     activeLevel: initialLevel,
     activeCell: initialCell,
+    hoveredCell: initialCell,
     cellSelected: false,
     moveSource: ''
   },
@@ -50,18 +50,16 @@ const store: StoreOptions<RootState> = {
     [SET_ACTIVE_CELL_COORDINATES](state, coord) {
       state.activeCell.coord = coord;
     },
+    // hovered cell functional
+    [SET_HOVERED_CELL](state, cell) {
+      state.hoveredCell = cell;
+    },
     // moving functionality
     [CELL_SELECTED](state) {
       state.cellSelected = true;
     },
     [CELL_UNSELECTED](state) {
       state.cellSelected = false;
-    },
-    [SET_MOVE_SOURCE](state, source) {
-      state.moveSource = source;
-    },
-    [RESET_MOVE_SOURCE](state) {
-      state.moveSource = '';
     },
     // toolbox functionality
     [SET_CURRENT_TOOLS](state, cells) {

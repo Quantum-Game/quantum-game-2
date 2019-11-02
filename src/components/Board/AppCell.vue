@@ -1,5 +1,10 @@
 <template>
-  <g :style="positionStyle" :class="computedClass" @click="handleCellClick">
+  <g
+    :style="positionStyle"
+    :class="computedClass"
+    @click="handleCellClick"
+    @mouseover="handleCellHover"
+  >
     <rect :width="tileSize" :height="tileSize" :class="rectBackgroundClass" />
     <component
       :is="computedCellName"
@@ -36,7 +41,6 @@ import {
   GlassCell,
   VacuumJarCell
 } from '@/components/Board/Cell/index';
-import { CELL_SELECTED } from '../../store/mutation-types';
 
 const borderColors = {
   active: 'transparent',
@@ -71,6 +75,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly lasers!: any[];
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('CELL_SELECTED') mutationCellSelected!: () => void;
   @Mutation('CELL_UNSELECTED') mutationCellUnselected!: () => void;
@@ -79,9 +84,19 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   @State cellSelected!: boolean;
   @State activeCell!: Cell;
+  @State hoveredCell!: Cell;
   @State activeLevel!: Level;
 
   border = '';
+
+  /**
+   * Handle mouseover for active cell display
+   */
+  handleCellHover(): void {
+    if (!this.cell.isVoid) {
+      this.mutationSetHoveredCell(this.cell);
+    }
+  }
 
   handleCellClick(): void {
     // First click unselected tool
