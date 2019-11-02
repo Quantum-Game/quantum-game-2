@@ -54,14 +54,21 @@ export default class Toolbox {
   }
 
   /**
+   * Returns the available elements
+   * @param name elements available
+   */
+  available(name: string): number {
+    return this.getCount(name);
+  }
+
+  /**
    * Add a tool to the toolbox
+   * TODO: Check if need to compare to original toolbox
    * @param cell cell holding element to remove
    */
   addTool(cell: Cell) {
     const { name } = cell.element;
-    if (this.toolbox[name] < this.originalToolbox[name]) {
-      this.toolbox[name] += 1;
-    }
+    this.toolbox[name] += 1;
   }
 
   /**

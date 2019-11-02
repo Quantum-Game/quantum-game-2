@@ -150,9 +150,17 @@ export default class Board extends Vue {
     const sourceCell = this.activeCell;
     const targetCell = this.grid.get(coord);
 
+    // MOVE GRID TOOL TO TOOLBOX
+    console.log(`COORD: ${coord}`);
+    if (coord.x === -1 && coord.y === -1) {
+      console.log(`Resetting: ${sourceCell.toString()}`);
+      sourceCell.reset();
+      this.grid.set(sourceCell);
+    }
+
     // MOVE GRID TOOL TO GRID VOID
     // eslint-disable-next-line prettier/prettier
-    if (
+    else if (
       sourceCell.isFromGrid &&
       sourceCell.tool &&
       targetCell.isFromGrid &&
@@ -171,7 +179,7 @@ export default class Board extends Vue {
       sourceCell.isFromGrid &&
       sourceCell.tool &&
       targetCell.isFromGrid &&
-      targetCell.isVoid
+      targetCell.tool
     ) {
       const tempCoord = sourceCell.coord;
       sourceCell.coord = targetCell.coord;
@@ -181,7 +189,7 @@ export default class Board extends Vue {
       this.grid.set(sourceCell);
       this.grid.set(targetCell);
 
-      // MOVE GRID TOOL TO TOOLBOX
+      // MOVE TOOLBOX TOOL TO GRID VOID
     } else if (
       sourceCell.isFromToolbox &&
       sourceCell.tool &&
