@@ -49,6 +49,7 @@ export default class Grid extends Cluster {
       currentCell.active = cell.active;
       currentCell.energized = cell.energized;
       currentCell.rotation = cell.rotation;
+      currentCell.tool = cell.tool;
       return true;
     }
     throw new Error(`Coordinate out of bounds. Cell: [${cell.coord.x}, ${cell.coord.y}]`);
