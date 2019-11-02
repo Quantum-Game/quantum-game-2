@@ -10,8 +10,8 @@
 
       <!-- GRIDS -->
       <div class="grids">
-        <div v-for="(level, i) in levels" :key="'level' + i">
-          <encyclopedia-board :level="level.levelInst" :step="level.step" class="grid" />
+        <div v-for="(grid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
+          <encyclopedia-board :gridObj="grid" :step="5" class="grid"/>
         </div>
       </div>
 
@@ -28,6 +28,7 @@
         :element-name="entry.elementName"
         :rotation="entry.defaultRotation"
         step="3"
+        :key="`transition-${entry.elementName}`"
       />
     </article>
   </div>
@@ -36,7 +37,6 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces';
-import { Level } from '@/engine/classes';
 import { getEntry } from '@/assets/data/entries/index';
 import AppButton from '@/components/AppButton.vue';
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue';
@@ -59,26 +59,10 @@ export default class EncyclopediaArticle extends Vue {
     sections: []
   };
 
-  get levels(): { levelInst: Level; step: number }[] {
-    return this.entry.grids.map((grid) => {
-      const levelInst = Level.importLevel({
-        id: -1,
-        name: '',
-        group: '',
-        description: '',
-        grid,
-        hints: [],
-        goals: []
-      });
-      return { levelInst, step: 3 };
-    });
-  }
-
   created() {
     this.loadEntry();
   }
 
-  // XXX Are we really sure we want to use watch in route, and not - pass in router via params?
   @Watch('$route')
   loadEntry() {
     if (this.entryURL) {
