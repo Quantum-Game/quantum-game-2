@@ -6,6 +6,7 @@ import Level from '@/engine/Level';
 import Toolbox from '@/engine/Toolbox';
 import {
   SET_ACTIVE_LEVEL,
+  UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   CELL_SELECTED,
@@ -34,6 +35,10 @@ const store: StoreOptions<RootState> = {
     // set active level
     [SET_ACTIVE_LEVEL](state, level) {
       state.activeLevel = level;
+    },
+    // modify grid cell
+    [UPDATE_GRID_CELL](state, cell) {
+      state.activeLevel.grid.set(cell);
     },
     // active cell functional
     [SET_ACTIVE_CELL](state, cell) {

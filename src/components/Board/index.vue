@@ -87,13 +87,14 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly grid!: Grid;
+  // @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
   @Prop() readonly hints!: Record<number, HintInterface>;
   @State activeCell!: Cell;
   @State activeLevel!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-
+  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
+  grid = this.$store.state.activeLevel.grid;
   tileSize: number = 64;
 
   $refs!: {
@@ -142,7 +143,7 @@ export default class Board extends Vue {
   }
 
   /**
-   * Used to move a cell
+   * Used to move or swap cells
    * @params coord to move to
    * @returns boolean
    */
