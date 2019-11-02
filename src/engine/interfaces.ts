@@ -94,9 +94,10 @@ export interface GoalInterface {
  */
 export interface HintInterface {
   coord: CoordInterface;
-  text: string;
+  content: string;
   color?: string;
   rotation?: number;
+  active?: boolean;
 }
 
 /**
