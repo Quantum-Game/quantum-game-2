@@ -40,7 +40,7 @@ export default class GameActiveCell extends Vue {
     return `/info/${addressName}`;
   }
 
-  get spacedName() {
+  get spacedName(): string {
     const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
     const nameCopy = this.name;
     return nameCopy.replace(regexp, '$1$4 $2$3$5');

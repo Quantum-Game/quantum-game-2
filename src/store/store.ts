@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { Coord, Element, Cell } from '@/engine/classes';
 import { RootState } from '@/types';
+import Cell from '@/engine/Cell';
 import {
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
@@ -16,7 +16,7 @@ import {
   RESET_MOVE_SOURCE
 } from './mutation-types';
 
-const initialCell = new Cell(new Coord(0, 0), Element.fromName('Void'));
+const initialCell = Cell.createVoid({ x: 0, y: 0 });
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
