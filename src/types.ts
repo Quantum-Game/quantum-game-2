@@ -1,6 +1,8 @@
 import Cell from '@/engine/Cell';
+import Level from '@/engine/Level';
 
 export interface RootState {
+  activeLevel: Level;
   activeCell: Cell;
   currentTools: Cell[];
   isMoving: boolean;

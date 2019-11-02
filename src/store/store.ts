@@ -2,7 +2,9 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/types';
 import Cell from '@/engine/Cell';
+import Level from '@/engine/Level';
 import {
+  SET_ACTIVE_LEVEL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   START_MOVING,
@@ -16,17 +18,23 @@ import {
   RESET_MOVE_SOURCE
 } from './mutation-types';
 
-const initialCell = Cell.createVoid({ x: 0, y: 0 });
+const initialCell = Cell.createDummy();
+const initialLevel = Level.createDummy();
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
+    activeLevel: initialLevel,
     activeCell: initialCell,
     currentTools: [],
     isMoving: false,
     moveSource: ''
   },
   mutations: {
+    // set level
+    [SET_ACTIVE_LEVEL](state, level) {
+      state.activeLevel = level;
+    },
     // active cell functional
     [SET_ACTIVE_CELL](state, cell) {
       state.activeCell = cell;
