@@ -71,17 +71,4 @@ button {
     transition: 0.5s;
   }
 }
-// button:hover {
-//   background-color: #4e99c9;
-//   transition: 0.5s;
-// }
-
-// .color1:hover {
-//   background-color: #be1616;
-//   transition: 0.5s;
-// }
-// .color2:hover {
-//   background-color: #4e99c9;
-//   transition: 0.5s;
-// }
 </style>

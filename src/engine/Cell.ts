@@ -13,6 +13,7 @@ export default class Cell {
   frozen: boolean;
   active: boolean;
   energized: boolean;
+  tool: boolean;
 
   constructor(
     coord: Coord,
@@ -20,7 +21,8 @@ export default class Cell {
     rotation = 0,
     frozen = false,
     active = false,
-    energized = false
+    energized = false,
+    tool = false
   ) {
     this.coord = coord;
     this.element = element;
@@ -28,6 +30,7 @@ export default class Cell {
     this.frozen = frozen;
     this.active = active;
     this.energized = energized;
+    this.tool = tool;
   }
 
   /**
@@ -55,6 +58,38 @@ export default class Cell {
   }
 
   /**
+   * Determine if the cell comes from a grid or a toolbox
+   */
+  get isFromToolbox(): boolean {
+    return this.coord.x === -1 && this.coord.y === -1;
+  }
+
+  /**
+   * Determine if the cell comes from a grid or a toolbox
+   */
+  get isFromGrid(): boolean {
+    return !this.isFromToolbox;
+  }
+
+  /**
+   * Valid draggable source
+   * Source should be a tool on grid or toolbox
+   * @returns boolean
+   */
+  isValidSource(): boolean {
+    return !this.frozen && !this.isVoid && this.tool;
+  }
+
+  /**
+   * Valid draggable target
+   * Target should be a tool or void on grid or toolbox
+   * @returns boolean
+   */
+  isValidTarget(): boolean {
+    return !this.frozen && (this.isVoid || this.tool);
+  }
+
+  /**
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
   reset(): void {
@@ -63,6 +98,7 @@ export default class Cell {
     this.active = false;
     this.frozen = false;
     this.energized = false;
+    this.tool = false;
   }
 
   /**
@@ -103,28 +139,23 @@ export default class Cell {
     this.energized = !this.energized;
   }
 
-  // /**
-  //  * Fire the laser
-  //  * Convert the laser direction and position into a photon
-  //  * @returns Particle
-  //  */
-  // fire(): Particle {
-  //   if (this.active) {
-  //     return new Particle(this.coord, this.rotation, 1, 0);
-  //   }
-  //   throw Error('Laser is inactive...');
-  // }
+  /**
+   * Toggle the energized status of the cell, cells are energized around an activated detector
+   */
+  toggleTool(): void {
+    this.energized = !this.energized;
+  }
 
   /**
    * Output a string describing the cell, overrides toString() method
    * @returns string describing the cell status
    */
   toString(): string {
-    return `Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
-      this.active ? 'active' : 'inactive'
-    } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.toString()} rotated ${
-      this.rotation
-    }°`;
+    return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} Cell @ ${this.coord.toString()} is ${
+      this.frozen ? 'frozen' : 'unfrozen'
+    } ${this.active ? 'active' : 'inactive'} and ${
+      this.energized ? 'powered' : 'unpowered'
+    } ${this.element.toString()} rotated ${this.rotation}°`;
   }
 
   /**
@@ -171,6 +202,8 @@ export default class Cell {
   static createToolboxCell(name: string): Cell {
     const element = Element.fromName(name);
     const coord = new Coord(-1, -1);
-    return new Cell(coord, element);
+    const cell = new Cell(coord, element);
+    cell.tool = true;
+    return cell;
   }
 }

@@ -1,11 +1,11 @@
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
+import Toolbox from '@/engine/Toolbox';
 
 export interface RootState {
   activeLevel: Level;
   activeCell: Cell;
-  currentTools: Cell[];
-  isMoving: boolean;
+  cellSelected: boolean;
   moveSource: string;
 }
 
