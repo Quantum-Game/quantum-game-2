@@ -87,14 +87,13 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  // @Prop({ default: '' }) readonly grid!: Grid;
+  @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
   @Prop() readonly hints!: Record<number, HintInterface>;
   @State activeCell!: Cell;
   @State activeLevel!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
   @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
-  grid = this.$store.state.activeLevel.grid;
   tileSize: number = 64;
 
   $refs!: {
@@ -152,16 +151,11 @@ export default class Board extends Vue {
     const targetCell = this.grid.get(coord);
 
     // MOVE GRID TOOL TO TOOLBOX
-    console.log(`COORD: ${coord}`);
-    if (coord.x === -1 && coord.y === -1) {
-      console.log(`Resetting: ${sourceCell.toString()}`);
-      sourceCell.reset();
-      this.grid.set(sourceCell);
-    }
+    // VUEX managed
 
     // MOVE GRID TOOL TO GRID VOID
     // eslint-disable-next-line prettier/prettier
-    else if (
+    if (
       sourceCell.isFromGrid &&
       sourceCell.tool &&
       targetCell.isFromGrid &&
@@ -172,8 +166,8 @@ export default class Board extends Vue {
       targetCell.coord = tempCoord;
       targetCell.tool = false;
       sourceCell.tool = true;
-      this.grid.set(sourceCell);
-      this.grid.set(targetCell);
+      this.mutationUpdateGridCell(sourceCell);
+      this.mutationUpdateGridCell(targetCell);
 
       // SWAP GRID TOOL TO GRID TOOL
     } else if (
@@ -187,8 +181,8 @@ export default class Board extends Vue {
       targetCell.coord = tempCoord;
       targetCell.tool = true;
       sourceCell.tool = true;
-      this.grid.set(sourceCell);
-      this.grid.set(targetCell);
+      this.mutationUpdateGridCell(sourceCell);
+      this.mutationUpdateGridCell(targetCell);
 
       // MOVE TOOLBOX TOOL TO GRID VOID
     } else if (
@@ -199,7 +193,7 @@ export default class Board extends Vue {
     ) {
       targetCell.element = sourceCell.element;
       targetCell.tool = true;
-      this.grid.set(targetCell);
+      this.mutationUpdateGridCell(targetCell);
     }
   }
 
