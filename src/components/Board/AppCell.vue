@@ -15,6 +15,7 @@
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
 import { Cell } from '@/engine/classes';
+import { getPosition } from '@/mixins';
 import {
   LaserCell,
   MirrorCell,
@@ -34,10 +35,10 @@ import {
   GlassCell,
   VacuumJarCell
 } from '@/components/Board/Cell/index';
-import { getPosition } from '@/mixins';
 
 const borderColors = {
   active: 'transparent',
+  frozen: 'turquoise',
   rotable: 'white',
   energized: 'blue'
 };
@@ -77,7 +78,10 @@ export default class AppCell extends Mixins(getPosition) {
 
   border = '';
 
-  get computedCellName() {
+  /**
+   * Compute the cell class
+   */
+  get computedCellName(): string {
     return `${this.cell.element.name}Cell`;
   }
 
@@ -199,7 +203,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns boolean
    */
   get shouldTileChangeColor() {
-    return this.isMoving && this.cell.element.name === 'Void';
+    return this.isMoving && this.cell.isVoid;
   }
 
   /**

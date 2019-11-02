@@ -89,14 +89,6 @@ export interface GoalInterface {
 }
 
 /**
- * HINT LIST INTERFACE
- * Hint list dictionary interface in primitives
- */
-export interface HintListInterface {
-  [index: number]: HintInterface;
-}
-
-/**
  * HINT INTERFACE
  * Hint interface in primitives
  */

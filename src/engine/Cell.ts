@@ -157,7 +157,7 @@ export default class Cell {
    * @param coord Coord
    * @returns a blank cell
    */
-  static createVoid(coordI: CoordInterface): Cell {
+  static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI);
     const element = Element.fromName('Void');
     return new Cell(coord, element);

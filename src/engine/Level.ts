@@ -106,7 +106,6 @@ export default class Level {
    * @param obj a level interface with primitives
    * @returns a Level instance
    */
-
   static importClassicLevel(obj: ClassicLevelInterface): Level {
     const rows = obj.height;
     const cols = obj.width;
@@ -121,5 +120,21 @@ export default class Level {
     const goals: Goal[] = [];
     const hints: Hint[] = [];
     return new Level(0, obj.name, obj.group, '', grid, goals, hints, false);
+  }
+
+  /**
+   * Import a json level
+   * @returns a Level instance
+   */
+  static createDummy(): Level {
+    return Level.importLevel({
+      id: 0,
+      name: 'DummyLevel',
+      group: 'Dummy',
+      description: 'Dummy level created for placeholders...',
+      grid: new Grid(2, 2).exportGrid(),
+      goals: [],
+      hints: []
+    });
   }
 }
