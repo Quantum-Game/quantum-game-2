@@ -4,7 +4,7 @@
 			<h1>
 				User Registration
 			</h1>
-			<div v-if="error" class="alert alert-danger">{{ error }}</div>
+			<div v-if="error" class="alert-error">{{ error }}</div>
 			<form class="email-login" action="#" @submit.prevent="signUp">
 				<div class="col-md-6">
 					<input
@@ -44,10 +44,6 @@
 					/>
 				</div>
 				<div class="login-button-wrapper">
-					<div class="rememberme">
-						<input type="checkbox" name="rememberme" />
-						<label for="rememberme">Remember Me</label>
-					</div>
 					<q-button type="special"> Sign Up </q-button>
 				</div>
 			</form>
@@ -150,11 +146,15 @@ input[type='password']:focus {
 	width: 100%;
 	align-items: center;
 	margin-top: 25px;
+
+	button {
+		margin: 0 auto;
+	}
 }
 
-.rememberme label {
-	font-size: 1rem;
-	color: rgba(255, 255, 255, 0.7);
+.alert-error {
+	margin-bottom: 20px;
+	color: #ff0055;
 }
 
 @media screen and (max-width: 736px) {

@@ -13,7 +13,7 @@
 				<div class="social-login__btn social-login__g" @click="signInSocial('google')">Google</div>
 			</div>
 			<p class="separator">or</p>
-			<div v-if="error" class="alert alert-danger">{{ error }}</div>
+			<div v-if="error" class="alert-error">{{ error }}</div>
 			<form class="email-login" action="#" @submit.prevent="signIn">
 				<div class="email-login__email">
 					<input
@@ -41,14 +41,14 @@
 				</div>
 				<div class="login-button-wrapper">
 					<div class="rememberme">
-						<input type="checkbox" name="rememberme" />
+						<input type="checkbox" checked v-model="user.rememberMe" name="rememberme" />
 						<label for="rememberme">Remember Me</label>
 					</div>
 					<q-button type="special"> Login </q-button>
 				</div>
 			</form>
 			<p>Forgot your password?</p>
-			<p>Don't have an account?<router-link to="/register"> Sign Up </router-link></p>
+			<p>Don't have an account? <router-link to="/register"> Sign Up </router-link></p>
 		</div>
 	</main-layout>
 </template>
@@ -68,7 +68,8 @@ import QButton from '../components/QButton.vue';
 export default class Login extends Vue {
 	user: {} = {
 		email: '',
-		password: ''
+		password: '',
+		rememberMe: true
 	};
 
 	get error() {
@@ -98,15 +99,48 @@ h1 {
 }
 p {
 	color: rgba(255, 255, 255, 0.7);
-	// line-height: 150%;
+}
+
+.alert-error {
+	margin-bottom: 20px;
+	color: #ff0055;
+}
+
+.separator {
+	position: relative;
+}
+
+.separator::before,
+.separator::after {
+	content: '';
+	position: absolute;
+	border-top: 2px solid #fff;
+	width: 45%;
+	top: 50%;
+	right: 55%;
+}
+
+.separator::after {
+	left: 55%;
 }
 
 .social-login__btn {
 	width: 100%;
 	padding: 10px 0;
-	border: 1px solid #fff;
 	margin-bottom: 5px;
 	cursor: pointer;
+}
+
+.social-login {
+	&__gh {
+		background: #120223;
+	}
+	&__fb {
+		background: #39579a;
+	}
+	&__g {
+		background: #4285f4;
+	}
 }
 
 input[type='email'],

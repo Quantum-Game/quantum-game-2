@@ -7,9 +7,9 @@ Vue.use(Vuex);
 
 const userStore = {
   state: {
-    // user: null,
     user: {
       loggedIn: false,
+      rememberMe: true,
       data: {
         displayName: '',
         email: ''
@@ -36,6 +36,9 @@ const userStore = {
     SET_LOGGED_IN(state, payload) {
       state.user.loggedIn = payload;    
     },
+    SET_REMEMBER_ME(state, payload) {
+      state.user.rememberMe = payload;    
+    },
     SET_USER(state, payload) {
       state.user.data = payload;
     },
@@ -60,13 +63,23 @@ const userStore = {
         commit("SET_USER", null);
       }
     },
-    SIGN_IN({commit}, user) {
-      auth
-        .signInWithEmailAndPassword(user.email, user.password)
-        .then(() => {
+    SIGN_IN({commit, getters}, user) {
+      commit("SET_REMEMBER_ME", user.rememberMe);
+
+      let authPersistance = auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+      if(!getters.user.rememberMe) {
+        authPersistance = auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+      }
+
+      authPersistance
+        .then(function() {
+          return auth.signInWithEmailAndPassword(user.email, user.password)
+        })
+        .then(()=> {
           router.replace({ name: 'myaccount' });
         })
-        .catch((err) => {
+        .catch(function(err) {
           commit("SET_ERROR", err.message);
         });
     },
@@ -78,7 +91,7 @@ const userStore = {
       } else if (social === 'facebook') {
         provider = new firebase.auth.FacebookAuthProvider();
       } else if (social === 'google') {
-        provider = new firebase.auth.FacebookAuthProvider();
+        provider = new firebase.auth.GoogleAuthProvider();
       }
   
       auth
@@ -114,7 +127,7 @@ const userStore = {
           });
         });
     },
-    SAVE_PROGRESS({commit, getters, dispatch}) {
+    SAVE_PROGRESS({commit, getters}) {
       const progressArr = getters.progressArr
       const dbRef = db.collection("users").doc(auth.currentUser.uid);
       const data = {uid: auth.currentUser.uid, progress:progressArr};
@@ -136,7 +149,7 @@ const userStore = {
           } else {
               console.log("No such document!");
           }
-      }).catch(function(error) {
+      }).catch(function(err) {
         commit("SET_ERROR", err.message);
       });
     }
