@@ -126,12 +126,13 @@ export default class AppCell extends Mixins(getPosition) {
         else if (this.activeCell.isFromGrid && this.cell.isFromToolbox) {
           console.log(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
           this.$emit('add-cell-here', this.cell.coord);
+          console.log(this.cell.coord);
           this.mutationAddToCurrentTools(this.activeCell);
           this.mutationResetActiveCell();
           this.mutationCellUnselected();
           // FALLBACK
         } else {
-          console.log(`FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          console.log(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
           this.mutationResetActiveCell();
           this.mutationCellUnselected();
         }

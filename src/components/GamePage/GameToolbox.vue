@@ -1,13 +1,16 @@
 <template>
   <div class="toolbox" @click="handleToolboxClick">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
-      <app-cell :cell="cell" :tool="true" />
+      <app-cell :cell="cell" />
       <text class="counter" x="50%" y="80">
         {{ toolbox.getCount(cell.element.name) }}
         ({{ toolbox.getCountOriginal(cell.element.name) }})
       </text>
     </svg>
-    <slot>isMoving: {{ isMoving }} activeCell: {{ activeCell.toString() }}</slot>
+    <slot>
+      <p>cellSelected: {{ cellSelected }}</p>
+      <p>activeCell: {{ activeCell.toString() }}</p>
+    </slot>
   </div>
 </template>
 
@@ -27,12 +30,12 @@ import AppCell from '@/components/Board/AppCell.vue';
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
-  @State isMoving!: boolean;
+  @State cellSelected!: boolean;
   @State activeCell!: Cell;
   @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
 
   handleToolboxClick() {
-    if (this.isMoving && !this.activeCell.frozen && this.activeCell.coord.x > -1) {
+    if (this.cellSelected && this.activeCell.isFromGrid) {
       this.mutationAddToCurrentTools(this.activeCell);
     }
   }
