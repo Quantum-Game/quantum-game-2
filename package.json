@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
+    "@types/webpack-env": "^1.14.1",
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-plugin-pwa": "^3.11.0",
@@ -54,6 +55,7 @@
     "typescript": "^3.4.3",
     "vue-class-component": "^7.1.0",
     "vue-property-decorator": "^8.2.2",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.10",
+    "webpack-env": "^0.8.0"
   }
 }
