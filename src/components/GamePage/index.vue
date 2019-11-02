@@ -13,11 +13,11 @@
       <!-- HEADER-MIDDLE -->
       <h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
       <h1 v-else slot="header-middle" class="title">
-        <router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
+        <router-link :to="previousLevel">
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
-        {{ level.name.toUpperCase() }}
-        <router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
+        {{ activeLevel.name.toUpperCase() }}
+        <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
       </h1>
@@ -43,7 +43,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="level.toolbox" />
+        <game-toolbox :toolbox="activeLevel.toolbox" />
         <game-active-cell />
         <game-photons :active-frame="activeFrame" />
       </section>
@@ -90,14 +90,11 @@ import AppOverlay from '@/components/AppOverlay.vue';
   }
 })
 export default class Game extends Vue {
-  level: Level = Level.createDummy();
-  levelI: LevelInterface = this.level.exportLevel();
+  @State activeLevel!: Level;
   frameIndex: number = 0;
   frames: Frame[] = [];
   error: string = '';
   activeElement = '';
-  @State activeLevel!: Level;
-  grid = this.$store.state.activeLevel;
 
   // LIFECYCLE
   created() {
@@ -123,11 +120,10 @@ export default class Game extends Vue {
       this.error = 'No such exists!';
       return false;
     }
-    // Process
-    this.levelI = levelI;
-    this.level = Level.importLevel(this.levelI);
-    this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
-    this.$store.commit('SET_ACTIVE_LEVEL', this.level);
+    // Process and store in Vuex
+    const level = Level.importLevel(levelI);
+    this.$store.commit('SET_CURRENT_TOOLS', level.toolbox.fullCellList);
+    this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.createFrames();
     return true;
   }
@@ -139,7 +135,7 @@ export default class Game extends Vue {
   createFrames(max = 25): void {
     this.frames = [];
     this.frameIndex = 0;
-    const initFrame = new Frame(this.level);
+    const initFrame = new Frame(this.activeLevel);
     this.frames.push(initFrame);
     this.frames.push(initFrame.next());
     for (let index = 0; index < max; index += 1) {
@@ -226,6 +222,10 @@ export default class Game extends Vue {
     return `level${parseInt(this.$route.params.id, 10)}`;
   }
 
+  get previousLevel(): string {
+    return `/level/${parseInt(this.$route.params.id, 10) - 1}`;
+  }
+
   get nextLevel(): string {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
   }
@@ -247,7 +247,7 @@ export default class Game extends Vue {
   }
 
   get hints(): HintInterface[] {
-    return this.levelI.hints;
+    return this.activeLevel.hints.map((hint) => hint.exportHint());
   }
 }
 </script>

@@ -1,12 +1,12 @@
 <template>
-  <div class="toolbox" @click="handleToolboxClick">
+  <div class="toolbox">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <app-cell :cell="cell" />
       <text class="counter" x="50%" y="80">x {{ toolbox.getCount(cell.element.name) }}</text>
     </svg>
     <slot>
-      <p>cellSelected: {{ cellSelected }}</p>
-      <p>activeCell: {{ activeCell.toString() }}</p>
+      <!-- <p>cellSelected: {{ cellSelected }}</p>
+      <p>activeCell: {{ activeCell.toString() }}</p> -->
     </slot>
   </div>
 </template>
@@ -29,13 +29,6 @@ export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
   @State cellSelected!: boolean;
   @State activeCell!: Cell;
-  @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
-
-  handleToolboxClick() {
-    if (this.cellSelected && this.activeCell.isFromGrid) {
-      this.mutationAddToCurrentTools(this.activeCell);
-    }
-  }
 }
 </script>
 
@@ -49,7 +42,7 @@ export default class GameToolbox extends Vue {
   border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 10px;
-  min-height: 300px;
+  // min-height: 300px;
   .tool {
     width: 30%;
     min-width: 64px;
