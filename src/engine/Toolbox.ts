@@ -37,6 +37,24 @@ export default class Toolbox {
   }
 
   /**
+   * Add a tool to the toolbox
+   * @param cell cell holding element to remove
+   */
+  addTool(cell: Cell) {
+    const { name } = cell.element;
+    this.toolbox[name] += 1;
+  }
+
+  /**
+   * Remove element from toolbox
+   * @param cell cell holdeing element to remove
+   */
+  removeTool(cell: Cell) {
+    const { name } = cell.element;
+    this.toolbox[name] -= 1;
+  }
+
+  /**
    * Override toString() method
    * Display toolbox content
    * @returns string

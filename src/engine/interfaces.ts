@@ -40,6 +40,24 @@ export interface LevelInterface {
 }
 
 /**
+ * CLASSICAL LEVEL INTERFACE
+ * original level structure for importing V1 levels
+ */
+export interface ClassicLevelInterface {
+  name: string;
+  group: string;
+  width: number;
+  height: number;
+  tiles: {
+    i: number;
+    j: number;
+    name: string;
+    rotation: number;
+    frozen: boolean;
+  }[];
+}
+
+/**
  * GOAL INTERFACE
  * Goal interface in primitives
  */
@@ -56,21 +74,16 @@ export interface GoalInterface {
 export interface HintInterface {
   coord: CoordInterface;
   text: string;
-}
-
-/**
- * IHINT KUBA
- * TODO: Refactor
- */
-export interface IHint {
-  coord: CoordInterface;
-  content: string;
   color?: string;
   rotation?: number;
 }
 
-export interface IHintList {
-  [index: number]: IHint;
+/**
+ * HINT LIST INTERFACE
+ * Hint list dictionary interface in primitives
+ */
+export interface HintListInterface {
+  [index: number]: HintInterface;
 }
 
 /**

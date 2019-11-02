@@ -18,12 +18,12 @@
 
 <script lang="ts">
 import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
-import { IHint } from '@/engine/interfaces';
+import { HintInterface } from '@/engine/interfaces';
 import { getPosition } from '@/mixins';
 
 @Component
 export default class SpeechBubble extends Mixins(getPosition) {
-  @Prop() readonly hint!: IHint;
+  @Prop() readonly hint!: HintInterface;
   @Prop({ default: 64 }) readonly tileSize!: number;
   positionX!: number;
   positionY!: number;

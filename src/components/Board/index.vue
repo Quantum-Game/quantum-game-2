@@ -73,7 +73,7 @@ import { Mutation, State } from 'vuex-class';
 import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
 import Grid from '@/engine/Grid';
-import { ParticleInterface, CellInterface, IHintList } from '@/engine/interfaces';
+import { ParticleInterface, CellInterface, HintListInterface } from '@/engine/interfaces';
 import AppCell from '@/components/Board/AppCell.vue';
 import AppPhoton from '@/components/AppPhoton.vue';
 import SpeechBubble from '@/components/SpeechBubble.vue';
@@ -88,7 +88,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
-  @Prop() readonly hints!: IHintList;
+  @Prop() readonly hints!: HintListInterface;
   @State activeCell!: Cell;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('STOP_MOVING') mutationStopMoving!: () => void;
