@@ -32,7 +32,7 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
+        <game-board :grid="activeLevel.grid" :photons="activeFrame.quantum" :hints="hints" />
         <game-controls
           :active-frame="activeFrame"
           :total-frames="frames.length"
@@ -52,8 +52,9 @@
 </template>
 
 <script lang="ts">
-import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Mutation, State } from 'vuex-class';
+import cloneDeep from 'lodash.clonedeep';
 import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
 import {
   CellInterface,
@@ -95,6 +96,8 @@ export default class Game extends Vue {
   frames: Frame[] = [];
   error: string = '';
   activeElement = '';
+  @State activeLevel!: Level;
+  grid = this.$store.state.activeLevel;
 
   // LIFECYCLE
   created() {

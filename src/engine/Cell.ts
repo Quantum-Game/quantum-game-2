@@ -92,13 +92,14 @@ export default class Cell {
   /**
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
-  reset(): void {
+  reset(): Cell {
     this.element.name = 'Void';
     this.rotation = 0;
     this.active = false;
     this.frozen = false;
     this.energized = false;
     this.tool = false;
+    return this;
   }
 
   /**
