@@ -2,10 +2,7 @@
   <div class="toolbox" @click="handleToolboxClick">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <app-cell :cell="cell" />
-      <text class="counter" x="50%" y="80">
-        {{ toolbox.getCount(cell.element.name) }}
-        ({{ toolbox.getCountOriginal(cell.element.name) }})
-      </text>
+      <text class="counter" x="50%" y="80">x {{ toolbox.getCount(cell.element.name) }}</text>
     </svg>
     <slot>
       <p>cellSelected: {{ cellSelected }}</p>
