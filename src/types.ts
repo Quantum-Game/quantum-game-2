@@ -1,5 +1,3 @@
-import { LevelInterface } from '@/engine/interfaces';
-import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
 
 export interface RootState {
@@ -7,14 +5,6 @@ export interface RootState {
   currentTools: Cell[];
   isMoving: boolean;
   moveSource: string;
-}
-
-export interface ILevelList {
-  [index: string]: LevelInterface;
-}
-
-export interface IToolset {
-  [key: string]: any;
 }
 
 /**

@@ -1,4 +1,16 @@
 /**
+ * ROOT STATE INTERFACE
+ * Holds global state of the application
+ * FIXME: See where the root state should be
+ */
+// export interface RootState {
+//   activeCell: CellInterface;
+//   currentTools: CellInterface[];
+//   isMoving: boolean;
+//   moveSource: string;
+// }
+
+/**
  * FRAME INTERFACE
  * time-frame in primitives
  */
@@ -12,6 +24,7 @@ export interface FrameInterface {
 }
 
 /**
+ * PARTICLE INTERFACE
  * Particle interface in primitives
  */
 export interface ParticleInterface {
@@ -23,6 +36,14 @@ export interface ParticleInterface {
   aim: number;
   bre: number;
   bim: number;
+}
+
+/**
+ * LEVEL LIST INTERFACE
+ * level dictionary interface
+ */
+export interface LevelListInterface {
+  [index: string]: LevelInterface;
 }
 
 /**
@@ -68,6 +89,14 @@ export interface GoalInterface {
 }
 
 /**
+ * HINT LIST INTERFACE
+ * Hint list dictionary interface in primitives
+ */
+export interface HintListInterface {
+  [index: number]: HintInterface;
+}
+
+/**
  * HINT INTERFACE
  * Hint interface in primitives
  */
@@ -76,14 +105,6 @@ export interface HintInterface {
   text: string;
   color?: string;
   rotation?: number;
-}
-
-/**
- * HINT LIST INTERFACE
- * Hint list dictionary interface in primitives
- */
-export interface HintListInterface {
-  [index: number]: HintInterface;
 }
 
 /**
@@ -142,14 +163,16 @@ export interface CoordInterface {
 }
 
 /**
- * Encyclopedia entry list
+ * ENCYCLOPEDIA ENTRY LIST INTERFACE
+ * Encyclopedia entry list in primitives
  */
 export interface EntryListInterface {
   [index: string]: EntryInterface;
 }
 
 /**
- * Encyclopedia entry interface
+ * ENCYCLOPEDIA ENTRY INTERFACE
+ * Encyclopedia entry interface in primitives
  */
 export interface EntryInterface {
   title: string;
@@ -160,27 +183,13 @@ export interface EntryInterface {
 }
 
 /**
+ * ENCYCLOPEDIA ENTRY SECTION INTERFACE
  * Encyclopedia entry section interface
  */
 export interface EntrySectionInterface {
   title: string;
   content?: string;
   pics?: string[];
-}
-
-export interface RootState {
-  activeCell: CellInterface;
-  currentTools: CellInterface[];
-  isMoving: boolean;
-  moveSource: string;
-}
-
-export interface LevelListInterface {
-  [index: string]: LevelInterface;
-}
-
-export interface IToolset {
-  [key: string]: any;
 }
 
 /**
