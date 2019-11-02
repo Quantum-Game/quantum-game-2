@@ -5,6 +5,7 @@
     </h2>
     <div ref="contentWrapper" class="content-wrapper" :style="style">
       <div v-for="(media, index) in section.contents" :key="index" class="content">
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <p v-if="!isImg(section.contents[index])" v-html="section.contents[index]"></p>
         <img v-else :src="imageUrl(section.contents[index])" />
       </div>
