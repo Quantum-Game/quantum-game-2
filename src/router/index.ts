@@ -37,6 +37,21 @@ export default new Router({
       ]
     },
     {
+			path: '/register',
+			name: 'register',
+			component: () => import('@/components/RegisterPage/index.vue')
+		},
+		{
+			path: '/login',
+			name: 'login',
+			component: () => import('@/components/LoginPage/index.vue')
+		},
+		{
+			path: '/myaccount',
+			name: 'myaccount',
+      component: () => import('@/components/MyAccountPage/index.vue')
+    },
+    {
       path: '*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue')
