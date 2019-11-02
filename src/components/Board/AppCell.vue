@@ -174,7 +174,7 @@ export default class AppCell extends Mixins(getPosition) {
    * Computed class
    */
   get computedClass(): string[] {
-    return [this.computedCellName, this.cell.tool ? 'tool' : 'frozen'];
+    return [this.computedCellName, this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''];
   }
 
   /**
@@ -259,6 +259,11 @@ rect {
 .movable-space:hover {
   fill: white;
   opacity: 0.1;
+  transition: 0.3s;
+}
+.frozen rect {
+  fill: grey;
+  opacity: 0.2;
   transition: 0.3s;
 }
 </style>
