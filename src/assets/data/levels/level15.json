@@ -1,0 +1,137 @@
+{
+  "id": 15,
+  "name": "Apples to apples",
+  "group": "Classic",
+  "description": "",
+  "grid": {
+    "cols": 13,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 1, "x": 1 },
+        "element": "Laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 4 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 5 },
+        "element": "PolarizerH",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 7 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 4 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 4 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 4 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 5 },
+        "element": "PolarizerH",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 7 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 9 },
+        "element": "PolarizerH",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 4, "x": 11 },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 7 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 9 },
+        "element": "PolarizerH",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 11 },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [],
+  "goals": [
+    {
+      "coord": { "y": 4, "x": 10 },
+      "threshold": 0.5,
+      "value": 0
+    },
+    {
+      "coord": { "y": 6, "x": 10 },
+      "threshold": 0.5,
+      "value": 0
+    }
+  ]
+}

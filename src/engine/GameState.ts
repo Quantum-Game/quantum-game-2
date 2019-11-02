@@ -4,34 +4,34 @@
  * TODO: Will need to be better defined
  */
 export default class GameState {
-	achievedGoals: boolean;
-	noParticles: boolean;
-	notEnoughIntensity: boolean;
+  achievedGoals: boolean;
+  noParticles: boolean;
+  notEnoughIntensity: boolean;
 
-	constructor() {
-		this.achievedGoals = false;
-		this.noParticles = false;
-		this.notEnoughIntensity = false;
-	}
+  constructor() {
+    this.achievedGoals = false;
+    this.noParticles = false;
+    this.notEnoughIntensity = false;
+  }
 
-	/**
-	 * Reset game state variables
-	 */
-	reset(): void {
-		this.achievedGoals = false;
-		this.noParticles = false;
-		this.notEnoughIntensity = false;
-	}
+  /**
+   * Reset game state variables
+   */
+  reset(): void {
+    this.achievedGoals = false;
+    this.noParticles = false;
+    this.notEnoughIntensity = false;
+  }
 
-	doComputeNextFrame(): boolean {
-		return !this.noParticles;
-	}
+  doComputeNextFrame(): boolean {
+    return !this.noParticles;
+  }
 
-	doRestartGame(): boolean {
-		return this.noParticles || this.notEnoughIntensity;
-	}
+  doRestartGame(): boolean {
+    return this.noParticles || this.notEnoughIntensity;
+  }
 
-	isGameOver(): boolean {
-		return this.achievedGoals || this.noParticles || this.notEnoughIntensity;
-	}
+  isGameOver(): boolean {
+    return this.achievedGoals || this.noParticles || this.notEnoughIntensity;
+  }
 }

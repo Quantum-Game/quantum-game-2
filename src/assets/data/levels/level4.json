@@ -1,0 +1,108 @@
+{
+  "id": 4,
+  "name": "Introducing interference",
+  "group": "Classic",
+  "description": "",
+  "grid": {
+    "cols": 13,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 3, "x": 1 },
+        "element": "Laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 3 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 5 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 7 },
+        "element": "Mirror",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 9 },
+        "element": "BeamSplitter",
+        "rotation": 45,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 11 },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 3 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 5 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 7 },
+        "element": "BeamSplitter",
+        "rotation": 225,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 9 },
+        "element": "Mirror",
+        "rotation": 45,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 10 },
+        "element": "Rock",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [],
+  "goals": [
+    {
+      "coord": { "y": 3, "x": 10 },
+      "threshold": 1,
+      "value": 0
+    }
+  ]
+}
