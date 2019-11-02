@@ -15,10 +15,12 @@ export interface ToolInterface {
 export default class Toolbox {
   tools: Cell[] = [];
   toolbox: ToolInterface = {};
+  originalToolbox: ToolInterface = {};
 
   constructor(tools: Cell[]) {
     const elements = tools.map((cell) => cell.element.name);
     this.toolbox = countBy(elements);
+    this.originalToolbox = this.toolbox;
   }
 
   /**
@@ -37,12 +39,22 @@ export default class Toolbox {
   }
 
   /**
+   * @params name
+   * @returns count of available elements in toolbox
+   */
+  getCountOriginal(name: string): number {
+    return this.originalToolbox[name];
+  }
+
+  /**
    * Add a tool to the toolbox
    * @param cell cell holding element to remove
    */
   addTool(cell: Cell) {
     const { name } = cell.element;
-    this.toolbox[name] += 1;
+    if (this.toolbox[name] < this.originalToolbox[name]) {
+      this.toolbox[name] += 1;
+    }
   }
 
   /**
@@ -51,7 +63,34 @@ export default class Toolbox {
    */
   removeTool(cell: Cell) {
     const { name } = cell.element;
-    this.toolbox[name] -= 1;
+    if (this.toolbox[name] > 0) {
+      this.toolbox[name] -= 1;
+    }
+  }
+
+  /**
+   * Create cell cluster from tools
+   * @returns cell[]
+   */
+  get uniqueCellList(): Cell[] {
+    return this.names.map((name) => {
+      return Cell.createToolboxCell(name);
+    });
+  }
+
+  /**
+   * Create cell cluster from tools
+   * @returns cell[]
+   */
+  get fullCellList(): Cell[] {
+    const fullList: Cell[] = [];
+    this.names.forEach((name) => {
+      const cellCount = this.toolbox[name];
+      for (let i = 0; i < cellCount; i += 1) {
+        fullList.push(Cell.createToolboxCell(name));
+      }
+    });
+    return fullList;
   }
 
   /**

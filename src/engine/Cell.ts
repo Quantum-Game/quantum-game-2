@@ -1,4 +1,4 @@
-import { CellInterface } from './interfaces';
+import { CoordInterface, CellInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import { angleToSymbol } from './Helpers';
@@ -52,6 +52,17 @@ export default class Cell {
    */
   get rotationAscii(): string {
     return angleToSymbol(this.element.rotationAngle);
+  }
+
+  /**
+   * Reset a cell to a void passive, unfrozen, unergized cell
+   */
+  reset(): void {
+    this.element.name = 'Void';
+    this.rotation = 0;
+    this.active = false;
+    this.frozen = false;
+    this.energized = false;
   }
 
   /**
@@ -139,5 +150,27 @@ export default class Cell {
     const coord = Coord.importCoord(obj.coord);
     const element = Element.fromName(obj.element);
     return new Cell(coord, element, obj.rotation, obj.frozen, obj.active, obj.energized);
+  }
+
+  /**
+   * Create a void cell from a Coord
+   * @param coord Coord
+   * @returns a blank cell
+   */
+  static createVoid(coordI: CoordInterface): Cell {
+    const coord = Coord.importCoord(coordI);
+    const element = Element.fromName('Void');
+    return new Cell(coord, element);
+  }
+
+  /**
+   * Create a void cell from a Coord
+   * @param name string
+   * @returns a toolbox cell
+   */
+  static createToolboxCell(name: string): Cell {
+    const element = Element.fromName(name);
+    const coord = new Coord(-1, -1);
+    return new Cell(coord, element);
   }
 }

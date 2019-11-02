@@ -43,7 +43,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :tools="toolboxElements" />
+        <game-toolbox :toolbox="level.toolbox" />
         <game-active-cell />
         <game-photons :active-frame="activeFrame" />
       </section>
@@ -116,7 +116,6 @@ export default class Game extends Vue {
   level: Level = Level.importLevel(this.levelObj);
   frameNumber: number = 0;
   frames: Frame[] = [];
-  toolbox = [];
   error: string = '';
   activeElement = '';
 
@@ -215,26 +214,16 @@ export default class Game extends Vue {
   }
 
   setUpToolboxElements(): void {
-    /*  sorry Philippe
-        return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
-        PLEASE MAKE SURE THAT ROUTE CHANGE ALLOWS FOR AUTOMATIC TOOLBOX PROCESSING
-    */
-    const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
-      if (cell.element.name !== 'Void' && !cell.frozen) {
-        return cell;
-      }
-    });
+    const arrayOfUnfrozenCells = this.level.toolbox.fullCellList;
     this.$store.commit('SET_CURRENT_TOOLS', cloneDeep(arrayOfUnfrozenCells));
 
-    arrayOfUnfrozenCells.map((cell: Cell) => {
-      const element = Element.fromName('Void');
-      cell.element = element;
-      cell.rotation = 0;
+    arrayOfUnfrozenCells.forEach((cell: Cell) => {
+      cell.reset();
     });
   }
 
   get toolboxElements() {
-    return this.$store.state.currentTools;
+    return this.level.toolbox.uniqueCellList;
   }
 
   // GETTERS
