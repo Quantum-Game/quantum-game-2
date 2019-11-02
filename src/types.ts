@@ -5,6 +5,7 @@ import Toolbox from '@/engine/Toolbox';
 export interface RootState {
   activeLevel: Level;
   activeCell: Cell;
+  hoveredCell: Cell;
   cellSelected: boolean;
   moveSource: string;
 }

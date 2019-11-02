@@ -81,6 +81,17 @@ export const enum GameState {
   InfiniteLoop = 'InfiniteLoop'
 }
 
+export function camelCaseToDash(str: string): string {
+  return str
+    .replace(/[^a-zA-Z0-9]+/g, '-')
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2')
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/([0-9])([^0-9])/g, '$1-$2')
+    .replace(/([^0-9])([0-9])/g, '$1-$2')
+    .replace(/-+/g, '-')
+    .toLowerCase();
+}
+
 /**
  * Convert angles to unicode arrow symbols
  * https://en.wikipedia.org/wiki/Template:Unicode_chart_Arrows
