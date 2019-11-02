@@ -91,6 +91,15 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Remove unfrozen cells once they are moved to the toolbox
+   */
+  resetUnfrozen(): void {
+    this.unfrozen.cells.forEach((cell) => {
+      cell.reset();
+    });
+  }
+
+  /**
    * Retrieve the list of quantum operators from the elements
    * @returns list of operators
    */
