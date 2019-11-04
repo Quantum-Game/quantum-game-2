@@ -16,7 +16,7 @@
         <router-link :to="previousLevel">
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
-        {{ activeLevel.name.toUpperCase() }}
+        {{ level.name.toUpperCase() }}
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
@@ -32,7 +32,7 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :grid="activeLevel.grid" :photons="activeFrame.quantum" :hints="hints" />
+        <game-board :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
         <game-controls
           :active-frame="activeFrame"
           :total-frames="frames.length"
@@ -43,7 +43,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="activeLevel.toolbox" />
+        <game-toolbox :toolbox="level.toolbox" />
         <game-active-cell />
         <game-photons :active-frame="activeFrame" />
       </section>
@@ -90,7 +90,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
   }
 })
 export default class Game extends Vue {
-  @State activeLevel!: Level;
+  @State level!: Level;
   frameIndex: number = 0;
   frames: Frame[] = [];
   error: string = '';
@@ -135,7 +135,7 @@ export default class Game extends Vue {
   createFrames(max = 25): void {
     this.frames = [];
     this.frameIndex = 0;
-    const initFrame = new Frame(this.activeLevel);
+    const initFrame = new Frame(this.level);
     this.frames.push(initFrame);
     this.frames.push(initFrame.next());
     for (let index = 0; index < max; index += 1) {
@@ -247,7 +247,7 @@ export default class Game extends Vue {
   }
 
   get hints(): HintInterface[] {
-    return this.activeLevel.hints.map((hint) => hint.exportHint());
+    return this.level.hints.map((hint) => hint.exportHint());
   }
 }
 </script>

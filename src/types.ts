@@ -3,7 +3,7 @@ import Level from '@/engine/Level';
 import Toolbox from '@/engine/Toolbox';
 
 export interface RootState {
-  activeLevel: Level;
+  level: Level;
   activeCell: Cell;
   hoveredCell: Cell;
   cellSelected: boolean;
