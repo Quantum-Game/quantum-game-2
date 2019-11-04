@@ -107,21 +107,44 @@ export default class Grid extends Cluster {
 
   /**
    * Move a cell to another coord
-   * @param src source coordinate
-   * @param dst destination coordinate
-   * @returns boolean if success
-   * FIXME: Problem with the cells setting and getting
+   * @param sourceCell source cell
+   * @param targetCell target cell
+   * @returns boolean move was successfull
    */
-  public move(src: Coord, dst: Coord): boolean {
-    const cellSrc = this.get(src);
-    const cellDst = this.get(dst);
-    if (!cellSrc.frozen && !cellDst.frozen) {
-      this.set(new Cell(src, cellDst.element, cellDst.rotation));
-      this.set(new Cell(dst, cellSrc.element, cellSrc.rotation));
-      console.debug(`Moved ${cellSrc.element} from ${src.toString()} to ${dst.toString()}`);
+  public move(sourceCell: Cell, targetCell: Cell): boolean {
+    const source = sourceCell;
+    const target = targetCell;
+    if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
+      const tempCoord = source.coord;
+      source.coord = target.coord;
+      target.coord = tempCoord;
+      target.tool = false;
+      source.tool = true;
+      this.set(source);
+      this.set(target);
       return true;
     }
-    console.error(`Couldn't move ${cellSrc.element} because of frozen ${dst.toString()}`);
+
+    // SWAP GRID TOOL TO GRID TOOL
+    if (source.isFromGrid && source.tool && target.isFromGrid && target.tool) {
+      const tempCoord = source.coord;
+      source.coord = target.coord;
+      target.coord = tempCoord;
+      target.tool = true;
+      source.tool = true;
+      this.set(source);
+      this.set(target);
+      return true;
+    }
+
+    // MOVE TOOLBOX TOOL TO GRID VOID
+    if (source.isFromToolbox && source.tool && target.isFromGrid && target.isVoid) {
+      target.element = source.element;
+      target.tool = true;
+      this.set(target);
+      return true;
+    }
+
     return false;
   }
 

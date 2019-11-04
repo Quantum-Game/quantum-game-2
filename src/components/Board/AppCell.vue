@@ -100,6 +100,8 @@ export default class AppCell extends Mixins(getPosition) {
 
   handleCellClick(): void {
     // First click unselected tool
+    // TODO: if tool from toolbox check availability before selection
+    // TODO: swap from grid tool to different toolbox tool
     if (!this.cellSelected) {
       if (this.cell.tool) {
         this.indicateTool();
@@ -127,7 +129,7 @@ export default class AppCell extends Mixins(getPosition) {
         if (this.activeCell.isFromToolbox && this.cell.isFromGrid) {
           const available = this.activeLevel.toolbox.available(this.activeCell.element.name);
           if (available > 0) {
-            this.$emit('add-cell-here', this.cell.coord);
+            this.$emit('updateCell', this.cell.coord);
             this.mutationRemoveFromCurrentTools(this.activeCell);
             this.mutationResetActiveCell();
             this.mutationCellUnselected();
@@ -136,14 +138,14 @@ export default class AppCell extends Mixins(getPosition) {
         // SOURCE: GRID - TARGET: GRID
         // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
         else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
-          this.$emit('add-cell-here', this.cell.coord);
+          this.$emit('updateCell', this.cell.coord);
           this.mutationResetActiveCell();
           this.mutationCellUnselected();
         }
         // SOURCE: GRID - TARGET: TOOLBOX
         // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
         else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
-          this.$emit('add-cell-here', this.cell.coord);
+          this.$emit('updateCell', this.cell.coord);
           this.mutationAddToCurrentTools(this.activeCell);
           this.mutationUpdateGridCell(this.activeCell.reset());
           this.mutationResetActiveCell();

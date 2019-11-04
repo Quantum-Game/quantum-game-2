@@ -30,7 +30,7 @@
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
-      @add-cell-here="moveCell"
+      @updateCell="moveCell"
       @rotate="rotateCell"
     />
 
@@ -148,52 +148,7 @@ export default class Board extends Vue {
   moveCell(coord: Coord): void {
     const sourceCell = this.activeCell;
     const targetCell = this.grid.get(coord);
-
-    // MOVE GRID TOOL TO TOOLBOX
-    // VUEX managed
-
-    // MOVE GRID TOOL TO GRID VOID
-    // eslint-disable-next-line prettier/prettier
-    if (
-      sourceCell.isFromGrid &&
-      sourceCell.tool &&
-      targetCell.isFromGrid &&
-      targetCell.isVoid
-    ) {
-      const tempCoord = sourceCell.coord;
-      sourceCell.coord = targetCell.coord;
-      targetCell.coord = tempCoord;
-      targetCell.tool = false;
-      sourceCell.tool = true;
-      this.mutationUpdateGridCell(sourceCell);
-      this.mutationUpdateGridCell(targetCell);
-
-      // SWAP GRID TOOL TO GRID TOOL
-    } else if (
-      sourceCell.isFromGrid &&
-      sourceCell.tool &&
-      targetCell.isFromGrid &&
-      targetCell.tool
-    ) {
-      const tempCoord = sourceCell.coord;
-      sourceCell.coord = targetCell.coord;
-      targetCell.coord = tempCoord;
-      targetCell.tool = true;
-      sourceCell.tool = true;
-      this.mutationUpdateGridCell(sourceCell);
-      this.mutationUpdateGridCell(targetCell);
-
-      // MOVE TOOLBOX TOOL TO GRID VOID
-    } else if (
-      sourceCell.isFromToolbox &&
-      sourceCell.tool &&
-      targetCell.isFromGrid &&
-      targetCell.isVoid
-    ) {
-      targetCell.element = sourceCell.element;
-      targetCell.tool = true;
-      this.mutationUpdateGridCell(targetCell);
-    }
+    this.grid.move(sourceCell, targetCell);
   }
 
   /**
