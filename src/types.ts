@@ -7,7 +7,6 @@ export interface RootState {
   activeCell: Cell;
   hoveredCell: Cell;
   cellSelected: boolean;
-  moveSource: string;
 }
 
 /**

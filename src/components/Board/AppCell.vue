@@ -72,7 +72,6 @@ const borderColors = {
 })
 export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
-  @Prop() readonly lasers!: any[];
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
