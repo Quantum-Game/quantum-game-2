@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import $userStore from '@/store/userStore';
@@ -14,16 +14,15 @@ const firebaseConfig = {
   measurementId: process.env.VUE_APP_MeasurementId
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
-auth.onAuthStateChanged(user => {
-  if(user) {
-    $userStore.dispatch("FETCH_USER", user);
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    $userStore.dispatch('FETCH_USER', user);
   }
 });
 
-export {db, auth};
+export { db, auth };
 
 export default firebase;
