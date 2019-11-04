@@ -1,46 +1,41 @@
-+<template>
+<template>
   <div class="explanation">
     <h3 class="explanation__title">{{ spacedName }}</h3>
-    <p class="explanation__description">
-      {{ activeCell.element.description }}
-    </p>
+    <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
-    <slot> </slot>
+    <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Mutation, State } from 'vuex-class';
 import Cell from '@/engine/Cell';
+import { camelCaseToDash } from '@/engine/Helpers';
 import AppButton from '@/components/AppButton.vue';
 
 @Component
 export default class GameActiveCell extends Vue {
-  get activeCell() {
-    return this.$store.state.activeCell;
-  }
+  @State activeCell!: Cell;
+  @State hoveredCell!: Cell;
 
   /*
     used at least twice, getter for convenience
   */
-  get name() {
-    return this.activeCell.element.name;
+  get name(): string {
+    return this.hoveredCell.element.name;
   }
 
   /*
-    get entry url - replace camelCase names
-    with hyphened ones, as this is how the entries
-    are stored.
+    Get entry url and use helper to convert it to dash
   */
-  get hyphenedEntryURL() {
-    const addressName = this.name
-      .replace(/(^[A-Z])/, ([first]: [string]) => first.toLowerCase())
-      .replace(/([A-Z])/g, ([letter]: [string]) => `-${letter.toLowerCase()}`);
-
+  get hyphenedEntryURL(): string {
+    const addressName = camelCaseToDash(this.name);
     return `/info/${addressName}`;
   }
 
-  get spacedName() {
+  /** Get entry with space as delimiter */
+  get spacedName(): string {
     const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g;
     const nameCopy = this.name;
     return nameCopy.replace(regexp, '$1$4 $2$3$5');
@@ -51,7 +46,6 @@ export default class GameActiveCell extends Vue {
 <style lang="scss" scoped>
 .explanation {
   width: 100%;
-  max-width: 130px;
   text-align: left;
   padding-top: 10px;
   padding-bottom: 10px;

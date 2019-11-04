@@ -1,75 +1,75 @@
 import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
-import { Coord, Element, Cell } from '@/engine/classes';
 import { RootState } from '@/types';
+import Cell from '@/engine/Cell';
+import Level from '@/engine/Level';
+import Toolbox from '@/engine/Toolbox';
 import {
+  SET_ACTIVE_LEVEL,
+  UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
-  START_MOVING,
-  STOP_MOVING,
+  SET_HOVERED_CELL,
   SET_CURRENT_TOOLS,
   RESET_CURRENT_TOOLS,
   ADD_TO_CURRENT_TOOLS,
-  REMOVE_FROM_CURRENT_TOOLS,
-  SET_ACTIVE_CELL_COORDINATES,
-  SET_MOVE_SOURCE,
-  RESET_MOVE_SOURCE
+  REMOVE_FROM_CURRENT_TOOLS
 } from './mutation-types';
 
-const initialCell = new Cell(new Coord(0, 0), Element.fromName('Void'));
+const initialCell = Cell.createDummy();
+const initialLevel = Level.createDummy();
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
+    level: initialLevel,
     activeCell: initialCell,
-    currentTools: [],
-    isMoving: false,
-    moveSource: ''
+    cellSelected: false,
+    hoveredCell: initialCell
   },
   mutations: {
-    // active cell functional
+    // set active level
+    [SET_ACTIVE_LEVEL](state, level) {
+      state.level = level;
+    },
+    // modify grid cell
+    [UPDATE_GRID_CELL](state, cell) {
+      state.level.grid.set(cell);
+    },
+    // set active cell
     [SET_ACTIVE_CELL](state, cell) {
       state.activeCell = cell;
+      state.cellSelected = true;
     },
+    // reset active cell
     [RESET_ACTIVE_CELL](state) {
       state.activeCell = initialCell;
+      state.cellSelected = false;
     },
-    [SET_ACTIVE_CELL_COORDINATES](state, coord) {
-      state.activeCell.coord = coord;
-    },
-    // moving functionality
-    [START_MOVING](state) {
-      state.isMoving = true;
-    },
-    [STOP_MOVING](state) {
-      state.isMoving = false;
-    },
-    [SET_MOVE_SOURCE](state, source) {
-      state.moveSource = source;
-    },
-    [RESET_MOVE_SOURCE](state) {
-      state.moveSource = '';
+    // hovered cell functional
+    [SET_HOVERED_CELL](state, cell) {
+      state.hoveredCell = cell;
     },
     // toolbox functionality
     [SET_CURRENT_TOOLS](state, cells) {
-      state.currentTools = cells;
+      state.level.toolbox = new Toolbox(cells);
     },
     [RESET_CURRENT_TOOLS](state) {
-      state.currentTools = [];
+      state.level.toolbox.reset();
     },
     [ADD_TO_CURRENT_TOOLS](state, cell) {
-      state.currentTools = [...state.currentTools, cell];
+      state.level.toolbox.addTool(cell);
     },
     [REMOVE_FROM_CURRENT_TOOLS](state, cell) {
-      const index = state.currentTools.findIndex((tool) => tool.element.name === cell.element.name);
-      state.currentTools.splice(index, 1);
+      state.level.toolbox.removeTool(cell);
     }
   },
   getters: {
+    level: (state) => state.level,
+    toolbox: (state) => state.level.toolbox,
     activeCell: (state) => state.activeCell,
-    isMoving: (state) => state.isMoving,
-    currentTools: (state) => state.currentTools,
-    isActiveCellMovable: (state) => !state.activeCell.frozen
+    cellSelected: (state) => state.cellSelected,
+    isActiveCellMovable: (state) => state.activeCell.tool
   }
 };
 

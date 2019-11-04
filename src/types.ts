@@ -1,20 +1,12 @@
-import { LevelInterface } from '@/engine/interfaces';
-import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
+import Level from '@/engine/Level';
+import Toolbox from '@/engine/Toolbox';
 
 export interface RootState {
+  level: Level;
   activeCell: Cell;
-  currentTools: Cell[];
-  isMoving: boolean;
-  moveSource: string;
-}
-
-export interface ILevelList {
-  [index: string]: LevelInterface;
-}
-
-export interface IToolset {
-  [key: string]: any;
+  hoveredCell: Cell;
+  cellSelected: boolean;
 }
 
 /**

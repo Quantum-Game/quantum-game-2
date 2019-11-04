@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Cell } from '@/engine/classes';
-import { IHint } from '@/engine/interfaces';
+import { HintInterface } from '@/engine/interfaces';
 
 @Component
-export default class getPostion extends Vue {
+export default class getPosition extends Vue {
   cell!: Cell;
-  hint!: IHint;
+  hint!: HintInterface;
   tileSize!: number;
 
   coord = {
@@ -30,15 +30,15 @@ export default class getPostion extends Vue {
     }
   }
 
-  centerCoord(val: number) {
+  centerCoord(val: number): number {
     return (val + 0.5) * this.tileSize;
   }
 
-  get positionX() {
+  get positionX(): number {
     return this.coord.x * this.tileSize;
   }
 
-  get positionY() {
+  get positionY(): number {
     return this.coord.y * this.tileSize;
   }
 
@@ -50,11 +50,11 @@ export default class getPostion extends Vue {
     return this.cell.coord.y * this.tileSize;
   }
 
-  get transformOriginX() {
+  get transformOriginX(): number {
     return this.centerCoord(this.coord.x);
   }
 
-  get transformOriginY() {
+  get transformOriginY(): number {
     return this.centerCoord(this.coord.y);
   }
 }

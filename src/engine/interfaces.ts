@@ -1,4 +1,16 @@
 /**
+ * ROOT STATE INTERFACE
+ * Holds global state of the application
+ * FIXME: See where the root state should be
+ */
+// export interface RootState {
+//   activeCell: CellInterface;
+//   currentTools: CellInterface[];
+//   isMoving: boolean;
+//   moveSource: string;
+// }
+
+/**
  * FRAME INTERFACE
  * time-frame in primitives
  */
@@ -12,6 +24,7 @@ export interface FrameInterface {
 }
 
 /**
+ * PARTICLE INTERFACE
  * Particle interface in primitives
  */
 export interface ParticleInterface {
@@ -26,6 +39,14 @@ export interface ParticleInterface {
 }
 
 /**
+ * LEVEL LIST INTERFACE
+ * level dictionary interface
+ */
+export interface LevelListInterface {
+  [index: string]: LevelInterface;
+}
+
+/**
  * LEVEL INTERFACE
  * level interface in primitives
  */
@@ -37,6 +58,24 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
+}
+
+/**
+ * CLASSICAL LEVEL INTERFACE
+ * original level structure for importing V1 levels
+ */
+export interface ClassicLevelInterface {
+  name: string;
+  group: string;
+  width: number;
+  height: number;
+  tiles: {
+    i: number;
+    j: number;
+    name: string;
+    rotation: number;
+    frozen: boolean;
+  }[];
 }
 
 /**
@@ -55,22 +94,10 @@ export interface GoalInterface {
  */
 export interface HintInterface {
   coord: CoordInterface;
-  text: string;
-}
-
-/**
- * IHINT KUBA
- * TODO: Refactor
- */
-export interface IHint {
-  coord: CoordInterface;
   content: string;
   color?: string;
   rotation?: number;
-}
-
-export interface IHintList {
-  [index: number]: IHint;
+  active?: boolean;
 }
 
 /**
@@ -129,14 +156,16 @@ export interface CoordInterface {
 }
 
 /**
- * Encyclopedia entry list
+ * ENCYCLOPEDIA ENTRY LIST INTERFACE
+ * Encyclopedia entry list in primitives
  */
 export interface EntryListInterface {
   [index: string]: EntryInterface;
 }
 
 /**
- * Encyclopedia entry interface
+ * ENCYCLOPEDIA ENTRY INTERFACE
+ * Encyclopedia entry interface in primitives
  */
 export interface EntryInterface {
   title: string;
@@ -147,27 +176,13 @@ export interface EntryInterface {
 }
 
 /**
+ * ENCYCLOPEDIA ENTRY SECTION INTERFACE
  * Encyclopedia entry section interface
  */
 export interface EntrySectionInterface {
   title: string;
   content?: string;
   pics?: string[];
-}
-
-export interface RootState {
-  activeCell: CellInterface;
-  currentTools: CellInterface[];
-  isMoving: boolean;
-  moveSource: string;
-}
-
-export interface LevelListInterface {
-  [index: string]: LevelInterface;
-}
-
-export interface IToolset {
-  [key: string]: any;
 }
 
 /**

@@ -1,10 +1,15 @@
 <template>
-  <g :style="positionStyle" @click="handleCellClick">
+  <g
+    :style="positionStyle"
+    :class="computedClass"
+    @click="handleCellClick"
+    @mouseover="handleCellHover"
+  >
     <rect :width="tileSize" :height="tileSize" :class="rectBackgroundClass" />
     <component
       :is="computedCellName"
       :cell="cell"
-      :class="cell.element.name"
+      :class="computedCellName"
       :cell-size="tileSize"
       :border="border"
     />
@@ -14,7 +19,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
-import { Cell } from '@/engine/classes';
+import Cell from '@/engine/Cell';
+import Level from '@/engine/Level';
+import { getPosition } from '@/mixins';
 import {
   LaserCell,
   MirrorCell,
@@ -34,10 +41,10 @@ import {
   GlassCell,
   VacuumJarCell
 } from '@/components/Board/Cell/index';
-import { getPosition } from '@/mixins';
 
 const borderColors = {
   active: 'transparent',
+  frozen: 'turquoise',
   rotable: 'white',
   energized: 'blue'
 };
@@ -65,70 +72,110 @@ const borderColors = {
 })
 export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
-  @Prop() readonly lasers!: any[];
-  @Prop({ default: false }) readonly tool!: boolean;
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
-  @Mutation('START_MOVING') mutationStartMoving!: () => void;
-  @Mutation('STOP_MOVING') mutationStopMoving!: () => void;
-  @Mutation('SET_MOVE_SOURCE') mutationSetMoveSource!: (source: string) => void;
-  @State isMoving!: boolean;
+  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
+  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
+  @State level!: Level;
   @State activeCell!: Cell;
+  @State cellSelected!: boolean;
+  @State hoveredCell!: Cell;
 
   border = '';
 
-  get computedCellName() {
-    return `${this.cell.element.name}Cell`;
+  /**
+   * Handle mouseover for active cell display
+   */
+  handleCellHover(): void {
+    if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+      this.mutationSetHoveredCell(this.cell);
+    }
+  }
+
+  handleCellClick(): void {
+    // First click unselected tool
+    // TODO: if tool from toolbox check availability before selection
+    // TODO: swap from grid tool to different toolbox tool
+    if (!this.cellSelected) {
+      // If from toolbox needs to have available elements
+      if (
+        this.cell.isValidSource &&
+        (this.cell.isFromGrid || (this.cell.isFromToolbox && this.level.isAvailable(this.cell)))
+      ) {
+        this.indicateTool();
+        this.mutationSetActiveCell(this.cell);
+      } else {
+        console.log(`INVALID SELECTION : ${this.cell.toString()}`);
+        this.indicateFrozen();
+        this.mutationResetActiveCell();
+      }
+    } else {
+      // ROTATE CELL
+      if (this.isActiveCell && this.cell.isFromGrid) {
+        this.cell.rotate();
+        this.level.grid.set(this.cell);
+        this.mutationResetActiveCell();
+        return;
+      }
+      // SOURCE: TOOLBOX - TARGET: GRID
+      // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
+      // eslint-disable-next-line
+      if (this.cell.isValidTarget()) {
+        if (this.activeCell.isFromToolbox && this.cell.isFromGrid) {
+          const available = this.level.toolbox.available(this.activeCell.element.name);
+          if (available > 0) {
+            this.$emit('updateCell', this.cell.coord);
+            this.mutationRemoveFromCurrentTools(this.activeCell);
+            this.mutationResetActiveCell();
+          }
+        }
+        // SOURCE: GRID - TARGET: GRID
+        // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
+        else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
+          this.$emit('updateCell', this.cell.coord);
+          this.mutationResetActiveCell();
+        }
+        // SOURCE: GRID - TARGET: TOOLBOX
+        // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
+        else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
+          this.$emit('updateCell', this.cell.coord);
+          this.mutationAddToCurrentTools(this.activeCell);
+          this.level.grid.set(this.activeCell.reset());
+          this.mutationResetActiveCell();
+          // FALLBACK
+          // console.log(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+        } else {
+          this.mutationResetActiveCell();
+        }
+        // INVALID TARGET
+        // console.debug(`Invalid target: ${this.cell.toString()}`);
+      } else {
+        this.mutationResetActiveCell();
+      }
+    }
   }
 
   /**
-   * used to handle clicking,
-   * including setting an active cell,
-   * rotation, border color changes
-   * @returns void
+   * Is current cell the active cell
    */
-  handleCellClick(): void {
-    // first click: see if valid drag target;
-    if (!this.isMoving) {
-      this.mutationSetActiveCell(this.cell);
-      if (this.validDrag) {
-        // can drag
-        this.mutationStartMoving();
-        this.indicateMovable();
-        // set the vuex property indicating the
-        // movement source
-        if (this.tool) {
-          this.mutationSetMoveSource('toolbox');
-        } else {
-          this.mutationSetMoveSource('grid');
-        }
-      } else {
-        this.indicateUnmovable();
-      }
+  get isActiveCell(): boolean {
+    return this.activeCell === this.cell;
+  }
 
-      // second click:
-    } else {
-      if (this.cell === this.activeCell) {
-        // same cell click - rotate
-        this.$emit('rotate', this.cell);
-        return;
-      }
-      // emit event for moving
-      if (this.validDrop) {
-        this.$emit('add-cell-here', this.cell.coord);
-        this.mutationStopMoving();
-      } else {
-        /*  the tile is taken;
-            indicate kind - frozen or not
-        */
-        if (this.validDrag) {
-          this.indicateMovable();
-        } else {
-          this.indicateUnmovable();
-        }
-        this.mutationSetActiveCell(this.cell);
-      }
-    }
+  /**
+   * Computed class
+   */
+  get computedClass(): string[] {
+    return [this.computedCellName, this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''];
+  }
+
+  /**
+   * Compute the cell class
+   */
+  get computedCellName(): string {
+    return `${this.cell.element.name}Cell`;
   }
 
   /**
@@ -136,7 +183,7 @@ export default class AppCell extends Mixins(getPosition) {
    * it can be moved
    * @returns void
    */
-  indicateMovable() {
+  indicateTool(): void {
     this.border = borderColors.rotable;
   }
 
@@ -144,27 +191,11 @@ export default class AppCell extends Mixins(getPosition) {
    * changes border color for w given time
    * @returns void
    */
-  indicateUnmovable(): void {
+  indicateFrozen(): void {
     this.border = borderColors.active;
     const timeout = setTimeout(() => {
       this.border = '';
     }, 200);
-  }
-
-  /**
-   * is the cell a valiable drag target?
-   * @returns a boolean
-   */
-  get validDrag(): boolean {
-    return !this.cell.frozen && this.cell.element.name !== 'Void';
-  }
-
-  /**
-   * is the cell a valiable drop target?
-   * @returns a boolean
-   */
-  get validDrop(): boolean {
-    return this.cell.element.name === 'Void' && !this.cell.frozen;
   }
 
   /**
@@ -174,14 +205,12 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get positionStyle(): any {
     let styleObj = {};
-    if (!this.tool) {
-      styleObj = {
-        'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
-        transform: `
+    styleObj = {
+      'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
+      transform: `
         rotate(-${this.cell.rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
-      };
-    }
+    };
     return styleObj;
   }
 
@@ -190,7 +219,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns highlight class
    */
   get rectBackgroundClass() {
-    return this.shouldTileChangeColor ? 'movable-space' : '';
+    return [this.shouldTileChangeColor ? 'movable-space' : ''];
   }
 
   /**
@@ -199,7 +228,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns boolean
    */
   get shouldTileChangeColor() {
-    return this.isMoving && this.cell.element.name === 'Void';
+    return this.cellSelected && this.cell.isVoid;
   }
 
   /**
@@ -224,6 +253,11 @@ rect {
 .movable-space:hover {
   fill: white;
   opacity: 0.1;
+  transition: 0.3s;
+}
+.frozen rect {
+  fill: grey;
+  opacity: 0.2;
   transition: 0.3s;
 }
 </style>

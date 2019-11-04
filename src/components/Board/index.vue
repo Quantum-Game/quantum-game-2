@@ -30,7 +30,7 @@
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
-      @add-cell-here="moveCell"
+      @updateCell="moveCell"
       @rotate="rotateCell"
     />
 
@@ -59,7 +59,7 @@
       />
     </g>
     <speech-bubble
-      v-for="(hint, index) in hints"
+      v-for="(hint, index) in level.hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -73,7 +73,8 @@ import { Mutation, State } from 'vuex-class';
 import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
 import Grid from '@/engine/Grid';
-import { ParticleInterface, CellInterface, IHintList } from '@/engine/interfaces';
+import Level from '@/engine/Level';
+import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces';
 import AppCell from '@/components/Board/AppCell.vue';
 import AppPhoton from '@/components/AppPhoton.vue';
 import SpeechBubble from '@/components/SpeechBubble.vue';
@@ -88,14 +89,10 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
-  @Prop() readonly hints!: IHintList;
   @State activeCell!: Cell;
-  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
-  @Mutation('STOP_MOVING') mutationStopMoving!: () => void;
-  @Mutation('RESET_MOVE_SOURCE') mutationResetMoveSource!: () => void;
+  @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @State moveSource!: string;
-
+  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   tileSize: number = 64;
 
   $refs!: {
@@ -144,28 +141,14 @@ export default class Board extends Vue {
   }
 
   /**
-   * Used to move a cell
+   * Used to move or swap cells
    * @params coord to move to
    * @returns boolean
    */
-  moveCell(coord: Coord): boolean {
-    const destinationCell = this.grid.get(coord);
-    if (!destinationCell.frozen && !this.activeCell.frozen) {
-      // the cell is coming from the toolbox,
-      // delete it from there
-      if (this.activeCell.coord.x === -1) {
-        this.mutationRemoveFromCurrentTools(this.activeCell);
-      } else {
-        // ...othersie, put void on active cell coords:
-        destinationCell.coord = this.activeCell.coord;
-        this.grid.set(destinationCell);
-      }
-      // place the activeCell on the new cords
-      this.activeCell.coord = coord;
-      this.grid.set(this.activeCell);
-      return true;
-    }
-    return false;
+  moveCell(coord: Coord): void {
+    const sourceCell = this.activeCell;
+    const targetCell = this.grid.get(coord);
+    this.grid.move(sourceCell, targetCell);
   }
 
   /**

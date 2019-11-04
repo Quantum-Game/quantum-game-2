@@ -18,18 +18,18 @@
 
 <script lang="ts">
 import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
-import { IHint } from '@/engine/interfaces';
+import Hint from '@/engine/Hint';
 import { getPosition } from '@/mixins';
 
 @Component
 export default class SpeechBubble extends Mixins(getPosition) {
-  @Prop() readonly hint!: IHint;
+  @Prop() readonly hint!: Hint;
   @Prop({ default: 64 }) readonly tileSize!: number;
   positionX!: number;
   positionY!: number;
 
   // this is where the tooltips width is set:
-  maxWidth = '120px';
+  maxWidth = '220px';
 
   contentRect = {
     width: 0,

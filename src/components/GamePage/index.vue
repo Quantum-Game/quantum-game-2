@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="gameState" @click.native="frameNumber = 0">
+    <app-overlay :game-state="gameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -13,11 +13,11 @@
       <!-- HEADER-MIDDLE -->
       <h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
       <h1 v-else slot="header-middle" class="title">
-        <router-link :to="`/level/${parseInt(this.$route.params.id, 10) - 1}`">
+        <router-link :to="previousLevel">
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
-        {{ level.name.toUpperCase() }}
-        <router-link :to="`/level/${parseInt(this.$route.params.id, 10) + 1}`">
+        {{ level.id + ' - ' + level.name.toUpperCase() }}
+        <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
       </h1>
@@ -43,7 +43,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :tools="toolboxElements" />
+        <game-toolbox :toolbox="level.toolbox" />
         <game-active-cell />
         <game-photons :active-frame="activeFrame" />
       </section>
@@ -52,15 +52,18 @@
 </template>
 
 <script lang="ts">
-import cloneDeep from 'lodash.clonedeep';
 import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Mutation, State } from 'vuex-class';
+import cloneDeep from 'lodash.clonedeep';
 import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
 import {
   CellInterface,
   FrameInterface,
   LevelInterface,
   ParticleInterface,
-  GoalInterface
+  GoalInterface,
+  HintInterface,
+  GameState
 } from '@/engine/interfaces';
 import levelData from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
@@ -72,30 +75,6 @@ import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
-
-const emptyLevelObj = {
-  id: 0,
-  name: 'default',
-  group: 'default',
-  description: 'default level',
-  grid: {
-    cols: 2,
-    rows: 2,
-    cells: [
-      {
-        coord: {
-          x: 1,
-          y: 1
-        },
-        element: 'Void',
-        rotation: 0,
-        frozen: false
-      }
-    ]
-  },
-  goals: [],
-  hints: []
-};
 
 @Component({
   components: {
@@ -111,18 +90,14 @@ const emptyLevelObj = {
   }
 })
 export default class Game extends Vue {
-  // Level interface and instance
-  levelObj: LevelInterface = emptyLevelObj;
-  level: Level = Level.importLevel(this.levelObj);
-  frameNumber: number = 0;
+  @State level!: Level;
+  frameIndex: number = 0;
   frames: Frame[] = [];
-  toolbox = [];
   error: string = '';
-  activeElement = '';
 
   // LIFECYCLE
   created() {
-    this.loadALevel();
+    this.loadLevel();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -130,78 +105,105 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
-  // LEVEL LOADING
+  /**
+   * Level loading and initialization
+   * @returns boolean
+   */
   @Watch('$route')
-  loadALevel() {
+  loadLevel() {
+    // Check for level existence
     this.error = '';
-    // See if there's such level:
-    const levelObjToLoad: LevelInterface = levelData[this.currentLevelName];
-    if (!levelObjToLoad) {
-      this.error = 'no such level!';
+    const levelName = `level${parseInt(this.$route.params.id, 10)}`;
+    const levelI: LevelInterface = levelData[levelName];
+    if (!levelI) {
+      this.error = 'No such exists!';
       return false;
     }
-    this.levelObj = levelObjToLoad;
-    this.level = Level.importLevel(levelObjToLoad);
-    this.setupInitFrame();
+    // Process and store in Vuex
+    const level = Level.importLevel(levelI);
+    this.$store.commit('SET_CURRENT_TOOLS', level.toolbox.fullCellList);
+    this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.createFrames();
-    this.setUpToolboxElements();
     return true;
   }
 
-  setupInitFrame() {
+  /**
+   * Compute frames until there are no more particles
+   * @param max number of frames to compute before simulation stops
+   */
+  createFrames(max = 25): void {
     this.frames = [];
-    this.frameNumber = 0;
-    this.level = Level.importLevel(this.levelObj);
+    this.frameIndex = 0;
     const initFrame = new Frame(this.level);
     this.frames.push(initFrame);
-  }
-
-  // FRAME CONTROL
-  // TODO: Find the correct amount of frames to compute for the simulation
-  createFrames(number = 25) {
-    for (let index = 0; index < number; index += 1) {
-      const lastFrameCopy = cloneDeep(this.lastFrame);
-      const nextFrame = lastFrameCopy.next();
-      this.frames.push(nextFrame);
+    this.frames.push(initFrame.next());
+    for (let index = 0; index < max; index += 1) {
+      const nextFrame = this.createNextFrame();
+      if (nextFrame.quantum.length > 0) {
+        this.frames.push(nextFrame);
+      } else {
+        break;
+      }
     }
+    this.frameIndex = 1;
   }
 
-  get activeFrame() {
-    return this.frames[this.frameNumber];
+  /**
+   * Compute the next frame
+   * @returns Frame
+   */
+  createNextFrame(): Frame {
+    const lastFrameCopy = cloneDeep(this.lastFrame);
+    const nextFrame = lastFrameCopy.next();
+    return nextFrame;
   }
 
-  get lastFrame() {
+  /**
+   * Get the last computed frame
+   */
+  get lastFrame(): Frame {
     return this.frames[this.frames.length - 1];
   }
 
-  createNextFrame() {
-    const lastFrameCopy = cloneDeep(this.lastFrame);
-    const nextFrame = lastFrameCopy.next();
-    this.frames.push(nextFrame);
+  /**
+   * Get the current simulation frame
+   */
+  get activeFrame(): Frame {
+    return this.frames[this.frameIndex];
   }
 
+  /**
+   * Show next frame and check it exists
+   *  @returns frameIndex
+   */
   showNext() {
-    const newFrameNumber = this.frameNumber + 1;
-    if (newFrameNumber > this.frames.length - 1) {
+    const newframeIndex = this.frameIndex + 1;
+    if (newframeIndex > this.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...");
       return false;
     }
-    this.frameNumber = newFrameNumber;
-    return this.frameNumber;
+    this.frameIndex = newframeIndex;
+    return this.frameIndex;
   }
 
+  /**
+   * Show previous frame and check it exists
+   *  @returns frameIndex
+   */
   showPrevious() {
-    const newFrameNumber = this.frameNumber - 1;
-    if (newFrameNumber < 0) {
+    const newframeIndex = this.frameIndex - 1;
+    if (newframeIndex < 0) {
       console.error("Can't access frames before simulation...");
       return false;
     }
-    this.frameNumber = newFrameNumber;
-    return this.frameNumber;
+    this.frameIndex = newframeIndex;
+    return this.frameIndex;
   }
 
+  /**
+   * Left and right keys to see frames
+   */
   handleArrowPress(e: { keyCode: number }): void {
-    // console.debug(e.keyCode);
     switch (e.keyCode) {
       case 37:
         this.showPrevious();
@@ -214,69 +216,31 @@ export default class Game extends Vue {
     }
   }
 
-  setUpToolboxElements(): void {
-    /*  sorry Philippe
-        return this.level.grid.unfrozen.cells.map((cell: any) => cell.exportCell());
-        PLEASE MAKE SURE THAT ROUTE CHANGE ALLOWS FOR AUTOMATIC TOOLBOX PROCESSING
-    */
-    const arrayOfUnfrozenCells = this.level.grid.cells.filter((cell: Cell) => {
-      if (cell.element.name !== 'Void' && !cell.frozen) {
-        return cell;
-      }
-      return false;
-    });
-    this.$store.commit('SET_CURRENT_TOOLS', cloneDeep(arrayOfUnfrozenCells));
-
-    arrayOfUnfrozenCells.map((cell: Cell) => {
-      const element = Element.fromName('Void');
-      cell.element = element;
-      cell.rotation = 0;
-      return cell;
-    });
-  }
-
-  get toolboxElements() {
-    return this.$store.state.currentTools;
-  }
-
   // GETTERS
-  get currentLevelName() {
+  get currentLevelName(): string {
     return `level${parseInt(this.$route.params.id, 10)}`;
   }
 
-  get levelLoaded(): boolean {
-    return this.level && this.level.grid.cols !== 0;
+  get previousLevel(): string {
+    return `/level/${parseInt(this.$route.params.id, 10) - 1}`;
   }
 
-  get particles(): Particle[] {
-    return this.frames[this.frameNumber].quantum;
-  }
-
-  get probabilitySum(): number {
-    let sum = 0;
-    this.frames[this.frameNumber].quantum.forEach((particle: any) => {
-      sum += particle.intensity;
-    });
-    return sum;
-  }
-
-  get gameState() {
-    return this.activeFrame.gameState;
-  }
-
-  get nextLevel() {
+  get nextLevel(): string {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
   }
 
-  get hints() {
-    return this.levelObj.hints;
+  get gameState(): GameState {
+    return this.activeFrame.gameState;
+  }
+
+  get hints(): HintInterface[] {
+    return this.level.hints.map((hint) => hint.exportHint());
   }
 }
 </script>
 
 <style lang="scss" scoped>
 h1 {
-  //color:crimson;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -284,11 +248,6 @@ h1 {
 .title {
   margin-bottom: 30;
   margin-top: 0;
-}
-
-.game {
-  width: 100%;
-  min-height: 100vh;
 }
 .grid {
   width: 100%;
@@ -316,6 +275,8 @@ h1 {
   }
 }
 .game {
+  width: 100%;
+  min-height: 100vh;
   &.goals {
     height: 600px;
     a:link,

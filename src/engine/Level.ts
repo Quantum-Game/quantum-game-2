@@ -1,32 +1,13 @@
-// TODO: work on the toolbox
 import { Photons } from 'quantum-tensors';
-import { LevelInterface } from './interfaces';
-import Grid from './Grid';
+import { LevelInterface, ClassicLevelInterface } from './interfaces';
 import Coord from './Coord';
-import Cell from './Cell';
 import Element from './Element';
+import Cell from './Cell';
+import Grid from './Grid';
+import Toolbox from './Toolbox';
 import Goal from './Goal';
 import Hint from './Hint';
-import Toolbox from './Toolbox';
 import { convertFromClassicNames } from './Helpers';
-
-/**
- * CLASSICAL LEVEL INTERFACE
- * original level structure for importing V1 levels
- */
-export interface ClassicLevelInterface {
-  name: string;
-  group: string;
-  width: number;
-  height: number;
-  tiles: {
-    i: number;
-    j: number;
-    name: string;
-    rotation: number;
-    frozen: boolean;
-  }[];
-}
 
 /**
  * LEVEL CLASS
@@ -71,6 +52,18 @@ export default class Level {
 
     // Populate toolbox
     this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);
+
+    // Remove toolbox cells from grid
+    this.grid.resetUnfrozen();
+  }
+
+  /**
+   * Shortand for checking if the toolbox has available elements
+   * @param element
+   * @returns number of available elements in the toolbox
+   */
+  isAvailable(cell: Cell) {
+    return this.toolbox.available(cell.element.name) > 0;
   }
 
   /**
@@ -122,7 +115,6 @@ export default class Level {
    * @param obj a level interface with primitives
    * @returns a Level instance
    */
-
   static importClassicLevel(obj: ClassicLevelInterface): Level {
     const rows = obj.height;
     const cols = obj.width;
@@ -137,5 +129,21 @@ export default class Level {
     const goals: Goal[] = [];
     const hints: Hint[] = [];
     return new Level(0, obj.name, obj.group, '', grid, goals, hints, false);
+  }
+
+  /**
+   * Import a json level
+   * @returns a Level instance
+   */
+  static createDummy(): Level {
+    return Level.importLevel({
+      id: 0,
+      name: 'DummyLevel',
+      group: 'Dummy',
+      description: 'Dummy level created for placeholders...',
+      grid: new Grid(2, 2).exportGrid(),
+      goals: [],
+      hints: []
+    });
   }
 }

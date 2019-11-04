@@ -1,10 +1,13 @@
 <template>
-  <div class="toolbox" @click="handleToolboxClick">
-    <svg v-for="(toolName, index) in toolboxKeys" :key="index" class="tool">
-      <app-cell :cell="getFakeCell(toolName)" :tool="true" />
-      <text class="counter" x="25" y="80">x {{ toolbox[toolName] }}</text>
+  <div class="toolbox">
+    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
+      <app-cell :cell="cell" />
+      <text class="counter" x="50%" y="80">x {{ toolbox.getCount(cell.element.name) }}</text>
     </svg>
-    <slot> isMoving: {{ isMoving }} activeCell: {{ activeCell.toString() }} </slot>
+    <slot>
+      <!-- <p>cellSelected: {{ cellSelected }}</p>
+      <p>activeCell: {{ activeCell.toString() }}</p> -->
+    </slot>
   </div>
 </template>
 
@@ -12,13 +15,10 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
-import { Cell, Element, Coord } from '@/engine/classes';
+import Cell from '@/engine/Cell';
+import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 import AppCell from '@/components/Board/AppCell.vue';
-
-interface Tool {
-  [symbol: string]: number;
-}
 
 @Component({
   components: {
@@ -26,50 +26,9 @@ interface Tool {
   }
 })
 export default class GameToolbox extends Vue {
-  @Prop() readonly tools!: Cell[];
-  toolbox: Tool = {};
-  @State isMoving!: boolean;
+  @Prop() readonly toolbox!: Toolbox;
+  @State cellSelected!: boolean;
   @State activeCell!: Cell;
-  @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
-
-  created() {
-    this.processTools();
-  }
-
-  addTool(cell: Cell) {
-    const { name } = cell.element;
-    this.toolbox[name] += 1;
-  }
-
-  getFakeCell(name: string): Cell {
-    const coord = new Coord(-1, -1);
-    const element = Element.fromName(name);
-    return new Cell(coord, element);
-  }
-
-  handleToolboxClick() {
-    if (this.isMoving && !this.activeCell.frozen && this.activeCell.coord.x > -1) {
-      this.mutationAddToCurrentTools(this.activeCell);
-    }
-  }
-
-  get toolboxKeys(): string[] {
-    return Object.keys(this.toolbox);
-  }
-
-  /*  watcher here is a provisional way of the internal
-      toolbox property reevaluated on props change
-  */
-  @Watch('tools')
-  processTools() {
-    const elements = this.tools.map((cell) => cell.element.name);
-    this.toolbox = countBy(elements);
-  }
-
-  removeTool(cell: Cell) {
-    const { name } = cell.element;
-    this.toolbox[name] -= 1;
-  }
 }
 </script>
 
@@ -83,10 +42,7 @@ export default class GameToolbox extends Vue {
   border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 10px;
-  min-height: 300px;
-  & h3 {
-    margin: 0;
-  }
+  // min-height: 300px;
   .tool {
     width: 30%;
     min-width: 64px;
@@ -96,6 +52,8 @@ export default class GameToolbox extends Vue {
   .counter {
     fill: white;
     stroke: white;
+    text-anchor: middle;
+    margin: 0;
   }
 }
 </style>
