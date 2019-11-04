@@ -113,7 +113,7 @@ export default class AppCell extends Mixins(getPosition) {
       }
     } else {
       // ROTATE CELL
-      if (this.isActiveCell) {
+      if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
         this.level.grid.set(this.cell);
         this.mutationResetActiveCell();
