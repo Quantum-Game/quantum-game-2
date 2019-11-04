@@ -25,8 +25,7 @@ const store: StoreOptions<RootState> = {
     level: initialLevel,
     activeCell: initialCell,
     cellSelected: false,
-    hoveredCell: initialCell,
-    moveSource: ''
+    hoveredCell: initialCell
   },
   mutations: {
     // set active level

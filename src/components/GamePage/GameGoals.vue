@@ -1,15 +1,5 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <!-- <div class="upper-icons">
-      <div>
-        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-        <span> 02</span>
-      </div>
-      <div>
-        <img src="@/assets/keyIcon.svg" alt="Key Icon" width="25" />
-        <span> 25</span>
-      </div>
-    </div> -->
     <vc-donut
       class="chart"
       :class="{ highscore: isHighScore }"
@@ -25,7 +15,7 @@
       <div class="inner-circle">{{ animatedPercent }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
-    <div class="btn-fake" @click="fakeClick">Click me</div>
+    <!-- <div class="btn-fake" @click="fakeClick">Click me</div> -->
     <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
         <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />
