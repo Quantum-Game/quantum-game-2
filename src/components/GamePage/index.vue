@@ -223,6 +223,7 @@ export default class Game extends Vue {
       if (cell.element.name !== 'Void' && !cell.frozen) {
         return cell;
       }
+      return false;
     });
     this.$store.commit('SET_CURRENT_TOOLS', cloneDeep(arrayOfUnfrozenCells));
 
@@ -230,6 +231,7 @@ export default class Game extends Vue {
       const element = Element.fromName('Void');
       cell.element = element;
       cell.rotation = 0;
+      return cell;
     });
   }
 
