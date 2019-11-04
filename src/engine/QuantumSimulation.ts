@@ -34,6 +34,7 @@ export default class QuantumSimulation {
   }
 
   initializeFromLaser(pol = 'V'): void {
+    this.frames = [];
     if (this.frames.length !== 0) {
       throw new Error(
         `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`

@@ -134,6 +134,7 @@ export default class Game extends Vue {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
+    this.frameIndex = 0;
   }
 
   /**

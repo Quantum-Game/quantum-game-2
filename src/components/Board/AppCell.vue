@@ -5,7 +5,12 @@
     @click="handleCellClick"
     @mouseover="handleCellHover"
   >
-    <rect :width="tileSize" :height="tileSize" :class="rectBackgroundClass" />
+    <rect
+      :width="tileSize"
+      :height="tileSize"
+      :class="rectBackgroundClass"
+      :style="rectPositionStyle"
+    />
     <component
       :is="computedCellName"
       :cell="cell"
@@ -211,6 +216,20 @@ export default class AppCell extends Mixins(getPosition) {
       transform: `
         rotate(-${this.cell.rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
+    };
+    return styleObj;
+  }
+
+  /**
+   * Undoes the parent element rotation
+   */
+  get rectPositionStyle(): any {
+    let styleObj = {};
+    const halfSize = this.tileSize / 2;
+    styleObj = {
+      'transform-origin': `${halfSize}px ${halfSize}px`,
+      transform: `
+        rotate(${this.cell.rotation}deg)`
     };
     return styleObj;
   }
