@@ -8,15 +8,12 @@ import {
   SET_ACTIVE_LEVEL,
   UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
-  SET_HOVERED_CELL,
   RESET_ACTIVE_CELL,
-  CELL_SELECTED,
-  CELL_UNSELECTED,
+  SET_HOVERED_CELL,
   SET_CURRENT_TOOLS,
   RESET_CURRENT_TOOLS,
   ADD_TO_CURRENT_TOOLS,
-  REMOVE_FROM_CURRENT_TOOLS,
-  SET_ACTIVE_CELL_COORDINATES
+  REMOVE_FROM_CURRENT_TOOLS
 } from './mutation-types';
 
 const initialCell = Cell.createDummy();
@@ -25,60 +22,54 @@ Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
-    activeLevel: initialLevel,
+    level: initialLevel,
     activeCell: initialCell,
-    hoveredCell: initialCell,
     cellSelected: false,
+    hoveredCell: initialCell,
     moveSource: ''
   },
   mutations: {
     // set active level
     [SET_ACTIVE_LEVEL](state, level) {
-      state.activeLevel = level;
+      state.level = level;
     },
     // modify grid cell
     [UPDATE_GRID_CELL](state, cell) {
-      state.activeLevel.grid.set(cell);
+      state.level.grid.set(cell);
     },
-    // active cell functional
+    // set active cell
     [SET_ACTIVE_CELL](state, cell) {
       state.activeCell = cell;
+      state.cellSelected = true;
     },
+    // reset active cell
     [RESET_ACTIVE_CELL](state) {
       state.activeCell = initialCell;
-    },
-    [SET_ACTIVE_CELL_COORDINATES](state, coord) {
-      state.activeCell.coord = coord;
+      state.cellSelected = false;
     },
     // hovered cell functional
     [SET_HOVERED_CELL](state, cell) {
       state.hoveredCell = cell;
     },
-    // moving functionality
-    [CELL_SELECTED](state) {
-      state.cellSelected = true;
-    },
-    [CELL_UNSELECTED](state) {
-      state.cellSelected = false;
-    },
     // toolbox functionality
     [SET_CURRENT_TOOLS](state, cells) {
-      state.activeLevel.toolbox = new Toolbox(cells);
+      state.level.toolbox = new Toolbox(cells);
     },
     [RESET_CURRENT_TOOLS](state) {
-      state.activeLevel.toolbox.reset();
+      state.level.toolbox.reset();
     },
     [ADD_TO_CURRENT_TOOLS](state, cell) {
-      state.activeLevel.toolbox.addTool(cell);
+      state.level.toolbox.addTool(cell);
     },
     [REMOVE_FROM_CURRENT_TOOLS](state, cell) {
-      state.activeLevel.toolbox.removeTool(cell);
+      state.level.toolbox.removeTool(cell);
     }
   },
   getters: {
+    level: (state) => state.level,
+    toolbox: (state) => state.level.toolbox,
     activeCell: (state) => state.activeCell,
     cellSelected: (state) => state.cellSelected,
-    toolbox: (state) => state.activeLevel.toolbox,
     isActiveCellMovable: (state) => state.activeCell.tool
   }
 };

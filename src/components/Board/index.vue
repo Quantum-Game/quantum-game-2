@@ -59,7 +59,7 @@
       />
     </g>
     <speech-bubble
-      v-for="(hint, index) in activeLevel.hints"
+      v-for="(hint, index) in level.hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -90,7 +90,7 @@ export default class Board extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly photons!: ParticleInterface[];
   @State activeCell!: Cell;
-  @State activeLevel!: Level;
+  @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
   @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   tileSize: number = 64;
