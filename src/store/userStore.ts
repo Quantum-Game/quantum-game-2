@@ -1,9 +1,29 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Vuex from 'vuex';
 import router from '@/router';
 import firebase, { db, auth } from '@/config/firebase';
 
 Vue.use(Vuex);
+
+interface progressObj {
+  id: number;
+  status: 'string';
+  score: number;
+}
+
+interface userInterface {
+  user: {
+    loggedIn: boolean;
+    rememberMe: boolean;
+    data: {
+      displayName: string;
+      email: string;
+    };
+  };
+  progressArr: progressObj[];
+  error: null;
+}
 
 const userStore = {
   state: {
@@ -19,33 +39,33 @@ const userStore = {
     error: null
   },
   getters: {
-    user(state) {
+    user(state: userInterface) {
       return state.user;
     },
-    userName(state) {
+    userName(state: userInterface) {
       return state.user.data.displayName;
     },
-    progressArr(state) {
+    progressArr(state: userInterface) {
       return state.progressArr;
     },
-    error(state) {
+    error(state: userInterface) {
       return state.error;
     }
   },
   mutations: {
-    SET_LOGGED_IN(state, payload) {
+    SET_LOGGED_IN(state: userInterface, payload) {
       state.user.loggedIn = payload;
     },
-    SET_REMEMBER_ME(state, payload) {
+    SET_REMEMBER_ME(state: userInterface, payload) {
       state.user.rememberMe = payload;
     },
-    SET_USER(state, payload) {
+    SET_USER(state: userInterface, payload) {
       state.user.data = payload;
     },
-    SET_ERROR(state, payload) {
+    SET_ERROR(state: userInterface, payload) {
       state.error = payload;
     },
-    SET_PROGRESS(state, payload) {
+    SET_PROGRESS(state: userInterface, payload) {
       state.progressArr = payload;
     }
   },
@@ -99,7 +119,7 @@ const userStore = {
         .then(() => {
           router.replace({ name: 'myaccount' });
         })
-        .catch((err) => {
+        .catch((err: { message: any; }) => {
           commit('SET_ERROR', err.message);
         });
     },
@@ -107,7 +127,7 @@ const userStore = {
       auth
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((data) => {
-          data.user.updateProfile({
+          data.user!.updateProfile({
             displayName: user.name
           });
         })
@@ -127,8 +147,8 @@ const userStore = {
     },
     SAVE_PROGRESS({ commit, getters }) {
       const { progressArr } = getters;
-      const dbRef = db.collection('users').doc(auth.currentUser.uid);
-      const data = { uid: auth.currentUser.uid, progress: progressArr };
+      const dbRef = db.collection('users').doc(auth.currentUser!.uid);
+      const data = { uid: auth.currentUser!.uid, progress: progressArr };
 
       dbRef
         .set(data)
@@ -140,7 +160,7 @@ const userStore = {
         });
     },
     GET_PROGRESS({ commit }) {
-      const dbRef = db.collection('users').doc(auth.currentUser.uid);
+      const dbRef = db.collection('users').doc(auth.currentUser!.uid);
       dbRef
         .get()
         .then((doc) => {
