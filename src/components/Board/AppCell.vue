@@ -74,15 +74,14 @@ export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
-  @State cellSelected!: boolean;
-  @State activeCell!: Cell;
-  @State hoveredCell!: Cell;
   @State level!: Level;
+  @State activeCell!: Cell;
+  @State cellSelected!: boolean;
+  @State hoveredCell!: Cell;
 
   border = '';
 
@@ -100,7 +99,11 @@ export default class AppCell extends Mixins(getPosition) {
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
     if (!this.cellSelected) {
-      if (this.cell.tool) {
+      // If from toolbox needs to have available elements
+      if (
+        this.cell.isValidSource &&
+        (this.cell.isFromGrid || (this.cell.isFromToolbox && this.level.isAvailable(this.cell)))
+      ) {
         this.indicateTool();
         this.mutationSetActiveCell(this.cell);
       } else {
@@ -112,7 +115,7 @@ export default class AppCell extends Mixins(getPosition) {
       // ROTATE CELL
       if (this.isActiveCell) {
         this.cell.rotate();
-        this.mutationUpdateGridCell(this.cell);
+        this.level.grid.set(this.cell);
         this.mutationResetActiveCell();
         return;
       }
@@ -139,7 +142,7 @@ export default class AppCell extends Mixins(getPosition) {
         else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
           this.$emit('updateCell', this.cell.coord);
           this.mutationAddToCurrentTools(this.activeCell);
-          this.mutationUpdateGridCell(this.activeCell.reset());
+          this.level.grid.set(this.activeCell.reset());
           this.mutationResetActiveCell();
           // FALLBACK
           // console.log(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);

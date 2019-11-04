@@ -1,12 +1,12 @@
 import { Photons } from 'quantum-tensors';
 import { LevelInterface, ClassicLevelInterface } from './interfaces';
-import Grid from './Grid';
 import Coord from './Coord';
-import Cell from './Cell';
 import Element from './Element';
+import Cell from './Cell';
+import Grid from './Grid';
+import Toolbox from './Toolbox';
 import Goal from './Goal';
 import Hint from './Hint';
-import Toolbox from './Toolbox';
 import { convertFromClassicNames } from './Helpers';
 
 /**
@@ -55,6 +55,15 @@ export default class Level {
 
     // Remove toolbox cells from grid
     this.grid.resetUnfrozen();
+  }
+
+  /**
+   * Shortand for checking if the toolbox has available elements
+   * @param element
+   * @returns number of available elements in the toolbox
+   */
+  isAvailable(cell: Cell) {
+    return this.toolbox.available(cell.element.name) > 0;
   }
 
   /**
