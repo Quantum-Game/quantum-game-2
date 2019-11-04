@@ -29,12 +29,19 @@ export default class QuantumFrame {
   }
 
   /**
-   * @note Cord and Partile will need a serious rewrite
+   * @note Coord and Partile will need a serious rewrite
    */
   get polarizationSuperpositions(): Particle[] {
     return this.photons.aggregatePolarization().map((q: Qparticle) => {
       const coord = new Coord(q.y, q.x);
       return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
     });
+  }
+
+  /**
+   * Shorthand for polarization superpositions
+   */
+  get particles() {
+    return this.polarizationSuperpositions;
   }
 }
