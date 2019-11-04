@@ -111,7 +111,7 @@ export default class Grid extends Cluster {
    * @param targetCell target cell
    * @returns boolean move was successfull
    */
-  public move(sourceCell: Cell, targetCell: Cell): boolean {
+  public move(sourceCell: Cell, targetCell: Cell): Cell[] {
     const source = sourceCell;
     const target = targetCell;
     if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
@@ -120,9 +120,9 @@ export default class Grid extends Cluster {
       target.coord = tempCoord;
       target.tool = false;
       source.tool = true;
-      this.set(source);
-      this.set(target);
-      return true;
+      // this.set(source);
+      // this.set(target);
+      return [source, target];
     }
 
     // SWAP GRID TOOL TO GRID TOOL
@@ -132,20 +132,19 @@ export default class Grid extends Cluster {
       target.coord = tempCoord;
       target.tool = true;
       source.tool = true;
-      this.set(source);
-      this.set(target);
-      return true;
+      // this.set(source);
+      // this.set(target);
+      return [source, target];
     }
 
     // MOVE TOOLBOX TOOL TO GRID VOID
     if (source.isFromToolbox && source.tool && target.isFromGrid && target.isVoid) {
       target.element = source.element;
       target.tool = true;
-      this.set(target);
-      return true;
+      // this.set(target);
+      return [target];
     }
-
-    return false;
+    return [];
   }
 
   /**

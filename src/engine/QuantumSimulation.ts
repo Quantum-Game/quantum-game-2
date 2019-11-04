@@ -62,7 +62,7 @@ export default class QuantumSimulation {
     this.frames.push(lastFrame);
   }
 
-  nextFrames(n: number, stopIfProbabilityBelow = 1e-6): void {
+  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {

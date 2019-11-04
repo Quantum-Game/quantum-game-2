@@ -116,6 +116,7 @@ export default class AppCell extends Mixins(getPosition) {
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
         this.level.grid.set(this.cell);
+        this.$emit('updateCell', this.cell.coord);
         this.mutationResetActiveCell();
         return;
       }

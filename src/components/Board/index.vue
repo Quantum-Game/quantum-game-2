@@ -1,8 +1,8 @@
 <template>
   <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <g v-for="(row, y) in grid.rows" :key="y">
-      <g v-for="(column, x) in grid.cols" :key="x">
+    <g v-for="(row, y) in level.grid.rows" :key="y">
+      <g v-for="(column, x) in level.grid.cols" :key="x">
         <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>
@@ -26,12 +26,11 @@
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in grid.cells"
+      v-for="(cell, i) in level.grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
-      @updateCell="moveCell"
-      @rotate="rotateCell"
+      @updateCell="updateCell"
     />
 
     <!-- PHOTONS -->
@@ -87,7 +86,6 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly grid!: Grid;
   @Prop({ default: [] }) readonly particles!: ParticleInterface[];
   @State activeCell!: Cell;
   @State level!: Level;
@@ -111,14 +109,14 @@ export default class Board extends Vue {
   }
 
   get lasers(): ParticleInterface[] {
-    return this.grid.computePaths();
+    return this.level.grid.computePaths();
   }
 
   get totalWidth(): number {
-    return this.grid.cols * this.tileSize;
+    return this.level.grid.cols * this.tileSize;
   }
   get totalHeight(): number {
-    return this.grid.rows * this.tileSize;
+    return this.level.grid.rows * this.tileSize;
   }
 
   computeParticleStyle(particle: ParticleInterface): {} {
@@ -145,19 +143,15 @@ export default class Board extends Vue {
    * @params coord to move to
    * @returns boolean
    */
-  moveCell(coord: Coord): void {
+  updateCell(coord: Coord): void {
     const sourceCell = this.activeCell;
-    const targetCell = this.grid.get(coord);
-    this.grid.move(sourceCell, targetCell);
-  }
-
-  /**
-   * Cell rotation
-   * @returns void
-   */
-  rotateCell(cell: Cell): void {
-    cell.rotate();
-    this.grid.set(cell);
+    const targetCell = this.level.grid.get(coord);
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    mutatedCells.forEach((cell) => {
+      // this.mutationUpdateGridCell(cell);
+      this.level.grid.set(cell);
+    });
+    this.$emit('updateSimulation');
   }
 
   /**
@@ -231,7 +225,9 @@ export default class Board extends Vue {
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
+    const cells = this.level.grid.cells.filter(
+      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
+    );
     if (cells.length > 0) {
       return cells[0].exportCell();
     }

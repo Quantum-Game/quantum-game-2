@@ -32,7 +32,7 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :grid="level.grid" :particles="particles" :hints="hints" />
+        <game-board :particles="particles" :hints="hints" @updateSimulation="updateSimulation" />
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
@@ -53,7 +53,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Mutation, State } from 'vuex-class';
+import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
 import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -65,7 +65,8 @@ import {
   ParticleInterface,
   GoalInterface,
   HintInterface,
-  GameState
+  GameState,
+  GridInterface
 } from '@/engine/interfaces';
 import levelData from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
@@ -99,7 +100,8 @@ export default class Game extends Vue {
 
   // LIFECYCLE
   created() {
-    this.loadLevel();
+    this.loadLevelFromRoute();
+    this.updateSimulation();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -108,27 +110,30 @@ export default class Game extends Vue {
   }
 
   /**
-   * Level loading and initialization
-   * @returns boolean
+   * Used to load level from route
    */
   @Watch('$route')
-  loadLevel() {
-    // Check for level existence
+  loadLevelFromRoute(): void {
     this.error = '';
     const levelName = `level${parseInt(this.$route.params.id, 10)}`;
     const levelI: LevelInterface = levelData[levelName];
     if (!levelI) {
       this.error = 'No such exists!';
-      return false;
     }
-    // Process and store in Vuex
     const level = Level.importLevel(levelI);
-    this.simulation = QuantumSimulation.importBoard(levelI.grid);
-    this.simulation.initializeFromLaser('V');
-    this.$store.commit('SET_CURRENT_TOOLS', level.toolbox.fullCellList);
+    this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
-    this.simulation.nextFrames(10);
-    return true;
+  }
+
+  /**
+   * Level loading and initialization
+   * @returns boolean
+   */
+  updateSimulation() {
+    console.log('FIRE');
+    this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
+    this.simulation.initializeFromLaser('V');
+    this.simulation.nextFrames(20);
   }
 
   /**

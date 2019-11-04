@@ -65,11 +65,8 @@ const store: StoreOptions<RootState> = {
     }
   },
   getters: {
-    level: (state) => state.level,
     toolbox: (state) => state.level.toolbox,
-    activeCell: (state) => state.activeCell,
-    cellSelected: (state) => state.cellSelected,
-    isActiveCellMovable: (state) => state.activeCell.tool
+    gridI: (state) => state.level.grid.exportGrid()
   }
 };
 
