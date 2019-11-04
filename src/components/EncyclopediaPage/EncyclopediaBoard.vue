@@ -2,7 +2,6 @@
   <div class="container">
     <div class="svg-container">
       <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
-
         <g v-for="(row, y) in grid.rows + 1" :key="y">
           <g v-for="(column, x) in grid.cols + 1" :key="x">
             <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
@@ -47,7 +46,7 @@
         :key="'frame' + index"
         @mouseover="selectedFrameId = index"
       >
-        <button :class="{ 'selected' : selectedFrameId === index}">
+        <button :class="{ selected: selectedFrameId === index }">
           {{ index }}
         </button>
       </span>
@@ -121,7 +120,7 @@ export default class EncyclopediaBoard extends Vue {
     return this.qFrames.length;
   }
 
-  reset() {;
+  reset() {
     const quantumSimulation = new QuantumSimulation(this.grid);
     quantumSimulation.initializeFromLaser('V');
     quantumSimulation.nextFrames(this.step);

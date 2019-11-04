@@ -12,7 +12,7 @@
         :margin="20"
       />
       <div class="eboard">
-        <encyclopedia-board :gridObj="gridObj" class="board" />
+        <encyclopedia-board :grid-obj="gridObj" class="board" />
       </div>
       <div>
         <span>Select dimension order:</span>
@@ -30,7 +30,12 @@
 import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import * as qt from 'quantum-tensors';
-import { ParticleInterface, CellInterface, LevelInterface, GridInterface } from '@/engine/interfaces';
+import {
+  ParticleInterface,
+  CellInterface,
+  LevelInterface,
+  GridInterface
+} from '@/engine/interfaces';
 import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
@@ -67,7 +72,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
         frozen: false
       }
     ]
-  }
+  };
 
   // XXX
   // XXX To be removed
