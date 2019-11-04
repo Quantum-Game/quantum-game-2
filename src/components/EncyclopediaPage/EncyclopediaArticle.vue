@@ -11,7 +11,7 @@
       <!-- GRIDS -->
       <div class="grids">
         <div v-for="(grid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
-          <encyclopedia-board :gridObj="grid" :step="5" class="grid"/>
+          <encyclopedia-board :grid-obj="grid" :step="5" class="grid" />
         </div>
       </div>
 
@@ -25,10 +25,10 @@
 
       <!-- EQUATION GRID -->
       <encyclopedia-transition
+        :key="`transition-${entry.elementName}`"
         :element-name="entry.elementName"
         :rotation="entry.defaultRotation"
         step="3"
-        :key="`transition-${entry.elementName}`"
       />
     </article>
   </div>
