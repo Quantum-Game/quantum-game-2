@@ -36,9 +36,9 @@
 
     <!-- PHOTONS -->
     <g
-      v-for="(particle, index) in photons"
+      v-for="(particle, index) in particles"
       :key="'particle' + index"
-      :v-if="photons.length > 0"
+      :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
     >
@@ -88,7 +88,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 })
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly grid!: Grid;
-  @Prop({ default: [] }) readonly photons!: ParticleInterface[];
+  @Prop({ default: [] }) readonly particles!: ParticleInterface[];
   @State activeCell!: Cell;
   @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
@@ -216,9 +216,9 @@ export default class Board extends Vue {
    */
   photonPath(): string {
     let pathStr = '';
-    if (this.photons.length > 0) {
-      const originX = this.centerCoord(this.photons[0].coord.x);
-      const originY = this.centerCoord(this.photons[0].coord.y);
+    if (this.particles.length > 0) {
+      const originX = this.centerCoord(this.particles[0].coord.x);
+      const originY = this.centerCoord(this.particles[0].coord.y);
       pathStr += `M ${originX} ${originY} `;
       this.lasers.forEach((laser: any) => {
         const x = this.centerCoord(laser.coord.x);

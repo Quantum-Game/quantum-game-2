@@ -10,7 +10,7 @@
     </span>
 
     <span>
-      <b>STEP {{ activeFrame.step }} / {{ totalFrames }}</b>
+      <b>STEP {{ frameIndex }} / {{ totalFrames }}</b>
     </span>
     <span class="view-mode">
       <game-controls-button
@@ -35,7 +35,7 @@ import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
   }
 })
 export default class GameControls extends Vue {
-  @Prop() readonly activeFrame!: FrameInterface;
+  @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
   playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];
   viewControls = ['classical', 'quantum', 'multiverse'];

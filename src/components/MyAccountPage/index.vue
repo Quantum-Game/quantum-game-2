@@ -33,6 +33,12 @@ import $userStore from '@/store/userStore';
 import AppLayout from '@/components/AppLayout.vue';
 import AppButton from '@/components/AppButton.vue';
 
+interface AccountLevel {
+  id: number;
+  status: '';
+  score: number;
+}
+
 @Component({
   components: {
     AppLayout,
@@ -41,9 +47,9 @@ import AppButton from '@/components/AppButton.vue';
 })
 export default class MyAccount extends Vue {
   level = {
-    id: null,
+    id: 0,
     status: '',
-    score: null
+    score: 0
   };
 
   get user() {
@@ -60,7 +66,7 @@ export default class MyAccount extends Vue {
     $userStore.commit('SET_PROGRESS', this.progressArr);
     $userStore.dispatch('SAVE_PROGRESS');
   }
-  editLevel(lvl) {
+  editLevel(lvl: AccountLevel) {
     this.level = lvl;
   }
 }

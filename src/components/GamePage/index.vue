@@ -23,13 +23,18 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals slot="main-left" :percentage="70" :goals="level.goals" :particles="particles" />
+      <game-goals
+        slot="main-left"
+        :percentage="70"
+        :goals="level.goals"
+        :particles="activeFrame.particles"
+      />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :grid="level.grid" :photons="particles" :hints="hints" />
+        <game-board :grid="level.grid" :particles="particles" :hints="hints" />
         <game-controls
-          :active-frame="activeFrame"
+          :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
           @step-back="showPrevious"
           @step-forward="showNext"
@@ -40,7 +45,7 @@
       <section slot="main-right">
         <game-toolbox :toolbox="level.toolbox" />
         <game-active-cell />
-        <game-photons :particles="particles" />
+        <game-photons :particles="activeFrame.particles" />
       </section>
     </game-layout>
   </div>
@@ -91,7 +96,6 @@ export default class Game extends Vue {
   frameIndex: number = 0;
   simulation: any = {};
   error: string = '';
-  // particles: Particle[] = [];
 
   // LIFECYCLE
   created() {
