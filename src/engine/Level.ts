@@ -138,7 +138,7 @@ export default class Level {
   static createDummy(): Level {
     return Level.importLevel({
       id: 0,
-      name: 'DummyLevel',
+      name: 'Dummy',
       group: 'Dummy',
       description: 'Dummy level created for placeholders...',
       grid: new Grid(2, 2).exportGrid(),

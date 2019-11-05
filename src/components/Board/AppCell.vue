@@ -5,7 +5,12 @@
     @click="handleCellClick"
     @mouseover="handleCellHover"
   >
-    <rect :width="tileSize" :height="tileSize" :class="rectBackgroundClass" />
+    <rect
+      :width="tileSize"
+      :height="tileSize"
+      :class="rectBackgroundClass"
+      :style="rectPositionStyle"
+    />
     <component
       :is="computedCellName"
       :cell="cell"
@@ -89,7 +94,8 @@ export default class AppCell extends Mixins(getPosition) {
    * Handle mouseover for active cell display
    */
   handleCellHover(): void {
-    if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+    // if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+    if (!this.cell.isVoid) {
       this.mutationSetHoveredCell(this.cell);
     }
   }
@@ -107,7 +113,7 @@ export default class AppCell extends Mixins(getPosition) {
         this.indicateTool();
         this.mutationSetActiveCell(this.cell);
       } else {
-        console.log(`INVALID SELECTION : ${this.cell.toString()}`);
+        // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
         this.indicateFrozen();
         this.mutationResetActiveCell();
       }
@@ -116,6 +122,7 @@ export default class AppCell extends Mixins(getPosition) {
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
         this.level.grid.set(this.cell);
+        this.$emit('updateCell', this.cell.coord);
         this.mutationResetActiveCell();
         return;
       }
@@ -123,7 +130,7 @@ export default class AppCell extends Mixins(getPosition) {
       // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
       // eslint-disable-next-line
       if (this.cell.isValidTarget()) {
-        if (this.activeCell.isFromToolbox && this.cell.isFromGrid) {
+        if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
           const available = this.level.toolbox.available(this.activeCell.element.name);
           if (available > 0) {
             this.$emit('updateCell', this.cell.coord);
@@ -145,7 +152,7 @@ export default class AppCell extends Mixins(getPosition) {
           this.level.grid.set(this.activeCell.reset());
           this.mutationResetActiveCell();
           // FALLBACK
-          // console.log(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
         } else {
           this.mutationResetActiveCell();
         }
@@ -210,6 +217,20 @@ export default class AppCell extends Mixins(getPosition) {
       transform: `
         rotate(-${this.cell.rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
+    };
+    return styleObj;
+  }
+
+  /**
+   * Undoes the parent element rotation
+   */
+  get rectPositionStyle(): any {
+    let styleObj = {};
+    const halfSize = this.tileSize / 2;
+    styleObj = {
+      'transform-origin': `${halfSize}px ${halfSize}px`,
+      transform: `
+        rotate(${this.cell.rotation}deg)`
     };
     return styleObj;
   }

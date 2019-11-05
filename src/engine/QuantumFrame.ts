@@ -29,7 +29,7 @@ export default class QuantumFrame {
   }
 
   /**
-   * @note Cord and Partile will need a serious rewrite
+   * @note Coord and Partile will need a serious rewrite
    */
   get polarizationSuperpositions(): Particle[] {
     return this.photons.aggregatePolarization().map((q: Qparticle) => {

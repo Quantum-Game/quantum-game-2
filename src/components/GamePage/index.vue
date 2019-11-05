@@ -26,16 +26,16 @@
       <game-goals
         slot="main-left"
         :percentage="70"
-        :goals="activeFrame.level.goals"
-        :particles="activeFrame.quantum"
+        :goals="level.goals"
+        :particles="activeFrame.particles"
       />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :grid="level.grid" :photons="activeFrame.quantum" :hints="hints" />
+        <game-board :particles="particles" :hints="hints" @updateSimulation="updateSimulation" />
         <game-controls
-          :active-frame="activeFrame"
-          :total-frames="frames.length"
+          :frame-index="frameIndex"
+          :total-frames="simulation.frames.length"
           @step-back="showPrevious"
           @step-forward="showNext"
         />
@@ -45,7 +45,7 @@
       <section slot="main-right">
         <game-toolbox :toolbox="level.toolbox" />
         <game-active-cell />
-        <game-photons :active-frame="activeFrame" />
+        <game-photons :particles="activeFrame.particles" />
       </section>
     </game-layout>
   </div>
@@ -53,9 +53,11 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Mutation, State } from 'vuex-class';
+import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
 import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
+import QuantumFrame from '@/engine/QuantumFrame';
+import QuantumSimulation from '@/engine/QuantumSimulation';
 import {
   CellInterface,
   FrameInterface,
@@ -63,7 +65,8 @@ import {
   ParticleInterface,
   GoalInterface,
   HintInterface,
-  GameState
+  GameState,
+  GridInterface
 } from '@/engine/interfaces';
 import levelData from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
@@ -92,12 +95,13 @@ import AppOverlay from '@/components/AppOverlay.vue';
 export default class Game extends Vue {
   @State level!: Level;
   frameIndex: number = 0;
-  frames: Frame[] = [];
+  simulation: any = {};
   error: string = '';
 
   // LIFECYCLE
   created() {
-    this.loadLevel();
+    this.loadLevelFromRoute();
+    this.updateSimulation();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -106,70 +110,42 @@ export default class Game extends Vue {
   }
 
   /**
-   * Level loading and initialization
-   * @returns boolean
+   * Used to load level from route
    */
   @Watch('$route')
-  loadLevel() {
-    // Check for level existence
+  loadLevelFromRoute(): void {
     this.error = '';
     const levelName = `level${parseInt(this.$route.params.id, 10)}`;
     const levelI: LevelInterface = levelData[levelName];
     if (!levelI) {
       this.error = 'No such exists!';
-      return false;
     }
-    // Process and store in Vuex
     const level = Level.importLevel(levelI);
-    this.$store.commit('SET_CURRENT_TOOLS', level.toolbox.fullCellList);
+    this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
-    this.createFrames();
-    return true;
+    this.updateSimulation();
   }
 
   /**
-   * Compute frames until there are no more particles
-   * @param max number of frames to compute before simulation stops
+   * Level loading and initialization
+   * @returns boolean
    */
-  createFrames(max = 25): void {
-    this.frames = [];
+  updateSimulation() {
+    this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
+    this.simulation.initializeFromLaser('V');
+    this.simulation.nextFrames(20);
     this.frameIndex = 0;
-    const initFrame = new Frame(this.level);
-    this.frames.push(initFrame);
-    this.frames.push(initFrame.next());
-    for (let index = 0; index < max; index += 1) {
-      const nextFrame = this.createNextFrame();
-      if (nextFrame.quantum.length > 0) {
-        this.frames.push(nextFrame);
-      } else {
-        break;
-      }
-    }
-    this.frameIndex = 1;
-  }
-
-  /**
-   * Compute the next frame
-   * @returns Frame
-   */
-  createNextFrame(): Frame {
-    const lastFrameCopy = cloneDeep(this.lastFrame);
-    const nextFrame = lastFrameCopy.next();
-    return nextFrame;
-  }
-
-  /**
-   * Get the last computed frame
-   */
-  get lastFrame(): Frame {
-    return this.frames[this.frames.length - 1];
   }
 
   /**
    * Get the current simulation frame
    */
-  get activeFrame(): Frame {
-    return this.frames[this.frameIndex];
+  get activeFrame(): QuantumFrame {
+    return this.simulation.frames[this.frameIndex];
+  }
+
+  get particles(): Particle[] {
+    return this.activeFrame.particles;
   }
 
   /**
@@ -178,7 +154,7 @@ export default class Game extends Vue {
    */
   showNext() {
     const newframeIndex = this.frameIndex + 1;
-    if (newframeIndex > this.frames.length - 1) {
+    if (newframeIndex > this.simulation.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...");
       return false;
     }
@@ -229,8 +205,9 @@ export default class Game extends Vue {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
   }
 
+  /** Need to be computed from simulation post-processing */
   get gameState(): GameState {
-    return this.activeFrame.gameState;
+    return GameState.InProgress;
   }
 
   get hints(): HintInterface[] {

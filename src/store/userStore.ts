@@ -6,6 +6,25 @@ import firebase, { db, auth } from '@/config/firebase';
 
 Vue.use(Vuex);
 
+interface progressObj {
+  id: number;
+  status: 'string';
+  score: number;
+}
+
+interface userInterface {
+  user: {
+    loggedIn: boolean;
+    rememberMe: boolean;
+    data: {
+      displayName: string;
+      email: string;
+    };
+  };
+  progressArr: progressObj[];
+  error: null;
+}
+
 const userStore = {
   state: {
     user: {
