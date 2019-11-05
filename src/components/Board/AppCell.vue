@@ -94,7 +94,8 @@ export default class AppCell extends Mixins(getPosition) {
    * Handle mouseover for active cell display
    */
   handleCellHover(): void {
-    if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+    // if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+    if (!this.cell.isVoid) {
       this.mutationSetHoveredCell(this.cell);
     }
   }
@@ -129,7 +130,7 @@ export default class AppCell extends Mixins(getPosition) {
       // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
       // eslint-disable-next-line
       if (this.cell.isValidTarget()) {
-        if (this.activeCell.isFromToolbox && this.cell.isFromGrid) {
+        if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
           const available = this.level.toolbox.available(this.activeCell.element.name);
           if (available > 0) {
             this.$emit('updateCell', this.cell.coord);
