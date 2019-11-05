@@ -1,8 +1,8 @@
 import cloneDeep from 'lodash.clonedeep';
-import QuantumFrame from './QuantumFrame';
-import Grid from './Grid';
-import { GridInterface } from './interfaces';
-import Cell from './Cell';
+import { GridInterface } from '@/engine/interfaces';
+import QuantumFrame from '@/engine/QuantumFrame';
+import Grid from '@/engine/Grid';
+import Cell from '@/engine/Cell';
 
 // To add in Vector->Photon->QuantumFrame: copy
 
