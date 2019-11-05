@@ -123,6 +123,7 @@ export default class Game extends Vue {
     const level = Level.importLevel(levelI);
     this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
+    this.updateSimulation();
   }
 
   /**
