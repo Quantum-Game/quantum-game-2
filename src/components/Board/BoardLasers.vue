@@ -24,6 +24,7 @@ import { State } from 'vuex-class';
 import { ParticleInterface } from '@/engine/interfaces';
 import Grid from '@/engine/Grid';
 import Level from '@/engine/Level';
+import Laser from '@/engine/Laser';
 
 @Component
 export default class Board extends Vue {
@@ -31,7 +32,7 @@ export default class Board extends Vue {
   tileSize: number = 64;
 
   get lasers() {
-    return this.level.grid.computePaths();
+    return new Laser(this.level.grid).computePaths();
   }
 
   /**
