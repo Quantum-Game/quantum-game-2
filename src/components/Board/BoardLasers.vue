@@ -1,6 +1,6 @@
 <template>
   <!-- LASER PATH -->
-  <g class="lasers">
+  <!-- <g class="lasers">
     <g
       v-for="(laser, index) in individualLaserPath"
       :key="'laser' + index"
@@ -15,7 +15,15 @@
         class="laserPath"
       />
     </g>
-  </g>
+  </g>-->
+  <path
+    :d="path"
+    stroke-dasharray="8 8"
+    fill="transparent"
+    stroke="red"
+    stroke-width="3"
+    class="laserPath"
+  />
 </template>
 
 <script lang="ts">
@@ -29,6 +37,7 @@ import Laser from '@/engine/Laser';
 @Component
 export default class Board extends Vue {
   @State level!: Level;
+  @Prop({ default: '' }) readonly path!: string;
   tileSize: number = 64;
 
   get lasers() {
