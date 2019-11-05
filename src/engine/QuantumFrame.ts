@@ -37,4 +37,8 @@ export default class QuantumFrame {
       return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
     });
   }
+
+  get particles(): Particle[] {
+    return this.polarizationSuperpositions;
+  }
 }

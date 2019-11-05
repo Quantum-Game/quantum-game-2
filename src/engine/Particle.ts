@@ -188,6 +188,14 @@ export default class Particle extends Coord {
   }
 
   /**
+   *  Propagate the particle following its direction
+   * @returns next coord
+   */
+  nextCoord(): Coord {
+    return this.coord.fromAngle(this.direction);
+  }
+
+  /**
    * Override toString() method for debug
    * @returns a string describing the particle
    */

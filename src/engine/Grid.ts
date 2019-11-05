@@ -7,7 +7,6 @@ import Element from './Element';
 import Cell from './Cell';
 import Cluster from './Cluster';
 import Particle from './Particle';
-import { flatDeep } from './Helpers';
 
 /**
  * Grid class includes the grid instance that holds the cells
