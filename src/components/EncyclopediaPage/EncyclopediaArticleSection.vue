@@ -4,11 +4,8 @@
       {{ section.title.toUpperCase() }}
     </h2>
     <div ref="contentWrapper" class="content-wrapper" :style="style">
-      <div v-for="(media, index) in section.contents" :key="index" class="content">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <p v-if="!isImg(section.contents[index])" v-html="section.contents[index]"></p>
-        <img v-else :src="imageUrl(section.contents[index])" />
-      </div>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <div class="content" v-html="section.content" />
     </div>
   </section>
 </template>
@@ -44,15 +41,6 @@ export default class EncyclopediaArticleSection extends Vue {
       maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
     };
   }
-
-  isImg(string: string): boolean {
-    return string.match(/\.(jpeg|jpg|gif|png|svg)$/) != null;
-  }
-
-  imageUrl(imageString: string) {
-    const images = require.context('@/assets');
-    return images(`./${imageString}`);
-  }
 }
 </script>
 
@@ -78,12 +66,12 @@ section.entry-section {
       border-bottom: 6px solid transparent;
       border-top: 6px solid transparent;
       clear: both;
-      transition: 0.4s;
+      transition: 0.2s;
     }
-  }
-  &.active:after {
-    transform: rotate(90deg);
-    transition: 0.4s;
+    &.active:after {
+      transform: rotate(90deg);
+      transition: 0.2s;
+    }
   }
   & .content-wrapper {
     font-weight: lighter;
@@ -95,34 +83,6 @@ section.entry-section {
     letter-spacing: 1px;
     text-align: left;
     line-height: 1.5em;
-    & div.content {
-      color: white;
-      & p {
-        color: white;
-        & a.link {
-          color: white;
-          text-decoration: none;
-        }
-      }
-    }
   }
-}
-
-// TEXT STYLING:
-// key words and phrases
-em {
-  font-style: underline;
-}
-
-// strong importance
-strong,
-b {
-  font-style: bold;
-}
-
-// emphasis
-em,
-i {
-  font-style: italics;
 }
 </style>

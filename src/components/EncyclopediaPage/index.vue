@@ -1,11 +1,6 @@
 <template>
   <app-layout>
-    <div slot="left" class="element-list">
-      <h3 class="upper-border">ALL ELEMENTS</h3>
-      <router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
-        <div>{{ entry }}</div>
-      </router-link>
-    </div>
+    <encyclopedia-link-list slot="left" :entry-list="entryList" />
     <div slot="main">
       <router-view />
     </div>
@@ -20,11 +15,13 @@ import { Vue, Component } from 'vue-property-decorator';
 import { entriesNameList } from '@/assets/data/entries';
 import AppLayout from '@/components/AppLayout.vue';
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
+import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue';
 
 @Component({
   components: {
     AppLayout,
-    EncyclopediaArticle
+    EncyclopediaArticle,
+    EncyclopediaLinkList
   }
 })
 export default class Info extends Vue {
@@ -45,11 +42,4 @@ export default class Info extends Vue {
   text-decoration: none;
 }
 
-.element-list {
-  a {
-    color: white;
-    text-decoration: none;
-    line-height: 200%;
-  }
-}
 </style>
