@@ -41,5 +41,4 @@ export default class Info extends Vue {
   color: white;
   text-decoration: none;
 }
-
 </style>
