@@ -23,7 +23,7 @@
             <li>B: {{ `${particle.b.re.toFixed(2)} + ${particle.b.im.toFixed(2)}i` }}</li>
             <li>Coord: [{{ `X: ${particle.x}, Y: ${particle.y}` }}]</li>
             <li>Direction: {{ particle.direction }}</li>
-            <li>Probability: {{ particle.intensity.toFixed(2) * 100 }}%</li>
+            <li>Probability: {{ particle.probability.toFixed(2) * 100 }}%</li>
             <li>Path length: {{ particle.path.length }}</li>
           </ul>
         </div>
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { CellInterface, CoordInterface, FrameInterface } from '@/engine/interfaces';
+import Particle from '@/engine/Particle';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 
@@ -45,33 +46,11 @@ import AppButton from '@/components/AppButton.vue';
   }
 })
 export default class GamePhotons extends Vue {
-  @Prop() readonly activeFrame!: FrameInterface;
-  width: number = 0;
+  @Prop() readonly particles!: Particle[];
+  width: number = 200;
   $refs!: {
     wrapper: HTMLElement;
   };
-
-  mounted() {
-    this.getElementWidth();
-  }
-
-  getElementWidth() {
-    // this.width = this.$refs.wrapper.clientWidth;
-    this.width = 200;
-  }
-
-  get particles() {
-    return (
-      this.activeFrame.quantum || [
-        {
-          a: { re: 1, im: 0 },
-          b: { re: 0, im: 0 },
-          path: [],
-          phase: 0
-        }
-      ]
-    );
-  }
 }
 </script>
 

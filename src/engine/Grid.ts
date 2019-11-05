@@ -6,8 +6,6 @@ import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
 import Cluster from './Cluster';
-import Particle from './Particle';
-import { flatDeep } from './Helpers';
 
 /**
  * Grid class includes the grid instance that holds the cells
@@ -15,7 +13,6 @@ import { flatDeep } from './Helpers';
 export default class Grid extends Cluster {
   public cols: number;
   public rows: number;
-  public paths: Particle[];
 
   constructor(rows: number, cols: number, cells?: Cell[]) {
     super(cells);
@@ -31,9 +28,6 @@ export default class Grid extends Cluster {
         this.cells.push(cell);
       }
     }
-
-    // If cells are given compute the laser path
-    this.paths = this.computePaths();
   }
 
   /**
@@ -111,7 +105,7 @@ export default class Grid extends Cluster {
    * @param targetCell target cell
    * @returns boolean move was successfull
    */
-  public move(sourceCell: Cell, targetCell: Cell): boolean {
+  public move(sourceCell: Cell, targetCell: Cell): Cell[] {
     const source = sourceCell;
     const target = targetCell;
     if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
@@ -122,7 +116,7 @@ export default class Grid extends Cluster {
       source.tool = true;
       this.set(source);
       this.set(target);
-      return true;
+      return [source, target];
     }
 
     // SWAP GRID TOOL TO GRID TOOL
@@ -134,7 +128,7 @@ export default class Grid extends Cluster {
       source.tool = true;
       this.set(source);
       this.set(target);
-      return true;
+      return [source, target];
     }
 
     // MOVE TOOLBOX TOOL TO GRID VOID
@@ -142,10 +136,9 @@ export default class Grid extends Cluster {
       target.element = source.element;
       target.tool = true;
       this.set(target);
-      return true;
+      return [target];
     }
-
-    return false;
+    return [];
   }
 
   /**
@@ -157,129 +150,6 @@ export default class Grid extends Cluster {
     this.cells.map((cell) => {
       return cell.coord.fromAngle(direction);
     });
-  }
-
-  /**
-   * Fire all the lasers
-   * @returns the particles fired
-   */
-  public fireLasers(): Particle[] {
-    return this.lasers.active.cells.map((laser) => {
-      if (laser.active) {
-        return new Particle(laser.coord, laser.rotation, 1, 0);
-      }
-      throw Error('Laser is inactive...');
-    });
-  }
-
-  /**
-   * Compute the classical intensity using laser paths of a coordinate
-   * FIXME: Move to level or to grid
-   * @param coord Coordinate
-   */
-  coordIntensitySum(coord: Coord): number {
-    return this.paths
-      .filter((particleInterface) => {
-        return coord.equal(particleInterface.coord);
-      })
-      .reduce((a, b) => a + b.probability, 0);
-  }
-
-  /**
-   * Compute the laser path of a particle
-   * @param particle Particle which needs its laser path computed
-   * @param maxFrames Max number of frames to compute
-   * @returns list of "path particles"
-   */
-  laserPath(initParticle: Particle, maxFrames = 40): Particle[][] {
-    // Make a depp clone of the particle
-    let alive: Particle[] = [initParticle];
-    const dead: Particle[] = [];
-
-    // Simulate path with a specific number of frames
-    for (let i = 0; i < maxFrames; i += 1) {
-      // Propagate each living particle
-      // eslint-disable-next-line
-      alive.forEach((particle: Particle) => {
-        particle.next();
-
-        // Zero the intensity of escaping particles
-        if (!this.includes(particle.coord)) {
-          // eslint-disable-next-line no-param-reassign
-          particle.intensity = 0;
-        }
-
-        // Absorption
-        this.absorbers.cells.forEach((absorber: Cell) => {
-          if (particle.on(absorber)) {
-            // eslint-disable-next-line no-param-reassign
-            particle.intensity -= particle.intensity * absorber.element.absorption;
-          }
-        });
-
-        // Reflection
-        this.mirrors.cells.forEach((mirror: Cell) => {
-          if (particle.on(mirror)) {
-            // eslint-disable-next-line no-param-reassign
-            particle.direction = (2 * mirror.rotation - particle.direction + 360) % 360;
-          }
-        });
-        this.polarbeamsplitters.cells.forEach((polar: Cell) => {
-          if (particle.on(polar)) {
-            if (polar.rotation === 0) {
-              const direction = (2 * (polar.rotation - 45) - particle.direction + 360) % 360;
-              alive.push(new Particle(particle.coord, direction, particle.intensity));
-            }
-            if (polar.rotation === 180) {
-              const direction = (2 * (polar.rotation + 45) - particle.direction + 360) % 360;
-              alive.push(new Particle(particle.coord, direction, particle.intensity));
-            }
-          }
-        });
-        this.beamsplitters.cells.forEach((beamsplitter: Cell) => {
-          if (particle.on(beamsplitter)) {
-            // Dim the current particle intensity
-            // eslint-disable-next-line no-param-reassign
-            particle.intensity /= 2;
-            // Reflecting particle (create new reflected faded particle)
-            const direction = (2 * beamsplitter.rotation - particle.direction + 360) % 360;
-            alive.push(new Particle(particle.coord, direction, particle.intensity));
-          }
-        });
-      });
-
-      // Filter the living from the dead
-      alive.forEach((particle) => {
-        if (!particle.alive) {
-          dead.push(particle);
-        }
-      });
-      alive = alive.filter((particle) => {
-        return particle.alive;
-      });
-    }
-
-    // Flatten and dedupe list of particles
-    const pathParticles: Particle[][] = [];
-    alive = dead.concat(alive);
-    alive.forEach((particle) => {
-      pathParticles.push(particle.pathParticle);
-    });
-    return pathParticles;
-    // return [...new Set(flatDeep(pathParticles))]
-  }
-
-  /**
-   * Gives the classical laser path of a specific particle
-   * FIXME: Could be refactored
-   * @returns a list of coordinates
-   * */
-  computePaths(): Particle[] {
-    const laserParticles = this.fireLasers();
-    const particles = laserParticles.map((laserParticle: Particle) => {
-      return [...new Set(this.laserPath(laserParticle, 40).flat())];
-    });
-    return particles.flat();
   }
 
   /**

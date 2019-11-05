@@ -1,49 +1,31 @@
 <template>
   <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <g v-for="(row, y) in grid.rows" :key="y">
-      <g v-for="(column, x) in grid.cols" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-      </g>
-    </g>
+    <board-dots />
 
     <!-- LASER PATH -->
-    <g
-      v-for="(laser, index) in individualLaserPath"
-      :key="'laser' + index"
-      :v-if="individualLaserPath.length > 0"
-      class="lasers"
-    >
-      <path
-        :d="laser"
-        stroke-dasharray="8 8"
-        fill="transparent"
-        stroke="red"
-        stroke-width="3"
-        class="laserPath"
-      />
-    </g>
+    <board-lasers />
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in grid.cells"
+      v-for="(cell, i) in level.grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
-      @updateCell="moveCell"
-      @rotate="rotateCell"
+      @updateCell="updateCell"
     />
 
     <!-- PHOTONS -->
     <g
-      v-for="(particle, index) in photons"
+      v-for="(particle, index) in particles"
       :key="'particle' + index"
-      :v-if="photons.length > 0"
+      :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
     >
       <app-photon
         name
+        :particle="particle"
         :intensity="particle.intensity"
         :are="particle.a.re"
         :aim="particle.a.im"
@@ -76,6 +58,8 @@ import Grid from '@/engine/Grid';
 import Level from '@/engine/Level';
 import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces';
 import AppCell from '@/components/Board/AppCell.vue';
+import BoardLasers from '@/components/Board/BoardLasers.vue';
+import BoardDots from '@/components/Board/BoardDots.vue';
 import AppPhoton from '@/components/AppPhoton.vue';
 import SpeechBubble from '@/components/SpeechBubble.vue';
 
@@ -83,12 +67,13 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   components: {
     AppCell,
     AppPhoton,
+    BoardLasers,
+    BoardDots,
     SpeechBubble
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly grid!: Grid;
-  @Prop({ default: [] }) readonly photons!: ParticleInterface[];
+  @Prop({ default: [] }) readonly particles!: ParticleInterface[];
   @State activeCell!: Cell;
   @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
@@ -110,15 +95,19 @@ export default class Board extends Vue {
     this.tileSize = 64;
   }
 
-  get lasers(): ParticleInterface[] {
-    return this.grid.computePaths();
-  }
-
   get totalWidth(): number {
-    return this.grid.cols * this.tileSize;
+    return this.level.grid.cols * this.tileSize;
   }
   get totalHeight(): number {
-    return this.grid.rows * this.tileSize;
+    return this.level.grid.rows * this.tileSize;
+  }
+
+  /**
+   * Compute the cell center at a specific coordinate for grid dots
+   * @returns x, y pixel coordinates
+   */
+  centerCoord(val: number): number {
+    return (val + 0.5) * this.tileSize;
   }
 
   computeParticleStyle(particle: ParticleInterface): {} {
@@ -133,81 +122,19 @@ export default class Board extends Vue {
   }
 
   /**
-   * Compute the cell center at a specific coordinate for grid dots
-   * @returns x, y pixel coordinates
-   */
-  centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
-  }
-
-  /**
    * Used to move or swap cells
    * @params coord to move to
    * @returns boolean
    */
-  moveCell(coord: Coord): void {
+  updateCell(coord: Coord): void {
     const sourceCell = this.activeCell;
-    const targetCell = this.grid.get(coord);
-    this.grid.move(sourceCell, targetCell);
-  }
-
-  /**
-   * Cell rotation
-   * @returns void
-   */
-  rotateCell(cell: Cell): void {
-    cell.rotate();
-    this.grid.set(cell);
-  }
-
-  /**
-   * Create laser path through the lasers points
-   * @returns SVG laser path
-   */
-  laserPath(): string {
-    let pathStr = '';
-    if (this.lasers.length > 0) {
-      const originX = this.centerCoord(this.lasers[0].coord.x);
-      const originY = this.centerCoord(this.lasers[0].coord.y);
-      pathStr += `M ${originX} ${originY} `;
-      this.lasers.forEach((laser: any) => {
-        const x = this.centerCoord(laser.coord.x);
-        const y = this.centerCoord(laser.coord.y);
-        pathStr += ` L ${x} ${y} `;
-      });
-      pathStr += ' ';
-    }
-    return pathStr;
-  }
-
-  get individualLaserPath(): string[] {
-    const pathsStr: string[] = [];
-    if (this.lasers.length > 0) {
-      this.lasers.forEach((laser: any) => {
-        let pathStr = '';
-        const originX = this.centerCoord(laser.coord.x);
-        const originY = this.centerCoord(laser.coord.y);
-        pathStr += `M ${originX} ${originY} `;
-        switch (laser.direction) {
-          case 0:
-            pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
-            break;
-          case 90:
-            pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
-            break;
-          case 180:
-            pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
-            break;
-          case 270:
-            pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
-            break;
-          default:
-            throw new Error(`Laser has wrong direction: ${laser.direction}°`);
-        }
-        pathsStr.push(pathStr);
-      });
-    }
-    return pathsStr;
+    const targetCell = this.level.grid.get(coord);
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    mutatedCells.forEach((cell) => {
+      this.level.grid.set(cell);
+    });
+    this.$emit('updateSimulation');
+    this.$emit('updateGrid');
   }
 
   /**
@@ -216,22 +143,19 @@ export default class Board extends Vue {
    */
   photonPath(): string {
     let pathStr = '';
-    if (this.photons.length > 0) {
-      const originX = this.centerCoord(this.photons[0].coord.x);
-      const originY = this.centerCoord(this.photons[0].coord.y);
+    if (this.particles.length > 0) {
+      const originX = this.centerCoord(this.particles[0].coord.x);
+      const originY = this.centerCoord(this.particles[0].coord.y);
       pathStr += `M ${originX} ${originY} `;
-      this.lasers.forEach((laser: any) => {
-        const x = this.centerCoord(laser.coord.x);
-        const y = this.centerCoord(laser.coord.y);
-        pathStr += ` L ${x} ${y} `;
-      });
     }
     return pathStr;
   }
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
+    const cells = this.level.grid.cells.filter(
+      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
+    );
     if (cells.length > 0) {
       return cells[0].exportCell();
     }

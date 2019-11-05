@@ -34,6 +34,7 @@ export default class QuantumSimulation {
   }
 
   initializeFromLaser(pol = 'V'): void {
+    this.frames = [];
     if (this.frames.length !== 0) {
       throw new Error(
         `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
@@ -62,7 +63,7 @@ export default class QuantumSimulation {
     this.frames.push(lastFrame);
   }
 
-  nextFrames(n: number, stopIfProbabilityBelow = 1e-6): void {
+  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {
