@@ -154,7 +154,7 @@ const userStore = {
 //       dbRef
 //         .set(data)
 //         .then(() => {
-//           console.log('Data stored: ', data);
+//           console.debug('Data stored: ', data);
 //         })
 //         .catch((err) => {
 //           commit('SET_ERROR', err.message);
@@ -167,10 +167,10 @@ const userStore = {
 //         .then((doc) => {
 //           const { progress } = doc.data();
 //           if (doc.exists) {
-//             console.log('Document data:', progress);
+//             console.debug('Document data:', progress);
 //             commit('SET_PROGRESS', progress);
 //           } else {
-//             console.log('No such document!');
+//             console.debug('No such document!');
 //           }
 //         })
 //         .catch((err) => {

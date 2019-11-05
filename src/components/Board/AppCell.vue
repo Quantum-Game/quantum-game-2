@@ -112,7 +112,7 @@ export default class AppCell extends Mixins(getPosition) {
         this.indicateTool();
         this.mutationSetActiveCell(this.cell);
       } else {
-        console.log(`INVALID SELECTION : ${this.cell.toString()}`);
+        // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
         this.indicateFrozen();
         this.mutationResetActiveCell();
       }
@@ -151,7 +151,7 @@ export default class AppCell extends Mixins(getPosition) {
           this.level.grid.set(this.activeCell.reset());
           this.mutationResetActiveCell();
           // FALLBACK
-          // console.log(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+          // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
         } else {
           this.mutationResetActiveCell();
         }
