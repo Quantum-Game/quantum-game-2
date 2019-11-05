@@ -60,7 +60,7 @@ export default class MyAccount extends Vue {
     $userStore.commit('SET_PROGRESS', this.progressArr);
     $userStore.dispatch('SAVE_PROGRESS');
   }
-  editLevel(lvl) {
+  editLevel(lvl: any) {
     this.level = lvl;
   }
 }
