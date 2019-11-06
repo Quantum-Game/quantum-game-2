@@ -1,6 +1,6 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
-    <animateTransform
+    <!-- <animateTransform
       v-if="animate > 0"
       attributeName="transform"
       attributeType="XML"
@@ -9,7 +9,7 @@
       :to="toCoord"
       :dur="animate + 's'"
       repeatCount="indefinite"
-    />
+    /> -->
     <g class="photon" :style="computeStyle">
       <g v-if="displayElectric" class="electric">
         <circle
