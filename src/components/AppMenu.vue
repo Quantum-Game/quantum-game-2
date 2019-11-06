@@ -11,6 +11,7 @@
           <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
           <router-link to="/level/1" @click.stop.native="closeMenu">CONTINUE</router-link>
           <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
+          <router-link to="/login" @click.stop.native="closeMenu">LOGIN</router-link>
           <span>SANDBOX</span>
           <router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
           <span>OPTIONS</span>
