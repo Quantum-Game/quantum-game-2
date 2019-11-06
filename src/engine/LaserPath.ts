@@ -3,7 +3,7 @@ import Grid from '@/engine/Grid';
 import Particle from '@/engine/Particle';
 import Cell from '@/engine/Cell';
 
-export default class Laser {
+export default class LaserPath {
   public grid: Grid;
   public paths: ParticleInterface[];
 

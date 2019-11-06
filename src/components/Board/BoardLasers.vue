@@ -20,67 +20,11 @@ import { State } from 'vuex-class';
 import { ParticleInterface } from '@/engine/interfaces';
 import Grid from '@/engine/Grid';
 import Level from '@/engine/Level';
-import Laser from '@/engine/Laser';
 
 @Component
 export default class Board extends Vue {
-  @State level!: Level;
   @Prop({ default: '' }) readonly paths!: string[];
   tileSize: number = 64;
-
-  // get lasers() {
-  // return new Laser(this.level.grid).computePaths();
-  // }
-
-  // /**
-  //  * Create laser path through the lasers points
-  //  * @returns SVG laser path
-  //  */
-  // laserPath(): string {
-  //   let pathStr = '';
-  //   if (this.lasers.length > 0) {
-  //     const originX = this.centerCoord(this.lasers[0].coord.x);
-  //     const originY = this.centerCoord(this.lasers[0].coord.y);
-  //     pathStr += `M ${originX} ${originY} `;
-  //     this.lasers.forEach((laser: any) => {
-  //       const x = this.centerCoord(laser.coord.x);
-  //       const y = this.centerCoord(laser.coord.y);
-  //       pathStr += ` L ${x} ${y} `;
-  //     });
-  //     pathStr += ' ';
-  //   }
-  //   return pathStr;
-  // }
-
-  // get individualLaserPath(): string[] {
-  //   const pathsStr: string[] = [];
-  //   if (this.lasers.length > 0) {
-  //     this.lasers.forEach((laser: any) => {
-  //       let pathStr = '';
-  //       const originX = this.centerCoord(laser.coord.x);
-  //       const originY = this.centerCoord(laser.coord.y);
-  //       pathStr += `M ${originX} ${originY} `;
-  //       switch (laser.direction) {
-  //         case 0:
-  //           pathStr += ` H ${this.centerCoord(laser.coord.x + 1)}`;
-  //           break;
-  //         case 90:
-  //           pathStr += ` V ${this.centerCoord(laser.coord.y - 1)}`;
-  //           break;
-  //         case 180:
-  //           pathStr += ` H ${this.centerCoord(laser.coord.x - 1)}`;
-  //           break;
-  //         case 270:
-  //           pathStr += ` V ${this.centerCoord(laser.coord.y + 1)}`;
-  //           break;
-  //         default:
-  //           throw new Error(`Laser has wrong direction: ${laser.direction}°`);
-  //       }
-  //       pathsStr.push(pathStr);
-  //     });
-  //   }
-  //   return pathsStr;
-  // }
 }
 </script>
 
