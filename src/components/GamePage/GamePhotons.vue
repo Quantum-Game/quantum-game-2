@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { CellInterface, CoordInterface, FrameInterface } from '@/engine/interfaces';
+import { CellInterface, CoordInterface } from '@/engine/interfaces';
 import Particle from '@/engine/Particle';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';

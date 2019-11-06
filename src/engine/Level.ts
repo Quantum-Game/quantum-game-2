@@ -1,4 +1,3 @@
-import { Photons } from 'quantum-tensors';
 import { LevelInterface, ClassicLevelInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
@@ -25,7 +24,6 @@ export default class Level {
   hints: Hint[];
   completed: boolean;
   toolbox: Toolbox;
-  state: Photons;
 
   constructor(
     id: number,
@@ -47,8 +45,6 @@ export default class Level {
     this.goals = goals;
     this.hints = hints;
     this.completed = completed;
-    // Initiate quantum state
-    this.state = new Photons(grid.cols, grid.rows);
 
     // Populate toolbox
     this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);

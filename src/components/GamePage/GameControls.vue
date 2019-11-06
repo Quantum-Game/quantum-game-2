@@ -26,7 +26,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { FrameInterface } from '@/engine/interfaces';
 import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 
 @Component({

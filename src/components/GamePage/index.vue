@@ -32,7 +32,12 @@
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
-        <game-board :particles="particles" :hints="hints" @updateSimulation="updateSimulation" />
+        <game-board
+          :particles="particles"
+          :hints="hints"
+          :paths="paths"
+          @updateSimulation="updateSimulation"
+        />
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
@@ -55,12 +60,12 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
+import { Level, Particle, Cell, Coord, Element } from '@/engine/classes';
+import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import {
   CellInterface,
-  FrameInterface,
   LevelInterface,
   ParticleInterface,
   GoalInterface,
@@ -96,6 +101,7 @@ export default class Game extends Vue {
   @State level!: Level;
   frameIndex: number = 0;
   simulation: any = {};
+  multiverseGraph: any = {};
   error: string = '';
 
   // LIFECYCLE
@@ -130,11 +136,22 @@ export default class Game extends Vue {
    * Level loading and initialization
    * @returns boolean
    */
-  updateSimulation() {
+  updateSimulation(): void {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
+    this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
+  }
+
+  /**
+   * compute paths for quantum laser paths
+   * @returns individual paths
+   */
+  get paths(): string[] {
+    return this.simulation.allParticles.map((particle: Particle) => {
+      return particle.toSvg();
+    });
   }
 
   /**

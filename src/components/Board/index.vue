@@ -4,7 +4,7 @@
     <board-dots />
 
     <!-- LASER PATH -->
-    <board-lasers />
+    <board-lasers :paths="paths" />
 
     <!-- CELLS -->
     <app-cell
@@ -74,6 +74,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 })
 export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: ParticleInterface[];
+  @Prop({ default: '' }) readonly paths!: string;
   @State activeCell!: Cell;
   @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;

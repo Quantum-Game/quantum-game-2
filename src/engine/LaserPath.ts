@@ -1,10 +1,9 @@
 import { ParticleInterface, GridInterface } from '@/engine/interfaces';
 import Grid from '@/engine/Grid';
 import Particle from '@/engine/Particle';
-import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
 
-export default class Laser {
+export default class LaserPath {
   public grid: Grid;
   public paths: ParticleInterface[];
 

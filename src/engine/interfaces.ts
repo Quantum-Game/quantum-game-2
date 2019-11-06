@@ -11,19 +11,6 @@
 // }
 
 /**
- * FRAME INTERFACE
- * time-frame in primitives
- */
-export interface FrameInterface {
-  level: LevelInterface;
-  step: number;
-  classical: ParticleInterface[];
-  quantum: ParticleInterface[];
-  gameState: GameState;
-  end: boolean;
-}
-
-/**
  * PARTICLE INTERFACE
  * Particle interface in primitives
  */

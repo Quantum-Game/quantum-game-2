@@ -38,10 +38,7 @@ export default class QuantumFrame {
     });
   }
 
-  /**
-   * Shorthand for polarization superpositions
-   */
-  get particles() {
+  get particles(): Particle[] {
     return this.polarizationSuperpositions;
   }
 }
