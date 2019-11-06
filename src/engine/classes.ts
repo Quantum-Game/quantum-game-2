@@ -1,7 +1,7 @@
 export { default as QuantumSimulation } from './QuantumSimulation';
 export { default as QuantumFrame } from './QuantumFrame';
-export { default as Frame } from './Frame';
 export { default as Level } from './Level';
+export { default as Laser } from './Laser';
 export { default as Grid } from './Grid';
 export { default as Cluster } from './Cluster';
 export { default as Cell } from './Cell';

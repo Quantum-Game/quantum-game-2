@@ -36,7 +36,7 @@ import {
   LevelInterface,
   GridInterface
 } from '@/engine/interfaces';
-import { Coord, Level, Element, Particle, Frame, Grid, Cell } from '@/engine/classes';
+import { Coord, Level, Element, Particle, Grid, Cell } from '@/engine/classes';
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
 
@@ -142,39 +142,6 @@ export default class EncyclopediaMatrixBoard extends Vue {
         im: entry.value.im
       };
     });
-  }
-
-  /**
-   * Temporary! I want to work with actual quantum states.
-   * Also - quick, dirty, no-LaTeX and pure string
-   */
-  frameToKet(frame: Frame): string {
-    const dirVis = new Map<number, string>();
-    dirVis.set(0, '⇢');
-    dirVis.set(90, '⇡');
-    dirVis.set(180, '⇠');
-    dirVis.set(270, '⇣');
-
-    return frame.quantum
-      .flatMap((d) => {
-        const res = [];
-        if (d.a.re !== 0 || d.a.im !== 0) {
-          res.push(
-            `(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) |${d.coord.x} ${
-              d.coord.y
-            } ${dirVis.get(d.direction)} H⟩`
-          );
-        }
-        if (d.b.re !== 0 || d.b.im !== 0) {
-          res.push(
-            `(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) |${d.coord.x} ${
-              d.coord.y
-            } ${dirVis.get(d.direction)} V⟩`
-          );
-        }
-        return res;
-      })
-      .join(' + ');
   }
 }
 </script>

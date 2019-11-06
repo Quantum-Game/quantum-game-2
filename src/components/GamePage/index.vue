@@ -60,13 +60,12 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Frame, Particle, Cell, Coord, Element } from '@/engine/classes';
+import { Level, Particle, Cell, Coord, Element } from '@/engine/classes';
 import PathGraph from '@/engine/PathGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import {
   CellInterface,
-  FrameInterface,
   LevelInterface,
   ParticleInterface,
   GoalInterface,
