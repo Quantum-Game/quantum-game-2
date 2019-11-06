@@ -115,7 +115,6 @@ export default class AppPhoton extends Vue {
       opacity: `${this.particle.probability}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
       transform: `rotate(${this.particle.direction}deg)`
-      // transform: `rotate(${this.particle.direction}deg)`
     };
   }
 
