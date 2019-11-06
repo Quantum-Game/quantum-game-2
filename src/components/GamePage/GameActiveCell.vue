@@ -45,6 +45,7 @@ export default class GameActiveCell extends Vue {
 
 <style lang="scss" scoped>
 .explanation {
+  border-top: 1px solid #8e819d;
   width: 100%;
   text-align: left;
   padding-top: 10px;
@@ -54,7 +55,6 @@ export default class GameActiveCell extends Vue {
     font-size: 1rem;
   }
   & .explanation__description {
-    border-top: 1px solid #8e819d;
     text-align: left;
     font-size: 1rem;
     line-height: 150%;
@@ -62,6 +62,7 @@ export default class GameActiveCell extends Vue {
 
   & .explanation__link {
     color: #837e9b;
+    font-size: 0.8rem;
     text-decoration: none;
   }
 }

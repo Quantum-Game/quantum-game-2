@@ -175,7 +175,7 @@ export default class AppCell extends Mixins(getPosition) {
    * Computed class
    */
   get computedClass(): string[] {
-    return [this.computedCellName, this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''];
+    return [this.computedCellName, this.cell.tool && !this.cell.isVoid ? 'active' : ''];
   }
 
   /**
@@ -240,7 +240,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns highlight class
    */
   get rectBackgroundClass() {
-    return [this.shouldTileChangeColor ? 'movable-space' : ''];
+    return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect'];
   }
 
   /**
@@ -276,9 +276,9 @@ rect {
   opacity: 0.1;
   transition: 0.3s;
 }
-.frozen rect {
-  fill: grey;
-  opacity: 0.2;
-  transition: 0.3s;
+.active .inner-rect {
+  fill: white;
+  opacity: 0.1;
+  //transition: 0.3s;
 }
 </style>
