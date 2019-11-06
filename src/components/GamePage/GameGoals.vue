@@ -81,7 +81,7 @@ export default class GameGoals extends Vue {
   //border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 100px;
-  border-bottom: 1px solid white;
+  //border-bottom: 1px solid white;
   width: 100%;
   // height: 320px;
   display: flex;

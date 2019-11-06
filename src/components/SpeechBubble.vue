@@ -75,7 +75,7 @@ export default class SpeechBubble extends Mixins(getPosition) {
   }
 
   get offsetY() {
-    return this.positionY - this.wrapperHeight / 2;
+    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3;
   }
 }
 </script>
@@ -83,6 +83,8 @@ export default class SpeechBubble extends Mixins(getPosition) {
 <style lang="scss">
 .hint {
   padding: 12px;
+  //min-height: 64px;
+  min-width: 128px;
   z-index: 2;
   position: absolute;
   color: #120223;
