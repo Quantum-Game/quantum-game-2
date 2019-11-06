@@ -1,5 +1,4 @@
-import { ElementInterface } from './interfaces';
-import { Elem } from './Helpers';
+import { Elem, ElementInterface } from '@/engine/interfaces';
 
 const jsonElements: ElementInterface[] = [
   {
