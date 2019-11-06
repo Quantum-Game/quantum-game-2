@@ -58,4 +58,8 @@ body {
     }
   }
 }
+a {
+    color: #796bbc;
+    text-decoration: none;
+}
 </style>

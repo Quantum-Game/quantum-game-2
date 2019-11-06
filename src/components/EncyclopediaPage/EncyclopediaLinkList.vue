@@ -23,6 +23,7 @@ export default class EncyclopediaLinkList extends Vue {
 
 <style lang="scss" scoped>
 .element-list {
+  border-top: 1px solid white;
   a {
     color: white;
     text-decoration: none;
