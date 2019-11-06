@@ -1,16 +1,16 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
     <animateTransform
-      v-if="animate"
+      v-if="animate > 0"
       attributeName="transform"
       attributeType="XML"
       type="translate"
       from="0 0"
       :to="toCoord"
-      dur="2s"
+      :dur="animate + 's'"
       repeatCount="indefinite"
     />
-    <g class="photon">
+    <g class="photon" :style="computeStyle">
       <g v-if="displayElectric" class="electric">
         <circle
           v-for="(z, index) in zs"
@@ -77,7 +77,7 @@ const d3 = {
 @Component
 export default class AppPhoton extends Vue {
   @Prop() readonly particle!: Particle;
-  @Prop({ default: false }) readonly animate!: boolean;
+  @Prop({ default: 0 }) readonly animate!: number;
   @Prop({ default: 64 }) readonly width!: number;
   @Prop({ default: 64 }) readonly height!: number;
   @Prop({ default: 20 }) readonly margin!: number;
@@ -108,6 +108,15 @@ export default class AppPhoton extends Vue {
   }
   get bim() {
     return this.particle.bim;
+  }
+
+  get computeStyle() {
+    return {
+      opacity: `${this.particle.probability}`,
+      'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
+      transform: `rotate(${this.particle.direction}deg)`
+      // transform: `rotate(${this.particle.direction}deg)`
+    };
   }
 
   /**
@@ -153,8 +162,10 @@ export default class AppPhoton extends Vue {
    */
   get toCoord(): string {
     const tileSize = 64;
-    const x = (this.particle.nextCoord().x - this.particle.coord.x) * tileSize;
-    const y = (this.particle.nextCoord().y - this.particle.coord.y) * tileSize;
+    const x = this.particle.relativeTarget.x * tileSize;
+    const y = this.particle.relativeTarget.y * tileSize;
+    console.log(`X:${x} - Y:${y}`);
+
     return `${x} ${y}`;
   }
 

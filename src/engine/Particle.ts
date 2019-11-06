@@ -1,6 +1,6 @@
 // FIXME: Duplicate between path and coord
 import { Complex } from 'quantum-tensors';
-import { ParticleInterface } from '@/engine/interfaces';
+import { ParticleInterface, CoordInterface } from '@/engine/interfaces';
 import Coord from './Coord';
 import Cell from './Cell';
 import { toPercent, angleToSymbol } from './Helpers';
@@ -234,6 +234,25 @@ export default class Particle extends Coord {
     )} intensity and polarization | A:${this.a.re} + ${this.a.im}i & B:${this.b.re} + ${
       this.b.im
     }i\n`;
+  }
+
+  /**
+   * Get relative movement for the particle
+   * @returns Coord using relative position
+   */
+  get relativeTarget(): CoordInterface {
+    switch (this.direction) {
+      case 0:
+        return { x: 1, y: 0 };
+      case 90:
+        return { x: 0, y: -1 };
+      case 180:
+        return { x: -1, y: 0 };
+      case 270:
+        return { x: 0, y: 1 };
+      default:
+        throw new Error('Wrong direction provided from particle...');
+    }
   }
 
   /**
