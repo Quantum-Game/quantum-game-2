@@ -35,7 +35,7 @@
         <game-board
           :particles="particles"
           :hints="hints"
-          :path="quantumPath"
+          :paths="paths"
           @updateSimulation="updateSimulation"
         />
         <game-controls
@@ -103,7 +103,6 @@ export default class Game extends Vue {
   frameIndex: number = 0;
   simulation: any = {};
   pathGraph: any = {};
-  quantumPath: string = '';
   error: string = '';
 
   // LIFECYCLE
@@ -138,13 +137,22 @@ export default class Game extends Vue {
    * Level loading and initialization
    * @returns boolean
    */
-  updateSimulation() {
+  updateSimulation(): void {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
     this.pathGraph = new PathGraph(this.simulation);
-    this.quantumPath = this.pathGraph.computePath(0, 0);
     this.frameIndex = 0;
+  }
+
+  /**
+   * compute paths for quantum laser paths
+   * @returns individual paths
+   */
+  get paths(): string[] {
+    return this.simulation.allParticles.map((particle: Particle) => {
+      return particle.toSvg();
+    });
   }
 
   /**

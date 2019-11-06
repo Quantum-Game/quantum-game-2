@@ -92,22 +92,22 @@ export default class PathGraph {
     const source = this.sources[0];
 
     // Compute Dijkstra paths
-    const paths = alg.dijkstra(this.graph, source);
-    console.log(paths);
-    console.log('SINK: ' + sink);
-    console.log('SOURCE: ' + source);
+    // const paths = alg.dijkstra(this.graph, source);
+    // console.log(paths);
+    // console.log(`SINK: ${sink}`);
+    // console.log(`SOURCE: ${source}`);
 
-    let sinkPath = paths[sink];
+    // let sinkPath = paths[sink];
 
-    while (sinkPath.distance !== 0) {
-      const uid = sinkPath.predecessor;
-      const particle = this.fromUid(uid);
-      const x = this.centerCoord(particle.coord.x);
-      const y = this.centerCoord(particle.coord.y);
-      svgPath += ` L ${x} ${y} `;
-      sinkPath = paths[uid];
-    }
-    console.log(svgPath);
+    // while (sinkPath.distance !== 0) {
+    //   const uid = sinkPath.predecessor;
+    //   const particle = this.fromUid(uid);
+    //   const x = this.centerCoord(particle.coord.x);
+    //   const y = this.centerCoord(particle.coord.y);
+    //   svgPath += ` L ${x} ${y} `;
+    //   sinkPath = paths[uid];
+    // }
+    // console.log(svgPath);
     return svgPath;
   }
 

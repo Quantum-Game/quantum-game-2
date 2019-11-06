@@ -3,6 +3,7 @@ import { GridInterface } from '@/engine/interfaces';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Grid from '@/engine/Grid';
 import Cell from '@/engine/Cell';
+import Particle from '@/engine/Particle';
 
 // To add in Vector->Photon->QuantumFrame: copy
 
@@ -71,5 +72,19 @@ export default class QuantumSimulation {
         break;
       }
     }
+  }
+
+  /**
+   * Retrieve a list of all the particles for quantum path computation
+   * @returns particle list
+   */
+  get allParticles(): Particle[] {
+    const result: Particle[] = [];
+    this.frames.forEach((frame) => {
+      frame.particles.forEach((particle) => {
+        result.push(particle);
+      });
+    });
+    return result;
   }
 }
