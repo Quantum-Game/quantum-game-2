@@ -100,21 +100,21 @@ export function camelCaseToDash(str: string): string {
 export function angleToSymbol(angle: number): string {
   switch (angle) {
     case 0:
-      return '↑';
+      return '→';
     case 45:
       return '↗';
     case 90:
-      return '→';
+      return '↑';
     case 135:
-      return '↘';
+      return '↖';
     case 180:
-      return '↓';
+      return '←';
     case 225:
       return '↙';
     case 270:
-      return '←';
+      return '↓';
     case 315:
-      return '↖';
+      return '↘';
     default:
       throw new Error(`Something is wrong with provided angle: ${angle}°`);
   }

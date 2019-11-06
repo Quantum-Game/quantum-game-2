@@ -1,61 +1,68 @@
 <template>
-  <svg
-    :class="`photon rotation${direction}`"
-    :width="width + 2 * margin"
-    :height="height + 2 * margin"
-  >
-    <g v-if="displayElectric" class="electric">
-      <circle
-        v-for="(z, index) in zs"
-        :key="`electricPoint-${index}`"
-        class="point electric"
-        :cx="xScale(z)"
-        :cy="yScale(gaussianComplex(are, aim, z, k, sigma))"
-        :r="eScale(gaussianComplex(bre, bim, z, k, sigma))"
-        :style="{ fill: eColor(gaussianComplex(bre, bim, z, k, sigma)) }"
-      />
-    </g>
+  <svg :width="width + 2 * margin" :height="height + 2 * margin">
+    <animateTransform
+      attributeName="transform"
+      attributeType="XML"
+      type="translate"
+      from="0 0"
+      :to="toCoord"
+      dur="2s"
+      repeatCount="indefinite"
+    />
+    <g class="photon">
+      <g v-if="displayElectric" class="electric">
+        <circle
+          v-for="(z, index) in zs"
+          :key="`electricPoint-${index}`"
+          class="point electric"
+          :cx="xScale(z)"
+          :cy="yScale(gaussianComplex(are, aim, z, k, sigma))"
+          :r="eScale(gaussianComplex(bre, bim, z, k, sigma))"
+          :style="{ fill: eColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+        />
+      </g>
 
-    <g v-if="displayMagnetic" class="magnetic">
-      <circle
-        v-for="(z, index) in zs"
-        :key="`magneticPoint-${index}`"
-        class="point magnetic"
-        :cx="xScale(z)"
-        :cy="yScale(gaussianComplex(bre, bim, z, k, sigma))"
-        :r="mScale(gaussianComplex(are, aim, z, k, sigma))"
-        :style="{ fill: mColor(gaussianComplex(bre, bim, z, k, sigma)) }"
-      />
-    </g>
+      <g v-if="displayMagnetic" class="magnetic">
+        <circle
+          v-for="(z, index) in zs"
+          :key="`magneticPoint-${index}`"
+          class="point magnetic"
+          :cx="xScale(z)"
+          :cy="yScale(gaussianComplex(bre, bim, z, k, sigma))"
+          :r="mScale(gaussianComplex(are, aim, z, k, sigma))"
+          :style="{ fill: mColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+        />
+      </g>
 
-    <g v-if="displayGaussian" class="gaussian">
-      <circle
-        v-for="(z, index) in zs"
-        :key="`gaussianPointb-${index}`"
-        class="point gaussian"
-        :cx="xScale(z)"
-        :cy="yScale(gaussian(z))"
-        :r="1"
-      />
-      <circle
-        v-for="(z, index) in zs"
-        :key="`gaussianPointt-${index}`"
-        class="point gaussian"
-        :cx="xScale(z)"
-        :cy="yScale(-gaussian(z))"
-        :r="1"
-      />
+      <g v-if="displayGaussian" class="gaussian">
+        <circle
+          v-for="(z, index) in zs"
+          :key="`gaussianPointb-${index}`"
+          class="point gaussian"
+          :cx="xScale(z)"
+          :cy="yScale(gaussian(z))"
+          :r="1"
+        />
+        <circle
+          v-for="(z, index) in zs"
+          :key="`gaussianPointt-${index}`"
+          class="point gaussian"
+          :cx="xScale(z)"
+          :cy="yScale(-gaussian(z))"
+          :r="1"
+        />
+      </g>
     </g>
   </svg>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-
 import { select } from 'd3-selection';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
 import { range } from 'd3-array';
+import Particle from '@/engine/Particle';
 
 const d3 = {
   scaleLinear,
@@ -68,6 +75,7 @@ const d3 = {
 
 @Component
 export default class AppPhoton extends Vue {
+  @Prop() readonly particle!: Particle;
   @Prop({ default: 'photon' }) readonly name!: string;
   @Prop({ default: '1' }) readonly intensity!: number;
   @Prop({ default: 0 }) readonly are!: number;
@@ -120,6 +128,17 @@ export default class AppPhoton extends Vue {
       .scaleLinear()
       .domain([-1, 1])
       .range([1, 2]);
+  }
+
+  /**
+   * Get SVG coordinates of particle animation
+   * @returns string
+   */
+  get toCoord(): string {
+    const tileSize = 64;
+    const x = (this.particle.nextCoord().x - this.particle.coord.x) * tileSize;
+    const y = (this.particle.nextCoord().y - this.particle.coord.y) * tileSize;
+    return `${x} ${y}`;
   }
 
   /**

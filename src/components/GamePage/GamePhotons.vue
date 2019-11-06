@@ -7,6 +7,7 @@
       <div v-for="(particle, index) in particles" :key="index">
         <app-photon
           name
+          :particle="particle"
           :are="particle.a.re"
           :aim="particle.a.im"
           :bre="particle.b.re"
@@ -19,12 +20,10 @@
         />
         <div class="info">
           <ul>
-            <li>A: {{ `${particle.a.re.toFixed(2)} + ${particle.a.im.toFixed(2)}i` }}</li>
-            <li>B: {{ `${particle.b.re.toFixed(2)} + ${particle.b.im.toFixed(2)}i` }}</li>
+            <li>Ket: {{ particle.toKetString() }}</li>
             <li>Coord: [{{ `X: ${particle.x}, Y: ${particle.y}` }}]</li>
-            <li>Direction: {{ particle.direction }}</li>
+            <li>Direction: {{ particle.directionToAscii() }} ({{ particle.direction }}°)</li>
             <li>Probability: {{ particle.probability.toFixed(2) * 100 }}%</li>
-            <li>Path length: {{ particle.path.length }}</li>
           </ul>
         </div>
       </div>

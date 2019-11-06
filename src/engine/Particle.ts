@@ -1,10 +1,9 @@
 // FIXME: Duplicate between path and coord
-// FIXME: Class needs rework
 import { Complex } from 'quantum-tensors';
-import { ParticleInterface } from './interfaces';
+import { ParticleInterface } from '@/engine/interfaces';
 import Coord from './Coord';
 import Cell from './Cell';
-import { toPercent } from './Helpers';
+import { toPercent, angleToSymbol } from './Helpers';
 
 /**
  * Particle interface retrieved from quantum-tensors
@@ -193,6 +192,36 @@ export default class Particle extends Coord {
    */
   nextCoord(): Coord {
     return this.coord.fromAngle(this.direction);
+  }
+
+  /**
+   * returns an ascii arrow of the particle direction angle
+   * @returns arrow ascii
+   */
+  directionToAscii() {
+    return angleToSymbol(this.direction);
+  }
+
+  /**
+   * Temporary! I want to work with actual quantum states.
+   * Also - quick, dirty, no-LaTeX and pure string
+   * Generating ket from Photons or QuantumFrame is preferred.
+   */
+  toKetString(): string {
+    const d = this;
+    const dirVis = new Map<number, string>();
+    dirVis.set(0, '⇢');
+    dirVis.set(90, '⇡');
+    dirVis.set(180, '⇠');
+    dirVis.set(270, '⇣');
+    let result = '';
+    if (d.a.re !== 0 || d.a.im !== 0) {
+      result += `(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) | ${dirVis.get(d.direction)} H⟩`;
+    }
+    if (d.b.re !== 0 || d.b.im !== 0) {
+      result += `(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) | ${dirVis.get(d.direction)} V⟩`;
+    }
+    return result;
   }
 
   /**
