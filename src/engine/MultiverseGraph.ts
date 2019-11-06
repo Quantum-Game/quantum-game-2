@@ -3,13 +3,11 @@ import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Particle from '@/engine/Particle';
 
-interface fpInterface {
-  fIndex: number;
-  pIndex: number;
-}
-
-// Create a new directed graph
-export default class PathGraph {
+/**
+ * MULTIVERSE GRAPH CLASS
+ * Creates a graph after post processing the current simulation frames
+ */
+export default class MultiverseGraph {
   graph: Graph;
   qs: QuantumSimulation;
 
@@ -23,19 +21,14 @@ export default class PathGraph {
    * @returns dag
    */
   processFrames() {
-    // if (this.qs.frames.length === 0) {
-    //   throw new Error('No quantum simulation frames...');
-    // }
     this.qs.frames.forEach((frame: QuantumFrame, fIndex: number) => {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
-        const fpInterface: fpInterface = { fIndex, pIndex };
-        const uid = PathGraph.createUid(fpInterface);
+        const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
         this.graph.setNode(uid, particleI);
         // Set edges from particle directions
-        this.findParent(fpInterface).forEach((parentUid: string) => {
+        this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
           this.graph.setEdge(uid, parentUid, 1);
-          // this.graph.setEdge(parentUid, uid, 1);
         });
       });
     });
@@ -47,16 +40,16 @@ export default class PathGraph {
    * @param particle Particle
    * @param frameIndex number
    */
-  findParent(fpInterface: fpInterface): string[] {
-    const particle = this.qs.frames[fpInterface.fIndex].particles[fpInterface.pIndex];
+  findParent(fIndex: number, pIndex: number): string[] {
+    const particle = this.qs.frames[fIndex].particles[pIndex];
     const parents: string[] = [];
-    if (fpInterface.fIndex > 0) {
-      const frame = this.qs.frames[fpInterface.fIndex];
-      const parentFrame = this.qs.frames[fpInterface.fIndex - 1];
-      parentFrame.particles.forEach((parentParticle: Particle, pIndex: number) => {
+    if (fIndex > 0) {
+      const frame = this.qs.frames[fIndex];
+      const parentFrame = this.qs.frames[fIndex - 1];
+      parentFrame.particles.forEach((parentParticle: Particle, parentIndex: number) => {
         // Check for parent
         if (parentParticle.nextCoord().equal(particle)) {
-          const parentUid = `particle-${fpInterface.fIndex - 1}-${pIndex}`;
+          const parentUid = `particle-${fIndex - 1}-${parentIndex}`;
           parents.push(parentUid);
         }
       });
@@ -83,13 +76,13 @@ export default class PathGraph {
     this.processFrames();
     let svgPath = '';
     const root: Particle = this.qs.frames[frameIndex].particles[particleIndex];
-    const parentUid: string = PathGraph.createUid({ fIndex: frameIndex, pIndex: particleIndex });
+    const parentUid: string = MultiverseGraph.createUid(frameIndex, particleIndex);
     const originX = this.centerCoord(root.coord.x);
     const originY = this.centerCoord(root.coord.y);
     svgPath += `M ${originX} ${originY} `;
 
-    const sink = this.sinks[0];
-    const source = this.sources[0];
+    const source = this.roots[0];
+    const sink = this.leafs[0];
 
     // Compute Dijkstra paths
     // const paths = alg.dijkstra(this.graph, source);
@@ -111,50 +104,21 @@ export default class PathGraph {
     return svgPath;
   }
 
-  get sources() {
+  /**
+   * Sinks are where elements don't have childrens
+   * @returns roots string names
+   */
+  get roots(): string[] {
     return this.graph.sources();
   }
 
-  get sinks() {
+  /**
+   * Leafs are where elements don't have childrens
+   * @returns leafs string names
+   */
+  get leafs(): string[] {
     return this.graph.sinks();
   }
-
-  /**
-   * Compute SVG path
-   * @param frameIndex
-   * @param particleIndex
-   */
-  // computePath(frameIndex: number, particleIndex: number): string {
-  //   let svgPath = '';
-  //   const root: Particle = this.qs.frames[frameIndex].particles[particleIndex];
-  //   const originX = this.centerCoord(root.coord.x);
-  //   const originY = this.centerCoord(root.coord.y);
-  //   svgPath += `M ${originX} ${originY} `;
-
-  //   this.qs.frames.forEach((frame, fIndex) => {
-  //     frame.particles.forEach((particle, pIndex) => {
-  //       if (fIndex > 0) {
-  //         const fpInterface: fpInterface = { fIndex, pIndex };
-  //         // Check for parent
-  //         const x = this.centerCoord(particle.coord.x);
-  //         const y = this.centerCoord(particle.coord.y);
-  //         svgPath += ` L ${x} ${y} `;
-  //         const parentFrame = this.qs.frames[fpInterface.fIndex - 1];
-
-  //         let parents = [];
-  //         parentFrame.particles.forEach((parentParticle: Particle) => {
-  //           if (parentParticle.nextCoord().equal(particle)) {
-  //             // const xParent = this.centerCoord(parentParticle.coord.x);
-  //             // const yParent = this.centerCoord(parentParticle.coord.y);
-  //             // svgPath += ` L ${xParent} ${yParent} `;
-  //           }
-  //         });
-  //       }
-  //     });
-  //   });
-  //   console.log(svgPath);
-  //   return svgPath;
-  // }
 
   /**
    * Create unique id for a particle
@@ -178,11 +142,12 @@ export default class PathGraph {
 
   /**
    * Create unique id for a particle
-   * @param frameIndex
-   * @param particle
+   * @param fIndex
+   * @param pIndex
+   * @returns uid string
    */
-  static createUid(fpInterface: fpInterface): string {
-    return `particle-${fpInterface.fIndex}-${fpInterface.pIndex}`;
+  static createUid(fIndex: number, pIndex: number): string {
+    return `particle-${fIndex}-${pIndex}`;
   }
 
   /**
