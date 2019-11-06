@@ -6,12 +6,7 @@
       <!-- <span>STATUS: {{ activeFrame.gameState }}</span> -->
       <div v-for="(particle, index) in particles" :key="index">
         <app-photon
-          name
           :particle="particle"
-          :are="particle.a.re"
-          :aim="particle.a.im"
-          :bre="particle.b.re"
-          :bim="particle.b.im"
           :width="width"
           :height="80"
           :display-magnetic="true"

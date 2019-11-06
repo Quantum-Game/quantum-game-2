@@ -1,6 +1,7 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
     <animateTransform
+      v-if="animate"
       attributeName="transform"
       attributeType="XML"
       type="translate"
@@ -76,14 +77,9 @@ const d3 = {
 @Component
 export default class AppPhoton extends Vue {
   @Prop() readonly particle!: Particle;
-  @Prop({ default: 'photon' }) readonly name!: string;
-  @Prop({ default: '1' }) readonly intensity!: number;
-  @Prop({ default: 0 }) readonly are!: number;
-  @Prop({ default: 0 }) readonly aim!: number;
-  @Prop({ default: 0 }) readonly bre!: number;
-  @Prop({ default: 0 }) readonly bim!: number;
-  @Prop({ default: 300 }) readonly width!: number;
-  @Prop({ default: 200 }) readonly height!: number;
+  @Prop({ default: false }) readonly animate!: boolean;
+  @Prop({ default: 64 }) readonly width!: number;
+  @Prop({ default: 64 }) readonly height!: number;
   @Prop({ default: 20 }) readonly margin!: number;
   @Prop({ default: 20 }) readonly k!: number;
   @Prop({ default: 0.3 }) readonly sigma!: number;
@@ -91,7 +87,28 @@ export default class AppPhoton extends Vue {
   @Prop({ default: true }) readonly displayMagnetic!: boolean;
   @Prop({ default: true }) readonly displayElectric!: boolean;
   @Prop({ default: true }) readonly displayGaussian!: boolean;
-  @Prop({ default: 0 }) readonly direction!: number;
+
+  /**
+   * Getters from particle
+   */
+  get intensity() {
+    return this.particle.intensity;
+  }
+  get direction() {
+    return this.particle.direction;
+  }
+  get are() {
+    return this.particle.are;
+  }
+  get aim() {
+    return this.particle.aim;
+  }
+  get bre() {
+    return this.particle.bre;
+  }
+  get bim() {
+    return this.particle.bim;
+  }
 
   /**
    * Get horizontal scaling

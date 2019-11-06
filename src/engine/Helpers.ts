@@ -128,21 +128,21 @@ export function angleToSymbol(angle: number): string {
  */
 export function symbolToAngle(direction: string): number {
   switch (direction) {
-    case '↑':
+    case '→':
       return 0;
     case '↗':
       return 45;
-    case '→':
+    case '↑':
       return 90;
-    case '↘':
+    case '↖':
       return 135;
-    case '↓':
+    case '←':
       return 180;
     case '↙':
       return 225;
-    case '←':
+    case '↓':
       return 270;
-    case '↖':
+    case '↘':
       return 315;
     default:
       throw new Error('Something is wrong with provided direction string.');

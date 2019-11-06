@@ -26,13 +26,7 @@
       <app-photon
         name
         :particle="particle"
-        :intensity="particle.intensity"
-        :are="particle.a.re"
-        :aim="particle.a.im"
-        :bre="particle.b.re"
-        :bim="particle.b.im"
-        :width="64"
-        :height="64"
+        :animate="true"
         :margin="0"
         :display-magnetic="true"
         :display-electric="false"
