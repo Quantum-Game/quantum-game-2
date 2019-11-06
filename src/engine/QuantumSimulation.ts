@@ -1,8 +1,9 @@
-import { GridInterface } from '@/engine/interfaces';
-import QuantumFrame from '@/engine/QuantumFrame';
-import Grid from '@/engine/Grid';
-import Cell from '@/engine/Cell';
-import Particle from '@/engine/Particle';
+import _ from 'lodash';
+import QuantumFrame, { AbsorptionsInterface } from './QuantumFrame';
+import Grid from './Grid';
+import { GridInterface } from './interfaces';
+import Cell from './Cell';
+import Particle from './Particle';
 
 // To add in Vector->Photon->QuantumFrame: copy
 
@@ -62,13 +63,53 @@ export default class QuantumSimulation {
     this.frames.push(frame);
   }
 
-  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
+  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6, logging = true): void {
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {
         break;
       }
     }
+    if (logging) {
+      console.log('POST-SIMULATION LOG:');
+      console.log('probabilityPerFrame', this.probabilityPerFrame);
+      console.log('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
+      console.log('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
+    }
+  }
+
+  /**
+   * Quantum state probability for for a for each frame.
+   */
+  get probabilityPerFrame(): number[] {
+    return this.frames.map((frame) => frame.probability);
+  }
+
+  /**
+   * Quantum state probability of absorption for each frame.
+   */
+  get totalAbsorptionPerFrame(): number[] {
+    return this.frames.map((frame) => frame.totalProbabilityLoss);
+  }
+
+  /**
+   * Total (summed over all frames) absorption per tile.
+   * {x: -1, y: -1, probability: ...} means falling of the board.
+   * @todo If needed, I we can add exact (off-board) cooardinates of all lost photons.
+   * @returns E.g.
+   * [{x: 2, y: 1, probability: 0.25}, {x: 3, y: 5, probability: 0.25}, {x: -1, y: -1, probability: 0.25}]
+   */
+  get totalAbsorptionPerTile(): AbsorptionsInterface[] {
+    return _(this.frames)
+      .flatMap((frame) => frame.absorptions)
+      .groupBy((absorption) => `(${absorption.x}.${absorption.y})`)
+      .values()
+      .map((absorptions) => ({
+        x: absorptions[0].x,
+        y: absorptions[0].y,
+        probability: _.sumBy(absorptions, 'probability')
+      }))
+      .value();
   }
 
   /**
@@ -84,4 +125,6 @@ export default class QuantumSimulation {
     });
     return result;
   }
+
+  // TODO: a random realizaiton; but first I need to eat something
 }

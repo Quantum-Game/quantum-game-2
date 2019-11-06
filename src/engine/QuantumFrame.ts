@@ -3,7 +3,7 @@ import * as qt from 'quantum-tensors';
 import Coord from './Coord';
 import Particle, { Qparticle } from './Particle';
 
-interface AbsorptionsInterface {
+export interface AbsorptionsInterface {
   x: number;
   y: number;
   probability: number;
@@ -75,7 +75,7 @@ export default class QuantumFrame {
   }
 
   /**
-   * @note Coord and Partile will need a serious rewrite
+   * @note Coord and Particle will need a serious rewrite
    */
   get polarizationSuperpositions(): Particle[] {
     return this.photons.aggregatePolarization().map((q: Qparticle) => {
@@ -84,6 +84,12 @@ export default class QuantumFrame {
     });
   }
 
+  /**
+   * Shorthand for polarization superpositions
+   * @remark From Piotr: well, I created name polarizationSuperpositions excatly
+   * to avoid words like particle, which is confusing, and has many meanings
+   * in the context of the game.
+   */
   get particles(): Particle[] {
     return this.polarizationSuperpositions;
   }
