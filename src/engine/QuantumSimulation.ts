@@ -1,4 +1,3 @@
-import cloneDeep from 'lodash.clonedeep';
 import { GridInterface } from '@/engine/interfaces';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Grid from '@/engine/Grid';
@@ -58,17 +57,15 @@ export default class QuantumSimulation {
         `Cannot do nextFrame when there are no frames. initializeFromLaser or something else.`
       );
     }
-    const lastFrame = cloneDeep(this.lastFrame);
-    lastFrame.photons.propagatePhotons();
-    lastFrame.photons.actOnSinglePhotons(this.board.operatorList);
-    this.frames.push(lastFrame);
+    const frame = QuantumFrame.fromPhotons(this.lastFrame.photons);
+    frame.propagateAndInteract(this.board.operatorList);
+    this.frames.push(frame);
   }
 
   nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {
-        this.frames.pop();
         break;
       }
     }
