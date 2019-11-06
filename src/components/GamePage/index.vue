@@ -181,7 +181,6 @@ export default class Game extends Vue {
         clearInterval(this.playInterval);
       }
     }, 200);
-
   }
 
   /**

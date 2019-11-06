@@ -13,7 +13,7 @@
           <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
           <span>SANDBOX</span>
           <router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
-          <span>OPTIONS</span>
+          <router-link to="/options" @click.stop.native="closeMenu">OPTIONS</router-link>
           <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
         </menu>
       </div>
