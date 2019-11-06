@@ -1,8 +1,8 @@
 <template>
   <div v-if="entry" class="entry">
-    <router-link to="/info">
+    <!-- <router-link to="/info">
       <app-button type="basic">ENCYCLOPEDIA</app-button>
-    </router-link>
+    </router-link> -->
     <article>
       <!-- TITLE -->
       <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
@@ -88,6 +88,7 @@ export default class EncyclopediaArticle extends Vue {
   & .title {
     font-size: 2rem;
     font-weight: bold;
+    padding-top: 30px;
   }
   & .short {
     font-size: 1rem;

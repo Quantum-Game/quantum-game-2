@@ -1,10 +1,10 @@
 <template>
   <div class="default-content">
-    <router-link to="/">
+    <!-- <router-link to="/">
       <app-button type="basic">HOMEPAGE</app-button>
-    </router-link>
+    </router-link> -->
     <!-- <router-link to="/info" class="button"> BACK TO GAME </router-link> -->
-    <h1>Welcome to the encyclopedia!</h1>
+    <h1>ENCYCLOPEDIA</h1>
     <img src="@/assets/placeholder_encyclopedia.svg" alt="placeholder" />
   </div>
 </template>
@@ -26,6 +26,9 @@ a {
   color: white;
   text-align: left;
   text-decoration: none;
+}
+h1 {
+  padding-top: 30px;
 }
 
 img {
