@@ -38,6 +38,7 @@
           :total-frames="simulation.frames.length"
           @step-back="showPrevious"
           @step-forward="showNext"
+          @play="play"
         />
       </section>
 
@@ -97,6 +98,7 @@ export default class Game extends Vue {
   frameIndex: number = 0;
   simulation: any = {};
   error: string = '';
+  playInterval: number = 0;
 
   // LIFECYCLE
   created() {
@@ -146,6 +148,23 @@ export default class Game extends Vue {
 
   get particles(): Particle[] {
     return this.activeFrame.particles;
+  }
+
+  /**
+   *  Reset frameIndex, flip it up for every frame,
+   *  then clear the interval
+   * @returns void
+   */
+  play() {
+    this.frameIndex = 0;
+    this.playInterval = setInterval(() => {
+      if (this.frameIndex < this.simulation.frames.length - 1) {
+        this.frameIndex += 1;
+      } else {
+        clearInterval(this.playInterval);
+      }
+    }, 200);
+
   }
 
   /**
