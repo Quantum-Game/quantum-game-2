@@ -8,10 +8,11 @@
       unit="px"
       :size="150"
       :thickness="5"
-      :total="totalGoalPercentage"
+      :total="100"
       :sections="sections"
       :start-angle="0"
     >
+      <!-- :total="totalGoalPercentage" -->
       <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
