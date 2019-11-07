@@ -25,9 +25,11 @@
       <!-- MAIN-LEFT -->
       <game-goals
         slot="main-left"
-        :percentage="70"
+        :percentage="percentage"
         :goals="level.goals"
         :particles="activeFrame.particles"
+        :detections="detections"
+        :mines="mineCount"
       />
 
       <!-- MAIN-MIDDLE -->
@@ -36,6 +38,7 @@
           :particles="particles"
           :hints="hints"
           :paths="paths"
+          :probabilities="probabilities"
           @updateSimulation="updateSimulation"
         />
         <game-controls
@@ -62,7 +65,7 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Particle, Cell, Coord, Element } from '@/engine/classes';
+import { Level, Particle, Cell, Coord, Element, Goal } from '@/engine/classes';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -144,10 +147,83 @@ export default class Game extends Vue {
   updateSimulation(): void {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     this.simulation.initializeFromLaser('V');
-    this.simulation.nextFrames(20);
+    this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
-    console.log(this.multiverseGraph.graph.edges());
     this.frameIndex = 0;
+    // console.log(this.multiverseGraph.graph.edges());
+  }
+
+  /**
+   * Output cells linked to detection events
+   * @returns Cell and percentage
+   */
+
+  get detections(): { cell: Cell; probability: number }[] {
+    interface probabilityCellInterface {
+      cell: Cell;
+      probability: number;
+    }
+    // Filter out of grid cells
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    // Convert to cells format
+    const detections: probabilityCellInterface[] = absorptions.map(
+      (absorption: { x: number; y: number; probability: number }) => {
+        const coord = new Coord(absorption.y, absorption.x);
+        const cell = this.level.grid.get(coord);
+        return { cell, probability: absorption.probability };
+      }
+    );
+    return detections;
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get probabilities() {
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    return absorptions;
+  }
+
+  /**
+   * Get the total number of the mines of the level
+   * @returns number of mines in the level
+   */
+  get mineCount() {
+    return this.level.grid.mines.cells.length;
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get framePercentage() {
+    // console.log(`FRAME %: ${this.activeFrame.probability}`);
+    return this.activeFrame.probability * 100;
+  }
+
+  /**
+   * Compute the total absorption at goals
+   * @returns total absorption
+   */
+  get percentage() {
+    let sum = 0;
+    this.detections.forEach((detection) => {
+      this.level.goals.forEach((goal: Goal) => {
+        if (goal.coord.equal(detection.cell.coord)) {
+          sum += detection.probability;
+        }
+      });
+    });
+    return sum * 100;
   }
 
   /**

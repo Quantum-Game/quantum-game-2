@@ -1,6 +1,7 @@
 <template>
   <div class="explanation">
     <h3 class="explanation__title">{{ spacedName }}</h3>
+    <p>{{ hoveredCell.coord.toString() }}</p>
     <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
     <slot></slot>

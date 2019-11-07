@@ -6,15 +6,6 @@
     <!-- LASER PATH -->
     <board-lasers :paths="paths" />
 
-    <!-- CELLS -->
-    <app-cell
-      v-for="(cell, i) in level.grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @updateCell="updateCell"
-    />
-
     <!-- PHOTONS -->
     <g
       v-for="(particle, index) in particles"
@@ -34,6 +25,29 @@
         :sigma="0.25"
       />
     </g>
+
+    <!-- CELLS -->
+    <app-cell
+      v-for="(cell, i) in level.grid.cells"
+      :key="'cell' + i"
+      :cell="cell"
+      :tileSize="tileSize"
+      @updateCell="updateCell"
+    />
+
+    <!-- PROBABILITY -->
+    <text
+      v-for="(probability, i) in probabilities"
+      :key="'probability' + i"
+      :x="(probability.x + 0.5) * 64"
+      :y="probability.y * 64"
+      text-anchor="middle"
+      class="probability"
+    >
+      {{ (probability.probability * 100).toFixed(1) }}%
+    </text>
+
+    <!-- SPEECH BUBBLES -->
     <speech-bubble
       v-for="(hint, index) in level.hints"
       :key="`hint${index}`"
@@ -70,6 +84,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: ParticleInterface[];
   @Prop({ default: '' }) readonly paths!: string;
+  @Prop({ default: '' }) readonly probabilities!: string;
   @State activeCell!: Cell;
   @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
@@ -96,6 +111,16 @@ export default class Board extends Vue {
   }
   get totalHeight(): number {
     return this.level.grid.rows * this.tileSize;
+  }
+
+  computeProbStyle(probability: { x: number; y: number; probability: number }) {
+    const originX = this.centerCoord(probability.x);
+    const originY = this.centerCoord(probability.y);
+    return {
+      // 'transform-origin': `${originX}px ${originY}px`,
+      transform: `translate: ${probability.x * this.tileSize}px ${probability.y * this.tileSize}px`,
+      fill: 'white'
+    };
   }
 
   /**
@@ -165,17 +190,7 @@ export default class Board extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.laserPath {
-  stroke-dasharray: 8;
-  animation-name: dash;
-  animation-duration: 4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: reverse;
-}
-@keyframes dash {
-  to {
-    stroke-dashoffset: 64;
-  }
+.probability {
+  fill: white;
 }
 </style>
