@@ -1,3 +1,4 @@
+import cloneDeep from 'lodash.clonedeep';
 import countBy from 'lodash.countby';
 import Cell from './Cell';
 /**
@@ -20,7 +21,7 @@ export default class Toolbox {
   constructor(tools: Cell[]) {
     const elements = tools.map((cell) => cell.element.name);
     this.toolbox = countBy(elements);
-    this.originalToolbox = this.toolbox;
+    this.originalToolbox = cloneDeep(this.toolbox);
   }
 
   /**

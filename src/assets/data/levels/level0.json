@@ -1,0 +1,46 @@
+
+{
+  "id": 0,
+  "name": "Intro",
+  "group": "Classic",
+  "description": "",
+  "grid": {
+    "cols": 13,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 2, "x": 1 },
+        "element": "Laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": { "y": 2, "x": 7 },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [
+    {
+      "coord": {
+        "y": 1,
+        "x": 4
+      },
+      "content": "Let's start! ",
+      "color": "purple"
+    }
+  ],
+  "goals": [
+    {
+      "coord": { "y": 2, "x": 7 },
+      "threshold": 1,
+      "value": 0
+    }
+  ]
+}
