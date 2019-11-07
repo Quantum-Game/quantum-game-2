@@ -1,7 +1,7 @@
 <template>
   <g class="dots">
     <g v-for="(row, y) in level.grid.rows" :key="y">
-      <g v-for="(column, x) in level.grid.cols" :key="x">
+      <g v-for="(column, x) in level.grid.cols + 1" :key="x">
         <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>

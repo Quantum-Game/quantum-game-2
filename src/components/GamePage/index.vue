@@ -45,6 +45,7 @@
           @step-forward="showNext"
           @play="play"
         />
+        <game-ket :frame="activeFrame" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -80,6 +81,7 @@ import GameActiveCell from '@/components/GamePage/GameActiveCell.vue';
 import GameToolbox from '@/components/GamePage/GameToolbox.vue';
 import GameControls from '@/components/GamePage/GameControls.vue';
 import GamePhotons from '@/components/GamePage/GamePhotons.vue';
+import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
 import AppButton from '@/components/AppButton.vue';
@@ -89,6 +91,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
   components: {
     GameLayout,
     GamePhotons,
+    GameKet,
     GameGoals,
     GameActiveCell,
     GameToolbox,
@@ -143,6 +146,7 @@ export default class Game extends Vue {
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
+    console.log(this.multiverseGraph.graph.edges());
     this.frameIndex = 0;
   }
 
