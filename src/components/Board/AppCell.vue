@@ -107,7 +107,7 @@ export default class AppCell extends Mixins(getPosition) {
     if (!this.cellSelected) {
       // If from toolbox needs to have available elements
       if (
-        this.cell.isValidSource &&
+        this.cell.tool &&
         (this.cell.isFromGrid || (this.cell.isFromToolbox && this.level.isAvailable(this.cell)))
       ) {
         this.indicateTool();

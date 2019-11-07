@@ -31,6 +31,8 @@ const store: StoreOptions<RootState> = {
     // set active level
     [SET_ACTIVE_LEVEL](state, level) {
       state.level = level;
+      state.cellSelected = false;
+      state.activeCell = initialCell;
     },
     // modify grid cell
     [UPDATE_GRID_CELL](state, cell) {
