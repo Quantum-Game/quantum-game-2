@@ -16,8 +16,11 @@
     <div>
       Absorptions: 
       <span v-for="(absorption, index) in absorptions" :key="`absorption-${index}`" class="absorption">
-        {{ toPercent(absorption.probability)}}% at ({{ absorption.x }}, {{ absorption.y }})
+        {{ toPercent(absorption.probability)}}% in {{ elementName(absorption.x, absorption.y ) }} at ({{ absorption.x }}, {{ absorption.y }}) 
       </span>
+    </div>
+    <div class="controls">
+      <span @click="polar = !polar"> Click for polar vs cartesian </span>
     </div>
   </div>
 </template>
@@ -26,6 +29,7 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { CellInterface, CoordInterface } from '@/engine/interfaces';
 import Particle from '@/engine/Particle';
+import Grid from '@/engine/Grid';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -39,13 +43,24 @@ import { Complex } from 'quantum-tensors';
 })
 export default class GameKet extends Vue {
   @Prop() readonly frame!: QuantumFrame;
+  @Prop() readonly grid!: Grid;
+
+  polar = false;
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision)
   }
 
+  elementName(x: number, y: number): string {
+    return this.grid.cellFromXY(x, y).element.name;
+  }
+
   renderComplex(z: Complex, precision = 2) {
-    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
+    if (this.polar) {
+      return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
+    } else {
+      return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
+    }
   }
 
   renderDir(dir: number) {

@@ -60,6 +60,13 @@ export default class Grid extends Cluster {
     })[0];
   }
 
+  public cellFromXY(x: number, y: number): Cell {
+    const coord = Coord.importCoord({ x, y });
+    return this.cells.filter((cell) => {
+      return coord.equal(cell.coord);
+    })[0];
+  }
+
   /**
    * Get center cell of the grid
    * @returns center cell coordinates
