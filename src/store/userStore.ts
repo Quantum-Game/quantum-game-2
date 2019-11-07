@@ -37,7 +37,7 @@ const userStore = {
     },
     progressArr: [{ id: 1, status: 'solved', score: 150 }, { id: 2, status: 'solved', score: 100 }],
     error: null
-  },
+  }
   getters: {
     user(state) {
       return state.user;

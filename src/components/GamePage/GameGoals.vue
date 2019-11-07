@@ -8,9 +8,11 @@
       unit="px"
       :size="150"
       :thickness="5"
+      :total="100"
       :sections="sections"
       :start-angle="0"
     >
+      <!-- :total="totalGoalPercentage" -->
       <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
@@ -38,7 +40,8 @@
     </div>
 
     <div>Max: {{ totalGoalPercentage }} %</div>
-    <div>Current: {{ percentage }} %</div>
+    <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
+    <div>Current: {{ percentage.toFixed() }} %</div>
 
     <!-- DETECTION EVENTS -->
     <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
@@ -56,6 +59,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Tween, update as updateTween } from 'es6-tween';
+import { GameState } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Goal from '@/engine/Goal';
 import AppCell from '@/components/Board/AppCell.vue';
@@ -73,6 +77,41 @@ export default class GameGoals extends Vue {
   @Prop() readonly percentage!: number;
   tweenedPercent: number = this.percentage;
   width = 100;
+
+  /**
+   * Compute game state and sets Vuex
+   */
+  computeGameState() {
+    let probabilityFlag = false;
+    let goalFlag = false;
+    let safeFlag = false;
+    // Compute the current detection probability and compare it to goals
+    if (this.percentage >= this.totalGoalPercentage) {
+      probabilityFlag = true;
+    }
+    // Check that the current goals are met
+    if (this.detectorsUnhit === 0) {
+      goalFlag = true;
+    }
+    // Check that no mines are hit so it's safe
+    if (this.minesHit === 0) {
+      safeFlag = true;
+    }
+
+    if (!safeFlag) {
+      this.$store.commit('SET_GAME_STATE', GameState.MineExploded);
+      this.$emit('gameState', GameState.MineExploded);
+      return;
+    }
+    if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
+      this.$store.commit('SET_GAME_STATE', GameState.InProgress);
+      this.$emit('gameState', GameState.InProgress);
+    }
+    if (probabilityFlag && goalFlag && safeFlag) {
+      this.$store.commit('SET_GAME_STATE', GameState.Victory);
+      this.$emit('gameState', GameState.Victory);
+    }
+  }
 
   /**
    * Process the detection events and select the detectors
@@ -101,8 +140,6 @@ export default class GameGoals extends Vue {
     const minesDetected = this.detections.filter((detection) => {
       return detection.cell.element.name === 'Mine' && detection.probability > 0.1;
     });
-    // console.log(`HIT:${minesDetected.length}`);
-    // console.log(`TOTAL:${this.mines}`);
     return minesDetected.length;
   }
 
@@ -143,6 +180,14 @@ export default class GameGoals extends Vue {
   }
 
   /**
+   * Total goal percentage
+   * @returns sum of goal threshold
+   */
+  get unavailableGoalPercentage() {
+    return 100 - this.totalGoalPercentage;
+  }
+
+  /**
    * @param time tween time
    */
   animateTween(time: number): void {
@@ -154,6 +199,7 @@ export default class GameGoals extends Vue {
   /**
    * Computes donut slices
    * @returns list of slices with colors
+   * FIXME: See level 7 problem
    */
   get sections() {
     return [
@@ -168,10 +214,10 @@ export default class GameGoals extends Vue {
       .to({ value: val }, 500)
       .on('update', ({ value }: { value: number }) => {
         this.tweenedPercent = value;
-        // console.log(`TWEEN:${this.tweenedPercent}`);
       })
       .start();
     requestAnimationFrame(this.animateTween);
+    this.computeGameState();
   }
 }
 </script>

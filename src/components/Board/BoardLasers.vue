@@ -1,13 +1,13 @@
 <template>
   <!-- LASER PATH -->
   <g class="lasers">
-    <g v-for="(laser, index) in paths" :key="'laser' + index" :v-if="paths.length > 0">
+    <g v-for="(particle, index) in pathParticles" :key="'laser' + index">
       <path
-        :d="laser"
+        :d="computePath(particle)"
         stroke-dasharray="8 8"
         fill="transparent"
         stroke="red"
-        stroke-width="3"
+        :stroke-width="computeSize(particle)"
         class="laserPath"
       />
     </g>
@@ -18,13 +18,22 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { State } from 'vuex-class';
 import { ParticleInterface } from '@/engine/interfaces';
+import Particle from '@/engine/Particle';
 import Grid from '@/engine/Grid';
 import Level from '@/engine/Level';
 
 @Component
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly paths!: string[];
+  @Prop({ default: '' }) readonly pathParticles!: Particle[];
   tileSize: number = 64;
+
+  computePath(particle: Particle): string {
+    return particle.toSvg();
+  }
+
+  computeSize(particle: Particle): number {
+    return 2 + particle.probability * 3;
+  }
 }
 </script>
 
