@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="gameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="computeGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -30,15 +30,14 @@
         :particles="activeFrame.particles"
         :detections="detections"
         :mines="mineCount"
-        @gameState="displayOverlay"
       />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
         <game-board
           :particles="particles"
+          :path-particles="pathParticles"
           :hints="hints"
-          :paths="paths"
           :probabilities="probabilities"
           @updateSimulation="updateSimulation"
         />
@@ -124,8 +123,6 @@ export default class Game extends Vue {
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
-
-  displayOverlay() {}
 
   /**
    * Used to load level from route
@@ -235,10 +232,8 @@ export default class Game extends Vue {
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get paths(): string[] {
-    return this.simulation.allParticles.map((particle: Particle) => {
-      return particle.toSvg();
-    });
+  get pathParticles(): string[] {
+    return this.simulation.allParticles;
   }
 
   /**
@@ -266,6 +261,16 @@ export default class Game extends Vue {
         clearInterval(this.playInterval);
       }
     }, 200);
+  }
+
+  /**
+   * Launch overlay if it's the last frame and the player has a game state set
+   */
+  get computeGameState() {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.gameState;
+    }
+    return 'InProgress';
   }
 
   /**
@@ -324,11 +329,6 @@ export default class Game extends Vue {
   get nextLevel(): string {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
   }
-
-  /** Need to be computed from simulation post-processing */
-  // get gameState(): GameState {
-  //   return this.gameState;
-  // }
 
   get hints(): HintInterface[] {
     return this.level.hints.map((hint) => hint.exportHint());

@@ -1,9 +1,9 @@
 <template>
   <transition :name="gameState">
     <!-- FIXME -->
-    <div v-if="gameState === 'MineFIXME'" :class="gameState" class="wrapper">
+    <div v-if="gameState === 'MineExploded'" :class="gameState" class="wrapper">
       <h2>
-        DANGER
+        MINE EXPLODED
         <slot> </slot>
       </h2>
     </div>
