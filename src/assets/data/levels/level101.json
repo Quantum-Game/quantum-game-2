@@ -1,8 +1,8 @@
 
 {
-  "id": 1,
-  "name": "The first steps",
-  "group": "Classic",
+  "id": 101,
+  "name": "Sandbox level",
+  "group": "Dev",
   "description": "",
   "grid": {
     "cols": 13,
