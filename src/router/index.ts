@@ -52,6 +52,11 @@ export default new Router({
       component: () => import('@/components/MyAccountPage/index.vue')
     },
     {
+      path: '/options',
+      name: 'options',
+      component: () => import('@/components/OptionsPage/index.vue')
+    },
+    {
       path: '*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue')
