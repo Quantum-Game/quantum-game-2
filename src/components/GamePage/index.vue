@@ -30,6 +30,7 @@
         :particles="activeFrame.particles"
         :detections="detections"
         :mines="mineCount"
+        @gameState="displayOverlay"
       />
 
       <!-- MAIN-MIDDLE -->
@@ -106,6 +107,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
 })
 export default class Game extends Vue {
   @State level!: Level;
+  @State gameState!: GameState;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -123,6 +125,8 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
+  displayOverlay() {}
+
   /**
    * Used to load level from route
    */
@@ -136,6 +140,7 @@ export default class Game extends Vue {
     }
     const level = Level.importLevel(levelI);
     this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
+    this.$store.commit('SET_GAME_STATE', GameState.Initial);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.updateSimulation();
   }
@@ -321,9 +326,9 @@ export default class Game extends Vue {
   }
 
   /** Need to be computed from simulation post-processing */
-  get gameState(): GameState {
-    return GameState.InProgress;
-  }
+  // get gameState(): GameState {
+  //   return this.gameState;
+  // }
 
   get hints(): HintInterface[] {
     return this.level.hints.map((hint) => hint.exportHint());
