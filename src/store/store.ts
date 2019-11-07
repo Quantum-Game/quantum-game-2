@@ -69,7 +69,20 @@ const store: StoreOptions<RootState> = {
   },
   getters: {
     toolbox: (state) => state.level.toolbox,
-    gridI: (state) => state.level.grid.exportGrid()
+    gridI: (state) => state.level.grid.exportGrid(),
+    cellPositionsArray: (state) => {
+      const array: number[] = [];
+      state.level.grid.cells
+        .filter((cell) => {
+          return cell.element.name !== 'Void';
+        })
+        .map((cell) => {
+          array.push(cell.coord.x);
+          array.push(cell.coord.y);
+          return cell;
+        });
+      return array;
+    }
   },
   modules: {
     optionsModule

@@ -15,7 +15,7 @@
       <div class="inner-circle">{{ animatedPercent }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
-    <!-- <div class="btn-fake" @click="fakeClick">Click me</div> -->
+    <div class="btn-fake" @click="fakeClick">Click me</div>
     <div class="bottom-icons">
       <span v-for="(goal, index) in goals" :key="index">
         <img src="@/assets/detectorIcon.svg" alt="Key Icon" width="30" />

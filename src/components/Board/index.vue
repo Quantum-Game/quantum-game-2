@@ -1,14 +1,14 @@
 <template>
-  <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+  <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots />
+    <board-dots :gridDimensions="gridDimensions" />
 
     <!-- LASER PATH -->
     <board-lasers :paths="paths" />
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in level.grid.cells"
+      v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
@@ -35,7 +35,7 @@
       />
     </g>
     <speech-bubble
-      v-for="(hint, index) in level.hints"
+      v-for="(hint, index) in hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -70,14 +70,16 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: ParticleInterface[];
   @Prop({ default: '' }) readonly paths!: string;
+  @Prop() readonly grid!: Grid;
+  @Prop() readonly hints!: HintInterface[];
   @State activeCell!: Cell;
-  @State level!: Level;
-  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
+  // @State level!: Level;
+  // @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
+  // @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   tileSize: number = 64;
 
   $refs!: {
-    grid: HTMLElement;
+    'grid-wrapper': HTMLElement;
   };
 
   mounted() {
@@ -92,10 +94,10 @@ export default class Board extends Vue {
   }
 
   get totalWidth(): number {
-    return this.level.grid.cols * this.tileSize;
+    return this.grid.cols * this.tileSize;
   }
   get totalHeight(): number {
-    return this.level.grid.rows * this.tileSize;
+    return this.grid.rows * this.tileSize;
   }
 
   /**
@@ -122,14 +124,16 @@ export default class Board extends Vue {
    * @returns boolean
    */
   updateCell(coord: Coord): void {
-    const sourceCell = this.activeCell;
-    const targetCell = this.level.grid.get(coord);
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    mutatedCells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
+    // emit drilling...
+
+    // const sourceCell = this.activeCell;
+    // const targetCell = this.level.grid.get(coord);
+    // const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    // mutatedCells.forEach((cell) => {
+    //   this.level.grid.set(cell);
+    // });
     this.$emit('updateSimulation');
-    this.$emit('updateGrid');
+    this.$emit('updateGrid', coord);
   }
 
   /**
@@ -148,9 +152,7 @@ export default class Board extends Vue {
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.level.grid.cells.filter(
-      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
-    );
+    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
     if (cells.length > 0) {
       return cells[0].exportCell();
     }
@@ -160,6 +162,14 @@ export default class Board extends Vue {
       rotation: 0,
       frozen: false
     };
+  }
+
+  get gridDimensions() {
+    const {
+      tileSize,
+      grid: { cols, rows }
+    } = this;
+    return { cols, rows, tileSize };
   }
 }
 </script>

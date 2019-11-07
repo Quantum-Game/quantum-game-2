@@ -17,6 +17,9 @@
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
         {{ level.id + ' - ' + level.name.toUpperCase() }}
+        <app-button @click.native="clearLS">CLEAR LS</app-button>
+        <app-button @click.native="saveLS">SAVE LS</app-button>
+
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
@@ -27,16 +30,18 @@
         slot="main-left"
         :percentage="70"
         :goals="level.goals"
-        :particles="activeFrame.particles"
+        :particles="particles"
       />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
         <game-board
           :particles="particles"
+          :grid="level.grid"
           :hints="hints"
           :paths="paths"
           @updateSimulation="updateSimulation"
+          @updateGrid="updateGrid"
         />
         <game-controls
           :frame-index="frameIndex"
@@ -50,9 +55,9 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="level.toolbox" />
+        <game-toolbox :toolbox="toolbox" />
         <game-active-cell />
-        <game-photons :particles="activeFrame.particles" />
+        <game-photons :particles="particles" />
       </section>
     </game-layout>
   </div>
@@ -60,9 +65,10 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Mutation, State, Getter } from 'vuex-class';
+import { State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Particle, Cell, Coord, Element } from '@/engine/classes';
+import { local } from 'd3-selection';
+import { Level, Particle, Cell, Coord, Element, Grid } from '@/engine/classes';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -86,6 +92,7 @@ import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
+import { warn } from 'vue-class-component/lib/util';
 
 @Component({
   components: {
@@ -102,7 +109,10 @@ import AppOverlay from '@/components/AppOverlay.vue';
   }
 })
 export default class Game extends Vue {
-  @State level!: Level;
+  level = Level.createDummy();
+  @State activeCell!: Cell;
+  // @State level!: Level;
+  @Getter('cellPositionsArray')
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -111,8 +121,8 @@ export default class Game extends Vue {
 
   // LIFECYCLE
   created() {
-    this.loadLevelFromRoute();
-    this.updateSimulation();
+    this.loadLevel();
+    // this.updateSimulation();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -120,20 +130,26 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
-  /**
-   * Used to load level from route
-   */
   @Watch('$route')
-  loadLevelFromRoute(): void {
+  loadLevel(): void {
     this.error = '';
-    const levelName = `level${parseInt(this.$route.params.id, 10)}`;
-    const levelI: LevelInterface = levelData[levelName];
-    if (!levelI) {
-      this.error = 'No such exists!';
+    const fromStorage: any = localStorage.getItem(this.currentLevelName);
+    let levelI: LevelInterface ;
+    // it is not in the storage
+    if (!fromStorage) {
+      levelI = levelData[this.currentLevelName];
+      console.warn(levelI)
+      if (!levelI) {
+        this.error = 'No such exists!';
+      }
+    } else {
+      levelI = JSON.parse(fromStorage);
+      console.warn('loadedFromStorage!')
+      console.warn(levelI)
     }
-    const level = Level.importLevel(levelI);
-    this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
-    this.$store.commit('SET_ACTIVE_LEVEL', level);
+    this.level = Level.importLevel(levelI);
+    // this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
+    // this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.updateSimulation();
   }
 
@@ -142,7 +158,9 @@ export default class Game extends Vue {
    * @returns boolean
    */
   updateSimulation(): void {
+    // console.warn(this.level.exportLevel().grid)
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
+    console.warn(this.level.grid.exportGrid())
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
@@ -231,6 +249,49 @@ export default class Game extends Vue {
     }
   }
 
+  // @Watch('$route')
+  // handleLevelRouteChange(newRoute, oldRoute) {
+  //   console.error(newRoute.params.id);
+  //   console.error(oldRoute.params.id);
+  //   if (newRoute.params.id !== oldRoute.params.id) {
+  //     // console.error('WHAT IS UP')
+  //     const locallyStoraged: any = localStorage.getItem(newRoute.params.id);
+  //     console.error(locallyStoraged);
+  //     // this.loadLevelFromRoute()
+  //   }
+  //   // else {
+  //   // }
+  //   // const bomba = localStorage.getItem(this.level.id.toString())
+  //   // console.warn(bomba);
+  // }
+
+  updateGrid(coord: Coord) {
+    const sourceCell = this.activeCell;
+    const targetCell = this.level.grid.get(coord);
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    mutatedCells.forEach((cell) => {
+      this.level.grid.set(cell);
+    });
+    this.saveLevelToStore()
+  }
+
+  @Watch('cellPositionsArray')
+  saveLevelToStore() {
+    console.error('saved');
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
+    localStorage.setItem(this.currentLevelName, currentStateJSONString);
+  }
+
+  clearLS() {
+    console.error(localStorage.getItem(this.$route.params.id));
+    localStorage.removeItem(this.currentLevelName);
+  }
+
+  saveLS() {
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
+    localStorage.setItem(this.currentLevelName, currentStateJSONString);
+  }
+
   // GETTERS
   get currentLevelName(): string {
     return `level${parseInt(this.$route.params.id, 10)}`;
@@ -251,6 +312,10 @@ export default class Game extends Vue {
 
   get hints(): HintInterface[] {
     return this.level.hints.map((hint) => hint.exportHint());
+  }
+
+  get toolbox() {
+    return this.level.toolbox
   }
 }
 </script>
