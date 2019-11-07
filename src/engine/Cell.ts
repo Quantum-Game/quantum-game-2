@@ -50,6 +50,14 @@ export default class Cell {
   }
 
   /**
+   * Is element blank?
+   * @returns true if blank
+   */
+  get isDetector(): boolean {
+    return this.element.name === 'Detector' || this.element.name === 'DetectorFour';
+  }
+
+  /**
    * Ouput the rotation with an unicode arrow
    * @returns unicode arrow describing rotation
    */

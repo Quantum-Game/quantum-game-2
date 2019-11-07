@@ -44,7 +44,7 @@
       text-anchor="middle"
       class="probability"
     >
-      {{ (probability.probability * 100).toPrecision(2) }}%
+      {{ (probability.probability * 100).toFixed(1) }}%
     </text>
 
     <!-- SPEECH BUBBLES -->

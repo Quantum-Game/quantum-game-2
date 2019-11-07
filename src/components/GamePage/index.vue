@@ -25,9 +25,11 @@
       <!-- MAIN-LEFT -->
       <game-goals
         slot="main-left"
-        :percentage="70"
+        :percentage="percentage"
         :goals="level.goals"
         :particles="activeFrame.particles"
+        :detections="detections"
+        :mines="mineCount"
       />
 
       <!-- MAIN-MIDDLE -->
@@ -152,6 +154,33 @@ export default class Game extends Vue {
   }
 
   /**
+   * Output cells linked to detection events
+   * @returns Cell and percentage
+   */
+
+  get detections(): { cell: Cell; probability: number }[] {
+    interface probabilityCellInterface {
+      cell: Cell;
+      probability: number;
+    }
+    // Filter out of grid cells
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    // Convert to cells format
+    const detections: probabilityCellInterface[] = absorptions.map(
+      (absorption: { x: number; y: number; probability: number }) => {
+        const coord = new Coord(absorption.y, absorption.x);
+        const cell = this.level.grid.get(coord);
+        return { cell, probability: absorption.probability };
+      }
+    );
+    return detections;
+  }
+
+  /**
    * Process the goals from level with the results of the quantum simulation
    *  @returns goals
    */
@@ -162,6 +191,23 @@ export default class Game extends Vue {
       }
     );
     return absorptions;
+  }
+
+  /**
+   * Get the total number of the mines of the level
+   * @returns number of mines in the level
+   */
+  get mineCount() {
+    return this.level.grid.mines.cells.length;
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get percentage() {
+    console.log(`FRAME %: ${this.activeFrame.probability}`);
+    return this.activeFrame.probability * 100;
   }
 
   /**

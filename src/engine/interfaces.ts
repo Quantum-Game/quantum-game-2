@@ -26,6 +26,14 @@ export interface ParticleInterface {
 }
 
 /**
+ * DETECTION INTERFACE
+ */
+export interface detectionInterface {
+  coord: CoordInterface;
+  probability: number;
+}
+
+/**
  * LEVEL LIST INTERFACE
  * level dictionary interface
  */
