@@ -4,7 +4,7 @@
     <div slot="main">
       <router-view />
     </div>
-    <div slot="right"  class="upper-border">
+    <div slot="right" class="upper-border">
       <h3>RELATED CONCEPTS</h3>
     </div>
   </app-layout>
