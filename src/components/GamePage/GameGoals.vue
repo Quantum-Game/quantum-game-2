@@ -9,7 +9,6 @@
       :size="150"
       :thickness="5"
       :sections="sections"
-      :total="100"
       :start-angle="0"
     >
       <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
@@ -28,15 +27,18 @@
     </div>
 
     <!-- MINES -->
-    <div class="bottom-icons">
+    <div v-if="mines > 0" class="bottom-icons">
       <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
         <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
         <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
-      <div>MINES</div>
+      <div>DANGER</div>
     </div>
+
+    <div>Max: {{ totalGoalPercentage }} %</div>
+    <div>Current: {{ percentage }} %</div>
 
     <!-- DETECTION EVENTS -->
     <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
@@ -55,6 +57,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Tween, update as updateTween } from 'es6-tween';
 import Cell from '@/engine/Cell';
+import Goal from '@/engine/Goal';
 import AppCell from '@/components/Board/AppCell.vue';
 
 @Component({
@@ -66,8 +69,8 @@ export default class GameGoals extends Vue {
   @Prop() readonly detectors!: number;
   @Prop() readonly mines!: number;
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
-  @Prop() readonly percentage!: number;
   @Prop() readonly goals!: any;
+  @Prop() readonly percentage!: number;
   tweenedPercent: number = this.percentage;
   width = 100;
 
@@ -112,14 +115,49 @@ export default class GameGoals extends Vue {
     return this.mines - this.minesHit;
   }
 
+  /**
+   * Compute the total absorption at goals
+   * @returns total absorption
+   */
+  get updatePercentage() {
+    let sum = 0;
+    this.detections.forEach((detection) => {
+      this.goals.forEach((goal: Goal) => {
+        if (goal.coord.equal(detection.cell.coord)) {
+          sum += detection.probability;
+        }
+      });
+    });
+    return sum;
+  }
+
+  /**
+   * Total goal percentage
+   * @returns sum of goal threshold
+   */
+  get totalGoalPercentage() {
+    let sum = 0;
+    this.goals.forEach((goal: Goal) => {
+      sum += goal.threshold;
+    });
+    return sum * 100;
+  }
+
   animateTween(time: number) {
     const id = requestAnimationFrame(this.animateTween);
     const result = updateTween(time);
     if (!result) cancelAnimationFrame(id);
   }
 
+  /**
+   * Computes donut slices
+   * @returns list of slices with colors
+   */
   get sections() {
-    return [{ value: Number(this.tweenedPercent).toFixed(1), color: '#5D00D5' }];
+    return [
+      { value: 100 - this.tweenedPercent, color: '#5D00D5' },
+      { value: this.tweenedPercent, color: '#00ff00' }
+    ];
   }
 
   @Watch('percentage')

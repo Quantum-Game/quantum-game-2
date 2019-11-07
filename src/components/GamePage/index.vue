@@ -65,7 +65,7 @@
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { Mutation, State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Particle, Cell, Coord, Element } from '@/engine/classes';
+import { Level, Particle, Cell, Coord, Element, Goal } from '@/engine/classes';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -205,9 +205,25 @@ export default class Game extends Vue {
    * Process the goals from level with the results of the quantum simulation
    *  @returns goals
    */
-  get percentage() {
+  get framePercentage() {
     console.log(`FRAME %: ${this.activeFrame.probability}`);
     return this.activeFrame.probability * 100;
+  }
+
+  /**
+   * Compute the total absorption at goals
+   * @returns total absorption
+   */
+  get percentage() {
+    let sum = 0;
+    this.detections.forEach((detection) => {
+      this.level.goals.forEach((goal: Goal) => {
+        if (goal.coord.equal(detection.cell.coord)) {
+          sum += detection.probability;
+        }
+      });
+    });
+    return sum * 100;
   }
 
   /**
