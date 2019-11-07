@@ -6,15 +6,6 @@
     <!-- LASER PATH -->
     <board-lasers :paths="paths" />
 
-    <!-- CELLS -->
-    <app-cell
-      v-for="(cell, i) in level.grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @updateCell="updateCell"
-    />
-
     <!-- PHOTONS -->
     <g
       v-for="(particle, index) in particles"
@@ -34,6 +25,15 @@
         :sigma="0.25"
       />
     </g>
+
+    <!-- CELLS -->
+    <app-cell
+      v-for="(cell, i) in level.grid.cells"
+      :key="'cell' + i"
+      :cell="cell"
+      :tileSize="tileSize"
+      @updateCell="updateCell"
+    />
 
     <!-- PROBABILITY -->
     <text
