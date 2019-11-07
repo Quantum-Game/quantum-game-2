@@ -10,6 +10,13 @@
     "cells": [
       {
         "coord": { "y": 2, "x": 1 },
+        "element": "Rock",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },{
+        "coord": { "y": 4, "x": 3 },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -17,7 +24,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 2, "x": 7 },
+        "coord": { "y": 4, "x": 9 },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
@@ -30,9 +37,9 @@
     {
       "coord": {
         "y": 1,
-        "x": 4
+        "x": 1
       },
-      "content": "Let's start! ",
+      "content": "PRESS PLAY!",
       "color": "purple"
     }
   ],
