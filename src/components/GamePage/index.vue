@@ -36,6 +36,7 @@
           :particles="particles"
           :hints="hints"
           :paths="paths"
+          :probabilities="probabilities"
           @updateSimulation="updateSimulation"
         />
         <game-controls
@@ -146,8 +147,21 @@ export default class Game extends Vue {
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
-    console.log(this.multiverseGraph.graph.edges());
     this.frameIndex = 0;
+    // console.log(this.multiverseGraph.graph.edges());
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get probabilities() {
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    return absorptions;
   }
 
   /**

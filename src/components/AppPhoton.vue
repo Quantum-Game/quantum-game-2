@@ -163,8 +163,7 @@ export default class AppPhoton extends Vue {
     const tileSize = 64;
     const x = this.particle.relativeTarget.x * tileSize;
     const y = this.particle.relativeTarget.y * tileSize;
-    console.log(`X:${x} - Y:${y}`);
-
+    // console.log(`X:${x} - Y:${y}`);
     return `${x} ${y}`;
   }
 

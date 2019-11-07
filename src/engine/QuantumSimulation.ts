@@ -71,10 +71,10 @@ export default class QuantumSimulation {
       }
     }
     if (logging) {
-      console.log('POST-SIMULATION LOG:');
-      console.log('probabilityPerFrame', this.probabilityPerFrame);
-      console.log('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
-      console.log('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
+      console.debug('POST-SIMULATION LOG:');
+      console.debug('probabilityPerFrame', this.probabilityPerFrame);
+      console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
+      console.debug('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
     }
   }
 

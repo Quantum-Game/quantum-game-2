@@ -51,6 +51,15 @@ export default class Coord {
   }
 
   /**
+   * Test if the coordinate is outside of grid
+   * beware, doesn't check out of bounds without grid/rows values
+   * @returns boolean
+   */
+  get outOfGrid(): boolean {
+    return this.x < 0 && this.y < 0;
+  }
+
+  /**
    * Check if two coordinates are adjacent
    * @returns boolean if cells are adjacent
    */
