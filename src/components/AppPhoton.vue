@@ -110,9 +110,14 @@ export default class AppPhoton extends Vue {
     return this.particle.bim;
   }
 
+  get opacity(): number {
+    const scalingPow = 0.5;
+    return this.particle.probability ** scalingPow;
+  }
+
   get computeStyle() {
     return {
-      opacity: `${this.particle.probability}`,
+      opacity: `${this.opacity}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
       transform: `rotate(${this.particle.direction}deg)`
     };
