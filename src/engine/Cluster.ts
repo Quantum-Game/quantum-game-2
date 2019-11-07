@@ -1,8 +1,7 @@
-import { CellInterface } from './interfaces';
+import { Elem, CellInterface } from '@/engine/interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
-import { Elem } from './Helpers';
 
 /**
  * CLUSTER CLASS

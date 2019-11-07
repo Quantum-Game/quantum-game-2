@@ -26,13 +26,7 @@
       <app-photon
         name
         :particle="particle"
-        :intensity="particle.intensity"
-        :are="particle.a.re"
-        :aim="particle.a.im"
-        :bre="particle.b.re"
-        :bim="particle.b.im"
-        :width="64"
-        :height="64"
+        :animate="2"
         :margin="0"
         :display-magnetic="true"
         :display-electric="false"
@@ -56,6 +50,7 @@ import Coord from '@/engine/Coord';
 import Cell from '@/engine/Cell';
 import Grid from '@/engine/Grid';
 import Level from '@/engine/Level';
+import Particle from '@/engine/Particle';
 import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces';
 import AppCell from '@/components/Board/AppCell.vue';
 import BoardLasers from '@/components/Board/BoardLasers.vue';
@@ -111,14 +106,13 @@ export default class Board extends Vue {
     return (val + 0.5) * this.tileSize;
   }
 
-  computeParticleStyle(particle: ParticleInterface): {} {
+  computeParticleStyle(particle: Particle): {} {
     const originX = this.centerCoord(particle.coord.x);
     const originY = this.centerCoord(particle.coord.y);
     return {
-      'transform-origin': `${originX}px ${originY}px`,
-      transform: `
-        rotate(${particle.direction}deg)
-        translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y * this.tileSize}px)`
+      // 'transform-origin': `${originX}px ${originY}px`,
+      transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
+        this.tileSize}px)`
     };
   }
 

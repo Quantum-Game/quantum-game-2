@@ -1,85 +1,4 @@
-/**
- * List of element names
- */
-export const enum Elem {
-  // Basic
-  Void = 'Void',
-  Wall = 'Wall',
-  Gate = 'Gate',
-  // Source
-  Laser = 'Laser',
-  // Direction
-  Mirror = 'Mirror',
-  BeamSplitter = 'BeamSplitter',
-  PolarizingBeamSplitter = 'PolarizingBeamSplitter',
-  CoatedBeamSplitter = 'CoatedBeamSplitter',
-  CornerCube = 'CornerCube',
-  // Absorption
-  Detector = 'Detector',
-  Rock = 'Rock',
-  Mine = 'Mine',
-  Absorber = 'Absorber',
-  DetectorFour = 'DetectorFour',
-  // Polarization
-  PolarizerH = 'PolarizerH',
-  PolarizerV = 'PolarizerV',
-  QuarterWavePlateH = 'QuarterWavePlateH',
-  QuarterWavePlateV = 'QuarterWavePlateV',
-  SugarSolution = 'SugarSolution',
-  FaradayRotator = 'FaradayRotator',
-  // Phase
-  Glass = 'Glass',
-  VacuumJar = 'VacuumJar'
-}
-
-/**
- * List of group names
- */
-export const enum Group {
-  Basic = 'Basic',
-  Source = 'Source',
-  Direction = 'Direction',
-  Absorption = 'Absorption',
-  Polarization = 'Polarization',
-  Phase = 'Phase'
-}
-/**
- * Element groups
- */
-export const ElemGroups: { [symbol: string]: Elem[] } = {
-  Basic: [Elem.Void, Elem.Wall, Elem.Gate],
-  Source: [Elem.Laser],
-  Direction: [
-    Elem.Mirror,
-    Elem.BeamSplitter,
-    Elem.PolarizingBeamSplitter,
-    Elem.CoatedBeamSplitter,
-    Elem.CornerCube
-  ],
-  Absorption: [Elem.Detector, Elem.Rock, Elem.Mine, Elem.Absorber, Elem.DetectorFour],
-  Polarization: [
-    Elem.PolarizerH,
-    Elem.PolarizerV,
-    Elem.QuarterWavePlateH,
-    Elem.QuarterWavePlateV,
-    Elem.SugarSolution,
-    Elem.FaradayRotator
-  ],
-  Phase: [Elem.Glass, Elem.VacuumJar]
-};
-
-export const enum GameState {
-  // Initial
-  Initial = 'Initial',
-  InProgress = 'InProgress',
-  // Victory
-  Victory = 'Victory',
-  // Defeat
-  MineExploded = 'MineExploded',
-  GoalsNotCompleted = 'GoalsNotCompleted',
-  ProbabilityTooLow = 'ProbabilityTooLow',
-  InfiniteLoop = 'InfiniteLoop'
-}
+import { Elem } from '@/engine/interfaces';
 
 export function camelCaseToDash(str: string): string {
   return str
@@ -100,21 +19,21 @@ export function camelCaseToDash(str: string): string {
 export function angleToSymbol(angle: number): string {
   switch (angle) {
     case 0:
-      return '↑';
+      return '→';
     case 45:
       return '↗';
     case 90:
-      return '→';
+      return '↑';
     case 135:
-      return '↘';
+      return '↖';
     case 180:
-      return '↓';
+      return '←';
     case 225:
       return '↙';
     case 270:
-      return '←';
+      return '↓';
     case 315:
-      return '↖';
+      return '↘';
     default:
       throw new Error(`Something is wrong with provided angle: ${angle}°`);
   }
@@ -128,21 +47,21 @@ export function angleToSymbol(angle: number): string {
  */
 export function symbolToAngle(direction: string): number {
   switch (direction) {
-    case '↑':
+    case '→':
       return 0;
     case '↗':
       return 45;
-    case '→':
+    case '↑':
       return 90;
-    case '↘':
+    case '↖':
       return 135;
-    case '↓':
+    case '←':
       return 180;
     case '↙':
       return 225;
-    case '←':
+    case '↓':
       return 270;
-    case '↖':
+    case '↘':
       return 315;
     default:
       throw new Error('Something is wrong with provided direction string.');
