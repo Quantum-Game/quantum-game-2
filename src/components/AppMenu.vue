@@ -9,7 +9,12 @@
       <div v-if="isMenuOpen" class="menu-overlay">
         <menu>
           <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
-          <router-link to="/level/1" @click.stop.native="closeMenu">CONTINUE</router-link>
+          <router-link
+            v-if="currentLevelId > 0"
+            :to="continueLink"
+            @click.stop.native="handleContinueClick"
+            >CONTINUE</router-link
+          >
           <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
           <span>SANDBOX</span>
           <router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
@@ -23,9 +28,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
+import { State } from 'vuex-class';
 
 @Component
 export default class AppMenu extends Vue {
+  @State((state) => state.level.id) currentLevelId!: number;
   isMenuOpen: boolean = false;
 
   created() {
@@ -35,6 +42,17 @@ export default class AppMenu extends Vue {
   closeMenu() {
     this.isMenuOpen = false;
   }
+
+  handleContinueClick(e: MouseEvent) {
+    // if we are in the encyclopedia, the continue
+    // should take us to the previous played level
+    // otherwuise in case we are playing:
+    if (this.$route.name === 'level') {
+      e.preventDefault();
+      this.closeMenu();
+    }
+  }
+
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
@@ -47,6 +65,10 @@ export default class AppMenu extends Vue {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleEscPress);
+  }
+
+  get continueLink() {
+    return `/level/${this.currentLevelId}`;
   }
 }
 </script>
