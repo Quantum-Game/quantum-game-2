@@ -1,22 +1,32 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets">
+    <div>Ket (old): {{ frame.photons.ketString() }}</div>
     <div>
-      Ket (old): {{ frame.photons.ketString() }}
-    </div>
-    <div>
-      <span v-for="(ketComponent, index) in ketComponents" :key="`ket-component-${index}`" class="ket-component">
-        <span>
-          + {{ renderComplex(ketComponent.amplitude) }}
-        </span>
-        <span v-for="(particleCoord, index) in ketComponent.particleCoords" :key="`ket-component-${index}`" class="ket-component">
-          | {{ particleCoord.x }},{{ particleCoord.y }} {{ renderDir(particleCoord.dir) }} {{ renderPol(particleCoord.pol) }}  ⟩
+      <span
+        v-for="(ketComponent, index) in ketComponents"
+        :key="`ket-component-${index}`"
+        class="ket-component"
+      >
+        <span> + {{ renderComplex(ketComponent.amplitude) }} </span>
+        <span
+          v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
+          :key="`ket-component-${pIndex}`"
+          class="ket-component"
+        >
+          | {{ particleCoord.x }},{{ particleCoord.y }} {{ renderDir(particleCoord.dir) }}
+          {{ renderPol(particleCoord.pol) }} ⟩
         </span>
       </span>
     </div>
     <div>
-      Absorptions: 
-      <span v-for="(absorption, index) in absorptions" :key="`absorption-${index}`" class="absorption">
-        {{ toPercent(absorption.probability)}}% in {{ elementName(absorption.x, absorption.y ) }} at ({{ absorption.x }}, {{ absorption.y }}) 
+      Absorptions:
+      <span
+        v-for="(absorption, index) in absorptions"
+        :key="`absorption-${index}`"
+        class="absorption"
+      >
+        {{ toPercent(absorption.probability) }}% in {{ elementName(absorption.x, absorption.y) }} at
+        ({{ absorption.x }}, {{ absorption.y }})
       </span>
     </div>
     <div class="controls">
@@ -27,13 +37,13 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { Complex } from 'quantum-tensors';
 import { CellInterface, CoordInterface } from '@/engine/interfaces';
 import Particle from '@/engine/Particle';
 import Grid from '@/engine/Grid';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
-import { Complex } from 'quantum-tensors'; 
 
 @Component({
   components: {
@@ -48,7 +58,7 @@ export default class GameKet extends Vue {
   polar = false;
 
   toPercent(x: number, precision = 1): string {
-    return (100 * x).toFixed(precision)
+    return (100 * x).toFixed(precision);
   }
 
   elementName(x: number, y: number): string {
@@ -58,9 +68,8 @@ export default class GameKet extends Vue {
   renderComplex(z: Complex, precision = 2) {
     if (this.polar) {
       return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
-    } else {
-      return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
     }
+    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
   }
 
   renderDir(dir: number) {
@@ -80,7 +89,6 @@ export default class GameKet extends Vue {
   get ketComponents() {
     return this.frame.ketComponents;
   }
-
 }
 </script>
 

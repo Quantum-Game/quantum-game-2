@@ -48,7 +48,7 @@
           @step-forward="showNext"
           @play="play"
         />
-        <game-ket :frame="activeFrame" :grid="level.grid"/>
+        <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
       <!-- MAIN-RIGHT -->
