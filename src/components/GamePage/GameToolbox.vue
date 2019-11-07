@@ -1,12 +1,16 @@
 <template>
   <div class="toolbox">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
-      <app-cell :cell="cell" />
-      <text class="counter" x="50%" y="80">x {{ toolbox.getCount(cell.element.name) }}</text>
+      <g :class="computedClass(cell)">
+        <app-cell :cell="cell" />
+        <text class="counter" x="50%" y="80">
+          {{ toolbox.getCount(cell.element.name) }}
+          ({{ toolbox.getCountOriginal(cell.element.name) }})
+        </text>
+      </g>
     </svg>
     <slot>
-      <!-- <p>cellSelected: {{ cellSelected }}</p>
-      <p>activeCell: {{ activeCell.toString() }}</p> -->
+      <!-- <p>activeCell: {{ activeCell.toString() }}</p> -->
     </slot>
   </div>
 </template>
@@ -29,6 +33,10 @@ export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
   @State cellSelected!: boolean;
   @State activeCell!: Cell;
+
+  computedClass(cell: Cell): string {
+    return this.toolbox.getCount(cell.element.name) === 0 ? 'inactive' : 'active';
+  }
 }
 </script>
 
@@ -48,6 +56,9 @@ export default class GameToolbox extends Vue {
     min-width: 64px;
     padding: 0.5rem 0rem;
     height: 90px;
+  }
+  .inactive {
+    opacity: 50%;
   }
   .counter {
     fill: white;

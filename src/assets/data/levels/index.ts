@@ -1,3 +1,4 @@
+import level0 from './level0.json';
 import level1 from './level1.json';
 import level2 from './level2.json';
 import level3 from './level3.json';
@@ -35,6 +36,7 @@ import level34 from './level34.json';
 import { LevelListInterface } from '@/engine/interfaces';
 
 export {
+  level0,
   level1,
   level2,
   level3,
@@ -72,6 +74,7 @@ export {
 };
 
 const levels: LevelListInterface = {
+  level0,
   level1,
   level2,
   level3,

@@ -15,6 +15,7 @@ import {
   ADD_TO_CURRENT_TOOLS,
   REMOVE_FROM_CURRENT_TOOLS
 } from './mutation-types';
+import optionsModule from './optionsModule';
 
 const initialCell = Cell.createDummy();
 const initialLevel = Level.createDummy();
@@ -31,6 +32,8 @@ const store: StoreOptions<RootState> = {
     // set active level
     [SET_ACTIVE_LEVEL](state, level) {
       state.level = level;
+      state.cellSelected = false;
+      state.activeCell = initialCell;
     },
     // modify grid cell
     [UPDATE_GRID_CELL](state, cell) {
@@ -67,6 +70,9 @@ const store: StoreOptions<RootState> = {
   getters: {
     toolbox: (state) => state.level.toolbox,
     gridI: (state) => state.level.grid.exportGrid()
+  },
+  modules: {
+    optionsModule
   }
 };
 
