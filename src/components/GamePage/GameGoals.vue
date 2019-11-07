@@ -101,9 +101,8 @@ export default class GameGoals extends Vue {
     const minesDetected = this.detections.filter((detection) => {
       return detection.cell.element.name === 'Mine' && detection.probability > 0.1;
     });
-    console.log(`HIT:${minesDetected.length}`);
-    console.log(`TOTAL:${this.mines}`);
-
+    // console.log(`HIT:${minesDetected.length}`);
+    // console.log(`TOTAL:${this.mines}`);
     return minesDetected.length;
   }
 
@@ -143,7 +142,10 @@ export default class GameGoals extends Vue {
     return sum * 100;
   }
 
-  animateTween(time: number) {
+  /**
+   * @param time tween time
+   */
+  animateTween(time: number): void {
     const id = requestAnimationFrame(this.animateTween);
     const result = updateTween(time);
     if (!result) cancelAnimationFrame(id);
@@ -162,12 +164,11 @@ export default class GameGoals extends Vue {
 
   @Watch('percentage')
   onPercentChanged(val: number, oldVal: number) {
-    console.log('COME ON');
     new Tween({ value: oldVal })
       .to({ value: val }, 500)
       .on('update', ({ value }: { value: number }) => {
         this.tweenedPercent = value;
-        console.log(`TWEEN:${this.tweenedPercent}`);
+        // console.log(`TWEEN:${this.tweenedPercent}`);
       })
       .start();
     requestAnimationFrame(this.animateTween);

@@ -124,12 +124,12 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 4, "x": 10 },
+      "coord": { "y": 4, "x": 11 },
       "threshold": 0.5,
       "value": 0
     },
     {
-      "coord": { "y": 6, "x": 10 },
+      "coord": { "y": 6, "x": 11 },
       "threshold": 0.5,
       "value": 0
     }

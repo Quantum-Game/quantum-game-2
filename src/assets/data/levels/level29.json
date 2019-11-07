@@ -132,7 +132,7 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 5, "x": 8 },
+      "coord": { "y": 5, "x": 9 },
       "threshold": 1,
       "value": 0
     }

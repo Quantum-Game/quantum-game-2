@@ -100,7 +100,7 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 7, "x": 3 },
+      "coord": { "y": 7, "x": 2 },
       "threshold": 1,
       "value": 0
     }

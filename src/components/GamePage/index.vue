@@ -147,7 +147,7 @@ export default class Game extends Vue {
   updateSimulation(): void {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     this.simulation.initializeFromLaser('V');
-    this.simulation.nextFrames(20);
+    this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     // console.log(this.multiverseGraph.graph.edges());
@@ -206,7 +206,7 @@ export default class Game extends Vue {
    *  @returns goals
    */
   get framePercentage() {
-    console.log(`FRAME %: ${this.activeFrame.probability}`);
+    // console.log(`FRAME %: ${this.activeFrame.probability}`);
     return this.activeFrame.probability * 100;
   }
 

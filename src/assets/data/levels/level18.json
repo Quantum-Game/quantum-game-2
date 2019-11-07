@@ -172,22 +172,22 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 5, "x": 6 },
+      "coord": { "y": 5, "x": 7 },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 6, "x": 5 },
+      "coord": { "y": 7, "x": 5 },
       "threshold": 0.5,
       "value": 0
     },
     {
-      "coord": { "y": 8, "x": 3 },
+      "coord": { "y": 9, "x": 3 },
       "threshold": 0.125,
       "value": 0
     },
     {
-      "coord": { "y": 7, "x": 2 },
+      "coord": { "y": 7, "x": 1 },
       "threshold": 0.125,
       "value": 0
     }

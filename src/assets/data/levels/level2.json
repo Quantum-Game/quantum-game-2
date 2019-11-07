@@ -100,27 +100,27 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 7, "x": 2 },
+      "coord": { "y": 8, "x": 2 },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 6, "x": 1 },
+      "coord": { "y": 6, "x": 0 },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 3, "x": 4 },
+      "coord": { "y": 2, "x": 4 },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 3, "x": 6 },
+      "coord": { "y": 2, "x": 6 },
       "threshold": 0.125,
       "value": 0
     },
     {
-      "coord": { "y": 4, "x": 7 },
+      "coord": { "y": 4, "x": 8 },
       "threshold": 0.125,
       "value": 0
     }
