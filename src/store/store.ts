@@ -5,8 +5,8 @@ import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
 import Toolbox from '@/engine/Toolbox';
 import {
-  SET_ACTIVE_LEVEL,
   SET_GAME_STATE,
+  SET_ACTIVE_LEVEL,
   UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,

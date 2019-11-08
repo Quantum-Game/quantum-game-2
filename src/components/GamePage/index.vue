@@ -152,6 +152,7 @@ export default class Game extends Vue {
     this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
+    this.level.grid.resetEnergized();
     // console.log(this.multiverseGraph.graph.edges());
   }
 
@@ -176,6 +177,7 @@ export default class Game extends Vue {
       (absorption: { x: number; y: number; probability: number }) => {
         const coord = new Coord(absorption.y, absorption.x);
         const cell = this.level.grid.get(coord);
+        cell.energized = true;
         return { cell, probability: absorption.probability };
       }
     );
