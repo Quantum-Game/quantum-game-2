@@ -88,6 +88,16 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Remove unfrozen cells once they are moved to the toolbox
+   */
+  resetEnergized(): void {
+    this.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.energized = false;
+    });
+  }
+
+  /**
    * Retrieve the list of quantum operators from the elements
    * @returns list of operators
    */

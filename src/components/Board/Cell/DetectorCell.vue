@@ -185,6 +185,7 @@
       </g>
     </g>
     <!-- OUTLINE -->
+    <!-- <g v-if="border" id="Qoutline"> -->
     <g v-if="border" id="Qoutline">
       <path
         class="st8"
