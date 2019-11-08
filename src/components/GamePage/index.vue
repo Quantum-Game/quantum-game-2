@@ -26,12 +26,7 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals
-        slot="main-left"
-        :percentage="70"
-        :goals="level.goals"
-        :particles="particles"
-      />
+      <game-goals slot="main-left" :percentage="70" :goals="level.goals" :particles="particles" />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
@@ -68,6 +63,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Getter } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
 import { local } from 'd3-selection';
+import { warn } from 'vue-class-component/lib/util';
 import { Level, Particle, Cell, Coord, Element, Grid } from '@/engine/classes';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -92,7 +88,6 @@ import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
-import { warn } from 'vue-class-component/lib/util';
 
 @Component({
   components: {
@@ -134,18 +129,18 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     const fromStorage: any = localStorage.getItem(this.currentLevelName);
-    let levelI: LevelInterface ;
+    let levelI: LevelInterface;
     // it is not in the storage
     if (!fromStorage) {
       levelI = levelData[this.currentLevelName];
-      console.warn(levelI)
+      console.warn(levelI);
       if (!levelI) {
         this.error = 'No such exists!';
       }
     } else {
       levelI = JSON.parse(fromStorage);
-      console.warn('loadedFromStorage!')
-      console.warn(levelI)
+      console.warn('loadedFromStorage!');
+      console.warn(levelI);
     }
     this.level = Level.importLevel(levelI);
     // this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
@@ -160,7 +155,7 @@ export default class Game extends Vue {
   updateSimulation(): void {
     // console.warn(this.level.exportLevel().grid)
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
-    console.warn(this.level.grid.exportGrid())
+    console.warn(this.level.grid.exportGrid());
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(20);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
@@ -272,7 +267,7 @@ export default class Game extends Vue {
     mutatedCells.forEach((cell) => {
       this.level.grid.set(cell);
     });
-    this.saveLevelToStore()
+    this.saveLevelToStore();
   }
 
   @Watch('cellPositionsArray')
@@ -315,7 +310,7 @@ export default class Game extends Vue {
   }
 
   get toolbox() {
-    return this.level.toolbox
+    return this.level.toolbox;
   }
 }
 </script>

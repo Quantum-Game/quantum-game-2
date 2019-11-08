@@ -2,7 +2,7 @@
   <div class="toolbox">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <g :class="computedClass(cell)">
-        <app-cell :cell="cell" />
+        <app-cell :cell="cell" :available="isAvailable"/>
         <text class="counter" x="50%" y="80">
           {{ toolbox.getCount(cell.element.name) }}
           ({{ toolbox.getCountOriginal(cell.element.name) }})
@@ -35,7 +35,11 @@ export default class GameToolbox extends Vue {
   @State activeCell!: Cell;
 
   computedClass(cell: Cell): string {
-    return this.toolbox.getCount(cell.element.name) === 0 ? 'inactive' : 'active';
+    return this.isAvailable(cell) ? 'inactive' : 'active';
+  }
+
+  isAvailable(cell: Cell): boolean {
+    return this.toolbox.getCount(cell.element.name) > 0;
   }
 }
 </script>

@@ -13,6 +13,8 @@
       :cell="cell"
       :tileSize="tileSize"
       @updateCell="updateCell"
+      @deleteCell="deleteCell"
+
     />
 
     <!-- PHOTONS -->
@@ -125,6 +127,22 @@ export default class Board extends Vue {
    */
   updateCell(coord: Coord): void {
     // emit drilling...
+    console.log('board cell clicked');
+
+
+    // const sourceCell = this.activeCell;
+    // const targetCell = this.level.grid.get(coord);
+    // const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    // mutatedCells.forEach((cell) => {
+    //   this.level.grid.set(cell);
+    // });
+    this.$emit('updateSimulation');
+    this.$emit('updateGrid', coord);
+  }
+    deleteCell(cell: Cell): void {
+    // emit drilling...
+    console.log('board cell clicked');
+
 
     // const sourceCell = this.activeCell;
     // const targetCell = this.level.grid.get(coord);

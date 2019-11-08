@@ -1,3 +1,5 @@
+import { ToolInterface } from './Toolbox';
+
 /**
  * ROOT STATE INTERFACE
  * Holds global state of the application
@@ -45,6 +47,7 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
+  toolbox?: ToolInterface;
 }
 
 /**

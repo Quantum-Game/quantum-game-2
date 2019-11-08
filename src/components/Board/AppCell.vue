@@ -78,12 +78,13 @@ const borderColors = {
 export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
   @Prop() readonly tileSize!: number;
+  @Prop() readonly available!: boolean;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @State level!: Level;
+  // @State level!: Level;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -101,6 +102,8 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   handleCellClick(): void {
+    console.log('clicked');
+
     // First click unselected tool
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
@@ -108,7 +111,7 @@ export default class AppCell extends Mixins(getPosition) {
       // If from toolbox needs to have available elements
       if (
         this.cell.tool &&
-        (this.cell.isFromGrid || (this.cell.isFromToolbox && this.level.isAvailable(this.cell)))
+        (this.cell.isFromGrid || (this.cell.isFromToolbox))
       ) {
         this.indicateTool();
         this.mutationSetActiveCell(this.cell);
@@ -131,8 +134,7 @@ export default class AppCell extends Mixins(getPosition) {
       // eslint-disable-next-line
       if (this.cell.isValidTarget()) {
         if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
-          const available = this.level.toolbox.available(this.activeCell.element.name);
-          if (available > 0) {
+          if (this.available) {
             this.$emit('updateCell', this.cell.coord);
             this.mutationRemoveFromCurrentTools(this.activeCell);
             this.mutationResetActiveCell();
@@ -150,6 +152,7 @@ export default class AppCell extends Mixins(getPosition) {
           this.$emit('updateCell', this.cell.coord);
           this.mutationAddToCurrentTools(this.activeCell);
           this.level.grid.set(this.activeCell.reset());
+          this.$emit('deleteCell', this.activeCell.reset())
           this.mutationResetActiveCell();
           // FALLBACK
           // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
