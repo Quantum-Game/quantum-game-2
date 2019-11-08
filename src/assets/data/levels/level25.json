@@ -116,7 +116,7 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 8, "x": 9 },
+      "coord": { "y": 9, "x": 9 },
       "threshold": 1,
       "value": 0
     }

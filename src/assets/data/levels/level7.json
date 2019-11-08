@@ -76,12 +76,12 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 6, "x": 2 },
+      "coord": { "y": 6, "x": 1 },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 7, "x": 3 },
+      "coord": { "y": 8, "x": 3 },
       "threshold": 0.25,
       "value": 0
     }

@@ -66,9 +66,9 @@ export default class GameToolbox extends Vue {
   }
   .counter {
     fill: white;
-    stroke: white;
     text-anchor: middle;
     margin: 0;
+    font-size: 0.8rem;
   }
 }
 </style>

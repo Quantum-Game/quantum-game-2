@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import * as qt from 'quantum-tensors';
 
 import Coord from './Coord';
@@ -7,6 +8,19 @@ export interface AbsorptionsInterface {
   x: number;
   y: number;
   probability: number;
+}
+
+export interface particleCoordInterface {
+  kind: string; // for now only 'photon'
+  x: number;
+  y: number;
+  dir: number; // 0: > 1: ^, 2: <. 3: v
+  pol: number; // 0: H, 1: V
+}
+
+export interface ketComponentInterface {
+  amplitude: qt.Complex;
+  particleCoords: particleCoordInterface[];
 }
 
 /**
@@ -41,6 +55,23 @@ export default class QuantumFrame {
     return this.photons.ketString();
   }
 
+  get ketComponents(): ketComponentInterface[] {
+    const ns = _.range(this.photons.nPhotons);
+    return this.photons.vector.entries.map((entry) => {
+      const particleCoords = ns.map((i) => {
+        const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
+        return { kind: 'photon', x, y, dir, pol };
+      });
+      return {
+        amplitude: entry.value,
+        particleCoords
+      };
+    });
+  }
+
+  /**
+   * State vector norm.
+   */
   get probability(): number {
     return this.photons.vector.normSquared();
   }

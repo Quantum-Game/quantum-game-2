@@ -16,8 +16,9 @@
       :cell="cell"
       :class="computedCellName"
       :cell-size="tileSize"
-      :border="border"
+      :border="computeBorder()"
     />
+    <!-- :border="red" -->
   </g>
 </template>
 
@@ -88,7 +89,6 @@ export default class AppCell extends Mixins(getPosition) {
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
-
   border = '';
 
   /**
@@ -113,11 +113,11 @@ export default class AppCell extends Mixins(getPosition) {
         this.cell.tool &&
         (this.cell.isFromGrid || (this.cell.isFromToolbox))
       ) {
-        this.indicateTool();
+        this.border = 'white';
         this.mutationSetActiveCell(this.cell);
       } else {
         // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
-        this.indicateFrozen();
+        this.border = '';
         this.mutationResetActiveCell();
       }
     } else {
@@ -182,7 +182,7 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
-   * Compute the cell class
+   * Compute the cell class name
    */
   get computedCellName(): string {
     return `${this.cell.element.name}Cell`;
@@ -193,20 +193,25 @@ export default class AppCell extends Mixins(getPosition) {
    * it can be moved
    * @returns void
    */
+  computeBorder() {
+    if (this.border !== '') {
+      return this.border;
+    }
+    if (this.cell.energized) {
+      return 'red';
+    }
+    return '';
+  }
+
   indicateTool(): void {
     this.border = borderColors.rotable;
   }
 
-  /**
-   * changes border color for w given time
-   * @returns void
-   */
-  indicateFrozen(): void {
-    this.border = borderColors.active;
-    const timeout = setTimeout(() => {
-      this.border = '';
-    }, 200);
-  }
+  // indicateFrozen(): void {
+  //   const timeout = setTimeout(() => {
+  //     this.border = '';
+  //   }, 200);
+  // }
 
   /**
    * styles used for wrapper positioning

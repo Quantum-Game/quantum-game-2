@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="gameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="computeGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -26,15 +26,23 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals slot="main-left" :percentage="70" :goals="level.goals" :particles="particles" />
+      <game-goals
+        slot="main-left"
+        :percentage="percentage"
+        :goals="level.goals"
+        :particles="activeFrame.particles"
+        :detections="detections"
+        :mines="mineCount"
+      />
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
         <game-board
           :particles="particles"
           :grid="level.grid"
+          :path-particles="pathParticles"
           :hints="hints"
-          :paths="paths"
+          :probabilities="probabilities"
           @updateSimulation="updateSimulation"
           @updateGrid="updateGrid"
         />
@@ -45,7 +53,7 @@
           @step-forward="showNext"
           @play="play"
         />
-        <game-ket :frame="activeFrame" />
+        <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -157,20 +165,94 @@ export default class Game extends Vue {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
     console.warn(this.level.grid.exportGrid());
     this.simulation.initializeFromLaser('V');
-    this.simulation.nextFrames(20);
+    this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
-    console.log(this.multiverseGraph.graph.edges());
     this.frameIndex = 0;
+    this.level.grid.resetEnergized();
+    this.$store.commit('SET_SIMULATION_STATE', false);
+    // console.log(this.multiverseGraph.graph.edges());
+  }
+
+  /**
+   * Output cells linked to detection events
+   * @returns Cell and percentage
+   */
+
+  get detections(): { cell: Cell; probability: number }[] {
+    interface probabilityCellInterface {
+      cell: Cell;
+      probability: number;
+    }
+    // Filter out of grid cells
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    // Convert to cells format
+    const detections: probabilityCellInterface[] = absorptions.map(
+      (absorption: { x: number; y: number; probability: number }) => {
+        const coord = new Coord(absorption.y, absorption.x);
+        const cell = this.level.grid.get(coord);
+        cell.energized = true;
+        return { cell, probability: absorption.probability };
+      }
+    );
+    return detections;
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get probabilities() {
+    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
+      (absorption: { x: number }) => {
+        return absorption.x !== -1;
+      }
+    );
+    return absorptions;
+  }
+
+  /**
+   * Get the total number of the mines of the level
+   * @returns number of mines in the level
+   */
+  get mineCount() {
+    return this.level.grid.mines.cells.length;
+  }
+
+  /**
+   * Process the goals from level with the results of the quantum simulation
+   *  @returns goals
+   */
+  get framePercentage() {
+    // console.log(`FRAME %: ${this.activeFrame.probability}`);
+    return this.activeFrame.probability * 100;
+  }
+
+  /**
+   * Compute the total absorption at goals
+   * @returns total absorption
+   */
+  get percentage() {
+    let sum = 0;
+    this.detections.forEach((detection) => {
+      this.level.goals.forEach((goal: Goal) => {
+        if (goal.coord.equal(detection.cell.coord)) {
+          sum += detection.probability;
+        }
+      });
+    });
+    return sum * 100;
   }
 
   /**
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get paths(): string[] {
-    return this.simulation.allParticles.map((particle: Particle) => {
-      return particle.toSvg();
-    });
+  get pathParticles(): string[] {
+    return this.simulation.allParticles;
   }
 
   /**
@@ -195,9 +277,21 @@ export default class Game extends Vue {
       if (this.frameIndex < this.simulation.frames.length - 1) {
         this.frameIndex += 1;
       } else {
+        this.$store.commit('SET_SIMULATION_STATE', false);
         clearInterval(this.playInterval);
       }
     }, 200);
+    this.$store.commit('SET_SIMULATION_STATE', true);
+  }
+
+  /**
+   * Launch overlay if it's the last frame and the player has a game state set
+   */
+  get computeGameState() {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.gameState;
+    }
+    return 'InProgress';
   }
 
   /**
@@ -298,11 +392,6 @@ export default class Game extends Vue {
 
   get nextLevel(): string {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
-  }
-
-  /** Need to be computed from simulation post-processing */
-  get gameState(): GameState {
-    return GameState.InProgress;
   }
 
   get hints(): HintInterface[] {
