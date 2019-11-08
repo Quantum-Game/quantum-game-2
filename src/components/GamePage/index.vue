@@ -107,6 +107,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
 export default class Game extends Vue {
   @State level!: Level;
   @State gameState!: GameState;
+  @State simulationState!: boolean;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -139,6 +140,7 @@ export default class Game extends Vue {
     this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     this.$store.commit('SET_GAME_STATE', GameState.Initial);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
+    this.$store.commit('SET_SIMULATION_STATE', false);
     this.updateSimulation();
   }
 
@@ -153,6 +155,7 @@ export default class Game extends Vue {
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
+    this.$store.commit('SET_SIMULATION_STATE', false);
     // console.log(this.multiverseGraph.graph.edges());
   }
 
@@ -260,9 +263,11 @@ export default class Game extends Vue {
       if (this.frameIndex < this.simulation.frames.length - 1) {
         this.frameIndex += 1;
       } else {
+        this.$store.commit('SET_SIMULATION_STATE', false);
         clearInterval(this.playInterval);
       }
     }, 200);
+    this.$store.commit('SET_SIMULATION_STATE', true);
   }
 
   /**

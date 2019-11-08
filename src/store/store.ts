@@ -6,6 +6,7 @@ import Level from '@/engine/Level';
 import Toolbox from '@/engine/Toolbox';
 import {
   SET_GAME_STATE,
+  SET_SIMULATION_STATE,
   SET_ACTIVE_LEVEL,
   UPDATE_GRID_CELL,
   SET_ACTIVE_CELL,
@@ -28,7 +29,8 @@ const store: StoreOptions<RootState> = {
     activeCell: initialCell,
     cellSelected: false,
     hoveredCell: initialCell,
-    gameState: 'Initial'
+    gameState: 'Initial',
+    simulationState: false
   },
   mutations: {
     // set active level
@@ -40,6 +42,10 @@ const store: StoreOptions<RootState> = {
     // set active level
     [SET_GAME_STATE](state, gameState) {
       state.gameState = gameState;
+    },
+    // set active level
+    [SET_SIMULATION_STATE](state, simulationState) {
+      state.simulationState = simulationState;
     },
     // modify grid cell
     [UPDATE_GRID_CELL](state, cell) {
