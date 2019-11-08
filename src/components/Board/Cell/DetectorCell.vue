@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <g id="Qactive">
+    <g v-if="border" id="Qactive">
       <path
         class="st1"
         d="M7.5,58.5h-3c0-15.1,15.5-18,15.6-18l0.5,3L20.4,42l0.3,1.5C20.1,43.6,7.5,46,7.5,58.5z"
@@ -97,7 +97,7 @@
       </g>
     </g>
     <!-- BASIC STATE -->
-    <g id="Qregular">
+    <g v-else id="Qregular">
       <g>
         <path
           class="st12"
@@ -148,7 +148,7 @@
             <clipPath id="detectorSVGID_11_">
               <use xlink:href="#detectorSVGID_10_" style="overflow:visible;" />
             </clipPath>
-            <polygon class="st15" points="55,10 32,32 56,54 61,47 62,22 60,14         " />
+            <polygon class="st15" points="55,10 32,32 56,54 61,47 62,22 60,14" />
           </g>
         </g>
         <g>

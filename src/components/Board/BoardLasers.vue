@@ -1,6 +1,6 @@
 <template>
   <!-- LASER PATH -->
-  <g class="lasers">
+  <g v-if="!simulationState" class="lasers">
     <g v-for="(particle, index) in pathParticles" :key="'laser' + index">
       <path
         :d="computePath(particle)"
@@ -25,6 +25,7 @@ import Level from '@/engine/Level';
 @Component
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly pathParticles!: Particle[];
+  @State simulationState!: boolean;
   tileSize: number = 64;
 
   computePath(particle: Particle): string {
