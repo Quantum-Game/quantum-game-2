@@ -3,6 +3,7 @@
     <g>
       <!-- ACTIVE RED BOMB - AFTER HIT BY PHOTON -->
       <path
+        v-if="border"
         id="Qactive"
         class="st0"
         d="M59.5,34.5v-5H53c-0.5-4-2-7.6-4.4-10.6l4.6-4.6l-3.5-3.5l-4.6,4.6
@@ -12,6 +13,7 @@
       />
       <!-- BASIC STATE -->
       <path
+        v-else
         class="st1"
         d="M59.5,34.5v-5H53c-0.5-4-2-7.6-4.4-10.6l4.6-4.6l-3.5-3.5l-4.6,4.6c-3-2.4-6.6-3.9-10.6-4.4V4.5h-5v6.4
         c-4,0.5-7.6,2-10.6,4.4l-4.6-4.6l-3.5,3.5l4.6,4.6c-2.4,3-3.9,6.6-4.4,10.6H4.5v5h6.4c0.5,4,2,7.6,4.4,10.6l-4.6,4.6l3.5,3.5
@@ -51,8 +53,18 @@ export default class MineCell extends Piece {}
 
 <style lang="scss" scoped>
 .st0 {
-  display: none;
   fill: #ff0055;
+  // animation: loading-spinner 0.2s linear infinite;
+  // transform-origin: 32px 32px;
+
+  // @keyframes loading-spinner {
+  //   from {
+  //     transform: rotate(10deg);
+  //   }
+  //   to {
+  //     transform: rotate(-10deg);
+  //   }
+  // }
 }
 .st1 {
   fill: #120223;

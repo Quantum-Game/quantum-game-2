@@ -1,8 +1,10 @@
 <template>
   <transition :name="gameState">
-    <div v-if="gameState === 'Defeat'" :class="gameState" class="wrapper">
+    <!-- FIXME -->
+    <div v-if="gameState === 'MineExploded'" :class="gameState" class="wrapper">
       <h2>
-        :(
+        MINE EXPLODED
+        <slot> </slot>
       </h2>
     </div>
 
@@ -95,14 +97,31 @@ export default class AppOverlay extends Vue {
     //transform: rotate(-5deg);
   }
 }
+.MineExploded-enter-active,
+.MineExploded-leave-active {
+  transition: opacity 0.5s;
+}
+.MineExploded-enter,
+.MineExploded-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 
-.wrapper {
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  z-index: 3;
+.MineExploded.wrapper {
+  //background-color: rgba(179, 7, 136, 0);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  h2 {
+    //THIS IS A DRAFT VERSION OF POP-UP
+    width: 12rem;
+    height: 10rem;
+    padding: 1rem;
+    background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
+    //margin: 50;
+    color: white;
+    font-size: 2rem;
+    //transform: rotate(-5deg);
+  }
 }
 
 .wrapper {

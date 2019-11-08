@@ -15,7 +15,7 @@
           <use xlink:href="#rockSVGID_1_" style="overflow:visible;" />
         </clipPath>
         <g class="st2">
-          <polygon class="st3" points="11,55 12.3,57 54,57 56.6,57 58,55       " />
+          <polygon class="st3" points="11,55 12.3,57 54,57 56.6,57 58,55" />
           <path
             class="st4"
             d="M44.6,14.2c-4.4-0.5-20.5-1.7-24.2,1.3C16.2,18.9,12.9,39,12.9,41c0,1.7,2.8,10.9,3.7,14H11
@@ -41,7 +41,7 @@
       </g>
     </g>
     <!-- PROBABILITY OH BEING HIT STATE -->
-    <g class="st0">
+    <g v-if="border">
       <g class="st1">
         <defs>
           <path
@@ -82,7 +82,7 @@
       </g>
     </g>
     <!-- BASIC STATE -->
-    <g>
+    <g v-else>
       <g>
         <defs>
           <path
@@ -141,9 +141,12 @@
       </g>
     </g>
     <!-- OUTLINE FOR PROBABILITY OF BEING HIT ONLY - NO ROTATION -->
-    <g class="st0">
+    <!-- <g class="st0"> -->
+
+    <g v-if="border" id="Qoutline">
       <path
         class="st17"
+        :style="{ fill: border }"
         d="M23.4,11l14.3,0.7c1.3,0.1,2.5,0.6,3.5,1.5l14.3,12.9c2.1,1.9,3.5,4.4,4.1,7.2L61.8,44c0.1,0.6,0,1.3-0.3,1.9
       l-4,9.4c-0.5,1.1-1.6,1.7-2.8,1.7H14.8c-1,0-2-0.5-2.6-1.3L3.7,43.2c-0.5-0.7-0.7-1.6-0.5-2.5l6-20.5C10.8,13.6,16.7,11,23.4,11
       M23.4,10L23.4,10c-8.1,0-13.7,3.6-15.2,9.9L2.3,40.4c-0.3,1.2-0.1,2.4,0.6,3.4l8.5,12.5c0.8,1.1,2,1.8,3.4,1.8h39.9
