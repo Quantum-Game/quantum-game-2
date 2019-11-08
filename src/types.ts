@@ -7,4 +7,5 @@ export interface RootState {
   hoveredCell: Cell;
   cellSelected: boolean;
   gameState: string;
+  simulationState: boolean;
 }

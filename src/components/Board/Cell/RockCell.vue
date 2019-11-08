@@ -15,7 +15,7 @@
           <use xlink:href="#rockSVGID_1_" style="overflow:visible;" />
         </clipPath>
         <g class="st2">
-          <polygon class="st3" points="11,55 12.3,57 54,57 56.6,57 58,55       " />
+          <polygon class="st3" points="11,55 12.3,57 54,57 56.6,57 58,55" />
           <path
             class="st4"
             d="M44.6,14.2c-4.4-0.5-20.5-1.7-24.2,1.3C16.2,18.9,12.9,39,12.9,41c0,1.7,2.8,10.9,3.7,14H11
@@ -41,7 +41,7 @@
       </g>
     </g>
     <!-- PROBABILITY OH BEING HIT STATE -->
-    <g class="st0">
+    <g v-if="border">
       <g class="st1">
         <defs>
           <path
@@ -82,7 +82,7 @@
       </g>
     </g>
     <!-- BASIC STATE -->
-    <g>
+    <g v-else>
       <g>
         <defs>
           <path
