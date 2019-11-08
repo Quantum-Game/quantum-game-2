@@ -23,7 +23,8 @@
           d="M55,28c-1.2,9-11.1,16-23,16S10.1,37,9,28c1.2-9,11.1-16,23-16S53.8,19,55,28z"
         />
       </defs>
-      <g :transform="`rotate(${rotation} 32 32)`">
+      <!-- <g :transform="`rotate(${rotation} 32 32)`"> -->
+      <g>
         <rect x="14.5" y="-7" class="st2" width="3" height="69" />
         <rect x="20.5" y="-7" class="st2" width="3" height="69" />
         <rect x="8.5" y="-7" class="st2" width="3" height="69" />
@@ -33,7 +34,8 @@
         <rect x="44.5" y="-7" class="st2" width="3" height="69" />
         <rect x="50.5" y="-7" class="st2" width="3" height="69" />
       </g>
-      <clipPath id="SVGID_2_" :transform="`rotate(-${rotation} 32 32)`">
+      <!-- <clipPath id="SVGID_2_" :transform="`rotate(-${rotation} 32 32)`"> -->
+      <clipPath id="SVGID_2_">
         <use xlink:href="#SVGID_1_" style="overflow:visible;" />
       </clipPath>
     </g>
