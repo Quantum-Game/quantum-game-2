@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="gameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="computeGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -36,8 +36,8 @@
       <section slot="main-middle">
         <game-board
           :particles="particles"
+          :path-particles="pathParticles"
           :hints="hints"
-          :paths="paths"
           :probabilities="probabilities"
           @updateSimulation="updateSimulation"
         />
@@ -48,7 +48,7 @@
           @step-forward="showNext"
           @play="play"
         />
-        <game-ket :frame="activeFrame" />
+        <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -106,6 +106,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
 })
 export default class Game extends Vue {
   @State level!: Level;
+  @State gameState!: GameState;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -136,6 +137,7 @@ export default class Game extends Vue {
     }
     const level = Level.importLevel(levelI);
     this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
+    this.$store.commit('SET_GAME_STATE', GameState.Initial);
     this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.updateSimulation();
   }
@@ -230,10 +232,8 @@ export default class Game extends Vue {
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get paths(): string[] {
-    return this.simulation.allParticles.map((particle: Particle) => {
-      return particle.toSvg();
-    });
+  get pathParticles(): string[] {
+    return this.simulation.allParticles;
   }
 
   /**
@@ -261,6 +261,16 @@ export default class Game extends Vue {
         clearInterval(this.playInterval);
       }
     }, 200);
+  }
+
+  /**
+   * Launch overlay if it's the last frame and the player has a game state set
+   */
+  get computeGameState() {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.gameState;
+    }
+    return 'InProgress';
   }
 
   /**
@@ -318,11 +328,6 @@ export default class Game extends Vue {
 
   get nextLevel(): string {
     return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
-  }
-
-  /** Need to be computed from simulation post-processing */
-  get gameState(): GameState {
-    return GameState.InProgress;
   }
 
   get hints(): HintInterface[] {

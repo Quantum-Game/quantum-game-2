@@ -1,3 +1,4 @@
+export const SET_GAME_STATE = 'SET_GAME_STATE';
 export const SET_ACTIVE_LEVEL = 'SET_ACTIVE_LEVEL';
 export const UPDATE_GRID_CELL = 'UPDATE_GRID_CELL';
 

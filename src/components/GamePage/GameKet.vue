@@ -1,15 +1,46 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets">
-    <span>
-      {{ frame.photons.ketString() }}
-    </span>
+    <div>Ket (old): {{ frame.photons.ketString() }}</div>
+    <div>
+      <span
+        v-for="(ketComponent, index) in ketComponents"
+        :key="`ket-component-${index}`"
+        class="ket-component"
+      >
+        <span> + {{ renderComplex(ketComponent.amplitude) }} </span>
+        <span
+          v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
+          :key="`ket-component-${pIndex}`"
+          class="ket-component"
+        >
+          | {{ particleCoord.x }},{{ particleCoord.y }} {{ renderDir(particleCoord.dir) }}
+          {{ renderPol(particleCoord.pol) }} ⟩
+        </span>
+      </span>
+    </div>
+    <div>
+      Absorptions:
+      <span
+        v-for="(absorption, index) in absorptions"
+        :key="`absorption-${index}`"
+        class="absorption"
+      >
+        {{ toPercent(absorption.probability) }}% in {{ elementName(absorption.x, absorption.y) }} at
+        ({{ absorption.x }}, {{ absorption.y }})
+      </span>
+    </div>
+    <div class="controls">
+      <span @click="polar = !polar"> Click for polar vs cartesian </span>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { Complex } from 'quantum-tensors';
 import { CellInterface, CoordInterface } from '@/engine/interfaces';
 import Particle from '@/engine/Particle';
+import Grid from '@/engine/Grid';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -22,6 +53,42 @@ import QuantumFrame from '@/engine/QuantumFrame';
 })
 export default class GameKet extends Vue {
   @Prop() readonly frame!: QuantumFrame;
+  @Prop() readonly grid!: Grid;
+
+  polar = false;
+
+  toPercent(x: number, precision = 1): string {
+    return (100 * x).toFixed(precision);
+  }
+
+  elementName(x: number, y: number): string {
+    return this.grid.cellFromXY(x, y).element.name;
+  }
+
+  renderComplex(z: Complex, precision = 2) {
+    if (this.polar) {
+      return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
+    }
+    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
+  }
+
+  renderDir(dir: number) {
+    return ['⤑', '⇡', '⇠', '⇣'][dir];
+    // or return ["⟷", "↕︎"][pol];
+  }
+
+  renderPol(pol: number) {
+    return ['H', 'V'][pol];
+    // or return ["⟷", "↕︎"][pol];
+  }
+
+  get absorptions() {
+    return this.frame.absorptions;
+  }
+
+  get ketComponents() {
+    return this.frame.ketComponents;
+  }
 }
 </script>
 

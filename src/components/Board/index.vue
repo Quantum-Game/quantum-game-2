@@ -4,7 +4,7 @@
     <board-dots />
 
     <!-- LASER PATH -->
-    <board-lasers :paths="paths" />
+    <board-lasers :pathParticles="pathParticles" />
 
     <!-- PHOTONS -->
     <g
@@ -83,7 +83,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 })
 export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: ParticleInterface[];
-  @Prop({ default: '' }) readonly paths!: string;
+  @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: '' }) readonly probabilities!: string;
   @State activeCell!: Cell;
   @State level!: Level;
