@@ -19,29 +19,30 @@
 
     <!-- GOALS -->
     <div class="bottom-icons">
-      <div>DETECTORS</div>
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
       <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
+      <div>DETECTORS</div>
     </div>
 
     <!-- MINES -->
     <div v-if="mines > 0" class="bottom-icons">
       <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
-        <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/mineIconRed.svg" alt="Key Icon" width="34" />
       </span>
       <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
-        <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>DANGER</div>
     </div>
-
-    <div>Max: {{ totalGoalPercentage }} %</div>
-    <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
-    <div>Current: {{ percentage.toFixed() }} %</div>
+    <div class="temp">
+      <div>Max: {{ totalGoalPercentage }} %</div>
+      <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
+      <div>Current: {{ percentage.toFixed() }} %</div>
+    </div>
 
     <!-- DETECTION EVENTS -->
     <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
@@ -243,6 +244,7 @@ export default class GameGoals extends Vue {
   }
   & .bottom-icons {
     line-height: 150%;
+    padding: 10px;
   }
   & .chart {
     & div.inner-circle {
@@ -278,5 +280,9 @@ export default class GameGoals extends Vue {
     stroke: white;
     text-anchor: middle;
   }
+}
+.temp {
+  font-size: 0.6rem;
+  color: darkgrey;
 }
 </style>
