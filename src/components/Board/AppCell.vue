@@ -18,7 +18,6 @@
       :cell-size="tileSize"
       :border="computeBorder()"
     />
-    <!-- :border="red" -->
   </g>
 </template>
 
@@ -83,9 +82,6 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
-  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  // @State level!: Level;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -101,65 +97,78 @@ export default class AppCell extends Mixins(getPosition) {
     }
   }
 
+  /**
+   *  handles clicking, namely
+   *  1. distinguishes a selecting vs a placing click
+   *  2. determines if the updateCell event should be emitted
+   *  @returns void
+   */
+
   handleCellClick(): void {
-    // First click unselected tool
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-    if (!this.cellSelected) {
-      // If from toolbox needs to have available elements
-      if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
-        this.border = 'white';
-        this.mutationSetActiveCell(this.cell);
-      } else {
+
+    // if there is nothing to do, do nothing
+    if (this.cell.frozen || (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)) {
+    } else {
+      if (!this.cellSelected) {
+        // FIRST CLICK
+        // If from toolbox needs to have available elements
+        if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
+          this.border = 'white';
+          this.mutationSetActiveCell(this.cell);
+          return;
+        }
         // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
         this.border = '';
         this.mutationResetActiveCell();
+        return;
       }
-    } else {
       // ROTATE CELL
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
-        this.$emit('updateCell', this.cell);
-        // this.level.grid.set(this.cell);
-        // this.$emit('updateCell', this.cell.coord);
-        this.mutationResetActiveCell();
-        return;
       }
-      // SOURCE: TOOLBOX - TARGET: GRID
-      // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-      // eslint-disable-next-line
-      if (this.cell.isValidTarget()) {
-        if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
-          this.$emit('updateCell', this.cell);
-          // this.mutationRemoveFromCurrentTools(this.activeCell);
-          this.mutationResetActiveCell();
-        }
-        // SOURCE: GRID - TARGET: GRID
-        // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-        else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
-          this.$emit('updateCell', this.cell);
-          this.mutationResetActiveCell();
-        }
-        // SOURCE: GRID - TARGET: TOOLBOX
-        // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
-        else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
-          this.$emit('updateCell', this.cell);
-          // this.mutationAddToCurrentTools(this.activeCell);
-          // this.level.grid.set(this.activeCell.reset());
-          // this.$emit('deleteCell', this.activeCell.reset());
-          this.mutationResetActiveCell();
-          // FALLBACK
-          // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
-        } else {
-          this.mutationResetActiveCell();
-        }
-        // INVALID TARGET
-        // console.debug(`Invalid target: ${this.cell.toString()}`);
-      } else {
-        this.mutationResetActiveCell();
-      }
+
+      this.$emit('updateCell', this.cell);
+      this.mutationResetActiveCell();
     }
   }
+  //     // SOURCE: TOOLBOX - TARGET: GRID
+  //     // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
+  //     // eslint-disable-next-line
+  //     if (this.cell.isValidTarget()) {
+  //       if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
+  //         this.$emit('updateCell', this.cell);
+  //         // this.mutationRemoveFromCurrentTools(this.activeCell);
+  //         this.mutationResetActiveCell();
+  //       }
+  //       // SOURCE: GRID - TARGET: GRID
+  //       // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
+  //       else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
+  //         this.$emit('updateCell', this.cell);
+  //         this.mutationResetActiveCell();
+  //       }
+  //       // SOURCE: GRID - TARGET: TOOLBOX
+  //       // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
+  //       else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
+  //         this.$emit('updateCell', this.cell);
+  //         // this.mutationAddToCurrentTools(this.activeCell);
+  //         // this.level.grid.set(this.activeCell.reset());
+  //         // this.$emit('deleteCell', this.activeCell.reset());
+  //         this.mutationResetActiveCell();
+  //         // FALLBACK
+  //         // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
+  //       } else {
+  //         this.mutationResetActiveCell();
+  //       }
+  //       // INVALID TARGET
+  //       // console.debug(`Invalid target: ${this.cell.toString()}`);
+  //     } else {
+  //       this.mutationResetActiveCell();
+  //     }
+  //   }
+  // }
+  // }
 
   /**
    * Is current cell the active cell

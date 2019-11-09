@@ -9,9 +9,7 @@
         </text>
       </g>
     </svg>
-    <slot>
-      <!-- <p>activeCell: {{ activeCell.toString() }}</p> -->
-    </slot>
+    <slot> </slot>
   </div>
 </template>
 
@@ -19,7 +17,6 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
-// import Cell, Coord from '@/engine/Cell';
 import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 import AppCell from '@/components/Board/AppCell.vue';
@@ -32,8 +29,6 @@ import { Coord, Cell } from '@/engine/classes';
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
-  @State cellSelected!: boolean;
-  @State activeCell!: Cell;
 
   computedClass(cell: Cell): string {
     return this.isAvailable(cell) ? 'inactive' : 'active';

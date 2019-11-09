@@ -89,9 +89,6 @@ export default class Board extends Vue {
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: '' }) readonly probabilities!: string;
   @State activeCell!: Cell;
-  // @State level!: Level;
-  // @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  // @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   tileSize: number = 64;
 
   $refs!: {
@@ -138,42 +135,14 @@ export default class Board extends Vue {
     const originX = this.centerCoord(particle.coord.x);
     const originY = this.centerCoord(particle.coord.y);
     return {
-      // 'transform-origin': `${originX}px ${originY}px`,
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
     };
   }
 
-  /**
-   * Used to move or swap cells
-   * @params coord to move to
-   * @returns boolean
-   */
   updateCell(cell: Cell): void {
     // emit drilling...
-    console.log('board cell clicked');
-
-    // const sourceCell = this.activeCell;
-    // const targetCell = this.level.grid.get(coord);
-    // const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    // mutatedCells.forEach((cell) => {
-    //   this.level.grid.set(cell);
-    // });
-    this.$emit('updateSimulation');
     this.$emit('updateCell', cell);
-  }
-  deleteCell(cell: Cell): void {
-    // emit drilling...
-    console.log('board cell clicked');
-
-    // const sourceCell = this.activeCell;
-    // const targetCell = this.level.grid.get(coord);
-    // const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    // mutatedCells.forEach((cell) => {
-    //   this.level.grid.set(cell);
-    // });
-    this.$emit('updateSimulation');
-    // this.$emit('updateGrid', coord);
   }
 
   /**

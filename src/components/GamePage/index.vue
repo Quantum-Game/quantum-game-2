@@ -58,7 +58,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="toolbox" @updateCell="updateCell"/>
+        <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
         <game-active-cell />
         <game-photons :particles="particles" />
       </section>
@@ -115,7 +115,6 @@ import AppOverlay from '@/components/AppOverlay.vue';
 export default class Game extends Vue {
   level = Level.createDummy();
   @State activeCell!: Cell;
-  // @State level!: Level;
   @Getter('cellPositionsArray')
   frameIndex: number = 0;
   simulation: any = {};
@@ -138,6 +137,7 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     const fromStorage: any = localStorage.getItem(this.currentLevelName);
+    console.warn(JSON.parse(fromStorage));
     let levelI: LevelInterface;
     // it is not in the storage
     if (!fromStorage) {
@@ -152,6 +152,9 @@ export default class Game extends Vue {
       console.warn(levelI);
     }
     this.level = Level.importLevel(levelI);
+    this.level.grid.cells.forEach((cell) => {
+      this.level.grid.set(cell);
+    });
     // this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     // this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.updateSimulation();
@@ -339,22 +342,6 @@ export default class Game extends Vue {
     }
   }
 
-  // @Watch('$route')
-  // handleLevelRouteChange(newRoute, oldRoute) {
-  //   console.error(newRoute.params.id);
-  //   console.error(oldRoute.params.id);
-  //   if (newRoute.params.id !== oldRoute.params.id) {
-  //     // console.error('WHAT IS UP')
-  //     const locallyStoraged: any = localStorage.getItem(newRoute.params.id);
-  //     console.error(locallyStoraged);
-  //     // this.loadLevelFromRoute()
-  //   }
-  //   // else {
-  //   // }
-  //   // const bomba = localStorage.getItem(this.level.id.toString())
-  //   // console.warn(bomba);
-  // }
-
   removeFromCurrentTools(cell: Cell) {
     this.level.toolbox.removeTool(cell);
   }
@@ -371,13 +358,19 @@ export default class Game extends Vue {
     this.level.toolbox.reset();
   }
 
+  /**
+   * the main level grid state updating method
+   * checks the updated cell details, compares them
+   * with the active cell and proceeds accordingly
+   * @param cell
+   * @returns void
+   */
   updateCell(cell: Cell): void {
-    // rotation
     const sourceCell = this.activeCell;
     const targetCell = cell;
 
     if (this.activeCell.isFromToolbox) {
-      this.removeFromCurrentTools(this.activeCell)
+      this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
       this.addToCurrentTools(cell);
       this.level.grid.set(this.activeCell.reset());
@@ -391,29 +384,11 @@ export default class Game extends Vue {
     this.updateSimulation();
   }
 
-  updateGrid(coord: Coord) {
-    if (this.activeCell.isFromToolbox) {
-      this.removeFromCurrentTools(this.activeCell)
-    }
-    const sourceCell = this.activeCell;
-    const targetCell = this.level.grid.get(coord);
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    mutatedCells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
-    this.saveLevelToStore();
-  }
-
-  updateToolbox(cell: Cell) {
-    // const targetCell = this.level.grid.get(cell);
-    // this.level.toolbox.addTool(cell);
-    // this.addToCurrentTools(targetCell);
-  }
-
   @Watch('cellPositionsArray')
   saveLevelToStore() {
     console.error('saved');
     const currentStateJSONString = JSON.stringify(this.level.exportLevel());
+    console.warn(JSON.parse(currentStateJSONString));
     localStorage.setItem(this.currentLevelName, currentStateJSONString);
   }
 
@@ -447,6 +422,20 @@ export default class Game extends Vue {
   get toolbox() {
     return this.level.toolbox;
   }
+
+  get cellPositionsArray() {
+      const array: number[] = [];
+      this.level.grid.cells
+        .filter((cell) => {
+          return cell.element.name !== 'Void';
+        })
+        .map((cell) => {
+          array.push(cell.coord.x);
+          array.push(cell.coord.y);
+          return cell;
+        });
+      return array;
+    }
 }
 </script>
 

@@ -2,7 +2,7 @@ import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
 
 export interface RootState {
-  level: Level;
+  // level: Level;
   activeCell: Cell;
   hoveredCell: Cell;
   cellSelected: boolean;
