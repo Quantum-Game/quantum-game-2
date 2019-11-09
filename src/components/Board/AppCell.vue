@@ -91,8 +91,7 @@ export default class AppCell extends Mixins(getPosition) {
    * Handle mouseover for active cell display
    */
   handleCellHover(): void {
-    // if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
-    if (!this.cell.isVoid) {
+    if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
       this.mutationSetHoveredCell(this.cell);
     }
   }
