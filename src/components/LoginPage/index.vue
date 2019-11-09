@@ -6,11 +6,11 @@
       </h1>
       <p>Login with your social account</p>
       <div class="social-login">
-        <div class="social-login__btn social-login__gh" @click="signInSocial('github')">Github</div>
-        <div class="social-login__btn social-login__fb " @click="signInSocial('facebook')">
+        <div class="social-login__btn social-login__gh" @click="signInGithub">Github</div>
+        <div class="social-login__btn social-login__fb " @click="signInFacebook">
           Facebook
         </div>
-        <div class="social-login__btn social-login__g" @click="signInSocial('google')">Google</div>
+        <div class="social-login__btn social-login__g" @click="signInGoogle">Google</div>
       </div>
       <p class="separator">or</p>
       <div v-if="error" class="alert-error">{{ error }}</div>
@@ -79,8 +79,14 @@ export default class Login extends Vue {
   signIn() {
     $userStore.dispatch('SIGN_IN', this.user);
   }
-  signInSocial(social: string) {
-    $userStore.dispatch('SIGN_IN_SOCIAL', social);
+  signInGithub() {
+    $userStore.dispatch('SIGN_IN_GITHUB');
+  }
+  signInFacebook() {
+    $userStore.dispatch('SIGN_IN_FACEBOOK');
+  }
+  signInGoogle() {
+    $userStore.dispatch('SIGN_IN_GOOGLE');
   }
 }
 </script>
