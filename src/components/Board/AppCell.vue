@@ -133,42 +133,6 @@ export default class AppCell extends Mixins(getPosition) {
       this.mutationResetActiveCell();
     }
   }
-  //     // SOURCE: TOOLBOX - TARGET: GRID
-  //     // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-  //     // eslint-disable-next-line
-  //     if (this.cell.isValidTarget()) {
-  //       if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
-  //         this.$emit('updateCell', this.cell);
-  //         // this.mutationRemoveFromCurrentTools(this.activeCell);
-  //         this.mutationResetActiveCell();
-  //       }
-  //       // SOURCE: GRID - TARGET: GRID
-  //       // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-  //       else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
-  //         this.$emit('updateCell', this.cell);
-  //         this.mutationResetActiveCell();
-  //       }
-  //       // SOURCE: GRID - TARGET: TOOLBOX
-  //       // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
-  //       else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
-  //         this.$emit('updateCell', this.cell);
-  //         // this.mutationAddToCurrentTools(this.activeCell);
-  //         // this.level.grid.set(this.activeCell.reset());
-  //         // this.$emit('deleteCell', this.activeCell.reset());
-  //         this.mutationResetActiveCell();
-  //         // FALLBACK
-  //         // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
-  //       } else {
-  //         this.mutationResetActiveCell();
-  //       }
-  //       // INVALID TARGET
-  //       // console.debug(`Invalid target: ${this.cell.toString()}`);
-  //     } else {
-  //       this.mutationResetActiveCell();
-  //     }
-  //   }
-  // }
-  // }
 
   /**
    * Is current cell the active cell
