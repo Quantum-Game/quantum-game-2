@@ -9,3 +9,21 @@ export interface RootState {
   gameState: string;
   simulationState: boolean;
 }
+
+export interface UserState {
+  user: {
+    loggedIn: boolean;
+    rememberMe: boolean;
+    data: {
+      displayName: string;
+      email: string;
+    };
+  };
+  progressArr: ProgressObj[];
+  error: null;
+}
+interface ProgressObj {
+  id: number;
+  status: 'string';
+  score: number;
+}
