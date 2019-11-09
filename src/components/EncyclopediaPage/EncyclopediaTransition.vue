@@ -26,7 +26,6 @@
           <option value="dir pol">dir pol</option>
           <option value="pol dir">pol dir</option>
         </select>
-        <!-- <div class="operatorText">{{ operator }}</div> -->
       </div>
     </div>
   </div>
@@ -76,17 +75,16 @@ export default class EncyclopediaMatrixBoard extends Vue {
   /**
    * Update the rotation of the mini board element
    */
-  updateRotation(cell: Cell) {
+  updateRotation(cell: Cell): void {
     console.log(cell.toString());
-
     this.rotation = cell.rotation;
   }
 
   get operator() {
-    return this.cell.element.transition(this.cell.rotation);
+    return this.cell.element.transition(this.rotation);
   }
 
-  get basis() {
+  get basis(): string[] {
     if (this.dimOrder === 'dir pol') {
       return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
     }

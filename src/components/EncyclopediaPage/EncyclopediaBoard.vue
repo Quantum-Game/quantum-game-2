@@ -11,6 +11,9 @@
           </g>
         </g>
 
+        <!-- LASERS -->
+        <board-lasers :path-particles="allParticles" />
+
         <!-- PHOTONS -->
         <g
           v-for="(particle, i) in selectedFrame.polarizationSuperpositions"
@@ -31,9 +34,6 @@
             :sigma="0.25"
           />
         </g>
-
-        <!-- LASERS -->
-        <board-lasers :pathParticles="pathParticles" />
 
         <!-- CELLS -->
         <app-cell
@@ -61,9 +61,11 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell } from '@/engine/classes';
+import Particle from '@/engine/Particle';
 import { ParticleInterface, GridInterface } from '@/engine/interfaces';
 import AppPhoton from '@/components/AppPhoton.vue';
 import BoardDots from '@/components/Board/BoardDots.vue';
+import BoardLasers from '@/components/Board/BoardLasers.vue';
 import AppCell from '@/components/Board/AppCell.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -74,7 +76,8 @@ const dummyGridInterface = dummyGrid.exportGrid();
 @Component({
   components: {
     AppPhoton,
-    AppCell
+    AppCell,
+    BoardLasers
   }
 })
 export default class EncyclopediaBoard extends Vue {
@@ -83,13 +86,13 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
 
   tileSize = 64; // sounds like a prop or constant
-  selectedFrameId = 0;
-  frames: QuantumFrame[] = [];
   grid = new Grid(
     this.gridObj.rows,
     this.gridObj.cols,
     this.gridObj.cells.map((jsonCell) => Cell.importCell(jsonCell))
   );
+  selectedFrameId = 0;
+  simulation: QuantumSimulation = new QuantumSimulation(this.grid);
 
   $refs!: {
     grid: HTMLElement;
@@ -100,12 +103,19 @@ export default class EncyclopediaBoard extends Vue {
   }
 
   reset() {
-    const quantumSimulation = new QuantumSimulation(this.grid);
-    quantumSimulation.initializeFromLaser('H');
-    quantumSimulation.nextFrames(this.maxSteps);
-    this.frames = quantumSimulation.frames;
-    this.selectedFrameId = Math.min(this.selectedFrameId, this.frames.length - 1);
+    this.simulation = new QuantumSimulation(this.grid);
+    this.simulation.initializeFromLaser('H');
+    this.simulation.nextFrames(this.maxSteps);
+    this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
     this.selectedFrameId = this.defaultStep;
+  }
+
+  get frames() {
+    return this.simulation.frames;
+  }
+
+  get allParticles() {
+    return this.simulation.allParticles;
   }
 
   get selectedFrame() {
