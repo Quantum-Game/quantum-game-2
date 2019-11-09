@@ -1,24 +1,26 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets">
-    <div>Ket (old): {{ frame.photons.ketString() }}</div>
-    <div>
+    <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div>
+    <!-- VIEWR -->
+    <div class="quantum-state-viewer">
       <span
         v-for="(ketComponent, index) in ketComponents"
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span> + {{ renderComplex(ketComponent.amplitude) }} </span>
+        <span class="ket-component2"> + {{ renderComplex(ketComponent.amplitude) }} </span>
         <span
           v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
           :key="`ket-component-${pIndex}`"
-          class="ket-component"
+          class="ket-component3"
         >
           | {{ particleCoord.x }},{{ particleCoord.y }} {{ renderDir(particleCoord.dir) }}
           {{ renderPol(particleCoord.pol) }} ⟩
         </span>
       </span>
     </div>
-    <div>
+    <!-- VIEWR -->
+    <div class="controls">
       Absorptions:
       <span
         v-for="(absorption, index) in absorptions"
@@ -93,12 +95,42 @@ export default class GameKet extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.temp {
+  font-size: 0.6rem;
+  color: gray;
+  padding: 10px;
+}
+.controls {
+  //font-size: 0.8rem;
+  color: #9229ed;
+}
 .simulation-frame-kets {
   padding-top: 10px;
   border-top: 1px solid white;
   width: 100%;
   display: block;
   text-align: center;
+}
+.quantum-state-viewer {
+  padding: 10px;
+}
+
+.ket-component {
+  padding: 8px 2px 8px 2px;
+  background-color: #17013a;
+  margin: 5px;
+}
+.ket-component2 {
+  background-color: #2e006a;
+  color: #0080ff;
+  padding: 2px;
+  margin: 5px;
+}
+.ket-component3 {
+  background-color: #2e006a;
+  color: white;
+  padding: 2px;
+  margin: 5px;
 }
 
 .step {

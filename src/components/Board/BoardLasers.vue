@@ -6,7 +6,7 @@
         :d="computePath(particle)"
         stroke-dasharray="8 8"
         fill="transparent"
-        stroke="red"
+        stroke="#FF0055"
         :stroke-width="computeSize(particle)"
         class="laserPath"
       />
