@@ -115,7 +115,6 @@ export default class Board extends Vue {
    * Handle mouse over from cell and photons
    */
   handleMouseOver(coord: Coord) {
-    console.log('FIRE');
     const cell = this.level.grid.get(coord);
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord);
