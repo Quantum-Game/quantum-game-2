@@ -23,6 +23,12 @@ export default new Router({
       component: () => import('@/components/GamePage/index.vue')
     },
     {
+      path: '/level/:id/:levelsaved',
+      name: 'levelsaved',
+      component: () => import('@/components/GamePage/index.vue'),
+      meta: { levelSaved: true }
+    },
+    {
       path: '/info',
       component: () => import('@/components/EncyclopediaPage/index.vue'),
       children: [

@@ -170,6 +170,69 @@ const userStore: StoreOptions<UserState> = {
           commit('SET_ERROR', err.message);
         });
       }
+    },
+    SAVE_LEVEL({commit}, level) {
+      if (auth.currentUser) {
+        const customLevel: any = {
+          userId: auth.currentUser.uid,
+          level: {
+            id: level.id,
+            name: level.name,
+            group: level.group,
+            description: level.description,
+          },
+          createdAt: firebase.firestore.Timestamp.fromDate(new Date())
+        };
+
+        console.log(level)
+        const dbRef = db.collection('levels');
+
+        dbRef
+          .add(customLevel)
+          .then(data => {
+            console.log('Level saved: ', data);
+            router.replace({ path: `/level/${level.id}/${data.id}` });
+          })
+          .then(data => {
+            console.log('dont worry be happy')
+          }) 
+          .catch((err) => {
+            commit('SET_ERROR', err.message);
+          });
+      } else {
+        console.log('You are not logged!')
+      }
+    },
+    UPDATE_LEVEL({commit}, level) {
+      if (auth.currentUser) {
+        const customLevel: any = {
+          userId: auth.currentUser.uid,
+          level: {
+            id: level.id,
+            name: level.name,
+            group: level.group,
+            description: level.description,
+          },
+          //created for firestore update test
+          lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
+        };
+        const levelSaved = router.currentRoute.params.levelsaved;
+
+        const doc = db.collection('levels').doc(levelSaved);
+        doc.get().then((query) => {
+          if(query.exists) {
+            doc
+            .update(customLevel)
+            .catch((err) => {
+              commit('SET_ERROR', err.message);
+            });
+          } else {
+            console.log('There is no level in db.')
+          }
+        })
+      } else {
+        console.log('You are not logged!')
+      }
     }
   }
 };
