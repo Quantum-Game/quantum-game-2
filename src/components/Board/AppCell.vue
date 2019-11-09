@@ -74,11 +74,10 @@ const borderColors = {
 export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
   @Prop() readonly tileSize!: number;
+  @Prop({ default: true }) readonly available!: boolean;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
-  @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
-  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @State level!: Level;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   border = '';
@@ -93,67 +92,46 @@ export default class AppCell extends Mixins(getPosition) {
   //   }
   // }
 
+  /**
+   *  handles clicking, namely
+   *  1. distinguishes a selecting vs a placing click
+   *  2. determines if the updateCell event should be emitted
+   *  @returns void
+   */
+
   handleCellClick(): void {
-    // First click unselected tool
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-    if (!this.cellSelected) {
-      // If from toolbox needs to have available elements
-      if (
-        this.cell.tool &&
-        (this.cell.isFromGrid || (this.cell.isFromToolbox && this.level.isAvailable(this.cell)))
-      ) {
-        this.border = 'white';
-        this.mutationSetActiveCell(this.cell);
-      } else {
-        // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
-        this.border = '';
-        this.mutationResetActiveCell();
-      }
+
+    // do nothing, if:
+    if (
+      this.cell.frozen ||
+      // if it s a click on a tool thats unavailable:
+      (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
+      // if there is a cell selected in the toolbox and you click it once more:
+      (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
+    ) {
+      this.mutationResetActiveCell();
     } else {
-      // ROTATE CELL
-      if (this.isActiveCell && this.cell.isFromGrid) {
-        this.cell.rotate();
-        this.level.grid.set(this.cell);
-        this.$emit('updateCell', this.cell.coord);
+      if (!this.cellSelected) {
+        // FIRST CLICK
+        // If from toolbox needs to have available elements
+        if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
+          this.border = 'white';
+          this.mutationSetActiveCell(this.cell);
+          return;
+        }
+        this.border = '';
         this.mutationResetActiveCell();
         return;
       }
-      // SOURCE: TOOLBOX - TARGET: GRID
-      // console.debug(`TOOLBOX: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-      // eslint-disable-next-line
-      if (this.cell.isValidTarget()) {
-        if (this.activeCell.isFromToolbox && this.cell.isFromGrid && this.cell.isVoid) {
-          const available = this.level.toolbox.available(this.activeCell.element.name);
-          if (available > 0) {
-            this.$emit('updateCell', this.cell.coord);
-            this.mutationRemoveFromCurrentTools(this.activeCell);
-            this.mutationResetActiveCell();
-          }
-        }
-        // SOURCE: GRID - TARGET: GRID
-        // console.debug(`GRID: ${this.activeCell.toString()} ---> GRID: ${this.cell.toString()}`);
-        else if (this.activeCell.isFromGrid && this.cell.isFromGrid) {
-          this.$emit('updateCell', this.cell.coord);
-          this.mutationResetActiveCell();
-        }
-        // SOURCE: GRID - TARGET: TOOLBOX
-        // console.debug(`GRID: ${this.activeCell.toString()} ---> TOOLBOX: ${this.cell.toString()}`);
-        else if (this.activeCell.isFromGrid && this.cell.isFromToolbox && this.cell.tool) {
-          this.$emit('updateCell', this.cell.coord);
-          this.mutationAddToCurrentTools(this.activeCell);
-          this.level.grid.set(this.activeCell.reset());
-          this.mutationResetActiveCell();
-          // FALLBACK
-          // console.debug(`ERROR FROM: ${this.activeCell.toString()} ---> TO: ${this.cell.toString()}`);
-        } else {
-          this.mutationResetActiveCell();
-        }
-        // INVALID TARGET
-        // console.debug(`Invalid target: ${this.cell.toString()}`);
-      } else {
-        this.mutationResetActiveCell();
+      // ROTATE CELL
+      if (this.isActiveCell && this.cell.isFromGrid) {
+        this.cell.rotate();
       }
+
+      this.$emit('updateCell', this.cell);
+      this.mutationResetActiveCell();
     }
   }
 
@@ -170,8 +148,11 @@ export default class AppCell extends Mixins(getPosition) {
   get computedCellClass(): string[] {
     return [
       this.computedCellName,
-      this.cell.tool && !this.cell.isVoid ? 'active' : '',
-      this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''
+      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
+      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
+        ? 'frozen'
+        : '',
+      this.cell.isFromToolbox && !this.available ? 'transparent' : ''
     ];
   }
 
@@ -210,12 +191,6 @@ export default class AppCell extends Mixins(getPosition) {
   indicateTool(): void {
     this.border = borderColors.rotable;
   }
-
-  // indicateFrozen(): void {
-  //   const timeout = setTimeout(() => {
-  //     this.border = '';
-  //   }, 200);
-  // }
 
   /**
    * styles used for wrapper positioning
@@ -297,6 +272,9 @@ rect {
   .inner-rect {
     fill: white;
     opacity: 0.1;
+  }
+  .transparent {
+    opacity: 0.5;
   }
 }
 </style>

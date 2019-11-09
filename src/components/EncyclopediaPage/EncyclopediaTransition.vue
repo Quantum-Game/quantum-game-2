@@ -12,7 +12,13 @@
         :margin="20"
       />
       <div class="eboard">
-        <encyclopedia-board :grid-obj="gridObj" class="board" />
+        <encyclopedia-board
+          :grid-obj="grid.exportGrid()"
+          class="board"
+          max-steps="10"
+          default-step="1"
+          @updateRotation="updateRotation"
+        />
       </div>
       <div>
         <span>Select dimension order:</span>
@@ -20,7 +26,6 @@
           <option value="dir pol">dir pol</option>
           <option value="pol dir">pol dir</option>
         </select>
-        <div class="operatorText">{{ operator }}</div>
       </div>
     </div>
   </div>
@@ -48,75 +53,38 @@ import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.v
 })
 export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: 'Mirror' }) readonly elementName!: string;
-  @Prop({ default: '0' }) readonly rotation!: number;
-  @Prop({ default: 5 }) readonly step!: number;
+  @Prop({ default: () => 10 }) readonly maxSteps!: number;
+  @Prop({ default: () => 2 }) readonly defaultStep!: number;
+  @Prop({ default: '0' }) defaultRotation!: number;
+  rotation = this.defaultRotation;
   element = Element.fromName(this.elementName);
-  coord = new Coord(1, 1);
+  coord = new Coord(1, 2);
   cell = new Cell(this.coord, this.element, this.rotation);
-  gridObj: GridInterface = {
-    cols: 3,
-    rows: 3,
-    cells: [
-      {
-        coord: { x: 0, y: 1 },
-        element: 'Laser',
-        rotation: 0,
-        active: true,
-        frozen: true
-      },
-      {
-        coord: { x: 1, y: 1 },
-        element: this.elementName,
-        rotation: this.rotation,
-        active: false,
-        frozen: false
-      }
-    ]
-  };
-
-  // XXX
-  // XXX To be removed
-  // XXX
-  level: Level = Level.importLevel({
-    id: 1337,
-    name: this.elementName,
-    group: 'Encyclopedia',
-    description: this.elementName,
-    grid: {
-      cols: 3,
-      rows: 3,
-      cells: [
-        {
-          coord: { x: 0, y: 1 },
-          element: 'Laser',
-          rotation: 0,
-          active: true,
-          frozen: true
-        },
-        {
-          coord: { x: 1, y: 1 },
-          element: this.elementName,
-          rotation: this.rotation,
-          active: false,
-          frozen: false
-        }
-      ]
-    },
-    hints: [],
-    goals: []
-  });
+  grid = Grid.dummyGrid(3, 4);
   dimOrder = 'dir pol';
 
   $refs!: {
     grid: HTMLElement;
   };
 
-  get operator() {
-    const cell = this.level.grid.get(this.coord);
-    return cell.element.transition(cell.rotation);
+  created() {
+    this.grid.set(this.cell);
+    console.log(this.grid.ascii);
   }
 
-  get basis() {
+  /**
+   * Update the rotation of the mini board element
+   */
+  updateRotation(cell: Cell): void {
+    console.log(cell.toString());
+    this.rotation = cell.rotation;
+  }
+
+  get operator() {
+    return this.cell.element.transition(this.rotation);
+  }
+
+  get basis(): string[] {
     if (this.dimOrder === 'dir pol') {
       return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
     }

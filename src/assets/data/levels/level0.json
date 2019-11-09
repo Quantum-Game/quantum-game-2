@@ -45,7 +45,7 @@
   ],
   "goals": [
     {
-      "coord": { "y": 2, "x": 7 },
+      "coord": { "y": 4, "x": 9 },
       "threshold": 1,
       "value": 0
     }

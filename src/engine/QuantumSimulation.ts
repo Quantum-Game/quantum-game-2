@@ -1,16 +1,11 @@
 import _ from 'lodash';
+import { Photons } from 'quantum-tensors';
+import { weightedRandomInt } from './utils';
 import QuantumFrame, { AbsorptionsInterface } from './QuantumFrame';
 import Grid from './Grid';
 import { GridInterface } from './interfaces';
 import Cell from './Cell';
 import Particle from './Particle';
-
-// To add in Vector->Photon->QuantumFrame: copy
-
-// - Grid x and y order
-// - Grid does do too many things
-
-// there should be no level-simulation circular dependecy!
 
 /**
  * Rewrite of Frame.
@@ -63,7 +58,8 @@ export default class QuantumSimulation {
     this.frames.push(frame);
   }
 
-  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6, logging = true): void {
+  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
+    const logging = true;
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {
@@ -75,6 +71,12 @@ export default class QuantumSimulation {
       console.debug('probabilityPerFrame', this.probabilityPerFrame);
       console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
       console.debug('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
+      console.debug('An example of realization:');
+      const randomSample = this.sampleRandomRealization();
+      randomSample.statePerFrame.forEach((state) => console.debug(state.ketString()));
+      console.debug(
+        `Detected: in ${randomSample.fate.name} at (${randomSample.fate.x},${randomSample.fate.y})`
+      );
     }
   }
 
@@ -126,5 +128,33 @@ export default class QuantumSimulation {
     return result;
   }
 
-  // TODO: a random realizaiton; but first I need to eat something
+  /**
+   * Create a random realization. So - the state is normalized, until a successful measurement.
+   * @remark So far for 1 particle.
+   * @todo Make it work for more particles.
+   * @todo Maybe make it another object? Or use QuantumFrame?
+   */
+  sampleRandomRealization(): {
+    statePerFrame: Photons[];
+    probability: number;
+    fate: { x: number; y: number; name: string };
+  } {
+    // first, which frame
+    const [...totalAbsorptionPerFrame] = this.totalAbsorptionPerFrame;
+    const lastId = weightedRandomInt(this.totalAbsorptionPerFrame, false);
+    // -1 if no measurement, and we need to deal with that
+    const lastFrameAbs = this.frames[lastId].absorptions;
+    const absorptionId = weightedRandomInt(lastFrameAbs.map((d) => d.probability), true);
+    const absorption = lastFrameAbs[absorptionId];
+    const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
+
+    const { x, y } = absorption;
+    const name = x === -1 && y === -1 ? 'OutOfBoard' : this.board.cellFromXY(x, y).element.name;
+
+    return {
+      statePerFrame: states,
+      probability: absorption.probability,
+      fate: { x, y, name }
+    };
+  }
 }
