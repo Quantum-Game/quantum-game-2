@@ -1,7 +1,7 @@
 <template>
   <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots />
+    <board-dots :grid="level.grid" />
 
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />

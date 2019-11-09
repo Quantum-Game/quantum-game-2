@@ -1,7 +1,7 @@
 <template>
   <g class="dots">
-    <g v-for="(row, y) in level.grid.rows + 1" :key="y">
-      <g v-for="(column, x) in level.grid.cols + 1" :key="x">
+    <g v-for="(row, y) in rows" :key="y">
+      <g v-for="(column, x) in cols" :key="x">
         <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>
@@ -9,13 +9,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import Level from '@/engine/Level';
+import { Vue, Prop, Component } from 'vue-property-decorator';
+import Grid from '@/engine/Grid';
 @Component
 export default class BoardDots extends Vue {
-  @State level!: Level;
+  @Prop() readonly grid!: Grid;
   tileSize = 64;
+
+  get rows(): number {
+    return this.grid.rows + 1;
+  }
+
+  get cols(): number {
+    return this.grid.cols + 1;
+  }
 }
 </script>
 

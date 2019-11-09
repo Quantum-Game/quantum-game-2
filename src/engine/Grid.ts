@@ -249,6 +249,25 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Create a dummy grid object
+   * @returns dummy Grid
+   */
+  public static dummyGrid(): Grid {
+    const grid = new Grid(3, 3);
+    const cells: CellInterface[] = [
+      {
+        coord: { x: 0, y: 1 },
+        element: 'Laser',
+        rotation: 0,
+        active: true,
+        frozen: true
+      }
+    ];
+    grid.importGrid(cells);
+    return grid;
+  }
+
+  /**
    * Exports the grid to an interface of primitives
    * @returns a grid interface
    */
