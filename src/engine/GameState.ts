@@ -1,7 +1,7 @@
 /**
  * GAME STATE CLASS
  * Stores the game starting and ending logic
- * TODO: Will need to be better defined
+ * FIXME: Currently unused
  */
 export default class GameState {
   achievedGoals: boolean;

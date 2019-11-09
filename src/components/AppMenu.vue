@@ -33,7 +33,7 @@ import { State } from 'vuex-class';
 
 @Component
 export default class AppMenu extends Vue {
-  @State((state) => state.level.id) currentLevelId!: number;
+  @State('currentLevelID') currentLevelID!: number;
   isMenuOpen: boolean = false;
 
   created() {
@@ -69,7 +69,7 @@ export default class AppMenu extends Vue {
   }
 
   get continueLink() {
-    return `/level/${this.currentLevelId}`;
+    return `/level/${this.currentLevelID}`;
   }
 }
 </script>

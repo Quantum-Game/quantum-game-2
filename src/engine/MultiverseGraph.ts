@@ -32,7 +32,7 @@ export default class MultiverseGraph {
         });
       });
     });
-    console.log(`NODES: ${this.graph.nodes()}`);
+    // console.log(`NODES: ${this.graph.nodes()}`);
   }
 
   /**
@@ -63,7 +63,7 @@ export default class MultiverseGraph {
    */
   successors(particleUid: string) {
     const successors = this.graph.children(particleUid);
-    console.log(`CHILDRENS: ${successors}`);
+    // console.log(`CHILDRENS: ${successors}`);
     return successors;
   }
 

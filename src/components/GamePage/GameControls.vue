@@ -36,17 +36,20 @@ import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 export default class GameControls extends Vue {
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
-  playBackControls = ['play', 'step-back', 'pause', 'step-forward', 'stop', 'reload'];
-  viewControls = ['classical', 'quantum', 'multiverse'];
+  // PLAY BUTTON SHOULD CHANGE TO PAUSE WHEN THE PHOTON IS MOVING
+  playBackControls = ['step-back', 'play', 'step-forward'];
+  // ADD VIEW CONTROLS WHEN MULTIVERSE MODE IS ADDED
+  viewControls = [];
 }
 </script>
 
 <style lang="scss" scoped>
 .controls {
   width: 100%;
-  border-top: 1px solid white;
+  //border-top: 1px solid white;
   display: flex;
-  padding-top: 0.7rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   justify-content: space-between;
   align-items: center;
   & .view-mode {

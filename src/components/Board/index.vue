@@ -1,19 +1,10 @@
 <template>
-  <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+  <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots />
+    <board-dots :gridDimensions="gridDimensions" />
 
     <!-- LASER PATH -->
-    <board-lasers :paths="paths" />
-
-    <!-- CELLS -->
-    <app-cell
-      v-for="(cell, i) in level.grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @updateCell="updateCell"
-    />
+    <board-lasers :pathParticles="pathParticles" />
 
     <!-- PHOTONS -->
     <g
@@ -22,20 +13,45 @@
       :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
+      @mouseenter.native="handleMouseEnter(particle.coord)"
     >
       <app-photon
         name
         :particle="particle"
         :animate="2"
-        :margin="0"
-        :display-magnetic="true"
-        :display-electric="false"
-        :display-gaussian="false"
+        :margin="2"
+        :display-magnetic="false"
+        :display-electric="true"
+        :display-gaussian="true"
         :sigma="0.25"
       />
     </g>
+
+    <!-- CELLS -->
+    <app-cell
+      v-for="(cell, i) in grid.cells"
+      :key="'cell' + i"
+      :cell="cell"
+      :tileSize="tileSize"
+      @updateCell="updateCell"
+      @mouseover.native="handleMouseEnter(cell.coord)"
+    />
+
+    <!-- PROBABILITY -->
+    <text
+      v-for="(probability, i) in probabilities"
+      :key="'probability' + i"
+      :x="(probability.x + 0.5) * 64"
+      :y="probability.y * 64"
+      text-anchor="middle"
+      class="probability"
+    >
+      {{ (probability.probability * 100).toFixed(1) }}%
+    </text>
+
+    <!-- SPEECH BUBBLES -->
     <speech-bubble
-      v-for="(hint, index) in level.hints"
+      v-for="(hint, index) in hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -68,21 +84,42 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: [] }) readonly particles!: ParticleInterface[];
-  @Prop({ default: '' }) readonly paths!: string;
+  @Prop({ default: [] }) readonly particles!: Particle[];
+  @Prop() readonly grid!: Grid;
+  @Prop() readonly hints!: HintInterface[];
+  @Prop({ default: [] }) readonly pathParticles!: Particle[];
+  @Prop({ default: '' }) readonly probabilities!: string;
+  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @State hoveredParticles!: Particle[];
+  @State hoveredCell!: Cell;
   @State activeCell!: Cell;
-  @State level!: Level;
-  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   tileSize: number = 64;
 
   $refs!: {
-    grid: HTMLElement;
+    'grid-wrapper': HTMLElement;
   };
 
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  /**
+   * Handle mouse over from cell and photons
+   */
+  handleMouseEnter(coord: Coord) {
+    console.log('FIRE');
+    const cell = this.grid.get(coord);
+    const particles = this.particles.filter((particle) => {
+      return particle.coord.equal(coord);
+    });
+    if (cell !== this.hoveredCell && !cell.isVoid) {
+      this.mutationSetHoveredCell(cell);
+    }
+    if (particles.length > 0) {
+      this.mutationSetHoveredParticles(particles);
+    }
   }
 
   assessTileSize(): void {
@@ -92,10 +129,20 @@ export default class Board extends Vue {
   }
 
   get totalWidth(): number {
-    return this.level.grid.cols * this.tileSize;
+    return this.grid.cols * this.tileSize;
   }
   get totalHeight(): number {
-    return this.level.grid.rows * this.tileSize;
+    return this.grid.rows * this.tileSize;
+  }
+
+  computeProbStyle(probability: { x: number; y: number; probability: number }) {
+    const originX = this.centerCoord(probability.x);
+    const originY = this.centerCoord(probability.y);
+    return {
+      // 'transform-origin': `${originX}px ${originY}px`,
+      transform: `translate: ${probability.x * this.tileSize}px ${probability.y * this.tileSize}px`,
+      fill: 'white'
+    };
   }
 
   /**
@@ -110,26 +157,14 @@ export default class Board extends Vue {
     const originX = this.centerCoord(particle.coord.x);
     const originY = this.centerCoord(particle.coord.y);
     return {
-      // 'transform-origin': `${originX}px ${originY}px`,
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
     };
   }
 
-  /**
-   * Used to move or swap cells
-   * @params coord to move to
-   * @returns boolean
-   */
-  updateCell(coord: Coord): void {
-    const sourceCell = this.activeCell;
-    const targetCell = this.level.grid.get(coord);
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    mutatedCells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
-    this.$emit('updateSimulation');
-    this.$emit('updateGrid');
+  updateCell(cell: Cell): void {
+    // emit drilling...
+    this.$emit('updateCell', cell);
   }
 
   /**
@@ -148,9 +183,7 @@ export default class Board extends Vue {
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.level.grid.cells.filter(
-      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
-    );
+    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
     if (cells.length > 0) {
       return cells[0].exportCell();
     }
@@ -161,21 +194,20 @@ export default class Board extends Vue {
       frozen: false
     };
   }
+
+  get gridDimensions() {
+    const {
+      tileSize,
+      grid: { cols, rows }
+    } = this;
+    return { cols, rows, tileSize };
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.laserPath {
-  stroke-dasharray: 8;
-  animation-name: dash;
-  animation-duration: 4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-  animation-direction: reverse;
-}
-@keyframes dash {
-  to {
-    stroke-dashoffset: 64;
-  }
+.probability {
+  fill: #ff0055;
+  font-size: 0.8rem;
 }
 </style>

@@ -2,42 +2,40 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/types';
 import Cell from '@/engine/Cell';
-import Level from '@/engine/Level';
-import Toolbox from '@/engine/Toolbox';
+import Particle from '@/engine/Particle';
 import {
-  SET_ACTIVE_LEVEL,
-  UPDATE_GRID_CELL,
+  SET_GAME_STATE,
+  SET_SIMULATION_STATE,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
+  SET_CURRENT_LEVEL_ID,
   SET_HOVERED_CELL,
-  SET_CURRENT_TOOLS,
-  RESET_CURRENT_TOOLS,
-  ADD_TO_CURRENT_TOOLS,
-  REMOVE_FROM_CURRENT_TOOLS
+  SET_HOVERED_PARTICLE
 } from './mutation-types';
 import optionsModule from './optionsModule';
 
 const initialCell = Cell.createDummy();
-const initialLevel = Level.createDummy();
+const initialParticle = Particle.createDummy();
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
   state: {
-    level: initialLevel,
     activeCell: initialCell,
     cellSelected: false,
-    hoveredCell: initialCell
+    hoveredCell: initialCell,
+    hoveredParticles: [initialParticle],
+    gameState: 'Initial',
+    simulationState: false,
+    currentLevelID: 0
   },
   mutations: {
     // set active level
-    [SET_ACTIVE_LEVEL](state, level) {
-      state.level = level;
-      state.cellSelected = false;
-      state.activeCell = initialCell;
+    [SET_GAME_STATE](state, gameState) {
+      state.gameState = gameState;
     },
-    // modify grid cell
-    [UPDATE_GRID_CELL](state, cell) {
-      state.level.grid.set(cell);
+    // set active level
+    [SET_SIMULATION_STATE](state, simulationState) {
+      state.simulationState = simulationState;
     },
     // set active cell
     [SET_ACTIVE_CELL](state, cell) {
@@ -53,23 +51,13 @@ const store: StoreOptions<RootState> = {
     [SET_HOVERED_CELL](state, cell) {
       state.hoveredCell = cell;
     },
-    // toolbox functionality
-    [SET_CURRENT_TOOLS](state, cells) {
-      state.level.toolbox = new Toolbox(cells);
+    // hovered cell functional
+    [SET_HOVERED_PARTICLE](state, particles) {
+      state.hoveredParticles = particles;
     },
-    [RESET_CURRENT_TOOLS](state) {
-      state.level.toolbox.reset();
-    },
-    [ADD_TO_CURRENT_TOOLS](state, cell) {
-      state.level.toolbox.addTool(cell);
-    },
-    [REMOVE_FROM_CURRENT_TOOLS](state, cell) {
-      state.level.toolbox.removeTool(cell);
+    [SET_CURRENT_LEVEL_ID](state, id) {
+      state.currentLevelID = id;
     }
-  },
-  getters: {
-    toolbox: (state) => state.level.toolbox,
-    gridI: (state) => state.level.grid.exportGrid()
   },
   modules: {
     optionsModule

@@ -1,3 +1,5 @@
+// import { ToolInterface } from './Toolbox';
+
 /**
  * ROOT STATE INTERFACE
  * Holds global state of the application
@@ -26,6 +28,14 @@ export interface ParticleInterface {
 }
 
 /**
+ * DETECTION INTERFACE
+ */
+export interface detectionInterface {
+  coord: CoordInterface;
+  probability: number;
+}
+
+/**
  * LEVEL LIST INTERFACE
  * level dictionary interface
  */
@@ -45,6 +55,7 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
+  tools?: CellInterface[];
 }
 
 /**
@@ -112,7 +123,7 @@ export interface ClusterInterface {
 export interface CellInterface {
   coord: CoordInterface;
   element: string;
-  rotation: number;
+  rotation?: number;
   frozen: boolean;
   active?: boolean;
   energized?: boolean;

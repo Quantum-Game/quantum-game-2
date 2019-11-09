@@ -327,6 +327,15 @@ export default class Particle extends Coord {
   }
 
   /**
+   * Create a dummy particle
+   * @returns dummy particle
+   */
+  static createDummy(): Particle {
+    const coord = new Coord(0, 0);
+    return new Particle(coord, 0);
+  }
+
+  /**
    * Convert particles to a string representation
    * @param particles list of particles
    * @returns string

@@ -60,6 +60,13 @@ export default class Grid extends Cluster {
     })[0];
   }
 
+  public cellFromXY(x: number, y: number): Cell {
+    const coord = Coord.importCoord({ x, y });
+    return this.cells.filter((cell) => {
+      return coord.equal(cell.coord);
+    })[0];
+  }
+
   /**
    * Get center cell of the grid
    * @returns center cell coordinates
@@ -77,6 +84,16 @@ export default class Grid extends Cluster {
   resetUnfrozen(): void {
     this.unfrozen.cells.forEach((cell) => {
       cell.reset();
+    });
+  }
+
+  /**
+   * Remove unfrozen cells once they are moved to the toolbox
+   */
+  resetEnergized(): void {
+    this.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.energized = false;
     });
   }
 

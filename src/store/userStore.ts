@@ -1,31 +1,13 @@
 /* eslint-disable */
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, { StoreOptions } from 'vuex';
+import { UserState } from '@/types';
 import router from '@/router';
 import firebase, { db, auth } from '@/config/firebase';
 
 Vue.use(Vuex);
 
-interface progressObj {
-  id: number;
-  status: 'string';
-  score: number;
-}
-
-interface userInterface {
-  user: {
-    loggedIn: boolean;
-    rememberMe: boolean;
-    data: {
-      displayName: string;
-      email: string;
-    };
-  };
-  progressArr: progressObj[];
-  error: null;
-}
-
-const userStore = {
+const userStore: StoreOptions<UserState> = {
   state: {
     user: {
       loggedIn: false,
@@ -35,7 +17,7 @@ const userStore = {
         email: ''
       }
     },
-    progressArr: [{ id: 1, status: 'solved', score: 150 }, { id: 2, status: 'solved', score: 100 }],
+    progressArr: [],
     error: null
   },
   getters: {
@@ -70,6 +52,12 @@ const userStore = {
     }
   },
   actions: {
+    SET_INITIAL_PROGRESS({commit}){
+      commit('SET_PROGRESS',
+      [{ id: 1, status: 'solved', score: 150 },
+      { id: 2, status: 'no', score: 100 }]
+      );
+    },
     FETCH_USER({ commit, dispatch }, user) {
       commit('SET_LOGGED_IN', user !== null);
       if (user) {
@@ -103,17 +91,19 @@ const userStore = {
           commit('SET_ERROR', err.message);
         });
     },
-    SIGN_IN_SOCIAL({ commit }, social) {
-      const self = this;
-      let provider = null;
-      if (social === 'github') {
-        provider = new firebase.auth.GithubAuthProvider();
-      } else if (social === 'facebook') {
-        provider = new firebase.auth.FacebookAuthProvider();
-      } else if (social === 'google') {
-        provider = new firebase.auth.GoogleAuthProvider();
-      }
-
+    SIGN_IN_GITHUB({ dispatch }) {
+      const provider = new firebase.auth.GithubAuthProvider();
+      dispatch('SIGN_IN_WITH_POPUP', provider);
+    },
+    SIGN_IN_FACEBOOK({ dispatch }) {
+      const provider = new firebase.auth.FacebookAuthProvider();
+      dispatch('SIGN_IN_WITH_POPUP', provider);
+    },
+    SIGN_IN_GOOGLE({ dispatch }) {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      dispatch('SIGN_IN_WITH_POPUP', provider);
+    },
+    SIGN_IN_WITH_POPUP({commit}, provider) {
       auth
         .signInWithPopup(provider)
         .then(() => {
@@ -127,18 +117,20 @@ const userStore = {
       auth
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((data) => {
-          data.user.updateProfile({
-            displayName: user.name
-          });
+          if(data.user) {
+            data.user.updateProfile({
+              displayName: user.name
+            });
+          }
         })
-        .then((data) => {
+        .then(() => {
           router.replace({ name: 'myaccount' });
         })
         .catch((err) => {
           commit('SET_ERROR', err.message);
         });
     },
-    SIGN_OUT({ commit }) {
+    SIGN_OUT() {
       auth.signOut().then(() => {
         router.replace({
           name: 'login'
@@ -146,27 +138,29 @@ const userStore = {
       });
     },
     SAVE_PROGRESS({ commit, getters }) {
-      const { progressArr } = getters;
-      const dbRef = db.collection('users').doc(auth.currentUser.uid);
-      const data = { uid: auth.currentUser.uid, progress: progressArr };
+      if (auth.currentUser) {
+        const { progressArr } = getters;
+        const dbRef = db.collection('users').doc(auth.currentUser.uid);
+        const data = { uid: auth.currentUser.uid, progress: progressArr };
 
-      dbRef
-        .set(data)
-        .then(() => {
-          console.log('Data stored: ', data);
-        })
-        .catch((err) => {
-          commit('SET_ERROR', err.message);
-        });
+        dbRef
+          .set(data)
+          .then(() => {
+            console.log('Data stored: ', data);
+          })
+          .catch((err) => {
+            commit('SET_ERROR', err.message);
+          });
+      }
     },
     GET_PROGRESS({ commit }) {
+      if (auth.currentUser) {
       const dbRef = db.collection('users').doc(auth.currentUser.uid);
       dbRef
         .get()
         .then((doc) => {
-          const { progress } = doc.data();
           if (doc.exists) {
-            console.log('Document data:', progress);
+            const { progress }: any = doc.data();
             commit('SET_PROGRESS', progress);
           } else {
             console.log('No such document!');
@@ -175,8 +169,9 @@ const userStore = {
         .catch((err) => {
           commit('SET_ERROR', err.message);
         });
+      }
     }
   }
 };
 
-export default new Vuex.Store(userStore);
+export default new Vuex.Store<UserState>(userStore);
