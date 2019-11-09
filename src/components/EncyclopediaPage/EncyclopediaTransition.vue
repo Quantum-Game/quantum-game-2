@@ -26,7 +26,7 @@
           <option value="dir pol">dir pol</option>
           <option value="pol dir">pol dir</option>
         </select>
-        <div class="operatorText">{{ operator }}</div>
+        <!-- <div class="operatorText">{{ operator }}</div> -->
       </div>
     </div>
   </div>
