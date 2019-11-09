@@ -228,7 +228,7 @@ export default class GameGoals extends Vue {
   // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS
   //border-top: 1px solid white;
   padding-top: 10px;
-  padding-bottom: 100px;
+  padding-bottom: 20px;
   //border-bottom: 1px solid white;
   width: 100%;
   // height: 320px;

@@ -1,3 +1,4 @@
+import * as dagre from 'dagre';
 import { Graph, alg } from 'graphlib';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -8,12 +9,18 @@ import Particle from '@/engine/Particle';
  * Creates a graph after post processing the current simulation frames
  */
 export default class MultiverseGraph {
-  graph: Graph;
+  graph: any;
   qs: QuantumSimulation;
 
   constructor(qs: QuantumSimulation) {
-    this.graph = new Graph({ directed: true });
     this.qs = qs;
+    this.graph = new dagre.graphlib.Graph({ directed: true })
+      .setGraph({})
+      .setDefaultEdgeLabel(() => {
+        return {};
+      });
+    this.processFrames();
+    dagre.layout(this.graph);
   }
 
   /**
@@ -25,12 +32,18 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        this.graph.setNode(uid, particleI);
+        this.graph.setNode(uid, { label: `${pIndex}` });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
-          this.graph.setEdge(uid, parentUid, 1);
+          this.graph.setEdge(uid, parentUid);
         });
       });
+    });
+    // Round the corners of the nodes
+    this.graph.nodes().forEach((v: any) => {
+      const node = this.graph.node(v);
+      node.rx = 5;
+      node.ry = 5;
     });
     // console.log(`NODES: ${this.graph.nodes()}`);
   }

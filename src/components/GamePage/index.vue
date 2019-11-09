@@ -24,14 +24,16 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals
-        slot="main-left"
-        :percentage="percentage"
-        :goals="level.goals"
-        :particles="activeFrame.particles"
-        :detections="detections"
-        :mines="mineCount"
-      />
+      <section slot="main-left">
+        <game-goals
+          :percentage="percentage"
+          :goals="level.goals"
+          :particles="activeFrame.particles"
+          :detections="detections"
+          :mines="mineCount"
+        />
+        <game-multiverse :multiverse="multiverseGraph" />
+      </section>
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
@@ -93,6 +95,7 @@ import GamePhotons from '@/components/GamePage/GamePhotons.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
+import GameMultiverse from '@/components/GamePage/GameMultiverse.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
 
@@ -104,6 +107,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
     GameGoals,
     GameActiveCell,
     GameToolbox,
+    GameMultiverse,
     GameControls,
     GameBoard,
     AppButton,
