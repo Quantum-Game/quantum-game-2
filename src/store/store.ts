@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 import { RootState } from '@/types';
 import Cell from '@/engine/Cell';
+import Particle from '@/engine/Particle';
 import Level from '@/engine/Level';
 import Toolbox from '@/engine/Toolbox';
 import {
@@ -12,6 +13,7 @@ import {
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   SET_HOVERED_CELL,
+  SET_HOVERED_PARTICLE,
   SET_CURRENT_TOOLS,
   RESET_CURRENT_TOOLS,
   ADD_TO_CURRENT_TOOLS,
@@ -21,6 +23,7 @@ import optionsModule from './optionsModule';
 
 const initialCell = Cell.createDummy();
 const initialLevel = Level.createDummy();
+const initialParticle = Particle.createDummy();
 Vue.use(Vuex);
 
 const store: StoreOptions<RootState> = {
@@ -29,6 +32,7 @@ const store: StoreOptions<RootState> = {
     activeCell: initialCell,
     cellSelected: false,
     hoveredCell: initialCell,
+    hoveredParticles: [initialParticle],
     gameState: 'Initial',
     simulationState: false
   },
@@ -64,6 +68,10 @@ const store: StoreOptions<RootState> = {
     // hovered cell functional
     [SET_HOVERED_CELL](state, cell) {
       state.hoveredCell = cell;
+    },
+    // hovered cell functional
+    [SET_HOVERED_PARTICLE](state, particles) {
+      state.hoveredParticles = particles;
     },
     // toolbox functionality
     [SET_CURRENT_TOOLS](state, cells) {
