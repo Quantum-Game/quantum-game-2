@@ -185,6 +185,7 @@ export default class Board extends Vue {
 
 <style lang="scss" scoped>
 .probability {
-  fill: white;
+  fill: #ff0055;
+  font-size: 0.8rem;
 }
 </style>

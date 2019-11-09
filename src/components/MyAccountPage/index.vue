@@ -53,6 +53,10 @@ export default class MyAccount extends Vue {
     score: 0
   };
 
+  created() {
+    $userStore.dispatch('SET_INITIAL_PROGRESS');
+  }
+
   get user() {
     return $userStore.getters.userName;
   }
@@ -64,6 +68,7 @@ export default class MyAccount extends Vue {
     $userStore.dispatch('SIGN_OUT', this.user);
   }
   saveProgressToDB() {
+    console.log(this.progressArr);
     $userStore.commit('SET_PROGRESS', this.progressArr);
     $userStore.dispatch('SAVE_PROGRESS');
   }

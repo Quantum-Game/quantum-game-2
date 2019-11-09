@@ -1,7 +1,7 @@
 <template>
   <g
     :style="positionStyle"
-    :class="computedClass"
+    :class="computedCellClass"
     @click="handleCellClick"
     @mouseover="handleCellHover"
   >
@@ -144,14 +144,27 @@ export default class AppCell extends Mixins(getPosition) {
   /**
    * Computed class
    */
-  get computedClass(): string[] {
-    return [this.computedCellName, this.cell.tool && !this.cell.isVoid ? 'active' : ''];
+  get computedCellClass(): string[] {
+    return [
+      this.computedCellName,
+      this.cell.tool && !this.cell.isVoid ? 'active' : '',
+      this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''
+    ];
   }
 
   /**
    * Compute the cell class name
    */
   get computedCellName(): string {
+    if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
+      return 'PolarizerCell';
+    }
+    if (
+      this.cell.element.name === 'QuarterWavePlateH' ||
+      this.cell.element.name === 'QuarterWavePlateV'
+    ) {
+      return 'QuarterWavePlateCell';
+    }
     return `${this.cell.element.name}Cell`;
   }
 
@@ -251,9 +264,15 @@ rect {
   opacity: 0.1;
   transition: 0.3s;
 }
-.active .inner-rect {
-  fill: white;
-  opacity: 0.1;
-  //transition: 0.3s;
+.frozen {
+  cursor: not-allowed;
+  // cursor: pointer;
+}
+.active {
+  cursor: grab;
+  .inner-rect {
+    fill: white;
+    opacity: 0.1;
+  }
 }
 </style>
