@@ -5,9 +5,10 @@ import Cell from '@/engine/Cell';
 import {
   SET_GAME_STATE,
   SET_SIMULATION_STATE,
+  SET_HOVERED_CELL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
-  SET_HOVERED_CELL
+  SET_CURRENT_LEVEL_ID
 } from './mutation-types';
 import optionsModule from './optionsModule';
 
@@ -20,7 +21,8 @@ const store: StoreOptions<RootState> = {
     cellSelected: false,
     hoveredCell: initialCell,
     gameState: 'Initial',
-    simulationState: false
+    simulationState: false,
+    currentLevelID: 0
   },
   mutations: {
     // set active level
@@ -44,6 +46,9 @@ const store: StoreOptions<RootState> = {
     // hovered cell functional
     [SET_HOVERED_CELL](state, cell) {
       state.hoveredCell = cell;
+    },
+    [SET_CURRENT_LEVEL_ID](state, id) {
+      state.currentLevelID = id;
     }
   },
   modules: {

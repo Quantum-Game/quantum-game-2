@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { State, Getter } from 'vuex-class';
+import { State, Getter, Mutation } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
 import { local } from 'd3-selection';
 import { warn } from 'vue-class-component/lib/util';
@@ -114,8 +114,9 @@ import AppOverlay from '@/components/AppOverlay.vue';
 })
 export default class Game extends Vue {
   level = Level.createDummy();
+  @State('currentLevelID')
   @State activeCell!: Cell;
-  @Getter('cellPositionsArray')
+  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -158,6 +159,7 @@ export default class Game extends Vue {
     // this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
     // this.$store.commit('SET_ACTIVE_LEVEL', level);
     this.updateSimulation();
+    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id));
   }
 
   /**

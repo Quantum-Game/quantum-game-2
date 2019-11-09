@@ -10,7 +10,6 @@
         <menu>
           <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
           <router-link
-            v-if="currentLevelId > 0"
             :to="continueLink"
             @click.stop.native="handleContinueClick"
             >CONTINUE</router-link
@@ -33,7 +32,7 @@ import { State } from 'vuex-class';
 
 @Component
 export default class AppMenu extends Vue {
-  @State((state) => state.level.id) currentLevelId!: number;
+  @State('currentLevelID') currentLevelID!: number;
   isMenuOpen: boolean = false;
 
   created() {
@@ -69,7 +68,7 @@ export default class AppMenu extends Vue {
   }
 
   get continueLink() {
-    return `/level/${this.currentLevelId}`;
+    return `/level/${this.currentLevelID}`;
   }
 }
 </script>
