@@ -1,7 +1,7 @@
 <template>
   <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots :grid="level.grid" />
+    <board-dots :grid="grid" />
 
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />
@@ -29,7 +29,7 @@
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in level.grid.cells"
+      v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
@@ -105,6 +105,10 @@ export default class Board extends Vue {
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  get grid() {
+    return this.level.grid;
   }
 
   /**
