@@ -11,7 +11,8 @@
           :height="80"
           :display-magnetic="true"
           :display-electric="true"
-          :display-gaussian="false"
+          :display-gaussian="true"
+          :display-opacity="false"
         />
         <div class="info">
           <ul>

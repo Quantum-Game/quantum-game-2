@@ -11,6 +11,11 @@
       repeatCount="indefinite"
     />-->
     <g class="photon" :style="computeStyle">
+      <g v-if="displayGaussian" class="gaussian">
+        <path class="gaussian" :d="computeGaussianPath.pathUp" />
+        <path class="gaussian" :d="computeGaussianPath.pathDown" />
+      </g>
+
       <g v-if="displayElectric" class="electric">
         <path
           v-for="(z, index) in zs"
@@ -29,11 +34,6 @@
           :stroke-width="mScale(gaussianComplex(are, aim, z, k, sigma))"
           :stroke="mColor(gaussianComplex(bre, bim, z, k, sigma))"
         />
-      </g>
-
-      <g v-if="displayGaussian" class="gaussian">
-        <path class="gaussian" :d="computeGaussianPath.pathUp" />
-        <path class="gaussian" :d="computeGaussianPath.pathDown" />
       </g>
     </g>
   </svg>
@@ -66,9 +66,10 @@ export default class AppPhoton extends Vue {
   @Prop({ default: 20 }) readonly k!: number;
   @Prop({ default: 0.3 }) readonly sigma!: number;
   @Prop({ default: 0.001 }) readonly range!: number;
-  @Prop({ default: true }) readonly displayMagnetic!: boolean;
+  @Prop({ default: false }) readonly displayMagnetic!: boolean;
   @Prop({ default: true }) readonly displayElectric!: boolean;
   @Prop({ default: true }) readonly displayGaussian!: boolean;
+  @Prop({ default: true }) readonly displayOpacity!: boolean;
 
   /**
    * Getters from particle
@@ -103,7 +104,7 @@ export default class AppPhoton extends Vue {
 
   get computeStyle() {
     return {
-      opacity: `${this.opacity}`,
+      opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
       transform: `rotate(${this.particle.direction}deg)`
     };
@@ -121,7 +122,7 @@ export default class AppPhoton extends Vue {
     const tx = this.xScale(z);
     const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.k, this.sigma));
     path += `M ${ox} ${oy} `;
-    path += `L ${tx} ${ty}`;
+    path += `L ${tx} ${ty} `;
     return path;
   }
 
@@ -152,11 +153,11 @@ export default class AppPhoton extends Vue {
       const x = this.xScale(z);
       const y = this.yScale(this.gaussian(z));
       if (index === 0) {
-        pathUp += `M ${x} ${y + this.margin} `;
-        pathDown += `M ${x} ${this.availableHeight + this.margin - y} `;
+        pathUp += `M ${x} ${y} `;
+        pathDown += `M ${x} ${this.availableHeight - y} `;
       } else {
-        pathUp += `L ${x} ${y + this.margin} `;
-        pathDown += `L ${x} ${this.availableHeight + this.margin - y} `;
+        pathUp += `L ${x} ${y} `;
+        pathDown += `L ${x} ${this.availableHeight - y} `;
       }
     });
     return { pathUp, pathDown };
@@ -237,6 +238,7 @@ export default class AppPhoton extends Vue {
   gaussian(z: number, sigma = 0.3): number {
     return Math.exp((-z * z) / (2 * sigma * sigma));
   }
+
   /**
    * Gaussian scaling of the graph
    */
@@ -265,8 +267,9 @@ export default class AppPhoton extends Vue {
   }
   .gaussian {
     stroke-width: 2px;
-    fill: transparent;
-    stroke: grey;
+    fill: purple;
+    stroke: purple;
+    opacity: 0.6;
   }
 }
 </style>

@@ -19,7 +19,7 @@
         :particle="particle"
         :animate="2"
         :margin="2"
-        :display-magnetic="true"
+        :display-magnetic="false"
         :display-electric="true"
         :display-gaussian="true"
         :sigma="0.25"

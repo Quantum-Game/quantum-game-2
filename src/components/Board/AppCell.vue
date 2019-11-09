@@ -18,7 +18,6 @@
       :cell-size="tileSize"
       :border="computeBorder()"
     />
-    <!-- :border="red" -->
   </g>
 </template>
 
