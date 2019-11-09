@@ -1,10 +1,5 @@
 <template>
-  <g
-    :style="positionStyle"
-    :class="computedClass"
-    @click="handleCellClick"
-    @mouseover="handleCellHover"
-  >
+  <g :style="positionStyle" :class="computedCellClass" @click="handleCellClick">
     <rect
       :width="tileSize"
       :height="tileSize"
@@ -18,7 +13,6 @@
       :cell-size="tileSize"
       :border="computeBorder()"
     />
-    <!-- :border="red" -->
   </g>
 </template>
 
@@ -27,6 +21,7 @@ import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
+import Particle from '@/engine/Particle';
 import { getPosition } from '@/mixins';
 import {
   LaserCell,
@@ -81,24 +76,22 @@ export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly tileSize!: number;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @Mutation('ADD_TO_CURRENT_TOOLS') mutationAddToCurrentTools!: (cell: Cell) => void;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
   @State level!: Level;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
-  @State hoveredCell!: Cell;
   border = '';
 
   /**
    * Handle mouseover for active cell display
    */
-  handleCellHover(): void {
-    // if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
-    if (!this.cell.isVoid) {
-      this.mutationSetHoveredCell(this.cell);
-    }
-  }
+  // handleCellHover(): void {
+  //   // if (!this.cell.isVoid) {
+  //   if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+  //     this.mutationSetHoveredCell(this.cell);
+  //   }
+  // }
 
   handleCellClick(): void {
     // First click unselected tool
@@ -174,14 +167,28 @@ export default class AppCell extends Mixins(getPosition) {
   /**
    * Computed class
    */
-  get computedClass(): string[] {
-    return [this.computedCellName, this.cell.tool && !this.cell.isVoid ? 'active' : ''];
+  get computedCellClass(): string[] {
+    return [
+      this.computedCellName,
+      this.cell.tool && !this.cell.isVoid ? 'active' : '',
+      this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''
+    ];
   }
 
   /**
    * Compute the cell class name
+   * @returns Computed cell name string
    */
   get computedCellName(): string {
+    if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
+      return 'PolarizerCell';
+    }
+    if (
+      this.cell.element.name === 'QuarterWavePlateH' ||
+      this.cell.element.name === 'QuarterWavePlateV'
+    ) {
+      return 'QuarterWavePlateCell';
+    }
     return `${this.cell.element.name}Cell`;
   }
 
@@ -281,9 +288,15 @@ rect {
   opacity: 0.1;
   transition: 0.3s;
 }
-.active .inner-rect {
-  fill: white;
-  opacity: 0.1;
-  //transition: 0.3s;
+.frozen {
+  cursor: not-allowed;
+  // cursor: pointer;
+}
+.active {
+  cursor: grab;
+  .inner-rect {
+    fill: white;
+    opacity: 0.1;
+  }
 }
 </style>

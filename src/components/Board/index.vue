@@ -13,15 +13,16 @@
       :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
+      @mouseover.native="handleMouseOver(particle.coord)"
     >
       <app-photon
         name
         :particle="particle"
         :animate="2"
-        :margin="0"
-        :display-magnetic="true"
-        :display-electric="false"
-        :display-gaussian="false"
+        :margin="2"
+        :display-magnetic="false"
+        :display-electric="true"
+        :display-gaussian="true"
         :sigma="0.25"
       />
     </g>
@@ -33,6 +34,7 @@
       :cell="cell"
       :tileSize="tileSize"
       @updateCell="updateCell"
+      @mouseover.native="handleMouseOver(cell.coord)"
     />
 
     <!-- PROBABILITY -->
@@ -82,13 +84,18 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: [] }) readonly particles!: ParticleInterface[];
+  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: '' }) readonly probabilities!: string;
   @State activeCell!: Cell;
   @State level!: Level;
   @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
   @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
+  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @State hoveredParticles!: Particle[];
+  @State hoveredCell!: Cell;
+
   tileSize: number = 64;
 
   $refs!: {
@@ -98,6 +105,23 @@ export default class Board extends Vue {
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  /**
+   * Handle mouse over from cell and photons
+   */
+  handleMouseOver(coord: Coord) {
+    console.log('FIRE');
+    const cell = this.level.grid.get(coord);
+    const particles = this.particles.filter((particle) => {
+      return particle.coord.equal(coord);
+    });
+    if (cell !== this.hoveredCell && !cell.isVoid) {
+      this.mutationSetHoveredCell(cell);
+    }
+    if (particles.length > 0) {
+      this.mutationSetHoveredParticles(particles);
+    }
   }
 
   assessTileSize(): void {
@@ -191,6 +215,7 @@ export default class Board extends Vue {
 
 <style lang="scss" scoped>
 .probability {
-  fill: white;
+  fill: #ff0055;
+  font-size: 0.8rem;
 }
 </style>
