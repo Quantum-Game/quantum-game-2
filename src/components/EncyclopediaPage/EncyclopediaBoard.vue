@@ -32,6 +32,9 @@
           />
         </g>
 
+        <!-- LASERS -->
+        <board-lasers :pathParticles="pathParticles" />
+
         <!-- CELLS -->
         <app-cell
           v-for="(cell, i) in nonVoidCells"
@@ -123,6 +126,7 @@ export default class EncyclopediaBoard extends Vue {
   rotate(cell: Cell) {
     cell.rotate();
     this.reset();
+    this.$emit('updateRotation', cell);
   }
 
   get totalWidth(): number {

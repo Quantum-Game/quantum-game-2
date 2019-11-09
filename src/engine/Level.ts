@@ -99,8 +99,7 @@ export default class Level {
    * @returns a Level instance
    */
   static importLevel(obj: LevelInterface): Level {
-    const grid = new Grid(obj.grid.rows, obj.grid.cols);
-    grid.importGrid(obj.grid.cells);
+    const grid = Grid.importGrid(obj.grid);
     const goals = Goal.importGoal(obj.goals);
     const hints = Hint.importHint(obj.hints);
     return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, false);
