@@ -3,13 +3,13 @@ import Particle from '@/engine/Particle';
 import Level from '@/engine/Level';
 
 export interface RootState {
-  level: Level;
   activeCell: Cell;
   hoveredCell: Cell;
   hoveredParticles: [Particle];
   cellSelected: boolean;
   gameState: string;
   simulationState: boolean;
+  currentLevelID: number;
 }
 
 export interface UserState {

@@ -1,7 +1,7 @@
 <template>
-  <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+  <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots />
+    <board-dots :gridDimensions="gridDimensions" />
 
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />
@@ -13,7 +13,7 @@
       :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
-      @mouseover.native="handleMouseOver(particle.coord)"
+      @mouseenter.native="handleMouseEnter(particle.coord)"
     >
       <app-photon
         name
@@ -29,12 +29,12 @@
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in level.grid.cells"
+      v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
       @updateCell="updateCell"
-      @mouseover.native="handleMouseOver(cell.coord)"
+      @mouseover.native="handleMouseEnter(cell.coord)"
     />
 
     <!-- PROBABILITY -->
@@ -51,7 +51,7 @@
 
     <!-- SPEECH BUBBLES -->
     <speech-bubble
-      v-for="(hint, index) in level.hints"
+      v-for="(hint, index) in hints"
       :key="`hint${index}`"
       :hint="hint"
       :tileSize="tileSize"
@@ -85,21 +85,19 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
 })
 export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: Particle[];
+  @Prop() readonly grid!: Grid;
+  @Prop() readonly hints!: HintInterface[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: '' }) readonly probabilities!: string;
-  @State activeCell!: Cell;
-  @State level!: Level;
-  @Mutation('REMOVE_FROM_CURRENT_TOOLS') mutationRemoveFromCurrentTools!: (cell: Cell) => void;
-  @Mutation('UPDATE_GRID_CELL') mutationUpdateGridCell!: (cell: Cell) => void;
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State hoveredParticles!: Particle[];
   @State hoveredCell!: Cell;
-
+  @State activeCell!: Cell;
   tileSize: number = 64;
 
   $refs!: {
-    grid: HTMLElement;
+    'grid-wrapper': HTMLElement;
   };
 
   mounted() {
@@ -110,9 +108,9 @@ export default class Board extends Vue {
   /**
    * Handle mouse over from cell and photons
    */
-  handleMouseOver(coord: Coord) {
+  handleMouseEnter(coord: Coord) {
     console.log('FIRE');
-    const cell = this.level.grid.get(coord);
+    const cell = this.grid.get(coord);
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord);
     });
@@ -131,10 +129,10 @@ export default class Board extends Vue {
   }
 
   get totalWidth(): number {
-    return this.level.grid.cols * this.tileSize;
+    return this.grid.cols * this.tileSize;
   }
   get totalHeight(): number {
-    return this.level.grid.rows * this.tileSize;
+    return this.grid.rows * this.tileSize;
   }
 
   computeProbStyle(probability: { x: number; y: number; probability: number }) {
@@ -159,26 +157,14 @@ export default class Board extends Vue {
     const originX = this.centerCoord(particle.coord.x);
     const originY = this.centerCoord(particle.coord.y);
     return {
-      // 'transform-origin': `${originX}px ${originY}px`,
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
     };
   }
 
-  /**
-   * Used to move or swap cells
-   * @params coord to move to
-   * @returns boolean
-   */
-  updateCell(coord: Coord): void {
-    const sourceCell = this.activeCell;
-    const targetCell = this.level.grid.get(coord);
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    mutatedCells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
-    this.$emit('updateSimulation');
-    this.$emit('updateGrid');
+  updateCell(cell: Cell): void {
+    // emit drilling...
+    this.$emit('updateCell', cell);
   }
 
   /**
@@ -197,9 +183,7 @@ export default class Board extends Vue {
 
   // HELPING FUNCTIONS
   element(y: number, x: number): CellInterface {
-    const cells = this.level.grid.cells.filter(
-      (cell: Cell) => cell.coord.x === x && cell.coord.y === y
-    );
+    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
     if (cells.length > 0) {
       return cells[0].exportCell();
     }
@@ -209,6 +193,14 @@ export default class Board extends Vue {
       rotation: 0,
       frozen: false
     };
+  }
+
+  get gridDimensions() {
+    const {
+      tileSize,
+      grid: { cols, rows }
+    } = this;
+    return { cols, rows, tileSize };
   }
 }
 </script>

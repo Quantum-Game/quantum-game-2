@@ -120,4 +120,8 @@ export default class Toolbox {
     });
     return resultStr;
   }
+
+  exportToolbox(): ToolInterface {
+    return this.toolbox;
+  }
 }

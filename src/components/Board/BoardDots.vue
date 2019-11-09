@@ -1,21 +1,24 @@
 <template>
   <g class="dots">
-    <g v-for="(row, y) in level.grid.rows + 1" :key="y">
-      <g v-for="(column, x) in level.grid.cols + 1" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+    <g v-for="(row, y) in gridDimensions.rows" :key="y">
+      <g v-for="(column, x) in gridDimensions.cols" :key="x">
+        <circle
+          :cx="x * gridDimensions.tileSize"
+          :cy="y * gridDimensions.tileSize"
+          r="1"
+          fill="#edeaf4"
+        />
       </g>
     </g>
   </g>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import Level from '@/engine/Level';
+import { Vue, Component, Prop } from 'vue-property-decorator';
+
 @Component
 export default class BoardDots extends Vue {
-  @State level!: Level;
-  tileSize = 64;
+  @Prop() readonly gridDimensions!: { x: number; y: number; tileSize: number };
 }
 </script>
 
