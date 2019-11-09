@@ -39,12 +39,12 @@
       <section slot="main-middle">
         <game-board
           :particles="particles"
-          :grid="level.grid"
           :path-particles="pathParticles"
           :hints="hints"
+          :grid="level.grid"
           :probabilities="probabilities"
           @updateSimulation="updateSimulation"
-          @updateGrid="updateGrid"
+          @updateCell="updateCell"
         />
         <game-controls
           :frame-index="frameIndex"
@@ -58,7 +58,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="toolbox" />
+        <game-toolbox :toolbox="toolbox" @updateCell="updateCell"/>
         <game-active-cell />
         <game-photons :particles="particles" />
       </section>
@@ -73,6 +73,7 @@ import cloneDeep from 'lodash.clonedeep';
 import { local } from 'd3-selection';
 import { warn } from 'vue-class-component/lib/util';
 import { Level, Particle, Cell, Coord, Element, Grid } from '@/engine/classes';
+import Toolbox from '@/engine/Toolbox';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -141,7 +142,7 @@ export default class Game extends Vue {
     // it is not in the storage
     if (!fromStorage) {
       levelI = levelData[this.currentLevelName];
-      console.warn(levelI);
+      // console.warn(levelI);
       if (!levelI) {
         this.error = 'No such exists!';
       }
@@ -163,7 +164,7 @@ export default class Game extends Vue {
   updateSimulation(): void {
     // console.warn(this.level.exportLevel().grid)
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
-    console.warn(this.level.grid.exportGrid());
+    // console.warn(this.level.grid.exportGrid());
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
@@ -354,7 +355,46 @@ export default class Game extends Vue {
   //   // console.warn(bomba);
   // }
 
+  removeFromCurrentTools(cell: Cell) {
+    this.level.toolbox.removeTool(cell);
+  }
+
+  addToCurrentTools(cell: Cell) {
+    this.level.toolbox.addTool(cell);
+  }
+
+  setCurrentTools(cells) {
+    this.level.toolbox = new Toolbox(cells);
+  }
+
+  resetCurrentTools() {
+    this.level.toolbox.reset();
+  }
+
+  updateCell(cell: Cell): void {
+    // rotation
+    const sourceCell = this.activeCell;
+    const targetCell = cell;
+
+    if (this.activeCell.isFromToolbox) {
+      this.removeFromCurrentTools(this.activeCell)
+    } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
+      this.addToCurrentTools(cell);
+      this.level.grid.set(this.activeCell.reset());
+    }
+
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    mutatedCells.forEach((cell) => {
+      this.level.grid.set(cell);
+    });
+    this.saveLevelToStore();
+    this.updateSimulation();
+  }
+
   updateGrid(coord: Coord) {
+    if (this.activeCell.isFromToolbox) {
+      this.removeFromCurrentTools(this.activeCell)
+    }
     const sourceCell = this.activeCell;
     const targetCell = this.level.grid.get(coord);
     const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
@@ -362,6 +402,12 @@ export default class Game extends Vue {
       this.level.grid.set(cell);
     });
     this.saveLevelToStore();
+  }
+
+  updateToolbox(cell: Cell) {
+    // const targetCell = this.level.grid.get(cell);
+    // this.level.toolbox.addTool(cell);
+    // this.addToCurrentTools(targetCell);
   }
 
   @Watch('cellPositionsArray')

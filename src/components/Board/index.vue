@@ -28,7 +28,7 @@
 
     <!-- CELLS -->
     <app-cell
-      v-for="(cell, i) in level.grid.cells"
+      v-for="(cell, i) in grid.cells"
       :key="'cell' + i"
       :cell="cell"
       :tileSize="tileSize"
@@ -149,10 +149,9 @@ export default class Board extends Vue {
    * @params coord to move to
    * @returns boolean
    */
-  updateCell(coord: Coord): void {
+  updateCell(cell: Cell): void {
     // emit drilling...
     console.log('board cell clicked');
-
 
     // const sourceCell = this.activeCell;
     // const targetCell = this.level.grid.get(coord);
@@ -161,12 +160,11 @@ export default class Board extends Vue {
     //   this.level.grid.set(cell);
     // });
     this.$emit('updateSimulation');
-    this.$emit('updateGrid', coord);
+    this.$emit('updateCell', cell);
   }
-    deleteCell(cell: Cell): void {
+  deleteCell(cell: Cell): void {
     // emit drilling...
     console.log('board cell clicked');
-
 
     // const sourceCell = this.activeCell;
     // const targetCell = this.level.grid.get(coord);
@@ -175,7 +173,7 @@ export default class Board extends Vue {
     //   this.level.grid.set(cell);
     // });
     this.$emit('updateSimulation');
-    this.$emit('updateGrid', coord);
+    // this.$emit('updateGrid', coord);
   }
 
   /**

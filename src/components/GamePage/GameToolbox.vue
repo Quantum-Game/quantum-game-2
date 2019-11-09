@@ -2,7 +2,7 @@
   <div class="toolbox">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <g :class="computedClass(cell)">
-        <app-cell :cell="cell" :available="isAvailable"/>
+        <app-cell :cell="cell" :available="isAvailable" :tool="true" @updateCell="updateCell" />
         <text class="counter" x="50%" y="80">
           {{ toolbox.getCount(cell.element.name) }}
           ({{ toolbox.getCountOriginal(cell.element.name) }})
@@ -19,10 +19,11 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
-import Cell from '@/engine/Cell';
+// import Cell, Coord from '@/engine/Cell';
 import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 import AppCell from '@/components/Board/AppCell.vue';
+import { Coord, Cell } from '@/engine/classes';
 
 @Component({
   components: {
@@ -40,6 +41,11 @@ export default class GameToolbox extends Vue {
 
   isAvailable(cell: Cell): boolean {
     return this.toolbox.getCount(cell.element.name) > 0;
+  }
+
+  updateCell(cell: Cell) {
+    // events drilling up...
+    this.$emit('updateCell', cell);
   }
 }
 </script>
