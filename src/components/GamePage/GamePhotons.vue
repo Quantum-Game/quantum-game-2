@@ -1,17 +1,16 @@
 <template>
   <div ref="wrapper" class="simulation-steps-display-wrapper">
-    <div class="step">
-      <h3>YOUR PHOTONS</h3>
-      <!-- <span>STEP {{ activeFrame.step }}</span> -->
-      <!-- <span>STATUS: {{ activeFrame.gameState }}</span> -->
-      <div v-for="(particle, index) in particles" :key="index">
+    <div class="hoveredPhotons">
+      <h3>PHOTONS</h3>
+      <div v-for="(particle, index) in hoveredParticles" :key="index">
         <app-photon
           :particle="particle"
           :width="width"
           :height="80"
           :display-magnetic="true"
           :display-electric="true"
-          :display-gaussian="false"
+          :display-gaussian="true"
+          :display-opacity="false"
         />
         <div class="info">
           <ul>
@@ -28,6 +27,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { Mutation, State } from 'vuex-class';
 import { CellInterface, CoordInterface } from '@/engine/interfaces';
 import Particle from '@/engine/Particle';
 import AppPhoton from '@/components/AppPhoton.vue';
@@ -40,7 +40,7 @@ import AppButton from '@/components/AppButton.vue';
   }
 })
 export default class GamePhotons extends Vue {
-  @Prop() readonly particles!: Particle[];
+  @State hoveredParticles!: Particle[];
   width: number = 200;
   $refs!: {
     wrapper: HTMLElement;
@@ -54,14 +54,12 @@ export default class GamePhotons extends Vue {
   width: 100%;
   display: block;
   text-align: left;
-}
-
-.step {
-  font-size: 0.8rem;
-  line-height: 150%;
-}
-
-h3 {
-  font-size: 1rem;
+  .step {
+    font-size: 0.8rem;
+    line-height: 150%;
+  }
+  h3 {
+    font-size: 1rem;
+  }
 }
 </style>

@@ -90,7 +90,7 @@ export default class Level {
       grid: this.grid.exportGrid(),
       hints: this.hints.map((hint) => hint.exportHint()),
       goals: this.goals.map((goal) => goal.exportGoal()),
-      tools: this.toolbox.exportToolbox()
+      tools: this.toolbox.fullCellList.map((cell: Cell) => cell.exportCell())
     };
   }
 

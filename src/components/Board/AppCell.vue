@@ -1,10 +1,5 @@
 <template>
-  <g
-    :style="positionStyle"
-    :class="computedCellClass"
-    @click="handleCellClick"
-    @mouseover="handleCellHover"
-  >
+  <g :style="positionStyle" :class="computedCellClass" @click="handleCellClick">
     <rect
       :width="tileSize"
       :height="tileSize"
@@ -26,6 +21,7 @@ import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
+import Particle from '@/engine/Particle';
 import { getPosition } from '@/mixins';
 import {
   LaserCell,
@@ -84,17 +80,17 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
-  @State hoveredCell!: Cell;
   border = '';
 
   /**
    * Handle mouseover for active cell display
    */
-  handleCellHover(): void {
-    if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
-      this.mutationSetHoveredCell(this.cell);
-    }
-  }
+  // handleCellHover(): void {
+  //   // if (!this.cell.isVoid) {
+  //   if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
+  //     this.mutationSetHoveredCell(this.cell);
+  //   }
+  // }
 
   /**
    *  handles clicking, namely
@@ -162,6 +158,7 @@ export default class AppCell extends Mixins(getPosition) {
 
   /**
    * Compute the cell class name
+   * @returns Computed cell name string
    */
   get computedCellName(): string {
     if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {

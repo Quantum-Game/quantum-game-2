@@ -13,15 +13,16 @@
       :v-if="particles.length > 0"
       :style="computeParticleStyle(particle)"
       class="photons"
+      @mouseenter.native="handleMouseEnter(particle.coord)"
     >
       <app-photon
         name
         :particle="particle"
         :animate="2"
-        :margin="0"
-        :display-magnetic="true"
-        :display-electric="false"
-        :display-gaussian="false"
+        :margin="2"
+        :display-magnetic="false"
+        :display-electric="true"
+        :display-gaussian="true"
         :sigma="0.25"
       />
     </g>
@@ -33,6 +34,7 @@
       :cell="cell"
       :tileSize="tileSize"
       @updateCell="updateCell"
+      @mouseover.native="handleMouseEnter(cell.coord)"
     />
 
     <!-- PROBABILITY -->
@@ -82,12 +84,15 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: [] }) readonly particles!: ParticleInterface[];
-  @Prop({ default: '' }) readonly paths!: string;
+  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
   @Prop() readonly hints!: HintInterface[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: '' }) readonly probabilities!: string;
+  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @State hoveredParticles!: Particle[];
+  @State hoveredCell!: Cell;
   @State activeCell!: Cell;
   tileSize: number = 64;
 
@@ -98,6 +103,23 @@ export default class Board extends Vue {
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  /**
+   * Handle mouse over from cell and photons
+   */
+  handleMouseEnter(coord: Coord) {
+    console.log('FIRE');
+    const cell = this.grid.get(coord);
+    const particles = this.particles.filter((particle) => {
+      return particle.coord.equal(coord);
+    });
+    if (cell !== this.hoveredCell && !cell.isVoid) {
+      this.mutationSetHoveredCell(cell);
+    }
+    if (particles.length > 0) {
+      this.mutationSetHoveredParticles(particles);
+    }
   }
 
   assessTileSize(): void {

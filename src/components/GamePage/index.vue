@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="computeGameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -17,8 +17,6 @@
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
         {{ level.id + ' - ' + level.name.toUpperCase() }}
-        <app-button @click.native="clearLS">CLEAR LS</app-button>
-        <app-button @click.native="saveLS">SAVE LS</app-button>
 
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
@@ -72,7 +70,7 @@ import { State, Getter, Mutation } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
 import { local } from 'd3-selection';
 import { warn } from 'vue-class-component/lib/util';
-import { Level, Particle, Cell, Coord, Element, Grid } from '@/engine/classes';
+import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
 import Toolbox from '@/engine/Toolbox';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -116,6 +114,7 @@ export default class Game extends Vue {
   level = Level.createDummy();
   @State('currentLevelID') currentLevelID!: number;
   @State('activeCell') activeCell!: Cell;
+  @State('gameState') gameState!: string;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   frameIndex: number = 0;
   simulation: any = {};
@@ -126,7 +125,6 @@ export default class Game extends Vue {
   // LIFECYCLE
   created() {
     this.loadLevel();
-    // this.updateSimulation();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -137,26 +135,14 @@ export default class Game extends Vue {
   @Watch('$route')
   loadLevel(): void {
     this.error = '';
-    const fromStorage: any = localStorage.getItem(this.currentLevelName);
-    // console.warn(JSON.parse(fromStorage));
-    let levelI: LevelInterface;
-    // it is not in the storage
-    if (!fromStorage) {
-      levelI = levelData[this.currentLevelName];
-      if (!levelI) {
-        this.error = 'No such exists!';
-      }
-    } else {
-      levelI = JSON.parse(fromStorage);
-      console.warn('loadedFromStorage!');
-    }
+    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
+    const levelI = levelData[`level${this.$route.params.id}`];
+
     this.level = Level.importLevel(levelI);
     this.level.grid.cells.forEach((cell) => {
       this.level.grid.set(cell);
     });
-    // this.setCurrentTools(this.level.toolbox)
     this.updateSimulation();
-    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id));
   }
 
   /**
@@ -165,7 +151,7 @@ export default class Game extends Vue {
    */
   updateSimulation(): void {
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
-    this.simulation.initializeFromLaser('V');
+    this.simulation.initializeFromLaser('H');
     this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
@@ -287,7 +273,7 @@ export default class Game extends Vue {
   /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
-  get computeGameState() {
+  get computedGameState() {
     if (this.frameIndex === this.simulation.frames.length - 1) {
       return this.gameState;
     }
@@ -346,7 +332,7 @@ export default class Game extends Vue {
     this.level.toolbox.addTool(cell);
   }
 
-  setCurrentTools(cells) {
+  setCurrentTools(cells: Cell[]) {
     this.level.toolbox = new Toolbox(cells);
   }
 
@@ -374,8 +360,8 @@ export default class Game extends Vue {
     }
 
     const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
-    mutatedCells.forEach((cell) => {
-      this.level.grid.set(cell);
+    mutatedCells.forEach((mutatedCell: Cell) => {
+      this.level.grid.set(mutatedCell);
     });
     this.saveLevelToStore();
     this.updateSimulation();

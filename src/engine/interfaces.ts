@@ -1,4 +1,4 @@
-import { ToolInterface } from './Toolbox';
+// import { ToolInterface } from './Toolbox';
 
 /**
  * ROOT STATE INTERFACE
@@ -55,7 +55,7 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
-  toolbox?: ToolInterface;
+  tools?: CellInterface[];
 }
 
 /**
