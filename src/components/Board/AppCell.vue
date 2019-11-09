@@ -1,7 +1,7 @@
 <template>
   <g
     :style="positionStyle"
-    :class="computedClass"
+    :class="computedCellClass"
     @click="handleCellClick"
     @mouseover="handleCellHover"
   >
@@ -18,7 +18,6 @@
       :cell-size="tileSize"
       :border="computeBorder()"
     />
-    <!-- :border="red" -->
   </g>
 </template>
 
@@ -174,8 +173,12 @@ export default class AppCell extends Mixins(getPosition) {
   /**
    * Computed class
    */
-  get computedClass(): string[] {
-    return [this.computedCellName, this.cell.tool && !this.cell.isVoid ? 'active' : ''];
+  get computedCellClass(): string[] {
+    return [
+      this.computedCellName,
+      this.cell.tool && !this.cell.isVoid ? 'active' : '',
+      this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''
+    ];
   }
 
   /**
@@ -291,9 +294,15 @@ rect {
   opacity: 0.1;
   transition: 0.3s;
 }
-.active .inner-rect {
-  fill: white;
-  opacity: 0.1;
-  //transition: 0.3s;
+.frozen {
+  cursor: not-allowed;
+  // cursor: pointer;
+}
+.active {
+  cursor: grab;
+  .inner-rect {
+    fill: white;
+    opacity: 0.1;
+  }
 }
 </style>
