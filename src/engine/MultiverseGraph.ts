@@ -1,5 +1,5 @@
 import * as dagre from 'dagre';
-import { Graph, alg } from 'graphlib';
+// import { Graph, alg } from 'graphlib';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Particle from '@/engine/Particle';
@@ -14,6 +14,7 @@ export default class MultiverseGraph {
 
   constructor(qs: QuantumSimulation) {
     this.qs = qs;
+    // const test = dagreD3.render
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({})
       .setDefaultEdgeLabel(() => {
@@ -32,10 +33,10 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        this.graph.setNode(uid, { label: `${pIndex}` });
+        this.graph.setNode(uid, { particle, label: `photon ${fIndex} at frame ${pIndex}` });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
-          this.graph.setEdge(uid, parentUid);
+          this.graph.setEdge(uid, parentUid, { label: `${parentUid} -> ${uid}` });
         });
       });
     });
@@ -45,7 +46,6 @@ export default class MultiverseGraph {
       node.rx = 5;
       node.ry = 5;
     });
-    // console.log(`NODES: ${this.graph.nodes()}`);
   }
 
   /**
@@ -62,7 +62,7 @@ export default class MultiverseGraph {
       parentFrame.particles.forEach((parentParticle: Particle, parentIndex: number) => {
         // Check for parent
         if (parentParticle.nextCoord().equal(particle)) {
-          const parentUid = `particle-${fIndex - 1}-${parentIndex}`;
+          const parentUid = `particle_${fIndex - 1}_${parentIndex}`;
           parents.push(parentUid);
         }
       });
@@ -160,7 +160,7 @@ export default class MultiverseGraph {
    * @returns uid string
    */
   static createUid(fIndex: number, pIndex: number): string {
-    return `particle-${fIndex}-${pIndex}`;
+    return `particle_${fIndex}_${pIndex}`;
   }
 
   /**
