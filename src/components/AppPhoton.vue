@@ -9,49 +9,31 @@
       :to="toCoord"
       :dur="animate + 's'"
       repeatCount="indefinite"
-    /> -->
+    />-->
     <g class="photon" :style="computeStyle">
       <g v-if="displayElectric" class="electric">
-        <circle
+        <path
           v-for="(z, index) in zs"
-          :key="`electricPoint-${index}`"
-          class="point electric"
-          :cx="xScale(z)"
-          :cy="yScale(gaussianComplex(are, aim, z, k, sigma))"
-          :r="eScale(gaussianComplex(bre, bim, z, k, sigma))"
-          :style="{ fill: eColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+          :key="`electricPath-${index}`"
+          :d="computeElectricPath(z)"
+          :stroke-width="eScale(gaussianComplex(bre, bim, z, k, sigma))"
+          :stroke="eColor(gaussianComplex(bre, bim, z, k, sigma))"
         />
       </g>
 
       <g v-if="displayMagnetic" class="magnetic">
-        <circle
+        <path
           v-for="(z, index) in zs"
-          :key="`magneticPoint-${index}`"
-          class="point magnetic"
-          :cx="xScale(z)"
-          :cy="yScale(gaussianComplex(bre, bim, z, k, sigma))"
-          :r="mScale(gaussianComplex(are, aim, z, k, sigma))"
-          :style="{ fill: mColor(gaussianComplex(bre, bim, z, k, sigma)) }"
+          :key="`magneticPath-${index}`"
+          :d="computeMagneticPath(z)"
+          :stroke-width="mScale(gaussianComplex(are, aim, z, k, sigma))"
+          :stroke="mColor(gaussianComplex(bre, bim, z, k, sigma))"
         />
       </g>
 
       <g v-if="displayGaussian" class="gaussian">
-        <circle
-          v-for="(z, index) in zs"
-          :key="`gaussianPointb-${index}`"
-          class="point gaussian"
-          :cx="xScale(z)"
-          :cy="yScale(gaussian(z))"
-          :r="1"
-        />
-        <circle
-          v-for="(z, index) in zs"
-          :key="`gaussianPointt-${index}`"
-          class="point gaussian"
-          :cx="xScale(z)"
-          :cy="yScale(-gaussian(z))"
-          :r="1"
-        />
+        <path class="gaussian" :d="computeGaussianPath.pathUp" />
+        <path class="gaussian" :d="computeGaussianPath.pathDown" />
       </g>
     </g>
   </svg>
@@ -91,6 +73,10 @@ export default class AppPhoton extends Vue {
   /**
    * Getters from particle
    */
+  get step() {
+    return 1 / this.width;
+  }
+
   get intensity() {
     return this.particle.intensity;
   }
@@ -124,6 +110,63 @@ export default class AppPhoton extends Vue {
   }
 
   /**
+   * Compute electric path from points
+   */
+  computeElectricPath(z: number): string {
+    let path = '';
+    const ox = this.xScale(z - this.step);
+    const oy = this.yScale(
+      this.gaussianComplex(this.are, this.aim, z - this.step, this.k, this.sigma)
+    );
+    const tx = this.xScale(z);
+    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.k, this.sigma));
+    path += `M ${ox} ${oy} `;
+    path += `L ${tx} ${ty}`;
+    return path;
+  }
+
+  /**
+   * Compute electric path from points
+   */
+  computeMagneticPath(z: number): string {
+    let path = '';
+    const ox = this.xScale(z - this.step);
+    const oy = this.yScale(
+      this.gaussianComplex(this.bre, this.bim, z - this.step, this.k, this.sigma)
+    );
+    const tx = this.xScale(z);
+    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.k, this.sigma));
+    path += `M ${ox} ${oy} `;
+    path += `L ${tx} ${ty}`;
+    return path;
+  }
+
+  /**
+   * Compute electric path from points
+   * @return bots svg paths as strings
+   */
+  get computeGaussianPath(): { pathUp: string; pathDown: string } {
+    let pathUp = '';
+    let pathDown = '';
+    this.zs.forEach((z, index) => {
+      const x = this.xScale(z);
+      const y = this.yScale(this.gaussian(z));
+      if (index === 0) {
+        pathUp += `M ${x} ${y + this.margin} `;
+        pathDown += `M ${x} ${this.availableHeight + this.margin - y} `;
+      } else {
+        pathUp += `L ${x} ${y + this.margin} `;
+        pathDown += `L ${x} ${this.availableHeight + this.margin - y} `;
+      }
+    });
+    return { pathUp, pathDown };
+  }
+
+  get availableHeight() {
+    return this.height - this.margin;
+  }
+
+  /**
    * Get horizontal scaling
    */
   get xScale() {
@@ -139,7 +182,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([0, this.height]);
+      .range([0, this.availableHeight]);
   }
   /**
    * Get magnetic scaling
@@ -148,7 +191,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([0.5, 3]);
+      .range([0.5, 6]);
   }
   /**
    * Get electric scaling
@@ -157,7 +200,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([1, 2]);
+      .range([1, 4]);
   }
 
   /**
@@ -168,7 +211,6 @@ export default class AppPhoton extends Vue {
     const tileSize = 64;
     const x = this.particle.relativeTarget.x * tileSize;
     const y = this.particle.relativeTarget.y * tileSize;
-    // console.log(`X:${x} - Y:${y}`);
     return `${x} ${y}`;
   }
 
@@ -177,10 +219,10 @@ export default class AppPhoton extends Vue {
    * @returns a range of steps
    */
   get zs(): number[] {
-    return d3.range(-1, 1, 1 / (this.width * 3));
+    return d3.range(-1, 1, this.step);
   }
-  eColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
-  mColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+  mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
+  eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
 
   /**
    * Compute graph properties from complex values
@@ -215,17 +257,16 @@ export default class AppPhoton extends Vue {
     font-size: 20px;
     text-anchor: middle;
   }
-  .point {
-    stroke-width: 3px;
-    .electric {
-      stroke-width: 3px;
-    }
-    .magnetic {
-      stroke-width: 2px;
-    }
-    .gaussian {
-      stroke-width: 1px;
-    }
+  .electric {
+    fill: transparent;
+  }
+  .magnetic {
+    fill: transparent;
+  }
+  .gaussian {
+    stroke-width: 2px;
+    fill: transparent;
+    stroke: grey;
   }
 }
 </style>

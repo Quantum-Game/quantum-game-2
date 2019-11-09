@@ -18,10 +18,10 @@
         name
         :particle="particle"
         :animate="2"
-        :margin="0"
+        :margin="2"
         :display-magnetic="true"
-        :display-electric="false"
-        :display-gaussian="false"
+        :display-electric="true"
+        :display-gaussian="true"
         :sigma="0.25"
       />
     </g>
