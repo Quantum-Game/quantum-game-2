@@ -1,7 +1,7 @@
 <template>
   <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots :gridDimensions="gridDimensions" />
+    <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
 
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />
@@ -192,14 +192,6 @@ export default class Board extends Vue {
       rotation: 0,
       frozen: false
     };
-  }
-
-  get gridDimensions() {
-    const {
-      tileSize,
-      grid: { cols, rows }
-    } = this;
-    return { cols, rows, tileSize };
   }
 }
 </script>
