@@ -53,8 +53,8 @@ const userStore: StoreOptions<UserState> = {
   },
   actions: {
     SET_INITIAL_PROGRESS({commit}){
-      commit('SET_PROGRESS', 
-      [{ id: 1, status: 'solved', score: 150 }, 
+      commit('SET_PROGRESS',
+      [{ id: 1, status: 'solved', score: 150 },
       { id: 2, status: 'no', score: 100 }]
       );
     },
@@ -142,7 +142,7 @@ const userStore: StoreOptions<UserState> = {
         const { progressArr } = getters;
         const dbRef = db.collection('users').doc(auth.currentUser.uid);
         const data = { uid: auth.currentUser.uid, progress: progressArr };
-  
+
         dbRef
           .set(data)
           .then(() => {
@@ -158,7 +158,7 @@ const userStore: StoreOptions<UserState> = {
       const dbRef = db.collection('users').doc(auth.currentUser.uid);
       dbRef
         .get()
-        .then((doc) => {          
+        .then((doc) => {
           if (doc.exists) {
             const { progress }: any = doc.data();
             commit('SET_PROGRESS', progress);

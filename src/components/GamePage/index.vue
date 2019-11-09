@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :game-state="computeGameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
       <router-link :to="nextLevel">
         <app-button>NEXT LEVEL</app-button>
@@ -17,6 +17,7 @@
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
         {{ level.id + ' - ' + level.name.toUpperCase() }}
+
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
@@ -38,8 +39,10 @@
           :particles="particles"
           :path-particles="pathParticles"
           :hints="hints"
+          :grid="level.grid"
           :probabilities="probabilities"
           @updateSimulation="updateSimulation"
+          @updateCell="updateCell"
         />
         <game-controls
           :frame-index="frameIndex"
@@ -53,9 +56,9 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="level.toolbox" />
+        <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
         <game-active-cell />
-        <game-photons :particles="activeFrame.particles" />
+        <game-photons :particles="particles" />
       </section>
     </game-layout>
   </div>
@@ -63,9 +66,12 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
-import { Mutation, State, Getter } from 'vuex-class';
+import { State, Getter, Mutation } from 'vuex-class';
 import cloneDeep from 'lodash.clonedeep';
-import { Level, Particle, Cell, Coord, Element, Goal } from '@/engine/classes';
+import { local } from 'd3-selection';
+import { warn } from 'vue-class-component/lib/util';
+import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
+import Toolbox from '@/engine/Toolbox';
 import MultiverseGraph from '@/engine/MultiverseGraph';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
@@ -105,9 +111,11 @@ import AppOverlay from '@/components/AppOverlay.vue';
   }
 })
 export default class Game extends Vue {
-  @State level!: Level;
-  @State gameState!: GameState;
-  @State simulationState!: boolean;
+  level = Level.createDummy();
+  @State('currentLevelID') currentLevelID!: number;
+  @State('activeCell') activeCell!: Cell;
+  @State('gameState') gameState!: string;
+  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -116,8 +124,7 @@ export default class Game extends Vue {
 
   // LIFECYCLE
   created() {
-    this.loadLevelFromRoute();
-    this.updateSimulation();
+    this.loadLevel();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
@@ -125,22 +132,16 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
-  /**
-   * Used to load level from route
-   */
   @Watch('$route')
-  loadLevelFromRoute(): void {
+  loadLevel(): void {
     this.error = '';
-    const levelName = `level${parseInt(this.$route.params.id, 10)}`;
-    const levelI: LevelInterface = levelData[levelName];
-    if (!levelI) {
-      this.error = 'No such exists!';
-    }
-    const level = Level.importLevel(levelI);
-    this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
-    this.$store.commit('SET_GAME_STATE', GameState.Initial);
-    this.$store.commit('SET_ACTIVE_LEVEL', level);
-    this.$store.commit('SET_SIMULATION_STATE', false);
+    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
+    const levelI = levelData[`level${this.$route.params.id}`];
+
+    this.level = Level.importLevel(levelI);
+    this.level.grid.cells.forEach((cell) => {
+      this.level.grid.set(cell);
+    });
     this.updateSimulation();
   }
 
@@ -156,7 +157,6 @@ export default class Game extends Vue {
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
     this.$store.commit('SET_SIMULATION_STATE', false);
-    // console.log(this.multiverseGraph.graph.edges());
   }
 
   /**
@@ -273,7 +273,7 @@ export default class Game extends Vue {
   /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
-  get computeGameState() {
+  get computedGameState() {
     if (this.frameIndex === this.simulation.frames.length - 1) {
       return this.gameState;
     }
@@ -324,6 +324,65 @@ export default class Game extends Vue {
     }
   }
 
+  removeFromCurrentTools(cell: Cell) {
+    this.level.toolbox.removeTool(cell);
+  }
+
+  addToCurrentTools(cell: Cell) {
+    this.level.toolbox.addTool(cell);
+  }
+
+  setCurrentTools(cells: Cell[]) {
+    this.level.toolbox = new Toolbox(cells);
+  }
+
+  resetCurrentTools() {
+    this.level.toolbox.reset();
+  }
+
+  /**
+   * the main level grid state updating method
+   * checks the updated cell details, compares them
+   * with the active cell and proceeds accordingly
+   * @param cell
+   * @returns void
+   */
+  updateCell(cell: Cell): void {
+    const sourceCell = this.activeCell;
+    const targetCell = cell;
+
+    // handle moving from from / to toolbox
+    if (this.activeCell.isFromToolbox) {
+      this.removeFromCurrentTools(this.activeCell);
+    } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
+      this.addToCurrentTools(cell);
+      this.level.grid.set(this.activeCell.reset());
+    }
+
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    mutatedCells.forEach((mutatedCell: Cell) => {
+      this.level.grid.set(mutatedCell);
+    });
+    this.saveLevelToStore();
+    this.updateSimulation();
+  }
+
+  saveLevelToStore() {
+    // console.error(this.cellPositionsArray);
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
+    localStorage.setItem(this.currentLevelName, currentStateJSONString);
+  }
+
+  clearLS() {
+    console.error(localStorage.getItem(this.$route.params.id));
+    localStorage.removeItem(this.currentLevelName);
+  }
+
+  saveLS() {
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
+    localStorage.setItem(this.currentLevelName, currentStateJSONString);
+  }
+
   // GETTERS
   get currentLevelName(): string {
     return `level${parseInt(this.$route.params.id, 10)}`;
@@ -339,6 +398,24 @@ export default class Game extends Vue {
 
   get hints(): HintInterface[] {
     return this.level.hints.map((hint) => hint.exportHint());
+  }
+
+  get toolbox() {
+    return this.level.toolbox;
+  }
+
+  get cellPositionsArray() {
+    const array: number[] = [];
+    this.level.grid.cells
+      .filter((cell) => {
+        return cell.element.name !== 'Void';
+      })
+      .map((cell) => {
+        array.push(cell.coord.x);
+        array.push(cell.coord.y);
+        return cell;
+      });
+    return array;
   }
 }
 </script>
