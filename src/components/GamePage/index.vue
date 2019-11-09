@@ -114,8 +114,8 @@ import AppOverlay from '@/components/AppOverlay.vue';
 })
 export default class Game extends Vue {
   level = Level.createDummy();
-  @State('currentLevelID')
-  @State activeCell!: Cell;
+  @State('currentLevelID') currentLevelID!: number;
+  @State('activeCell') activeCell!: Cell;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   frameIndex: number = 0;
   simulation: any = {};
@@ -138,26 +138,23 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     const fromStorage: any = localStorage.getItem(this.currentLevelName);
-    console.warn(JSON.parse(fromStorage));
+    // console.warn(JSON.parse(fromStorage));
     let levelI: LevelInterface;
     // it is not in the storage
     if (!fromStorage) {
       levelI = levelData[this.currentLevelName];
-      // console.warn(levelI);
       if (!levelI) {
         this.error = 'No such exists!';
       }
     } else {
       levelI = JSON.parse(fromStorage);
       console.warn('loadedFromStorage!');
-      console.warn(levelI);
     }
     this.level = Level.importLevel(levelI);
     this.level.grid.cells.forEach((cell) => {
       this.level.grid.set(cell);
     });
-    // this.$store.commit('SET_CURRENT_TOOLS', this.level.toolbox.fullCellList);
-    // this.$store.commit('SET_ACTIVE_LEVEL', level);
+    // this.setCurrentTools(this.level.toolbox)
     this.updateSimulation();
     this.mutationSetCurrentLevelID(parseInt(this.$route.params.id));
   }
@@ -167,16 +164,13 @@ export default class Game extends Vue {
    * @returns boolean
    */
   updateSimulation(): void {
-    // console.warn(this.level.exportLevel().grid)
     this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
-    // console.warn(this.level.grid.exportGrid());
     this.simulation.initializeFromLaser('V');
     this.simulation.nextFrames(30);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
     this.$store.commit('SET_SIMULATION_STATE', false);
-    // console.log(this.multiverseGraph.graph.edges());
   }
 
   /**
@@ -371,6 +365,7 @@ export default class Game extends Vue {
     const sourceCell = this.activeCell;
     const targetCell = cell;
 
+    // handle moving from from / to toolbox
     if (this.activeCell.isFromToolbox) {
       this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
@@ -386,11 +381,9 @@ export default class Game extends Vue {
     this.updateSimulation();
   }
 
-  @Watch('cellPositionsArray')
   saveLevelToStore() {
-    console.error('saved');
+    // console.error(this.cellPositionsArray);
     const currentStateJSONString = JSON.stringify(this.level.exportLevel());
-    console.warn(JSON.parse(currentStateJSONString));
     localStorage.setItem(this.currentLevelName, currentStateJSONString);
   }
 
@@ -426,18 +419,18 @@ export default class Game extends Vue {
   }
 
   get cellPositionsArray() {
-      const array: number[] = [];
-      this.level.grid.cells
-        .filter((cell) => {
-          return cell.element.name !== 'Void';
-        })
-        .map((cell) => {
-          array.push(cell.coord.x);
-          array.push(cell.coord.y);
-          return cell;
-        });
-      return array;
-    }
+    const array: number[] = [];
+    this.level.grid.cells
+      .filter((cell) => {
+        return cell.element.name !== 'Void';
+      })
+      .map((cell) => {
+        array.push(cell.coord.x);
+        array.push(cell.coord.y);
+        return cell;
+      });
+    return array;
+  }
 }
 </script>
 

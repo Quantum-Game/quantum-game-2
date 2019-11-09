@@ -2,7 +2,12 @@
   <div class="toolbox">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <g :class="computedClass(cell)">
-        <app-cell :cell="cell" :available="isAvailable" :tool="true" @updateCell="updateCell" />
+        <app-cell
+          :cell="cell"
+          :available="isAvailable(cell)"
+          :tool="true"
+          @updateCell="updateCell"
+        />
         <text class="counter" x="50%" y="80">
           {{ toolbox.getCount(cell.element.name) }}
           ({{ toolbox.getCountOriginal(cell.element.name) }})

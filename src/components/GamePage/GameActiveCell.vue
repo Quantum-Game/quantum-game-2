@@ -4,6 +4,7 @@
     <p>{{ hoveredCell.coord.toString() }}</p>
     <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
+    isFromToolbox: {{ this.activeCell.isFromToolbox }} isFromGrid: {{ this.activeCell.isFromGrid }}
     <slot></slot>
   </div>
 </template>

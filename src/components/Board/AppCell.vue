@@ -78,7 +78,7 @@ const borderColors = {
 export default class AppCell extends Mixins(getPosition) {
   @Prop() readonly cell!: Cell;
   @Prop() readonly tileSize!: number;
-  @Prop() readonly available!: boolean;
+  @Prop({ default: true }) readonly available!: boolean;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
@@ -108,8 +108,15 @@ export default class AppCell extends Mixins(getPosition) {
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
 
-    // if there is nothing to do, do nothing
-    if (this.cell.frozen || (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)) {
+    // do nothing, if:
+    if (
+      this.cell.frozen ||
+      // if it s a click on a tool thats unavailable:
+      (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
+      // if there is a cell selected in the toolbox and you click it once more:
+      (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
+    ) {
+      this.mutationResetActiveCell();
     } else {
       if (!this.cellSelected) {
         // FIRST CLICK
@@ -119,7 +126,6 @@ export default class AppCell extends Mixins(getPosition) {
           this.mutationSetActiveCell(this.cell);
           return;
         }
-        // console.debug(`INVALID SELECTION : ${this.cell.toString()}`);
         this.border = '';
         this.mutationResetActiveCell();
         return;
@@ -147,8 +153,11 @@ export default class AppCell extends Mixins(getPosition) {
   get computedCellClass(): string[] {
     return [
       this.computedCellName,
-      this.cell.tool && !this.cell.isVoid ? 'active' : '',
-      this.cell.frozen && !this.cell.isVoid ? 'frozen' : ''
+      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
+      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
+        ? 'frozen'
+        : '',
+      this.cell.isFromToolbox && !this.available ? 'transparent' : ''
     ];
   }
 
@@ -186,12 +195,6 @@ export default class AppCell extends Mixins(getPosition) {
   indicateTool(): void {
     this.border = borderColors.rotable;
   }
-
-  // indicateFrozen(): void {
-  //   const timeout = setTimeout(() => {
-  //     this.border = '';
-  //   }, 200);
-  // }
 
   /**
    * styles used for wrapper positioning
@@ -273,6 +276,9 @@ rect {
   .inner-rect {
     fill: white;
     opacity: 0.1;
+  }
+  .transparent {
+    opacity: 0.5;
   }
 }
 </style>

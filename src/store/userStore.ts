@@ -52,11 +52,11 @@ const userStore: StoreOptions<UserState> = {
     }
   },
   actions: {
-    SET_INITIAL_PROGRESS({commit}){
-      commit('SET_PROGRESS',
-      [{ id: 1, status: 'solved', score: 150 },
-      { id: 2, status: 'no', score: 100 }]
-      );
+    SET_INITIAL_PROGRESS({ commit }) {
+      commit('SET_PROGRESS', [
+        { id: 1, status: 'solved', score: 150 },
+        { id: 2, status: 'no', score: 100 }
+      ]);
     },
     FETCH_USER({ commit, dispatch }, user) {
       commit('SET_LOGGED_IN', user !== null);
@@ -103,7 +103,7 @@ const userStore: StoreOptions<UserState> = {
       const provider = new firebase.auth.GoogleAuthProvider();
       dispatch('SIGN_IN_WITH_POPUP', provider);
     },
-    SIGN_IN_WITH_POPUP({commit}, provider) {
+    SIGN_IN_WITH_POPUP({ commit }, provider) {
       auth
         .signInWithPopup(provider)
         .then(() => {
@@ -117,7 +117,7 @@ const userStore: StoreOptions<UserState> = {
       auth
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((data) => {
-          if(data.user) {
+          if (data.user) {
             data.user.updateProfile({
               displayName: user.name
             });
@@ -155,20 +155,20 @@ const userStore: StoreOptions<UserState> = {
     },
     GET_PROGRESS({ commit }) {
       if (auth.currentUser) {
-      const dbRef = db.collection('users').doc(auth.currentUser.uid);
-      dbRef
-        .get()
-        .then((doc) => {
-          if (doc.exists) {
-            const { progress }: any = doc.data();
-            commit('SET_PROGRESS', progress);
-          } else {
-            console.log('No such document!');
-          }
-        })
-        .catch((err) => {
-          commit('SET_ERROR', err.message);
-        });
+        const dbRef = db.collection('users').doc(auth.currentUser.uid);
+        dbRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              const { progress }: any = doc.data();
+              commit('SET_PROGRESS', progress);
+            } else {
+              console.log('No such document!');
+            }
+          })
+          .catch((err) => {
+            commit('SET_ERROR', err.message);
+          });
       }
     }
   }
