@@ -1,13 +1,8 @@
 <template>
   <g class="dots">
-    <g v-for="(row, y) in gridDimensions.rows" :key="y">
-      <g v-for="(column, x) in gridDimensions.cols" :key="x">
-        <circle
-          :cx="x * gridDimensions.tileSize"
-          :cy="y * gridDimensions.tileSize"
-          r="1"
-          fill="#edeaf4"
-        />
+    <g v-for="(row, y) in rows" :key="y">
+      <g v-for="(column, x) in cols" :key="x">
+        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
       </g>
     </g>
   </g>
@@ -18,7 +13,9 @@ import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
 export default class BoardDots extends Vue {
-  @Prop() readonly gridDimensions!: { x: number; y: number; tileSize: number };
+  @Prop() readonly rows!: number;
+  @Prop() readonly cols!: number;
+  @Prop({ default: 64 }) readonly tileSize!: number;
 }
 </script>
 

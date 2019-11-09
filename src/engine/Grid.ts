@@ -241,11 +241,35 @@ export default class Grid extends Cluster {
    * Sets the grid with the appropriate cells
    * @param jsonCells A list of cell interface
    */
-  public importGrid(jsonCells: CellInterface[]): void {
-    jsonCells.forEach((jsonCell) => {
-      const cell = Cell.importCell(jsonCell);
-      this.set(cell);
+  public static importGrid(gridObj: GridInterface): Grid {
+    const grid = new Grid(gridObj.rows, gridObj.cols);
+    gridObj.cells.forEach((cellObj) => {
+      const cell = Cell.importCell(cellObj);
+      grid.set(cell);
     });
+    return grid;
+  }
+
+  /**
+   * Create a dummy grid object
+   * @returns dummy Grid
+   */
+  public static dummyGrid(rows = 3, cols = 3): Grid {
+    const gridI: GridInterface = {
+      rows,
+      cols,
+      cells: [
+        {
+          coord: { x: 0, y: 1 },
+          element: 'Laser',
+          rotation: 0,
+          active: true,
+          frozen: true
+        }
+      ]
+    };
+    const grid = Grid.importGrid(gridI);
+    return grid;
   }
 
   /**
