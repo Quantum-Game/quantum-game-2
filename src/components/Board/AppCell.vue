@@ -183,6 +183,7 @@ export default class AppCell extends Mixins(getPosition) {
 
   /**
    * Compute the cell class name
+   * @returns Computed cell name string
    */
   get computedCellName(): string {
     if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
