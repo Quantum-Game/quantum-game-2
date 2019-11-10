@@ -33,7 +33,8 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        this.graph.setNode(uid, { particle, label: `photon ${fIndex} at frame ${pIndex}` });
+        // this.graph.setNode(uid, { particle, label: `photon ${fIndex} at frame ${pIndex}` });
+        this.graph.setNode(uid, { label: `photon ${fIndex} at frame ${pIndex}` });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
           this.graph.setEdge(uid, parentUid, { label: `${parentUid} -> ${uid}` });
