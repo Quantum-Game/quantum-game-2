@@ -22,10 +22,20 @@ export interface UserState {
     };
   };
   progressArr: ProgressObj[];
+  savedLevelsList: SavedLevel[];
+  publicLevels: PublicLevel[];
   error: null;
 }
 interface ProgressObj {
   id: number;
   status: 'string';
   score: number;
+}
+interface SavedLevel {
+  id: 'string';
+  link: 'string';
+  public: boolean;
+}
+interface PublicLevel {
+  link: 'string';
 }
