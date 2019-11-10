@@ -41,7 +41,7 @@ export default class GameToolbox extends Vue {
   }
 
   computedClass(cell: Cell): string {
-    return this.isAvailable(cell) ? 'inactive' : 'active';
+    return this.isAvailable(cell) ? 'active' : 'inactive';
   }
 
   isAvailable(cell: Cell): boolean {
