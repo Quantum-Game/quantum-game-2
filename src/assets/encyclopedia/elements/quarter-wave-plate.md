@@ -1,6 +1,6 @@
 # Quarter Wave Plate
 
-Quarter Wave Plate lorem ipsum.
+Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.
 
 ```{quantum-board}
       {
@@ -25,26 +25,24 @@ Quarter Wave Plate lorem ipsum.
       }
 ```
 
-## Dig Deeper
+## The basics
 
-Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.
+![Quarter Plate](https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Circular.Polarization.Circularly.Polarized.Light_Circular.Polarizer_Creating.Left.Handed.Helix.View.svg/1280px-Circular.Polarization.Circularly.Polarized.Light_Circular.Polarizer_Creating.Left.Handed.Helix.View.svg.png)
 
-In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.
+Waveplates are thick slabs of birefringent material, such as quartz or mica. For this type of material, the index of refraction, which is a quantity related to how fast or slow light is travelling through a medium, is different along two main directions within the crystal. When light is linearly polarized, this polarization can be broken into two components along the directions of the birefringence. Due to the different refractive index, one of the components will travel slower than the other. The phase shift between them is of pi/2. This phase shift between components gives rise to elliptical and circular polarization.
 
-Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.
+## Everyday use & usage in laboratories
 
-## TRICKS WITH PHASE!
+Waveplates are widely used as a tool to identify minerals. Of course, something you’d want to do everyday. They are also used to determine the sugar content of beer!
+They are also used extensively in optics and quantum physics laboratories, where light with very specific polarization states is required.
 
-NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!
+## Digging deeper
 
-## Everyday Life
-
-“Mirror mirror on the wall who's the fairest of them all?”
-
-We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!
+The two axis of the crystalline birefringent material are called the fast and slow axis. Manufacturing these plates is extremely challenging. The plate must be cut at exactly the right thickness to achieve the desired delay, and the tolerance for this is very tight, there is no room for error!
 
 ## Further Reading
 
-* [Mirror](https://en.wikipedia.org/wiki/Mirror)
-* [Reflection Phase Change](https://en.wikipedia.org/wiki/Reflection_phase_change)
-* [Optical Cavity](https://en.wikipedia.org/wiki/Optical_cavity)
+[Wave Plate on Wikipedia](https://en.wikipedia.org/wiki/Waveplate)
+[Introduction to Waveplates](https://www.toweroptical.com/introduction-to-waveplates/)
+[Understanding Waveplates](https://www.edmundoptics.com/resources/application-notes/optics/understanding-waveplates/)
+[More on Waveplates](https://www.rp-photonics.com/waveplates.html)

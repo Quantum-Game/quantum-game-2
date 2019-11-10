@@ -1,4 +1,3 @@
-// export { default as QuantumSimulation } from './QuantumSimulation';
 export { default as QuantumFrame } from './QuantumFrame';
 export { default as Level } from './Level';
 export { default as LaserPath } from './LaserPath';

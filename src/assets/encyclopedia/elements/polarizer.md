@@ -1,6 +1,7 @@
 # Polarizer
 
-Polarizer lorem ipsum.
+Filters light of a specific polarization, while blocking light of all other polarisations.
+It can transform mixed polarised light into light of a specific polarization.
 
 ```{quantum-board}
       {
@@ -25,26 +26,26 @@ Polarizer lorem ipsum.
       }
 ```
 
-## Dig Deeper
+## The basics
 
-Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.
+Polarizers are made of crystals which are dichroic, they prefer to absorb light which is polarised in a particular direction. Wire-grid polarizers let through the polarization which is parallel to the grid direction, as shown below.
 
-In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.
+[!Polarizer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Wire-grid-polarizer.svg/1280px-Wire-grid-polarizer.svg.png)
 
-Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.
+## Usage in everyday life
 
-## TRICKS WITH PHASE!
+Polarizers are all around us, from our sunglasses to our cameras. Sunlight which is reflected off surfaces is often polarized, and by blocking out some of the polarized light these filters attenuate the overall amount of light that reaches our eyes or the camera sensors. In photography, a polarizer can be used to change the contrast of a picture!
 
-NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!
+[!Circular Polarizer](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/CircularPolarizer.jpg/1920px-CircularPolarizer.jpg)
 
-## Everyday Life
+## Usage in the Laboratory
 
-“Mirror mirror on the wall who's the fairest of them all?”
+Polarizers are everywhere in Optics and Quantum physics labs! Can you spot them below?
+[!Polarizers in a lab](https://horizon-media.s3-eu-west-1.amazonaws.com/s3fs-public/field/image/Labor%20UQUAM.jpg)
 
-We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!
 
 ## Further Reading
 
-* [Mirror](https://en.wikipedia.org/wiki/Mirror)
-* [Reflection Phase Change](https://en.wikipedia.org/wiki/Reflection_phase_change)
-* [Optical Cavity](https://en.wikipedia.org/wiki/Optical_cavity)
+* [Polarizer](https://en.wikipedia.org/wiki/Polarizer)
+* [Polarizing Filter](https://en.wikipedia.org/wiki/Polarizing_filter_(photography))
+* [Polarizing Filters - Why they're awesome?](https://www.youtube.com/watch?v=6Anskk4W7Ms)
