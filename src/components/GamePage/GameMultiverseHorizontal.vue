@@ -44,15 +44,6 @@
 
       <!-- NODE -->
       <g :style="computedStyle">
-        <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
-          <!-- <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
-            {{ node.label }}
-          </text> -->
-          <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
-          <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
-        </g>
-        <!-- EDGE -->
         <g v-for="(edge, i) in edges" :key="'edge' + i" :class="computeEdgeClass(edge)">
           <path
             :d="computeEdgePath(edge.points)"
@@ -60,6 +51,15 @@
             :marker-end="computeArrowHead(edge)"
           />
         </g>
+        <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
+          <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
+          <text class="nodeText" :x="node.x" :y="node.y + 20" text-anchor="middle">
+            {{ (node.probability * 100).toFixed(0) }}%
+          </text>
+          <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
+          <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
+        </g>
+        <!-- EDGE -->
       </g>
     </svg>
   </div>
@@ -194,21 +194,23 @@ export default class GameMultiverseHorizontal extends Vue {
 $past: gray;
 $present: red;
 $future: purple;
-$root: red;
+$root: white;
 $leaf: magenta;
 .multiverse {
   border-top: 1px solid white;
   width: 100%;
   height: 100%;
   min-height: 500px;
-  display: block;
-  text-align: center;
-  color: white;
   svg {
     width: 100%;
   }
   .node {
-    font-size: 10px;
+    text {
+      // stroke: white;
+      font-size: 0.8rem;
+      font-style: normal;
+      font-weight: 100;
+    }
     .bar {
       display: none;
     }

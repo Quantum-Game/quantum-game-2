@@ -35,9 +35,9 @@ export default class MultiverseGraph {
     // Frame multiverse graph
     this.tree = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
-        nodesep: 5,
+        nodesep: 20,
         ranksep: 20,
-        marginy: 10,
+        marginy: 20,
         rankdir: 'TB'
       })
       .setDefaultEdgeLabel(() => {
@@ -59,12 +59,28 @@ export default class MultiverseGraph {
       if (fIndex === 0) {
         this.tree.setNode(frameUid, {
           label: fIndex,
-          probability: frame.probability,
+          probability: 1 - frame.probability,
           fIndex,
           height: 15,
           width: 15
         });
       } else {
+        // Absorption
+        if (frame.totalProbabilityLoss !== 0) {
+          this.tree.setNode(absorberUid, {
+            label: absorberUid,
+            probability: frame.totalProbabilityLoss,
+            fIndex,
+            height: 15,
+            width: 15
+          });
+          this.tree.setEdge(parentUid, absorberUid, {
+            label: `${parentUid} -> ${absorberUid}`,
+            width: frame.totalProbabilityLoss * 4 + 1,
+            fIndex
+          });
+        }
+
         // No absorption
         this.tree.setNode(frameUid, {
           label: frameUid,
@@ -78,22 +94,6 @@ export default class MultiverseGraph {
           width: frame.probability * 4 + 1,
           fIndex
         });
-
-        // Absorption
-        if (parentFrame.totalProbabilityLoss > 0) {
-          this.tree.setNode(absorberUid, {
-            label: absorberUid,
-            probability: (parentFrame.probability - frame.totalProbabilityLoss) * 4 + 1,
-            fIndex,
-            height: 15,
-            width: 15
-          });
-          this.tree.setEdge(parentUid, absorberUid, {
-            label: `${parentUid} -> ${absorberUid}`,
-            width: parentFrame.totalProbabilityLoss,
-            fIndex
-          });
-        }
 
         // Set parent node
         parentFrame = frame;
@@ -202,7 +202,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   isGraphLeaf(uid: string): boolean {
-    return _.includes(this.graph.sinks, uid);
+    return _.includes(this.graph.sinks(), uid);
   }
 
   /**
@@ -210,7 +210,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   isGraphRoot(uid: string): boolean {
-    return _.includes(this.graph.sources, uid);
+    return _.includes(this.graph.sources(), uid);
   }
 
   /**
@@ -218,7 +218,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   isTreeLeaf(uid: string): boolean {
-    return _.includes(this.tree.sinks, uid);
+    return _.includes(this.tree.sinks(), uid);
   }
 
   /**
@@ -226,7 +226,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   isTreeRoot(uid: string): boolean {
-    return _.includes(this.tree.sources, uid);
+    return _.includes(this.tree.sources(), uid);
   }
 
   /**

@@ -22,14 +22,16 @@
     <!-- VIEWR -->
     <div v-if="absorptions.length > 0" class="controls">
       Absorptions:
-      <span
+      <ul
         v-for="(absorption, index) in absorptions"
         :key="`absorption-${index}`"
         class="absorption"
       >
-        {{ toPercent(absorption.probability) }}% in {{ elementName(absorption.x, absorption.y) }} at
-        ({{ absorption.x }}, {{ absorption.y }})
-      </span>
+        <li>
+          {{ toPercent(absorption.probability) }}% in
+          {{ elementName(absorption.x, absorption.y) }} at ({{ absorption.x }}, {{ absorption.y }})
+        </li>
+      </ul>
     </div>
     <div class="controls">
       <span v-if="polar" class="smallBtn">
