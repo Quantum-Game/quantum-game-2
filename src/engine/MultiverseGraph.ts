@@ -47,8 +47,8 @@ export default class MultiverseGraph {
           label: fIndex,
           fIndex,
           pIndex,
-          height: 20,
-          width: 20,
+          height: 15,
+          width: 15,
           detectionEvent
         });
         // Set edges from particle directions
