@@ -1,4 +1,7 @@
-import { Graph, alg } from 'graphlib';
+import * as dagre from 'dagre';
+import _ from 'lodash';
+import { detectionInterface } from './interfaces';
+// import { Graph, alg } from 'graphlib';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Particle from '@/engine/Particle';
@@ -8,12 +11,26 @@ import Particle from '@/engine/Particle';
  * Creates a graph after post processing the current simulation frames
  */
 export default class MultiverseGraph {
-  graph: Graph;
+  graph: any;
   qs: QuantumSimulation;
 
   constructor(qs: QuantumSimulation) {
-    this.graph = new Graph({ directed: true });
     this.qs = qs;
+    // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
+    this.graph = new dagre.graphlib.Graph({ directed: true })
+      .setGraph({
+        nodesep: 5,
+        ranksep: 15,
+        marginy: 20,
+        // rankdir: 'LR'
+        rankdir: 'TB'
+        // rankdir: 'BT'
+      })
+      .setDefaultEdgeLabel(() => {
+        return {};
+      });
+    this.processFrames();
+    dagre.layout(this.graph);
   }
 
   /**
@@ -25,14 +42,35 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        this.graph.setNode(uid, particleI);
+        const detectionEvent = this.qs.isDetectionEvent(particle.coord);
+        this.graph.setNode(uid, {
+          label: fIndex,
+          fIndex,
+          pIndex,
+          height: 15,
+          width: 15,
+          detectionEvent
+        });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
-          this.graph.setEdge(uid, parentUid, 1);
+          // this.graph.setEdge(uid, parentUid, {
+          this.graph.setEdge(parentUid, uid, {
+            label: `${parentUid} -> ${uid}`,
+            width: particle.probability * 4 + 1,
+            fIndex,
+            pIndex
+          });
         });
       });
     });
-    // console.log(`NODES: ${this.graph.nodes()}`);
+    // Round the corners of the nodes
+    this.graph.nodes().forEach((v: any) => {
+      const node = this.graph.node(v);
+      node.rx = 5;
+      node.ry = 5;
+      node.leaf = this.isLeaf(v);
+      node.root = this.isRoot(v);
+    });
   }
 
   /**
@@ -49,7 +87,7 @@ export default class MultiverseGraph {
       parentFrame.particles.forEach((parentParticle: Particle, parentIndex: number) => {
         // Check for parent
         if (parentParticle.nextCoord().equal(particle)) {
-          const parentUid = `particle-${fIndex - 1}-${parentIndex}`;
+          const parentUid = `particle_${fIndex - 1}_${parentIndex}`;
           parents.push(parentUid);
         }
       });
@@ -83,24 +121,6 @@ export default class MultiverseGraph {
 
     const source = this.roots[0];
     const sink = this.leafs[0];
-
-    // Compute Dijkstra paths
-    // const paths = alg.dijkstra(this.graph, source);
-    // console.log(paths);
-    // console.log(`SINK: ${sink}`);
-    // console.log(`SOURCE: ${source}`);
-
-    // let sinkPath = paths[sink];
-
-    // while (sinkPath.distance !== 0) {
-    //   const uid = sinkPath.predecessor;
-    //   const particle = this.fromUid(uid);
-    //   const x = this.centerCoord(particle.coord.x);
-    //   const y = this.centerCoord(particle.coord.y);
-    //   svgPath += ` L ${x} ${y} `;
-    //   sinkPath = paths[uid];
-    // }
-    // console.log(svgPath);
     return svgPath;
   }
 
@@ -118,6 +138,22 @@ export default class MultiverseGraph {
    */
   get leafs(): string[] {
     return this.graph.sinks();
+  }
+
+  /**
+   * Check if a node is a leaf
+   * @returns leafs string names
+   */
+  isLeaf(uid: string): boolean {
+    return _.includes(this.leafs, uid);
+  }
+
+  /**
+   * Check if a node is a leaf
+   * @returns leafs string names
+   */
+  isRoot(uid: string): boolean {
+    return _.includes(this.roots, uid);
   }
 
   /**
@@ -147,7 +183,7 @@ export default class MultiverseGraph {
    * @returns uid string
    */
   static createUid(fIndex: number, pIndex: number): string {
-    return `particle-${fIndex}-${pIndex}`;
+    return `particle_${fIndex}_${pIndex}`;
   }
 
   /**

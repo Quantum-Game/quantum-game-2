@@ -24,14 +24,20 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals
-        slot="main-left"
-        :percentage="percentage"
-        :goals="level.goals"
-        :particles="activeFrame.particles"
-        :detections="detections"
-        :mines="mineCount"
-      />
+      <section slot="main-left">
+        <game-goals
+          :percentage="percentage"
+          :goals="level.goals"
+          :particles="activeFrame.particles"
+          :detections="detections"
+          :mines="mineCount"
+        />
+        <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        />
+      </section>
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
@@ -51,6 +57,11 @@
           @step-forward="showNext"
           @play="play"
         />
+        <!-- <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        /> -->
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
@@ -58,7 +69,7 @@
       <section slot="main-right">
         <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
         <game-active-cell />
-        <game-photons :particles="particles" />
+        <game-photons :particles="activeFrame.particles" />
       </section>
     </game-layout>
   </div>
@@ -93,6 +104,8 @@ import GamePhotons from '@/components/GamePage/GamePhotons.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
+import GameMultiverse from '@/components/GamePage/GameMultiverse.vue';
+import GameMultiverseHorizontal from '@/components/GamePage/GameMultiverseHorizontal.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
 
@@ -104,6 +117,8 @@ import AppOverlay from '@/components/AppOverlay.vue';
     GameGoals,
     GameActiveCell,
     GameToolbox,
+    GameMultiverse,
+    GameMultiverseHorizontal,
     GameControls,
     GameBoard,
     AppButton,
@@ -130,6 +145,10 @@ export default class Game extends Vue {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleArrowPress);
+  }
+
+  handleChangeActiveFrame(activeId: number) {
+    this.frameIndex = activeId;
   }
 
   @Watch('$route')

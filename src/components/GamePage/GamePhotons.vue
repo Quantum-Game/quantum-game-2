@@ -2,7 +2,7 @@
   <div ref="wrapper" class="simulation-steps-display-wrapper">
     <div class="hoveredPhotons">
       <h3>PHOTONS</h3>
-      <div v-for="(particle, index) in hoveredParticles" :key="index">
+      <div v-for="(particle, index) in particles" :key="index">
         <app-photon
           :particle="particle"
           :width="width"
@@ -41,6 +41,7 @@ import AppButton from '@/components/AppButton.vue';
 })
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[];
+  @Prop() readonly particles!: Particle[];
   width: number = 200;
   $refs!: {
     wrapper: HTMLElement;

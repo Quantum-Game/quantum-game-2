@@ -5,7 +5,7 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 6,
     "cells": [
       {
         "coord": { "y": 3, "x": 1 },
