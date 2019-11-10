@@ -104,10 +104,11 @@ export default class AppPhoton extends Vue {
   }
 
   get computeStyle() {
+    const direction = this.displayDirection ? this.particle.direction : 0;
     return {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
-      transform: `rotate(${this.displayDirection ? this.particle.direction : 0}deg)`
+      transform: `rotate(${direction}deg)`
     };
   }
 

@@ -368,6 +368,7 @@ export default class Game extends Vue {
    * the main level grid state updating method
    * checks the updated cell details, compares them
    * with the active cell and proceeds accordingly
+   * FIXME: Tool drop to tool makes it disappear
    * @param cell
    * @returns void
    */

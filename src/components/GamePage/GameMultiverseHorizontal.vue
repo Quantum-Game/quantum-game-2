@@ -149,6 +149,7 @@ export default class GameMultiverseHorizontal extends Vue {
    */
   get graph() {
     return this.multiverse.tree;
+    // return this.multiverse.graph;
   }
 
   get nodes() {
