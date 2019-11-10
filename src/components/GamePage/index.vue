@@ -131,6 +131,7 @@ export default class Game extends Vue {
   @State('activeCell') activeCell!: Cell;
   @State('gameState') gameState!: string;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: string) => void;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -155,6 +156,7 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
+    this.mutationSetGameState('InProgress');
     const levelI = levelData[`level${this.$route.params.id}`];
 
     this.level = Level.importLevel(levelI);
