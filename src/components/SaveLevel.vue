@@ -21,10 +21,10 @@ import AppButton from '@/components/AppButton.vue';
 })
 export default class SaveLevel extends Vue {
   saveLevel() {
-    $userStore.dispatch('SAVE_LEVEL', this.$store.getters.level);
+    $userStore.dispatch('SAVE_LEVEL', this.$store.state);
   }
   updateLevel() {
-    $userStore.dispatch('UPDATE_LEVEL', this.$store.getters.level);
+    $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
   }
 }
 </script>

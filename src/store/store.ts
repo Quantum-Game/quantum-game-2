@@ -59,9 +59,6 @@ const store: StoreOptions<RootState> = {
       state.currentLevelID = id;
     }
   },
-  getters: {
-    level: (state) => state.level
-  },
   modules: {
     optionsModule
   }
