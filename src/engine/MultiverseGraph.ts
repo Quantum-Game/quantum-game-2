@@ -12,10 +12,12 @@ import Particle from '@/engine/Particle';
  */
 export default class MultiverseGraph {
   graph: any;
+  tree: any;
   qs: QuantumSimulation;
 
   constructor(qs: QuantumSimulation) {
     this.qs = qs;
+    // Frame particle graph
     // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
@@ -23,14 +25,89 @@ export default class MultiverseGraph {
         ranksep: 20,
         marginy: 10,
         rankdir: 'TB'
-        // rankdir: 'LR'
-        // rankdir: 'BT'
       })
       .setDefaultEdgeLabel(() => {
         return {};
       });
     this.processFrames();
     dagre.layout(this.graph);
+
+    // Frame multiverse graph
+    this.tree = new dagre.graphlib.Graph({ directed: true })
+      .setGraph({
+        nodesep: 5,
+        ranksep: 20,
+        marginy: 10,
+        rankdir: 'TB'
+      })
+      .setDefaultEdgeLabel(() => {
+        return {};
+      });
+    this.processTree();
+    dagre.layout(this.tree);
+  }
+
+  /**
+   * Create a multiverse tree from the frame and their absorption
+   */
+  processTree() {
+    this.qs.frames.forEach((frame: QuantumFrame, fIndex: number) => {
+      let parentFrame = frame;
+      const parentUid = `frame_${fIndex - 1}`;
+      const frameUid = `frame_${fIndex}`;
+      const absorberUid = `absorber_${fIndex}`;
+      if (fIndex === 0) {
+        this.tree.setNode(frameUid, {
+          label: fIndex,
+          probability: frame.probability,
+          fIndex,
+          height: 15,
+          width: 15
+        });
+      } else {
+        // No absorption
+        this.tree.setNode(frameUid, {
+          label: frameUid,
+          probability: frame.probability,
+          fIndex,
+          height: 15,
+          width: 15
+        });
+        this.tree.setEdge(parentUid, frameUid, {
+          label: `${parentUid} -> ${frameUid}`,
+          width: frame.probability * 4 + 1,
+          fIndex
+        });
+
+        // Absorption
+        if (parentFrame.totalProbabilityLoss > 0) {
+          this.tree.setNode(absorberUid, {
+            label: absorberUid,
+            probability: (parentFrame.probability - frame.totalProbabilityLoss) * 4 + 1,
+            fIndex,
+            height: 15,
+            width: 15
+          });
+          this.tree.setEdge(parentUid, absorberUid, {
+            label: `${parentUid} -> ${absorberUid}`,
+            width: parentFrame.totalProbabilityLoss,
+            fIndex
+          });
+        }
+
+        // Set parent node
+        parentFrame = frame;
+      }
+    });
+
+    // Post process
+    this.tree.nodes().forEach((v: any) => {
+      const node = this.tree.node(v);
+      node.rx = 5;
+      node.ry = 5;
+      node.leaf = this.isTreeLeaf(v);
+      node.root = this.isTreeRoot(v);
+    });
   }
 
   /**
@@ -68,8 +145,8 @@ export default class MultiverseGraph {
       const node = this.graph.node(v);
       node.rx = 5;
       node.ry = 5;
-      node.leaf = this.isLeaf(v);
-      node.root = this.isRoot(v);
+      node.leaf = this.isGraphLeaf(v);
+      node.root = this.isGraphRoot(v);
     });
   }
 
@@ -117,42 +194,39 @@ export default class MultiverseGraph {
     const originX = this.centerCoord(root.coord.x);
     const originY = this.centerCoord(root.coord.y);
     svgPath += `M ${originX} ${originY} `;
-
-    const source = this.roots[0];
-    const sink = this.leafs[0];
     return svgPath;
   }
 
   /**
-   * Sinks are where elements don't have childrens
-   * @returns roots string names
-   */
-  get roots(): string[] {
-    return this.graph.sources();
-  }
-
-  /**
-   * Leafs are where elements don't have childrens
+   * Check if a node is a leaf
    * @returns leafs string names
    */
-  get leafs(): string[] {
-    return this.graph.sinks();
+  isGraphLeaf(uid: string): boolean {
+    return _.includes(this.graph.sinks, uid);
   }
 
   /**
    * Check if a node is a leaf
    * @returns leafs string names
    */
-  isLeaf(uid: string): boolean {
-    return _.includes(this.leafs, uid);
+  isGraphRoot(uid: string): boolean {
+    return _.includes(this.graph.sources, uid);
   }
 
   /**
    * Check if a node is a leaf
    * @returns leafs string names
    */
-  isRoot(uid: string): boolean {
-    return _.includes(this.roots, uid);
+  isTreeLeaf(uid: string): boolean {
+    return _.includes(this.tree.sinks, uid);
+  }
+
+  /**
+   * Check if a node is a leaf
+   * @returns leafs string names
+   */
+  isTreeRoot(uid: string): boolean {
+    return _.includes(this.tree.sources, uid);
   }
 
   /**

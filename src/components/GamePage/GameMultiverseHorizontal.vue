@@ -46,9 +46,9 @@
       <g :style="computedStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
           <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
-          <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
+          <!-- <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
-          </text>
+          </text> -->
           <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
           <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
@@ -83,6 +83,7 @@ export default class GameMultiverseHorizontal extends Vue {
 
   mounted() {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
+    console.log(this.multiverse.tree.nodes());
   }
 
   handleMouseOver(activeId: number): void {
@@ -147,18 +148,18 @@ export default class GameMultiverseHorizontal extends Vue {
    * Getters
    */
   get graph() {
-    return this.multiverse.graph;
+    return this.multiverse.tree;
   }
 
   get nodes() {
-    const uids = this.multiverse.graph.nodes();
+    const uids = this.graph.nodes();
     return uids.map((uid: string) => {
       return this.graph.node(uid);
     });
   }
 
   get edges() {
-    const edgeIds = this.multiverse.graph.edges();
+    const edgeIds = this.graph.edges();
     return edgeIds.map((edgeId: { u: string; v: string }) => {
       return this.graph.edge(edgeId);
     });
@@ -177,7 +178,7 @@ export default class GameMultiverseHorizontal extends Vue {
    * Debug the computed nodes and edges properties
    */
   debugNodes() {
-    this.multiverse.graph.nodes().forEach((node: any) => {
+    this.graph.nodes().forEach((node: any) => {
       console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
     });
   }

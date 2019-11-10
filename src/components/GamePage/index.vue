@@ -161,8 +161,6 @@ export default class Game extends Vue {
     const levelI = levelData[`level${this.$route.params.id}`];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
-    console.log(this.level.toolbox.uniqueCellList);
-
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
