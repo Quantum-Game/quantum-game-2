@@ -1,5 +1,5 @@
 <template>
-  <section class="entry-section">
+  <section v-if="section.title" class="entry-section">
     <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
       {{ section.title.toUpperCase() }}
     </h2>

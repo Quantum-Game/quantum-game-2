@@ -1,50 +1,69 @@
-# DetectorFour
+# Photon Detector x 4
 
-A mirror is an object that reflects incident light preserving its properties.
+It detects any photon which is incident on it by transforming it into an electrical signal.
+_To win the game, you want to feed as many carnivorous plants as possible! They are hungry!_
 
 ```{quantum-board}
+  {
+    "cols": 4,
+    "rows": 3,
+    "cells": [
       {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "DetectorFour",
-            "rotation": 135,
-            "frozen": false,
-            "active": false
-          }
-        ]
+        "coord": { "y": 1, "x": 0 },
+        "element": "Laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true
+      },
+      {
+        "coord": { "y": 1, "x": 3 },
+        "element": "DetectorFour",
+        "rotation": 180,
+        "frozen": false,
+        "active": false
       }
+    ]
+  }
 ```
 
-## Dig Deeper
+## Basics
 
-Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.
+Some people argue that us humans, if we really stretch our eyes, can detect even single photons. [“The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”](https://www.nature.com/news/people-can-sense-single-photons-1.20282). Catching a single photon is an enormous challenge! Luckily, scientists have worked for us and have come up with many devices which can sense as little as one photon!
 
-In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.
+One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely.
 
-Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.
+## Everyday use
 
-## TRICKS WITH PHASE!
+Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory! And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!
 
-NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!
+## Digging deeper
 
-## Everyday Life
+How does a photomultiplier tube work?
+These devices are a tube filled with vacuum. Inside, the photons hit a cathode, where, by the photoelectric effect, they are transformed into electrons.
+The electrons are then guided down along the tube and, as they hit other electrons, they create more and more electrons. The original electron from the photon is multiplied to create a flow of electrons, or a current, high enough to be measured precisely.
+[![Photomultiplier tubue](https://upload.wikimedia.org/wikipedia/commons/e/e8/PhotoMultiplierTubeAndScintillator.svg)](https://en.wikipedia.org/wiki/Photomultiplier_tube)
 
-“Mirror mirror on the wall who's the fairest of them all?”
+Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!
 
-We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!
+Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!!
 
-## Further Reading
+## Usage in Laboratories
 
-* [Mirror](https://en.wikipedia.org/wiki/Mirror)
-* [Reflection Phase Change](https://en.wikipedia.org/wiki/Reflection_phase_change)
-* [Optical Cavity](https://en.wikipedia.org/wiki/Optical_cavity)
+PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!
+
+[![Photomultiplier tubue](https://scx2.b-cdn.net/gfx/news/hires/2016/thesuperkami.jpg)](https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html)
+
+## further reading
+[Photodetector](https://en.wikipedia.org/wiki/Photodetector)
+[Photon counting](https://en.wikipedia.org/wiki/Photon_counting)
+[Photomultiplier Tube](https://en.wikipedia.org/wiki/Photomultiplier_tube)
+[People Can Sense Single Photon](https://www.nature.com/news/people-can-sense-single-photons-1.20282)
+[See a Photon](http://math.ucr.edu/home/baez/physics/Quantum/see_a_photon.html)
+[Super Kamiokande Detector](https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html)
+
+
+## Related concepts:
+-photoelectric effect
+-single photon source
+-spontaneous emission/absorption/stimulated emission
+
