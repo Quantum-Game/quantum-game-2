@@ -6,6 +6,7 @@ import Grid from './Grid';
 import { GridInterface } from './interfaces';
 import Cell from './Cell';
 import Particle from './Particle';
+import { Coord } from './classes';
 
 /**
  * Rewrite of Frame.
@@ -112,6 +113,17 @@ export default class QuantumSimulation {
         probability: _.sumBy(absorptions, 'probability')
       }))
       .value();
+  }
+
+  /**
+   * Check for a detection event with its coordinates
+   * @param coord coord to check for detection
+   */
+  isDetectionEvent(coord: Coord): boolean {
+    const coords = this.totalAbsorptionPerTile.map((absorption) => {
+      return new Coord(absorption.y, absorption.x);
+    });
+    return _.includes(coords, coord);
   }
 
   /**
