@@ -1,6 +1,6 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets">
-    <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div>
+    <!-- <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div> -->
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
       <span
@@ -32,7 +32,12 @@
       </span>
     </div>
     <div class="controls">
-      <span @click="polar = !polar"> Click for polar vs cartesian </span>
+      <span v-if="polar">
+        <span @click="polar = !polar">Show cartesian</span>
+      </span>
+      <span v-else>
+        <span @click="polar = !polar">Show polar</span>
+      </span>
     </div>
   </div>
 </template>

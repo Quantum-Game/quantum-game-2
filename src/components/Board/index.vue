@@ -6,6 +6,16 @@
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />
 
+    <!-- CELLS -->
+    <app-cell
+      v-for="(cell, i) in grid.cells"
+      :key="'cell' + i"
+      :cell="cell"
+      :tileSize="tileSize"
+      @updateCell="updateCell"
+      @mouseover.native="handleMouseEnter(cell.coord)"
+    />
+
     <!-- PHOTONS -->
     <g
       v-for="(particle, index) in particles"
@@ -23,19 +33,10 @@
         :display-magnetic="false"
         :display-electric="true"
         :display-gaussian="true"
+        :display-opacity="false"
         :sigma="0.25"
       />
     </g>
-
-    <!-- CELLS -->
-    <app-cell
-      v-for="(cell, i) in grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @updateCell="updateCell"
-      @mouseover.native="handleMouseEnter(cell.coord)"
-    />
 
     <!-- PROBABILITY -->
     <text

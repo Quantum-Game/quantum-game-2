@@ -161,7 +161,7 @@ export default class GameMultiverse extends Vue {
     let path = '';
     if (points.length > 2) {
       path += `M ${points[0].x} ${points[0].y}`;
-      path += `L ${points[1].x} ${points[1].y}`;
+      // path += `L ${points[1].x} ${points[1].y}`;
       path += `L ${points[2].x} ${points[2].y}`;
     }
     return path;
@@ -183,6 +183,9 @@ export default class GameMultiverse extends Vue {
 </script>
 
 <style lang="scss" scoped>
+$past: gray;
+$present: red;
+$future: purple;
 .multiverse {
   border-top: 1px solid white;
   padding-top: 20px;
@@ -198,17 +201,17 @@ export default class GameMultiverse extends Vue {
   .node {
     font-size: 10px;
     &.past {
-      fill: darkgrey;
-      stroke: darkgrey;
+      fill: $past;
+      stroke: $past;
     }
     &.present {
-      fill: red;
-      stroke: red;
+      fill: $present;
+      stroke: $present;
       font-size: 10px;
     }
     &.future {
-      fill: purple;
-      stroke: purple;
+      fill: $future;
+      stroke: $future;
     }
 
     rect {
@@ -219,25 +222,25 @@ export default class GameMultiverse extends Vue {
 
   .edge {
     &.past {
-      fill: darkgrey;
-      stroke: darkgrey;
+      fill: $past;
+      stroke: $past;
       & path {
-        fill: darkgray;
+        fill: $past;
       }
     }
     &.present {
-      fill: red;
-      stroke: red;
+      fill: $present;
+      stroke: $present;
       font-size: 10px;
       & path {
-        fill: red;
+        fill: $present;
       }
     }
     &.future {
-      fill: purple;
-      stroke: purple;
+      fill: $future;
+      stroke: $future;
       & path {
-        fill: purple;
+        fill: $future;
       }
     }
   }
