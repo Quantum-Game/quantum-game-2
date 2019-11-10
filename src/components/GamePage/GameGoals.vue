@@ -139,7 +139,7 @@ export default class GameGoals extends Vue {
    */
   get minesHit(): number {
     const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine' && detection.probability > 0.1;
+      return detection.cell.element.name === 'Mine' && detection.probability > 0.001;
     });
     return minesDetected.length;
   }

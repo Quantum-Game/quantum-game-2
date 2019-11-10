@@ -11,6 +11,7 @@
 
     <span>
       <b>STEP {{ frameIndex }} / {{ totalFrames }}</b>
+      <b>{{ gameState }}</b>
     </span>
     <span class="view-mode">
       <game-controls-button
@@ -26,6 +27,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { State, Getter, Mutation } from 'vuex-class';
 import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 
 @Component({
@@ -36,6 +38,7 @@ import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 export default class GameControls extends Vue {
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
+  @State('gameState') gameState!: string;
   // PLAY BUTTON SHOULD CHANGE TO PAUSE WHEN THE PHOTON IS MOVING
   playBackControls = ['step-back', 'play', 'step-forward'];
   // ADD VIEW CONTROLS WHEN MULTIVERSE MODE IS ADDED
