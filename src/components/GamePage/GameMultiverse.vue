@@ -16,9 +16,7 @@ import MultiverseGraph from '@/engine/MultiverseGraph';
 export default class GameMultiverse extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph;
 
-  mounted() {
-    this.debug();
-  }
+  mounted() {}
 
   /**
    * Getters
@@ -54,5 +52,15 @@ export default class GameMultiverse extends Vue {
   display: block;
   text-align: center;
   color: white;
+  .node rect {
+    stroke: #333;
+    fill: #fff;
+  }
+
+  .edgePath path {
+    stroke: #333;
+    fill: #333;
+    stroke-width: 1.5px;
+  }
 }
 </style>
