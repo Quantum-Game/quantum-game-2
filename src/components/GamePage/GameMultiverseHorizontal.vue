@@ -83,8 +83,6 @@ export default class GameMultiverseHorizontal extends Vue {
 
   mounted() {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
-    this.debugNodes();
-    console.log(this.graph.sinks());
   }
 
   handleMouseOver(activeId: number): void {
@@ -180,12 +178,12 @@ export default class GameMultiverseHorizontal extends Vue {
    */
   debugNodes() {
     this.multiverse.graph.nodes().forEach((node: any) => {
-      console.log(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
+      console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
     });
   }
   debugEdges() {
     this.edges.forEach((edge: any) => {
-      console.log(`Edge ${edge}: ${JSON.stringify(edge)}`);
+      console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`);
     });
   }
 }

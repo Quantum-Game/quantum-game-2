@@ -234,7 +234,6 @@ export default class Game extends Vue {
    *  @returns goals
    */
   get framePercentage() {
-    // console.log(`FRAME %: ${this.activeFrame.probability}`);
     return this.activeFrame.probability * 100;
   }
 
