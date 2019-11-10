@@ -49,7 +49,8 @@
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
           </text>
-          <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" />
+          <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
+          <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
         <!-- EDGE -->
         <g v-for="(edge, i) in edges" :key="'edge' + i" :class="computeEdgeClass(edge)">

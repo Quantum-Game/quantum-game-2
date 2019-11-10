@@ -22,8 +22,8 @@ export default class MultiverseGraph {
         nodesep: 5,
         ranksep: 15,
         marginy: 20,
-        rankdir: 'LR'
-        // rankdir: 'TB'
+        // rankdir: 'LR'
+        rankdir: 'TB'
         // rankdir: 'BT'
       })
       .setDefaultEdgeLabel(() => {

@@ -32,6 +32,11 @@
           :detections="detections"
           :mines="mineCount"
         />
+        <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -52,11 +57,11 @@
           @step-forward="showNext"
           @play="play"
         />
-        <game-multiverse-horizontal
+        <!-- <game-multiverse-horizontal
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
           @changeActiveFrame="handleChangeActiveFrame"
-        />
+        /> -->
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
