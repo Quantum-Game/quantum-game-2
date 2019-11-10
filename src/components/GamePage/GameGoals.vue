@@ -41,7 +41,7 @@
         <span v-if="detectorsHit === 0" class="defeat">
           <b>DETECTORS</b>
         </span>
-        <span v-else class="success"><b>SAFE</b></span>
+        <span v-else class="success"><b>DETECTORS</b></span>
       </div>
     </div>
 
