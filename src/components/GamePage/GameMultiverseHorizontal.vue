@@ -141,9 +141,8 @@ export default class GameMultiverseHorizontal extends Vue {
 
   get computedStyle() {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
-    const yCenterOffset = (this.rect.height - this.graph.graph().height) / 2;
     return {
-      transform: `translate(${xCenterOffset}px, ${yCenterOffset}px)`
+      transform: `translate(${xCenterOffset}px, 0px)`
     };
   }
   /**
@@ -201,6 +200,8 @@ $leaf: magenta;
 .multiverse {
   border-top: 1px solid white;
   width: 100%;
+  height: 100%;
+  min-height: 500px;
   display: block;
   text-align: center;
   color: white;

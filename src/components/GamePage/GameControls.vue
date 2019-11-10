@@ -12,7 +12,7 @@
 
     <span>
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }} </b>
-      <b>({{ gameState }})</b>
+      <span>({{ gameState }})</span>
     </span>
     <span class="view-mode">
       <game-controls-button

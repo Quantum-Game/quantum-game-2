@@ -20,7 +20,7 @@
       </span>
     </div>
     <!-- VIEWR -->
-    <div class="controls">
+    <div v-if="absorptions.length > 0" class="controls">
       Absorptions:
       <span
         v-for="(absorption, index) in absorptions"
