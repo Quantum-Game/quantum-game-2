@@ -305,6 +305,6 @@ export default class GameGoals extends Vue {
   color: darkred;
 }
 .success {
-  color: green;
+  color: white;
 }
 </style>
