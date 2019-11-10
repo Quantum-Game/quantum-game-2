@@ -71,10 +71,6 @@ export default class Particle extends Coord {
     return Coord.importCoord(this.path[0].coord);
   }
 
-  // get intensity(): number {
-  //   return this.probability;
-  // }
-
   /**
    * Check if the particle has any intensity
    * @returns true if above threshold
@@ -279,6 +275,9 @@ export default class Particle extends Coord {
         break;
       default:
         throw new Error(`Laser has wrong direction: ${this.direction}°`);
+    }
+    if (this.probability < 0.001) {
+      return '';
     }
     return pathStr;
   }
