@@ -194,8 +194,8 @@ export default class GameMultiverseHorizontal extends Vue {
 $past: gray;
 $present: red;
 $future: purple;
-$root: brown;
-$leaf: green;
+$root: white;
+$leaf: magenta;
 .multiverse {
   border-top: 1px solid white;
   width: 100%;
