@@ -17,11 +17,12 @@ export default class MultiverseGraph {
     // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
-        nodesep: 10,
+        nodesep: 5,
         ranksep: 20,
-        // rankdir: 'LR'
+        marginy: 20,
+        rankdir: 'LR'
         // rankdir: 'TB'
-        rankdir: 'BT'
+        // rankdir: 'BT'
       })
       .setDefaultEdgeLabel(() => {
         return {};
@@ -39,7 +40,7 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        // this.graph.setNode(uid, { particle, label: `photon ${fIndex} at frame ${pIndex}` });
+        // const detectionEvent = this.qs.totalAbsorptionPerTile.
         this.graph.setNode(uid, {
           label: fIndex,
           fIndex,
@@ -114,24 +115,6 @@ export default class MultiverseGraph {
 
     const source = this.roots[0];
     const sink = this.leafs[0];
-
-    // Compute Dijkstra paths
-    // const paths = alg.dijkstra(this.graph, source);
-    // console.log(paths);
-    // console.log(`SINK: ${sink}`);
-    // console.log(`SOURCE: ${source}`);
-
-    // let sinkPath = paths[sink];
-
-    // while (sinkPath.distance !== 0) {
-    //   const uid = sinkPath.predecessor;
-    //   const particle = this.fromUid(uid);
-    //   const x = this.centerCoord(particle.coord.x);
-    //   const y = this.centerCoord(particle.coord.y);
-    //   svgPath += ` L ${x} ${y} `;
-    //   sinkPath = paths[uid];
-    // }
-    // console.log(svgPath);
     return svgPath;
   }
 

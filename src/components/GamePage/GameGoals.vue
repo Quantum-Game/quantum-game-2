@@ -38,11 +38,11 @@
       </span>
       <div>DANGER</div>
     </div>
-    <div class="temp">
+    <!-- <div class="temp">
       <div>Max: {{ totalGoalPercentage }} %</div>
       <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
       <div>Current: {{ percentage.toFixed() }} %</div>
-    </div>
+    </div> -->
 
     <!-- DETECTION EVENTS -->
     <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">

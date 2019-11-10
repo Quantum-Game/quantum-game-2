@@ -1,7 +1,7 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
     <!-- <h3>MULTIVERSE</h3> -->
-    <svg width="100%">
+    <svg :style="computedSvgStyle">
       <!-- ARROWHEAD -->
       <defs>
         <marker
@@ -45,14 +45,7 @@
       <!-- NODE -->
       <g :style="computedStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <rect
-            class="nodeRect"
-            :x="node.x - 10"
-            :y="node.y - 10"
-            :rx="node.rx"
-            :ry="node.ry"
-            @mouseover="handleMouseOver(node.fIndex)"
-          />
+          <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
           </text>
@@ -78,7 +71,7 @@ import MultiverseGraph from '@/engine/MultiverseGraph';
 @Component({
   components: {}
 })
-export default class GameMultiverse extends Vue {
+export default class GameMultiverseHorizontal extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph;
   @Prop() readonly activeId!: number;
   $refs!: {
@@ -93,6 +86,15 @@ export default class GameMultiverse extends Vue {
 
   handleMouseOver(activeId: number): void {
     this.$emit('changeActiveFrame', activeId);
+  }
+
+  get computedSvgStyle(): {} {
+    const { height } = this.graph.graph();
+    console.log(height);
+
+    return {
+      height
+    };
   }
 
   computeNodeClass(node: { fIndex: number }): string[] {
@@ -133,7 +135,7 @@ export default class GameMultiverse extends Vue {
 
   get computedStyle() {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
-    // const yCenterOffset = this.graph.graph().height + 40;
+    const yCenterOffset = this.graph.graph().height + 40;
     return {
       transform: `translate(${xCenterOffset}px, ${0}px)`
     };
@@ -188,14 +190,11 @@ $present: red;
 $future: purple;
 .multiverse {
   border-top: 1px solid white;
-  padding-top: 20px;
-  padding-bottom: 20px;
   width: 100%;
   display: block;
   text-align: center;
   color: white;
   svg {
-    // min-height: 800px;
     width: 100%;
   }
   .node {

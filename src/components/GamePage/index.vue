@@ -32,11 +32,6 @@
           :detections="detections"
           :mines="mineCount"
         />
-        <game-multiverse
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
-        />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -56,6 +51,11 @@
           @step-back="showPrevious"
           @step-forward="showNext"
           @play="play"
+        />
+        <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
         />
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
@@ -100,6 +100,7 @@ import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
 import GameMultiverse from '@/components/GamePage/GameMultiverse.vue';
+import GameMultiverseHorizontal from '@/components/GamePage/GameMultiverseHorizontal.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
 
@@ -112,6 +113,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
     GameActiveCell,
     GameToolbox,
     GameMultiverse,
+    GameMultiverseHorizontal,
     GameControls,
     GameBoard,
     AppButton,
