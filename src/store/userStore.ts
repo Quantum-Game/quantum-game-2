@@ -176,10 +176,8 @@ const userStore: StoreOptions<UserState> = {
         const customLevel: any = {
           userId: auth.currentUser.uid,
           level: {
-            id: level.id,
-            name: level.name,
-            group: level.group,
-            description: level.description,
+            currentLevelID: level.currentLevelID,
+            gameState: level.gameState
           },
           createdAt: firebase.firestore.Timestamp.fromDate(new Date())
         };
@@ -191,7 +189,7 @@ const userStore: StoreOptions<UserState> = {
           .add(customLevel)
           .then(data => {
             console.log('Level saved: ', data);
-            router.replace({ path: `/level/${level.id}/${data.id}` });
+            router.replace({ path: `/level/${level.currentLevelID}/${data.id}` });
           })
           .then(data => {
             console.log('dont worry be happy')
@@ -208,10 +206,8 @@ const userStore: StoreOptions<UserState> = {
         const customLevel: any = {
           userId: auth.currentUser.uid,
           level: {
-            id: level.id,
-            name: level.name,
-            group: level.group,
-            description: level.description,
+            currentLevelID: level.currentLevelID,
+            gameState: level.gameState
           },
           //created for firestore update test
           lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
@@ -219,17 +215,12 @@ const userStore: StoreOptions<UserState> = {
         const levelSaved = router.currentRoute.params.levelsaved;
 
         const doc = db.collection('levels').doc(levelSaved);
-        doc.get().then((query) => {
-          if(query.exists) {
-            doc
-            .update(customLevel)
-            .catch((err) => {
-              commit('SET_ERROR', err.message);
-            });
-          } else {
-            console.log('There is no level in db.')
-          }
-        })
+
+        doc
+          .update(customLevel)
+          .catch((err) => {
+            commit('SET_ERROR', err.message);
+          });
       } else {
         console.log('You are not logged!')
       }
