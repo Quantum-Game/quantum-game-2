@@ -10,8 +10,8 @@
 
       <!-- GRIDS -->
       <div class="grids">
-        <div v-for="(grid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
-          <encyclopedia-board :grid-obj="grid" :step="5" class="grid" />
+        <div v-for="(gridObj, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
+          <encyclopedia-board :grid-obj="gridObj" :step="5" class="grid" />
         </div>
       </div>
 

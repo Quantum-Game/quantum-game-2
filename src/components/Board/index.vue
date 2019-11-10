@@ -1,7 +1,7 @@
 <template>
   <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
     <!-- DOTS -->
-    <board-dots :gridDimensions="gridDimensions" />
+    <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
 
     <!-- LASER PATH -->
     <board-lasers :pathParticles="pathParticles" />
@@ -109,7 +109,6 @@ export default class Board extends Vue {
    * Handle mouse over from cell and photons
    */
   handleMouseEnter(coord: Coord) {
-    console.log('FIRE');
     const cell = this.grid.get(coord);
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord);
@@ -193,14 +192,6 @@ export default class Board extends Vue {
       rotation: 0,
       frozen: false
     };
-  }
-
-  get gridDimensions() {
-    const {
-      tileSize,
-      grid: { cols, rows }
-    } = this;
-    return { cols, rows, tileSize };
   }
 }
 </script>
