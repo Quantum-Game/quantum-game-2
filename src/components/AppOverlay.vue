@@ -63,18 +63,6 @@ export default class AppOverlay extends Vue {
           '#ba00ff' // purple 02
         ]
       });
-    } else if (gameState === 'MineExploded') {
-      this.$confetti.start({
-        particlesPerFrame: 3,
-        defaultSize: 8,
-        particles: [
-          {
-            dropRate: 15
-            // type:'rect',
-          }
-        ],
-        defaultColors: ['red', 'orange', 'yellow']
-      });
     } else {
       this.$confetti.stop();
     }

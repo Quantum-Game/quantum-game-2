@@ -1,4 +1,6 @@
 import * as dagre from 'dagre';
+import _ from 'lodash';
+import { detectionInterface } from './interfaces';
 // import { Graph, alg } from 'graphlib';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
@@ -18,7 +20,7 @@ export default class MultiverseGraph {
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
         nodesep: 5,
-        ranksep: 20,
+        ranksep: 15,
         marginy: 20,
         rankdir: 'LR'
         // rankdir: 'TB'
@@ -40,12 +42,14 @@ export default class MultiverseGraph {
       frame.particles.forEach((particle: Particle, pIndex: number) => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
-        // const detectionEvent = this.qs.totalAbsorptionPerTile.
+        const detectionEvent = this.qs.isDetectionEvent(particle.coord);
         this.graph.setNode(uid, {
           label: fIndex,
           fIndex,
+          pIndex,
           height: 20,
-          width: 20
+          width: 20,
+          detectionEvent
         });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
@@ -64,6 +68,8 @@ export default class MultiverseGraph {
       const node = this.graph.node(v);
       node.rx = 5;
       node.ry = 5;
+      node.leaf = this.isLeaf(v);
+      node.root = this.isRoot(v);
     });
   }
 
@@ -132,6 +138,22 @@ export default class MultiverseGraph {
    */
   get leafs(): string[] {
     return this.graph.sinks();
+  }
+
+  /**
+   * Check if a node is a leaf
+   * @returns leafs string names
+   */
+  isLeaf(uid: string): boolean {
+    return _.includes(this.leafs, uid);
+  }
+
+  /**
+   * Check if a node is a leaf
+   * @returns leafs string names
+   */
+  isRoot(uid: string): boolean {
+    return _.includes(this.roots, uid);
   }
 
   /**
