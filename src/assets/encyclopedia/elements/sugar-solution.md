@@ -1,6 +1,6 @@
 # Sugar Solution
 
-Sugar Solution lorem ipsum.
+Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.
 
 ```{quantum-board}
       {
@@ -25,26 +25,25 @@ Sugar Solution lorem ipsum.
       }
 ```
 
-## Dig Deeper
+## The basics
 
-Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.
+Sugar molecules are chiral, meaning they differ from their mirror image. Chiral molecules affect right- and left-circularly polarized light differently. As a consequence, they can be used to rotate polarization.
 
-In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.
+All glucose found in nature is “D-glucose”. “L-Glucose” is its mirror image, which can be synthesised in the laboratory but does not occur naturally. Scientists can distinguish the two by measuring which direction they rotate polarization.
 
-Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.
+[!Kinds of Glucose](https://s3-eu1.ixquick.com/cgi-bin/serveimage?url=https:%2F%2Fqph.fs.quoracdn.net%2Fmain-qimg-de848af8d44207b6a19458c340dc99c0.webp&sp=924c33fd7d8a6f5bf074f3028fe1610b)
 
-## TRICKS WITH PHASE!
+## Digging deeper
 
-NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!
+Sugar solution rotates polarization due to birefringence. The left- and right-circular polarization experience different phase velocities, and so acquire a phase-shift as they travel through the solution. By choosing the thickness of the solution correctly, we can affect the polarization in a controlled manner.
 
-## Everyday Life
+Suppose a photon travels through a sugar solution, gets reflected off the mirror, and travels back through the solution. On the second pass, the effect of the sugar solution is reversed, and the photon comes back with the same polarization it started with. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. However, the way sugar solution acts on a photon is independent of which direction the photon is coming from, since the interaction only depends on sugar chirality.
 
-“Mirror mirror on the wall who's the fairest of them all?”
+## Usage in laboratories and experiments
 
-We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!
+Scientists usually prefer to drink sugary drinks rather than use them in experiments.
 
 ## Further Reading
 
-* [Mirror](https://en.wikipedia.org/wiki/Mirror)
-* [Reflection Phase Change](https://en.wikipedia.org/wiki/Reflection_phase_change)
-* [Optical Cavity](https://en.wikipedia.org/wiki/Optical_cavity)
+* [Chirality](https://en.wikipedia.org/wiki/Chirality_(chemistry))
+* [Optical Rotation](https://en.wikipedia.org/wiki/Optical_rotation)

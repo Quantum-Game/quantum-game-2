@@ -1,6 +1,6 @@
 # Faraday Rotator
 
-Faraday Rotator lorem ipsum.
+It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.
 
 ```{quantum-board}
       {
@@ -25,26 +25,20 @@ Faraday Rotator lorem ipsum.
       }
 ```
 
-## Dig Deeper
+## The basics
 
-Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.
+A photon enters a ferromagnetic crystal placed in a strong magnetic field. Due to “magneto-optic effect”, the polarization of the photon is rotated by an angle proportional to the magnetic field along the propagation direction. Consequently, if the photon enters from the opposite end, its polarization will be rotated in the opposite direction.
 
-In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.
+## Explanations
 
-Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.
+Suppose a photon travels through a faraday rotator, gets reflected off the mirror and travels back through the rotator. On the second pass, the effect of the rotator adds up to the first pass, and the photon polarization is rotated by 90 degrees overall. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. This so-called “non-reciprocity” is the reason why Faraday rotators are ubiquitous in optics laboratories.
 
-## TRICKS WITH PHASE!
+## USAGE IN LABORATORIES AND EXPERIMENTS
 
-NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!
-
-## Everyday Life
-
-“Mirror mirror on the wall who's the fairest of them all?”
-
-We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!
+By combining a Faraday rotator with two polarizing beamsplitters we create an optical isolator. This device allows light to pass in one direction, while blocking the other. Isolators are commonly used to protect sensitive equipment (such as laser diodes) that can break due to back-reflections. Faraday rotators can also be used to create double-pass amplifiers.
 
 ## Further Reading
 
-* [Mirror](https://en.wikipedia.org/wiki/Mirror)
-* [Reflection Phase Change](https://en.wikipedia.org/wiki/Reflection_phase_change)
-* [Optical Cavity](https://en.wikipedia.org/wiki/Optical_cavity)
+* [Magneto-optic Effects](https://en.wikipedia.org/wiki/Magneto-optic_effect)
+* [Faraday Rotators](https://www.rp-photonics.com/faraday_rotators.html)
+* [Faraday Rotators on ThorLabs](https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12684)
