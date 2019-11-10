@@ -167,9 +167,6 @@ export default class Game extends Vue {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
     this.updateSimulation();
-    // this.level.grid.cells.forEach((cell) => {
-    //   this.level.grid.set(cell);
-    // });
   }
 
   /**

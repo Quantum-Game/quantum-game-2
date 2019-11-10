@@ -32,10 +32,10 @@
       </span>
     </div>
     <div class="controls">
-      <span v-if="polar">
+      <span v-if="polar" class="smallBtn">
         <span @click="polar = !polar">Show cartesian</span>
       </span>
-      <span v-else>
+      <span v-else class="smallBtn">
         <span @click="polar = !polar">Show polar</span>
       </span>
     </div>
@@ -142,7 +142,17 @@ export default class GameKet extends Vue {
   font-size: 0.8rem;
   line-height: 150%;
 }
-
+.smallBtn {
+  background-color: inherit;
+  margin-top: 5px;
+  border: dotted 1px purple;
+  color: grey;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
 h3 {
   font-size: 1rem;
 }

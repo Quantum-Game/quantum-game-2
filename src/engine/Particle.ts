@@ -71,10 +71,6 @@ export default class Particle extends Coord {
     return Coord.importCoord(this.path[0].coord);
   }
 
-  // get intensity(): number {
-  //   return this.probability;
-  // }
-
   /**
    * Check if the particle has any intensity
    * @returns true if above threshold
