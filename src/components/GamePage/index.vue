@@ -32,7 +32,11 @@
           :detections="detections"
           :mines="mineCount"
         />
-        <game-multiverse :multiverse="multiverseGraph" :active-id="frameIndex" />
+        <game-multiverse
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -60,7 +64,7 @@
       <section slot="main-right">
         <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
         <game-active-cell />
-        <game-photons :particles="particles" />
+        <game-photons :particles="activeFrame.particles" />
       </section>
     </game-layout>
   </div>
@@ -134,6 +138,10 @@ export default class Game extends Vue {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleArrowPress);
+  }
+
+  handleChangeActiveFrame(activeId: number) {
+    this.frameIndex = activeId;
   }
 
   @Watch('$route')

@@ -45,7 +45,14 @@
       <!-- NODE -->
       <g :style="computedStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <rect class="nodeRect" :x="node.x - 10" :y="node.y - 10" :rx="node.rx" :ry="node.ry" />
+          <rect
+            class="nodeRect"
+            :x="node.x - 10"
+            :y="node.y - 10"
+            :rx="node.rx"
+            :ry="node.ry"
+            @mouseover="handleMouseOver(node.fIndex)"
+          />
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
           </text>
@@ -78,6 +85,10 @@ export default class GameMultiverse extends Vue {
     multiverseWrapper: HTMLElement;
   };
   rect = { width: 0 };
+
+  handleMouseOver(activeId: number): void {
+    this.$emit('changeActiveFrame', activeId);
+  }
 
   mounted() {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
