@@ -32,7 +32,7 @@
           :detections="detections"
           :mines="mineCount"
         />
-        <game-multiverse :multiverse="multiverseGraph" />
+        <game-multiverse :multiverse="multiverseGraph" :active-id="frameIndex" />
       </section>
 
       <!-- MAIN-MIDDLE -->

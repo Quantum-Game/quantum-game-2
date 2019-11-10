@@ -14,9 +14,14 @@ export default class MultiverseGraph {
 
   constructor(qs: QuantumSimulation) {
     this.qs = qs;
-    // const test = dagreD3.render
+    // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
     this.graph = new dagre.graphlib.Graph({ directed: true })
-      .setGraph({})
+      .setGraph({
+        nodesep: 10,
+        ranksep: 20,
+        // rankdir: 'LR'
+        rankdir: 'TB'
+      })
       .setDefaultEdgeLabel(() => {
         return {};
       });
@@ -34,10 +39,21 @@ export default class MultiverseGraph {
         const uid = MultiverseGraph.createUid(fIndex, pIndex);
         const particleI = particle.exportParticle();
         // this.graph.setNode(uid, { particle, label: `photon ${fIndex} at frame ${pIndex}` });
-        this.graph.setNode(uid, { label: `photon ${fIndex} at frame ${pIndex}` });
+        this.graph.setNode(uid, {
+          label: fIndex,
+          fIndex,
+          height: 20,
+          width: 20
+        });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
-          this.graph.setEdge(uid, parentUid, { label: `${parentUid} -> ${uid}` });
+          // this.graph.setEdge(uid, parentUid, {
+          this.graph.setEdge(parentUid, uid, {
+            label: `${parentUid} -> ${uid}`,
+            width: particle.probability * 4 + 1,
+            fIndex,
+            pIndex
+          });
         });
       });
     });
