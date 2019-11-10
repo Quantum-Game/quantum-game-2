@@ -280,6 +280,9 @@ export default class Particle extends Coord {
       default:
         throw new Error(`Laser has wrong direction: ${this.direction}°`);
     }
+    if (this.probability < 0.001) {
+      return '';
+    }
     return pathStr;
   }
 
