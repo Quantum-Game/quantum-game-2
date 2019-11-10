@@ -132,6 +132,8 @@ export default class Game extends Vue {
   @State('gameState') gameState!: string;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: string) => void;
+  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
@@ -156,14 +158,18 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
-    this.mutationSetGameState('InProgress');
     const levelI = levelData[`level${this.$route.params.id}`];
-
     this.level = Level.importLevel(levelI);
-    this.level.grid.cells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
+    this.mutationSetGameState('InProgress');
+    console.log(this.level.toolbox.uniqueCellList);
+
+    if (this.level.toolbox.uniqueCellList.length > 0) {
+      this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
+    }
     this.updateSimulation();
+    // this.level.grid.cells.forEach((cell) => {
+    //   this.level.grid.set(cell);
+    // });
   }
 
   /**
@@ -177,7 +183,7 @@ export default class Game extends Vue {
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
-    this.$store.commit('SET_SIMULATION_STATE', false);
+    this.mutationSetSimulationState(false);
   }
 
   /**
@@ -268,6 +274,9 @@ export default class Game extends Vue {
     return this.simulation.frames[this.frameIndex];
   }
 
+  /**
+   * Current simulation frame particles
+   */
   get particles(): Particle[] {
     return this.activeFrame.particles;
   }
