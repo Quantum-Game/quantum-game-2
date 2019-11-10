@@ -18,6 +18,11 @@ export default new Router({
       component: () => import('@/components/LevelMapPage/index.vue')
     },
     {
+      path: '/levels/shared/:id/:levelsaved',
+      name: 'levelsaved',
+      component: () => import('@/components/GamePage/index.vue')
+    },
+    {
       path: '/level/:id',
       name: 'level',
       component: () => import('@/components/GamePage/index.vue')
@@ -56,6 +61,11 @@ export default new Router({
       path: '/myaccount',
       name: 'myaccount',
       component: () => import('@/components/MyAccountPage/index.vue')
+    },
+    {
+      path: '/savedlevels',
+      name: 'savedlevels',
+      component: () => import('@/components/SavedLevelsPage/index.vue')
     },
     {
       path: '/options',
