@@ -5,6 +5,7 @@
         v-for="btn in playBackControls"
         :key="btn"
         :which-is="btn"
+        :class="computedClass"
         @click.native="$emit(btn)"
       />
     </span>

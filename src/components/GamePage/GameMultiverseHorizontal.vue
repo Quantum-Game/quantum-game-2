@@ -98,7 +98,8 @@ export default class GameMultiverseHorizontal extends Vue {
   get computedSvgStyle(): {} {
     const { height } = this.graph.graph();
     return {
-      height
+      height: `${height}px`,
+      'min-height': this.totalFrames * 30
     };
   }
 
