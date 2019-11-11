@@ -1,6 +1,5 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
-    <!-- <h3>MULTIVERSE</h3> -->
     <svg :style="computedSvgStyle">
       <!-- ARROWHEAD -->
       <defs>
