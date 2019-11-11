@@ -159,7 +159,7 @@ export default class GameKet extends Vue {
 .smallBtn {
   background-color: inherit;
   margin-top: 5px;
-  border: dotted 1px purple;
+  //border: dotted 1px purple;
   color: grey;
   padding: 5px 15px;
   text-align: center;

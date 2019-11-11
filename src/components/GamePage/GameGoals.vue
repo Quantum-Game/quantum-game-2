@@ -13,7 +13,7 @@
       :start-angle="0"
     >
       <!-- PROBABILITY -->
-      <div v-if="percentage > totalGoalPercentage" class="success">
+      <div v-if="percentage >= totalGoalPercentage" class="success">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
         <div class="temp">
@@ -302,7 +302,8 @@ export default class GameGoals extends Vue {
   font-size: 0.6rem;
 }
 .defeat {
-  color: darkred;
+  color: white;
+  //opacity: 0.2;
 }
 .success {
   color: white;
