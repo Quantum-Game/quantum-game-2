@@ -96,7 +96,8 @@ export default class GameMultiverseHorizontal extends Vue {
     const { height } = this.graph.graph();
     return {
       height: `${height}px`,
-      'min-height': this.totalFrames * 30
+      // 'min-height': this.totalFrames * 30,
+      'max-height': '500px'
     };
   }
 
@@ -204,6 +205,7 @@ $leaf: magenta;
   color: white;
   svg {
     width: 100%;
+    max-height: 500px;
   }
   .node {
     font-size: 10px;

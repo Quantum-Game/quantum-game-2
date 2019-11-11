@@ -1,7 +1,7 @@
 <template>
-  <div v-if="particles.length > 0" ref="wrapper" class="simulation-steps-display-wrapper">
+  <div v-if="hoveredParticles.length > 0" ref="wrapper" class="simulation-steps-display-wrapper">
     <div class="hoveredPhotons">
-      <h3>Active photons</h3>
+      <h3>Visualization</h3>
       <div v-for="(particle, index) in hoveredParticles" :key="index">
         <app-photon
           :particle="particle"
@@ -11,7 +11,7 @@
           :display-magnetic="true"
           :display-electric="true"
           :display-gaussian="true"
-          :display-opacity="false"
+          :display-opacity="true"
           :display-direction="false"
         />
         <div class="info">

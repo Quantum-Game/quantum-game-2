@@ -33,7 +33,7 @@
         :display-magnetic="false"
         :display-electric="true"
         :display-gaussian="true"
-        :display-opacity="false"
+        :display-opacity="true"
         :sigma="0.25"
       />
     </g>
