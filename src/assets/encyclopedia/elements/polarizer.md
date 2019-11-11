@@ -30,7 +30,7 @@ It can transform mixed polarised light into light of a specific polarization.
 
 Polarizers are made of crystals which are dichroic, they prefer to absorb light which is polarised in a particular direction. Wire-grid polarizers let through the polarization which is parallel to the grid direction, as shown below.
 
-[!Polarizer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Wire-grid-polarizer.svg/1280px-Wire-grid-polarizer.svg.png)
+![Polarizer](https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Wire-grid-polarizer.svg/1280px-Wire-grid-polarizer.svg.png)
 
 ## Usage in everyday life
 
