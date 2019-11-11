@@ -119,6 +119,8 @@ export default class Board extends Vue {
     }
     if (particles.length > 0) {
       this.mutationSetHoveredParticles(particles);
+    } else {
+      this.mutationSetHoveredParticles([]);
     }
   }
 

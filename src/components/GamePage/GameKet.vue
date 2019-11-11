@@ -8,14 +8,23 @@
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span class="ket-component2"> + {{ renderComplex(ketComponent.amplitude) }} </span>
+        <span class="ket-component2">
+          + {{ renderComplex(ketComponent.amplitude) }}
+          <!-- <svg height="16" width="16">
+            <circle cx="8" cy="8" r="8" fill="red" />
+          </svg> -->
+        </span>
         <span
           v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
           :key="`ket-component-${pIndex}`"
           class="ket-component3"
         >
-          | {{ particleCoord.x }},{{ particleCoord.y }} {{ renderDir(particleCoord.dir) }}
-          {{ renderPol(particleCoord.pol) }} ⟩
+          | {{ particleCoord.x }},{{ particleCoord.y }}
+          <span class="ket-coord">
+            {{ renderDir(particleCoord.dir) }}
+            {{ renderPol(particleCoord.pol) }}
+          </span>
+          ⟩
         </span>
       </span>
     </div>
@@ -124,6 +133,8 @@ export default class GameKet extends Vue {
   padding: 8px 2px 8px 2px;
   background-color: #17013a;
   margin: 5px;
+  line-height: 1.4rem;
+  display: inline-block;
 }
 .ket-component2 {
   background-color: #2e006a;
@@ -137,6 +148,9 @@ export default class GameKet extends Vue {
   padding: 2px;
   margin: 5px;
 }
+.ket-coord {
+  color: #ff0055;
+}
 
 .step {
   font-size: 0.8rem;
@@ -145,7 +159,7 @@ export default class GameKet extends Vue {
 .smallBtn {
   background-color: inherit;
   margin-top: 5px;
-  border: dotted 1px purple;
+  //border: dotted 1px purple;
   color: grey;
   padding: 5px 15px;
   text-align: center;

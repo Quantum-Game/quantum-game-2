@@ -299,7 +299,8 @@ export default class GameGoals extends Vue {
   font-size: 0.6rem;
 }
 .defeat {
-  color: darkred;
+  color: white;
+  //opacity: 0.2;
 }
 .success {
   color: white;
