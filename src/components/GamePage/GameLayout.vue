@@ -28,7 +28,9 @@
 
     <!-- a generic footer for now -->
     <footer>
-      <slot name="footer"></slot>
+      <slot name="footer">
+        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT" width="128" />
+      </slot>
     </footer>
   </div>
 </template>
@@ -76,13 +78,20 @@ header {
   padding: none;
 }
 
-main,
-//header,
+main {
+  max-width: 1400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 footer {
   max-width: 1400px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 1rem;
+  opacity: 0.2;
 }
 
 .placeholder {
