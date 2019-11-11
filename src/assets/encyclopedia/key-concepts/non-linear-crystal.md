@@ -12,7 +12,7 @@ Non linear optics is a special type of optics which works a bit differently than
 
 To create a non linear effect, a non linear medium is placed in the path of light. Usually a non linear crystal is used, such as the BBO crystal.
 
-## Usage in everyday life & the laboratory
+## Usage in everyday life and the laboratory
 
 Non linear crystals are used for research applications in optical communication, optical sensing and materials research.
 
