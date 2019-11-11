@@ -79,6 +79,9 @@ export default class AppMenu extends Vue {
   left: 20px;
   cursor: pointer;
   z-index: 2;
+  @media screen and (max-width: 1000px) {
+    position: static;
+  }
   &.open {
     position: fixed;
   }

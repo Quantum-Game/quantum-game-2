@@ -16,6 +16,7 @@
       <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
+      <span class="results_simple">{{tweenedPercent.toFixed(2)}}% SUCCESS</span>
 
     <!-- GOALS -->
     <div class="bottom-icons">
@@ -289,5 +290,19 @@ export default class GameGoals extends Vue {
 .temp {
   font-size: 0.6rem;
   color: darkgrey;
+}
+
+.cdc-container {
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+}
+
+.results_simple {
+  display: none;
+  @media screen and (max-width: 1000px) {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
