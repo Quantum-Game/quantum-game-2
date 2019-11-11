@@ -1,16 +1,18 @@
 <template>
-  <div ref="wrapper" class="simulation-steps-display-wrapper">
+  <div v-if="particles.length > 0" ref="wrapper" class="simulation-steps-display-wrapper">
     <div class="hoveredPhotons">
-      <h3>PHOTONS</h3>
-      <div v-for="(particle, index) in hoveredParticles" :key="index">
+      <h3>Active photons</h3>
+      <div v-for="(particle, index) in particles" :key="index">
         <app-photon
           :particle="particle"
           :width="width"
           :height="80"
+          :margin="0"
           :display-magnetic="true"
           :display-electric="true"
           :display-gaussian="true"
           :display-opacity="false"
+          :display-direction="false"
         />
         <div class="info">
           <ul>
@@ -41,6 +43,7 @@ import AppButton from '@/components/AppButton.vue';
 })
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[];
+  @Prop() readonly particles!: Particle[];
   width: number = 200;
   $refs!: {
     wrapper: HTMLElement;
@@ -60,6 +63,9 @@ export default class GamePhotons extends Vue {
   }
   h3 {
     font-size: 1rem;
+  }
+  .info {
+    display: none;
   }
 }
 </style>

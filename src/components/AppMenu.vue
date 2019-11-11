@@ -10,7 +10,7 @@
         <menu>
           <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
           <router-link
-            v-if="currentLevelId > 0"
+            v-if="currentLevelID > 0"
             :to="continueLink"
             @click.stop.native="handleContinueClick"
             >CONTINUE</router-link

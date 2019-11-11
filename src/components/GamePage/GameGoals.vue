@@ -12,9 +12,21 @@
       :sections="sections"
       :start-angle="0"
     >
-      <!-- :total="totalGoalPercentage" -->
-      <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
-      <div>SUCCESS</div>
+      <!-- PROBABILITY -->
+      <div v-if="percentage > totalGoalPercentage" class="success">
+        <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
+        <div>PROBABILITY</div>
+        <div class="temp">
+          <div>Max: {{ totalGoalPercentage }} %</div>
+        </div>
+      </div>
+      <div v-else class="defeat">
+        <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
+        <div>PROBABILITY</div>
+        <div class="temp">
+          <div>Max: {{ totalGoalPercentage }} %</div>
+        </div>
+      </div>
     </vc-donut>
 
     <!-- GOALS -->
@@ -25,7 +37,12 @@
       <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
-      <div>DETECTORS</div>
+      <div>
+        <span v-if="detectorsHit !== goals.length" class="defeat">
+          <b>DETECTORS</b>
+        </span>
+        <span v-else class="success"><b>DETECTORS</b></span>
+      </div>
     </div>
 
     <!-- MINES -->
@@ -36,12 +53,12 @@
       <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
         <img src="@/assets/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
-      <div>DANGER</div>
-    </div>
-    <div class="temp">
-      <div>Max: {{ totalGoalPercentage }} %</div>
-      <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
-      <div>Current: {{ percentage.toFixed() }} %</div>
+      <div>
+        <span v-if="minesHit > 0" class="defeat">
+          <b>DANGER!</b>
+        </span>
+        <span v-else class="success"><b>SAFE</b></span>
+      </div>
     </div>
 
     <!-- DETECTION EVENTS -->
@@ -139,7 +156,7 @@ export default class GameGoals extends Vue {
    */
   get minesHit(): number {
     const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine' && detection.probability > 0.1;
+      return detection.cell.element.name === 'Mine' && detection.probability > 0.001;
     });
     return minesDetected.length;
   }
@@ -228,7 +245,7 @@ export default class GameGoals extends Vue {
   // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS
   //border-top: 1px solid white;
   padding-top: 10px;
-  padding-bottom: 100px;
+  padding-bottom: 20px;
   //border-bottom: 1px solid white;
   width: 100%;
   // height: 320px;
@@ -283,6 +300,11 @@ export default class GameGoals extends Vue {
 }
 .temp {
   font-size: 0.6rem;
-  color: darkgrey;
+}
+.defeat {
+  color: darkred;
+}
+.success {
+  color: white;
 }
 </style>

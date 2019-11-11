@@ -1,6 +1,6 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets">
-    <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div>
+    <!-- <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div> -->
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
       <span
@@ -20,7 +20,7 @@
       </span>
     </div>
     <!-- VIEWR -->
-    <div class="controls">
+    <div v-if="absorptions.length > 0" class="controls">
       Absorptions:
       <span
         v-for="(absorption, index) in absorptions"
@@ -32,7 +32,12 @@
       </span>
     </div>
     <div class="controls">
-      <span @click="polar = !polar"> Click for polar vs cartesian </span>
+      <span v-if="polar" class="smallBtn">
+        <span @click="polar = !polar">Show cartesian</span>
+      </span>
+      <span v-else class="smallBtn">
+        <span @click="polar = !polar">Show polar</span>
+      </span>
     </div>
   </div>
 </template>
@@ -137,7 +142,17 @@ export default class GameKet extends Vue {
   font-size: 0.8rem;
   line-height: 150%;
 }
-
+.smallBtn {
+  background-color: inherit;
+  margin-top: 5px;
+  border: dotted 1px purple;
+  color: grey;
+  padding: 5px 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+}
 h3 {
   font-size: 1rem;
 }

@@ -1,7 +1,6 @@
 <template>
   <div class="explanation">
     <h3 class="explanation__title">{{ spacedName }}</h3>
-    <p>{{ hoveredCell.coord.toString() }}</p>
     <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
     <slot></slot>
@@ -57,7 +56,9 @@ export default class GameActiveCell extends Vue {
   }
   & .explanation__description {
     text-align: left;
-    font-size: 1rem;
+    // font-size: 1rem;
+    font-size: 13px;
+    font-style: italic;
     line-height: 150%;
   }
 
