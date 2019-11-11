@@ -35,6 +35,7 @@ export default class AppLayout extends Vue {}
   justify-content: center;
   @media screen and (max-width: 1000px) {
     flex-direction: column;
+    justify-content: flex-start;
   }
   & aside,
   & main {
@@ -55,6 +56,7 @@ export default class AppLayout extends Vue {}
       @media screen and (max-width: 1000px) {
         padding: 20px;
         min-height: 41px;
+        width: 100%;
       }
     }
     &.right {

@@ -84,5 +84,8 @@ section.entry-section {
     text-align: left;
     line-height: 1.5em;
   }
+  @media screen and (max-width: 1000px) {
+      padding-left: 20px;
+  }
 }
 </style>
