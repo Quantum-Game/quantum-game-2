@@ -234,6 +234,11 @@ export default class GameGoals extends Vue {
   // height: 320px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 1000px) {
+    flex-direction: row;
+    padding-bottom: 0;
+    justify-content: space-evenly;
+  }
 
   & .upper-icons {
     display: flex;

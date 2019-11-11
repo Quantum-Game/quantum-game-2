@@ -1,5 +1,5 @@
 <template>
-<div ref="boardScaler" class="board_scaler" >
+<div ref="boardScaler" class="board_scaler" :style="{height: boardHeight + 'px'}">
   
     <svg ref="gridWrapper" :style="scalerStyle" class="grid" :width="totalWidth" :height="totalHeight">
       <!-- DOTS -->
@@ -90,8 +90,10 @@ export default class Board extends Vue {
   data() {
     return {
       scalerStyle: {
-        transform: `scale(1)`
-      }
+        transform: `scale(1)`,
+      },
+      boardHeight: 640
+      
     }
   }
   @Prop({ default: [] }) readonly particles!: Particle[];
@@ -133,9 +135,11 @@ export default class Board extends Vue {
 
   assessTileSize(): void {
     const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width;
+    const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
     this.$data.scalerStyle = {
-      transform: `scale(${currentWidth / 830})`
+      transform: `scale(${currentWidth / 870})`
     }
+    this.$data.boardHeight = currentHeight;
     //this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
   }
@@ -217,8 +221,14 @@ export default class Board extends Vue {
 
 .board_scaler {
   max-width: 1400px;
+  @media screen and (min-width: 1001px) {
+    margin-bottom: 100px;
+  }
 }
 .grid {
   transform-origin: 0 50%;
+  @media screen and (max-width: 1000px) {
+    transform-origin: 0 0;
+  }
 }
 </style>

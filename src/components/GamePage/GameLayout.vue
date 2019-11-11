@@ -60,12 +60,22 @@ export default class GameLayout extends Vue {}
   align-content: center;
   justify-content: center;
   width: 65%;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    padding: 0 20px;
+  }
+
 }
 .left,
 .right {
+  box-sizing: border-box;
   height: auto;
   width: 16%;
   padding: 20px;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 }
 
 header {
@@ -84,6 +94,13 @@ footer {
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+main {
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    padding: 0 20px;
+  }
 }
 
 .placeholder {
