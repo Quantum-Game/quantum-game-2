@@ -79,6 +79,7 @@ header {
 main,
 //header,
 footer {
+  width: 100%;
   max-width: 1400px;
   display: flex;
   flex-direction: row;

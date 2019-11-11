@@ -1,62 +1,65 @@
 <template>
-  <svg ref="grid-wrapper" class="grid" :width="totalWidth" :height="totalHeight">
-    <!-- DOTS -->
-    <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
-
-    <!-- LASER PATH -->
-    <board-lasers :pathParticles="pathParticles" />
-
-    <!-- PHOTONS -->
-    <g
-      v-for="(particle, index) in particles"
-      :key="'particle' + index"
-      :v-if="particles.length > 0"
-      :style="computeParticleStyle(particle)"
-      class="photons"
-      @mouseenter.native="handleMouseEnter(particle.coord)"
-    >
-      <app-photon
-        name
-        :particle="particle"
-        :animate="2"
-        :margin="2"
-        :display-magnetic="false"
-        :display-electric="true"
-        :display-gaussian="true"
-        :sigma="0.25"
+<div ref="boardScaler" class="board_scaler" >
+  
+    <svg ref="gridWrapper" :style="scalerStyle" class="grid" :width="totalWidth" :height="totalHeight">
+      <!-- DOTS -->
+      <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
+  
+      <!-- LASER PATH -->
+      <board-lasers :pathParticles="pathParticles" />
+  
+      <!-- PHOTONS -->
+      <g
+        v-for="(particle, index) in particles"
+        :key="'particle' + index"
+        :v-if="particles.length > 0"
+        :style="computeParticleStyle(particle)"
+        class="photons"
+        @mouseenter.native="handleMouseEnter(particle.coord)"
+      >
+        <app-photon
+          name
+          :particle="particle"
+          :animate="2"
+          :margin="2"
+          :display-magnetic="false"
+          :display-electric="true"
+          :display-gaussian="true"
+          :sigma="0.25"
+        />
+      </g>
+  
+      <!-- CELLS -->
+      <app-cell
+        v-for="(cell, i) in grid.cells"
+        :key="'cell' + i"
+        :cell="cell"
+        :tileSize="tileSize"
+        @updateCell="updateCell"
+        @mouseover.native="handleMouseEnter(cell.coord)"
       />
-    </g>
-
-    <!-- CELLS -->
-    <app-cell
-      v-for="(cell, i) in grid.cells"
-      :key="'cell' + i"
-      :cell="cell"
-      :tileSize="tileSize"
-      @updateCell="updateCell"
-      @mouseover.native="handleMouseEnter(cell.coord)"
-    />
-
-    <!-- PROBABILITY -->
-    <text
-      v-for="(probability, i) in probabilities"
-      :key="'probability' + i"
-      :x="(probability.x + 0.5) * 64"
-      :y="probability.y * 64"
-      text-anchor="middle"
-      class="probability"
-    >
-      {{ (probability.probability * 100).toFixed(1) }}%
-    </text>
-
-    <!-- SPEECH BUBBLES -->
-    <speech-bubble
-      v-for="(hint, index) in hints"
-      :key="`hint${index}`"
-      :hint="hint"
-      :tileSize="tileSize"
-    />
-  </svg>
+  
+      <!-- PROBABILITY -->
+      <text
+        v-for="(probability, i) in probabilities"
+        :key="'probability' + i"
+        :x="(probability.x + 0.5) * 64"
+        :y="probability.y * 64"
+        text-anchor="middle"
+        class="probability"
+      >
+        {{ (probability.probability * 100).toFixed(1) }}%
+      </text>
+  
+      <!-- SPEECH BUBBLES -->
+      <speech-bubble
+        v-for="(hint, index) in hints"
+        :key="`hint${index}`"
+        :hint="hint"
+        :tileSize="tileSize"
+      />
+    </svg>
+</div>
 </template>
 
 <script lang="ts">
@@ -84,6 +87,13 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
+  data() {
+    return {
+      scalerStyle: {
+        transform: `scale(1)`
+      }
+    }
+  }
   @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
   @Prop() readonly hints!: HintInterface[];
@@ -97,7 +107,7 @@ export default class Board extends Vue {
   tileSize: number = 64;
 
   $refs!: {
-    'grid-wrapper': HTMLElement;
+    'gridWrapper': HTMLElement;
   };
 
   mounted() {
@@ -122,8 +132,11 @@ export default class Board extends Vue {
   }
 
   assessTileSize(): void {
-    // const currentWidth = this.$refs.grid.getBoundingClientRect().width;
-    // this.tileSize = currentWidth / this.grid.cols;
+    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width;
+    this.$data.scalerStyle = {
+      transform: `scale(${currentWidth / 830})`
+    }
+    //this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
   }
 
@@ -200,5 +213,12 @@ export default class Board extends Vue {
 .probability {
   fill: #ff0055;
   font-size: 0.8rem;
+}
+
+.board_scaler {
+  max-width: 1400px;
+}
+.grid {
+  transform-origin: 0 50%;
 }
 </style>
