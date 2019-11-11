@@ -20,10 +20,10 @@ export default class MultiverseGraph {
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
         nodesep: 5,
-        ranksep: 15,
-        marginy: 20,
-        // rankdir: 'LR'
+        ranksep: 20,
+        marginy: 10,
         rankdir: 'TB'
+        // rankdir: 'LR'
         // rankdir: 'BT'
       })
       .setDefaultEdgeLabel(() => {
@@ -101,7 +101,6 @@ export default class MultiverseGraph {
    */
   successors(particleUid: string) {
     const successors = this.graph.children(particleUid);
-    // console.log(`CHILDRENS: ${successors}`);
     return successors;
   }
 
