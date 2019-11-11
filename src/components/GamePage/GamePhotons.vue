@@ -1,7 +1,7 @@
 <template>
   <div v-if="particles.length > 0" ref="wrapper" class="simulation-steps-display-wrapper">
     <div class="hoveredPhotons">
-      <h3>Active photons</h3>
+      <h3>Visualization</h3>
       <div v-for="(particle, index) in particles" :key="index">
         <app-photon
           :particle="particle"

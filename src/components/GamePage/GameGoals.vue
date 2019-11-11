@@ -13,14 +13,7 @@
       :start-angle="0"
     >
       <!-- PROBABILITY -->
-      <div v-if="percentage > totalGoalPercentage" class="success">
-        <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
-        <div>PROBABILITY</div>
-        <div class="temp">
-          <div>Max: {{ totalGoalPercentage }} %</div>
-        </div>
-      </div>
-      <div v-else class="defeat">
+      <div :class="gameStateClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
         <div class="temp">
@@ -224,6 +217,10 @@ export default class GameGoals extends Vue {
       { value: 100 - this.tweenedPercent, color: '#210235' },
       { value: this.tweenedPercent, color: '#5D00D5' }
     ];
+  }
+
+  get gameStateClass() {
+    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
   }
 
   @Watch('percentage')
