@@ -114,6 +114,7 @@ export default class Board extends Vue {
 
   $refs!: {
     gridWrapper: HTMLElement;
+    boardScaler: HTMLElement;
   };
 
   mounted() {
