@@ -133,7 +133,6 @@ export default class GameKet extends Vue {
 }
 .simulation-frame-kets {
   padding-top: 10px;
-  border-top: 1px solid white;
   width: 100%;
   display: block;
   text-align: center;
