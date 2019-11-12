@@ -195,8 +195,8 @@ export default class Game extends Vue {
     }
     // Filter out of grid cells
     const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: { x: number }) => {
-        return absorption.x !== -1;
+      (absorption: { x: number; probability: number }) => {
+        return absorption.x !== -1 && absorption.probability > 0.001;
       }
     );
     // Convert to cells format
