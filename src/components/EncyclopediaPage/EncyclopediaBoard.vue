@@ -55,7 +55,7 @@
       </span>
     </div>
     <div class="ket">
-      <game-ket :frame="selectedFrame" :grid="grid" />
+      <game-ket :frame="selectedFrame" :grid="grid" :show-legend="false" />
     </div>
   </div>
 </template>
