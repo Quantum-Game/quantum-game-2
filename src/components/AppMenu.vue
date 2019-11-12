@@ -75,6 +75,9 @@ export default class AppMenu extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.q-menu-wrapper {
+  min-height: 42px;
+}
 .menu-icon {
   display: block;
   position: absolute;
@@ -82,6 +85,9 @@ export default class AppMenu extends Vue {
   left: 20px;
   cursor: pointer;
   z-index: 2;
+  @media screen and (max-width: 1000px) {
+    position: static;
+  }
   &.open {
     position: fixed;
   }

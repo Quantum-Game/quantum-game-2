@@ -33,6 +33,10 @@ export default class AppLayout extends Vue {}
   color: white;
   width: 1400px;
   justify-content: center;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
   & aside,
   & main {
     padding: 20px;
@@ -40,12 +44,20 @@ export default class AppLayout extends Vue {}
     width: 65%;
     margin: 0;
     padding: 0;
+    @media screen and (max-width: 1000px) {
+      width: 100%;
+    }
     &.left {
       width: 16%;
       padding: 50px 20px 0 0;
       text-transform: uppercase;
       text-align: left;
       color: white;
+      @media screen and (max-width: 1000px) {
+        padding: 20px;
+        min-height: 41px;
+        width: 100%;
+      }
     }
     &.right {
       width: 16%;
