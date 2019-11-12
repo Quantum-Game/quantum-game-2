@@ -254,9 +254,6 @@ export default class DetectorFourCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>
-.st0 {
-  display: none;
-}
 .st1 {
   display: inline;
 }
