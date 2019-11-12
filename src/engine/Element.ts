@@ -63,6 +63,8 @@ export default class Element {
         return qt.attenuator(0);
       case Elem.Laser:
         return qt.attenuator(1);
+      case Elem.NonLinearCrystal:
+        return qt.attenuator(1);
       case Elem.Void:
         return qt.attenuator(1);
       case Elem.SugarSolution:

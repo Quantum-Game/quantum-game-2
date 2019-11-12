@@ -33,6 +33,7 @@ import level31 from './level31.json';
 import level32 from './level32.json';
 import level33 from './level33.json';
 import level34 from './level34.json';
+import level35 from './level35.json';
 import level101 from './level101.json';
 import { LevelListInterface } from '@/engine/interfaces';
 
@@ -72,6 +73,7 @@ export {
   level32,
   level33,
   level34,
+  level35,
   level101
 };
 
@@ -111,6 +113,7 @@ const levels: LevelListInterface = {
   level32,
   level33,
   level34,
+  level35,
   level101
 };
 

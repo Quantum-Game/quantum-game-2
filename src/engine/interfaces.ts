@@ -1,17 +1,3 @@
-// import { ToolInterface } from './Toolbox';
-
-/**
- * ROOT STATE INTERFACE
- * Holds global state of the application
- * FIXME: See where the root state should be
- */
-// export interface RootState {
-//   activeCell: CellInterface;
-//   currentTools: CellInterface[];
-//   isMoving: boolean;
-//   moveSource: string;
-// }
-
 /**
  * PARTICLE INTERFACE
  * Particle interface in primitives
@@ -193,6 +179,7 @@ export const enum Elem {
   Gate = 'Gate',
   // Source
   Laser = 'Laser',
+  NonLinearCrystal = 'NonLinearCrystal',
   // Direction
   Mirror = 'Mirror',
   BeamSplitter = 'BeamSplitter',
@@ -227,6 +214,7 @@ export const enum ElemLower {
   Gate = 'gate',
   // Source
   Laser = 'laser',
+  NonLinearCrystal = 'non-linear-crystal',
   // Direction
   Mirror = 'mirror',
   BeamSplitter = 'beam-splitter',
@@ -268,7 +256,7 @@ export const enum Group {
  */
 export const ElemGroups: { [symbol: string]: Elem[] } = {
   Basic: [Elem.Void, Elem.Wall, Elem.Gate],
-  Source: [Elem.Laser],
+  Source: [Elem.Laser, Elem.NonLinearCrystal],
   Direction: [
     Elem.Mirror,
     Elem.BeamSplitter,

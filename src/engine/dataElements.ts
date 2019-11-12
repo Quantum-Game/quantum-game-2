@@ -2,7 +2,6 @@ import { Elem, ElementInterface } from '@/engine/interfaces';
 
 const jsonElements: ElementInterface[] = [
   {
-    // name: "Laser",
     name: Elem.Laser,
     group: 'Source',
     description: 'An on-demand single photon source.',
@@ -13,7 +12,16 @@ const jsonElements: ElementInterface[] = [
     ascii: ['>', '^', '<', 'v']
   },
   {
-    // name: "Rock",
+    name: Elem.NonLinearCrystal,
+    group: 'Source',
+    description: 'A BBO crystal.',
+    active: true,
+    absorption: 0,
+    phase: 0,
+    id: 31,
+    ascii: ['>', '^', '<', 'v']
+  },
+  {
     name: Elem.Rock,
     group: 'Absorption',
     description:
@@ -25,7 +33,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['♜']
   },
   {
-    // name: "PolarizerH",
     name: Elem.PolarizerH,
     group: 'Polarization',
     description:
@@ -37,7 +44,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['🡢', '🡥', '🡡', '🡤', '🡠', '🡧', '🡣', '🡦']
   },
   {
-    // name: "PolarizerH",
     name: Elem.PolarizerV,
     group: 'Polarization',
     description:
@@ -49,7 +55,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['🡢', '🡥', '🡡', '🡤', '🡠', '🡧', '🡣', '🡦']
   },
   {
-    // name: "QuarterWavePlateH",
     name: Elem.QuarterWavePlateH,
     group: 'Polarization',
     description:
@@ -61,7 +66,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['🡪', '🡭', '🡩', '🡬', '🡨', '🡯', '🡫', '🡮']
   },
   {
-    // name: "QuarterWavePlateH",
     name: Elem.QuarterWavePlateV,
     group: 'Polarization',
     description:
@@ -73,7 +77,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['🡪', '🡭', '🡩', '🡬', '🡨', '🡯', '🡫', '🡮']
   },
   {
-    // name: "Detector",
     name: Elem.Detector,
     group: 'Absorption',
     description:
@@ -85,7 +88,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['⭲', '⭱', '⭰', '⭳']
   },
   {
-    // name: "DetectorFour",
     name: Elem.DetectorFour,
     group: 'Absorption',
     description:
@@ -97,7 +99,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['O']
   },
   {
-    // name: "SugarSolution",
     name: Elem.SugarSolution,
     group: 'Polarization',
     description:
@@ -109,7 +110,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['S']
   },
   {
-    // name: "CoatedBeamSplitter",
     name: Elem.CoatedBeamSplitter,
     group: 'Direction',
     description:
@@ -121,7 +121,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['⇒', '⇗', '⇑', '⇖', '⇐', '⇙', '⇓', '⇘']
   },
   {
-    // name: "Mine",
     name: Elem.Mine,
     group: 'Absorption',
     description:
@@ -133,7 +132,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['!']
   },
   {
-    // name: "PolarizingBeamSplitter",
     name: Elem.PolarizingBeamSplitter,
     group: 'Direction',
     description: 'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).',
@@ -144,7 +142,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['⬲', '⟴']
   },
   {
-    // name: "CornerCube",
     name: Elem.CornerCube,
     group: 'Direction',
     description: 'Reflects any incoming photon.',
@@ -155,7 +152,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['*']
   },
   {
-    // name: "Mirror",
     name: Elem.Mirror,
     group: 'Direction',
     description: 'Metallic or dielectric mirror.',
@@ -166,7 +162,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['-', '/', '|', '\\', '-', '/', '|', '\\']
   },
   {
-    // name: "BeamSplitter",
     name: Elem.BeamSplitter,
     group: 'Direction',
     description:
@@ -178,7 +173,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
   },
   {
-    // name: "Glass",
     name: Elem.Glass,
     group: 'Phase',
     description:
@@ -190,7 +184,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['↜']
   },
   {
-    // name: "VacuumJar",
     name: Elem.VacuumJar,
     group: 'Phase',
     description:
@@ -202,7 +195,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['↝']
   },
   {
-    // name: "Absorber",
     name: Elem.Absorber,
     group: 'Absorption',
     description: 'Filter with 50% absorption probability.',
@@ -213,7 +205,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['░']
   },
   {
-    // name: "Void",
     name: Elem.Void,
     group: 'Basic',
     description: 'The void...',
@@ -224,7 +215,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['.']
   },
   {
-    // name: "Wall",
     name: Elem.Wall,
     group: 'Basic',
     description: 'A standard wall.',
@@ -235,7 +225,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['▓']
   },
   {
-    // name: "Gate",
     name: Elem.Gate,
     group: 'Basic',
     description: 'A gate that opens when an adjacent detector is active.',
@@ -246,7 +235,6 @@ const jsonElements: ElementInterface[] = [
     ascii: ['W', 'M']
   },
   {
-    // name: "FaradayRotator",
     name: Elem.FaradayRotator,
     group: 'Polarization',
     description:

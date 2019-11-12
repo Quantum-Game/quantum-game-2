@@ -1,0 +1,37 @@
+
+{
+  "id": 35,
+  "name": "Non Linear Crystal",
+  "group": "Game",
+  "description": "",
+  "grid": {
+    "cols": 13,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": { "y": 3, "x": 2 },
+        "element": "NonLinearCrystal",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 4 },
+        "element": "NonLinearCrystal",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      }
+    ]
+  },
+  "hints": [],
+  "goals": [
+    {
+      "coord": { "y": 8, "x": 8 },
+      "threshold": 0.5,
+      "value": 0
+    }
+  ]
+}
