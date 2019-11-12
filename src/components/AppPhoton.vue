@@ -246,7 +246,7 @@ export default class AppPhoton extends Vue {
   eColor = d3
     .scaleLinear<string>()
     .domain([-1, 0, 1])
-    .range(['#00ff00', '#00ff00', '#0000ff']);
+    .range(['#ffbb3b', '#ff0055', '#5c00d3']); // YELLOW RED PURPLE
 
   /**
    * Compute graph properties from complex values
