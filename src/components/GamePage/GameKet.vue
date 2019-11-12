@@ -23,8 +23,10 @@
           class="ket-component3"
         >
           | {{ particleCoord.x }},{{ particleCoord.y }}
-          <span class="ket-coord">
+          <span class="ket-coord1">
             {{ renderDir(particleCoord.dir) }}
+          </span>
+          <span class="ket-coord2">
             {{ renderPol(particleCoord.pol) }}
           </span>
           ⟩
@@ -45,11 +47,17 @@
     </div>
     <div class="controls">
       <span v-if="polar" class="smallBtn">
-        <span @click="polar = !polar">Show cartesian</span>
+        <span @click="polar = !polar">SHOW CARTESIAN</span>
       </span>
       <span v-else class="smallBtn">
-        <span @click="polar = !polar">Show polar</span>
+        <span @click="polar = !polar">SHOW POLAR</span>
       </span>
+    </div>
+    <div v-if="showLegend" class="legend">
+      <span class="exp01">amplitude (complex number)</span>
+      <span class="exp02"> x,y coordinates</span>
+      <span class="exp03">direction</span>
+      <span class="exp04">polarization</span>
     </div>
   </div>
 </template>
@@ -79,6 +87,7 @@ export default class GameKet extends Vue {
 
   @Prop() readonly frame!: QuantumFrame;
   @Prop() readonly grid!: Grid;
+  @Prop({ default: true }) readonly showLegend!: boolean;
 
   polar = false;
 
@@ -130,6 +139,7 @@ export default class GameKet extends Vue {
 .controls {
   //font-size: 0.8rem;
   color: #9229ed;
+  padding: 6px;
 }
 .simulation-frame-kets {
   padding-top: 10px;
@@ -166,23 +176,49 @@ export default class GameKet extends Vue {
   padding: 2px;
   margin: 5px;
 }
-.ket-coord {
+.ket-coord1 {
   color: #ff0055;
 }
-
+.ket-coord2 {
+  color: #faaa15;
+}
 .step {
   font-size: 0.8rem;
   line-height: 150%;
 }
 .smallBtn {
   background-color: inherit;
-  margin-top: 5px;
   //border: dotted 1px purple;
+  background: #5c00d3;
   color: white;
   padding: 5px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
+  font-size: 0.8rem;
+}
+.legend {
+  padding: 6px;
+  margin-top: 10px;
+}
+.exp01 {
+  color: #0080ff;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.exp02 {
+  color: #fff;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.exp03 {
+  color: #ff0055;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.exp04 {
+  color: #faaa15;
+  margin: 5px;
   font-size: 0.8rem;
 }
 h3 {
