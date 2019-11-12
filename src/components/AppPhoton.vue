@@ -232,8 +232,21 @@ export default class AppPhoton extends Vue {
   get zs(): number[] {
     return d3.range(-1, 1, this.step);
   }
+
+  /**
+   * Magnetic field color scheme.
+   */
   mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
-  eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+
+  /**
+   * Electric field color scheme.
+   * See also: https://github.com/d3/d3-scale-chromatic/
+   *
+   */
+  eColor = d3
+    .scaleLinear<string>()
+    .domain([-1, 0, 1])
+    .range(['#00ff00', '#00ff00', '#0000ff']);
 
   /**
    * Compute graph properties from complex values
