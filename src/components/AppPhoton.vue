@@ -71,12 +71,21 @@ export default class AppPhoton extends Vue {
   @Prop({ default: true }) readonly displayGaussian!: boolean;
   @Prop({ default: true }) readonly displayOpacity!: boolean;
   @Prop({ default: true }) readonly displayDirection!: boolean;
+  @Prop({ default: true }) readonly normalize!: boolean;
 
   /**
    * Getters from particle
    */
   get step() {
     return 1 / this.width;
+  }
+
+  get normalization() {
+    if (this.normalize) {
+      const { are, aim, bre, bim } = this.particle;
+      return Math.sqrt(are ** 2 + aim ** 2 + bre ** 2 + bim ** 2);
+    }
+    return 1;
   }
 
   get intensity() {
@@ -86,16 +95,16 @@ export default class AppPhoton extends Vue {
     return this.particle.direction;
   }
   get are() {
-    return this.particle.are;
+    return this.particle.are / this.normalization;
   }
   get aim() {
-    return this.particle.aim;
+    return this.particle.aim / this.normalization;
   }
   get bre() {
-    return this.particle.bre;
+    return this.particle.bre / this.normalization;
   }
   get bim() {
-    return this.particle.bim;
+    return this.particle.bim / this.normalization;
   }
 
   get opacity(): number {
@@ -223,8 +232,21 @@ export default class AppPhoton extends Vue {
   get zs(): number[] {
     return d3.range(-1, 1, this.step);
   }
+
+  /**
+   * Magnetic field color scheme.
+   */
   mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
-  eColor = d3.scaleSequential(d3.interpolateInferno).domain([-1, 1]);
+
+  /**
+   * Electric field color scheme.
+   * See also: https://github.com/d3/d3-scale-chromatic/
+   *
+   */
+  eColor = d3
+    .scaleLinear<string>()
+    .domain([-1, 0, 1])
+    .range(['#ffbb3b', '#ff0055', '#5c00d3']); // YELLOW RED PURPLE
 
   /**
    * Compute graph properties from complex values

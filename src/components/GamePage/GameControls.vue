@@ -49,7 +49,7 @@ export default class GameControls extends Vue {
 <style lang="scss" scoped>
 .controls {
   width: 100%;
-  //border-top: 1px solid white;
+  border-bottom: 1px solid white;
   display: flex;
   padding-top: 1rem;
   padding-bottom: 1rem;
