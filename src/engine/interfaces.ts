@@ -120,13 +120,9 @@ export interface CellInterface {
  * Element interface composed of primitive types
  */
 export interface ElementInterface {
-  id: number;
   name: string;
   group: string;
   description: string;
-  active: boolean;
-  absorption: number;
-  phase: number;
   ascii: string[];
 }
 
