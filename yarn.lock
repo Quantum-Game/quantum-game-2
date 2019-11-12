@@ -9098,8 +9098,8 @@ qs@~6.5.2:
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
 quantum-tensors@stared/quantum-tensors:
-  version "0.2.1"
-  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/4649cd2b712228fef076d9d31385effc7a4a1ccc"
+  version "0.2.2"
+  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/93f5655b1ed3d7b8ed2f996542172899a5eccd3b"
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"

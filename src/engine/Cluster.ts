@@ -141,7 +141,12 @@ export default class Cluster {
   // Emitters
   get lasers(): Cluster {
     return this.filteredBy(Elem.Laser);
-    // return this.filteredBy("Laser");
+  }
+  get nonlinearcrystals(): Cluster {
+    return this.filteredBy(Elem.NonLinearCrystal);
+  }
+  get emitters(): Cluster {
+    return new Cluster(this.lasers.cells.concat(this.nonlinearcrystals.cells));
   }
 
   // Reflectors

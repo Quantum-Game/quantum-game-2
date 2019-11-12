@@ -1,5 +1,8 @@
 <template>
-  <div ref="wrapper" class="simulation-frame-kets">
+  <div ref="wrapper" class="simulation-frame-kets" :class="{ ketHidden: ketHidden }">
+    <span class="hidebutton" @click="toggleKets"
+      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
+    >
     <!-- <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div> -->
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
@@ -68,10 +71,20 @@ import QuantumFrame from '@/engine/QuantumFrame';
   }
 })
 export default class GameKet extends Vue {
+  data() {
+    return {
+      ketHidden: true
+    };
+  }
+
   @Prop() readonly frame!: QuantumFrame;
   @Prop() readonly grid!: Grid;
 
   polar = false;
+
+  toggleKets(): void {
+    this.$data.ketHidden = !this.$data.ketHidden;
+  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision);
@@ -120,10 +133,15 @@ export default class GameKet extends Vue {
 }
 .simulation-frame-kets {
   padding-top: 10px;
-  border-top: 1px solid white;
   width: 100%;
   display: block;
   text-align: center;
+  height: 150px;
+  transition: height 0.5s;
+  overflow: hidden;
+  @media screen and (max-width: 1000px) {
+    border: none;
+  }
 }
 .quantum-state-viewer {
   padding: 10px;
@@ -160,14 +178,29 @@ export default class GameKet extends Vue {
   background-color: inherit;
   margin-top: 5px;
   //border: dotted 1px purple;
-  color: grey;
+  color: white;
   padding: 5px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 0.8rem;
 }
 h3 {
   font-size: 1rem;
+}
+
+.hidebutton {
+  display: none;
+  cursor: pointer;
+  font-weight: bold;
+  @media screen and (max-width: 1000px) {
+    display: block;
+  }
+}
+
+.ketHidden {
+  @media screen and (max-width: 1000px) {
+    height: 30px;
+  }
 }
 </style>

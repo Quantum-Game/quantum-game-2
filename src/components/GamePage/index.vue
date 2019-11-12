@@ -139,6 +139,7 @@ export default class Game extends Vue {
   multiverseGraph: any = {};
   error: string = '';
   playInterval: number = 0;
+  absorptionThreshold: number = 0.0001;
 
   // LIFECYCLE
   created() {
@@ -154,11 +155,16 @@ export default class Game extends Vue {
     this.frameIndex = activeId;
   }
 
+  get levelId() {
+    // if missing then fallback to '0' for infinity level / sandbox
+    return parseInt(this.$route.params.id || '0', 10);
+  }
+
   @Watch('$route')
   loadLevel(): void {
     this.error = '';
-    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
-    const levelI = levelData[`level${this.$route.params.id}`];
+    this.mutationSetCurrentLevelID(this.levelId);
+    const levelI = levelData[`level${this.levelId}`];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
     // console.log(this.level.toolbox.uniqueCellList);
@@ -195,8 +201,8 @@ export default class Game extends Vue {
     }
     // Filter out of grid cells
     const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: { x: number }) => {
-        return absorption.x !== -1;
+      (absorption: { x: number; probability: number }) => {
+        return absorption.x !== -1 && absorption.probability > this.absorptionThreshold;
       }
     );
     // Convert to cells format
@@ -411,15 +417,15 @@ export default class Game extends Vue {
 
   // GETTERS
   get currentLevelName(): string {
-    return `level${parseInt(this.$route.params.id, 10)}`;
+    return `level${this.levelId}`;
   }
 
   get previousLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) - 1}`;
+    return `/level/${this.levelId - 1}`;
   }
 
   get nextLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
+    return `/level/${this.levelId + 1}`;
   }
 
   get hints(): HintInterface[] {

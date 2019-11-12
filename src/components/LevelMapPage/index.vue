@@ -28,6 +28,10 @@ export default class LevelMapPage extends Vue {}
 .container {
   column-count: 3;
   padding: 5em;
+  @media screen and (max-width: 800px) {
+    column-count: 1;
+    padding: 0;
+  }
 }
 .main {
   & .main__level-list {
