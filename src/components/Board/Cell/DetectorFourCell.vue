@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <g id="Qactive_1_" class="st0">
+    <g v-if="border" id="Qactive_1_">
       <g class="st1">
         <g>
           <g>
@@ -110,7 +110,7 @@
       </g>
     </g>
     <!-- BASIC STATE -->
-    <g id="Qregular">
+    <g v-else id="Qregular">
       <g>
         <g>
           <g>
