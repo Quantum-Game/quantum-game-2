@@ -16,12 +16,11 @@
       <div :class="gameStateClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
-        <div class="temp">
-          <div>Max: {{ totalGoalPercentage }} %</div>
-        </div>
       </div>
     </vc-donut>
-    <span class="results_simple">{{ tweenedPercent.toFixed(2) }}% SUCCESS</span>
+    <div class="temp">
+      <div>Goal: {{ totalGoalPercentage }} %</div>
+    </div>
 
     <!-- GOALS -->
     <div class="bottom-icons">
@@ -270,7 +269,7 @@ export default class GameGoals extends Vue {
     & div.inner-circle {
       font-size: 2rem;
     }
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     position: relative;
 
@@ -302,7 +301,8 @@ export default class GameGoals extends Vue {
   }
 }
 .temp {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
 }
 .defeat {
   color: white;
