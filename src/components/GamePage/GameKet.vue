@@ -3,7 +3,7 @@
     <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     >
-    <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div>
+    <!-- <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div> -->
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
       <span
@@ -178,12 +178,12 @@ export default class GameKet extends Vue {
   background-color: inherit;
   margin-top: 5px;
   //border: dotted 1px purple;
-  color: grey;
+  color: white;
   padding: 5px 15px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 12px;
+  font-size: 0.8rem;
 }
 h3 {
   font-size: 1rem;
