@@ -69,14 +69,13 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   created() {
     this.grid.set(this.cell);
-    console.log(this.grid.ascii);
+    console.debug(this.grid.ascii);
   }
 
   /**
    * Update the rotation of the mini board element
    */
   updateRotation(cell: Cell): void {
-    console.log(cell.toString());
     this.rotation = cell.rotation;
   }
 

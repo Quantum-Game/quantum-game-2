@@ -9,7 +9,10 @@
       <div v-if="isMenuOpen" class="menu-overlay">
         <menu>
           <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
-          <router-link :to="continueLink" @click.stop.native="handleContinueClick"
+          <router-link
+            v-if="currentLevelID > 0"
+            :to="continueLink"
+            @click.stop.native="handleContinueClick"
             >CONTINUE</router-link
           >
           <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>

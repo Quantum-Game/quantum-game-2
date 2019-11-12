@@ -1,5 +1,5 @@
 import { EntryListInterface, EntryInterface } from '@/engine/interfaces';
-import entries from './entries-test.json';
+import entries from './entries.json';
 
 export const typedEntries: EntryListInterface = entries;
 

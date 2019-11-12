@@ -11,6 +11,7 @@ import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 export default class GameControlsButton extends Vue {
   @Prop() readonly whichIs!: string;
   @Prop({ default: true }) readonly usable!: boolean;
+  @Prop({ default: true }) readonly disabled!: boolean;
 
   handleClick() {
     console.debug(this.whichIs);
@@ -20,15 +21,11 @@ export default class GameControlsButton extends Vue {
   get calculatedStyle() {
     let styleObj = {};
     if (this.whichIs) {
-      // if (this.whichIs === 'classical' || this.whichIs === 'quantum') {
-      //   return { opacity: 0.3 };
-      // }
-
       styleObj = {
         backgroundImage: `url(${require(`@/assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
         backgroundColor: this.usable ? 'transparent' : 'transparent',
-        border: 'none'
-        // transform: `rotate(-${this.cell.rotation}deg)`
+        border: 'none',
+        opacity: this.disabled ? 1 : 0.3
       };
     }
     return styleObj;
