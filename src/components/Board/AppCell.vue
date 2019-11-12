@@ -25,6 +25,7 @@ import Particle from '@/engine/Particle';
 import { getPosition } from '@/mixins';
 import {
   LaserCell,
+  NonLinearCrystalCell,
   MirrorCell,
   BeamSplitterCell,
   PolarizingBeamSplitterCell,
@@ -53,6 +54,7 @@ const borderColors = {
 @Component({
   components: {
     LaserCell,
+    NonLinearCrystalCell,
     MirrorCell,
     BeamSplitterCell,
     PolarizingBeamSplitterCell,
@@ -81,16 +83,6 @@ export default class AppCell extends Mixins(getPosition) {
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   border = '';
-
-  /**
-   * Handle mouseover for active cell display
-   */
-  // handleCellHover(): void {
-  //   // if (!this.cell.isVoid) {
-  //   if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
-  //     this.mutationSetHoveredCell(this.cell);
-  //   }
-  // }
 
   /**
    *  handles clicking, namely

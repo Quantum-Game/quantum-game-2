@@ -23,6 +23,11 @@ export default new Router({
       component: () => import('@/components/GamePage/index.vue')
     },
     {
+      path: '/sandbox',
+      name: 'sandbox',
+      component: () => import('@/components/GamePage/index.vue')
+    },
+    {
       path: '/info',
       component: () => import('@/components/EncyclopediaPage/index.vue'),
       children: [
