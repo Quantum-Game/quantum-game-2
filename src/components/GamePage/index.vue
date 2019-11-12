@@ -155,11 +155,16 @@ export default class Game extends Vue {
     this.frameIndex = activeId;
   }
 
+  get levelId() {
+    // if missing then fallback to '0' for infinity level / sandbox
+    return parseInt(this.$route.params.id || '0', 10);
+  }
+
   @Watch('$route')
   loadLevel(): void {
     this.error = '';
-    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
-    const levelI = levelData[`level${this.$route.params.id}`];
+    this.mutationSetCurrentLevelID(this.levelId);
+    const levelI = levelData[`level${this.levelId}`];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
     // console.log(this.level.toolbox.uniqueCellList);
@@ -412,15 +417,15 @@ export default class Game extends Vue {
 
   // GETTERS
   get currentLevelName(): string {
-    return `level${parseInt(this.$route.params.id, 10)}`;
+    return `level${this.levelId}`;
   }
 
   get previousLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) - 1}`;
+    return `/level/${this.levelId - 1}`;
   }
 
   get nextLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
+    return `/level/${this.levelId + 1}`;
   }
 
   get hints(): HintInterface[] {
