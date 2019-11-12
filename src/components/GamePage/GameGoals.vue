@@ -16,7 +16,7 @@
       <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
       <div>SUCCESS</div>
     </vc-donut>
-      <span class="results_simple">{{tweenedPercent.toFixed(2)}}% SUCCESS</span>
+    <span class="results_simple">{{ tweenedPercent.toFixed(2) }}% SUCCESS</span>
 
     <!-- GOALS -->
     <div class="bottom-icons">

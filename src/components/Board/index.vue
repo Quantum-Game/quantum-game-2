@@ -1,13 +1,18 @@
 <template>
-<div ref="boardScaler" class="board_scaler" :style="{height: boardHeight + 'px'}">
-  
-    <svg ref="gridWrapper" :style="scalerStyle" class="grid" :width="totalWidth" :height="totalHeight">
+  <div ref="boardScaler" class="board_scaler" :style="{ height: boardHeight + 'px' }">
+    <svg
+      ref="gridWrapper"
+      :style="scalerStyle"
+      class="grid"
+      :width="totalWidth"
+      :height="totalHeight"
+    >
       <!-- DOTS -->
       <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
-  
+
       <!-- LASER PATH -->
       <board-lasers :pathParticles="pathParticles" />
-  
+
       <!-- PHOTONS -->
       <g
         v-for="(particle, index) in particles"
@@ -28,7 +33,7 @@
           :sigma="0.25"
         />
       </g>
-  
+
       <!-- CELLS -->
       <app-cell
         v-for="(cell, i) in grid.cells"
@@ -38,7 +43,7 @@
         @updateCell="updateCell"
         @mouseover.native="handleMouseEnter(cell.coord)"
       />
-  
+
       <!-- PROBABILITY -->
       <text
         v-for="(probability, i) in probabilities"
@@ -50,7 +55,7 @@
       >
         {{ (probability.probability * 100).toFixed(1) }}%
       </text>
-  
+
       <!-- SPEECH BUBBLES -->
       <speech-bubble
         v-for="(hint, index) in hints"
@@ -59,7 +64,7 @@
         :tileSize="tileSize"
       />
     </svg>
-</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -90,11 +95,10 @@ export default class Board extends Vue {
   data() {
     return {
       scalerStyle: {
-        transform: `scale(1)`,
+        transform: `scale(1)`
       },
       boardHeight: 640
-      
-    }
+    };
   }
   @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
@@ -109,7 +113,7 @@ export default class Board extends Vue {
   tileSize: number = 64;
 
   $refs!: {
-    'gridWrapper': HTMLElement;
+    gridWrapper: HTMLElement;
   };
 
   mounted() {
@@ -138,9 +142,9 @@ export default class Board extends Vue {
     const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
     this.$data.scalerStyle = {
       transform: `scale(${currentWidth / 870})`
-    }
+    };
     this.$data.boardHeight = currentHeight;
-    //this.tileSize = currentWidth / this.grid.cols;
+    // this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
   }
 

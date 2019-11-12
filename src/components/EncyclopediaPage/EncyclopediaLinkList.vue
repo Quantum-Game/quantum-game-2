@@ -1,5 +1,5 @@
 <template>
-  <div slot="left" class="element-list" :class="{entriesExpanded: entriesExpanded}">
+  <div slot="left" class="element-list" :class="{ entriesExpanded: entriesExpanded }">
     <h3 class="upper-border" @click="toggleEntries">ALL ELEMENTS</h3>
     <router-link v-for="entry in entryList" :key="entry" :to="`/info/${entry}`">
       <div>{{ spacedEntry(entry) }}</div>
@@ -19,8 +19,7 @@ export default class EncyclopediaLinkList extends Vue {
   }
   @Prop() readonly entryList!: Array<string>;
 
-  
-  toggleEntries (): void {
+  toggleEntries(): void {
     this.$data.entriesExpanded = !this.$data.entriesExpanded;
   }
 

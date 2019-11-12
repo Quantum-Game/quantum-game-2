@@ -85,7 +85,7 @@ section.entry-section {
     line-height: 1.5em;
   }
   @media screen and (max-width: 1000px) {
-      padding-left: 20px;
+    padding-left: 20px;
   }
 }
 </style>

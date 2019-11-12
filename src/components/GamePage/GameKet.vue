@@ -1,6 +1,8 @@
 <template>
-  <div ref="wrapper" class="simulation-frame-kets" :class="{ketHidden: ketHidden}">
-    <span class="hidebutton" @click="toggleKets">{{ketHidden ? 'EXPAND' : 'COLLAPSE'}} SIMULATION INFO</span>
+  <div ref="wrapper" class="simulation-frame-kets" :class="{ ketHidden: ketHidden }">
+    <span class="hidebutton" @click="toggleKets"
+      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
+    >
     <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div>
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
@@ -58,17 +60,15 @@ export default class GameKet extends Vue {
   data() {
     return {
       ketHidden: true
-    }
+    };
   }
-
-
 
   @Prop() readonly frame!: QuantumFrame;
   @Prop() readonly grid!: Grid;
 
   polar = false;
 
-  toggleKets (): void {
+  toggleKets(): void {
     this.$data.ketHidden = !this.$data.ketHidden;
   }
 
