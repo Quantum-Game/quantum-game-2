@@ -54,7 +54,9 @@
         <button :class="{ selected: selectedFrameId === index }">{{ index }}</button>
       </span>
     </div>
-    <div class="ket">{{ selectedFrame.ketString }}</div>
+    <div class="ket">
+      <game-ket :frame="selectedFrame" :grid="grid" />
+    </div>
   </div>
 </template>
 
@@ -67,6 +69,7 @@ import AppPhoton from '@/components/AppPhoton.vue';
 import BoardDots from '@/components/Board/BoardDots.vue';
 import BoardLasers from '@/components/Board/BoardLasers.vue';
 import AppCell from '@/components/Board/AppCell.vue';
+import GameKet from '@/components/GamePage/GameKet.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 
@@ -77,7 +80,8 @@ const dummyGridInterface = dummyGrid.exportGrid();
   components: {
     AppPhoton,
     AppCell,
-    BoardLasers
+    BoardLasers,
+    GameKet
   }
 })
 export default class EncyclopediaBoard extends Vue {
@@ -168,6 +172,10 @@ export default class EncyclopediaBoard extends Vue {
   .svg-container {
     padding: 20px;
   }
+}
+
+.ket {
+  width: 360px;
 }
 
 .btn-group {
