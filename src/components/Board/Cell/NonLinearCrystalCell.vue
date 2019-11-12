@@ -3,22 +3,22 @@
     <g>
       <g>
         <defs>
-          <polygon id="bboSVGID_1_" points="32,14.8 33,1.6 63,15.9 63,16 			" />
+          <polygon id="bboSVGID_1_" points="32,14.8 33,1.6 63,15.9 63,16" />
         </defs>
         <use xlink:href="#bboSVGID_1_" style="overflow:visible;fill:#B3EEF7;" />
         <clipPath id="bboSVGID_2_">
           <use xlink:href="#bboSVGID_1_" style="overflow:visible;" />
         </clipPath>
         <g class="st0">
-          <polygon class="st1" points="20.3,17.7 14.4,15.7 66.5,-1.6 72.3,0.3 			" />
-          <polygon class="st1" points="21.4,21.4 17.6,20.1 69.7,2.8 73.5,4.1 			" />
+          <polygon class="st1" points="20.3,17.7 14.4,15.7 66.5,-1.6 72.3,0.3" />
+          <polygon class="st1" points="21.4,21.4 17.6,20.1 69.7,2.8 73.5,4.1" />
         </g>
       </g>
       <g>
         <defs>
           <polygon
             id="bboSVGID_3_"
-            points="1,43.5 1,30.1 31.5,14.7 32,14.8 32,51.9 31.9,51.9 31.8,51.9 			"
+            points="1,43.5 1,30.1 31.5,14.7 32,14.8 32,51.9 31.9,51.9 31.8,51.9"
           />
         </defs>
         <use xlink:href="#bboSVGID_3_" style="overflow:visible;fill:#61AAB5;" />
@@ -26,19 +26,19 @@
           <use xlink:href="#bboSVGID_3_" style="overflow:visible;" />
         </clipPath>
         <g class="st2">
-          <polygon class="st3" points="-8.7,41.7 -11.3,39.1 58.5,31.3 61.1,33.9 			" />
-          <polygon class="st3" points="-6.1,49.1 -9.5,43.5 60.3,35.7 63.7,41.4 			" />
+          <polygon class="st3" points="-8.7,41.7 -11.3,39.1 58.5,31.3 61.1,33.9" />
+          <polygon class="st3" points="-6.1,49.1 -9.5,43.5 60.3,35.7 63.7,41.4" />
         </g>
       </g>
       <g>
-        <polygon class="st4" points="1,30.1 1,15.9 32,1 33,1.6 32,14.8 31.5,14.7 1.5,16 		" />
-        <polygon class="st5" points="32,51.9 32,14.8 63,16 63,50.7 		" />
-        <polygon class="st5" points="1.1,50.7 31.9,51.9 32,51.9 33,62.4 32,63 		" />
-        <polygon class="st6" points="33,62.4 32,51.9 63,50.7 63,51.1 		" />
-        <polygon class="st3" points="1,50.7 1,43.5 31.8,51.9 1.1,50.7 		" />
-        <polygon class="st7" points="1,30.1 1,15.9 31.5,14.7 		" />
+        <polygon class="st4" points="1,30.1 1,15.9 32,1 33,1.6 32,14.8 31.5,14.7 1.5,16" />
+        <polygon class="st5" points="32,51.9 32,14.8 63,16 63,50.7" />
+        <polygon class="st5" points="1.1,50.7 31.9,51.9 32,51.9 33,62.4 32,63" />
+        <polygon class="st6" points="33,62.4 32,51.9 63,50.7 63,51.1" />
+        <polygon class="st3" points="1,50.7 1,43.5 31.8,51.9 1.1,50.7" />
+        <polygon class="st7" points="1,30.1 1,15.9 31.5,14.7" />
       </g>
-      <polyline class="st8" points="57.2,50.4 32,51.9 32,32.3 	" />
+      <polyline class="st8" points="57.2,50.4 32,51.9 32,32.3" />
       <line class="st8" x1="57.2" y1="15.5" x2="32" y2="14.8" />
       <line class="st8" x1="18.4" y1="21.3" x2="2.9" y2="29.1" />
       <path class="st8" d="M18.2,21.4" />
