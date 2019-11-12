@@ -73,5 +73,8 @@ export default class OptionsPage extends Vue {
       direction: rtl;
     }
   }
+  @media screen and (max-width: 1000px) {
+    padding: 20px;
+  }
 }
 </style>
