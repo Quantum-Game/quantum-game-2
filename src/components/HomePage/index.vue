@@ -25,7 +25,9 @@
         <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
         of the National University of Singapore.
       </p>
-      <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
+      <a href="https://www.quantumlah.org/" target="_blank" class="cqt">
+        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
+      </a>
       <!-- newsletter -->
       <!-- <div id="content" class="newsletter">
         <h1>Sign up for our newsletter now!</h1>
@@ -103,6 +105,9 @@ p {
   position: center;
   flex-direction: column;
   align-items: center;
+  & .cqt {
+    width: 100%;
+  }
   @media screen and (max-width: 1259px) {
     width: 60%;
   }

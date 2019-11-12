@@ -27,21 +27,19 @@
     </main>
 
     <!-- a generic footer for now -->
-    <footer>
-      <slot name="footer">
-        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT" width="128" />
-      </slot>
-    </footer>
+    <app-footer />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import AppMenu from '@/components/AppMenu.vue';
+import AppFooter from '@/components/AppFooter.vue';
 
 @Component({
   components: {
-    AppMenu
+    AppMenu,
+    AppFooter
   }
 })
 export default class GameLayout extends Vue {}
@@ -105,16 +103,6 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-footer {
-  width: 100%;
-  max-width: 1400px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 1rem;
-  opacity: 0.2;
 }
 
 main {
