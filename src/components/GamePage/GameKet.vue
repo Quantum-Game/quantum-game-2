@@ -10,22 +10,20 @@
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span class="ket-complex">
-          <span v-if="selectedStyle === 'polar'">
-            {{ renderComplexPolar(ketComponent.amplitude) }}
-          </span>
-          <span v-if="selectedStyle === 'cartesian'">
-            {{ renderComplexCartesian(ketComponent.amplitude) }}
-          </span>
-          <svg v-if="selectedStyle === 'color-disk'" height="18" width="18">
-            <circle
-              cx="9"
-              cy="9"
-              :r="diskScale(ketComponent.amplitude.r)"
-              :fill="complexToColor(ketComponent.amplitude)"
-            />
-          </svg>
+        <span v-if="selectedStyle === 'polar'" class="ket-complex">
+          {{ renderComplexPolar(ketComponent.amplitude) }}
         </span>
+        <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
+          {{ renderComplexCartesian(ketComponent.amplitude) }}
+        </span>
+        <svg v-if="selectedStyle === 'color-disk'" height="16" width="16" class="ket-disk">
+          <circle
+            cx="8"
+            cy="8"
+            :r="diskScale(ketComponent.amplitude.r)"
+            :fill="complexToColor(ketComponent.amplitude)"
+          />
+        </svg>
         <span
           v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
           :key="`ket-component-${pIndex}`"
@@ -41,30 +39,30 @@
           ⟩
         </span>
       </span>
-    </div>
-    <div v-if="absorptions.length > 0" class="controls">
-      Absorptions:
-      <span
-        v-for="(absorption, index) in absorptions"
-        :key="`absorption-${index}`"
-        class="absorption"
-      >
-        {{ toPercent(absorption.probability) }}% in {{ elementName(absorption.x, absorption.y) }} at
-        ({{ absorption.x }}, {{ absorption.y }})
-      </span>
-    </div>
-    <div v-if="showLegend" class="legend">
-      <span v-if="selectedStyle === 'color-disk'">
-        <span class="legend-coord-xy"> x,y coordinates</span>
-        <span class="legend-dir">direction</span>
-        <span class="legend-pol">polarization</span>
-      </span>
-      <span v-else>
-        <span class="legend-complex">amplitude (complex number)</span>
-        <span class="legend-coord-xy"> x,y coordinates</span>
-        <span class="legend-dir">direction</span>
-        <span class="legend-pol">polarization</span>
-      </span>
+      <div v-if="showLegend" class="legend">
+        <span v-if="selectedStyle === 'color-disk'">
+          <span class="legend-coord-xy"> x,y coordinates</span>
+          <span class="legend-dir">direction</span>
+          <span class="legend-pol">polarization</span>
+        </span>
+        <span v-else>
+          <span class="legend-complex">amplitude (complex number)</span>
+          <span class="legend-coord-xy"> x,y coordinates</span>
+          <span class="legend-dir">direction</span>
+          <span class="legend-pol">polarization</span>
+        </span>
+      </div>
+      <div v-if="absorptions.length > 0" class="controls">
+        Absorptions:
+        <span
+          v-for="(absorption, index) in absorptions"
+          :key="`absorption-${index}`"
+          class="absorption"
+        >
+          {{ toPercent(absorption.probability) }}% in
+          {{ elementName(absorption.x, absorption.y) }} at ({{ absorption.x }}, {{ absorption.y }})
+        </span>
+      </div>
     </div>
     <div class="btn-group">
       <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
@@ -204,115 +202,119 @@ export default class GameKet extends Vue {
   color: gray;
   padding: 10px;
 }
-.controls {
-  font-size: 0.8rem;
-  color: white;
-  padding: 6px;
-}
 .simulation-frame-kets {
   padding-top: 10px;
   width: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   text-align: center;
   transition: height 0.5s;
   overflow: hidden;
+  // max-height: 150px;
+  align-content: space-between;
+  & .quantum-state-viewer {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    & .controls {
+      font-size: 0.8rem;
+      color: white;
+      padding: 6px;
+    }
+    & .legend {
+      padding-bottom: 6px;
+      width: 100%;
+      & .legend-complex {
+        color: #0080ff;
+        margin: 5px;
+        font-size: 0.8rem;
+      }
+      & .legend-coord-xy {
+        color: #fff;
+        margin: 5px;
+        font-size: 0.8rem;
+      }
+      & .legend-pol {
+        color: #ff0055;
+        margin: 5px;
+        font-size: 0.8rem;
+      }
+      & .legend-dir {
+        color: #faaa15;
+        margin: 5px;
+        font-size: 0.8rem;
+      }
+    }
+    & .ket-component {
+      padding: 1px 1px 1px 1px;
+      background-color: #17013a;
+      margin: 5px;
+      line-height: 1.4rem;
+      flex-wrap: nowrap;
+      flex-direction: row;
+      display: flex;
+      align-items: center;
+      & .ket-complex {
+        background-color: #2e006a;
+        color: #0080ff;
+        padding: 2px;
+        margin: 5px;
+      }
+      & .ket-disk {
+        //padding: 2px;
+        margin-left: 5px;
+      }
+      & .ket-coord {
+        //background-color: #2e006a;
+        color: white;
+        padding: 1px;
+        margin: 5px;
+        & .ket-dir {
+          color: #ff0055;
+        }
+        & .ket-pol {
+          color: #faaa15;
+        }
+      }
+    }
+  }
+  & .btn-group {
+    text-align: center;
+    display: flex;
+    // flex-direction: column;
+    justify-content: center;
+    & button {
+      font-size: 0.8rem;
+      font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+      text-transform: uppercase;
+      background-color: #5c00d3;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      margin: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: #4302bf;
+        color: white;
+      }
+      &.selected {
+        background-color: white;
+        color: #5c00d3;
+      }
+    }
+  }
   @media screen and (max-width: 1000px) {
     border: none;
   }
 }
-.quantum-state-viewer {
-  padding: 10px;
-}
 
-.ket-component {
-  padding: 8px 2px 8px 2px;
-  background-color: #17013a;
-  margin: 5px;
-  line-height: 1.4rem;
-  display: inline-block;
-}
-.ket-complex {
-  background-color: #2e006a;
-  color: #0080ff;
-  padding: 2px;
-  margin: 5px;
-}
-.ket-coord {
-  background-color: #2e006a;
-  color: white;
-  padding: 2px;
-  margin: 5px;
-}
-.ket-dir {
-  color: #ff0055;
-}
-.ket-pol {
-  color: #faaa15;
-}
 .step {
   font-size: 0.8rem;
   line-height: 150%;
 }
-.btn-group {
-  text-align: center;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 
-  button {
-    font-size: 0.8rem;
-    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-    text-transform: uppercase;
-    background-color: #5c00d3;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    margin: 5px;
-    cursor: pointer;
-
-    &:not(:last-child) {
-      border-right: none;
-    }
-  }
-  &:after {
-    content: '';
-    clear: both;
-    display: table;
-  }
-
-  button:hover {
-    background-color: #4302bf;
-    color: white;
-  }
-
-  .selected {
-    background-color: white;
-    color: #5c00d3;
-  }
-}
-.legend {
-  padding-bottom: 6px;
-}
-.legend-complex {
-  color: #0080ff;
-  margin: 5px;
-  font-size: 0.8rem;
-}
-.legend-coord-xy {
-  color: #fff;
-  margin: 5px;
-  font-size: 0.8rem;
-}
-.legend-pol {
-  color: #ff0055;
-  margin: 5px;
-  font-size: 0.8rem;
-}
-.legend-dir {
-  color: #faaa15;
-  margin: 5px;
-  font-size: 0.8rem;
-}
 h3 {
   font-size: 1rem;
 }
