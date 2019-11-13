@@ -56,7 +56,9 @@
           @step-back="showPrevious"
           @step-forward="showNext"
           @play="play"
-        />
+        >
+          <app-button @click.native="handleSave">exportLevel</app-button>
+        </game-controls>
         <!-- <game-multiverse-horizontal
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -149,6 +151,15 @@ export default class Game extends Vue {
 
   beforeDestroy() {
     window.removeEventListener('keyup', this.handleArrowPress);
+  }
+
+  handleSave() {
+    const json = JSON.stringify(this.level.exportLevel(), null, 2);
+    const blob = new Blob([json], { type: 'octet/stream' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'level.json';
+    link.click();
   }
 
   handleChangeActiveFrame(activeId: number) {
@@ -344,7 +355,23 @@ export default class Game extends Vue {
    * Left and right keys to see frames
    */
   handleArrowPress(e: { keyCode: number }): void {
+    console.log(e.keyCode);
     switch (e.keyCode) {
+      case 81:
+        this.level.grid.moveAll(180);
+        break;
+      case 68:
+        this.level.grid.moveAll(0);
+        break;
+      case 90:
+        this.level.grid.moveAll(90);
+        break;
+      case 83:
+        this.level.grid.moveAll(270);
+        break;
+      case 65:
+        this.level.grid.rotateAll();
+        break;
       case 37:
         this.showPrevious();
         break;
