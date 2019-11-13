@@ -5,34 +5,35 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 7,
     "cells": [
       {
-        "coord": { "y": 1, "x": 10 },
+        "coord": {
+          "y": 1,
+          "x": 2
+        },
         "element": "Laser",
-        "rotation": 270,
+        "rotation": 0,
         "frozen": true,
         "active": true,
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 8 },
-        "element": "Mirror",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 10 },
+        "coord": {
+          "y": 1,
+          "x": 4
+        },
         "element": "BeamSplitter",
-        "rotation": 45,
+        "rotation": 135,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 4, "x": 10 },
+        "coord": {
+          "y": 1,
+          "x": 5
+        },
         "element": "Glass",
         "rotation": 0,
         "frozen": true,
@@ -40,31 +41,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 4 },
-        "element": "Detector",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 8 },
-        "element": "BeamSplitter",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 10 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 6, "x": 10 },
+        "coord": {
+          "y": 1,
+          "x": 7
+        },
         "element": "Glass",
         "rotation": 0,
         "frozen": true,
@@ -72,50 +52,102 @@
         "energized": false
       },
       {
-        "coord": { "y": 7, "x": 4 },
-        "element": "Detector",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 7, "x": 8 },
-        "element": "BeamSplitter",
-        "rotation": 45,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 7, "x": 10 },
+        "coord": {
+          "y": 1,
+          "x": 8
+        },
         "element": "Mirror",
-        "rotation": 45,
+        "rotation": 135,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 9, "x": 8 },
+        "coord": {
+          "y": 3,
+          "x": 4
+        },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 3,
+          "x": 6
+        },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 3,
+          "x": 8
+        },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 3,
+          "x": 10
+        },
         "element": "Mine",
         "rotation": 0,
         "frozen": true,
         "active": false,
-        "energized": false
+        "energized": true
+      },
+      {
+        "coord": {
+          "y": 5,
+          "x": 6
+        },
+        "element": "Detector",
+        "rotation": 90,
+        "frozen": true,
+        "active": false,
+        "energized": true
+      },
+      {
+        "coord": {
+          "y": 5,
+          "x": 8
+        },
+        "element": "Detector",
+        "rotation": 90,
+        "frozen": true,
+        "active": false,
+        "energized": true
       }
     ]
   },
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 5, "x": 4 },
+      "coord": {
+        "y": 5,
+        "x": 6
+      },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 7, "x": 4 },
+      "coord": {
+        "y": 5,
+        "x": 8
+      },
       "threshold": 0.5,
       "value": 0
     }
-  ]
+  ],
+  "tools": ["Absorber"]
 }
