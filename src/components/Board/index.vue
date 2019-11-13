@@ -131,6 +131,7 @@ export default class Board extends Vue {
       return particle.coord.equal(coord);
     });
     if (cell !== this.hoveredCell && !cell.isVoid) {
+      
       this.mutationSetHoveredCell(cell);
     }
     if (particles.length > 0) {

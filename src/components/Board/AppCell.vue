@@ -82,6 +82,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
+  @State hoveredCell!: Cell;
   border = '';
 
   $refs!: {
@@ -97,9 +98,7 @@ export default class AppCell extends Mixins(getPosition) {
   mouseMove(e: any): void {
     const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
     const {cellRef} = this.$refs;
-    console.log(e)
     hoverCell.innerHTML = cellRef.innerHTML;
-
     cellRef.style.visibility = "hidden";
     hoverCell.style.visibility = "visible";
     document.body.style.cursor = "grabbing";
@@ -109,11 +108,12 @@ export default class AppCell extends Mixins(getPosition) {
     hoverCell.style.transform = `
         translate(${e.pageX - 64/2}px, ${e.pageY - 64/2}px) 
         rotate(-${this.cell.rotation}deg)`; // change to tileSize/2
+    
   }
 
   dragStart(): void{
     this.border = 'white';
-
+    
     this.mutationSetActiveCell(this.cell);
     window.addEventListener("mousemove", this.mouseMove);
     window.addEventListener("mouseup", this.dragEnd);
@@ -123,11 +123,9 @@ export default class AppCell extends Mixins(getPosition) {
   dragEnd(): void{
     const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
     const {cellRef} = this.$refs;
-
     cellRef.style.visibility = "visible"
     hoverCell.style.visibility = "hidden";
     document.body.style.cursor = "default";
-
     window.removeEventListener("mousemove", this.mouseMove);
     this.border = '';
     this.mutationResetActiveCell();
@@ -145,6 +143,7 @@ export default class AppCell extends Mixins(getPosition) {
       // if there is a cell selected in the toolbox and you click it once more:
       (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
     ) {
+      
       this.mutationResetActiveCell();
     } else {
       if (!this.cellSelected) {
@@ -181,6 +180,7 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get computedCellClass(): string[] {
     return [
+      'cell',
       this.computedCellName,
       this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
       (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)

@@ -384,8 +384,9 @@ export default class Game extends Vue {
     const sourceCell = this.activeCell;
     const targetCell = cell;
 
+
     // handle moving from from / to toolbox
-    if (this.activeCell.isFromToolbox) {
+    if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
       this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
       this.addToCurrentTools(cell);
