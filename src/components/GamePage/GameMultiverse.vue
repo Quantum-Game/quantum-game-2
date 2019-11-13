@@ -184,7 +184,7 @@ export default class GameMultiverse extends Vue {
 
 <style lang="scss" scoped>
 $past: gray;
-$present: red;
+$present: #ff0055;
 $future: purple;
 .multiverse {
   border-top: 1px solid white;

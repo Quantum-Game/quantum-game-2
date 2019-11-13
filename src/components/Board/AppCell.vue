@@ -217,7 +217,7 @@ export default class AppCell extends Mixins(getPosition) {
       return this.border;
     }
     if (this.cell.energized) {
-      return 'red';
+      return '#ff0055';
     }
     return '';
   }
