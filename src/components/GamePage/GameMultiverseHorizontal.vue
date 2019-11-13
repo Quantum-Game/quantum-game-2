@@ -1,6 +1,5 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
-    <!-- <h3>MULTIVERSE</h3> -->
     <svg :style="computedSvgStyle">
       <!-- ARROWHEAD -->
       <defs>
@@ -83,8 +82,6 @@ export default class GameMultiverseHorizontal extends Vue {
 
   mounted() {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
-    this.debugNodes();
-    console.log(this.graph.sinks());
   }
 
   handleMouseOver(activeId: number): void {
@@ -98,7 +95,9 @@ export default class GameMultiverseHorizontal extends Vue {
   get computedSvgStyle(): {} {
     const { height } = this.graph.graph();
     return {
-      height
+      height: `${height}px`,
+      // 'min-height': this.totalFrames * 30,
+      'max-height': '500px'
     };
   }
 
@@ -140,9 +139,8 @@ export default class GameMultiverseHorizontal extends Vue {
 
   get computedStyle() {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
-    const yCenterOffset = (this.rect.height - this.graph.graph().height) / 2;
     return {
-      transform: `translate(${xCenterOffset}px, ${yCenterOffset}px)`
+      transform: `translate(${xCenterOffset}px, 0px)`
     };
   }
   /**
@@ -180,12 +178,12 @@ export default class GameMultiverseHorizontal extends Vue {
    */
   debugNodes() {
     this.multiverse.graph.nodes().forEach((node: any) => {
-      console.log(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
+      console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
     });
   }
   debugEdges() {
     this.edges.forEach((edge: any) => {
-      console.log(`Edge ${edge}: ${JSON.stringify(edge)}`);
+      console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`);
     });
   }
 }
@@ -193,18 +191,21 @@ export default class GameMultiverseHorizontal extends Vue {
 
 <style lang="scss" scoped>
 $past: gray;
-$present: red;
+$present: #ff0055;
 $future: purple;
-$root: white;
+$root: #ff0055;
 $leaf: magenta;
 .multiverse {
   border-top: 1px solid white;
   width: 100%;
+  height: 100%;
+  min-height: 500px;
   display: block;
   text-align: center;
   color: white;
   svg {
     width: 100%;
+    max-height: 500px;
   }
   .node {
     font-size: 10px;

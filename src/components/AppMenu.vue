@@ -17,7 +17,7 @@
           >
           <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
           <router-link to="/login" @click.stop.native="closeMenu">LOGIN</router-link>
-          <span>SANDBOX</span>
+          <router-link to="/sandbox" @click.stop.native="closeMenu">SANDBOX</router-link>
           <router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
           <router-link to="/options" @click.stop.native="closeMenu">OPTIONS</router-link>
           <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
@@ -75,6 +75,9 @@ export default class AppMenu extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.q-menu-wrapper {
+  min-height: 42px;
+}
 .menu-icon {
   display: block;
   position: absolute;
@@ -82,6 +85,9 @@ export default class AppMenu extends Vue {
   left: 20px;
   cursor: pointer;
   z-index: 2;
+  @media screen and (max-width: 1000px) {
+    position: static;
+  }
   &.open {
     position: fixed;
   }

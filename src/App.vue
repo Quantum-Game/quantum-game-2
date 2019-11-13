@@ -8,7 +8,7 @@
 body {
   margin: 0;
   padding: 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 #app {
@@ -61,8 +61,5 @@ body {
 a {
   color: #796bbc;
   text-decoration: none;
-}
-img {
-  max-width: 100%;
 }
 </style>

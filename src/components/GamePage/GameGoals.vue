@@ -12,10 +12,15 @@
       :sections="sections"
       :start-angle="0"
     >
-      <!-- :total="totalGoalPercentage" -->
-      <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
-      <div>SUCCESS</div>
+      <!-- PROBABILITY -->
+      <div :class="gameStateClass">
+        <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
+        <div>PROBABILITY</div>
+      </div>
     </vc-donut>
+    <div class="temp">
+      <div>Goal: {{ totalGoalPercentage }} %</div>
+    </div>
 
     <!-- GOALS -->
     <div class="bottom-icons">
@@ -25,7 +30,12 @@
       <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
-      <div>DETECTORS</div>
+      <div>
+        <span v-if="detectorsHit !== goals.length" class="defeat">
+          <b>DETECTORS</b>
+        </span>
+        <span v-else class="success"><b>DETECTORS</b></span>
+      </div>
     </div>
 
     <!-- MINES -->
@@ -36,13 +46,13 @@
       <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
         <img src="@/assets/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
-      <div>DANGER</div>
+      <div>
+        <span v-if="minesHit > 0" class="defeat">
+          <b>DANGER!</b>
+        </span>
+        <span v-else class="success"><b>SAFE</b></span>
+      </div>
     </div>
-    <!-- <div class="temp">
-      <div>Max: {{ totalGoalPercentage }} %</div>
-      <div>Unavailable: {{ unavailableGoalPercentage }} %</div>
-      <div>Current: {{ percentage.toFixed() }} %</div>
-    </div> -->
 
     <!-- DETECTION EVENTS -->
     <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
@@ -139,7 +149,7 @@ export default class GameGoals extends Vue {
    */
   get minesHit(): number {
     const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine' && detection.probability > 0.1;
+      return detection.cell.element.name === 'Mine' && detection.probability > 0.001;
     });
     return minesDetected.length;
   }
@@ -209,6 +219,10 @@ export default class GameGoals extends Vue {
     ];
   }
 
+  get gameStateClass() {
+    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
+  }
+
   @Watch('percentage')
   onPercentChanged(val: number, oldVal: number) {
     new Tween({ value: oldVal })
@@ -234,6 +248,11 @@ export default class GameGoals extends Vue {
   // height: 320px;
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 1000px) {
+    flex-direction: row;
+    padding-bottom: 0;
+    justify-content: space-evenly;
+  }
 
   & .upper-icons {
     display: flex;
@@ -250,7 +269,7 @@ export default class GameGoals extends Vue {
     & div.inner-circle {
       font-size: 2rem;
     }
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 
     position: relative;
 
@@ -282,7 +301,28 @@ export default class GameGoals extends Vue {
   }
 }
 .temp {
-  font-size: 0.6rem;
-  color: darkgrey;
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
+}
+.defeat {
+  color: white;
+  //opacity: 0.2;
+}
+.success {
+  color: white;
+}
+
+.cdc-container {
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+}
+
+.results_simple {
+  display: none;
+  @media screen and (max-width: 1000px) {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>

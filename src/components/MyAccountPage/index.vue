@@ -68,7 +68,7 @@ export default class MyAccount extends Vue {
     $userStore.dispatch('SIGN_OUT', this.user);
   }
   saveProgressToDB() {
-    console.log(this.progressArr);
+    console.debug(this.progressArr);
     $userStore.commit('SET_PROGRESS', this.progressArr);
     $userStore.dispatch('SAVE_PROGRESS');
   }

@@ -37,7 +37,8 @@ export default class QuantumSimulation {
         `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
       );
     }
-    const lasers = this.board.lasers.active.cells;
+    // const lasers = this.board.lasers.active.cells;
+    const lasers = this.board.emitters.active.cells;
     if (lasers.length !== 1) {
       throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
     }

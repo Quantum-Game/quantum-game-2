@@ -41,7 +41,7 @@ export default class GameToolbox extends Vue {
   }
 
   computedClass(cell: Cell): string {
-    return this.isAvailable(cell) ? 'inactive' : 'active';
+    return this.isAvailable(cell) ? 'active' : 'inactive';
   }
 
   isAvailable(cell: Cell): boolean {
@@ -74,6 +74,9 @@ export default class GameToolbox extends Vue {
   }
   .inactive {
     opacity: 50%;
+  }
+  .active {
+    opacity: 100%;
   }
   .counter {
     fill: white;

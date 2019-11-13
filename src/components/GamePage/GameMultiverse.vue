@@ -171,12 +171,12 @@ export default class GameMultiverse extends Vue {
    */
   debugNodes() {
     this.multiverse.graph.nodes().forEach((node: any) => {
-      console.log(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
+      console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
     });
   }
   debugEdges() {
     this.edges.forEach((edge: any) => {
-      console.log(`Edge ${edge}: ${JSON.stringify(edge)}`);
+      console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`);
     });
   }
 }
@@ -184,7 +184,7 @@ export default class GameMultiverse extends Vue {
 
 <style lang="scss" scoped>
 $past: gray;
-$present: red;
+$present: #ff0055;
 $future: purple;
 .multiverse {
   border-top: 1px solid white;

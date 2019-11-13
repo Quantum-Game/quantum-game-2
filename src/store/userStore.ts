@@ -173,7 +173,7 @@ const userStore: StoreOptions<UserState> = {
         dbRef
           .set(data)
           .then(() => {
-            console.log('Data stored: ', data);
+            console.debug('Data stored: ', data);
           })
           .catch((err) => {
             commit('SET_ERROR', err.message);
@@ -190,7 +190,7 @@ const userStore: StoreOptions<UserState> = {
             const { progress }: any = doc.data();
             commit('SET_PROGRESS', progress);
           } else {
-            console.log('No such document!');
+            console.debug('No such document!');
           }
         })
         .catch((err) => {

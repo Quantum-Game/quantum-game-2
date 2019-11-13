@@ -9,32 +9,20 @@ import jsonElements from './dataElements';
  * Rendering abstraction should be moved to Glyph
  */
 export default class Element {
-  id: number;
   name: string;
   group: string;
   description: string;
-  active: boolean;
-  absorption: number;
-  phase: number;
   ascii: string[];
 
   constructor(
-    id: number,
     name: string,
     group: string,
     description = '',
-    active = false,
-    absorption = 0,
-    phase = 0,
     ascii: string[] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
   ) {
-    this.id = id;
     this.name = name;
     this.group = group;
     this.description = description;
-    this.active = active;
-    this.absorption = absorption;
-    this.phase = phase;
     this.ascii = ascii;
   }
 
@@ -62,6 +50,8 @@ export default class Element {
       case Elem.DetectorFour:
         return qt.attenuator(0);
       case Elem.Laser:
+        return qt.attenuator(1);
+      case Elem.NonLinearCrystal:
         return qt.attenuator(1);
       case Elem.Void:
         return qt.attenuator(1);
@@ -107,7 +97,7 @@ export default class Element {
    * @returns string describing element
    */
   toString(): string {
-    return `${this.name} (Phase: ${this.phase}, Absorption: ${this.absorption * 100}%)`;
+    return this.name;
   }
 
   /**
@@ -116,13 +106,9 @@ export default class Element {
    */
   exportElement(): ElementInterface {
     return {
-      id: this.id,
       name: this.name,
       group: this.group,
       description: this.description,
-      active: this.active,
-      absorption: this.absorption,
-      phase: this.phase,
       ascii: this.ascii
     };
   }
@@ -132,16 +118,7 @@ export default class Element {
    * @param obj Create element from interface
    */
   static importElement(obj: ElementInterface): Element {
-    return new Element(
-      obj.id,
-      obj.name,
-      obj.group,
-      obj.description,
-      obj.active,
-      obj.absorption,
-      obj.phase,
-      obj.ascii
-    );
+    return new Element(obj.name, obj.group, obj.description, obj.ascii);
   }
 
   /**
