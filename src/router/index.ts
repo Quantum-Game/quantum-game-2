@@ -62,6 +62,11 @@ export default new Router({
       component: () => import('@/components/OptionsPage/index.vue')
     },
     {
+      path: '/about',
+      name: 'about',
+      component: () => import('@/components/AboutPage/index.vue')
+    },
+    {
       path: '*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue')

@@ -15,12 +15,13 @@
             @click.stop.native="handleContinueClick"
             >CONTINUE</router-link
           >
-          <router-link to="/levels" @click.stop.native="closeMenu">LEVELS</router-link>
-          <router-link to="/login" @click.stop.native="closeMenu">LOGIN</router-link>
-          <router-link to="/sandbox" @click.stop.native="closeMenu">SANDBOX</router-link>
-          <router-link to="/info" @click.stop.native="closeMenu">ENCYCLOPEDIA</router-link>
-          <router-link to="/options" @click.stop.native="closeMenu">OPTIONS</router-link>
-          <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
+          <router-link
+            v-for="item in menuItems"
+            :key="item.name"
+            :to="item.url"
+            @click.stop.native="closeMenu"
+            >{{ item.name }}</router-link
+          >
         </menu>
       </div>
     </transition>
@@ -34,6 +35,32 @@ import { State } from 'vuex-class';
 @Component
 export default class AppMenu extends Vue {
   @State('currentLevelID') currentLevelID!: number;
+  menuItems = [
+    {
+      name: 'LEVELS',
+      url: '/levels'
+    },
+    {
+      name: 'LOGIN',
+      url: '/login'
+    },
+    {
+      name: 'SANDBOX',
+      url: '/sandbox'
+    },
+    {
+      name: 'ENCYCLOPEDIA',
+      url: '/info'
+    },
+    {
+      name: 'OPTIONS',
+      url: '/options'
+    },
+    {
+      name: 'ABOUT',
+      url: '/about'
+    }
+  ];
   isMenuOpen: boolean = false;
 
   created() {
