@@ -141,7 +141,7 @@ export default class AppCell extends Mixins(getPosition) {
   handleCellClick(): void {
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-
+    
     // do nothing, if:
     if (
       this.cell.frozen ||
