@@ -5,10 +5,13 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 7,
     "cells": [
       {
-        "coord": { "y": 3, "x": 1 },
+        "coord": {
+          "y": 2,
+          "x": 1
+        },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -16,7 +19,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 3 },
+        "coord": {
+          "y": 2,
+          "x": 3
+        },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": true,
@@ -24,7 +30,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 5 },
+        "coord": {
+          "y": 2,
+          "x": 5
+        },
         "element": "Mirror",
         "rotation": 135,
         "frozen": true,
@@ -32,15 +41,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 7 },
-        "element": "Mirror",
-        "rotation": 45,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 9 },
+        "coord": {
+          "y": 2,
+          "x": 9
+        },
         "element": "BeamSplitter",
         "rotation": 45,
         "frozen": true,
@@ -48,7 +52,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 11 },
+        "coord": {
+          "y": 2,
+          "x": 11
+        },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
@@ -56,7 +63,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 3 },
+        "coord": {
+          "y": 4,
+          "x": 3
+        },
         "element": "Mirror",
         "rotation": 135,
         "frozen": true,
@@ -64,7 +74,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 5 },
+        "coord": {
+          "y": 4,
+          "x": 5
+        },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": true,
@@ -72,7 +85,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 7 },
+        "coord": {
+          "y": 4,
+          "x": 7
+        },
         "element": "BeamSplitter",
         "rotation": 225,
         "frozen": true,
@@ -80,29 +96,28 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 9 },
-        "element": "Mirror",
-        "rotation": 45,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 10 },
+        "coord": {
+          "y": 4,
+          "x": 10
+        },
         "element": "Rock",
         "rotation": 0,
         "frozen": true,
         "active": false,
-        "energized": false
+        "energized": true
       }
     ]
   },
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 3, "x": 11 },
+      "coord": {
+        "y": 2,
+        "x": 11
+      },
       "threshold": 1,
       "value": 0
     }
-  ]
+  ],
+  "tools": ["Mirror", "Mirror"]
 }

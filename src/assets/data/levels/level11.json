@@ -5,10 +5,13 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 5,
     "cells": [
       {
-        "coord": { "y": 4, "x": 1 },
+        "coord": {
+          "y": 2,
+          "x": 1
+        },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -16,69 +19,36 @@
         "energized": false
       },
       {
-        "coord": { "y": 4, "x": 3 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 4 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 5 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 6 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 7 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 8 },
-        "element": "Absorber",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 10 },
+        "coord": {
+          "y": 2,
+          "x": 10
+        },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
         "active": false,
-        "energized": false
+        "energized": true
       }
     ]
   },
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 4, "x": 10 },
-      "threshold": 0.016,
+      "coord": {
+        "y": 2,
+        "x": 10
+      },
+      "threshold": 0.015,
       "value": 0
     }
+  ],
+  "tools": [
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber"
   ]
 }

@@ -5,10 +5,13 @@
   "description": "Error with 90° beamsplitter",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 8,
     "cells": [
       {
-        "coord": { "y": 1, "x": 4 },
+        "coord": {
+          "y": 1,
+          "x": 6
+        },
         "element": "Detector",
         "rotation": 270,
         "frozen": true,
@@ -16,15 +19,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 4 },
-        "element": "BeamSplitter",
-        "rotation": 180,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 2 },
+        "coord": {
+          "y": 4,
+          "x": 4
+        },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -32,23 +30,21 @@
         "energized": false
       },
       {
-        "coord": { "y": 4, "x": 4 },
-        "element": "BeamSplitter",
-        "rotation": 45,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 4, "x": 6 },
+        "coord": {
+          "y": 4,
+          "x": 8
+        },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
         "active": false,
-        "energized": false
+        "energized": true
       },
       {
-        "coord": { "y": 6, "x": 4 },
+        "coord": {
+          "y": 6,
+          "x": 6
+        },
         "element": "Detector",
         "rotation": 90,
         "frozen": true,
@@ -60,19 +56,29 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 1, "x": 4 },
+      "coord": {
+        "y": 1,
+        "x": 6
+      },
       "threshold": 0.25,
       "value": 0
     },
     {
-      "coord": { "y": 6, "x": 4 },
+      "coord": {
+        "y": 6,
+        "x": 6
+      },
       "threshold": 0.125,
       "value": 0
     },
     {
-      "coord": { "y": 4, "x": 6 },
-      "threshold": 0.50,
+      "coord": {
+        "y": 4,
+        "x": 8
+      },
+      "threshold": 0.5,
       "value": 0
     }
-  ]
+  ],
+  "tools": ["BeamSplitter", "BeamSplitter"]
 }

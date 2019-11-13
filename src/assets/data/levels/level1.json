@@ -5,10 +5,13 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 8,
     "cells": [
       {
-        "coord": { "y": 2, "x": 1 },
+        "coord": {
+          "y": 2,
+          "x": 3
+        },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -16,23 +19,21 @@
         "energized": false
       },
       {
-        "coord": { "y": 2, "x": 3 },
-        "element": "Mirror",
-        "rotation": 135,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 2, "x": 4 },
+        "coord": {
+          "y": 2,
+          "x": 6
+        },
         "element": "Rock",
         "rotation": 0,
         "frozen": true,
         "active": false,
-        "energized": false
+        "energized": true
       },
       {
-        "coord": { "y": 2, "x": 7 },
+        "coord": {
+          "y": 2,
+          "x": 9
+        },
         "element": "Detector",
         "rotation": 270,
         "frozen": true,
@@ -40,18 +41,13 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 3 },
+        "coord": {
+          "y": 5,
+          "x": 5
+        },
         "element": "Mirror",
         "rotation": 135,
         "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 7 },
-        "element": "Mirror",
-        "rotation": 225,
-        "frozen": false,
         "active": false,
         "energized": false
       }
@@ -64,14 +60,20 @@
         "x": 4
       },
       "content": "GET THE LASER OFF MY FACE! ",
-      "color": "purple"
+      "color": "purple",
+      "rotation": 0,
+      "active": true
     }
   ],
   "goals": [
     {
-      "coord": { "y": 2, "x": 7 },
+      "coord": {
+        "y": 2,
+        "x": 7
+      },
       "threshold": 1,
       "value": 0
     }
-  ]
+  ],
+  "tools": ["Mirror", "Mirror"]
 }

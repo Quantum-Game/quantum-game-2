@@ -41,7 +41,7 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
-  tools?: CellInterface[];
+  tools: string[];
 }
 
 /**

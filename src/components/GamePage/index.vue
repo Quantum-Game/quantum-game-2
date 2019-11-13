@@ -178,8 +178,6 @@ export default class Game extends Vue {
     const levelI = levelData[`level${this.levelId}`];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
-    // console.log(this.level.toolbox.uniqueCellList);
-
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
@@ -371,6 +369,9 @@ export default class Game extends Vue {
         break;
       case 65:
         this.level.grid.rotateAll();
+        break;
+      case 69:
+        this.level.grid.reflectAll();
         break;
       case 37:
         this.showPrevious();

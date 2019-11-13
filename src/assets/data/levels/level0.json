@@ -1,4 +1,3 @@
-
 {
   "id": 0,
   "name": "Sandbox level",
@@ -15,237 +14,6 @@
         "frozen": true,
         "active": true,
         "energized": false
-      },
-      
-      {
-        "coord": { "y": 0, "x": 0 },
-        "element": "Mirror",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 0, "x": 1 },
-        "element": "Mirror",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 0, "x": 2 },
-        "element": "Mirror",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 0, "x": 3 },
-        "element": "Mirror",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 1, "x": 0 },
-        "element": "BeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 1 },
-        "element": "BeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 2 },
-        "element": "BeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 3 },
-        "element": "BeamSplitter",
-        "frozen": false
-      },
-      
-      {
-        "coord": { "y": 1, "x": 5 },
-        "element": "PolarizingBeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 6 },
-        "element": "PolarizingBeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 7 },
-        "element": "PolarizingBeamSplitter",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 1, "x": 8 },
-        "element": "PolarizingBeamSplitter",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 2, "x": 0 },
-        "element": "Detector",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 1 },
-        "element": "Detector",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 2 },
-        "element": "Detector",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 3 },
-        "element": "Detector",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 4, "x": 0 },
-        "element": "Rock",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 4, "x": 1 },
-        "element": "Rock",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 4, "x": 4 },
-        "element": "Rock",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 4, "x": 3 },
-        "element": "Rock",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 5, "x": 0 },
-        "element": "Mine",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 5, "x": 1 },
-        "element": "Mine",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 5, "x": 2 },
-        "element": "Mine",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 5, "x": 3 },
-        "element": "Mine",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 6, "x": 0 },
-        "element": "SugarSolution",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 6, "x": 1 },
-        "element": "SugarSolution",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 6, "x": 2 },
-        "element": "SugarSolution",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 6, "x": 3 },
-        "element": "SugarSolution",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 7, "x": 0 },
-        "element": "Glass",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 1 },
-        "element": "Glass",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 2 },
-        "element": "Glass",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 3 },
-        "element": "Glass",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 7, "x": 5 },
-        "element": "VacuumJar",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 6 },
-        "element": "VacuumJar",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 7 },
-        "element": "VacuumJar",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 7, "x": 8 },
-        "element": "VacuumJar",
-        "frozen": false
-      },
-      
-      {
-        "coord": { "y": 9, "x": 0 },
-        "element": "FaradayRotator",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 9, "x": 1 },
-        "element": "FaradayRotator",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 9, "x": 2 },
-        "element": "FaradayRotator",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 9, "x": 3 },
-        "element": "FaradayRotator",
-        "frozen": false
-      },
-
-      {
-        "coord": { "y": 2, "x": 5 },
-        "element": "DetectorFour",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 6 },
-        "element": "DetectorFour",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 7 },
-        "element": "DetectorFour",
-        "frozen": false
-      },
-      {
-        "coord": { "y": 2, "x": 8 },
-        "element": "DetectorFour",
-        "frozen": false
       }
     ]
   },
@@ -259,6 +27,92 @@
       "color": "purple"
     }
   ],
-  "goals": [
+  "goals": [],
+  "tools": [
+    "Laser",
+    "Laser",
+    "Laser",
+    "Laser",
+    "Laser",
+    "NonLinearCrystal",
+    "NonLinearCrystal",
+    "NonLinearCrystal",
+    "NonLinearCrystal",
+    "NonLinearCrystal",
+    "Mirror",
+    "Mirror",
+    "Mirror",
+    "Mirror",
+    "Mirror",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "PolarizingBeamSplitter",
+    "PolarizingBeamSplitter",
+    "PolarizingBeamSplitter",
+    "PolarizingBeamSplitter",
+    "PolarizingBeamSplitter",
+    "CornerCube",
+    "CornerCube",
+    "CornerCube",
+    "CornerCube",
+    "CornerCube",
+    "Detector",
+    "Detector",
+    "Detector",
+    "Detector",
+    "Detector",
+    "Rock",
+    "Rock",
+    "Rock",
+    "Rock",
+    "Rock",
+    "Mine",
+    "Mine",
+    "Mine",
+    "Mine",
+    "Mine",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "DetectorFour",
+    "DetectorFour",
+    "DetectorFour",
+    "DetectorFour",
+    "DetectorFour",
+    "PolarizerH",
+    "PolarizerH",
+    "PolarizerH",
+    "PolarizerH",
+    "PolarizerH",
+    "QuarterWavePlateH",
+    "QuarterWavePlateH",
+    "QuarterWavePlateH",
+    "QuarterWavePlateH",
+    "QuarterWavePlateH",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator",
+    "Glass",
+    "Glass",
+    "Glass",
+    "Glass",
+    "Glass",
+    "VacuumJar",
+    "VacuumJar",
+    "VacuumJar",
+    "VacuumJar",
+    "VacuumJar"
   ]
 }

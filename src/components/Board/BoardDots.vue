@@ -2,7 +2,7 @@
   <g class="dots">
     <g v-for="(row, y) in rows" :key="y">
       <g v-for="(column, x) in cols" :key="x">
-        <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
+        <circle :cx="x * tileSize" :cy="y * tileSize" r="1.5" fill="#edeaf4" />
       </g>
     </g>
   </g>

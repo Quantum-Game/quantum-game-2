@@ -184,6 +184,18 @@ export default class Grid extends Cluster {
     });
   }
 
+  public reflectAll(): void {
+    console.debug(`Vertical reflecting grid`);
+    this.unvoid.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x);
+      if (cell.rotation % 180 === 0) {
+        // eslint-disable-next-line
+        cell.rotation = (cell.rotation + 180) % 360;
+      }
+    });
+  }
+
   /**
    * Set the cells as energized if on this laser path.
    * @param paths laser path to energize
