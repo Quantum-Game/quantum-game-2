@@ -59,3 +59,9 @@ import AppLayout from '@/components/AppLayout.vue';
 })
 export default class AboutPage extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+h3 {
+  margin-bottom: 3rem;
+}
+</style>
