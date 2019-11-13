@@ -65,11 +65,22 @@ export default class HomePage extends Vue {}
   align-items: center;
   background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
   width: 100%;
-  //background-color: #2e006a;
-  // background-image: url(~../assets/background_dots.svg);
-  // background-size: 1000px auto; //not responsive
-  // background-repeat: repeat;
-  // background-position: center;
+  h2 {
+    color: white;
+    font-size: 1.4rem;
+    font-weight: normal;
+    line-height: 150%;
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+  & a {
+    width: 100%;
+    & img {
+      max-width: 250px;
+    }
+  }
 }
 h1 {
   color: white;
@@ -106,11 +117,9 @@ p {
   width: 100vw;
   min-width: 1300px;
   position: center;
-  //  margin-left: -50vw;
   height: 100px;
   margin-top: 100px;
   margin-bottom: 12vw;
-  //left: 50%;
   align-items: center;
 }
 .image {
@@ -127,7 +136,6 @@ p {
 }
 
 h3 {
-  // margin: 40px 0 0;
   color: white;
   text-align: left;
 }
@@ -141,24 +149,16 @@ li {
 }
 a {
   color: rgb(255, 181, 209);
-  //color:ffcfe5;
-  //color: #9780b5;
   text-decoration: none;
 }
 a:hover {
   color: white;
 }
 
-.CQTlogo {
-  max-width: 250px;
-}
-///////////
 * {
   transition: all 0.6s;
 }
-// .newsletter{
-//   padding-bottom:30px;
-// }
+
 input[type='email'] {
   outline: none;
   display: inline-block;
@@ -205,5 +205,4 @@ input[type='email']:focus {
     width: 100%;
   }
 }
-////////////
 </style>
