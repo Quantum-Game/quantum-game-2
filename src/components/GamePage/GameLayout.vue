@@ -59,7 +59,7 @@ export default class GameLayout extends Vue {}
   -webkit-user-select: none; /* Safari 3.1+ */
   -moz-user-select: none; /* Firefox 2+ */
   -ms-user-select: none; /* IE 10+ */
-  user-select: none;
+  user-select: none
 }
 .middle {
   padding: 20px;
@@ -84,7 +84,7 @@ export default class GameLayout extends Vue {}
   }
 }
 
-.right {
+.right{
   z-index: 2;
 }
 
