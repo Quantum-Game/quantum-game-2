@@ -3,7 +3,6 @@
     <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     >
-    <!-- <div class="temp">Ket (old): {{ frame.photons.ketString() }}</div> -->
     <!-- VIEWR -->
     <div class="quantum-state-viewer">
       <span
@@ -11,27 +10,38 @@
         :key="`ket-component-${index}`"
         class="ket-component"
       >
-        <span class="ket-component2">
-          + {{ renderComplex(ketComponent.amplitude) }}
-          <!-- <svg height="16" width="16">
-            <circle cx="8" cy="8" r="8" fill="red" />
-          </svg> -->
+        <span class="ket-complex">
+          <span v-if="selectedStyle === 'polar'">
+            {{ renderComplexPolar(ketComponent.amplitude) }}
+          </span>
+          <span v-if="selectedStyle === 'cartesian'">
+            {{ renderComplexCartesian(ketComponent.amplitude) }}
+          </span>
+          <svg v-if="selectedStyle === 'color-disk'" height="18" width="18">
+            <circle
+              cx="9"
+              cy="9"
+              :r="diskScale(ketComponent.amplitude.r)"
+              :fill="complexToColor(ketComponent.amplitude)"
+            />
+          </svg>
         </span>
         <span
           v-for="(particleCoord, pIndex) in ketComponent.particleCoords"
           :key="`ket-component-${pIndex}`"
-          class="ket-component3"
+          class="ket-coord"
         >
           | {{ particleCoord.x }},{{ particleCoord.y }}
-          <span class="ket-coord">
+          <span class="ket-dir">
             {{ renderDir(particleCoord.dir) }}
+          </span>
+          <span class="ket-pol">
             {{ renderPol(particleCoord.pol) }}
           </span>
           ⟩
         </span>
       </span>
     </div>
-    <!-- VIEWR -->
     <div v-if="absorptions.length > 0" class="controls">
       Absorptions:
       <span
@@ -43,12 +53,22 @@
         ({{ absorption.x }}, {{ absorption.y }})
       </span>
     </div>
-    <div class="controls">
-      <span v-if="polar" class="smallBtn">
-        <span @click="polar = !polar">Show cartesian</span>
+    <div v-if="showLegend" class="legend">
+      <span v-if="selectedStyle === 'color-disk'">
+        <span class="legend-coord-xy"> x,y coordinates</span>
+        <span class="legend-dir">direction</span>
+        <span class="legend-pol">polarization</span>
       </span>
-      <span v-else class="smallBtn">
-        <span @click="polar = !polar">Show polar</span>
+      <span v-else>
+        <span class="legend-complex">amplitude (complex number)</span>
+        <span class="legend-coord-xy"> x,y coordinates</span>
+        <span class="legend-dir">direction</span>
+        <span class="legend-pol">polarization</span>
+      </span>
+    </div>
+    <div class="btn-group">
+      <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
+        <button :class="{ selected: style === selectedStyle }">{{ style }}</button>
       </span>
     </div>
   </div>
@@ -63,6 +83,51 @@ import Grid from '@/engine/Grid';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
+
+const TAU = 2 * Math.PI;
+
+/**
+ * Stolen from https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
+ * Alternatively: d3.hsl
+ */
+function hslToHex(hParam: number, sParam: number, lParam: number) {
+  let h = hParam;
+  let s = sParam;
+  let l = lParam;
+  h /= 360;
+  s /= 100;
+  l /= 100;
+  let r;
+  let g;
+  let b;
+  if (s === 0) {
+    r = l;
+    g = l;
+    b = l; // achromatic
+  } else {
+    const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
+      const p = pParam;
+      const q = qParam;
+      let t = tParam;
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  const toHex = (x: number) => {
+    const hex = Math.round(x * 255).toString(16);
+    return hex.length === 1 ? `0${hex}` : hex;
+  };
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
 
 @Component({
   components: {
@@ -79,8 +144,10 @@ export default class GameKet extends Vue {
 
   @Prop() readonly frame!: QuantumFrame;
   @Prop() readonly grid!: Grid;
+  @Prop({ default: true }) readonly showLegend!: boolean;
 
-  polar = false;
+  styles = ['polar', 'cartesian', 'color-disk'];
+  selectedStyle = 'polar';
 
   toggleKets(): void {
     this.$data.ketHidden = !this.$data.ketHidden;
@@ -94,11 +161,21 @@ export default class GameKet extends Vue {
     return this.grid.cellFromXY(x, y).element.name;
   }
 
-  renderComplex(z: Complex, precision = 2) {
-    if (this.polar) {
-      return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
-    }
+  renderComplexPolar(z: Complex, precision = 2) {
+    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
+  }
+
+  renderComplexCartesian(z: Complex, precision = 2) {
     return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
+  }
+
+  diskScale(r: number): number {
+    return 8 * r;
+  }
+
+  complexToColor(z: Complex): string {
+    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
+    return hslToHex(angleInDegrees, 100, 50);
   }
 
   renderDir(dir: number) {
@@ -128,15 +205,15 @@ export default class GameKet extends Vue {
   padding: 10px;
 }
 .controls {
-  //font-size: 0.8rem;
-  color: #9229ed;
+  font-size: 0.8rem;
+  color: white;
+  padding: 6px;
 }
 .simulation-frame-kets {
   padding-top: 10px;
   width: 100%;
   display: block;
   text-align: center;
-  height: 150px;
   transition: height 0.5s;
   overflow: hidden;
   @media screen and (max-width: 1000px) {
@@ -154,35 +231,86 @@ export default class GameKet extends Vue {
   line-height: 1.4rem;
   display: inline-block;
 }
-.ket-component2 {
+.ket-complex {
   background-color: #2e006a;
   color: #0080ff;
   padding: 2px;
   margin: 5px;
 }
-.ket-component3 {
+.ket-coord {
   background-color: #2e006a;
   color: white;
   padding: 2px;
   margin: 5px;
 }
-.ket-coord {
+.ket-dir {
   color: #ff0055;
 }
-
+.ket-pol {
+  color: #faaa15;
+}
 .step {
   font-size: 0.8rem;
   line-height: 150%;
 }
-.smallBtn {
-  background-color: inherit;
-  margin-top: 5px;
-  //border: dotted 1px purple;
-  color: white;
-  padding: 5px 15px;
+.btn-group {
   text-align: center;
-  text-decoration: none;
-  display: inline-block;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  button {
+    font-size: 0.8rem;
+    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+    text-transform: uppercase;
+    background-color: #5c00d3;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      border-right: none;
+    }
+  }
+  &:after {
+    content: '';
+    clear: both;
+    display: table;
+  }
+
+  button:hover {
+    background-color: #4302bf;
+    color: white;
+  }
+
+  .selected {
+    background-color: white;
+    color: #5c00d3;
+  }
+}
+.legend {
+  padding-bottom: 6px;
+}
+.legend-complex {
+  color: #0080ff;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.legend-coord-xy {
+  color: #fff;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.legend-pol {
+  color: #ff0055;
+  margin: 5px;
+  font-size: 0.8rem;
+}
+.legend-dir {
+  color: #faaa15;
+  margin: 5px;
   font-size: 0.8rem;
 }
 h3 {
