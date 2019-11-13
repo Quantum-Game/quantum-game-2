@@ -1,5 +1,5 @@
 <template>
-  <g :style="positionStyle" :class="computedCellClass" @click="handleCellClick">
+  <g ref="cellRef" :style="positionStyle" :class="computedCellClass" @mousedown="handleCellClick" @mouseup="handleCellClick">
     <rect
       :width="tileSize"
       :height="tileSize"
@@ -25,6 +25,7 @@ import Particle from '@/engine/Particle';
 import { getPosition } from '@/mixins';
 import {
   LaserCell,
+  NonLinearCrystalCell,
   MirrorCell,
   BeamSplitterCell,
   PolarizingBeamSplitterCell,
@@ -53,6 +54,7 @@ const borderColors = {
 @Component({
   components: {
     LaserCell,
+    NonLinearCrystalCell,
     MirrorCell,
     BeamSplitterCell,
     PolarizingBeamSplitterCell,
@@ -82,22 +84,54 @@ export default class AppCell extends Mixins(getPosition) {
   @State cellSelected!: boolean;
   border = '';
 
-  /**
-   * Handle mouseover for active cell display
-   */
-  // handleCellHover(): void {
-  //   // if (!this.cell.isVoid) {
-  //   if (!this.cell.isVoid && this.cell !== this.hoveredCell) {
-  //     this.mutationSetHoveredCell(this.cell);
-  //   }
-  // }
-
+  $refs!: {
+    cellRef: HTMLElement;
+  };
   /**
    *  handles clicking, namely
    *  1. distinguishes a selecting vs a placing click
    *  2. determines if the updateCell event should be emitted
    *  @returns void
    */
+
+  mouseMove(e: any): void {
+    const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
+    const {cellRef} = this.$refs;
+    console.log(e)
+    hoverCell.innerHTML = cellRef.innerHTML;
+
+    cellRef.style.visibility = "hidden";
+    hoverCell.style.visibility = "visible";
+    document.body.style.cursor = "grabbing";
+    hoverCell.style.height = "64px"; // change to tileSize, IDK why not work
+    hoverCell.style.width = "64px";// change to tileSize, IDK why not work
+    hoverCell.style.transformOrigin = "32px 32px"; // change to tileSize/2
+    hoverCell.style.transform = `
+        translate(${e.pageX - 64/2}px, ${e.pageY - 64/2}px) 
+        rotate(-${this.cell.rotation}deg)`; // change to tileSize/2
+  }
+
+  dragStart(): void{
+    this.border = 'white';
+
+    this.mutationSetActiveCell(this.cell);
+    window.addEventListener("mousemove", this.mouseMove);
+    window.addEventListener("mouseup", this.dragEnd);
+    
+  }
+
+  dragEnd(): void{
+    const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
+    const {cellRef} = this.$refs;
+
+    cellRef.style.visibility = "visible"
+    hoverCell.style.visibility = "hidden";
+    document.body.style.cursor = "default";
+
+    window.removeEventListener("mousemove", this.mouseMove);
+    this.border = '';
+    this.mutationResetActiveCell();
+  }
 
   handleCellClick(): void {
     // TODO: if tool from toolbox check availability before selection
@@ -117,8 +151,7 @@ export default class AppCell extends Mixins(getPosition) {
         // FIRST CLICK
         // If from toolbox needs to have available elements
         if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
-          this.border = 'white';
-          this.mutationSetActiveCell(this.cell);
+          this.dragStart();
           return;
         }
         this.border = '';
@@ -128,6 +161,7 @@ export default class AppCell extends Mixins(getPosition) {
       // ROTATE CELL
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
+        this.mutationResetActiveCell();
       }
 
       this.$emit('updateCell', this.cell);
@@ -183,7 +217,7 @@ export default class AppCell extends Mixins(getPosition) {
       return this.border;
     }
     if (this.cell.energized) {
-      return 'red';
+      return '#ff0055';
     }
     return '';
   }
@@ -207,7 +241,6 @@ export default class AppCell extends Mixins(getPosition) {
     };
     return styleObj;
   }
-
   /**
    * Undoes the parent element rotation
    */

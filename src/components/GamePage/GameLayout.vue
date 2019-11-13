@@ -28,7 +28,9 @@
 
     <!-- a generic footer for now -->
     <footer>
-      <slot name="footer"></slot>
+      <slot name="footer">
+        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT" width="128" />
+      </slot>
     </footer>
   </div>
 </template>
@@ -54,18 +56,36 @@ export default class GameLayout extends Vue {}
   color: white;
   width: 100%;
   align-items: center;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none
 }
 .middle {
   padding: 20px;
   align-content: center;
   justify-content: center;
   width: 65%;
+  box-sizing: border-box;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 }
 .left,
 .right {
+  box-sizing: border-box;
   height: auto;
   width: 16%;
   padding: 20px;
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    padding: 0 20px;
+  }
+}
+
+.right{
+  z-index: 2;
 }
 
 header {
@@ -74,15 +94,42 @@ header {
   flex-direction: row;
   justify-content: center;
   padding: none;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    .left {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 50px;
+      min-height: 41px;
+    }
+  }
 }
 
-main,
-//header,
-footer {
+main {
   max-width: 1400px;
   display: flex;
   flex-direction: row;
   justify-content: center;
+}
+
+footer {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0.2;
+}
+
+main {
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    padding: 0 20px;
+  }
 }
 
 .placeholder {

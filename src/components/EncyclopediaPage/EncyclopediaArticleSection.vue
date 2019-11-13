@@ -1,5 +1,5 @@
 <template>
-  <section class="entry-section">
+  <section v-if="section.title" class="entry-section">
     <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
       {{ section.title.toUpperCase() }}
     </h2>
@@ -83,6 +83,9 @@ section.entry-section {
     letter-spacing: 1px;
     text-align: left;
     line-height: 1.5em;
+  }
+  @media screen and (max-width: 1000px) {
+    padding-left: 20px;
   }
 }
 </style>

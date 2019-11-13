@@ -1,23 +1,159 @@
 {
-  "beam-splitter": {
-    "title": "50-50 Beamsplitter",
-    "elementName": "BeamSplitter",
-    "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one",
+  "absorber": {
+    "title": "Absorber",
+    "elementName": "Absorber",
+    "short": "COMING SOON!",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "Absorber",
+            "rotation": 90,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
+      }
+    ]
+  },
+  "beam-splitter": {
+    "title": "50-50 Beamsplitter",
+    "elementName": "BeamSplitter",
+    "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 0,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 0,
+              "x": 2
+            },
             "element": "BeamSplitter",
+            "rotation": 135,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      },
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 0,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true,
+            "energized": false
+          },
+          {
+            "coord": {
+              "y": 0,
+              "x": 2
+            },
+            "element": "BeamSplitter",
+            "rotation": 90,
+            "frozen": false,
+            "active": false,
+            "energized": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "The basics",
+        "content": "<p>Beamsplitters are optical devices used to split a single beam of laser light into two beams, independent of the polarization of the incoming light. If the two outgoing beams have the same intensity, it is called a 50-50 beamsplitter. This ratio between the two beams intensity can be tuned arbitrarily to obtain more light transmitted than reflected or vice versa. Beamsplitters can also be used in reverse, to recombine two beams into one!</p>"
+      },
+      {
+        "title": "Everday use",
+        "content": "<p>Beamsplitters can come in two forms: a cube or a thin slab (like shown in the figure above).</p><p><strong>Beamsplitters cubes</strong> are made of two prisms glued to each other. Using a phenomenon called <a href=\"https://en.wikipedia.org/wiki/Total_internal_reflection#Frustrated_total_internal_reflection\">frustrated total internal reflection</a> half of the initial beam is reflected, the other half is transmitted. This ratio depends on the gap between the two prisms, which is chosen and manufactured extremely carefully.</p>"
+      },
+      {
+        "title": "Explanation",
+        "content": "<p>You can experiment with frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing</p><p>Beamsplitters are used in interferometers, and some spooky phenomenon can be achieved with them (check out level xx)! This phenomenon is due to a phase shift which the beamsplitter imparts on the reflected beam. When light bounces off a material with a higher refractive index, it picks up a phase of 180°, or a π-phase.</p>"
+      },
+      {
+        "title": "Usage in laboratories and experiments",
+        "content": "<p>You can find beamsplitters around you in your everyday life! For example, they used to be inside old TVs. Nowadays, they are used in CCD-cameras, LCD displays and optical fibre communication systems. Of course, they are used daily by thousands of scientists in the world, which align them as part of their large optical systems.</p>"
+      },
+      {
+        "title": "Further resources",
+        "content": "<p>Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:</p><ul><li>Michelson-Morley interferometers</li><li>Mach-Zehnder interferometers</li></ul><p><img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1f/Beamsplitter-1.png\" alt=\"Beamsplitter\"></p><p>Famous experiments that used beamsplitters are:</p><ul><li>The Fizeau experiment of 1851 to measure the speeds of light in water</li><li>The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light</li><li>Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories</li><li>Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens</li></ul>"
+      },
+      {
+        "title": "Transition map",
+        "content": "<p>:transition-map</p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/\">What are Beamsplitters?</a></li><li><a href=\"https://en.wikipedia.org/wiki/Beam_splitter\">Beamsplitters on Wikipedia</a></li><li><a href=\"https://www.rp-photonics.com/beam_splitters.html\">Beamsplitters on RP Photonics Encyclopedia</a></li></ul><p>Videos on hommade beamsplitters:</p><ul><li><a href=\"https://www.youtube.com/watch?v=P1n3hizj3c4\">What is a beam splitter and how do you make one?</a></li><li>[Playing with beamsplitters](Playing with beamsplitters)</li></ul>"
+      }
+    ]
+  },
+  "coated-beam-splitter": {
+    "title": "Coated Beam Splitter",
+    "elementName": "CoatedBeamSplitter",
+    "short": "COMING SOON!",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "CoatedBeamSplitter",
             "rotation": 135,
             "frozen": false,
             "active": false
@@ -27,47 +163,320 @@
     ],
     "sections": [
       {
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
+      }
+    ]
+  },
+  "corner-cube": {
+    "title": "Corner Cube",
+    "elementName": "CornerCube",
+    "short": "COMING SOON!",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "CornerCube",
+            "rotation": 135,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
+      }
+    ]
+  },
+  "detector-four": {
+    "title": "Photon Detector x 4",
+    "elementName": "DetectorFour",
+    "short": "It detects any photon which is incident on it by transforming it into an electrical sig",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 3
+            },
+            "element": "DetectorFour",
+            "rotation": 180,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "Basics",
+        "content": "<p>Some people argue that us humans, if we really stretch our eyes, can detect even single photons. <a href=\"https://www.nature.com/news/people-can-sense-single-photons-1.20282\">“The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”</a>. Catching a single photon is an enormous challenge! Luckily, scientists have worked for us and have come up with many devices which can sense as little as one photon!</p><p>One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely.</p>"
+      },
+      {
+        "title": "Everyday use",
+        "content": "<p>Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory! And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!</p>"
+      },
+      {
+        "title": "Digging deeper",
+        "content": "<p>How does a photomultiplier tube work?<p>Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!</p><p>Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!!</p>"
+      },
+      {
+        "title": "Usage in Laboratories",
+        "content": "<p>PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!</p><p><a href=\"https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html\"><img src=\"https://scx2.b-cdn.net/gfx/news/hires/2016/thesuperkami.jpg\" alt=\"Photomultiplier tubue\"></a></p>"
+      },
+      {
+        "title": "Related concepts:",
+        "content": "<p>-photoelectric effect"
+      }
+    ]
+  },
+  "detector": {
+    "title": "Photon Detector",
+    "elementName": "Detector",
+    "short": "It detects any photon which is incident on it by transforming it into an electrical sig",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 3
+            },
+            "element": "Detector",
+            "rotation": 180,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "Basics",
+        "content": "<p>Some people argue that us humans, if we really stretch our eyes, can detect even single photons. <a href=\"https://www.nature.com/news/people-can-sense-single-photons-1.20282\">“The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”</a>. Catching a single photon is an enormous challenge! Luckily, scientists have worked for us and have come up with many devices which can sense as little as one photon!</p><p>One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely.</p>"
+      },
+      {
+        "title": "Everyday use",
+        "content": "<p>Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory! And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!</p>"
+      },
+      {
+        "title": "Digging deeper",
+        "content": "<p>How does a photomultiplier tube work?<p>Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!</p><p>Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!!</p>"
+      },
+      {
+        "title": "Usage in Laboratories",
+        "content": "<p>PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!</p><p><a href=\"https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html\"><img src=\"https://scx2.b-cdn.net/gfx/news/hires/2016/thesuperkami.jpg\" alt=\"Photomultiplier tubue\"></a></p>"
+      },
+      {
+        "title": "Related concepts:",
+        "content": "<p>-photoelectric effect"
+      }
+    ]
+  },
+  "faraday-rotator": {
+    "title": "Faraday Rotator",
+    "elementName": "FaradayRotator",
+    "short": "It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "FaradayRotator",
+            "rotation": 90,
+            "frozen": false,
+            "active": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
         "title": "The basics",
-        "contents": [
-          "Beamsplitters are optical devices used to split a single beam of laser light into two beams, <em>independent</em> of the polarization of the incoming light. If the two outgoing beams have the same intensity, it is called a 50-50 beamsplitter. This ratio between the two beams intensity can be tuned arbitrarily to obtain more light transmitted than reflected or vice versa. Beamsplitters can also be used in reverse, to recombine two beams into one!"
-        ]
+        "content": "<p>A photon enters a ferromagnetic crystal placed in a strong magnetic field. Due to “magneto-optic effect”, the polarization of the photon is rotated by an angle proportional to the magnetic field along the propagation direction. Consequently, if the photon enters from the opposite end, its polarization will be rotated in the opposite direction.</p>"
       },
       {
-        "title": "EVERYDAY USE",
-        "contents": [
-          "Beamsplitters can come in two forms: a cube or a thin slab (like shown in the figure above).</p><p><strong>Beamsplitters cubes</strong> are made of two prisms glued to each other. Using a phenomenon called <em><a href='https://en.wikipedia.org/wiki/Total_internal_reflection#Frustrated_total_internal_reflection' target='_blank'>frustrated total internal reflection</a></em> half of the initial beam is reflected, the other half is transmitted. This ratio depends on the gap between the two prisms, which is chosen and manufactured extremely carefully.</p><p>[You can experiment with frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing"
-        ]
-      },
-      {
-        "title": "EXPLANATIONS",
-        "contents": [
-          "Beamsplitters are used in interferometers, and some spooky phenomenon can be achieved with them (check out level xx)! This phenomenon is due to a phase shift which the beamsplitter imparts on the reflected beam. When light bounces off a material with a higher refractive index, it picks up a phase of 180°, or a π-phase."
-        ]
+        "title": "Explanations",
+        "content": "<p>Suppose a photon travels through a faraday rotator, gets reflected off the mirror and travels back through the rotator. On the second pass, the effect of the rotator adds up to the first pass, and the photon polarization is rotated by 90 degrees overall. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. This so-called “non-reciprocity” is the reason why Faraday rotators are ubiquitous in optics laboratories.</p>"
       },
       {
         "title": "USAGE IN LABORATORIES AND EXPERIMENTS",
-        "contents": [
-          "You can find beamsplitters around you in your everyday life! For example, they used to be inside old TVs. Nowadays, they are used in CCD-cameras, LCD displays and optical fibre communication systems. Of course, they are used daily by thousands of scientists in the world, which align them as part of their large optical systems."
-        ]
+        "content": "<p>By combining a Faraday rotator with two polarizing beamsplitters we create an optical isolator. This device allows light to pass in one direction, while blocking the other. Isolators are commonly used to protect sensitive equipment (such as laser diodes) that can break due to back-reflections. Faraday rotators can also be used to create double-pass amplifiers.</p>"
       },
       {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:<br/>-Michelson-Morley interferometers<br/>-Mach-Zehnder interferometers<br/>",
-          "encyclopedia/beamsplitter-1.png",
-          "Famous experiments that used beamsplitters are:<br/>-The Fizeau experiment of 1851 to measure the speeds of light in water<br/>-The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light<br/>-Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories<br/>-Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens"
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Magneto-optic_effect\">Magneto-optic Effects</a></li><li><a href=\"https://www.rp-photonics.com/faraday_rotators.html\">Faraday Rotators</a></li><li><a href=\"https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12684\">Faraday Rotators on ThorLabs</a></li></ul>"
+      }
+    ]
+  },
+  "glass": {
+    "title": "Glass",
+    "elementName": "Glass",
+    "short": "COMING SOON!",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "Glass",
+            "rotation": 90,
+            "frozen": false,
+            "active": false
+          }
         ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
+      }
+    ]
+  },
+  "laser": {
+    "title": "Single Photon Source",
+    "elementName": "Laser",
+    "short": "An on-demand single photon source. (CLICK to EMIT!)",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>An on-demand single photon source. (CLICK to EMIT!)</p>"
       },
       {
-        "title": "TRANSITIONS MAP",
-        "contents": [
-          "<a href='https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/' target='_blank'>What are Beamsplitters?</a>",
-          "<a href='https://en.wikipedia.org/wiki/Beam_splitter' target='_blank'>Beamsplitters on Wikipedia</a>",
-          "<a href='https://www.rp-photonics.com/beam_splitters.html' target='_blank'>Beamsplitters on RP Photonics Encyclopedia</a>",
-          "Videos on hommade beamsplitters:",
-          "<a href='https://www.youtube.com/watch?v=P1n3hizj3c4' target='_blank'>What is a beam splitter and how do you make one?</a>",
-          "<a href='https://www.youtube.com/watch?v=C7edG13kzgU' target='_blank'>Playing with beamsplitters</a>"
+        "title": "The basics",
+        "content": "<p>Single photon sources allow the production of individual photons. The single photons have characteristic quantum behaviour. Single photons were created only quite recently, in the 1970s! They are the “quantum”, or the smallest unit, of electromagnetic field!</p>"
+      },
+      {
+        "title": "Digging deeper",
+        "content": "<p>In most cases, there is a system which emits a single photon upon a certain process. Some systems which can produce single photons are trapped ions, attenuated beams of sodium atoms, pentacene molecules and more recently nitrogen vacancy centers in diamond, quantum dots and two dimensional materials.</p><p>One of the processes through which single photons can be created is parametric down conversion. In this process a single photon which interacts with a non linear crystal can be split into two photons, and vice versa.</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/d/df/Scheme_of_spontaneous_parametric_down-conversion.pdf\">!Scheme of spontaneous parametric down conversion</a></p>"
+      },
+      {
+        "title": "USAGE IN THE LABORATORIES",
+        "content": "<p>Single photons are routinely used in quantum information laboratories, They are the main characters of Bell test experiments and quantum cryptography!</p>"
+      },
+      {
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Single-photon_source\">Single Photon Source</a></li><li><a href=\"https://en.wikipedia.org/wiki/Spontaneous_parametric_down-conversion\">Spontaneous parametric down-conversion</a></li><li><a href=\"http://news.mit.edu/2019/single-photon-source-fluorescent-quantum-defects-0809\">A single-photon source you can make at home</a></li></ul>"
+      }
+    ]
+  },
+  "mine": {
+    "title": "Mirror",
+    "elementName": "Mine",
+    "short": "COMING SOON!",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "Mine",
+            "rotation": 135,
+            "frozen": false,
+            "active": false
+          }
         ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
       }
     ]
   },
@@ -81,14 +490,20 @@
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
             "element": "Mirror",
             "rotation": 135,
             "frozen": false,
@@ -99,59 +514,49 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
+        "title": "Dig Deeper",
+        "content": "<p>Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.</p><p>In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass. To make sure as much light is reflected as possible, most manufacturers nowadays make mirrors which have a series of coatings.</p><p>Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.</p>"
       },
       {
         "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
+        "content": "<p>NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!</p>"
       },
       {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
+        "title": "Everyday Life",
+        "content": "<p>“Mirror mirror on the wall who's the fairest of them all?”</p><p>We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!</p>"
       },
       {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mirror\">Mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\">Reflection Phase Change</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_cavity\">Optical Cavity</a></li></ul>"
       }
     ]
   },
-  "detector": {
-    "title": "Photon Detector",
-    "elementName": "Detector",
-    "short": "It detects any photon which is incident on it by transforming it into an electrical signal. To win the game, you want to feed as many carnivorous plants as possible! They are hungry!",
+  "polarizer": {
+    "title": "Polarizer",
+    "elementName": "Polarizer",
+    "short": "Filters light of a specific polarization, while blocking light of all other polarisati",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 3 },
-            "element": "Detector",
-            "rotation": 180,
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "PolarizerH",
+            "rotation": 135,
             "frozen": false,
             "active": false
           }
@@ -160,143 +565,45 @@
     ],
     "sections": [
       {
-        "title": "BASICS",
-        "contents": [
-          "Some people argue that us humans, if we really stretch our eyes, can detect even single photons. (<a href='https://www.nature.com/news/people-can-sense-single-photons-1.20282'>People can sense single photons - Nature</a>) “The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”. Catching a single photon is an enormous challenge! Luckily scientists have worked for us and have come up with many devices which can sense as little as one photon!",
-          "One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely."
-        ]
+        "title": "The basics",
+        "content": "<p>Polarizers are made of crystals which are dichroic, they prefer to absorb light which is polarised in a particular direction. Wire-grid polarizers let through the polarization which is parallel to the grid direction, as shown below.</p><p><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Wire-grid-polarizer.svg/1280px-Wire-grid-polarizer.svg.png\" alt=\"Polarizer\"></p>"
       },
       {
-        "title": "EVERYDAY USE",
-        "contents": [
-          "Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory!",
-          "And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!"
-        ]
+        "title": "Usage in everyday life",
+        "content": "<p>Polarizers are all around us, from our sunglasses to our cameras. Sunlight which is reflected off surfaces is often polarized, and by blocking out some of the polarized light these filters attenuate the overall amount of light that reaches our eyes or the camera sensors. In photography, a polarizer can be used to change the contrast of a picture!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/CircularPolarizer.jpg/1920px-CircularPolarizer.jpg\">!Circular Polarizer</a></p>"
       },
       {
-        "title": "DIGGING DEEPER",
-        "contents": [
-          "How does a photomultiplier tube work?",
-          "These devices are a tube filled with vacuum. Inside, the photons hit a cathode, here, by the photoelectric effect, they are transformed into electrons.",
-          "The electrons are they guided down along the tube and, as they hit other electrons, they create more and more electrons. The original electron from the photon is multiplied to create a flow of electrons, or a current, high enough to be measured precisely.",
-          "encyclopedia/detector-photomultiplier.jpg",
-          "Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!",
-          "Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!"
-        ]
-      },
-      {
-        "title": "LABORATORY USE",
-        "contents": [
-          "PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!",
-          "encyclopedia/detector-superkami.jpg"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href='https://en.wikipedia.org/wiki/Photodetector' target='_blank'>Photodetector - Wikipedia</a>",
-          "<a href='https://en.wikipedia.org/wiki/Photon_counting' target='_blank'>Photon counting - Wikipedia</a>",
-          "<a href='https://en.wikipedia.org/wiki/Photomultiplier_tube' target='_blank'>Photomultiplier tube - Wikipedia</a>",
-          "<a href='https://www.nature.com/news/people-can-sense-single-photons-1.20282' target='_blank'>People can sense single photons - Nature</a>",
-          "<a href='http://math.ucr.edu/home/baez/physics/Quantum/see_a_photon.html' target='_blank'>See a photon</a>",
-          "<a href='https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html' target='_blank'>Awaiting neutrino supernova</a>"
-        ]
-      },
-      {
-        "title": "RELATED CONCEPTS",
-        "contents": [
-          "Photoelectric effect",
-          "Single photon source",
-          "Spontaneous emission / absorption / stimulated  emission"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "mine": {
-    "title": "Mine",
-    "elementName": "Mine",
-    "short": "A Mine lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 3 },
-            "element": "Mine",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Polarizer\">Polarizer</a></li><li><a href=\"https://en.wikipedia.org/wiki/Polarizing_filter_(photography)\">Polarizing Filter</a></li><li><a href=\"https://www.youtube.com/watch?v=6Anskk4W7Ms\">Polarizing Filters - Why they're awesome?</a></li></ul>"
       }
     ]
   },
   "polarizing-beam-splitter": {
-    "title": "PolarizingBeamSplitter",
+    "title": "Polarizing Beam Splitter",
     "elementName": "PolarizingBeamSplitter",
-    "short": "PolarizingBeamSplitter lorem ipusm.",
+    "short": "COMING SOON!",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
             "element": "PolarizingBeamSplitter",
-            "rotation": 0,
+            "rotation": 135,
             "frozen": false,
             "active": false
           }
@@ -305,59 +612,37 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
       }
     ]
   },
-  "coated-beam-splitter": {
-    "title": "CoatedBeamSplitter",
-    "elementName": "CoatedBeamSplitter",
-    "short": "CoatedBeamSplitter lorem ipusm.",
+  "quarter-wave-plate": {
+    "title": "Quarter Wave Plate",
+    "elementName": "QuarterWavePlate",
+    "short": "Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
-            "element": "CoatedBeamSplitter",
-            "rotation": 0,
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "QuarterWavePlate",
+            "rotation": 135,
             "frozen": false,
             "active": false
           }
@@ -366,118 +651,43 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
+        "title": "The basics",
+        "content": "<p><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Circular.Polarization.Circularly.Polarized.Light_Circular.Polarizer_Creating.Left.Handed.Helix.View.svg/1280px-Circular.Polarization.Circularly.Polarized.Light_Circular.Polarizer_Creating.Left.Handed.Helix.View.svg.png\" alt=\"Quarter Plate\"></p><p>Waveplates are thick slabs of birefringent material, such as quartz or mica. For this type of material, the index of refraction, which is a quantity related to how fast or slow light is travelling through a medium, is different along two main directions within the crystal. When light is linearly polarized, this polarization can be broken into two components along the directions of the birefringence. Due to the different refractive index, one of the components will travel slower than the other. The phase shift between them is of pi/2. This phase shift between components gives rise to elliptical and circular polarization.</p>"
       },
       {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
+        "title": "Digging deeper",
+        "content": "<p>The two axis of the crystalline birefringent material are called the fast and slow axis. Manufacturing these plates is extremely challenging. The plate must be cut at exactly the right thickness to achieve the desired delay, and the tolerance for this is very tight, there is no room for error!</p>"
       },
       {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Reading",
+        "content": "<p><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Wave Plate on Wikipedia</a>"
       }
     ]
   },
-  "corner-cube": {
-    "title": "CornerCube",
-    "elementName": "CornerCube",
-    "short": "CornerCube lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "CornerCube",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "Rock": {
+  "rock": {
     "title": "Rock",
     "elementName": "Rock",
-    "short": "Rock lorem ipusm.",
+    "short": "A mirror is an object that reflects incident light preserving its properties.",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
             "element": "Rock",
             "rotation": 0,
             "frozen": false,
@@ -488,301 +698,47 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
+        "title": "Dig Deeper",
+        "content": "<p>Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.</p><p>In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.</p><p>Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.</p>"
       },
       {
         "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
+        "content": "<p>NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!</p>"
       },
       {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
+        "title": "Everyday Life",
+        "content": "<p>“Mirror mirror on the wall who's the fairest of them all?”</p><p>We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!</p>"
       },
       {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "absorber": {
-    "title": "Absorber",
-    "elementName": "Absorber",
-    "short": "Absorber lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "Absorber",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "detector-four": {
-    "title": "DetectorFour",
-    "elementName": "DetectorFour",
-    "short": "DetectorFour lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "DetectorFour",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "polarizer": {
-    "title": "Polarizer",
-    "elementName": "Polarizer",
-    "short": "Polarizer lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "PolarizerH",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "quarter-wave-plate": {
-    "title": "QuarterWavePlate",
-    "elementName": "QuarterWavePlate",
-    "short": "QuarterWavePlate lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "QuarterWavePlateH",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mirror\">Mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\">Reflection Phase Change</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_cavity\">Optical Cavity</a></li></ul>"
       }
     ]
   },
   "sugar-solution": {
-    "title": "SugarSolution",
+    "title": "Sugar Solution",
     "elementName": "SugarSolution",
-    "short": "SugarSolution lorem ipusm.",
+    "short": "Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
             "element": "SugarSolution",
             "rotation": 0,
             "frozen": false,
@@ -793,179 +749,47 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
+        "title": "The basics",
+        "content": "<p>Sugar molecules are chiral, meaning they differ from their mirror image. Chiral molecules affect right- and left-circularly polarized light differently. As a consequence, they can be used to rotate polarization.</p><p>All glucose found in nature is “D-glucose”. “L-Glucose” is its mirror image, which can be synthesised in the laboratory but does not occur naturally. Scientists can distinguish the two by measuring which direction they rotate polarization.</p><p><img src=\"https://s3-eu1.ixquick.com/cgi-bin/serveimage?url=https:%2F%2Fqph.fs.quoracdn.net%2Fmain-qimg-de848af8d44207b6a19458c340dc99c0.webp&amp;sp=924c33fd7d8a6f5bf074f3028fe1610b\" alt=\"Kinds of Glucose\"></p>"
       },
       {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
+        "title": "Digging deeper",
+        "content": "<p>Sugar solution rotates polarization due to birefringence. The left- and right-circular polarization experience different phase velocities, and so acquire a phase-shift as they travel through the solution. By choosing the thickness of the solution correctly, we can affect the polarization in a controlled manner.</p><p>Suppose a photon travels through a sugar solution, gets reflected off the mirror, and travels back through the solution. On the second pass, the effect of the sugar solution is reversed, and the photon comes back with the same polarization it started with. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. However, the way sugar solution acts on a photon is independent of which direction the photon is coming from, since the interaction only depends on sugar chirality.</p>"
       },
       {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
+        "title": "Usage in laboratories and experiments",
+        "content": "<p>Scientists usually prefer to drink sugary drinks rather than use them in experiments.</p>"
       },
       {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "faraday-rotator": {
-    "title": "FaradayRotator",
-    "elementName": "FaradayRotator",
-    "short": "FaradayRotator lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "FaradayRotator",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
-      }
-    ]
-  },
-  "glass": {
-    "title": "Glass",
-    "elementName": "Glass",
-    "short": "Glass lorem ipusm.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": { "y": 1, "x": 0 },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": { "y": 1, "x": 2 },
-            "element": "Glass",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
-      },
-      {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
-      },
-      {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
-      },
-      {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Chirality_(chemistry)\">Chirality</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_rotation\">Optical Rotation</a></li></ul>"
       }
     ]
   },
   "vacuum-jar": {
-    "title": "VacuumJar",
+    "title": "Vacuum Jar",
     "elementName": "VacuumJar",
-    "short": "VacuumJar lorem ipusm.",
+    "short": "COMING SOON!",
     "grids": [
       {
         "cols": 4,
         "rows": 3,
         "cells": [
           {
-            "coord": { "y": 1, "x": 0 },
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
             "element": "Laser",
             "rotation": 0,
             "frozen": true,
             "active": true
           },
           {
-            "coord": { "y": 1, "x": 2 },
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
             "element": "VacuumJar",
             "rotation": 0,
             "frozen": false,
@@ -976,36 +800,102 @@
     ],
     "sections": [
       {
-        "title": "DIG DEEPER",
-        "contents": [
-          "Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected. </p><p> In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.",
-          "Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light."
-        ]
+        "title": "",
+        "content": "<p>COMING SOON!</p>"
+      }
+    ]
+  },
+  "aom": {
+    "title": "Acusto-Optic Modulator",
+    "elementName": "Aom",
+    "short": "Using sound, it shifts the frequency of light by a certain amount.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Using sound, it shifts the frequency of light by a certain amount.</p>"
       },
       {
-        "title": "TRICKS WITH PHASE!",
-        "contents": [
-          "NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!"
-        ]
+        "title": "Usage in everyday life",
+        "content": "<p>It is likely that your laser printer has an AOM embedded into it, to modulate the power of a laser beam.</p>"
       },
       {
-        "title": "EVERYDAY LIFE",
-        "contents": [
-          "“Mirror mirror on the wall who's the fairest of them all?”",
-          "We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!"
-        ]
+        "title": "Usage in laboratories",
+        "content": "<p>AOMs are used in setups which control certain laser properties, and maintain light stable over a long time.</p>"
       },
       {
-        "title": "FURTHER RESOURCES",
-        "contents": [
-          "<a href=\"https://en.wikipedia.org/wiki/Mirror\" target=\"_blank\">Mirror on Wikipedia</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\" target=\"_blank\">Reflection phase change</a>",
-          "<a href=\"https://en.wikipedia.org/wiki/Optical_cavity\" target=\"_blank\">Optical cavity</a>"
-        ]
+        "title": "Digging Deeper",
+        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: a number of different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
       },
       {
-        "title": "TRANSITIONS MAP",
-        "content": []
+        "title": "Further Readings",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Acousto-optic_modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.rp-photonics.com/acousto_optic_modulators.html\">Acusto-optic Modulator</a></li><li><a href=\"https://www.sciencedirect.com/topics/engineering/acousto-optical-modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.youtube.com/watch?v=tEf98SBqbGc\">Lecture: Acusto-optic Modulator and Devices</a></li></ul>"
+      }
+    ]
+  },
+  "non-linear-crystal": {
+    "title": "Non-linear Crystal",
+    "elementName": "NonLinearCrystal",
+    "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p>"
+      },
+      {
+        "title": "The Basics",
+        "content": "<p>Non linear optics is a special type of optics which works a bit differently than linear optics (examples of which are mirrors, beamsplitters, attenuators). It allows us to change the color of a light beam, to change its shape in space and time, and to create the shortest events ever made by humans. There are many different phenomena that can occur because of non linear behaviour, some examples are:</p><ul><li>Second-harmonic generation: combines two photons into one with double frequency</li><li>Sum-frequency generation: combines two photons into one with frequency as the sum of the incoming photons frequencies.</li><li>Spontaneous parametric down-conversion use to create single photon sources!</li></ul><p>To create a non linear effect, a non linear medium is placed in the path of light. Usually a non linear crystal is used, such as the BBO crystal.</p>"
+      },
+      {
+        "title": "Usage in everyday life and the laboratory",
+        "content": "<p>Non linear crystals are used for research applications in optical communication, optical sensing and materials research.</p>"
+      },
+      {
+        "title": "Digginf Deeper",
+        "content": "<p>BBO, or Barium Borate crystals are very common medium used to create non linear phenomena. They are strongly birefringent, meaning that they have two different refractive indices. In addition, they have a specific crystal symmetry and are resistant to high power light. Other types of non linear crystals are KDP (potassium dihydrogen phosphate), KTP (potassium titanyl phosphate), and lithium niobate.</p><p>Spontaneous parametric down conversion using a non linear crystal can generate two photons with entangled polarisation!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SPDC_figure.png/800px-SPDC_figure.png\">!Quantum Entanglement</a></p>"
+      },
+      {
+        "title": "Further Readings",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Nonlinear_optics\">Non-linear Optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Quantum_entanglement\">Quantum Entanglement</a></li><li><a href=\"https://www.brown.edu/research/labs/mittleman/sites/brown.edu.research.labs.mittleman/files/uploads/lecture35_0.pdf\">Introduction to non-linear optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Barium_borate\">Barium borate</a></li></ul>"
+      }
+    ]
+  },
+  "two-level-system": {
+    "title": "Two-level system",
+    "elementName": "TwoLevelSystem",
+    "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>"
+      },
+      {
+        "title": "The basics",
+        "content": "<p>There are different physical implementations of a two level system. Usually any property that has two values can be used, such as, for example “open” and “closed”. Depending on the physical system chosen, the two “levels” or “states” are different. For example, for electrons, the two level is often encoded in the spin state. The electron can either be in state spin up or spin down and these two states can be in a superposition. For light, these are usually polarization states (vertical and horizontal polarization).</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Two-state_quantum_system\">Two-state quantum system</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
       }
     ]
   }

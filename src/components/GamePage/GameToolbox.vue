@@ -7,6 +7,7 @@
           :available="isAvailable(cell)"
           :tool="true"
           @updateCell="updateCell"
+          @mouseover.native="handleMouseEnter(cell)"
         />
         <text class="counter" x="50%" y="80">
           {{ toolbox.getCount(cell.element.name) }}
@@ -26,7 +27,6 @@ import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
 import AppCell from '@/components/Board/AppCell.vue';
 import { Coord, Cell } from '@/engine/classes';
-
 @Component({
   components: {
     AppCell
@@ -34,9 +34,14 @@ import { Coord, Cell } from '@/engine/classes';
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+
+  handleMouseEnter(cell: Cell) {
+    this.mutationSetHoveredCell(cell);
+  }
 
   computedClass(cell: Cell): string {
-    return this.isAvailable(cell) ? 'inactive' : 'active';
+    return this.isAvailable(cell) ? 'active' : 'inactive';
   }
 
   isAvailable(cell: Cell): boolean {
@@ -69,6 +74,9 @@ export default class GameToolbox extends Vue {
   }
   .inactive {
     opacity: 50%;
+  }
+  .active {
+    opacity: 100%;
   }
   .counter {
     fill: white;

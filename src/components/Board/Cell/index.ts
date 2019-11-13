@@ -15,6 +15,7 @@ import SugarSolutionCell from './SugarSolutionCell.vue';
 import VacuumJarCell from './VacuumJarCell.vue';
 import QuarterWavePlateCell from './QuarterWavePlateCell.vue';
 import FaradayRotatorCell from './FaradayRotatorCell.vue';
+import NonLinearCrystalCell from './NonLinearCrystalCell.vue';
 
 export { AbsorberCell };
 export { BeamSplitterCell };
@@ -33,6 +34,7 @@ export { SugarSolutionCell };
 export { VacuumJarCell };
 export { QuarterWavePlateCell };
 export { FaradayRotatorCell };
+export { NonLinearCrystalCell };
 
 interface ICellList {
   [index: string]: Object;
@@ -55,7 +57,8 @@ const CellList: ICellList = {
   SugarSolutionCell,
   GlassCell,
   VacuumJarCell,
-  FaradayRotatorCell
+  FaradayRotatorCell,
+  NonLinearCrystalCell
 };
 
 export default CellList;

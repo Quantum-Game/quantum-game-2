@@ -1,8 +1,5 @@
 <template>
   <div v-if="entry" class="entry">
-    <!-- <router-link to="/info">
-      <app-button type="basic">ENCYCLOPEDIA</app-button>
-    </router-link> -->
     <article>
       <!-- TITLE -->
       <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
@@ -25,6 +22,7 @@
 
       <!-- EQUATION GRID -->
       <encyclopedia-transition
+        v-if="theComponentsTransitionMapShouldBeDisplayed"
         :key="`transition-${entry.elementName}`"
         :element-name="entry.elementName"
         :rotation="entry.defaultRotation"
@@ -75,6 +73,11 @@ export default class EncyclopediaArticle extends Vue {
 
   get entryURL(): string {
     return this.$route.params.entry;
+  }
+
+  get theComponentsTransitionMapShouldBeDisplayed() {
+    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube'];
+    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0;
   }
 }
 </script>

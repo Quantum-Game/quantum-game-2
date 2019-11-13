@@ -1,5 +1,6 @@
 <template>
   <div class="game">
+    <div class="hoverCell" style="position: absolute;"></div>
     <!-- OVERLAY -->
     <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
@@ -24,14 +25,20 @@
       </h1>
 
       <!-- MAIN-LEFT -->
-      <game-goals
-        slot="main-left"
-        :percentage="percentage"
-        :goals="level.goals"
-        :particles="activeFrame.particles"
-        :detections="detections"
-        :mines="mineCount"
-      />
+      <section slot="main-left">
+        <game-goals
+          :percentage="percentage"
+          :goals="level.goals"
+          :particles="activeFrame.particles"
+          :detections="detections"
+          :mines="mineCount"
+        />
+        <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        />
+      </section>
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
@@ -51,6 +58,11 @@
           @step-forward="showNext"
           @play="play"
         />
+        <!-- <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
+        /> -->
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
@@ -58,7 +70,7 @@
       <section slot="main-right">
         <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
         <game-active-cell />
-        <game-photons :particles="particles" />
+        <game-photons :particles="activeFrame.particles" />
       </section>
     </game-layout>
   </div>
@@ -93,6 +105,8 @@ import GamePhotons from '@/components/GamePage/GamePhotons.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
+import GameMultiverse from '@/components/GamePage/GameMultiverse.vue';
+import GameMultiverseHorizontal from '@/components/GamePage/GameMultiverseHorizontal.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
 
@@ -104,6 +118,8 @@ import AppOverlay from '@/components/AppOverlay.vue';
     GameGoals,
     GameActiveCell,
     GameToolbox,
+    GameMultiverse,
+    GameMultiverseHorizontal,
     GameControls,
     GameBoard,
     AppButton,
@@ -116,11 +132,15 @@ export default class Game extends Vue {
   @State('activeCell') activeCell!: Cell;
   @State('gameState') gameState!: string;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: string) => void;
+  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   frameIndex: number = 0;
   simulation: any = {};
   multiverseGraph: any = {};
   error: string = '';
   playInterval: number = 0;
+  absorptionThreshold: number = 0.0001;
 
   // LIFECYCLE
   created() {
@@ -132,16 +152,27 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
+  handleChangeActiveFrame(activeId: number) {
+    this.frameIndex = activeId;
+  }
+
+  get levelId() {
+    // if missing then fallback to '0' for infinity level / sandbox
+    return parseInt(this.$route.params.id || '0', 10);
+  }
+
   @Watch('$route')
   loadLevel(): void {
     this.error = '';
-    this.mutationSetCurrentLevelID(parseInt(this.$route.params.id, 10));
-    const levelI = levelData[`level${this.$route.params.id}`];
-
+    this.mutationSetCurrentLevelID(this.levelId);
+    const levelI = levelData[`level${this.levelId}`];
     this.level = Level.importLevel(levelI);
-    this.level.grid.cells.forEach((cell) => {
-      this.level.grid.set(cell);
-    });
+    this.mutationSetGameState('InProgress');
+    // console.log(this.level.toolbox.uniqueCellList);
+
+    if (this.level.toolbox.uniqueCellList.length > 0) {
+      this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
+    }
     this.updateSimulation();
   }
 
@@ -156,7 +187,7 @@ export default class Game extends Vue {
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
-    this.$store.commit('SET_SIMULATION_STATE', false);
+    this.mutationSetSimulationState(false);
   }
 
   /**
@@ -171,8 +202,8 @@ export default class Game extends Vue {
     }
     // Filter out of grid cells
     const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: { x: number }) => {
-        return absorption.x !== -1;
+      (absorption: { x: number; probability: number }) => {
+        return absorption.x !== -1 && absorption.probability > this.absorptionThreshold;
       }
     );
     // Convert to cells format
@@ -213,7 +244,6 @@ export default class Game extends Vue {
    *  @returns goals
    */
   get framePercentage() {
-    // console.log(`FRAME %: ${this.activeFrame.probability}`);
     return this.activeFrame.probability * 100;
   }
 
@@ -248,6 +278,9 @@ export default class Game extends Vue {
     return this.simulation.frames[this.frameIndex];
   }
 
+  /**
+   * Current simulation frame particles
+   */
   get particles(): Particle[] {
     return this.activeFrame.particles;
   }
@@ -374,7 +407,7 @@ export default class Game extends Vue {
   }
 
   clearLS() {
-    console.error(localStorage.getItem(this.$route.params.id));
+    // console.error(localStorage.getItem(this.$route.params.id));
     localStorage.removeItem(this.currentLevelName);
   }
 
@@ -385,15 +418,15 @@ export default class Game extends Vue {
 
   // GETTERS
   get currentLevelName(): string {
-    return `level${parseInt(this.$route.params.id, 10)}`;
+    return `level${this.levelId}`;
   }
 
   get previousLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) - 1}`;
+    return `/level/${this.levelId - 1}`;
   }
 
   get nextLevel(): string {
-    return `/level/${parseInt(this.$route.params.id, 10) + 1}`;
+    return `/level/${this.levelId + 1}`;
   }
 
   get hints(): HintInterface[] {

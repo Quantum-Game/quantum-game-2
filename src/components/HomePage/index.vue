@@ -72,6 +72,7 @@ export default class HomePage extends Vue {}
   flex-direction: column;
   align-items: center;
   background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
+  width: 100%;
   //background-color: #2e006a;
   // background-image: url(~../assets/background_dots.svg);
   // background-size: 1000px auto; //not responsive
@@ -102,6 +103,12 @@ p {
   position: center;
   flex-direction: column;
   align-items: center;
+  @media screen and (max-width: 1259px) {
+    width: 60%;
+  }
+  @media screen and (max-width: 560px) {
+    width: 100%;
+  }
 }
 .row-full {
   width: 100vw;
@@ -117,6 +124,7 @@ p {
 .image {
   width: 40%;
   padding-bottom: 10px;
+  min-width: 200px;
 }
 .blog {
   border-top: 1px solid white;
