@@ -21,13 +21,24 @@
         <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
       </h1>
       <p>
+        Quantum Game is currently being developed by dr
+        <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a>,
+        <a href="https://fr.linkedin.com/in/philippe-cochin-b4978231" target="_blank"
+          >Philippe Cochin</a
+        >, <a href="https://maperseguirvirtute.wordpress.com/" target="_blank">Chiara Decaroli</a>,
+        <a href="http://jankiewiczstudio.com/" target="_blank">Klem Jankiewicz</a>,
+        <a href="https://www.linkedin.com/in/strebeyko/" target="_blank">Kuba Strebeyko</a>.
+      </p>
+      <p>
         This version of the game was funded by the
         <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
         of the National University of Singapore.
       </p>
-      <a href="https://www.quantumlah.org" target="_blank">
-        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
-      </a>
+      <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
+      <p>
+        You can play the old version
+        <a href="http://play.quantumgame.io/" target="_blank">here</a>.
+      </p>
       <div class="image">
         <img src="@/assets/Rock.svg" alt="Rock" />
       </div>
@@ -112,7 +123,7 @@ p {
   align-items: center;
 }
 .image {
-  width: 40%;
+  width: 30%;
   padding-bottom: 10px;
   min-width: 200px;
 }

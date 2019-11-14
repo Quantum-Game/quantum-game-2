@@ -68,4 +68,8 @@ export default class GameActiveCell extends Vue {
     text-decoration: none;
   }
 }
+
+h3 {
+  text-transform: uppercase;
+}
 </style>
