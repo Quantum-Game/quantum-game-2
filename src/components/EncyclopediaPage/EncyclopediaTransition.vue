@@ -10,14 +10,17 @@
         :width="300"
         :size="30"
         :margin="20"
+        @columnMouseover="updateInitialState($event)"
       />
       <div class="eboard">
         <encyclopedia-board
+          :key="`${JSON.stringify(intializeFrom)}`"
           :grid-obj="grid.exportGrid()"
           :initialize-from="intializeFrom"
           class="board"
-          max-steps="2"
-          default-step="1"
+          :max-steps="2"
+          :default-step="2"
+          :exact-steps="true"
           @updateRotation="updateRotation"
         />
       </div>
@@ -60,7 +63,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   rotation = this.defaultRotation;
 
   // this code begs a rewrite
-  cell = new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
+  // cell = new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
   grid = Grid.emptyGrid(3, 3);
   dimOrder = 'dir pol';
   intializeFrom = [
@@ -76,9 +79,32 @@ export default class EncyclopediaMatrixBoard extends Vue {
     grid: HTMLElement;
   };
 
+  get cell(): Cell {
+    return new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
+  }
+
   created() {
     this.grid.set(this.cell);
     console.debug(this.grid.ascii);
+  }
+
+  updateInitialState(colId: number): void {
+    // suuuper dirty
+    this.grid.set(this.cell);
+    if (this.dimOrder === 'dir pol') {
+      const dirStr = ['>', '>', '^', '^', '<', '<', 'v', 'v'][colId];
+      const polStr = ['H', 'V', 'H', 'V', 'H', 'V', 'H', 'V'][colId];
+      const x = [0, 0, 1, 1, 2, 2, 1, 1][colId];
+      const y = [1, 1, 2, 2, 1, 1, 0, 0][colId];
+      this.intializeFrom = [{ x, y, dirStr, polStr }];
+    } else {
+      const dirStr = ['>', '^', '<', 'v', '>', '^', '<', 'v'][colId];
+      const polStr = ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V'][colId];
+      const x = [0, 1, 2, 1, 0, 1, 2, 1][colId];
+      const y = [1, 2, 1, 0, 1, 2, 1, 0][colId];
+      this.intializeFrom = [{ x, y, dirStr, polStr }];
+    }
+    console.log(this.intializeFrom);
   }
 
   /**

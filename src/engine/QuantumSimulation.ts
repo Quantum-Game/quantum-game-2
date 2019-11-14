@@ -86,11 +86,11 @@ export default class QuantumSimulation {
       console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
       console.debug('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
       console.debug('An example of realization:');
-      const randomSample = this.sampleRandomRealization();
-      randomSample.statePerFrame.forEach((state) => console.debug(state.ketString()));
-      console.debug(
-        `Detected: in ${randomSample.fate.name} at (${randomSample.fate.x},${randomSample.fate.y})`
-      );
+      // const randomSample = this.sampleRandomRealization();
+      // randomSample.statePerFrame.forEach((state) => console.debug(state.ketString()));
+      // console.debug(
+      //   `Detected: in ${randomSample.fate.name} at (${randomSample.fate.x},${randomSample.fate.y})`
+      // );
     }
   }
 

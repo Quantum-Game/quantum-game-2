@@ -99,6 +99,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
   @Prop({ default: () => [] }) readonly initializeFrom!: photonIndicator[];
+  @Prop({ default: false }) readonly exactSteps!: boolean;
 
   tileSize = 64; // sounds like a prop or constant
   grid = new Grid(
@@ -106,7 +107,7 @@ export default class EncyclopediaBoard extends Vue {
     this.gridObj.cols,
     this.gridObj.cells.map((jsonCell) => Cell.importCell(jsonCell))
   );
-  selectedFrameId = 0;
+  selectedFrameId = this.defaultStep;
   simulation: QuantumSimulation = new QuantumSimulation(this.grid);
 
   $refs!: {
@@ -127,9 +128,12 @@ export default class EncyclopediaBoard extends Vue {
     } else {
       throw new Error('EncyclopediaBoard not yet prepared for more photons.');
     }
-    this.simulation.nextFrames(this.maxSteps);
+    if (this.exactSteps) {
+      this.simulation.nextFrames(this.maxSteps, -1);
+    } else {
+      this.simulation.nextFrames(this.maxSteps);
+    }
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
-    this.selectedFrameId = this.defaultStep;
   }
 
   get frames() {
