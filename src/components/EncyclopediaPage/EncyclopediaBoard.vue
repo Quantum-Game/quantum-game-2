@@ -55,7 +55,7 @@
       </span>
     </div>
     <div class="ket">
-      <game-ket :frame="selectedFrame" :grid="grid" />
+      <game-ket :frame="selectedFrame" :grid="grid" :show-legend="false" />
     </div>
   </div>
 </template>
@@ -76,6 +76,16 @@ import QuantumSimulation from '@/engine/QuantumSimulation';
 const dummyGrid = Grid.dummyGrid();
 const dummyGridInterface = dummyGrid.exportGrid();
 
+/**
+ * Temporary for initializinf
+ */
+interface photonIndicator {
+  x: number;
+  y: number;
+  dirStr: string;
+  polStr: string;
+}
+
 @Component({
   components: {
     AppPhoton,
@@ -88,6 +98,8 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => dummyGridInterface }) gridObj!: GridInterface;
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
+  @Prop({ default: () => [] }) readonly initializeFrom!: photonIndicator[];
+  @Prop({ default: false }) readonly exactSteps!: boolean;
 
   tileSize = 64; // sounds like a prop or constant
   grid = new Grid(
@@ -95,7 +107,7 @@ export default class EncyclopediaBoard extends Vue {
     this.gridObj.cols,
     this.gridObj.cells.map((jsonCell) => Cell.importCell(jsonCell))
   );
-  selectedFrameId = 0;
+  selectedFrameId = this.defaultStep;
   simulation: QuantumSimulation = new QuantumSimulation(this.grid);
 
   $refs!: {
@@ -108,10 +120,20 @@ export default class EncyclopediaBoard extends Vue {
 
   reset() {
     this.simulation = new QuantumSimulation(this.grid);
-    this.simulation.initializeFromLaser('H');
-    this.simulation.nextFrames(this.maxSteps);
+    if (this.initializeFrom.length === 0) {
+      this.simulation.initializeFromLaser('H');
+    } else if (this.initializeFrom.length === 1) {
+      const [{ x, y, dirStr, polStr }, ...rest] = this.initializeFrom;
+      this.simulation.initializeFromIndicator(x, y, dirStr, polStr);
+    } else {
+      throw new Error('EncyclopediaBoard not yet prepared for more photons.');
+    }
+    if (this.exactSteps) {
+      this.simulation.nextFrames(this.maxSteps, -1);
+    } else {
+      this.simulation.nextFrames(this.maxSteps);
+    }
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
-    this.selectedFrameId = this.defaultStep;
   }
 
   get frames() {

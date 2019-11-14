@@ -22,7 +22,6 @@ export default class Level {
   grid: Grid;
   goals: Goal[];
   hints: Hint[];
-  completed: boolean;
   toolbox: Toolbox;
 
   constructor(
@@ -33,7 +32,7 @@ export default class Level {
     grid: Grid = new Grid(8, 8),
     goals: Goal[],
     hints: Hint[],
-    completed: boolean
+    toolbox: Toolbox
   ) {
     // Basic infos
     this.id = id;
@@ -44,10 +43,13 @@ export default class Level {
     this.grid = grid;
     this.goals = goals;
     this.hints = hints;
-    this.completed = completed;
 
     // Populate toolbox
-    this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);
+    if (Object.keys(toolbox).length === 0) {
+      this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);
+    } else {
+      this.toolbox = toolbox;
+    }
 
     // Remove toolbox cells from grid
     this.grid.resetUnfrozen();
@@ -90,7 +92,7 @@ export default class Level {
       grid: this.grid.exportGrid(),
       hints: this.hints.map((hint) => hint.exportHint()),
       goals: this.goals.map((goal) => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell) => cell.exportCell())
+      tools: this.toolbox.fullCellList.map((cell: Cell) => cell.element.name)
     };
   }
 
@@ -103,7 +105,8 @@ export default class Level {
     const grid = Grid.importGrid(obj.grid);
     const goals = Goal.importGoal(obj.goals);
     const hints = Hint.importHint(obj.hints);
-    return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, false);
+    const toolbox = Toolbox.importToolbox(obj.tools);
+    return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox);
   }
 
   /**
@@ -124,7 +127,8 @@ export default class Level {
     });
     const goals: Goal[] = [];
     const hints: Hint[] = [];
-    return new Level(0, obj.name, obj.group, '', grid, goals, hints, false);
+    const toolbox: Toolbox = new Toolbox([]);
+    return new Level(0, obj.name, obj.group, '', grid, goals, hints, toolbox);
   }
 
   /**
@@ -139,7 +143,8 @@ export default class Level {
       description: 'Dummy level created for placeholders...',
       grid: new Grid(2, 2).exportGrid(),
       goals: [],
-      hints: []
+      hints: [],
+      tools: []
     });
   }
 }

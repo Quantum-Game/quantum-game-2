@@ -62,4 +62,14 @@ a {
   color: #796bbc;
   text-decoration: none;
 }
+
+a:hover {
+  text-decoration: underline;
+}
+
+.entry {
+  & img {
+    width: 100%;
+  }
+}
 </style>

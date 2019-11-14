@@ -4,9 +4,7 @@
     <div slot="main">
       <router-view />
     </div>
-    <div slot="right" class="upper-border">
-      <h3>RELATED CONCEPTS</h3>
-    </div>
+    <encyclopedia-link-list slot="right" :entry-list="keyConceptList" />
   </app-layout>
 </template>
 
@@ -25,9 +23,21 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   }
 })
 export default class Info extends Vue {
-  entryList: Array<string> = [];
+  entryList: Array<any> = [];
+  readyEntries: string[] = [
+    'beam-splitter',
+    'detector-four',
+    'detector',
+    'faraday-rotator',
+    'mirror',
+    'sugar-solution'
+  ];
+
   created() {
-    entriesNameList.forEach((entryName: string) => this.entryList.push(entryName));
+    entriesNameList.forEach((entryName: string) => {
+      const isReady = this.readyEntries.indexOf(entryName) > -1;
+      this.entryList.push({ name: entryName, ready: isReady });
+    });
   }
 }
 </script>
@@ -38,5 +48,6 @@ export default class Info extends Vue {
   text-align: left;
   color: white;
   text-decoration: none;
+  margin-top: 40px;
 }
 </style>

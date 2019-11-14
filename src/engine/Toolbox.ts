@@ -1,6 +1,9 @@
 import cloneDeep from 'lodash.clonedeep';
 import countBy from 'lodash.countby';
-import Cell from './Cell';
+import { CellInterface } from './interfaces';
+import Coord from '@/engine/Coord';
+import Element from '@/engine/Element';
+import Cell from '@/engine/Cell';
 /**
  * TOOL INTERFACE
  * Contains number of available elements to the player
@@ -67,8 +70,8 @@ export default class Toolbox {
    * TODO: Check if need to compare to original toolbox
    * @param cell cell holding element to remove
    */
-  addTool(cell: Cell) {
-    const { name } = cell.element;
+  addTool(cell: Cell, activeCell: Cell) {
+    const { name } = activeCell.element;
     this.toolbox[name] += 1;
   }
 
@@ -123,5 +126,14 @@ export default class Toolbox {
 
   exportToolbox(): ToolInterface {
     return this.toolbox;
+  }
+
+  static importToolbox(tools: string[]): Toolbox {
+    const coord = new Coord(-1, -1);
+    const toolCells = tools.map((tool) => {
+      const element = Element.fromName(tool);
+      return new Cell(coord, element);
+    });
+    return new Toolbox(toolCells);
   }
 }

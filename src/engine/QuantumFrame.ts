@@ -32,6 +32,8 @@ export interface ketComponentInterface {
 export default class QuantumFrame {
   readonly photons: qt.Photons;
   absorptions: AbsorptionsInterface[];
+  // note: later we may need to clean such low values within the engine
+  probThreshold = 1e-6;
   // things below right now mostly for debugging puroses
   probBefore: number;
   probPropagated?: number;
@@ -57,16 +59,18 @@ export default class QuantumFrame {
 
   get ketComponents(): ketComponentInterface[] {
     const ns = _.range(this.photons.nPhotons);
-    return this.photons.vector.entries.map((entry) => {
-      const particleCoords = ns.map((i) => {
-        const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
-        return { kind: 'photon', x, y, dir, pol };
-      });
-      return {
-        amplitude: entry.value,
-        particleCoords
-      };
-    });
+    return this.photons.vector.entries
+      .map((entry) => {
+        const particleCoords = ns.map((i) => {
+          const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4);
+          return { kind: 'photon', x, y, dir, pol };
+        });
+        return {
+          amplitude: entry.value,
+          particleCoords
+        };
+      })
+      .filter((ketComponent) => ketComponent.amplitude.r ** 2 > this.probThreshold);
   }
 
   /**
@@ -88,8 +92,8 @@ export default class QuantumFrame {
         y,
         probability: this.photons.measureAbsorptionAtOperator(x, y, op)
       }))
-      .filter((d) => d.probability > 0);
-    if (this.probBefore - this.probPropagated > 0) {
+      .filter((d) => d.probability > this.probThreshold);
+    if (this.probBefore - this.probPropagated > this.probThreshold) {
       this.absorptions.push({
         x: -1,
         y: -1,
@@ -109,10 +113,13 @@ export default class QuantumFrame {
    * @note Coord and Particle will need a serious rewrite
    */
   get polarizationSuperpositions(): Particle[] {
-    return this.photons.aggregatePolarization().map((q: Qparticle) => {
-      const coord = new Coord(q.y, q.x);
-      return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
-    });
+    return this.photons
+      .aggregatePolarization()
+      .map((q: Qparticle) => {
+        const coord = new Coord(q.y, q.x);
+        return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
+      })
+      .filter((particle) => particle.probability > this.probThreshold);
   }
 
   /**

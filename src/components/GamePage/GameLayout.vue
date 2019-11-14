@@ -25,13 +25,6 @@
         <slot name="main-right"></slot>
       </aside>
     </main>
-
-    <!-- a generic footer for now -->
-    <footer>
-      <slot name="footer">
-        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT" width="128" />
-      </slot>
-    </footer>
   </div>
 </template>
 
@@ -56,6 +49,10 @@ export default class GameLayout extends Vue {}
   color: white;
   width: 100%;
   align-items: center;
+  -webkit-user-select: none; /* Safari 3.1+ */
+  -moz-user-select: none; /* Firefox 2+ */
+  -ms-user-select: none; /* IE 10+ */
+  user-select: none;
 }
 .middle {
   padding: 20px;
@@ -78,6 +75,10 @@ export default class GameLayout extends Vue {}
     width: 100%;
     padding: 0 20px;
   }
+}
+
+.right {
+  z-index: 2;
 }
 
 header {

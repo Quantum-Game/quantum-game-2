@@ -72,6 +72,7 @@ export default class AppPhoton extends Vue {
   @Prop({ default: true }) readonly displayOpacity!: boolean;
   @Prop({ default: true }) readonly displayDirection!: boolean;
   @Prop({ default: true }) readonly normalize!: boolean;
+  @Prop({ default: 1.3 }) readonly squeezeFactor!: number;
 
   /**
    * Getters from particle
@@ -188,11 +189,12 @@ export default class AppPhoton extends Vue {
   }
   /**
    * Get vertical scaling
+   * FIXME: squeezeFactor
    */
   get yScale() {
     return d3
       .scaleLinear()
-      .domain([-1, 1])
+      .domain([-this.squeezeFactor, this.squeezeFactor])
       .range([0, this.availableHeight]);
   }
   /**
@@ -289,10 +291,9 @@ export default class AppPhoton extends Vue {
     fill: transparent;
   }
   .gaussian {
-    stroke-width: 2px;
-    fill: purple;
-    stroke: purple;
-    opacity: 0.6;
+    stroke-width: 6px;
+    fill: #5c00d3;
+    stroke: #5c00d3;
   }
 }
 </style>

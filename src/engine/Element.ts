@@ -50,7 +50,7 @@ export default class Element {
       case Elem.DetectorFour:
         return qt.attenuator(0);
       case Elem.Laser:
-        return qt.attenuator(1);
+        return qt.attenuator(0);
       case Elem.NonLinearCrystal:
         return qt.attenuator(1);
       case Elem.Void:
@@ -71,7 +71,7 @@ export default class Element {
       case Elem.QuarterWavePlateV:
         return qt.quarterWavePlateNS(param);
       case Elem.FaradayRotator:
-        return qt.faradayRotator(param, 0);
+        return qt.faradayRotator(param);
       case Elem.Mine:
         return qt.attenuator(0);
       case Elem.Rock:
