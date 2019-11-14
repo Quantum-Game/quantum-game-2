@@ -4,13 +4,13 @@
     <div slot="main">
       <router-view />
     </div>
-    <encyclopedia-link-list slot="right" :entry-list="keyConceptList" />
+    <encyclopedia-link-list slot="right" :entry-list="keyConceptsList" />
   </app-layout>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator';
-import { entriesNameList } from '@/assets/data/entries';
+import { entriesNameList, relatedConceptsNameList } from '@/assets/data/entries';
 import AppLayout from '@/components/AppLayout.vue';
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue';
@@ -24,6 +24,7 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
 })
 export default class Info extends Vue {
   entryList: Array<any> = [];
+  keyConceptsList: Array<any> = [];
   readyEntries: string[] = [
     'beam-splitter',
     'detector-four',
@@ -37,6 +38,9 @@ export default class Info extends Vue {
     entriesNameList.forEach((entryName: string) => {
       const isReady = this.readyEntries.indexOf(entryName) > -1;
       this.entryList.push({ name: entryName, ready: isReady });
+    });
+    relatedConceptsNameList.forEach((entryName: string) => {
+      this.keyConceptsList.push({ name: entryName, ready: true });
     });
   }
 }
