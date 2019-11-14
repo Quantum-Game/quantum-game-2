@@ -8,29 +8,27 @@ import Coord from './Coord';
 export default class Goal extends Coord {
   coord: Coord;
   threshold: number;
-  value: number;
 
   constructor(coord: Coord, threshold: number, value = 0) {
     super(coord.y, coord.x);
     this.coord = coord;
     this.threshold = threshold;
-    this.value = value;
   }
 
   /**
    * Is a goal completed
    * @returns boolean if the goal is completed
    */
-  get completed(): boolean {
-    return this.value >= this.threshold;
+  completed(value: number): boolean {
+    return value >= this.threshold;
   }
 
   /**
    * Returns a percentage of the current value compared to the expected value.
    * @returns number from 0 to 1 describing percentage
    */
-  get percentage(): number {
-    return (this.value / this.threshold) * 100;
+  percentage(value: number): number {
+    return (value / this.threshold) * 100;
   }
 
   /**
@@ -38,9 +36,7 @@ export default class Goal extends Coord {
    * @returns string
    */
   toString(): string {
-    return `{#Goal ${this.completed ? 'completed ' : ' '}@ ${this.coord.toString()} is ${
-      this.value
-    } / ${this.threshold}} (${this.percentage}%)`;
+    return `{#Goal ${this.threshold}% @ ${this.coord.toString()}`;
   }
 
   /**
@@ -50,8 +46,7 @@ export default class Goal extends Coord {
   exportGoal(): GoalInterface {
     return {
       coord: this.coord.exportCoord(),
-      threshold: this.threshold,
-      value: this.value
+      threshold: this.threshold
     };
   }
 

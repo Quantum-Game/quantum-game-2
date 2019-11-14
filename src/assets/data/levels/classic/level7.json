@@ -94,16 +94,14 @@
         "y": 5,
         "x": 9
       },
-      "threshold": 0.25,
-      "value": 0
+      "threshold": 0.25
     },
     {
       "coord": {
         "y": 7,
         "x": 7
       },
-      "threshold": 0.25,
-      "value": 0
+      "threshold": 0.25
     }
   ],
   "tools": ["Rock"]

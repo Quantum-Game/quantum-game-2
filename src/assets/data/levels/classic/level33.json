@@ -117,13 +117,11 @@
   "goals": [
     {
       "coord": { "y": 8, "x": 7 },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     },
     {
       "coord": { "y": 6, "x": 9 },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     }
   ],
   "tools": []

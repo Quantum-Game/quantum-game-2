@@ -60,24 +60,21 @@
         "y": 1,
         "x": 6
       },
-      "threshold": 0.25,
-      "value": 0
+      "threshold": 0.25
     },
     {
       "coord": {
         "y": 6,
         "x": 6
       },
-      "threshold": 0.125,
-      "value": 0
+      "threshold": 0.125
     },
     {
       "coord": {
         "y": 4,
         "x": 8
       },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     }
   ],
   "tools": ["BeamSplitter", "BeamSplitter"]

@@ -69,7 +69,6 @@ export interface ClassicLevelInterface {
 export interface GoalInterface {
   coord: CoordInterface;
   threshold: number;
-  value: number;
 }
 
 /**

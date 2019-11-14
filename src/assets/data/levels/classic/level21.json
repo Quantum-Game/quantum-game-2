@@ -125,13 +125,11 @@
   "goals": [
     {
       "coord": { "y": 3, "x": 8 },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     },
     {
       "coord": { "y": 5, "x": 8 },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     }
   ],
   "tools": []

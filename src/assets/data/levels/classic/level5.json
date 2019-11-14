@@ -93,8 +93,7 @@
         "y": 1,
         "x": 8
       },
-      "threshold": 1,
-      "value": 0
+      "threshold": 1
     }
   ],
   "tools": ["Glass", "Glass"]

@@ -101,8 +101,7 @@
   "goals": [
     {
       "coord": { "y": 3, "x": 10 },
-      "threshold": 1,
-      "value": 0
+      "threshold": 1
     }
   ],
   "tools": ["Mirror", "Mirror"]

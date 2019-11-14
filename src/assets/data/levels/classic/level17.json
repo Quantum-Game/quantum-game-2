@@ -141,8 +141,7 @@
   "goals": [
     {
       "coord": { "y": 9, "x": 3 },
-      "threshold": 1,
-      "value": 0
+      "threshold": 1
     }
   ],
   "tools": []

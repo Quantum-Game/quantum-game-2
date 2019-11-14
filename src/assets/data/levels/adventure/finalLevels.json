@@ -73,8 +73,7 @@
           "y": 2,
           "x": 7
         },
-        "threshold": 1,
-        "value": 0
+        "threshold": 1
       }
     ],
     "tools": ["Mirror", "Mirror"]
@@ -152,8 +151,7 @@
           "y": 2,
           "x": 7
         },
-        "threshold": 1,
-        "value": 0
+        "threshold": 1
       }
     ],
     "tools": ["Mirror", "Mirror"]

@@ -137,16 +137,14 @@
         "y": 5,
         "x": 6
       },
-      "threshold": 0.25,
-      "value": 0
+      "threshold": 0.25
     },
     {
       "coord": {
         "y": 5,
         "x": 8
       },
-      "threshold": 0.5,
-      "value": 0
+      "threshold": 0.5
     }
   ],
   "tools": ["Absorber"]
