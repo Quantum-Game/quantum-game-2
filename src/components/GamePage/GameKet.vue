@@ -53,7 +53,7 @@
         </span>
       </div>
       <div v-if="absorptions.length > 0" class="controls">
-        Absorptions:
+        ABSORPTIONS:
         <span
           v-for="(absorption, index) in absorptions"
           :key="`absorption-${index}`"
@@ -236,13 +236,13 @@ export default class GameKet extends Vue {
         margin: 5px;
         font-size: 0.8rem;
       }
-      & .legend-pol {
+      & .legend-dir {
         color: #ff0055;
         margin: 5px;
         font-size: 0.8rem;
       }
-      & .legend-dir {
-        color: #faaa15;
+      & .legend-pol {
+        color: #9D40FF;
         margin: 5px;
         font-size: 0.8rem;
       }
@@ -275,7 +275,7 @@ export default class GameKet extends Vue {
           color: #ff0055;
         }
         & .ket-pol {
-          color: #faaa15;
+          color: #9D40FF;
         }
       }
     }
