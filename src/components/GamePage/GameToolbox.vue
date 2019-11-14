@@ -73,10 +73,10 @@ export default class GameToolbox extends Vue {
     height: 90px;
   }
   .inactive {
-    opacity: 50%;
+    opacity: 0.5;
   }
   .active {
-    opacity: 100%;
+    opacity: 1;
     visibility: visible !important;
   }
   .counter {
