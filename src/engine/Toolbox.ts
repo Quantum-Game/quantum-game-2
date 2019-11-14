@@ -70,8 +70,8 @@ export default class Toolbox {
    * TODO: Check if need to compare to original toolbox
    * @param cell cell holding element to remove
    */
-  addTool(cell: Cell) {
-    const { name } = cell.element;
+  addTool(cell: Cell, activeCell: Cell) {
+    const { name } = activeCell.element;
     this.toolbox[name] += 1;
   }
 

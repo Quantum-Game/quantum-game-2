@@ -88,6 +88,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
+  @State hoveredCell!: Cell;
   border = '';
 
   $refs!: {
@@ -103,9 +104,7 @@ export default class AppCell extends Mixins(getPosition) {
   mouseMove(e: any): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
     const { cellRef } = this.$refs;
-    console.log(e);
     hoverCell.innerHTML = cellRef.innerHTML;
-
     cellRef.style.visibility = 'hidden';
     hoverCell.style.visibility = 'visible';
     document.body.style.cursor = 'grabbing';
@@ -119,7 +118,6 @@ export default class AppCell extends Mixins(getPosition) {
 
   dragStart(): void {
     this.border = 'white';
-
     this.mutationSetActiveCell(this.cell);
     window.addEventListener('mousemove', this.mouseMove);
     window.addEventListener('mouseup', this.dragEnd);
@@ -128,11 +126,9 @@ export default class AppCell extends Mixins(getPosition) {
   dragEnd(): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
     const { cellRef } = this.$refs;
-
     cellRef.style.visibility = 'visible';
     hoverCell.style.visibility = 'hidden';
     document.body.style.cursor = 'default';
-
     window.removeEventListener('mousemove', this.mouseMove);
     this.border = '';
     this.mutationResetActiveCell();
@@ -168,7 +164,6 @@ export default class AppCell extends Mixins(getPosition) {
         this.cell.rotate();
         this.mutationResetActiveCell();
       }
-
       this.$emit('updateCell', this.cell);
       this.mutationResetActiveCell();
     }
