@@ -49,6 +49,18 @@ export default class QuantumSimulation {
     this.frames.push(frame);
   }
 
+  initializeFromIndicator(x: number, y: number, dir = '>', pol = 'H'): void {
+    this.frames = [];
+    if (this.frames.length !== 0) {
+      throw new Error(
+        `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
+      );
+    }
+    const frame = new QuantumFrame(this.board.cols, this.board.rows);
+    frame.photons.addPhotonIndicator(x, y, dir, pol);
+    this.frames.push(frame);
+  }
+
   nextFrame(): void {
     if (this.frames.length === 0) {
       throw new Error(

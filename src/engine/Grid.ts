@@ -273,6 +273,14 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Create an empty grid object
+   * @returns A grid with nothing.
+   */
+  public static emptyGrid(rows = 3, cols = 3): Grid {
+    return Grid.importGrid({ rows, cols, cells: [] });
+  }
+
+  /**
    * Exports the grid to an interface of primitives
    * @returns a grid interface
    */

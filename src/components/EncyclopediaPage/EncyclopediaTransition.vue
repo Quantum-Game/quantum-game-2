@@ -14,8 +14,9 @@
       <div class="eboard">
         <encyclopedia-board
           :grid-obj="grid.exportGrid()"
+          :initialize-from="intializeFrom"
           class="board"
-          max-steps="10"
+          max-steps="2"
           default-step="1"
           @updateRotation="updateRotation"
         />
@@ -57,11 +58,19 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
   @Prop({ default: '0' }) defaultRotation!: number;
   rotation = this.defaultRotation;
-  element = Element.fromName(this.elementName);
-  coord = new Coord(1, 2);
-  cell = new Cell(this.coord, this.element, this.rotation);
-  grid = Grid.dummyGrid(3, 4);
+
+  // this code begs a rewrite
+  cell = new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
+  grid = Grid.emptyGrid(3, 3);
   dimOrder = 'dir pol';
+  intializeFrom = [
+    {
+      x: 0,
+      y: 1,
+      dirStr: '>',
+      polStr: 'H'
+    }
+  ];
 
   $refs!: {
     grid: HTMLElement;
