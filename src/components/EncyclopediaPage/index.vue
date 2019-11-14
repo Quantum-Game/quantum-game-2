@@ -4,9 +4,7 @@
     <div slot="main">
       <router-view />
     </div>
-    <div slot="right" class="upper-border">
-      <h3>RELATED CONCEPTS</h3>
-    </div>
+    <encyclopedia-link-list slot="right" :entry-list="keyConceptList" />
   </app-layout>
 </template>
 
@@ -21,7 +19,7 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   components: {
     AppLayout,
     EncyclopediaArticle,
-    EncyclopediaLinkList
+    EncyclopediaLinkList,
   }
 })
 export default class Info extends Vue {
@@ -38,5 +36,6 @@ export default class Info extends Vue {
   text-align: left;
   color: white;
   text-decoration: none;
+  margin-top: 40px;
 }
 </style>
