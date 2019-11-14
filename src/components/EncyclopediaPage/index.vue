@@ -23,9 +23,21 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   }
 })
 export default class Info extends Vue {
-  entryList: Array<string> = [];
+  entryList: Array<any> = [];
+  readyEntries: string[] = [
+    'beam-splitter',
+    'detector-four',
+    'detector',
+    'faraday-rotator',
+    'mirror',
+    'sugar-solution'
+  ];
+
   created() {
-    entriesNameList.forEach((entryName: string) => this.entryList.push(entryName));
+    entriesNameList.forEach((entryName: string) => {
+      const isReady = this.readyEntries.indexOf(entryName) > -1;
+      this.entryList.push({ name: entryName, ready: isReady });
+    });
   }
 }
 </script>
