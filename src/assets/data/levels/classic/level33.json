@@ -1,30 +1,14 @@
 {
-  "id": 28,
-  "name": "Sagnac twist",
-  "group": "Classic",
+  "id": 33,
+  "name": "Interfering polarization",
+  "group": "Game",
   "description": "",
   "grid": {
     "cols": 13,
     "rows": 10,
     "cells": [
       {
-        "coord": { "y": 1, "x": 4 },
-        "element": "Mine",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 1, "x": 6 },
-        "element": "Detector",
-        "rotation": 270,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 1 },
+        "coord": { "y": 1, "x": 1 },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -32,10 +16,26 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 2 },
+        "coord": { "y": 1, "x": 3 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 5 },
         "element": "SugarSolution",
         "rotation": 0,
         "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 7 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
         "active": false,
         "energized": false
       },
@@ -48,23 +48,15 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 4 },
-        "element": "PolarizingBeamSplitter",
-        "rotation": 180,
+        "coord": { "y": 4, "x": 3 },
+        "element": "Mirror",
+        "rotation": 135,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 5 },
-        "element": "SugarSolution",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 6 },
+        "coord": { "y": 4, "x": 7 },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": true,
@@ -72,31 +64,15 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 7 },
-        "element": "FaradayRotator",
+        "coord": { "y": 4, "x": 9 },
+        "element": "PolarizingBeamSplitter",
         "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 9 },
-        "element": "Mirror",
-        "rotation": 135,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 4, "x": 6 },
-        "element": "FaradayRotator",
-        "rotation": 270,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 6, "x": 4 },
+        "coord": { "y": 4, "x": 11 },
         "element": "Mine",
         "rotation": 0,
         "frozen": true,
@@ -104,17 +80,33 @@
         "energized": false
       },
       {
-        "coord": { "y": 6, "x": 6 },
-        "element": "Mirror",
-        "rotation": 135,
+        "coord": { "y": 6, "x": 5 },
+        "element": "Mine",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 7 },
+        "element": "PolarizingBeamSplitter",
+        "rotation": 180,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
         "coord": { "y": 6, "x": 9 },
-        "element": "Mirror",
-        "rotation": 45,
+        "element": "Detector",
+        "rotation": 90,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 8, "x": 7 },
+        "element": "Detector",
+        "rotation": 90,
         "frozen": true,
         "active": false,
         "energized": false
@@ -124,9 +116,15 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 1, "x": 6 },
-      "threshold": 1,
+      "coord": { "y": 8, "x": 7 },
+      "threshold": 0.5,
+      "value": 0
+    },
+    {
+      "coord": { "y": 6, "x": 9 },
+      "threshold": 0.5,
       "value": 0
     }
-  ]
+  ],
+  "tools": []
 }

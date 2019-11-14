@@ -1,6 +1,6 @@
 {
-  "id": 25,
-  "name": "Interfrenzy",
+  "id": 28,
+  "name": "Sagnac twist",
   "group": "Classic",
   "description": "",
   "grid": {
@@ -8,7 +8,23 @@
     "rows": 10,
     "cells": [
       {
-        "coord": { "y": 1, "x": 0 },
+        "coord": { "y": 1, "x": 4 },
+        "element": "Mine",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 1, "x": 6 },
+        "element": "Detector",
+        "rotation": 270,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 1 },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -16,41 +32,49 @@
         "energized": false
       },
       {
-        "coord": { "y": 1, "x": 2 },
-        "element": "BeamSplitter",
-        "rotation": 135,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 1, "x": 5 },
-        "element": "BeamSplitter",
-        "rotation": 315,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 1, "x": 7 },
-        "element": "Mirror",
-        "rotation": 135,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
         "coord": { "y": 3, "x": 2 },
-        "element": "BeamSplitter",
-        "rotation": 135,
+        "element": "SugarSolution",
+        "rotation": 0,
         "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 3 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 4 },
+        "element": "PolarizingBeamSplitter",
+        "rotation": 180,
+        "frozen": true,
         "active": false,
         "energized": false
       },
       {
         "coord": { "y": 3, "x": 5 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 6 },
         "element": "BeamSplitter",
         "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 7 },
+        "element": "FaradayRotator",
+        "rotation": 0,
         "frozen": false,
         "active": false,
         "energized": false
@@ -58,13 +82,29 @@
       {
         "coord": { "y": 3, "x": 9 },
         "element": "Mirror",
-        "rotation": 315,
+        "rotation": 135,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 7, "x": 2 },
+        "coord": { "y": 4, "x": 6 },
+        "element": "FaradayRotator",
+        "rotation": 270,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 4 },
+        "element": "Mine",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 6, "x": 6 },
         "element": "Mirror",
         "rotation": 135,
         "frozen": true,
@@ -72,41 +112,9 @@
         "energized": false
       },
       {
-        "coord": { "y": 7, "x": 7 },
-        "element": "BeamSplitter",
-        "rotation": 135,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 7, "x": 9 },
-        "element": "BeamSplitter",
-        "rotation": 135,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 7, "x": 11 },
-        "element": "Mine",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 9, "x": 7 },
-        "element": "Mine",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 9, "x": 9 },
-        "element": "Detector",
-        "rotation": 90,
+        "coord": { "y": 6, "x": 9 },
+        "element": "Mirror",
+        "rotation": 45,
         "frozen": true,
         "active": false,
         "energized": false
@@ -116,9 +124,10 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 9, "x": 9 },
+      "coord": { "y": 1, "x": 6 },
       "threshold": 1,
       "value": 0
     }
-  ]
+  ],
+  "tools": []
 }

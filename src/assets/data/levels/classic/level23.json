@@ -1,6 +1,6 @@
 {
-  "id": 27,
-  "name": "You shouldnt look back",
+  "id": 23,
+  "name": "Sagnac-Michelson-Morley",
   "group": "Classic",
   "description": "",
   "grid": {
@@ -8,23 +8,55 @@
     "rows": 10,
     "cells": [
       {
-        "coord": { "y": 2, "x": 3 },
-        "element": "Mine",
-        "rotation": 0,
+        "coord": { "y": 1, "x": 5 },
+        "element": "Mirror",
+        "rotation": 225,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 1 },
-        "element": "Laser",
-        "rotation": 0,
+        "coord": { "y": 1, "x": 7 },
+        "element": "Mirror",
+        "rotation": 135,
         "frozen": true,
-        "active": true,
+        "active": false,
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 3 },
+        "coord": { "y": 2, "x": 7 },
+        "element": "VacuumJar",
+        "rotation": 0,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 5 },
+        "element": "Mirror",
+        "rotation": 135,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 7 },
+        "element": "BeamSplitter",
+        "rotation": 135,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 1 },
+        "element": "Mirror",
+        "rotation": 90,
+        "frozen": false,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 5, "x": 7 },
         "element": "BeamSplitter",
         "rotation": 135,
         "frozen": true,
@@ -32,31 +64,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 4 },
-        "element": "PolarizerH",
-        "rotation": 270,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 6 },
-        "element": "FaradayRotator",
-        "rotation": 180,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 9 },
-        "element": "BeamSplitter",
-        "rotation": 90,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 11 },
+        "coord": { "y": 5, "x": 9 },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
@@ -64,11 +72,11 @@
         "energized": false
       },
       {
-        "coord": { "y": 4, "x": 3 },
-        "element": "Rock",
-        "rotation": 0,
+        "coord": { "y": 7, "x": 7 },
+        "element": "Laser",
+        "rotation": 90,
         "frozen": true,
-        "active": false,
+        "active": true,
         "energized": false
       }
     ]
@@ -76,9 +84,10 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 3, "x": 11 },
-      "threshold": 0.25,
+      "coord": { "y": 5, "x": 9 },
+      "threshold": 1,
       "value": 0
     }
-  ]
+  ],
+  "tools": []
 }
