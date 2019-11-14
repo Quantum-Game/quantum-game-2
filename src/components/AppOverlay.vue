@@ -1,18 +1,16 @@
 <template>
   <transition :name="gameState">
     <!-- FIXME -->
-    <div v-if="gameState === 'MineExploded'" :class="gameState" class="wrapper">
-      <h2>
-        MINE EXPLODED
-        <slot> </slot>
-      </h2>
+    <div v-if="explosion" :class="gameState" class="wrapper">
     </div>
 
     <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
-      <h2>
-        You won!
-        <slot> </slot>
-      </h2>
+      <div class="victory-circle">
+        <h2>
+          You won!
+        </h2>
+        <slot></slot>
+      </div> 
     </div>
   </transition>
 </template>
@@ -35,10 +33,19 @@ export default class AppOverlay extends Vue {
     start: (params: any) => void;
     stop: () => void;
   };
+  explosion: boolean = false;
+  explosionTimeout: number = 0;
+
+  mineExploding() {
+    this.explosion = true;
+    this.explosionTimeout = setTimeout(() => {
+      this.explosion = false;
+    }, 300)
+  } 
 
   @Watch('gameState')
-  startConfetti(gameState: string) {
-    if (gameState === 'Victory') {
+  handleGameStateChange(newGameState: string, oldGameState: string) {
+    if (newGameState === 'Victory') {
       this.$confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
@@ -63,7 +70,9 @@ export default class AppOverlay extends Vue {
           '#ba00ff' // purple 02
         ]
       });
-    } else {
+    } else if (newGameState === 'MineExploded') {
+      this.mineExploding();
+    } else if (oldGameState === 'Victory') {
       this.$confetti.stop();
     }
   }
@@ -85,43 +94,35 @@ export default class AppOverlay extends Vue {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  h2 {
-    //THIS IS A DRAFT VERSION OF POP-UP
-    width: 12rem;
-    height: 10rem;
-    padding: 1rem;
+  & .victory-circle {
+    width: 300px;
+    height: 300px;
+    border-radius: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    margin: 10px;
     background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
-    //margin: 50;
+  }
+  h2 {
     color: white;
     font-size: 2rem;
-    //transform: rotate(-5deg);
+    margin: 20px;
   }
 }
-.MineExploded-enter-active,
-.MineExploded-leave-active {
-  transition: opacity 0.5s;
-}
+// .MineExploded-enter-active,
+// .MineExploded-leave-active {
+//   //transition: opacity 5s;
+// }
 .MineExploded-enter,
 .MineExploded-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
 }
 
 .MineExploded.wrapper {
-  //background-color: rgba(179, 7, 136, 0);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  h2 {
-    //THIS IS A DRAFT VERSION OF POP-UP
-    width: 12rem;
-    height: 10rem;
-    padding: 1rem;
-    background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
-    //margin: 50;
-    color: white;
-    font-size: 2rem;
-    //transform: rotate(-5deg);
-  }
+  opacity: 0.8;
+  background: #ff0055;
 }
 
 .wrapper {

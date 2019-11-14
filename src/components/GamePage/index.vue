@@ -3,9 +3,9 @@
     <div class="hoverCell"></div>
     <!-- OVERLAY -->
     <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
-      <app-button>GO BACK</app-button>
+      <app-button :overlay="true" :inline="false">GO BACK</app-button>
       <router-link :to="nextLevel">
-        <app-button>NEXT LEVEL</app-button>
+        <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
       </router-link>
     </app-overlay>
 
