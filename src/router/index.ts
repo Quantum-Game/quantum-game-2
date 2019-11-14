@@ -19,7 +19,7 @@ export default new Router({
     },
     {
       path: '/levels/shared/:id/:levelsaved',
-      name: 'levelsaved',
+      name: 'sharedlevels',
       component: () => import('@/components/GamePage/index.vue')
     },
     {
