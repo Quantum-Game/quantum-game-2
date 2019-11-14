@@ -24,7 +24,7 @@ export default class SaveLevel extends Vue {
     $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
   }
 
-  hendleClick() {
+  handleClick() {
     if (!this.$route.meta.levelSaved) {
       this.saveLevel();
     } else {
