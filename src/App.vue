@@ -65,4 +65,9 @@ a {
 a:hover {
   text-decoration: underline;
 }
+.entry {
+  & img {
+    width: 100%;
+  }
+}
 </style>

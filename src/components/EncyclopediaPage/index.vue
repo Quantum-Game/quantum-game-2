@@ -4,9 +4,7 @@
     <div slot="main">
       <router-view />
     </div>
-    <div slot="right" class="upper-border">
-      <h3>RELATED CONCEPTS</h3>
-    </div>
+    <encyclopedia-link-list slot="right" :entry-list="keyConceptList" />
   </app-layout>
 </template>
 
@@ -16,12 +14,14 @@ import { entriesNameList } from '@/assets/data/entries';
 import AppLayout from '@/components/AppLayout.vue';
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue';
+import EncyclopediaRelatedConceptsList from '@/components/EncyclopediaPage/EncyclopediaRelatedConceptsList.vue';
 
 @Component({
   components: {
     AppLayout,
     EncyclopediaArticle,
-    EncyclopediaLinkList
+    EncyclopediaLinkList,
+    EncyclopediaRelatedConceptsList
   }
 })
 export default class Info extends Vue {
@@ -38,5 +38,6 @@ export default class Info extends Vue {
   text-align: left;
   color: white;
   text-decoration: none;
+  margin-top: 40px;
 }
 </style>
