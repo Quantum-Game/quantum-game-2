@@ -38,6 +38,40 @@
       }
     ]
   },
+  "aom": {
+    "title": "Acusto-Optic Modulator",
+    "elementName": "Aom",
+    "short": "Using sound, it shifts the frequency of light by a certain amount.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Using sound, it shifts the frequency of light by a certain amount.</p>"
+      },
+      {
+        "title": "Usage in everyday life",
+        "content": "<p>It is likely that your laser printer has an AOM embedded into it, to modulate the power of a laser beam.</p>"
+      },
+      {
+        "title": "Usage in laboratories",
+        "content": "<p>AOMs are used in setups which control certain laser properties, and maintain light stable over a long time.</p>"
+      },
+      {
+        "title": "Digging Deeper",
+        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: a number of different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
+      },
+      {
+        "title": "Further Readings",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Acousto-optic_modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.rp-photonics.com/acousto_optic_modulators.html\">Acusto-optic Modulator</a></li><li><a href=\"https://www.sciencedirect.com/topics/engineering/acousto-optical-modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.youtube.com/watch?v=tEf98SBqbGc\">Lecture: Acusto-optic Modulator and Devices</a></li></ul>"
+      }
+    ]
+  },
   "beam-splitter": {
     "title": "50-50 Beamsplitter",
     "elementName": "BeamSplitter",
@@ -531,6 +565,40 @@
       }
     ]
   },
+  "non-linear-crystal": {
+    "title": "Non-linear Crystal",
+    "elementName": "NonLinearCrystal",
+    "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p>"
+      },
+      {
+        "title": "The Basics",
+        "content": "<p>Non linear optics is a special type of optics which works a bit differently than linear optics (examples of which are mirrors, beamsplitters, attenuators). It allows us to change the color of a light beam, to change its shape in space and time, and to create the shortest events ever made by humans. There are many different phenomena that can occur because of non linear behaviour, some examples are:</p><ul><li>Second-harmonic generation: combines two photons into one with double frequency</li><li>Sum-frequency generation: combines two photons into one with frequency as the sum of the incoming photons frequencies.</li><li>Spontaneous parametric down-conversion use to create single photon sources!</li></ul><p>To create a non linear effect, a non linear medium is placed in the path of light. Usually a non linear crystal is used, such as the BBO crystal.</p>"
+      },
+      {
+        "title": "Usage in everyday life and the laboratory",
+        "content": "<p>Non linear crystals are used for research applications in optical communication, optical sensing and materials research.</p>"
+      },
+      {
+        "title": "Digginf Deeper",
+        "content": "<p>BBO, or Barium Borate crystals are very common medium used to create non linear phenomena. They are strongly birefringent, meaning that they have two different refractive indices. In addition, they have a specific crystal symmetry and are resistant to high power light. Other types of non linear crystals are KDP (potassium dihydrogen phosphate), KTP (potassium titanyl phosphate), and lithium niobate.</p><p>Spontaneous parametric down conversion using a non linear crystal can generate two photons with entangled polarisation!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SPDC_figure.png/800px-SPDC_figure.png\">!Quantum Entanglement</a></p>"
+      },
+      {
+        "title": "Further Readings",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Nonlinear_optics\">Non-linear Optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Quantum_entanglement\">Quantum Entanglement</a></li><li><a href=\"https://www.brown.edu/research/labs/mittleman/sites/brown.edu.research.labs.mittleman/files/uploads/lecture35_0.pdf\">Introduction to non-linear optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Barium_borate\">Barium borate</a></li></ul>"
+      }
+    ]
+  },
   "polarizer": {
     "title": "Polarizer",
     "elementName": "Polarizer",
@@ -754,6 +822,32 @@
       }
     ]
   },
+  "two-level-system": {
+    "title": "Two-level system",
+    "elementName": "TwoLevelSystem",
+    "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
+    "grids": [
+      {
+        "cols": 0,
+        "rows": 0,
+        "cells": []
+      }
+    ],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>"
+      },
+      {
+        "title": "The basics",
+        "content": "<p>There are different physical implementations of a two level system. Usually any property that has two values can be used, such as, for example “open” and “closed”. Depending on the physical system chosen, the two “levels” or “states” are different. For example, for electrons, the two level is often encoded in the spin state. The electron can either be in state spin up or spin down and these two states can be in a superposition. For light, these are usually polarization states (vertical and horizontal polarization).</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Two-state_quantum_system\">Two-state quantum system</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
+      }
+    ]
+  },
   "vacuum-jar": {
     "title": "Vacuum Jar",
     "elementName": "VacuumJar",
@@ -790,100 +884,6 @@
       {
         "title": "",
         "content": "<p>COMING SOON!</p>"
-      }
-    ]
-  },
-  "aom": {
-    "title": "Acusto-Optic Modulator",
-    "elementName": "Aom",
-    "short": "Using sound, it shifts the frequency of light by a certain amount.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
-    "sections": [
-      {
-        "title": "",
-        "content": "<p>Using sound, it shifts the frequency of light by a certain amount.</p>"
-      },
-      {
-        "title": "Usage in everyday life",
-        "content": "<p>It is likely that your laser printer has an AOM embedded into it, to modulate the power of a laser beam.</p>"
-      },
-      {
-        "title": "Usage in laboratories",
-        "content": "<p>AOMs are used in setups which control certain laser properties, and maintain light stable over a long time.</p>"
-      },
-      {
-        "title": "Digging Deeper",
-        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: a number of different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
-      },
-      {
-        "title": "Further Readings",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Acousto-optic_modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.rp-photonics.com/acousto_optic_modulators.html\">Acusto-optic Modulator</a></li><li><a href=\"https://www.sciencedirect.com/topics/engineering/acousto-optical-modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.youtube.com/watch?v=tEf98SBqbGc\">Lecture: Acusto-optic Modulator and Devices</a></li></ul>"
-      }
-    ]
-  },
-  "non-linear-crystal": {
-    "title": "Non-linear Crystal",
-    "elementName": "NonLinearCrystal",
-    "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
-    "sections": [
-      {
-        "title": "",
-        "content": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p>"
-      },
-      {
-        "title": "The Basics",
-        "content": "<p>Non linear optics is a special type of optics which works a bit differently than linear optics (examples of which are mirrors, beamsplitters, attenuators). It allows us to change the color of a light beam, to change its shape in space and time, and to create the shortest events ever made by humans. There are many different phenomena that can occur because of non linear behaviour, some examples are:</p><ul><li>Second-harmonic generation: combines two photons into one with double frequency</li><li>Sum-frequency generation: combines two photons into one with frequency as the sum of the incoming photons frequencies.</li><li>Spontaneous parametric down-conversion use to create single photon sources!</li></ul><p>To create a non linear effect, a non linear medium is placed in the path of light. Usually a non linear crystal is used, such as the BBO crystal.</p>"
-      },
-      {
-        "title": "Usage in everyday life and the laboratory",
-        "content": "<p>Non linear crystals are used for research applications in optical communication, optical sensing and materials research.</p>"
-      },
-      {
-        "title": "Digginf Deeper",
-        "content": "<p>BBO, or Barium Borate crystals are very common medium used to create non linear phenomena. They are strongly birefringent, meaning that they have two different refractive indices. In addition, they have a specific crystal symmetry and are resistant to high power light. Other types of non linear crystals are KDP (potassium dihydrogen phosphate), KTP (potassium titanyl phosphate), and lithium niobate.</p><p>Spontaneous parametric down conversion using a non linear crystal can generate two photons with entangled polarisation!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SPDC_figure.png/800px-SPDC_figure.png\">!Quantum Entanglement</a></p>"
-      },
-      {
-        "title": "Further Readings",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Nonlinear_optics\">Non-linear Optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Quantum_entanglement\">Quantum Entanglement</a></li><li><a href=\"https://www.brown.edu/research/labs/mittleman/sites/brown.edu.research.labs.mittleman/files/uploads/lecture35_0.pdf\">Introduction to non-linear optics</a></li><li><a href=\"https://en.wikipedia.org/wiki/Barium_borate\">Barium borate</a></li></ul>"
-      }
-    ]
-  },
-  "two-level-system": {
-    "title": "Two-level system",
-    "elementName": "TwoLevelSystem",
-    "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
-    "sections": [
-      {
-        "title": "",
-        "content": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>"
-      },
-      {
-        "title": "The basics",
-        "content": "<p>There are different physical implementations of a two level system. Usually any property that has two values can be used, such as, for example “open” and “closed”. Depending on the physical system chosen, the two “levels” or “states” are different. For example, for electrons, the two level is often encoded in the spin state. The electron can either be in state spin up or spin down and these two states can be in a superposition. For light, these are usually polarization states (vertical and horizontal polarization).</p>"
-      },
-      {
-        "title": "Further Resources",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Two-state_quantum_system\">Two-state quantum system</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
       }
     ]
   }
