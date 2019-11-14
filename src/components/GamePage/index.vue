@@ -1,6 +1,6 @@
 <template>
   <div class="game">
-    <div class="hoverCell" style="position: absolute;"></div>
+    <div class="hoverCell"></div>
     <!-- OVERLAY -->
     <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
       <app-button>GO BACK</app-button>
@@ -504,5 +504,11 @@ h1 {
 }
 .levelLink {
   text-decoration: none;
+}
+
+.hoverCell{
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
 }
 </style>

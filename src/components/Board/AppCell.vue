@@ -113,7 +113,6 @@ export default class AppCell extends Mixins(getPosition) {
 
   dragStart(): void{
     this.border = 'white';
-    
     this.mutationSetActiveCell(this.cell);
     window.addEventListener("mousemove", this.mouseMove);
     window.addEventListener("mouseup", this.dragEnd);
@@ -161,8 +160,8 @@ export default class AppCell extends Mixins(getPosition) {
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
         this.mutationResetActiveCell();
+        
       }
-
       this.$emit('updateCell', this.cell);
       this.mutationResetActiveCell();
     }
@@ -180,7 +179,6 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get computedCellClass(): string[] {
     return [
-      'cell',
       this.computedCellName,
       this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
       (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
