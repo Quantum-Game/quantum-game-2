@@ -53,17 +53,6 @@
         <span v-else class="success"><b>SAFE</b></span>
       </div>
     </div>
-
-    <!-- DETECTION EVENTS -->
-    <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
-      <g>
-        <app-cell :cell="detection.cell" />
-        <text class="counter" x="100px" y="50%">
-          {{ (detection.probability * 100).toFixed(2) }}%
-        </text>
-      </g>
-    </svg>
-    <div>DETECTION EVENTS</div>-->
   </div>
 </template>
 

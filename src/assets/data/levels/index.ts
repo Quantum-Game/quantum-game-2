@@ -29,13 +29,13 @@ const classicGroup: LevelInterface[] = classicLevels;
 
 const levels: LevelInterface[] = [
   sandbox,
+  ...classicGroup,
   ...introGroup,
   ...reflectionGroup,
   ...phaseGroup,
   ...interferenceGroup,
   ...polarizationGroup,
-  ...finalGroup,
-  ...classicGroup
+  ...finalGroup
 ];
 
 export default levels;
