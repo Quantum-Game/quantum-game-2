@@ -20,6 +20,7 @@
     </vc-donut>
     <div class="temp">
       <div>Goal: {{ totalGoalPercentage }} %</div>
+      <div>Percentage: {{ percentage }} %</div>
     </div>
 
     <!-- GOALS -->

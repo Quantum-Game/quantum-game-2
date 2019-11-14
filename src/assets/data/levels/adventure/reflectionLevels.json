@@ -90,7 +90,7 @@
     "hints": [],
     "goals": [
       {
-        "coord": { "x": 3, "y": 9 },
+        "coord": { "x": 9, "y": 3 },
         "threshold": 1
       }
     ],
