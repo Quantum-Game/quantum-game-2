@@ -362,7 +362,7 @@ export default class Game extends Vue {
   }
 
   addToCurrentTools(cell: Cell) {
-    this.level.toolbox.addTool(cell);
+    this.level.toolbox.addTool(cell, this.activeCell);
   }
 
   setCurrentTools(cells: Cell[]) {
@@ -389,8 +389,10 @@ export default class Game extends Vue {
     if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
       this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
-      this.addToCurrentTools(cell);
-      this.level.grid.set(this.activeCell.reset());
+      
+        this.addToCurrentTools(cell);
+        this.level.grid.set(this.activeCell.reset());
+      
     }
 
     const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
