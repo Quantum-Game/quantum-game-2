@@ -1,11 +1,8 @@
 <template>
   <div>
-    <a v-if="!$route.meta.publicRoute && !$route.meta.levelSaved" @click.prevent="saveLevel"
-      ><app-button type="special"> Save Level </app-button></a
-    >
-    <a v-if="!$route.meta.publicRoute && $route.meta.levelSaved" @click.prevent="updateLevel"
-      ><app-button type="special"> Save Level </app-button></a
-    >
+    <a v-if="!$route.meta.publicRoute" @click.prevent="handleClick"
+      ><app-button type="special"> Save Level </app-button>
+    </a>
   </div>
 </template>
 
@@ -25,6 +22,14 @@ export default class SaveLevel extends Vue {
   }
   updateLevel() {
     $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
+  }
+
+  hendleClick() {
+    if (!this.$route.meta.levelSaved) {
+      this.saveLevel();
+    } else {
+      this.updateLevel();
+    }
   }
 }
 </script>
