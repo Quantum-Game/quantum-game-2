@@ -2,10 +2,12 @@
   <app-layout>
     <article slot="main" class="main">
       <div class="container">
-        <ul class="main__level-list">
-          <li v-for="(stuff, i) in Array(34)" :key="i">
-            <router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
-          </li>
+        <ul v-for="(group, i) in groups" :key="'group' + i" class="main__level-list">
+          <ul v-for="(level, j) in group" :key="'level' + j">
+            <li>
+              <router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
+            </li>
+          </ul>
         </ul>
       </div>
     </article>
@@ -13,15 +15,24 @@
 </template>
 
 <script lang="ts">
+import * as _ from 'lodash';
 import { Vue, Component } from 'vue-property-decorator';
+import { LevelInterface } from '@/engine/interfaces';
 import AppLayout from '@/components/AppLayout.vue';
+import levels from '@/assets/data/levels/index';
 
 @Component({
   components: {
     AppLayout
   }
 })
-export default class LevelMapPage extends Vue {}
+export default class LevelMapPage extends Vue {
+  get groups() {
+    return _.groupBy(levels, (level: LevelInterface) => {
+      return level.group;
+    });
+  }
+}
 </script>
 
 <style lang="scss">

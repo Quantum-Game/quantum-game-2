@@ -98,7 +98,7 @@ import {
   GameState,
   GridInterface
 } from '@/engine/interfaces';
-import levelData from '@/assets/data/levels';
+import levels from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue';
 import GameToolbox from '@/components/GamePage/GameToolbox.vue';
@@ -176,7 +176,7 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     this.mutationSetCurrentLevelID(this.levelId);
-    const levelI = levelData[`level${this.levelId}`];
+    const levelI = levels[this.levelId];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
     if (this.level.toolbox.uniqueCellList.length > 0) {
