@@ -76,6 +76,16 @@ import QuantumSimulation from '@/engine/QuantumSimulation';
 const dummyGrid = Grid.dummyGrid();
 const dummyGridInterface = dummyGrid.exportGrid();
 
+/**
+ * Temporary for initializinf
+ */
+interface photonIndicator {
+  x: number;
+  y: number;
+  dirStr: string;
+  polStr: string;
+}
+
 @Component({
   components: {
     AppPhoton,
@@ -88,6 +98,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => dummyGridInterface }) gridObj!: GridInterface;
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
+  @Prop({ default: () => [] }) readonly initializeFrom!: photonIndicator[];
 
   tileSize = 64; // sounds like a prop or constant
   grid = new Grid(
@@ -108,7 +119,14 @@ export default class EncyclopediaBoard extends Vue {
 
   reset() {
     this.simulation = new QuantumSimulation(this.grid);
-    this.simulation.initializeFromLaser('H');
+    if (this.initializeFrom.length === 0) {
+      this.simulation.initializeFromLaser('H');
+    } else if (this.initializeFrom.length === 1) {
+      const [{ x, y, dirStr, polStr }, ...rest] = this.initializeFrom;
+      this.simulation.initializeFromIndicator(x, y, dirStr, polStr);
+    } else {
+      throw new Error('EncyclopediaBoard not yet prepared for more photons.');
+    }
     this.simulation.nextFrames(this.maxSteps);
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
     this.selectedFrameId = this.defaultStep;
