@@ -156,7 +156,7 @@ export default class GameKet extends Vue {
   }
 
   elementName(x: number, y: number): string {
-    return this.grid.cellFromXY(x, y).element.name;
+    return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name;
   }
 
   renderComplexPolar(z: Complex, precision = 2) {
