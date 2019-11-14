@@ -1,0 +1,155 @@
+[
+  {
+    "id": 1,
+    "name": "Plant hero",
+    "group": "Intro",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 3,
+            "x": 2
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 6
+          },
+          "element": "Detector",
+          "rotation": 0,
+          "frozen": false,
+          "active": true
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 10
+          },
+          "element": "Mine",
+          "rotation": 0,
+          "frozen": true
+        }
+      ]
+    },
+    "hints": [
+      {
+        "coord": {
+          "y": 2,
+          "x": 6
+        },
+        "content": "DRAG A PLANT HERE",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      }
+    ],
+    "goals": [
+      {
+        "coord": {
+          "y": 3,
+          "x": 6
+        },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Detector", "Rock"]
+  },
+  {
+    "id": 2,
+    "name": "Meet the rock",
+    "group": "Intro",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 2,
+            "x": 3
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 6
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": true
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 9
+          },
+          "element": "Detector",
+          "rotation": 270,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 5
+          },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 9
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [
+      {
+        "coord": {
+          "y": 1,
+          "x": 6
+        },
+        "content": "GET THE LASER OFF MY FACE!",
+        "color": "red",
+        "rotation": 0,
+        "active": true
+      }
+    ],
+    "goals": [
+      {
+        "coord": {
+          "y": 2,
+          "x": 9
+        },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Mirror"]
+  }
+  
+]

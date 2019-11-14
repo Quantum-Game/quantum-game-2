@@ -97,7 +97,7 @@ export default class Board extends Vue {
       scalerStyle: {
         transform: `scale(1)`
       },
-      boardHeight: 640
+      boardHeight: 0
     };
   }
   @Prop({ default: [] }) readonly particles!: Particle[];

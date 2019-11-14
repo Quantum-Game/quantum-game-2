@@ -19,7 +19,7 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   components: {
     AppLayout,
     EncyclopediaArticle,
-    EncyclopediaLinkList,
+    EncyclopediaLinkList
   }
 })
 export default class Info extends Vue {

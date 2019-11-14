@@ -1,0 +1,143 @@
+[
+  {
+    "id": 5,
+    "name": "Phase Shifters",
+    "group": "Phase",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 2,
+            "x": 1
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 3
+          },
+          "element": "Glass",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 5
+          },
+          "element": "Glass",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 7
+          },
+          "element": "Glass",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 9
+          },
+          "element": "Glass",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 11
+          },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 1
+          },
+          "element": "Detector",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": true
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 3
+          },
+          "element": "VacuumJar",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 5
+          },
+          "element": "VacuumJar",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 7
+          },
+          "element": "VacuumJar",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 9
+          },
+          "element": "VacuumJar",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 4, "x": 1 },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Mirror"]
+  }
+]

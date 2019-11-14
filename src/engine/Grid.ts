@@ -164,8 +164,35 @@ export default class Grid extends Cluster {
    */
   public moveAll(direction: number): void {
     console.debug(`Moving all in direction: ${direction}`);
-    this.cells.map((cell) => {
-      return cell.coord.fromAngle(direction);
+    this.unvoid.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.coord = cell.coord.fromAngle(direction);
+    });
+  }
+
+  /**
+   * Move all elements to a common direction
+   * @param direction direction string
+   */
+  public rotateAll(): void {
+    console.debug(`Rotating grid`);
+    this.unvoid.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.coord = new Coord(cell.coord.x, cell.coord.y);
+      // eslint-disable-next-line
+      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360;
+    });
+  }
+
+  public reflectAll(): void {
+    console.debug(`Vertical reflecting grid`);
+    this.unvoid.cells.forEach((cell) => {
+      // eslint-disable-next-line
+      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x);
+      if (cell.rotation % 180 === 0) {
+        // eslint-disable-next-line
+        cell.rotation = (cell.rotation + 180) % 360;
+      }
     });
   }
 

@@ -112,7 +112,7 @@ export default class AppCell extends Mixins(getPosition) {
     hoverCell.style.width = '64px'; // change to tileSize, IDK why not work
     hoverCell.style.transformOrigin = '32px 32px'; // change to tileSize/2
     hoverCell.style.transform = `
-        translate(${e.pageX - 64 / 2}px, ${e.pageY - 64 / 2}px) 
+        translate(${e.pageX - 64 / 2}px, ${e.pageY - 64 / 2}px)
         rotate(-${this.cell.rotation}deg)`; // change to tileSize/2
   }
 

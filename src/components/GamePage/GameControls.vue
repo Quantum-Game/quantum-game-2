@@ -8,7 +8,7 @@
         @click.native="$emit(btn)"
       />
     </span>
-    <save-level />
+    <!-- <save-level /> -->
     <span>
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }} </b>
       <span>({{ gameState }})</span>

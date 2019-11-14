@@ -72,7 +72,7 @@ function convertMarkdown(dir, target) {
       for (let i = 0; i < entryLines.length; i += 1) {
         const line = entryLines[i];
         if (dir.endsWith('concepts/')) {
-          console.log(line);
+          // console.log(line);
         }
         const nextLine = entryLines[i + 1];
         // if we're in a mini-grid parsing mode - check below:
@@ -137,11 +137,11 @@ function convertMarkdown(dir, target) {
     }
   });
   const entriesFile = JSON.stringify(returnedObject, null, 2);
-  console.log(`extracting JSON from ${dir}`);
+  console.debug(`extracting JSON from ${dir}`);
   fs.writeFile(target, entriesFile, (err) => {
     if (err) throw err;
   });
-  console.log(`${target.toString()} created!`);
+  console.debug(`${target.toString()} created!`);
   return returnedObject;
 }
 

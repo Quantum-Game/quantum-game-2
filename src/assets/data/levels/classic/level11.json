@@ -1,0 +1,53 @@
+{
+  "id": 11,
+  "name": "Attenuate the beam",
+  "group": "Classic",
+  "description": "",
+  "grid": {
+    "cols": 13,
+    "rows": 10,
+    "cells": [
+      {
+        "coord": {
+          "y": 2,
+          "x": 1
+        },
+        "element": "Laser",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 2,
+          "x": 10
+        },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": false,
+        "energized": true
+      }
+    ]
+  },
+  "hints": [],
+  "goals": [
+    {
+      "coord": {
+        "y": 2,
+        "x": 10
+      },
+      "threshold": 0.015
+    }
+  ],
+  "tools": [
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber",
+    "Absorber"
+  ]
+}
