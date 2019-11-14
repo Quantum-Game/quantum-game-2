@@ -87,10 +87,6 @@ Famous experiments that used beamsplitters are:
 * Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories
 * Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens
 
-## Transition map
-
-:transition-map
-
 ## Further reading
 
 * [What are Beamsplitters?](https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/)
