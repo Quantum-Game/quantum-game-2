@@ -25,13 +25,6 @@
         <slot name="main-right"></slot>
       </aside>
     </main>
-
-    <!-- a generic footer for now -->
-    <footer>
-      <slot name="footer">
-        <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT" width="128" />
-      </slot>
-    </footer>
   </div>
 </template>
 
