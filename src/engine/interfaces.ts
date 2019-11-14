@@ -151,7 +151,7 @@ export interface EntryInterface {
   title: string;
   elementName: string;
   short?: string;
-  grids: GridInterface[];
+  grids?: GridInterface[];
   sections: EntrySectionInterface[];
 }
 

@@ -154,10 +154,6 @@
         "content": "<p>Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:</p><ul><li>Michelson-Morley interferometers</li><li>Mach-Zehnder interferometers</li></ul><p><img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1f/Beamsplitter-1.png\" alt=\"Beamsplitter\"></p><p>Famous experiments that used beamsplitters are:</p><ul><li>The Fizeau experiment of 1851 to measure the speeds of light in water</li><li>The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light</li><li>Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories</li><li>Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens</li></ul>"
       },
       {
-        "title": "Transition map",
-        "content": "<p>:transition-map</p>"
-      },
-      {
         "title": "Further reading",
         "content": "<ul><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/\">What are Beamsplitters?</a></li><li><a href=\"https://en.wikipedia.org/wiki/Beam_splitter\">Beamsplitters on Wikipedia</a></li><li><a href=\"https://www.rp-photonics.com/beam_splitters.html\">Beamsplitters on RP Photonics Encyclopedia</a></li></ul><p>Videos on hommade beamsplitters:</p><ul><li><a href=\"https://www.youtube.com/watch?v=P1n3hizj3c4\">What is a beam splitter and how do you make one?</a></li><li>[Playing with beamsplitters](Playing with beamsplitters)</li></ul>"
       }

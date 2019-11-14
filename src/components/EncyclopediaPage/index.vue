@@ -38,7 +38,7 @@ export default class Info extends Vue {
   created() {
     entriesNameList.forEach((entryName: string) => {
       const isReady = this.readyEntries.indexOf(entryName) > -1;
-      this.entryList.push({name: entryName, ready: isReady});
+      this.entryList.push({ name: entryName, ready: isReady });
     });
   }
 }

@@ -11,7 +11,7 @@ const mdOptions = {
 };
 const md = new MarkDownIt(mdOptions);
 
-function dashedToCamelCase(str, target) {
+function dashedToCamelCase(str) {
   const alteredString = str.replace(/-(.)/g, (m, group1) => {
     return group1.toUpperCase();
   });
@@ -71,6 +71,9 @@ function convertMarkdown(dir, target) {
       // parse, line by line
       for (let i = 0; i < entryLines.length; i += 1) {
         const line = entryLines[i];
+        if (dir.endsWith('concepts/')) {
+          console.log(line);
+        }
         const nextLine = entryLines[i + 1];
         // if we're in a mini-grid parsing mode - check below:
         if (gridParsingMode) {

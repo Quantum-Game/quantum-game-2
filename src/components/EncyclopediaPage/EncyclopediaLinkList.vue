@@ -2,7 +2,7 @@
   <div slot="left" class="element-list" :class="{ entriesExpanded: entriesExpanded }">
     <h3 class="upper-border" @click="toggleEntries">ALL ELEMENTS</h3>
     <router-link v-for="entry in entryList" :key="entry.name" :to="`/info/${entry.name}`">
-      <div :class="{'not-ready': !entry.ready}">{{ spacedEntry(entry.name) }}</div>
+      <div :class="{ 'not-ready': !entry.ready }">{{ spacedEntry(entry.name) }}</div>
     </router-link>
   </div>
 </template>
