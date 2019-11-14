@@ -18,7 +18,7 @@
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
         {{ level.id + ' - ' + level.name.toUpperCase() }}
-        <span class="groupTitle">{{ level.group.toUpperCase() }}</span>
+        <!-- <span class="groupTitle">{{ level.group.toUpperCase() }}</span> -->
 
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />

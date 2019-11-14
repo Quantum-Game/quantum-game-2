@@ -23,7 +23,7 @@
     </div>
 
     <!-- GOALS -->
-    <div class="bottom-icons">
+    <div v-if="detectors > 0" class="bottom-icons">
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
@@ -149,7 +149,7 @@ export default class GameGoals extends Vue {
    */
   get minesHit(): number {
     const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine' && detection.probability > 0.001;
+      return detection.cell.element.name === 'Mine';
     });
     return minesDetected.length;
   }

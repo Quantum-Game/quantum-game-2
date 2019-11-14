@@ -5,8 +5,8 @@ import phaseLevels from './adventure/phaseLevels.json';
 import interferenceLevels from './adventure/interferenceLevels.json';
 import polarizationLevels from './adventure/polarizationLevels.json';
 import finalLevels from './adventure/finalLevels.json';
-import sandbox from './sandboxLevel.json';
 import classicLevels from './classic/index';
+import sandbox from './sandboxLevel.json';
 
 export {
   sandbox,
@@ -15,7 +15,8 @@ export {
   phaseLevels,
   interferenceLevels,
   polarizationLevels,
-  finalLevels
+  finalLevels,
+  classicLevels
 };
 
 const introGroup: LevelInterface[] = introLevels;
@@ -24,20 +25,17 @@ const phaseGroup: LevelInterface[] = phaseLevels;
 const interferenceGroup: LevelInterface[] = interferenceLevels;
 const polarizationGroup: LevelInterface[] = polarizationLevels;
 const finalGroup: LevelInterface[] = finalLevels;
+const classicGroup: LevelInterface[] = classicLevels;
 
 const levels: LevelInterface[] = [
   sandbox,
-  introGroup[0],
-  introGroup[1],
-  reflectionGroup[0],
-  reflectionGroup[1],
-  phaseGroup[0],
-  phaseGroup[1],
-  interferenceGroup[0],
-  interferenceGroup[1],
-  polarizationGroup[0],
-  polarizationGroup[1],
-  finalGroup[0],
-  finalGroup[1]
-].concat(classicLevels);
+  ...introGroup,
+  ...reflectionGroup,
+  ...phaseGroup,
+  ...interferenceGroup,
+  ...polarizationGroup,
+  ...finalGroup,
+  ...classicGroup
+];
+
 export default levels;

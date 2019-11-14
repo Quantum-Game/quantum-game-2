@@ -1,66 +1,61 @@
 [
   {
     "id": 1,
-    "name": "Let there be light",
+    "name": "Plant hero",
     "group": "Intro",
     "description": "",
     "grid": {
       "cols": 13,
-      "rows": 8,
+      "rows": 7,
       "cells": [
         {
           "coord": {
-            "y": 2,
-            "x": 3
+            "y": 3,
+            "x": 2
           },
           "element": "Laser",
           "rotation": 0,
           "frozen": true,
-          "active": true,
-          "energized": false
+          "active": true
         },
         {
           "coord": {
-            "y": 2,
+            "y": 3,
             "x": 6
           },
-          "element": "Rock",
-          "rotation": 0,
-          "frozen": true,
-          "active": false,
-          "energized": true
-        },
-        {
-          "coord": {
-            "y": 2,
-            "x": 9
-          },
           "element": "Detector",
-          "rotation": 180,
-          "frozen": true,
-          "active": false,
-          "energized": false
+          "rotation": 0,
+          "frozen": false,
+          "active": true
         },
         {
           "coord": {
-            "y": 5,
-            "x": 5
+            "y": 3,
+            "x": 10
           },
-          "element": "Mirror",
-          "rotation": 135,
-          "frozen": true,
-          "active": false,
-          "energized": false
+          "element": "Mine",
+          "rotation": 0,
+          "frozen": true
         }
       ]
     },
     "hints": [
       {
         "coord": {
-          "y": 1,
+          "y": 2,
+          "x": 10
+        },
+        "content": "LASER MINE ARE DANGEROUS",
+        "color": "red",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 2,
           "x": 6
         },
-        "content": "GET THE LASER OFF MY FACE! ",
+        "content": "DRAG A PLANT HERE",
         "color": "purple",
         "rotation": 0,
         "active": true
@@ -69,13 +64,13 @@
     "goals": [
       {
         "coord": {
-          "y": 2,
-          "x": 7
+          "y": 3,
+          "x": 6
         },
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Detector", "Rock"]
   },
   {
     "id": 2,
@@ -114,7 +109,7 @@
             "x": 9
           },
           "element": "Detector",
-          "rotation": 180,
+          "rotation": 270,
           "frozen": true,
           "active": false,
           "energized": false
@@ -129,6 +124,17 @@
           "frozen": true,
           "active": false,
           "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 9
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
         }
       ]
     },
@@ -136,9 +142,19 @@
       {
         "coord": {
           "y": 1,
-          "x": 4
+          "x": 6
         },
-        "content": "GET THE LASER OFF MY FACE! ",
+        "content": "GET THE LASER OFF MY FACE!",
+        "color": "red",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 7,
+          "x": 5
+        },
+        "content": "CLICK ELEMENTS TO ROTATE THEM",
         "color": "purple",
         "rotation": 0,
         "active": true
@@ -153,6 +169,7 @@
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Mirror"]
   }
+  
 ]
