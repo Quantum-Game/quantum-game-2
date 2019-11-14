@@ -384,15 +384,12 @@ export default class Game extends Vue {
     const sourceCell = this.activeCell;
     const targetCell = cell;
 
-
     // handle moving from from / to toolbox
     if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
       this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
-      
-        this.addToCurrentTools(cell);
-        this.level.grid.set(this.activeCell.reset());
-      
+      this.addToCurrentTools(cell);
+      this.level.grid.set(this.activeCell.reset());
     }
 
     const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
@@ -508,7 +505,7 @@ h1 {
   text-decoration: none;
 }
 
-.hoverCell{
+.hoverCell {
   pointer-events: none;
   position: absolute;
   z-index: 10;

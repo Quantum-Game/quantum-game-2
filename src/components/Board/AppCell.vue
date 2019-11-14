@@ -1,5 +1,11 @@
 <template>
-  <g ref="cellRef" :style="positionStyle" :class="computedCellClass" @mousedown="handleCellClick" @mouseup="handleCellClick">
+  <g
+    ref="cellRef"
+    :style="positionStyle"
+    :class="computedCellClass"
+    @mousedown="handleCellClick"
+    @mouseup="handleCellClick"
+  >
     <rect
       :width="tileSize"
       :height="tileSize"
@@ -96,36 +102,34 @@ export default class AppCell extends Mixins(getPosition) {
    */
 
   mouseMove(e: any): void {
-    const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
-    const {cellRef} = this.$refs;
+    const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
+    const { cellRef } = this.$refs;
     hoverCell.innerHTML = cellRef.innerHTML;
-    cellRef.style.visibility = "hidden";
-    hoverCell.style.visibility = "visible";
-    document.body.style.cursor = "grabbing";
-    hoverCell.style.height = "64px"; // change to tileSize, IDK why not work
-    hoverCell.style.width = "64px";// change to tileSize, IDK why not work
-    hoverCell.style.transformOrigin = "32px 32px"; // change to tileSize/2
+    cellRef.style.visibility = 'hidden';
+    hoverCell.style.visibility = 'visible';
+    document.body.style.cursor = 'grabbing';
+    hoverCell.style.height = '64px'; // change to tileSize, IDK why not work
+    hoverCell.style.width = '64px'; // change to tileSize, IDK why not work
+    hoverCell.style.transformOrigin = '32px 32px'; // change to tileSize/2
     hoverCell.style.transform = `
-        translate(${e.pageX - 64/2}px, ${e.pageY - 64/2}px) 
+        translate(${e.pageX - 64 / 2}px, ${e.pageY - 64 / 2}px) 
         rotate(-${this.cell.rotation}deg)`; // change to tileSize/2
-    
   }
 
-  dragStart(): void{
+  dragStart(): void {
     this.border = 'white';
     this.mutationSetActiveCell(this.cell);
-    window.addEventListener("mousemove", this.mouseMove);
-    window.addEventListener("mouseup", this.dragEnd);
-    
+    window.addEventListener('mousemove', this.mouseMove);
+    window.addEventListener('mouseup', this.dragEnd);
   }
 
-  dragEnd(): void{
-    const hoverCell = document.querySelector(".hoverCell") as HTMLElement;
-    const {cellRef} = this.$refs;
-    cellRef.style.visibility = "visible"
-    hoverCell.style.visibility = "hidden";
-    document.body.style.cursor = "default";
-    window.removeEventListener("mousemove", this.mouseMove);
+  dragEnd(): void {
+    const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
+    const { cellRef } = this.$refs;
+    cellRef.style.visibility = 'visible';
+    hoverCell.style.visibility = 'hidden';
+    document.body.style.cursor = 'default';
+    window.removeEventListener('mousemove', this.mouseMove);
     this.border = '';
     this.mutationResetActiveCell();
   }
@@ -133,7 +137,7 @@ export default class AppCell extends Mixins(getPosition) {
   handleCellClick(): void {
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-    
+
     // do nothing, if:
     if (
       this.cell.frozen ||
@@ -142,7 +146,6 @@ export default class AppCell extends Mixins(getPosition) {
       // if there is a cell selected in the toolbox and you click it once more:
       (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
     ) {
-      
       this.mutationResetActiveCell();
     } else {
       if (!this.cellSelected) {
@@ -160,7 +163,6 @@ export default class AppCell extends Mixins(getPosition) {
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate();
         this.mutationResetActiveCell();
-        
       }
       this.$emit('updateCell', this.cell);
       this.mutationResetActiveCell();
