@@ -16,14 +16,6 @@
         "energized": false
       },
       {
-        "coord": { "y": 2, "x": 1 },
-        "element": "SugarSolution",
-        "rotation": 0,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
         "coord": { "y": 2, "x": 2 },
         "element": "Mirror",
         "rotation": 225,
@@ -32,25 +24,9 @@
         "energized": false
       },
       {
-        "coord": { "y": 2, "x": 3 },
-        "element": "SugarSolution",
-        "rotation": 0,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
         "coord": { "y": 2, "x": 9 },
         "element": "Mirror",
         "rotation": 135,
-        "frozen": true,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 1 },
-        "element": "SugarSolution",
-        "rotation": 0,
         "frozen": true,
         "active": false,
         "energized": false
@@ -136,5 +112,9 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "SugarSolution",
+    "PolarizingBeamSplitter",
+    "FaradayRotator"
+  ]
 }

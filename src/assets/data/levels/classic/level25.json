@@ -120,5 +120,11 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter"
+  ]
 }

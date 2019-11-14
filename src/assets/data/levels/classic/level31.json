@@ -240,5 +240,15 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator",
+    "FaradayRotator"
+  ]
 }

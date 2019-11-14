@@ -64,6 +64,22 @@
         "energized": false
       },
       {
+        "coord": { "y": 7, "x": 7 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
+        "coord": { "y": 8, "x": 7 },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": true,
+        "active": false,
+        "energized": false
+      },
+      {
         "coord": { "y": 5, "x": 9 },
         "element": "Detector",
         "rotation": 180,
@@ -72,7 +88,7 @@
         "energized": false
       },
       {
-        "coord": { "y": 7, "x": 7 },
+        "coord": { "y": 9, "x": 7 },
         "element": "Laser",
         "rotation": 90,
         "frozen": true,
@@ -88,5 +104,9 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "Mirror",
+    "BeamSplitter",
+    "VacuumJar"
+  ]
 }

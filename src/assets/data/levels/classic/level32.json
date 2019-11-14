@@ -112,5 +112,8 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "Glass",
+    "Glass"
+  ]
 }

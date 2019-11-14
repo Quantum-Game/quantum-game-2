@@ -5,10 +5,13 @@
   "description": "",
   "grid": {
     "cols": 13,
-    "rows": 10,
+    "rows": 7,
     "cells": [
       {
-        "coord": { "y": 1, "x": 1 },
+        "coord": {
+          "y": 1,
+          "x": 1
+        },
         "element": "Laser",
         "rotation": 0,
         "frozen": true,
@@ -16,7 +19,32 @@
         "energized": false
       },
       {
-        "coord": { "y": 1, "x": 3 },
+        "coord": {
+          "y": 1,
+          "x": 2
+        },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 1,
+          "x": 3
+        },
+        "element": "SugarSolution",
+        "rotation": 0,
+        "frozen": true,
+        "active": true,
+        "energized": false
+      },
+      {
+        "coord": {
+          "y": 1,
+          "x": 4
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 0,
         "frozen": true,
@@ -24,7 +52,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 1, "x": 5 },
+        "coord": {
+          "y": 1,
+          "x": 6
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 180,
         "frozen": true,
@@ -32,7 +63,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 1, "x": 7 },
+        "coord": {
+          "y": 1,
+          "x": 8
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 0,
         "frozen": true,
@@ -40,23 +74,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 1 },
-        "element": "Mirror",
-        "rotation": 90,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 2 },
-        "element": "FaradayRotator",
-        "rotation": 180,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 3 },
+        "coord": {
+          "y": 3,
+          "x": 4
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 180,
         "frozen": true,
@@ -64,7 +85,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 5 },
+        "coord": {
+          "y": 3,
+          "x": 6
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 0,
         "frozen": true,
@@ -72,7 +96,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 7 },
+        "coord": {
+          "y": 3,
+          "x": 8
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 180,
         "frozen": true,
@@ -80,23 +107,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 3, "x": 8 },
-        "element": "FaradayRotator",
-        "rotation": 180,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 3, "x": 9 },
-        "element": "Mirror",
-        "rotation": 90,
-        "frozen": false,
-        "active": false,
-        "energized": false
-      },
-      {
-        "coord": { "y": 5, "x": 3 },
+        "coord": {
+          "y": 5,
+          "x": 4
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 0,
         "frozen": true,
@@ -104,7 +118,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 5 },
+        "coord": {
+          "y": 5,
+          "x": 6
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 180,
         "frozen": true,
@@ -112,7 +129,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 7 },
+        "coord": {
+          "y": 5,
+          "x": 8
+        },
         "element": "PolarizingBeamSplitter",
         "rotation": 0,
         "frozen": true,
@@ -120,7 +140,10 @@
         "energized": false
       },
       {
-        "coord": { "y": 5, "x": 9 },
+        "coord": {
+          "y": 5,
+          "x": 10
+        },
         "element": "Detector",
         "rotation": 180,
         "frozen": true,
@@ -132,9 +155,17 @@
   "hints": [],
   "goals": [
     {
-      "coord": { "y": 5, "x": 9 },
+      "coord": {
+        "y": 5,
+        "x": 9
+      },
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "FaradayRotator",
+    "FaradayRotator",
+    "Mirror",
+    "Mirror"
+  ]
 }

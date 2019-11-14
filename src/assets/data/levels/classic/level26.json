@@ -27,7 +27,7 @@
         "coord": { "y": 3, "x": 2 },
         "element": "SugarSolution",
         "rotation": 0,
-        "frozen": true,
+        "frozen": false,
         "active": false,
         "energized": false
       },
@@ -35,7 +35,7 @@
         "coord": { "y": 3, "x": 3 },
         "element": "SugarSolution",
         "rotation": 0,
-        "frozen": true,
+        "frozen": false,
         "active": false,
         "energized": false
       },
@@ -88,5 +88,9 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "FaradayRotator",
+    "FaradayRotator",
+    "Mirror"
+  ]
 }
