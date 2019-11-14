@@ -122,10 +122,10 @@ p {
   margin-bottom: 12vw;
   align-items: center;
 }
-.image {
-  width: 30%;
+.CQTlogo {
+  width: 40%;
   padding-bottom: 10px;
-  min-width: 200px;
+  min-width: 250px;
 }
 .blog {
   border-top: 1px solid white;
