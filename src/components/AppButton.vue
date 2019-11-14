@@ -51,6 +51,7 @@ button {
   &:hover {
     background-color: #4302bf;
     transition: 0.5s;
+    text-decoration: none;
   }
 }
 
@@ -60,6 +61,7 @@ button {
   &:hover {
     background-color: #e80054;
     transition: 0.5s;
+    text-decoration: none;
   }
 }
 
@@ -70,10 +72,12 @@ button {
   &:hover {
     background-color: #4302bf;
     transition: 0.5s;
+    text-decoration: none;
   }
 }
 
 .overlay-btn {
   margin: 5px;
+  text-decoration: none;
 }
 </style>

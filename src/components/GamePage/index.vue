@@ -3,7 +3,7 @@
     <div class="hoverCell"></div>
     <!-- OVERLAY -->
     <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
-      <app-button :overlay="true" :inline="false">GO BACK</app-button>
+      <p class="backButton">GO BACK</p>
       <router-link :to="nextLevel">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
       </router-link>
@@ -449,6 +449,11 @@ export default class Game extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.backButton {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
 h1 {
   display: flex;
   flex-direction: row;

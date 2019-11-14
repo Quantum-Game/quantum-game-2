@@ -108,7 +108,7 @@ export default class AppOverlay extends Vue {
   h2 {
     color: white;
     font-size: 2rem;
-    margin: 20px;
+    margin: 10px;
   }
 }
 // .MineExploded-enter-active,
