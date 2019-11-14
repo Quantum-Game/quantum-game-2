@@ -6,6 +6,7 @@ import interferenceLevels from './adventure/interferenceLevels.json';
 import polarizationLevels from './adventure/polarizationLevels.json';
 import finalLevels from './adventure/finalLevels.json';
 import sandbox from './sandboxLevel.json';
+import classicLevels from './classic/index';
 
 export {
   sandbox,
@@ -38,6 +39,5 @@ const levels: LevelInterface[] = [
   polarizationGroup[1],
   finalGroup[0],
   finalGroup[1]
-];
-
+].concat(classicLevels);
 export default levels;

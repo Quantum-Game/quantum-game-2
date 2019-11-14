@@ -1,7 +1,7 @@
 {
   "id": 31,
   "name": "Sweet Faraday",
-  "group": "Game",
+  "group": "Classic",
   "description": "Inverted Faraday rotation from classic",
   "grid": {
     "cols": 13,
