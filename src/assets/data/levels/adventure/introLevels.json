@@ -43,16 +43,6 @@
       {
         "coord": {
           "y": 2,
-          "x": 10
-        },
-        "content": "LASER MINE ARE DANGEROUS",
-        "color": "red",
-        "rotation": 0,
-        "active": true
-      },
-      {
-        "coord": {
-          "y": 2,
           "x": 6
         },
         "content": "DRAG A PLANT HERE",

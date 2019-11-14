@@ -1,8 +1,7 @@
 <template>
   <transition :name="gameState">
     <!-- FIXME -->
-    <div v-if="explosion" :class="gameState" class="wrapper">
-    </div>
+    <div v-if="explosion" :class="gameState" class="wrapper"></div>
 
     <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
       <div class="victory-circle">
@@ -10,7 +9,7 @@
           You won!
         </h2>
         <slot></slot>
-      </div> 
+      </div>
     </div>
   </transition>
 </template>
@@ -40,8 +39,8 @@ export default class AppOverlay extends Vue {
     this.explosion = true;
     this.explosionTimeout = setTimeout(() => {
       this.explosion = false;
-    }, 300)
-  } 
+    }, 300);
+  }
 
   @Watch('gameState')
   handleGameStateChange(newGameState: string, oldGameState: string) {
@@ -100,7 +99,7 @@ export default class AppOverlay extends Vue {
     border-radius: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     margin: 10px;
     background: linear-gradient(#5c00d3, #ff0055, #fbb03b);

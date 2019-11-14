@@ -242,7 +242,7 @@ export default class GameKet extends Vue {
         font-size: 0.8rem;
       }
       & .legend-pol {
-        color: #9D40FF;
+        color: #9d40ff;
         margin: 5px;
         font-size: 0.8rem;
       }
@@ -275,7 +275,7 @@ export default class GameKet extends Vue {
           color: #ff0055;
         }
         & .ket-pol {
-          color: #9D40FF;
+          color: #9d40ff;
         }
       }
     }
