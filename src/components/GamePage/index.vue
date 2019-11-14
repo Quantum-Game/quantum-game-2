@@ -349,28 +349,29 @@ export default class Game extends Vue {
 
   /**
    * Left and right keys to see frames
+   * TODO: Implement dev mode
    */
   handleArrowPress(e: { keyCode: number }): void {
     // console.log(e.keyCode);
     switch (e.keyCode) {
-      case 81:
-        this.level.grid.moveAll(180);
-        break;
-      case 68:
-        this.level.grid.moveAll(0);
-        break;
-      case 90:
-        this.level.grid.moveAll(90);
-        break;
-      case 83:
-        this.level.grid.moveAll(270);
-        break;
-      case 65:
-        this.level.grid.rotateAll();
-        break;
-      case 69:
-        this.level.grid.reflectAll();
-        break;
+      // case 81:
+      //   this.level.grid.moveAll(180);
+      //   break;
+      // case 68:
+      //   this.level.grid.moveAll(0);
+      //   break;
+      // case 90:
+      //   this.level.grid.moveAll(90);
+      //   break;
+      // case 83:
+      //   this.level.grid.moveAll(270);
+      //   break;
+      // case 65:
+      //   this.level.grid.rotateAll();
+      //   break;
+      // case 69:
+      //   this.level.grid.reflectAll();
+      //   break;
       case 37:
         this.showPrevious();
         break;
