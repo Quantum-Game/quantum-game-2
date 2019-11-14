@@ -667,7 +667,7 @@
   "rock": {
     "title": "Rock",
     "elementName": "Rock",
-    "short": "A mirror is an object that reflects incident light preserving its properties.",
+    "short": "##COMING SOON!",
     "grids": [
       {
         "cols": 4,
@@ -698,20 +698,8 @@
     ],
     "sections": [
       {
-        "title": "Dig Deeper",
-        "content": "<p>Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.</p><p>In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass.</p><p>Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.</p>"
-      },
-      {
-        "title": "TRICKS WITH PHASE!",
-        "content": "<p>NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!</p>"
-      },
-      {
-        "title": "Everyday Life",
-        "content": "<p>“Mirror mirror on the wall who's the fairest of them all?”</p><p>We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!</p>"
-      },
-      {
-        "title": "Further Reading",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mirror\">Mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\">Reflection Phase Change</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_cavity\">Optical Cavity</a></li></ul>"
+        "title": "",
+        "content": "<p>##COMING SOON!</p>"
       }
     ]
   },
