@@ -33,11 +33,6 @@
           :detections="detections"
           :mines="mineCount"
         />
-        <game-multiverse-horizontal
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
-        />
       </section>
 
       <!-- MAIN-MIDDLE -->

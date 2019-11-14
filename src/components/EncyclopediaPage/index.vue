@@ -14,14 +14,12 @@ import { entriesNameList } from '@/assets/data/entries';
 import AppLayout from '@/components/AppLayout.vue';
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue';
-import EncyclopediaRelatedConceptsList from '@/components/EncyclopediaPage/EncyclopediaRelatedConceptsList.vue';
 
 @Component({
   components: {
     AppLayout,
     EncyclopediaArticle,
     EncyclopediaLinkList,
-    EncyclopediaRelatedConceptsList
   }
 })
 export default class Info extends Vue {
