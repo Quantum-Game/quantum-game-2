@@ -23,7 +23,7 @@
     </div>
 
     <!-- GOALS -->
-    <div v-if="detectors > 0" class="bottom-icons">
+    <div v-if="goals.length > 0" class="bottom-icons">
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>

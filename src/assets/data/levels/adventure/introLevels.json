@@ -138,23 +138,13 @@
         "color": "red",
         "rotation": 0,
         "active": true
-      },
-      {
-        "coord": {
-          "y": 7,
-          "x": 5
-        },
-        "content": "CLICK ELEMENTS TO ROTATE THEM",
-        "color": "purple",
-        "rotation": 0,
-        "active": true
       }
     ],
     "goals": [
       {
         "coord": {
           "y": 2,
-          "x": 7
+          "x": 9
         },
         "threshold": 1
       }

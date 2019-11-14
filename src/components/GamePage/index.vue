@@ -54,7 +54,7 @@
           @step-forward="showNext"
           @play="play"
         >
-          <app-button @click.native="handleSave">exportLevel</app-button>
+          <app-button @click.native="handleSave">save level</app-button>
         </game-controls>
         <!-- <game-multiverse-horizontal
           :multiverse="multiverseGraph"
