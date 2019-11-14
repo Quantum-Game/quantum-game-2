@@ -350,7 +350,7 @@ export default class Game extends Vue {
    * Left and right keys to see frames
    */
   handleArrowPress(e: { keyCode: number }): void {
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
     switch (e.keyCode) {
       case 81:
         this.level.grid.moveAll(180);
