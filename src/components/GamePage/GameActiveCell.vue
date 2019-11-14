@@ -1,7 +1,6 @@
 <template>
-  <div class="explanation">
+  <div v-if="hoveredParticles.length === 0" class="explanation">
     <h3 class="explanation__title">{{ spacedName }}</h3>
-    <!-- <p class="coord">{{ hoveredCell.coord.toString() }}</p> -->
     <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
     <slot></slot>
@@ -12,6 +11,7 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
 import Cell from '@/engine/Cell';
+import Particle from '@/engine/Particle';
 import { camelCaseToDash } from '@/engine/Helpers';
 import AppButton from '@/components/AppButton.vue';
 
@@ -19,6 +19,7 @@ import AppButton from '@/components/AppButton.vue';
 export default class GameActiveCell extends Vue {
   @State activeCell!: Cell;
   @State hoveredCell!: Cell;
+  @State hoveredParticles!: Particle[];
 
   /*
     used at least twice, getter for convenience
