@@ -1,9 +1,9 @@
 
 [
   {
-    "id": 1,
-    "name": "Genesis",
-    "group": "Adventure",
+    "id": 5,
+    "name": "Out of phase",
+    "group": "Phase",
     "description": "",
     "grid": {
       "cols": 13,
@@ -80,9 +80,9 @@
     "tools": ["Mirror", "Mirror"]
   },
   {
-    "id": 2,
-    "name": "Meet the rock",
-    "group": "Adventure",
+    "id": 6,
+    "name": "Phaser",
+    "group": "Phase",
     "description": "",
     "grid": {
       "cols": 13,

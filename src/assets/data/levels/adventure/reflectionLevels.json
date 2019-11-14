@@ -1,9 +1,9 @@
 
 [
   {
-    "id": 1,
-    "name": "Genesis",
-    "group": "Adventure",
+    "id": 3,
+    "name": "Reflektor",
+    "group": "Reflection",
     "description": "",
     "grid": {
       "cols": 13,
@@ -80,9 +80,9 @@
     "tools": ["Mirror", "Mirror"]
   },
   {
-    "id": 2,
-    "name": "Meet the rock",
-    "group": "Adventure",
+    "id": 4,
+    "name": "Hall of mirrors",
+    "group": "Reflection",
     "description": "",
     "grid": {
       "cols": 13,

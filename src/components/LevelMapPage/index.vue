@@ -2,13 +2,16 @@
   <app-layout>
     <article slot="main" class="main">
       <div class="container">
-        <ul v-for="(group, i) in groups" :key="'group' + i" class="main__level-list">
-          <ul v-for="(level, j) in group" :key="'level' + j">
+        <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
+          <h3>{{ group[0].group }}</h3>
+          <ul v-for="(level, j) in group" :key="'level' + j" class="group">
             <li>
-              <router-link class="levelLink" :to="`/level/${i + 1}`">Level {{ i + 1 }}</router-link>
+              <router-link class="levelLink" :to="`/level/${level.id}`">{{
+                level.name
+              }}</router-link>
             </li>
           </ul>
-        </ul>
+        </div>
       </div>
     </article>
   </app-layout>
@@ -37,7 +40,7 @@ export default class LevelMapPage extends Vue {
 
 <style lang="scss">
 .container {
-  column-count: 3;
+  column-count: 1;
   padding: 5em;
   @media screen and (max-width: 800px) {
     column-count: 1;
@@ -45,19 +48,25 @@ export default class LevelMapPage extends Vue {
   }
 }
 .main {
-  & .main__level-list {
-    height: 100vh;
-    display: flex;
+  text-align: left;
+  .groups {
+    display: block;
+    padding: 20px;
+    margin-top: 20px;
+    border: 3px dotted white;
     flex-direction: column;
-    justify-content: space-around;
-    padding: 0;
-    margin: 10;
-    list-style: none;
     & a {
-      text-decoration: none;
+      text-decoration: underline;
       font-weight: bold;
       color: white;
     }
   }
+  // & .main__level-list {
+  //   height: 100vh;
+  //   display: flex;
+  //   justify-content: space-around;
+  //   padding: 0;
+  //   margin: 10;
+  //   list-style: none;
 }
 </style>

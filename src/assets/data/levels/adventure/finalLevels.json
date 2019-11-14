@@ -1,9 +1,9 @@
 
 [
   {
-    "id": 1,
-    "name": "Genesis",
-    "group": "Adventure",
+    "id": 11,
+    "name": "Drumroll",
+    "group": "Final",
     "description": "",
     "grid": {
       "cols": 13,
@@ -80,9 +80,9 @@
     "tools": ["Mirror", "Mirror"]
   },
   {
-    "id": 2,
-    "name": "Meet the rock",
-    "group": "Adventure",
+    "id": 12,
+    "name": "Final boss of the internetz",
+    "group": "Final",
     "description": "",
     "grid": {
       "cols": 13,

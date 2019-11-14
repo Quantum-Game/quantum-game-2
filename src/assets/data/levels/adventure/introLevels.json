@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "name": "Genesis",
-    "group": "Adventure",
+    "name": "Let there be light",
+    "group": "Intro",
     "description": "",
     "grid": {
       "cols": 13,
@@ -81,7 +81,7 @@
   {
     "id": 2,
     "name": "Meet the rock",
-    "group": "Adventure",
+    "group": "Intro",
     "description": "",
     "grid": {
       "cols": 13,
