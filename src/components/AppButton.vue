@@ -10,13 +10,14 @@ export default class AppButton extends Vue {
   @Prop() readonly hoverColor!: string;
   @Prop({ default: 'basic' }) readonly type!: string;
   @Prop({ default: true }) readonly inline!: boolean;
+  @Prop() readonly overlay!: boolean;
 
   get colorClass() {
     return this.hoverColor;
   }
 
   get computedClass() {
-    return [this.type, this.inline && 'inline'];
+    return [this.type, this.inline && 'inline', this.overlay && 'overlay-btn'];
   }
 }
 </script>
@@ -70,5 +71,9 @@ button {
     background-color: #4302bf;
     transition: 0.5s;
   }
+}
+
+.overlay-btn {
+  margin: 5px;
 }
 </style>
