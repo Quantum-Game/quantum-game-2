@@ -62,4 +62,10 @@ a {
   color: #796bbc;
   text-decoration: none;
 }
+
+.entry {
+  img {
+    width: 100%;
+  }
+}
 </style>
