@@ -74,4 +74,8 @@ export default class GameActiveCell extends Vue {
     color: grey;
   }
 }
+
+h3 {
+  text-transform: uppercase;
+}
 </style>

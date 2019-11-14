@@ -8,7 +8,7 @@
         @click.native="$emit(btn)"
       />
     </span>
-
+    <save-level />
     <span>
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }} </b>
       <span>({{ gameState }})</span>
@@ -29,10 +29,12 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
+import SaveLevel from '@/components/SaveLevel.vue';
 
 @Component({
   components: {
-    GameControlsButton
+    GameControlsButton,
+    SaveLevel
   }
 })
 export default class GameControls extends Vue {
