@@ -1,12 +1,11 @@
 <template>
   <div class="game">
-    <div class="hoverCell" style="position: absolute;"></div>
-
+    <div class="hoverCell"></div>
     <!-- OVERLAY -->
     <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
-      <app-button>GO BACK</app-button>
+      <p class="backButton">GO BACK</p>
       <router-link :to="nextLevel">
-        <app-button>NEXT LEVEL</app-button>
+        <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
       </router-link>
     </app-overlay>
 
@@ -33,11 +32,6 @@
           :particles="activeFrame.particles"
           :detections="detections"
           :mines="mineCount"
-        />
-        <game-multiverse-horizontal
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
         />
       </section>
 
@@ -363,7 +357,7 @@ export default class Game extends Vue {
   }
 
   addToCurrentTools(cell: Cell) {
-    this.level.toolbox.addTool(cell);
+    this.level.toolbox.addTool(cell, this.activeCell);
   }
 
   setCurrentTools(cells: Cell[]) {
@@ -386,7 +380,7 @@ export default class Game extends Vue {
     const targetCell = cell;
 
     // handle moving from from / to toolbox
-    if (this.activeCell.isFromToolbox) {
+    if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
       this.removeFromCurrentTools(this.activeCell);
     } else if (this.activeCell.isFromGrid && cell.isFromToolbox) {
       this.addToCurrentTools(cell);
@@ -455,6 +449,11 @@ export default class Game extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.backButton {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
 h1 {
   display: flex;
   flex-direction: row;
@@ -504,5 +503,11 @@ h1 {
 }
 .levelLink {
   text-decoration: none;
+}
+
+.hoverCell {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
 }
 </style>

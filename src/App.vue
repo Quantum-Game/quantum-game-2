@@ -63,8 +63,12 @@ a {
   text-decoration: none;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 .entry {
-  img {
+  & img {
     width: 100%;
   }
 }
