@@ -5,6 +5,8 @@
     :class="computedCellClass"
     @mousedown="handleCellClick"
     @mouseup="handleCellClick"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
     <rect
       :width="tileSize"
@@ -224,6 +226,16 @@ export default class AppCell extends Mixins(getPosition) {
 
   indicateTool(): void {
     this.border = borderColors.rotable;
+  }
+
+  handleMouseEnter() {
+    if (!this.cell.frozen && this.available) {
+      this.border = borderColors.rotable;
+    }
+  }
+
+  handleMouseLeave() {
+    this.border = '';
   }
 
   /**
