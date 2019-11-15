@@ -5,11 +5,9 @@
         <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
           <h3>{{ group[0].group }}</h3>
           <ul v-for="(level, j) in group" :key="'level' + j" class="group">
-            <li>
               <router-link class="levelLink" :to="`/level/${level.id}`">
                 {{ level.id }} - {{ level.name }}
               </router-link>
-            </li>
           </ul>
         </div>
       </div>
@@ -48,16 +46,21 @@ export default class LevelMapPage extends Vue {
   }
 }
 .main {
-  text-align: left;
+  text-align: center;
   .groups {
     display: block;
     padding: 20px;
     margin-top: 20px;
-    border: 3px dotted white;
+    border-top: 1px solid white;
     flex-direction: column;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-transform: uppercase;
     & a {
-      text-decoration: underline;
-      font-weight: bold;
+      font-size: 1rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-weight: 300;
       color: white;
     }
   }
