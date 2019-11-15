@@ -23,7 +23,7 @@
     </div>
 
     <!-- GOALS -->
-    <div class="bottom-icons">
+    <div v-if="goals.length > 0" class="bottom-icons">
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
@@ -53,17 +53,6 @@
         <span v-else class="success"><b>SAFE</b></span>
       </div>
     </div>
-
-    <!-- DETECTION EVENTS -->
-    <!-- <svg v-for="(detection, index) in detections" :key="'detection' + index" class="detection">
-      <g>
-        <app-cell :cell="detection.cell" />
-        <text class="counter" x="100px" y="50%">
-          {{ (detection.probability * 100).toFixed(2) }}%
-        </text>
-      </g>
-    </svg>
-    <div>DETECTION EVENTS</div>-->
   </div>
 </template>
 
@@ -149,7 +138,7 @@ export default class GameGoals extends Vue {
    */
   get minesHit(): number {
     const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine' && detection.probability > 0.001;
+      return detection.cell.element.name === 'Mine';
     });
     return minesDetected.length;
   }

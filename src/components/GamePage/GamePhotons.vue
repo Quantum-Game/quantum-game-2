@@ -52,6 +52,7 @@ export default class GamePhotons extends Vue {
 <style lang="scss" scoped>
 .hovered-photons-wrapper {
   border-bottom: 1px solid white;
+  border-top: 1px solid #8e819d;
   width: 100%;
   // width: 150px;
   display: block;

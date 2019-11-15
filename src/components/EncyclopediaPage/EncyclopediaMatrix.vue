@@ -36,7 +36,6 @@
         @mouseover="tileMouseOver(d)"
       />
     </g>
-    <text class="description" :x="scale(4.5)" :y="scale(10)">{{ description }}</text>
   </svg>
 </template>
 
@@ -105,7 +104,6 @@ export default class EncyclopediaOperatorViewer extends Vue {
   @Prop({ default: () => [] }) private labelsOut!: number[];
 
   scale = (i: number) => i * this.size;
-  description = '';
 
   // https://github.com/stared/quantum-game/blob/master/js/transition_heatmap.js
   colorComplex = (re: number, im: number) => {
@@ -115,9 +113,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
   };
 
   tileMouseOver(d: { i: number; j: number; re: number; im: number }) {
-    this.description = `i: ${d.i}, j: ${d.j}:   (${d.re.toFixed(2)} + ${d.im.toFixed(2)} i)|${
-      this.labelsOut[d.i]
-    }⟩⟨${this.labelsIn[d.j]}|`;
+    this.$emit('columnMouseover', d.i);
   }
 }
 </script>
@@ -129,8 +125,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
 }
 
 .label-in,
-.label-out,
-.description {
+.label-out {
   font-size: 16px;
   text-align: center;
   text-anchor: middle;

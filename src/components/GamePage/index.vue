@@ -17,7 +17,9 @@
         <router-link :to="previousLevel">
           <img src="@/assets/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
-        {{ level.id + ' - ' + level.name.toUpperCase() }}
+        {{ level.name.toUpperCase() }}
+        <!-- {{ level.id + ' - ' + level.name.toUpperCase() }} -->
+        <!-- <span class="groupTitle">{{ level.group.toUpperCase() }}</span> -->
 
         <router-link :to="nextLevel">
           <img src="@/assets/nextIcon.svg" alt="Next Level" width="32" />
@@ -32,6 +34,11 @@
           :particles="activeFrame.particles"
           :detections="detections"
           :mines="mineCount"
+        />
+        <game-multiverse-horizontal
+          :multiverse="multiverseGraph"
+          :active-id="frameIndex"
+          @changeActiveFrame="handleChangeActiveFrame"
         />
       </section>
 
@@ -52,12 +59,9 @@
           @step-back="showPrevious"
           @step-forward="showNext"
           @play="play"
-        />
-        <!-- <game-multiverse-horizontal
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
-        /> -->
+        >
+          <app-button @click.native="handleSave">save level</app-button>
+        </game-controls>
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
@@ -91,7 +95,7 @@ import {
   GameState,
   GridInterface
 } from '@/engine/interfaces';
-import levelData from '@/assets/data/levels';
+import levels from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue';
 import GameToolbox from '@/components/GamePage/GameToolbox.vue';
@@ -147,6 +151,15 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
+  handleSave() {
+    const json = JSON.stringify(this.level.exportLevel(), null, 2);
+    const blob = new Blob([json], { type: 'octet/stream' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'level.json';
+    link.click();
+  }
+
   handleChangeActiveFrame(activeId: number) {
     this.frameIndex = activeId;
   }
@@ -160,11 +173,9 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.error = '';
     this.mutationSetCurrentLevelID(this.levelId);
-    const levelI = levelData[`level${this.levelId}`];
+    const levelI = levels[this.levelId];
     this.level = Level.importLevel(levelI);
     this.mutationSetGameState('InProgress');
-    // console.log(this.level.toolbox.uniqueCellList);
-
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
@@ -338,9 +349,29 @@ export default class Game extends Vue {
 
   /**
    * Left and right keys to see frames
+   * TODO: Implement dev mode
    */
   handleArrowPress(e: { keyCode: number }): void {
+    // console.log(e.keyCode);
     switch (e.keyCode) {
+      // case 81:
+      //   this.level.grid.moveAll(180);
+      //   break;
+      // case 68:
+      //   this.level.grid.moveAll(0);
+      //   break;
+      // case 90:
+      //   this.level.grid.moveAll(90);
+      //   break;
+      // case 83:
+      //   this.level.grid.moveAll(270);
+      //   break;
+      // case 65:
+      //   this.level.grid.rotateAll();
+      //   break;
+      // case 69:
+      //   this.level.grid.reflectAll();
+      //   break;
       case 37:
         this.showPrevious();
         break;
@@ -462,6 +493,10 @@ h1 {
 .title {
   margin-bottom: 30;
   margin-top: 0;
+  .groupTitle {
+    font-size: 14px;
+    color: grey;
+  }
 }
 .grid {
   width: 100%;
