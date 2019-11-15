@@ -4,7 +4,7 @@
     :style="positionStyle"
     :class="computedCellClass"
     @mousedown="handleCellClick"
-    @mouseup="handleCellClick"
+    @mouseup="handleCellUp"
   >
     <rect
       :width="tileSize"
@@ -90,6 +90,7 @@ export default class AppCell extends Mixins(getPosition) {
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
   border = '';
+  isRotate = false;
 
   $refs!: {
     cellRef: HTMLElement;
@@ -103,9 +104,10 @@ export default class AppCell extends Mixins(getPosition) {
 
   mouseMove(e: any): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
+    this.isRotate = true;
     const { cellRef } = this.$refs;
     hoverCell.innerHTML = cellRef.innerHTML;
-    cellRef.style.visibility = 'hidden';
+    cellRef.style.opacity = '0';
     hoverCell.style.visibility = 'visible';
     document.body.style.cursor = 'grabbing';
     hoverCell.style.height = '64px'; // change to tileSize, IDK why not work
@@ -117,27 +119,32 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   dragStart(): void {
+    const gameLayout = document.querySelector('.game-layout') as HTMLElement;
     this.border = 'white';
     this.mutationSetActiveCell(this.cell);
     window.addEventListener('mousemove', this.mouseMove);
-    window.addEventListener('mouseup', this.dragEnd);
+    window.addEventListener('mouseup', (e) => this.dragEnd(e));
   }
 
-  dragEnd(): void {
+  dragEnd(e: any): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
+    const grid = document.querySelector('.board_scaler') as HTMLElement;
+    const gridWidth = grid.getBoundingClientRect().width;
+
     const { cellRef } = this.$refs;
-    cellRef.style.visibility = 'visible';
+    cellRef.style.opacity = '1';
     hoverCell.style.visibility = 'hidden';
     document.body.style.cursor = 'default';
     window.removeEventListener('mousemove', this.mouseMove);
     this.border = '';
+
     this.mutationResetActiveCell();
+    window.removeEventListener('mouseup', this.dragEnd);
   }
 
   handleCellClick(): void {
     // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-
     // do nothing, if:
     if (
       this.cell.frozen ||
@@ -148,6 +155,11 @@ export default class AppCell extends Mixins(getPosition) {
     ) {
       this.mutationResetActiveCell();
     } else {
+      // ROTATE CELL
+      if (this.isActiveCell && this.cell.isFromGrid && this.isRotate) {
+        this.cell.rotate();
+        this.isRotate = false;
+      }
       if (!this.cellSelected) {
         // FIRST CLICK
         // If from toolbox needs to have available elements
@@ -155,18 +167,18 @@ export default class AppCell extends Mixins(getPosition) {
           this.dragStart();
           return;
         }
+
         this.border = '';
-        this.mutationResetActiveCell();
-        return;
       }
-      // ROTATE CELL
-      if (this.isActiveCell && this.cell.isFromGrid) {
-        this.cell.rotate();
-        this.mutationResetActiveCell();
-      }
-      this.$emit('updateCell', this.cell);
-      this.mutationResetActiveCell();
     }
+  }
+
+  handleCellUp(): void {
+    if (this.isActiveCell && this.cell.isFromGrid) {
+      this.cell.rotate();
+    }
+    this.$emit('updateCell', this.cell);
+    this.mutationResetActiveCell();
   }
 
   /**

@@ -409,7 +409,6 @@ export default class Game extends Vue {
   updateCell(cell: Cell): void {
     const sourceCell = this.activeCell;
     const targetCell = cell;
-
     // handle moving from from / to toolbox
     if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
       this.removeFromCurrentTools(this.activeCell);
@@ -417,7 +416,6 @@ export default class Game extends Vue {
       this.addToCurrentTools(cell);
       this.level.grid.set(this.activeCell.reset());
     }
-
     const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
     mutatedCells.forEach((mutatedCell: Cell) => {
       this.level.grid.set(mutatedCell);
