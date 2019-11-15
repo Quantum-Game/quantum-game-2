@@ -41,7 +41,7 @@ export interface LevelInterface {
   grid: GridInterface;
   goals: GoalInterface[];
   hints: HintInterface[];
-  tools?: CellInterface[];
+  tools: string[];
 }
 
 /**
@@ -69,7 +69,6 @@ export interface ClassicLevelInterface {
 export interface GoalInterface {
   coord: CoordInterface;
   threshold: number;
-  value: number;
 }
 
 /**
