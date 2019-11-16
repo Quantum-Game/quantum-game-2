@@ -123,15 +123,14 @@ export default class AppCell extends Mixins(getPosition) {
     this.border = 'white';
     this.mutationSetActiveCell(this.cell);
     window.addEventListener('mousemove', this.mouseMove);
-    window.addEventListener('mouseup', (e) => this.dragEnd(e));
+    window.addEventListener('mouseup', this.dragEnd);
   }
 
   dragEnd(e: any): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
     const grid = document.querySelector('.board_scaler') as HTMLElement;
-    const gridWidth = grid.getBoundingClientRect().width;
-
     const { cellRef } = this.$refs;
+
     cellRef.style.opacity = '1';
     hoverCell.style.visibility = 'hidden';
     document.body.style.cursor = 'default';
