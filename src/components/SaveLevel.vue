@@ -1,7 +1,6 @@
 <template>
   <div>
     <app-button
-      v-if="!$route.meta.publicRoute"
       :class="{ inactive: !isLoggedIn }"
       type="special inline"
       @click.native="handleClick"
@@ -42,5 +41,3 @@ export default class SaveLevel extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped></style>
