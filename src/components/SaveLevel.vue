@@ -1,8 +1,13 @@
 <template>
   <div>
-    <a v-if="!$route.meta.publicRoute" @click.prevent="handleClick"
-      ><app-button type="special"> Save Level </app-button>
-    </a>
+    <app-button
+      v-if="!$route.meta.publicRoute"
+      :class="{ inactive: !isLoggedIn }"
+      type="special inline"
+      @click.native="handleClick"
+    >
+      Save Level
+    </app-button>
   </div>
 </template>
 
@@ -17,6 +22,10 @@ import AppButton from '@/components/AppButton.vue';
   }
 })
 export default class SaveLevel extends Vue {
+  get isLoggedIn() {
+    return $userStore.getters.isLoggedIn;
+  }
+
   saveLevel() {
     $userStore.dispatch('SAVE_LEVEL', this.$store.state);
   }
