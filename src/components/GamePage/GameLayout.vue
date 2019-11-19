@@ -44,7 +44,6 @@ export default class GameLayout extends Vue {}
 .game-layout {
   width: 1400px;
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
   color: white;
   width: 100%;
@@ -53,24 +52,29 @@ export default class GameLayout extends Vue {}
   -moz-user-select: none; /* Firefox 2+ */
   -ms-user-select: none; /* IE 10+ */
   user-select: none;
+  @media screen and (min-width: 1300px) {
+    display:flex;
+  }
 }
 .middle {
   padding: 20px;
   align-content: center;
   justify-content: center;
-  width: 65%;
+  width: 60%;
   box-sizing: border-box;
   @media screen and (max-width: 1000px) {
     width: 100%;
-    padding: 0 20px;
+    padding: 0;
   }
 }
 .left,
 .right {
   box-sizing: border-box;
   height: auto;
-  width: 16%;
+  width: 17%;
   padding: 20px;
+  min-width: 232px;
+
   @media screen and (max-width: 1000px) {
     width: 100%;
     padding: 0 20px;
@@ -82,20 +86,30 @@ export default class GameLayout extends Vue {}
 }
 
 header {
-  width: 1400px;
+  //width: 1400px;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   padding: none;
+  @media screen and (min-width: 1001px) {
+    .title a {
+      margin: 0 20px;
+    }
+  }
   @media screen and (max-width: 1000px) {
     flex-direction: column;
     width: 100%;
-    margin-top: 20px;
+    padding-top: 20px;
+    h1 {
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+    }
     .left {
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      margin-bottom: 50px;
       min-height: 41px;
     }
   }

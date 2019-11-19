@@ -57,6 +57,9 @@ export default class GamePhotons extends Vue {
   // width: 150px;
   display: block;
   text-align: left;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
   .step {
     font-size: 0.8rem;
     line-height: 150%;
