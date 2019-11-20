@@ -43,6 +43,7 @@ export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  cell = {};
 
   handleMouseEnter(cell: Cell) {
     this.mutationSetHoveredCell(cell);
