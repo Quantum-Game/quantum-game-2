@@ -1,7 +1,7 @@
 <template>
   <transition :name="gameState">
     <div v-if="explosion" :class="gameState" class="wrapper"></div>
-    <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
+    <div v-else-if="gameState === GameState.Victory" :class="gameState" class="wrapper">
       <div class="victory-circle">
         <h2>
           You won!
@@ -17,6 +17,7 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import VueConfetti from 'vue-confetti';
 import AppButton from '@/components/AppButton.vue';
+import { GameState } from '../engine/interfaces';
 
 Vue.use(VueConfetti);
 
@@ -26,7 +27,7 @@ Vue.use(VueConfetti);
   }
 })
 export default class AppOverlay extends Vue {
-  @Prop() readonly gameState!: string;
+  @Prop() readonly gameState!: GameState;
   $confetti!: {
     start: (params: any) => void;
     stop: () => void;
@@ -42,8 +43,8 @@ export default class AppOverlay extends Vue {
   }
 
   @Watch('gameState')
-  handleGameStateChange(newGameState: string, oldGameState: string) {
-    if (newGameState === 'Victory') {
+  handleGameStateChange(newGameState: GameState, oldGameState: GameState) {
+    if (newGameState === GameState.Victory) {
       this.$confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
@@ -68,9 +69,9 @@ export default class AppOverlay extends Vue {
           '#ba00ff' // purple 02
         ]
       });
-    } else if (newGameState === 'MineExploded') {
+    } else if (newGameState === GameState.MineExploded) {
       this.mineExploding();
-    } else if (oldGameState === 'Victory') {
+    } else if (oldGameState === GameState.Victory) {
       this.$confetti.stop();
     }
   }

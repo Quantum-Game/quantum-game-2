@@ -29,6 +29,7 @@
 // FIXME: Way too overcomplicated and hides access to individual customization
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
+import { GameState } from '@/engine/interfaces';
 import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
 import SaveLevel from '@/components/SaveLevel.vue';
 
@@ -41,7 +42,7 @@ import SaveLevel from '@/components/SaveLevel.vue';
 export default class GameControls extends Vue {
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
-  @State('gameState') gameState!: string;
+  @State('gameState') gameState!: GameState;
   // PLAY BUTTON SHOULD CHANGE TO PAUSE WHEN THE PHOTON IS MOVING
   playBackControls = ['step-back', 'play', 'step-forward'];
   // ADD VIEW CONTROLS WHEN MULTIVERSE MODE IS ADDED
