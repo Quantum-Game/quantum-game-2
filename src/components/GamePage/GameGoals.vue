@@ -25,10 +25,10 @@
     <!-- GOALS -->
     <div v-if="goals.length > 0" class="bottom-icons">
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
-        <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
       <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
         <span v-if="detectorsHit !== goals.length" class="defeat">
@@ -41,10 +41,10 @@
     <!-- MINES -->
     <div v-if="mines > 0" class="bottom-icons">
       <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
-        <img src="@/assets/mineIconRed.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/mineIconRed.svg" alt="Key Icon" width="34" />
       </span>
       <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
-        <img src="@/assets/mineIconEmpty.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>
         <span v-if="minesHit > 0" class="defeat">
