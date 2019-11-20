@@ -1,7 +1,6 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
-    <!-- <h3>MULTIVERSE</h3> -->
-    <svg width="100%">
+    <svg :style="computedSvgStyle">
       <!-- ARROWHEAD -->
       <defs>
         <marker
@@ -45,17 +44,12 @@
       <!-- NODE -->
       <g :style="computedStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <rect
-            class="nodeRect"
-            :x="node.x - 10"
-            :y="node.y - 10"
-            :rx="node.rx"
-            :ry="node.ry"
-            @mouseover="handleMouseOver(node.fIndex)"
-          />
+          <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
           </text>
+          <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
+          <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
         <!-- EDGE -->
         <g v-for="(edge, i) in edges" :key="'edge' + i" :class="computeEdgeClass(edge)">
@@ -78,24 +72,36 @@ import MultiverseGraph from '@/engine/MultiverseGraph';
 @Component({
   components: {}
 })
-export default class GameMultiverse extends Vue {
+export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph;
   @Prop() readonly activeId!: number;
   $refs!: {
     multiverseWrapper: HTMLElement;
   };
-  rect = { width: 0 };
+  rect = { width: 0, height: 0 };
 
   mounted() {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
-    // this.debugNodes();
   }
 
   handleMouseOver(activeId: number): void {
     this.$emit('changeActiveFrame', activeId);
   }
 
-  computeNodeClass(node: { fIndex: number }): string[] {
+  get totalFrames() {
+    return this.multiverse.qs.frames.length;
+  }
+
+  get computedSvgStyle(): {} {
+    const { height } = this.graph.graph();
+    return {
+      height: `${height}px`,
+      // 'min-height': this.totalFrames * 30,
+      'max-height': '500px'
+    };
+  }
+
+  computeNodeClass(node: { fIndex: number; leaf: boolean; root: boolean }): string[] {
     let timeClass = '';
     if (node.fIndex < this.activeId) {
       timeClass = 'past';
@@ -104,7 +110,7 @@ export default class GameMultiverse extends Vue {
     } else {
       timeClass = 'future';
     }
-    return ['node', timeClass];
+    return ['node', timeClass, node.root ? 'root' : '', node.leaf ? 'leaf' : ''];
   }
 
   computeEdgeClass(edge: { fIndex: number }): string[] {
@@ -133,9 +139,8 @@ export default class GameMultiverse extends Vue {
 
   get computedStyle() {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
-    // const yCenterOffset = this.graph.graph().height + 40;
     return {
-      transform: `translate(${xCenterOffset}px, ${0}px)`
+      transform: `translate(${xCenterOffset}px, 0px)`
     };
   }
   /**
@@ -144,12 +149,14 @@ export default class GameMultiverse extends Vue {
   get graph() {
     return this.multiverse.graph;
   }
+
   get nodes() {
     const uids = this.multiverse.graph.nodes();
     return uids.map((uid: string) => {
       return this.graph.node(uid);
     });
   }
+
   get edges() {
     const edgeIds = this.multiverse.graph.edges();
     return edgeIds.map((edgeId: { u: string; v: string }) => {
@@ -186,20 +193,25 @@ export default class GameMultiverse extends Vue {
 $past: gray;
 $present: #ff0055;
 $future: purple;
+$root: #ff0055;
+$leaf: magenta;
 .multiverse {
   border-top: 1px solid white;
-  padding-top: 20px;
-  padding-bottom: 20px;
   width: 100%;
+  height: 100%;
+  min-height: 500px;
   display: block;
   text-align: center;
   color: white;
   svg {
-    // min-height: 800px;
     width: 100%;
+    max-height: 500px;
   }
   .node {
     font-size: 10px;
+    .bar {
+      display: none;
+    }
     &.past {
       fill: $past;
       stroke: $past;
@@ -208,10 +220,21 @@ $future: purple;
       fill: $present;
       stroke: $present;
       font-size: 10px;
+      .bar {
+        display: block;
+      }
     }
     &.future {
       fill: $future;
       stroke: $future;
+    }
+    &.leaf {
+      fill: $leaf;
+      stroke: $leaf;
+    }
+    &.root {
+      fill: $root;
+      stroke: $root;
     }
 
     rect {
