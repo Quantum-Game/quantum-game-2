@@ -237,11 +237,11 @@ export default class Board extends Vue {
 .board_scaler {
   max-width: 1400px;
   @media screen and (min-width: 1001px) {
-    margin-bottom: 100px;
+    // margin-bottom: 100px;
   }
 }
 .grid {
-  transform-origin: 0 50%;
+  transform-origin: 0 0%;
   @media screen and (max-width: 1000px) {
     transform-origin: 0 0;
   }

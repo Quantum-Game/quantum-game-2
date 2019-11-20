@@ -1,11 +1,13 @@
-import { LevelInterface, ClassicLevelInterface } from './interfaces';
+import { LevelInterface, ClassicLevelInterface, GoalInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
+import Cluster from './Cluster';
 import Grid from './Grid';
 import Toolbox from './Toolbox';
 import Goal from './Goal';
 import Hint from './Hint';
+import GameState from './GameState';
 import { convertFromClassicNames } from './Helpers';
 
 /**
@@ -23,6 +25,7 @@ export default class Level {
   goals: Goal[];
   hints: Hint[];
   toolbox: Toolbox;
+  gameState: GameState;
 
   constructor(
     id: number,
@@ -50,6 +53,9 @@ export default class Level {
     } else {
       this.toolbox = toolbox;
     }
+
+    // Initiate game state
+    this.gameState = new GameState(this.goals);
 
     // Remove toolbox cells from grid
     this.grid.resetUnfrozen();
@@ -103,7 +109,11 @@ export default class Level {
    */
   static importLevel(obj: LevelInterface): Level {
     const grid = Grid.importGrid(obj.grid);
-    const goals = Goal.importGoal(obj.goals);
+    const goals = obj.goals.map((goalI: GoalInterface) => {
+      const coord = Coord.importCoord(goalI.coord);
+      const cell = grid.get(coord);
+      return new Goal(cell, goalI.threshold);
+    });
     const hints = Hint.importHint(obj.hints);
     const toolbox = Toolbox.importToolbox(obj.tools);
     return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox);

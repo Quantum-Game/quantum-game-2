@@ -59,6 +59,11 @@ export default class Grid extends Cluster {
     })[0];
   }
 
+  /**
+   * Retrieve a cell from the grid
+   * @param x X coordinate
+   * @param y Y coordinate
+   */
   public cellFromXY(x: number, y: number): Cell {
     const coord = Coord.importCoord({ x, y });
     return this.cells.filter((cell) => {
@@ -75,6 +80,14 @@ export default class Grid extends Cluster {
       y: Math.floor(this.cols / 2),
       x: Math.floor(this.rows / 2)
     });
+  }
+
+  /**
+   * Get the total number of the mines of the grid
+   * @returns number of mines in the grid
+   */
+  get mineCount() {
+    return this.mines.cells.length;
   }
 
   /**

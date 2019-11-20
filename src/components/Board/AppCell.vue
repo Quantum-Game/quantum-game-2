@@ -239,7 +239,6 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get displayPulsation(): boolean {
     if (this.cell.isLaser) {
-      console.log('Pulsation');
       return true;
     }
     return false;

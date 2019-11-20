@@ -22,7 +22,7 @@ export default class GameControlsButton extends Vue {
     let styleObj = {};
     if (this.whichIs) {
       styleObj = {
-        backgroundImage: `url(${require(`@/assets/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/${this.whichIs}.svg`)})`, // eslint-disable-line
         backgroundColor: this.usable ? 'transparent' : 'transparent',
         border: 'none',
         opacity: this.disabled ? 1 : 0.3
