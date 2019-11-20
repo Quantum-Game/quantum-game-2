@@ -177,11 +177,11 @@ export default class EncyclopediaBoard extends Vue {
   }
 
   computeParticleStyle(particle: ParticleInterface): {} {
-    const originX = this.centerCoord(particle.coord.x);
-    const originY = this.centerCoord(particle.coord.y);
+    const originX = this.centerCoord(particle.x);
+    const originY = this.centerCoord(particle.y);
     return {
       transform: `
-        translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y * this.tileSize}px)`
+        translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`
     };
   }
 }

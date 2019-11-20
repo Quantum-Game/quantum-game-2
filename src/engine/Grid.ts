@@ -209,23 +209,6 @@ export default class Grid extends Cluster {
   }
 
   /**
-   * Set the cells as energized if on this laser path.
-   * @param paths laser path to energize
-   */
-  energizeCells(paths: ParticleInterface[]): void {
-    const pathCoords: Coord[] = paths.map((pathParticle) => Coord.importCoord(pathParticle.coord));
-    this.cells.forEach((cell: Cell) => {
-      if (cell.coord.isIncludedIn(pathCoords) && cell.element.name !== 'Void') {
-        // eslint-disable-next-line no-param-reassign
-        cell.energized = true;
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        cell.energized = false;
-      }
-    });
-  }
-
-  /**
    * Set the adjacent cells as active if they are near an energized detector
    */
   activateCells(): void {

@@ -90,7 +90,7 @@ export default class AppPhoton extends Vue {
   }
 
   get intensity() {
-    return this.particle.intensity;
+    return this.particle.probability;
   }
   get direction() {
     return this.particle.direction;
