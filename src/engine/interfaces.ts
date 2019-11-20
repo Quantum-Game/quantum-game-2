@@ -5,8 +5,6 @@
 export interface ParticleInterface {
   coord: CoordInterface;
   direction: number;
-  intensity: number;
-  phase: number;
   are: number;
   aim: number;
   bre: number;
