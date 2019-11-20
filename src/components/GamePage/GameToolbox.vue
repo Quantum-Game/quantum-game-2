@@ -1,6 +1,7 @@
 <template>
   <div class="toolbox" :cell="cell" @mouseup="handleCellDrop(toolbox.uniqueCellList[0])">
-    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
+    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool" :viewBox="viewBox"
+    preserveAspectRatio="xMidYMid meet">
       <g :class="computedClass(cell)">
         <app-cell
           :cell="cell"
@@ -9,7 +10,7 @@
           @updateCell="updateCell"
           @mouseover.native="handleMouseEnter(cell)"
         />
-        <text class="counter" x="50%" y="85">
+        <text class="counter" :x="counterX" y="80">
           {{ toolbox.getCount(cell.element.name) }}
           ({{ toolbox.getCountOriginal(cell.element.name) }})
         </text>
@@ -58,10 +59,31 @@ export default class GameToolbox extends Vue {
     // events drilling up...
     this.$emit('updateCell', cell);
   }
+
+viewBox: string = "-8 0 80 80";
+counterX: string = "40%";
+
+  calculateViewBox(): void {
+    if (window.innerWidth > 1000) {
+      this.viewBox = "";
+      this.counterX = "50%";
+    } else {
+      this.viewBox = "-8 0 80 80";
+      this.counterX = "40%";
+    }
+  }
+
+  mounted() {
+    window.addEventListener('resize', this.calculateViewBox);
+    this.calculateViewBox();
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+body {
+  overflow-y: hidden;
+}
 .toolbox {
   display: flex;
   flex-direction: row;
@@ -74,6 +96,10 @@ export default class GameToolbox extends Vue {
   // min-height: 300px;
   @media screen and (max-width: 1000px) {
     justify-content: space-evenly;
+    &::after {
+      content: '';
+      flex-grow: 99999999;
+    }
   }
   .tool {
     width: 30%;
@@ -82,9 +108,16 @@ export default class GameToolbox extends Vue {
     height: 90px;
     @media screen and (max-width: 1000px) {
       width: 64px;
-      margin-right: 5px;
+      //margin-right: 5px;
       height: 90px;
-      margin: -30px 0;
+      padding: 0;
+      width: auto;
+      height: auto;
+      min-width: 35px;
+      min-height: 0;
+      flex-grow: 1;
+      flex-basis: 20%;
+      //4margin: -30px 0;
     }
     .counter {
       transform-origin: 50% 100%;
