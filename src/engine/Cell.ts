@@ -50,11 +50,19 @@ export default class Cell {
   }
 
   /**
-   * Is element blank?
-   * @returns true if blank
+   * Is element a detector?
+   * @returns true if detector
    */
   get isDetector(): boolean {
     return this.element.name === 'Detector' || this.element.name === 'DetectorFour';
+  }
+
+  /**
+   * Is element a laser?
+   * @returns true if laser
+   */
+  get isLaser(): boolean {
+    return this.element.name === 'Laser';
   }
 
   /**

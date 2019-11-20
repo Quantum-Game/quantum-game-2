@@ -52,6 +52,7 @@
           :probabilities="probabilities"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
+          @play="play"
         />
         <game-controls
           :frame-index="frameIndex"
