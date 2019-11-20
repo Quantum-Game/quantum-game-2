@@ -13,7 +13,7 @@ import {
   SET_HOVERED_PARTICLE
 } from './mutation-types';
 import optionsModule from './optionsModule';
-import { GameState } from '@/engine/interfaces';
+import { GameStateEnum } from '@/engine/interfaces';
 
 const initialCell = Cell.createDummy();
 const initialParticle = Particle.createDummy();
@@ -25,7 +25,7 @@ const store: StoreOptions<RootState> = {
     cellSelected: false,
     hoveredCell: initialCell,
     hoveredParticles: [initialParticle],
-    gameState: GameState.InProgress,
+    gameState: GameStateEnum.InProgress,
     simulationState: false,
     currentLevelID: 0
   },

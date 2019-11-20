@@ -60,9 +60,10 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import { Tween, update as updateTween } from 'es6-tween';
-import { GameState } from '@/engine/interfaces';
+import { GameStateEnum } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Goal from '@/engine/Goal';
+import GameState from '@/engine/GameState';
 import AppCell from '@/components/Board/AppCell.vue';
 import Game from './index.vue';
 
@@ -75,9 +76,9 @@ export default class GameGoals extends Vue {
   @Prop() readonly detectors!: number;
   @Prop() readonly mines!: number;
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
-  @Prop() readonly goals!: any;
+  @Prop() readonly goals!: Goal[];
   @Prop() readonly percentage!: number;
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (state: GameState) => void;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
   tweenedPercent: number = this.percentage;
   width = 100;
 
@@ -102,17 +103,17 @@ export default class GameGoals extends Vue {
     }
 
     if (!safeFlag) {
-      this.mutationSetGameState(GameState.MineExploded);
-      this.$emit('gameState', GameState.MineExploded);
+      this.mutationSetGameState(GameStateEnum.MineExploded);
+      this.$emit('gameState', GameStateEnum.MineExploded);
       return;
     }
     if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
-      this.mutationSetGameState(GameState.InProgress);
-      this.$emit('gameState', GameState.InProgress);
+      this.mutationSetGameState(GameStateEnum.InProgress);
+      this.$emit('gameState', GameStateEnum.InProgress);
     }
     if (probabilityFlag && goalFlag && safeFlag) {
-      this.mutationSetGameState(GameState.Victory);
-      this.$emit('gameState', GameState.Victory);
+      this.mutationSetGameState(GameStateEnum.Victory);
+      this.$emit('gameState', GameStateEnum.Victory);
     }
   }
 
@@ -162,7 +163,7 @@ export default class GameGoals extends Vue {
     let sum = 0;
     this.detections.forEach((detection) => {
       this.goals.forEach((goal: Goal) => {
-        if (goal.coord.equal(detection.cell.coord)) {
+        if (goal.cell.coord.equal(detection.cell.coord)) {
           sum += detection.probability;
         }
       });
@@ -170,24 +171,16 @@ export default class GameGoals extends Vue {
     return sum;
   }
 
-  /**
-   * Total goal percentage
-   * @returns sum of goal threshold
-   */
-  get totalGoalPercentage() {
-    let sum = 0;
-    this.goals.forEach((goal: Goal) => {
-      sum += goal.threshold;
-    });
-    return sum * 100;
+  get gameStateClass() {
+    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
   }
 
   /**
    * Total goal percentage
    * @returns sum of goal threshold
    */
-  get unavailableGoalPercentage() {
-    return 100 - this.totalGoalPercentage;
+  get totalGoalPercentage(): number {
+    return new GameState(this.goals).totalGoalPercentage;
   }
 
   /**
@@ -202,17 +195,12 @@ export default class GameGoals extends Vue {
   /**
    * Computes donut slices
    * @returns list of slices with colors
-   * FIXME: See level 7 problem
    */
   get sections() {
     return [
       { value: 100 - this.tweenedPercent, color: '#210235' },
       { value: this.tweenedPercent, color: '#5D00D5' }
     ];
-  }
-
-  get gameStateClass() {
-    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
   }
 
   @Watch('percentage')

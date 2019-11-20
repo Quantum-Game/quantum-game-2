@@ -1,4 +1,4 @@
-import { GameState } from '@/engine/interfaces';
+import { GameStateEnum } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Particle from '@/engine/Particle';
 
@@ -7,7 +7,7 @@ export interface RootState {
   hoveredCell: Cell;
   hoveredParticles: [Particle];
   cellSelected: boolean;
-  gameState: GameState;
+  gameState: GameStateEnum;
   simulationState: boolean;
   currentLevelID: number;
 }

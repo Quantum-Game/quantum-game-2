@@ -90,7 +90,7 @@ import {
   ParticleInterface,
   GoalInterface,
   HintInterface,
-  GameState,
+  GameStateEnum,
   GridInterface
 } from '@/engine/interfaces';
 import levels from '@/assets/data/levels';
@@ -125,9 +125,9 @@ export default class Game extends Vue {
   level = Level.createDummy();
   @State('currentLevelID') currentLevelID!: number;
   @State('activeCell') activeCell!: Cell;
-  @State('gameState') gameState!: GameState;
+  @State('gameState') gameState!: GameStateEnum;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (state: GameState) => void;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   frameIndex: number = 0;
@@ -147,7 +147,11 @@ export default class Game extends Vue {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
-  handleSave() {
+  /**
+   * Export the level in JSON format and uploads it
+   * @returns level in JSON format
+   */
+  handleSave(): void {
     const json = JSON.stringify(this.level.exportLevel(), null, 2);
     const blob = new Blob([json], { type: 'octet/stream' });
     const link = document.createElement('a');
@@ -156,22 +160,28 @@ export default class Game extends Vue {
     link.click();
   }
 
-  handleChangeActiveFrame(activeId: number) {
+  handleChangeActiveFrame(activeId: number): void {
     this.frameIndex = activeId;
   }
 
-  get levelId() {
+  /**
+   * Parse url to extract level number
+   */
+  get levelId(): number {
     // if missing then fallback to '0' for infinity level / sandbox
     return parseInt(this.$route.params.id || '0', 10);
   }
 
+  /**
+   * Load level
+   */
   @Watch('$route')
   loadLevel(): void {
     this.error = '';
     this.mutationSetCurrentLevelID(this.levelId);
     const levelI = levels[this.levelId];
     this.level = Level.importLevel(levelI);
-    this.mutationSetGameState(GameState.InProgress);
+    // this.mutationSetGameState(GameState.InProgress);
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
@@ -257,7 +267,7 @@ export default class Game extends Vue {
     let sum = 0;
     this.detections.forEach((detection) => {
       this.level.goals.forEach((goal: Goal) => {
-        if (goal.coord.equal(detection.cell.coord)) {
+        if (goal.cell.coord.equal(detection.cell.coord)) {
           sum += detection.probability;
         }
       });
@@ -368,6 +378,9 @@ export default class Game extends Vue {
       // case 69:
       //   this.level.grid.reflectAll();
       //   break;
+      case 32:
+        this.play();
+        break;
       case 37:
         this.showPrevious();
         break;

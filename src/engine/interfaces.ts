@@ -274,7 +274,7 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
 /**
  * Game state enum
  */
-export const enum GameState {
+export const enum GameStateEnum {
   // Initial
   Initial = 'Initial',
   InProgress = 'InProgress',

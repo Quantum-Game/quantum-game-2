@@ -1,7 +1,11 @@
 <template>
   <transition :name="gameState">
-    <div v-if="explosion" :class="gameState" class="wrapper"></div>
-    <div v-else-if="gameState === GameState.Victory" :class="gameState" class="wrapper">
+    <div v-if="explosion" :class="computeClass">
+      <h2>
+        Mine Exploded
+      </h2>
+    </div>
+    <div v-else-if="victory" :class="computeClass">
       <div class="victory-circle">
         <h2>
           You won!
@@ -14,10 +18,12 @@
 
 <script lang="ts">
 // TODO: Needs to be extended for instructions overlay
+// FIXME: Rethink overlay and gameState logic
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { State, Getter, Mutation } from 'vuex-class';
 import VueConfetti from 'vue-confetti';
 import AppButton from '@/components/AppButton.vue';
-import { GameState } from '../engine/interfaces';
+import { GameStateEnum } from '@/engine/interfaces';
 
 Vue.use(VueConfetti);
 
@@ -27,7 +33,8 @@ Vue.use(VueConfetti);
   }
 })
 export default class AppOverlay extends Vue {
-  @Prop() readonly gameState!: GameState;
+  @Prop() readonly gameState!: GameStateEnum;
+  // @State('gameState') gameState!: GameState;
   $confetti!: {
     start: (params: any) => void;
     stop: () => void;
@@ -42,16 +49,27 @@ export default class AppOverlay extends Vue {
     }, 300);
   }
 
+  get computeClass(): string[] {
+    return [this.gameState.toString(), 'wrapper'];
+  }
+
+  get victory(): boolean {
+    return this.gameState === GameStateEnum.Victory;
+  }
+
+  get mineExploded(): boolean {
+    return this.gameState === GameStateEnum.MineExploded;
+  }
+
   @Watch('gameState')
-  handleGameStateChange(newGameState: GameState, oldGameState: GameState) {
-    if (newGameState === GameState.Victory) {
+  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum) {
+    if (newGameState === GameStateEnum.Victory) {
       this.$confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
         particles: [
           {
             dropRate: 15
-            // type:'rect',
           }
         ],
         defaultColors: [
@@ -69,9 +87,9 @@ export default class AppOverlay extends Vue {
           '#ba00ff' // purple 02
         ]
       });
-    } else if (newGameState === GameState.MineExploded) {
+    } else if (newGameState === GameStateEnum.MineExploded) {
       this.mineExploding();
-    } else if (oldGameState === GameState.Victory) {
+    } else if (oldGameState === GameStateEnum.Victory) {
       this.$confetti.stop();
     }
   }
