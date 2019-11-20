@@ -95,6 +95,7 @@ export default class AppCell extends Mixins(getPosition) {
   $refs!: {
     cellRef: HTMLElement;
   };
+
   /**
    *  handles clicking, namely
    *  1. distinguishes a selecting vs a placing click

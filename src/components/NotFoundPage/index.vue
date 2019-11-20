@@ -2,7 +2,7 @@
   <div class="not-found">
     <h1>404</h1>
     <p>OH NO :(</p>
-    <img src="@/assets/rock_weasel.svg" alt="weasel" />
+    <img src="@/assets/graphics/rock_weasel.svg" alt="weasel" />
     <router-link to="/"> <app-button type="basic">Take me back!</app-button></router-link>
   </div>
 </template>

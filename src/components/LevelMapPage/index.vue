@@ -5,9 +5,9 @@
         <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
           <h3>{{ group[0].group }}</h3>
           <ul v-for="(level, j) in group" :key="'level' + j" class="group">
-              <router-link class="levelLink" :to="`/level/${level.id}`">
-                {{ level.id }} - {{ level.name }}
-              </router-link>
+            <router-link class="levelLink" :to="`/level/${level.id}`">
+              {{ level.id }} - {{ level.name }}
+            </router-link>
           </ul>
         </div>
       </div>

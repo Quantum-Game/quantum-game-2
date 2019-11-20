@@ -1,7 +1,7 @@
 <template>
   <div class="default-content">
     <h1>ENCYCLOPEDIA</h1>
-    <img src="@/assets/placeholder_encyclopedia.svg" alt="placeholder" />
+    <img src="@/assets/graphics/placeholder_encyclopedia.svg" alt="placeholder" />
   </div>
 </template>
 
