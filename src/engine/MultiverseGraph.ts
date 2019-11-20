@@ -1,7 +1,5 @@
 import * as dagre from 'dagre';
 import _ from 'lodash';
-import { detectionInterface } from './interfaces';
-// import { Graph, alg } from 'graphlib';
 import QuantumSimulation from '@/engine/QuantumSimulation';
 import QuantumFrame from '@/engine/QuantumFrame';
 import Particle from '@/engine/Particle';
@@ -23,8 +21,6 @@ export default class MultiverseGraph {
         ranksep: 20,
         marginy: 10,
         rankdir: 'TB'
-        // rankdir: 'LR'
-        // rankdir: 'BT'
       })
       .setDefaultEdgeLabel(() => {
         return {};
@@ -53,7 +49,6 @@ export default class MultiverseGraph {
         });
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string) => {
-          // this.graph.setEdge(uid, parentUid, {
           this.graph.setEdge(parentUid, uid, {
             label: `${parentUid} -> ${uid}`,
             width: particle.probability * 4 + 1,

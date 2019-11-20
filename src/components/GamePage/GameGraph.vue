@@ -72,7 +72,7 @@ import MultiverseGraph from '@/engine/MultiverseGraph';
 @Component({
   components: {}
 })
-export default class GameMultiverseHorizontal extends Vue {
+export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph;
   @Prop() readonly activeId!: number;
   $refs!: {

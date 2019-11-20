@@ -18,9 +18,6 @@
           <img src="@/assets/graphics/prevIcon.svg" alt="Previous Level" width="32" />
         </router-link>
         {{ level.name.toUpperCase() }}
-        <!-- {{ level.id + ' - ' + level.name.toUpperCase() }} -->
-        <!-- <span class="groupTitle">{{ level.group.toUpperCase() }}</span> -->
-
         <router-link :to="nextLevel">
           <img src="@/assets/graphics/nextIcon.svg" alt="Next Level" width="32" />
         </router-link>
@@ -35,7 +32,7 @@
           :detections="detections"
           :mines="mineCount"
         />
-        <game-multiverse-horizontal
+        <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
           @changeActiveFrame="handleChangeActiveFrame"
@@ -105,8 +102,7 @@ import GamePhotons from '@/components/GamePage/GamePhotons.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import GameLayout from '@/components/GamePage/GameLayout.vue';
 import GameBoard from '@/components/Board/index.vue';
-import GameMultiverse from '@/components/GamePage/GameMultiverse.vue';
-import GameMultiverseHorizontal from '@/components/GamePage/GameMultiverseHorizontal.vue';
+import GameGraph from '@/components/GamePage/GameGraph.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
 
@@ -118,8 +114,7 @@ import AppOverlay from '@/components/AppOverlay.vue';
     GameGoals,
     GameActiveCell,
     GameToolbox,
-    GameMultiverse,
-    GameMultiverseHorizontal,
+    GameGraph,
     GameControls,
     GameBoard,
     AppButton,
