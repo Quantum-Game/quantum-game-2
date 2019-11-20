@@ -108,7 +108,7 @@ export default class AppMenu extends Vue {
   top: 20px;
   left: 20px;
   cursor: pointer;
-  z-index: 2;
+  z-index: 4;
   @media screen and (max-width: 1000px) {
     position: static;
   }
@@ -141,7 +141,7 @@ export default class AppMenu extends Vue {
   }
 }
 .menu-overlay {
-  z-index: 1;
+  z-index: 3;
   position: fixed;
   width: 100%;
   height: 100%;

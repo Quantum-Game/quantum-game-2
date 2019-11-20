@@ -245,6 +245,7 @@ export default class GameGoals extends Vue {
     flex-direction: row;
     padding-bottom: 0;
     justify-content: space-evenly;
+    align-items: center;
   }
 
   & .upper-icons {

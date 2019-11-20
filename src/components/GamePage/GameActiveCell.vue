@@ -53,6 +53,9 @@ export default class GameActiveCell extends Vue {
   text-align: left;
   padding-top: 10px;
   padding-bottom: 10px;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
   & .explanation__tile {
     margin: 0;
     font-size: 1rem;

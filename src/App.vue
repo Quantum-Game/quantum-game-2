@@ -10,6 +10,9 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
+  @media screen and (max-width: 800px) {
+    overflow-y: hidden;
+  }
 }
 #app {
   display: flex;
@@ -47,6 +50,7 @@ body {
     #210235 84%
   ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5000a0', endColorstr='#3c1156',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  overflow-x: hidden;
 }
 #nav {
   padding: 30px;

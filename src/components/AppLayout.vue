@@ -65,6 +65,9 @@ export default class AppLayout extends Vue {}
       text-transform: uppercase;
       text-align: left;
       color: white;
+      @media screen and (max-width: 1000px) {
+        width: 100%;
+      }
     }
   }
 }
