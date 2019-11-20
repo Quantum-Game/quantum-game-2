@@ -86,6 +86,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -177,10 +178,14 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   handleCellClick(): void {
-    // TODO: if tool from toolbox check availability before selection
     // TODO: swap from grid tool to different toolbox tool
-    // do nothing, if:
-    if (
+
+    // START SIMULATION: Drilling to Game
+    if (this.cell.isLaser && this.cell.frozen) {
+      console.log('CELL PLAY');
+      this.$emit('play', true);
+    } else if (
+      // TOOLBOX LOGIC
       this.cell.frozen ||
       // if it s a click on a tool thats unavailable:
       (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
@@ -194,6 +199,7 @@ export default class AppCell extends Mixins(getPosition) {
         this.cell.rotate();
         this.isRotate = false;
       }
+
       if (!this.cellSelected) {
         // FIRST CLICK
         // If from toolbox needs to have available elements

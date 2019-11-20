@@ -42,6 +42,7 @@
         :tileSize="tileSize"
         @updateCell="updateCell"
         @mouseover.native="handleMouseEnter(cell.coord)"
+        @play="play"
       />
 
       <!-- PROBABILITY -->
@@ -120,6 +121,13 @@ export default class Board extends Vue {
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  /**
+   * Drilling from appCell to Game to allow clicking laser to start simulation
+   */
+  play(): void {
+    this.$emit('play', true);
   }
 
   /**
