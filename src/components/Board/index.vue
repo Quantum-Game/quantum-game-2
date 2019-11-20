@@ -157,7 +157,6 @@ export default class Board extends Vue {
       const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
       this.$data.boardHeight = currentHeight;
     }, 1);
-    // this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
   }
 
