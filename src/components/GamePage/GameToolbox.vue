@@ -9,7 +9,7 @@
           @updateCell="updateCell"
           @mouseover.native="handleMouseEnter(cell)"
         />
-        <text class="counter" x="50%" y="80">
+        <text class="counter" x="50%" y="85">
           {{ toolbox.getCount(cell.element.name) }}
           ({{ toolbox.getCountOriginal(cell.element.name) }})
         </text>
@@ -72,11 +72,23 @@ export default class GameToolbox extends Vue {
   padding-top: 10px;
   padding-bottom: 10px;
   // min-height: 300px;
+  @media screen and (max-width: 1000px) {
+    justify-content: space-evenly;
+  }
   .tool {
     width: 30%;
     min-width: 64px;
     padding: 0.5rem 0rem;
     height: 90px;
+    @media screen and (max-width: 1000px) {
+      width: 64px;
+      margin-right: 5px;
+      height: 90px;
+      margin: -30px 0;
+    }
+    .counter {
+      transform-origin: 50% 100%;
+    }
   }
   .inactive {
     opacity: 0.5;

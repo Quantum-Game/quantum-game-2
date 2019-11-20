@@ -203,6 +203,12 @@ $leaf: magenta;
   display: block;
   text-align: center;
   color: white;
+  @media screen and (max-width: 1000px) {
+    border-bottom: 1px solid white;
+    min-height: 0px;
+    margin-bottom: 64px;
+    display: none;
+  }
   svg {
     width: 100%;
     max-height: 500px;
