@@ -2,7 +2,7 @@
  * GAME STATE CLASS
  * Computes the current game state
  */
-import { GameStateEnum } from '@/engine/interfaces';
+import { GameStateEnum, AbsorptionInterface } from '@/engine/interfaces';
 import Goal from '@/engine/Goal';
 import Cell from '@/engine/Cell';
 
@@ -10,14 +10,16 @@ export default class GameStateEngine {
   probabilityFlag: boolean = false;
   goalFlag: boolean = false;
   safeFlag: boolean = false;
-  gameState: GameStateEnum;
+  state: GameStateEnum;
   goals: Goal[];
   mines: Cell[];
+  absorptions: AbsorptionInterface[];
 
-  constructor(goals: Goal[], mines: Cell[] = []) {
+  constructor(goals: Goal[], mines: Cell[] = [], absorptions: AbsorptionInterface[] = []) {
     this.goals = goals;
     this.mines = mines;
-    this.gameState = GameStateEnum.Initial;
+    this.absorptions = absorptions;
+    this.state = GameStateEnum.Initial;
   }
 
   /**

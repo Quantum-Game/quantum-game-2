@@ -2,9 +2,11 @@ import _ from 'lodash';
 import * as qt from 'quantum-tensors';
 
 import Coord from './Coord';
+import Absorption from './Absorption';
 import Particle, { Qparticle } from './Particle';
 import { AbsorptionInterface } from './interfaces';
 
+// TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface particleCoordInterface {
   kind: string; // for now only 'photon'
   x: number;
@@ -13,12 +15,14 @@ export interface particleCoordInterface {
   pol: number; // 0: H, 1: V
 }
 
+// TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface ketComponentInterface {
   amplitude: qt.Complex;
   particleCoords: particleCoordInterface[];
 }
 
 /**
+ * QUANTUM FRAME CLASS
  * QuantumFrame is essentially a wrapper on Photons from qunatum-tensors.
  * It hold quantum state at a given time, and nothing more.
  * All other things are accessible with getters.
@@ -110,7 +114,7 @@ export default class QuantumFrame {
       .aggregatePolarization()
       .map((q: Qparticle) => {
         const coord = new Coord(q.y, q.x);
-        return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
+        return new Particle(coord, q.direction, q.are, q.aim, q.bre, q.bim);
       })
       .filter((particle) => particle.probability > this.probThreshold);
   }

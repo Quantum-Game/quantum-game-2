@@ -9,7 +9,7 @@ export default class Goal extends Cell {
   cell: Cell;
   threshold: number;
 
-  constructor(cell: Cell, threshold: number, value = 0) {
+  constructor(cell: Cell, threshold: number) {
     super(cell.coord, cell.element);
     this.cell = cell;
     this.threshold = threshold;
