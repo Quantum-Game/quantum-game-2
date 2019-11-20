@@ -58,11 +58,13 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { State, Getter, Mutation } from 'vuex-class';
 import { Tween, update as updateTween } from 'es6-tween';
 import { GameState } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Goal from '@/engine/Goal';
 import AppCell from '@/components/Board/AppCell.vue';
+import Game from './index.vue';
 
 @Component({
   components: {
@@ -75,6 +77,7 @@ export default class GameGoals extends Vue {
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
   @Prop() readonly goals!: any;
   @Prop() readonly percentage!: number;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (state: GameState) => void;
   tweenedPercent: number = this.percentage;
   width = 100;
 
@@ -99,16 +102,16 @@ export default class GameGoals extends Vue {
     }
 
     if (!safeFlag) {
-      this.$store.commit('SET_GAME_STATE', GameState.MineExploded);
+      this.mutationSetGameState(GameState.MineExploded);
       this.$emit('gameState', GameState.MineExploded);
       return;
     }
     if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
-      this.$store.commit('SET_GAME_STATE', GameState.InProgress);
+      this.mutationSetGameState(GameState.InProgress);
       this.$emit('gameState', GameState.InProgress);
     }
     if (probabilityFlag && goalFlag && safeFlag) {
-      this.$store.commit('SET_GAME_STATE', GameState.Victory);
+      this.mutationSetGameState(GameState.Victory);
       this.$emit('gameState', GameState.Victory);
     }
   }
