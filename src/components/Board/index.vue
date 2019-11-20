@@ -162,10 +162,12 @@ export default class Board extends Vue {
     if (window.innerWidth < 801) {
       document
         .querySelectorAll('.tool')
-        .forEach((tool) => (tool.style.transform = `scale(${currentWidth / 870})`));
+        // eslint-disable-next-line
+        .forEach((tool: any) => (tool.style.transform = `scale(${currentWidth / 870})`));
       document
         .querySelectorAll('.tool .counter')
-        .forEach((counter) => (counter.style.transform = `scale(${870 / currentWidth})`));
+        // eslint-disable-next-line
+        .forEach((counter: any) => (counter.style.transform = `scale(${870 / currentWidth})`));
     }
   }
 
