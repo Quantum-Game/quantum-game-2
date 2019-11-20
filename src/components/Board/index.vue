@@ -146,15 +146,19 @@ export default class Board extends Vue {
       transform: `scale(${currentWidth / 845})`
     };
     setTimeout(() => {
-const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
-    this.$data.boardHeight = currentHeight;
-    }, 1)
+      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
+      this.$data.boardHeight = currentHeight;
+    }, 1);
     // this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
-    if(window.innerWidth < 801) {
-        document.querySelectorAll(".tool").forEach(tool => tool.style.transform = `scale(${currentWidth / 870})`);
-        document.querySelectorAll(".tool .counter").forEach(counter => counter.style.transform = `scale(${870 / currentWidth})`)
-      }
+    if (window.innerWidth < 801) {
+      document
+        .querySelectorAll('.tool')
+        .forEach((tool) => (tool.style.transform = `scale(${currentWidth / 870})`));
+      document
+        .querySelectorAll('.tool .counter')
+        .forEach((counter) => (counter.style.transform = `scale(${870 / currentWidth})`));
+    }
   }
 
   get totalWidth(): number {
