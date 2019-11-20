@@ -76,6 +76,16 @@ button {
   }
 }
 
+.inactive {
+  opacity: 0.3;
+  cursor: initial;
+  outline: none;
+  &:hover {
+    background-color: #ff0055;
+    transition: none;
+  }
+}
+
 .overlay-btn {
   margin: 5px;
   text-decoration: none;

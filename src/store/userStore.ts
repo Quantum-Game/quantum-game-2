@@ -40,6 +40,9 @@ const userStore: StoreOptions<UserState> = {
     },
     error(state) {
       return state.error;
+    },
+    isLoggedIn(state) {
+      return state.user.loggedIn;
     }
   },
   mutations: {
