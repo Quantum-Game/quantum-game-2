@@ -1,15 +1,16 @@
 import _ from 'lodash';
 import { Photons } from 'quantum-tensors';
 import { weightedRandomInt } from './utils';
-import QuantumFrame, { AbsorptionsInterface } from './QuantumFrame';
+import QuantumFrame from './QuantumFrame';
 import Grid from './Grid';
-import { GridInterface } from './interfaces';
+import { GridInterface, AbsorptionInterface } from './interfaces';
 import Cell from './Cell';
 import Particle from './Particle';
 import { Coord } from './classes';
 
 /**
- * Rewrite of Frame.
+ * QUANTUM SIMULATION CLASS
+ * Contains the frames of the simulation
  */
 export default class QuantumSimulation {
   board: Grid;
@@ -73,7 +74,7 @@ export default class QuantumSimulation {
   }
 
   nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
-    const logging = true;
+    const logging = false;
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
       if (this.lastFrame.probability < stopIfProbabilityBelow) {
@@ -115,14 +116,13 @@ export default class QuantumSimulation {
    * @returns E.g.
    * [{x: 2, y: 1, probability: 0.25}, {x: 3, y: 5, probability: 0.25}, {x: -1, y: -1, probability: 0.25}]
    */
-  get totalAbsorptionPerTile(): AbsorptionsInterface[] {
+  get totalAbsorptionPerTile(): AbsorptionInterface[] {
     return _(this.frames)
       .flatMap((frame) => frame.absorptions)
-      .groupBy((absorption) => `(${absorption.x}.${absorption.y})`)
+      .groupBy((absorption) => `(${absorption.coord.x}.${absorption.coord.y})`)
       .values()
       .map((absorptions) => ({
-        x: absorptions[0].x,
-        y: absorptions[0].y,
+        coord: absorptions[0].coord,
         probability: _.sumBy(absorptions, 'probability')
       }))
       .value();
@@ -134,7 +134,7 @@ export default class QuantumSimulation {
    */
   isDetectionEvent(coord: Coord): boolean {
     const coords = this.totalAbsorptionPerTile.map((absorption) => {
-      return new Coord(absorption.y, absorption.x);
+      return Coord.importCoord(absorption.coord);
     });
     return _.includes(coords, coord);
   }
@@ -173,7 +173,7 @@ export default class QuantumSimulation {
     const absorption = lastFrameAbs[absorptionId];
     const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
 
-    const { x, y } = absorption;
+    const { x, y } = absorption.coord;
     const name = x === -1 && y === -1 ? 'OutOfBoard' : this.board.cellFromXY(x, y).element.name;
 
     return {

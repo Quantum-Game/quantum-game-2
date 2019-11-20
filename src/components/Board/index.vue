@@ -49,8 +49,8 @@
       <text
         v-for="(probability, i) in probabilities"
         :key="'probability' + i"
-        :x="(probability.x + 0.5) * 64"
-        :y="probability.y * 64"
+        :x="(probability.coord.x + 0.5) * 64"
+        :y="probability.coord.y * 64"
         text-anchor="middle"
         class="probability"
       >
