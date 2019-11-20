@@ -6,12 +6,15 @@
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
   >
+    <!-- BOUNDING RECTANGLE -->
     <rect
       :width="tileSize"
       :height="tileSize"
       :class="rectBackgroundClass"
       :style="rectPositionStyle"
     />
+
+    <!-- ELEMENT SVG -->
     <component
       :is="computedCellName"
       :cell="cell"
@@ -19,6 +22,30 @@
       :cell-size="tileSize"
       :border="computeBorder()"
     />
+
+    <!-- PULSATING CIRCLE -->
+    <!-- eslint-disable -->
+    <g v-if="displayPulsation">
+      <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
+        <animate
+          attributeName="opacity"
+          from="1"
+          to="0"
+          dur="1.5s"
+          begin="0s"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="r"
+          from="32"
+          to="64"
+          dur="1.5s"
+          begin="0s"
+          repeatCount="indefinite"
+        />
+        <!-- eslint-enable -->
+      </circle>
+    </g>
   </g>
 </template>
 
@@ -86,7 +113,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
+  @State simulationState!: string;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -96,6 +123,17 @@ export default class AppCell extends Mixins(getPosition) {
   $refs!: {
     cellRef: HTMLElement;
   };
+
+  /**
+   * Display pulsating ring around laser
+   */
+  get displayPulsation(): boolean {
+    if (this.cell.isLaser) {
+      console.log('Pulsation');
+      return true;
+    }
+    return false;
+  }
 
   /**
    *  handles clicking, namely
@@ -237,7 +275,8 @@ export default class AppCell extends Mixins(getPosition) {
       (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
         ? 'frozen'
         : '',
-      this.cell.isFromToolbox && !this.available ? 'transparent' : ''
+      this.cell.isFromToolbox && !this.available ? 'transparent' : '',
+      this.cell.isLaser ? 'laser' : ''
     ];
   }
 
@@ -349,7 +388,9 @@ rect {
 }
 .frozen {
   cursor: not-allowed;
-  // cursor: pointer;
+  &.laser {
+    cursor: pointer;
+  }
 }
 .active {
   cursor: grab;
