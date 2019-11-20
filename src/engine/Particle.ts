@@ -1,4 +1,3 @@
-// FIXME: Duplicate between path and coord
 import { Complex } from 'quantum-tensors';
 import { ParticleInterface, CoordInterface } from '@/engine/interfaces';
 import Coord from './Coord';

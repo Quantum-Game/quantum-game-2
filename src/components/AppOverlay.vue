@@ -1,8 +1,6 @@
 <template>
   <transition :name="gameState">
-    <!-- FIXME -->
     <div v-if="explosion" :class="gameState" class="wrapper"></div>
-
     <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
       <div class="victory-circle">
         <h2>
@@ -15,6 +13,7 @@
 </template>
 
 <script lang="ts">
+// TODO: Needs to be extended for instructions overlay
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import VueConfetti from 'vue-confetti';
 import AppButton from '@/components/AppButton.vue';
@@ -35,7 +34,7 @@ export default class AppOverlay extends Vue {
   explosion: boolean = false;
   explosionTimeout: number = 0;
 
-  mineExploding() {
+  mineExploding(): void {
     this.explosion = true;
     this.explosionTimeout = setTimeout(() => {
       this.explosion = false;

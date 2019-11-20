@@ -1,4 +1,3 @@
-// TODO: Remove display logic to Glyph class
 // TODO: Refactor to extended class based logic
 import * as qt from 'quantum-tensors';
 import { ElementInterface, Elem } from './interfaces';
