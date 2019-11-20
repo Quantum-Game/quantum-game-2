@@ -3,8 +3,8 @@ import * as qt from 'quantum-tensors';
 
 import Coord from './Coord';
 import Absorption from './Absorption';
-import Particle, { Qparticle } from './Particle';
-import { AbsorptionInterface } from './interfaces';
+import Particle from './Particle';
+import { AbsorptionInterface, ParticleInterface } from './interfaces';
 
 // TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface particleCoordInterface {
@@ -112,7 +112,7 @@ export default class QuantumFrame {
   get polarizationSuperpositions(): Particle[] {
     return this.photons
       .aggregatePolarization()
-      .map((q: Qparticle) => {
+      .map((q: ParticleInterface) => {
         const coord = new Coord(q.y, q.x);
         return new Particle(coord, q.direction, q.are, q.aim, q.bre, q.bim);
       })
