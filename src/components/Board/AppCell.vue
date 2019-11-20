@@ -147,7 +147,6 @@ export default class AppCell extends Mixins(getPosition) {
 
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
-      console.log('CELL PLAY');
       this.$emit('play', true);
     } else if (
       // TOOLBOX LOGIC
