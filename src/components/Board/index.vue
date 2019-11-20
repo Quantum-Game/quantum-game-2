@@ -151,10 +151,6 @@ const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
     }, 1)
     // this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
-    if(window.innerWidth < 801) {
-        document.querySelectorAll(".tool").forEach(tool => tool.style.transform = `scale(${currentWidth / 870})`);
-        document.querySelectorAll(".tool .counter").forEach(counter => counter.style.transform = `scale(${870 / currentWidth})`)
-      }
   }
 
   get totalWidth(): number {
