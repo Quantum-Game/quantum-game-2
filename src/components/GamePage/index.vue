@@ -25,13 +25,7 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals
-          :percentage="percentage"
-          :goals="level.goals"
-          :particles="activeFrame.particles"
-          :detections="detections"
-          :mines="mineCount"
-        />
+        <game-goals :game-state="level.gameState" :detections="detections" />
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -89,6 +83,7 @@ import {
   LevelInterface,
   ParticleInterface,
   GoalInterface,
+  AbsorptionInterface,
   HintInterface,
   GameStateEnum,
   GridInterface
@@ -160,20 +155,23 @@ export default class Game extends Vue {
     link.click();
   }
 
+  /**
+   * Change active frame with provided Id
+   */
   handleChangeActiveFrame(activeId: number): void {
     this.frameIndex = activeId;
   }
 
   /**
    * Parse url to extract level number
+   * if missing then fallback to '0' for infinity level / sandbox
    */
   get levelId(): number {
-    // if missing then fallback to '0' for infinity level / sandbox
     return parseInt(this.$route.params.id || '0', 10);
   }
 
   /**
-   * Load level
+   * Load level and process simulation
    */
   @Watch('$route')
   loadLevel(): void {
@@ -181,10 +179,11 @@ export default class Game extends Vue {
     this.mutationSetCurrentLevelID(this.levelId);
     const levelI = levels[this.levelId];
     this.level = Level.importLevel(levelI);
-    // this.mutationSetGameState(GameState.InProgress);
+    // Set hovered cell as first element of toolbox
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
+    // Process simulation
     this.updateSimulation();
   }
 
@@ -193,9 +192,10 @@ export default class Game extends Vue {
    * @returns boolean
    */
   updateSimulation(): void {
-    this.simulation = QuantumSimulation.importBoard(this.level.exportLevel().grid);
+    const gridInterface = this.level.exportLevel().grid;
+    this.simulation = QuantumSimulation.importBoard(gridInterface);
     this.simulation.initializeFromLaser('H');
-    this.simulation.nextFrames(30);
+    this.simulation.nextFrames(35);
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
@@ -206,7 +206,6 @@ export default class Game extends Vue {
    * Output cells linked to detection events
    * @returns Cell and percentage
    */
-
   get detections(): { cell: Cell; probability: number }[] {
     interface probabilityCellInterface {
       cell: Cell;
@@ -214,14 +213,14 @@ export default class Game extends Vue {
     }
     // Filter out of grid cells
     const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: { x: number; probability: number }) => {
-        return absorption.x !== -1 && absorption.probability > this.absorptionThreshold;
+      (absorption: AbsorptionInterface) => {
+        return absorption.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
       }
     );
     // Convert to cells format
     const detections: probabilityCellInterface[] = absorptions.map(
-      (absorption: { x: number; y: number; probability: number }) => {
-        const coord = new Coord(absorption.y, absorption.x);
+      (absorption: AbsorptionInterface) => {
+        const coord = Coord.importCoord(absorption.coord);
         const cell = this.level.grid.get(coord);
         cell.energized = true;
         return { cell, probability: absorption.probability };
@@ -231,24 +230,16 @@ export default class Game extends Vue {
   }
 
   /**
-   * Process the goals from level with the results of the quantum simulation
-   *  @returns goals
+   * Process the detection events who happen in the grid
+   *  @returns absorptions
    */
   get probabilities() {
     const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: { x: number }) => {
-        return absorption.x !== -1;
+      (absorption: AbsorptionInterface) => {
+        return absorption.coord.x !== -1;
       }
     );
     return absorptions;
-  }
-
-  /**
-   * Get the total number of the mines of the level
-   * @returns number of mines in the level
-   */
-  get mineCount() {
-    return this.level.grid.mines.cells.length;
   }
 
   /**
@@ -257,22 +248,6 @@ export default class Game extends Vue {
    */
   get framePercentage() {
     return this.activeFrame.probability * 100;
-  }
-
-  /**
-   * Compute the total absorption at goals
-   * @returns total absorption
-   */
-  get percentage() {
-    let sum = 0;
-    this.detections.forEach((detection) => {
-      this.level.goals.forEach((goal: Goal) => {
-        if (goal.cell.coord.equal(detection.cell.coord)) {
-          sum += detection.probability;
-        }
-      });
-    });
-    return sum * 100;
   }
 
   /**

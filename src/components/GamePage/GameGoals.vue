@@ -23,7 +23,7 @@
     </div>
 
     <!-- GOALS -->
-    <div v-if="goals.length > 0" class="bottom-icons">
+    <div v-if="gameState.goals.length > 0" class="bottom-icons">
       <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/graphics/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
@@ -31,7 +31,7 @@
         <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
-        <span v-if="detectorsHit !== goals.length" class="defeat">
+        <span v-if="detectorsHit !== gameState.goals.length" class="defeat">
           <b>DETECTORS</b>
         </span>
         <span v-else class="success"><b>DETECTORS</b></span>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- MINES -->
-    <div v-if="mines > 0" class="bottom-icons">
+    <div v-if="gameState.mines > 0" class="bottom-icons">
       <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
         <img src="@/assets/graphics/mineIconRed.svg" alt="Key Icon" width="34" />
       </span>
@@ -73,14 +73,27 @@ import Game from './index.vue';
   }
 })
 export default class GameGoals extends Vue {
-  @Prop() readonly detectors!: number;
-  @Prop() readonly mines!: number;
+  @Prop() readonly gameState!: GameState;
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
-  @Prop() readonly goals!: Goal[];
-  @Prop() readonly percentage!: number;
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
   tweenedPercent: number = this.percentage;
   width = 100;
+
+  /**
+   * Compute the total absorption at goals
+   * @returns total absorption
+   */
+  get percentage() {
+    let sum = 0;
+    this.detections.forEach((detection) => {
+      this.gameState.goals.forEach((goal: Goal) => {
+        if (goal.cell.coord.equal(detection.cell.coord)) {
+          sum += detection.probability;
+        }
+      });
+    });
+    return sum * 100;
+  }
 
   /**
    * Compute game state and sets Vuex
@@ -133,7 +146,7 @@ export default class GameGoals extends Vue {
    * @returns hit detector count
    */
   get detectorsUnhit(): number {
-    return this.goals.length - this.detectorsHit;
+    return this.gameState.goals.length - this.detectorsHit;
   }
 
   /**
@@ -152,7 +165,7 @@ export default class GameGoals extends Vue {
    * @returns hit detector count
    */
   get minesUnhit(): number {
-    return this.mines - this.minesHit;
+    return this.gameState.mines.length - this.minesHit;
   }
 
   /**
@@ -162,7 +175,7 @@ export default class GameGoals extends Vue {
   get updatePercentage() {
     let sum = 0;
     this.detections.forEach((detection) => {
-      this.goals.forEach((goal: Goal) => {
+      this.gameState.goals.forEach((goal: Goal) => {
         if (goal.cell.coord.equal(detection.cell.coord)) {
           sum += detection.probability;
         }
@@ -180,7 +193,7 @@ export default class GameGoals extends Vue {
    * @returns sum of goal threshold
    */
   get totalGoalPercentage(): number {
-    return new GameState(this.goals).totalGoalPercentage;
+    return this.gameState.totalGoalPercentage;
   }
 
   /**

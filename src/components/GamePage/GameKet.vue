@@ -60,7 +60,8 @@
           class="absorption"
         >
           {{ toPercent(absorption.probability) }}% in
-          {{ elementName(absorption.x, absorption.y) }} at ({{ absorption.x }}, {{ absorption.y }})
+          {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
+          {{ absorption.coord.y }})
         </span>
       </div>
     </div>

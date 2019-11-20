@@ -72,6 +72,15 @@ export interface GoalInterface {
 }
 
 /**
+ * GOAL INTERFACE
+ * Goal interface in primitives
+ */
+export interface AbsorptionInterface {
+  coord: CoordInterface;
+  probability: number;
+}
+
+/**
  * HINT INTERFACE
  * Hint interface in primitives
  */

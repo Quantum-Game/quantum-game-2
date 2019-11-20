@@ -2,7 +2,6 @@ import { LevelInterface, ClassicLevelInterface, GoalInterface } from './interfac
 import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
-import Cluster from './Cluster';
 import Grid from './Grid';
 import Toolbox from './Toolbox';
 import Goal from './Goal';
@@ -55,7 +54,7 @@ export default class Level {
     }
 
     // Initiate game state
-    this.gameState = new GameState(this.goals);
+    this.gameState = new GameState(this.goals, this.grid.mines.cells);
 
     // Remove toolbox cells from grid
     this.grid.resetUnfrozen();

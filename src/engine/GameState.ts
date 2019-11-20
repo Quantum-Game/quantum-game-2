@@ -10,11 +10,13 @@ export default class GameStateEngine {
   probabilityFlag: boolean = false;
   goalFlag: boolean = false;
   safeFlag: boolean = false;
-  goals: Goal[];
   gameState: GameStateEnum;
+  goals: Goal[];
+  mines: Cell[];
 
-  constructor(goals: Goal[]) {
+  constructor(goals: Goal[], mines: Cell[] = []) {
     this.goals = goals;
+    this.mines = mines;
     this.gameState = GameStateEnum.Initial;
   }
 
@@ -29,6 +31,10 @@ export default class GameStateEngine {
       sum += goal.threshold;
     });
     return sum;
+  }
+
+  get minesCount() {
+    return this.mines.length;
   }
 
   /**
