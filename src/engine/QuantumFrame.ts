@@ -101,9 +101,9 @@ export default class QuantumFrame {
     this.probAfter = this.probability;
   }
 
+  // should be same as this.probAfter
   get totalProbabilityLoss(): number {
     return this.absorptions.map((absorption) => absorption.probability).reduce((a, b) => a + b, 0);
-    // should be same as this.probAfter
   }
 
   /**
