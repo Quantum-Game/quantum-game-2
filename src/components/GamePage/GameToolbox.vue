@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbox">
+  <div class="toolbox" :cell="cell" @mouseup="handleCellDrop(toolbox.uniqueCellList[0])">
     <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool">
       <g :class="computedClass(cell)">
         <app-cell
@@ -34,10 +34,16 @@ import { Coord, Cell } from '@/engine/classes';
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
+  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
 
   handleMouseEnter(cell: Cell) {
     this.mutationSetHoveredCell(cell);
+  }
+
+  handleCellDrop(cell: Cell) {
+    this.mutationSetHoveredCell(cell);
+    this.$emit('updateCell', cell);
   }
 
   computedClass(cell: Cell): string {
