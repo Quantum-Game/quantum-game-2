@@ -1,13 +1,13 @@
+import { GameState } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Particle from '@/engine/Particle';
-import Level from '@/engine/Level';
 
 export interface RootState {
   activeCell: Cell;
   hoveredCell: Cell;
   hoveredParticles: [Particle];
   cellSelected: boolean;
-  gameState: string;
+  gameState: GameState;
   simulationState: boolean;
   currentLevelID: number;
 }
@@ -26,16 +26,19 @@ export interface UserState {
   publicLevels: PublicLevel[];
   error: null;
 }
+
 interface ProgressObj {
   id: number;
   status: 'string';
   score: number;
 }
+
 interface SavedLevel {
   id: 'string';
   link: 'string';
   public: boolean;
 }
+
 interface PublicLevel {
   link: 'string';
 }

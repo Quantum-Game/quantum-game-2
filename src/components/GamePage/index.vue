@@ -125,7 +125,7 @@ export default class Game extends Vue {
   level = Level.createDummy();
   @State('currentLevelID') currentLevelID!: number;
   @State('activeCell') activeCell!: Cell;
-  @State('gameState') gameState!: string;
+  @State('gameState') gameState!: GameState;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (state: GameState) => void;
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
@@ -171,7 +171,7 @@ export default class Game extends Vue {
     this.mutationSetCurrentLevelID(this.levelId);
     const levelI = levels[this.levelId];
     this.level = Level.importLevel(levelI);
-    this.mutationSetGameState('InProgress');
+    this.mutationSetGameState(GameState.InProgress);
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
     }
