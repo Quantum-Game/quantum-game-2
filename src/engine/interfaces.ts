@@ -3,7 +3,8 @@
  * Particle interface in primitives
  */
 export interface ParticleInterface {
-  coord: CoordInterface;
+  x: number;
+  y: number;
   direction: number;
   are: number;
   aim: number;

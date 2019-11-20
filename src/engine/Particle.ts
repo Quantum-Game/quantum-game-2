@@ -5,19 +5,6 @@ import Cell from './Cell';
 import { toPercent, angleToSymbol } from './Helpers';
 
 /**
- * Particle interface retrieved from quantum-tensors
- */
-export interface Qparticle {
-  x: number;
-  y: number;
-  direction: number;
-  are: number;
-  aim: number;
-  bre: number;
-  bim: number;
-}
-
-/**
  * PARTICLE CLASS
  * Describes a vector with an origin, a direction and two complex numbers.
  */
@@ -229,7 +216,8 @@ export default class Particle extends Coord {
    */
   exportParticle(): ParticleInterface {
     return {
-      coord: this.coord,
+      x: this.coord.x,
+      y: this.coord.y,
       direction: this.direction,
       are: this.are,
       aim: this.aim,
@@ -243,7 +231,7 @@ export default class Particle extends Coord {
    * @param obj particle interface
    */
   static importParticle(obj: ParticleInterface): Particle {
-    const coord = Coord.importCoord(obj.coord);
+    const coord = new Coord(obj.y, obj.x);
     return new Particle(coord, obj.direction, obj.are, obj.aim, obj.bre, obj.bim);
   }
 
