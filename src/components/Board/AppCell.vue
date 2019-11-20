@@ -187,8 +187,6 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   handleCellClick(): void {
-    // TODO: swap from grid tool to different toolbox tool
-
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
       this.$emit('play', true);

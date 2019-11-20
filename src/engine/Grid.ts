@@ -1,5 +1,4 @@
 // FIXME: Figure a way to have uid and coord access to cells
-// FIXME: Figure out blank cells in constructor
 import * as qt from 'quantum-tensors';
 import { CellInterface, GridInterface, ParticleInterface } from './interfaces';
 import Coord from './Coord';
