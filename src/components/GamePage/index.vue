@@ -127,7 +127,7 @@ export default class Game extends Vue {
   @State('activeCell') activeCell!: Cell;
   @State('gameState') gameState!: string;
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: string) => void;
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (state: GameState) => void;
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   frameIndex: number = 0;
@@ -298,11 +298,11 @@ export default class Game extends Vue {
       if (this.frameIndex < this.simulation.frames.length - 1) {
         this.frameIndex += 1;
       } else {
-        this.$store.commit('SET_SIMULATION_STATE', false);
+        this.mutationSetSimulationState(false);
         clearInterval(this.playInterval);
       }
     }, 200);
-    this.$store.commit('SET_SIMULATION_STATE', true);
+    this.mutationSetSimulationState(true);
   }
 
   /**

@@ -26,6 +26,7 @@
 </template>
 
 <script lang="ts">
+// FIXME: Way too overcomplicated and hides access to individual customization
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';

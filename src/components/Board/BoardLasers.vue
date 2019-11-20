@@ -28,10 +28,18 @@ export default class Board extends Vue {
   @State simulationState!: boolean;
   tileSize: number = 64;
 
+  /**
+   * Compute the laser path
+   * @returns SVG path
+   */
   computePath(particle: Particle): string {
     return particle.toSvg();
   }
 
+  /**
+   * Compute laser path width according to probability
+   * @returns laser path width
+   */
   computeSize(particle: Particle): number {
     return 2 + particle.probability * 3;
   }

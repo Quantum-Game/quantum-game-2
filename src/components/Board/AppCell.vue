@@ -125,14 +125,20 @@ export default class AppCell extends Mixins(getPosition) {
   };
 
   /**
-   * Display pulsating ring around laser
+   * Compute the cell class name
+   * @returns Computed cell name string
    */
-  get displayPulsation(): boolean {
-    if (this.cell.isLaser) {
-      console.log('Pulsation');
-      return true;
+  get computedCellName(): string {
+    if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
+      return 'PolarizerCell';
     }
-    return false;
+    if (
+      this.cell.element.name === 'QuarterWavePlateH' ||
+      this.cell.element.name === 'QuarterWavePlateV'
+    ) {
+      return 'QuarterWavePlateCell';
+    }
+    return `${this.cell.element.name}Cell`;
   }
 
   /**
@@ -231,6 +237,17 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
+   * Display pulsating ring around laser
+   */
+  get displayPulsation(): boolean {
+    if (this.cell.isLaser) {
+      console.log('Pulsation');
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Computed class
    */
   get computedCellClass(): string[] {
@@ -243,23 +260,6 @@ export default class AppCell extends Mixins(getPosition) {
       this.cell.isFromToolbox && !this.available ? 'transparent' : '',
       this.cell.isLaser ? 'laser' : ''
     ];
-  }
-
-  /**
-   * Compute the cell class name
-   * @returns Computed cell name string
-   */
-  get computedCellName(): string {
-    if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
-      return 'PolarizerCell';
-    }
-    if (
-      this.cell.element.name === 'QuarterWavePlateH' ||
-      this.cell.element.name === 'QuarterWavePlateV'
-    ) {
-      return 'QuarterWavePlateCell';
-    }
-    return `${this.cell.element.name}Cell`;
   }
 
   /**
