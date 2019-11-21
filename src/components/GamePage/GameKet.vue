@@ -54,7 +54,7 @@
       </div>
       <div v-if="absorptions.length > 0" class="controls">
         ABSORPTIONS:
-        <span
+        <div
           v-for="(absorption, index) in absorptions"
           :key="`absorption-${index}`"
           class="absorption"
@@ -62,7 +62,7 @@
           {{ toPercent(absorption.probability) }}% in
           {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
           {{ absorption.coord.y }})
-        </span>
+        </div>
       </div>
     </div>
     <div class="btn-group">
