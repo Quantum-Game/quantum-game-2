@@ -71,13 +71,19 @@ export default class GameState {
    * Compute current game state from the different flags
    */
   get gameState(): GameStateEnum {
-    // Compute gameState from flags
+    // Simulation will trigger mine
     if (!this.safeFlag) {
       return GameStateEnum.MineExploded;
     }
-    if ((!this.goalFlag && this.probabilityFlag) || (this.goalFlag && !this.probabilityFlag)) {
-      return GameStateEnum.InProgress;
+    // Goals are unmet
+    if (!this.goalFlag && this.probabilityFlag) {
+      return GameStateEnum.GoalsNotCompleted;
     }
+    // Total probability is too low
+    if (this.goalFlag && !this.probabilityFlag) {
+      return GameStateEnum.ProbabilityTooLow;
+    }
+    // All conditions met for victory
     if (this.probabilityFlag && this.goalFlag && this.safeFlag) {
       return GameStateEnum.Victory;
     }
