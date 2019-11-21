@@ -56,6 +56,9 @@ section.entry-section {
     margin: 0;
     font-weight: bold;
     text-align: justify;
+    @media screen and (max-width: 1000px) {
+      text-align: center;      
+    }
     &:after {
       display: inline-block;
       position: relative;
