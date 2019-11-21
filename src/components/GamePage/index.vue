@@ -25,7 +25,7 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals :game-state="level.gameState" :detections="detections" />
+        <game-goals :game-state="level.gameState" />
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -40,7 +40,7 @@
           :path-particles="pathParticles"
           :hints="hints"
           :grid="level.grid"
-          :probabilities="detections"
+          :probabilities="filteredAbsorptions"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"
@@ -200,6 +200,8 @@ export default class Game extends Vue {
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     this.frameIndex = 0;
     this.level.grid.resetEnergized();
+    this.level.gameState.absorptions = this.filteredAbsorptions;
+    console.log(this.level.gameState.toString());
     this.mutationSetSimulationState(false);
   }
 
@@ -207,9 +209,9 @@ export default class Game extends Vue {
    * Output cells linked to detection events
    * @returns Cell and percentage
    */
-  get detections(): Absorption[] {
+  get filteredAbsorptions(): Absorption[] {
     // Filter out of grid cells
-    return this.simulation.totalAbsorptionPerTile.filter((absorption: Absorption) => {
+    return this.simulation.absorptions.filter((absorption: Absorption) => {
       return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
     });
   }

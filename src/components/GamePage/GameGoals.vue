@@ -35,7 +35,7 @@
         <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
-        <span v-if="detectorsHit !== gameState.goals.length" class="defeat">
+        <span v-if="gameState.goalFlag" class="defeat">
           <b>DETECTORS</b>
         </span>
         <span v-else class="success"><b>DETECTORS</b></span>

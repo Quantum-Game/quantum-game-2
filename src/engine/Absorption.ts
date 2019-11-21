@@ -16,6 +16,13 @@ export default class Absorption extends Cell {
   }
 
   /**
+   * Override toString()
+   */
+  toString() {
+    return `Absorbing ${this.probability} at ${this.cell.toString}`;
+  }
+
+  /**
    * Export absorption as javascript primitives
    * @returns AbsorptionInterface
    */
