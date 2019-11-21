@@ -6,7 +6,7 @@
         <app-photon
           :particle="particle"
           :width="width"
-          :height="120"
+          :height="100"
           :margin="0"
           :display-magnetic="true"
           :display-electric="true"
@@ -42,7 +42,7 @@ import AppButton from '@/components/AppButton.vue';
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[];
   @Prop() readonly particles!: Particle[];
-  width: number = 100;
+  width: number = 180;
   $refs!: {
     wrapper: HTMLElement;
   };
