@@ -48,7 +48,7 @@ const classicLevels: LevelInterface[] = [
   level11,
   level12,
   level13,
-  // level14,
+  level14,
   // level15,
   // level16,
   // level17,

@@ -52,6 +52,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
+import { GameStateEnum } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
 import Particle from '@/engine/Particle';
@@ -114,6 +115,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State simulationState!: string;
+  @State gameState!: GameStateEnum;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -273,7 +275,7 @@ export default class AppCell extends Mixins(getPosition) {
    * Display pulsating ring around laser
    */
   get displayPulsation(): boolean {
-    if (this.cell.isLaser) {
+    if (this.cell.isLaser && this.gameState === GameStateEnum.Victory) {
       return true;
     }
     return false;

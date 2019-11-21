@@ -1,6 +1,5 @@
 import cloneDeep from 'lodash.clonedeep';
 import countBy from 'lodash.countby';
-import { CellInterface } from './interfaces';
 import Coord from '@/engine/Coord';
 import Element from '@/engine/Element';
 import Cell from '@/engine/Cell';
