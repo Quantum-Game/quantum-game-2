@@ -47,14 +47,14 @@
 
       <!-- PROBABILITY -->
       <text
-        v-for="(probability, i) in probabilities"
+        v-for="(absorption, i) in absorptions"
         :key="'probability' + i"
-        :x="(probability.coord.x + 0.5) * 64"
-        :y="probability.coord.y * 64"
+        :x="(absorption.cell.coord.x + 0.5) * 64"
+        :y="absorption.cell.coord.y * 64"
         text-anchor="middle"
         class="probability"
       >
-        {{ (probability.probability * 100).toFixed(1) }}%
+        {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
 
       <!-- SPEECH BUBBLES -->
@@ -82,6 +82,7 @@ import BoardLasers from '@/components/Board/BoardLasers.vue';
 import BoardDots from '@/components/Board/BoardDots.vue';
 import AppPhoton from '@/components/AppPhoton.vue';
 import SpeechBubble from '@/components/SpeechBubble.vue';
+import Absorption from '../../engine/Absorption';
 
 @Component({
   components: {
@@ -105,7 +106,7 @@ export default class Board extends Vue {
   @Prop() readonly grid!: Grid;
   @Prop() readonly hints!: HintInterface[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
-  @Prop({ default: '' }) readonly probabilities!: string;
+  @Prop({ default: [] }) readonly absorptions!: Absorption[];
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State hoveredParticles!: Particle[];
@@ -178,12 +179,13 @@ export default class Board extends Vue {
     return this.grid.rows * this.tileSize;
   }
 
-  computeProbStyle(probability: { x: number; y: number; probability: number }) {
-    const originX = this.centerCoord(probability.x);
-    const originY = this.centerCoord(probability.y);
+  computeProbStyle(absorption: Absorption) {
+    const originX = this.centerCoord(absorption.coord.x);
+    const originY = this.centerCoord(absorption.coord.y);
     return {
       // 'transform-origin': `${originX}px ${originY}px`,
-      transform: `translate: ${probability.x * this.tileSize}px ${probability.y * this.tileSize}px`,
+      transform: `translate: ${absorption.coord.x * this.tileSize}px ${absorption.coord.y *
+        this.tileSize}px`,
       fill: 'white'
     };
   }

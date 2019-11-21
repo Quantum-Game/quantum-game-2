@@ -40,7 +40,7 @@
           :path-particles="pathParticles"
           :hints="hints"
           :grid="level.grid"
-          :probabilities="filteredAbsorptions"
+          :absorptions="filteredAbsorptions"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"
@@ -193,17 +193,32 @@ export default class Game extends Vue {
    * @returns boolean
    */
   updateSimulation(): void {
+    // Compute simulation frames
     const gridInterface = this.level.exportLevel().grid;
     this.simulation = QuantumSimulation.importBoard(gridInterface);
     this.simulation.initializeFromLaser('H');
     this.simulation.nextFrames(35);
+    // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation);
-    this.frameIndex = 0;
-    this.level.grid.resetEnergized();
+    // Set absorption events
     this.level.gameState.absorptions = this.filteredAbsorptions;
-    console.log(this.level.gameState.toString());
+    console.debug(this.level.gameState.toString());
+    // Reset simulation variables
+    this.frameIndex = 0;
+    this.setEnergizedCells();
     this.mutationSetGameState(this.level.gameState.gameState);
     this.mutationSetSimulationState(false);
+  }
+
+  /**
+   * Set the energized cells from the simulation
+   */
+  setEnergizedCells() {
+    this.level.grid.resetEnergized();
+    const coords = this.filteredAbsorptions.map((absorption) => {
+      return absorption.cell.coord;
+    });
+    this.level.grid.setEnergized(coords);
   }
 
   /**

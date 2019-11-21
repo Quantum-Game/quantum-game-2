@@ -100,6 +100,16 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Energize the following list of cells
+   */
+  setEnergized(coords: Coord[]): void {
+    coords.forEach((coord) => {
+      const cell = this.get(coord);
+      cell.energized = true;
+    });
+  }
+
+  /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
   resetEnergized(): void {
@@ -204,26 +214,6 @@ export default class Grid extends Cluster {
       if (cell.rotation % 180 === 0) {
         // eslint-disable-next-line
         cell.rotation = (cell.rotation + 180) % 360;
-      }
-    });
-  }
-
-  /**
-   * Set the adjacent cells as active if they are near an energized detector
-   */
-  activateCells(): void {
-    this.unvoid.cells.forEach((cell) => {
-      if (cell.element.name !== 'laser') {
-        // eslint-disable-next-line no-param-reassign
-        cell.active = false;
-      }
-      const energizedAdjacent = this.adjacentCells(cell.coord).filter((adjacent) => {
-        return adjacent.energized && adjacent.element.name === 'detector';
-      });
-      if (energizedAdjacent.length > 0) {
-        console.debug(`Cell ${cell.toString()} has 1+ active detectors as adjacent cell.`);
-        // eslint-disable-next-line no-param-reassign
-        cell.active = true;
       }
     });
   }
