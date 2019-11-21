@@ -42,6 +42,7 @@
         :tileSize="tileSize"
         @updateCell="updateCell"
         @mouseover.native="handleMouseEnter(cell.coord)"
+        @mouseleave.native="handleMouseLeave(cell.coord)"
         @play="play"
       />
 
@@ -144,7 +145,17 @@ export default class Board extends Vue {
     }
     if (particles.length > 0) {
       this.mutationSetHoveredParticles(particles);
-    } else {
+    }
+  }
+
+  /**
+   * Handle mouse over from cell and photons
+   */
+  handleMouseLeave(coord: Coord) {
+    const particles = this.particles.filter((particle) => {
+      return particle.coord.equal(coord);
+    });
+    if (particles.length > 0) {
       this.mutationSetHoveredParticles([]);
     }
   }
