@@ -16,6 +16,14 @@ export default class Absorption extends Cell {
   }
 
   /**
+   * Is the particle escaping the grid?
+   * @return boolean
+   */
+  get isEscaping() {
+    return this.cell.coord.outOfGrid;
+  }
+
+  /**
    * Override toString()
    */
   toString() {

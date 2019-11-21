@@ -13,17 +13,17 @@
       :start-angle="0"
     >
       <!-- PROBABILITY -->
-      <div :class="gameStateClass">
+      <div :class="probabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
       </div>
     </vc-donut>
-    <div class="temp">
+    <div class="goalPercentage">
       <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
 
     <!-- GOALS -->
-    <div v-if="gameState.goals.length > 0" class="bottom-icons">
+    <div v-if="gameState.goals.length > 0" :class="goalClass">
       <span
         v-for="(goal, index) in gameState.goalsHit.length"
         :key="'detectorh' + index"
@@ -35,15 +35,14 @@
         <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
-        <span v-if="gameState.goalFlag" class="defeat">
+        <span>
           <b>DETECTORS</b>
         </span>
-        <span v-else class="success"><b>DETECTORS</b></span>
       </div>
     </div>
 
     <!-- MINES -->
-    <div v-if="gameState.mines.length > 0" class="bottom-icons">
+    <div v-if="gameState.mines.length > 0" :class="safeClass">
       <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
         <img src="@/assets/graphics/mineIconRed.svg" alt="Key Icon" width="34" />
       </span>
@@ -51,10 +50,12 @@
         <img src="@/assets/graphics/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>
-        <span v-if="minesHit > 0" class="defeat">
+        <span v-if="gameState.minesHit > 0" class="defeat">
           <b>DANGER!</b>
         </span>
-        <span v-else class="success"><b>SAFE</b></span>
+        <span v-else class="success">
+          <b>SAFE</b>
+        </span>
       </div>
     </div>
   </div>
@@ -69,7 +70,7 @@ import Cell from '@/engine/Cell';
 import Goal from '@/engine/Goal';
 import GameState from '@/engine/GameState';
 import AppCell from '@/components/Board/AppCell.vue';
-import Game from './index.vue';
+import Game from '@/components/GamePage/index.vue';
 
 @Component({
   components: {
@@ -78,26 +79,21 @@ import Game from './index.vue';
 })
 export default class GameGoals extends Vue {
   @Prop() readonly gameState!: GameState;
-  @Prop() readonly detections!: { cell: Cell; probability: number }[];
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
+  @Prop() readonly percentage!: number;
   tweenedPercent: number = this.gameState.totalAbsorption;
   width = 100;
 
   /**
-   * Compute success or failure class
-   * TODO: Should be a boolean
+   * Compute success or failure class from the gameState flags
    */
-  get gameStateClass(): string {
-    return this.gameState.totalAbsorption >= this.gameState.totalGoal ? 'success' : 'defeat';
+  get probabilityClass(): string {
+    return this.gameState.probabilityFlag ? 'success' : 'defeat';
   }
-
-  /**
-   * @param time tween time
-   */
-  animateTween(time: number): void {
-    const id = requestAnimationFrame(this.animateTween);
-    const result = updateTween(time);
-    if (!result) cancelAnimationFrame(id);
+  get goalClass(): string[] {
+    return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons'];
+  }
+  get safeClass(): string[] {
+    return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons'];
   }
 
   /**
@@ -112,9 +108,19 @@ export default class GameGoals extends Vue {
   }
 
   /**
-   * Animate donut increase / decrease
+   * Create the donut animation tween
+   * @param time tween time
    */
-  @Watch('gameState')
+  animateTween(time: number): void {
+    const id = requestAnimationFrame(this.animateTween);
+    const result = updateTween(time);
+    if (!result) cancelAnimationFrame(id);
+  }
+
+  /**
+   * Animate donut increase / decrease on gameState change
+   */
+  @Watch('percentage')
   onPercentChanged(val: number, oldVal: number) {
     new Tween({ value: oldVal })
       .to({ value: val }, 500)
@@ -191,13 +197,13 @@ export default class GameGoals extends Vue {
     text-anchor: middle;
   }
 }
-.temp {
+.goalPercentage {
   font-size: 0.8rem;
   margin-bottom: 2rem;
 }
 .defeat {
   color: white;
-  opacity: 0.2;
+  opacity: 0.75;
 }
 .success {
   color: white;
