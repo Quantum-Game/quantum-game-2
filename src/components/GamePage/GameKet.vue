@@ -3,7 +3,7 @@
     <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     >
-    <!-- VIEWR -->
+    <!-- VIEWER -->
     <div class="quantum-state-viewer">
       <span
         v-for="(ketComponent, index) in ketComponents"
@@ -39,7 +39,7 @@
           ⟩
         </span>
       </span>
-      <div v-if="showLegend" class="legend">
+      <div v-if="showLegend && ketComponents.length > 0" class="legend">
         <span v-if="selectedStyle === 'color-disk'">
           <span class="legend-coord-xy"> x,y coordinates</span>
           <span class="legend-dir">direction</span>
