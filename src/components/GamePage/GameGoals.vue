@@ -50,11 +50,11 @@
         <img src="@/assets/graphics/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>
-        <span v-if="gameState.minesHit > 0" class="defeat">
-          <b>DANGER!</b>
-        </span>
-        <span v-else class="success">
+        <span v-if="gameState.safeFlag" class="success">
           <b>SAFE</b>
+        </span>
+        <span v-else class="defeat">
+          <b>DANGER!</b>
         </span>
       </div>
     </div>
