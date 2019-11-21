@@ -19,15 +19,15 @@
       </div>
     </vc-donut>
     <div class="temp">
-      <div>Goal: {{ totalGoalPercentage }} %</div>
+      <div>Goal: {{ totalGoal }} %</div>
     </div>
 
     <!-- GOALS -->
     <div v-if="gameState.goals.length > 0" class="bottom-icons">
-      <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
+      <span v-for="(goal, index) in goalsHit" :key="'detectorh' + index" class="hit">
         <img src="@/assets/graphics/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
-      <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
+      <span v-for="(goal, index) in goalsUnhit" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
@@ -76,124 +76,31 @@ export default class GameGoals extends Vue {
   @Prop() readonly gameState!: GameState;
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
-  tweenedPercent: number = this.percentage;
+  tweenedPercent: number = this.totalAbsorption;
   width = 100;
 
   /**
    * Compute the total absorption at goals
    * @returns total absorption
    */
-  get percentage() {
-    let sum = 0;
-    this.detections.forEach((detection) => {
-      this.gameState.goals.forEach((goal: Goal) => {
-        if (goal.cell.coord.equal(detection.cell.coord)) {
-          sum += detection.probability;
-        }
-      });
-    });
-    return sum * 100;
-  }
-
-  /**
-   * Compute game state and sets Vuex
-   */
-  computeGameState() {
-    let probabilityFlag = false;
-    let goalFlag = false;
-    let safeFlag = false;
-    // Compute the current detection probability and compare it to goals
-    if (this.percentage >= this.totalGoalPercentage) {
-      probabilityFlag = true;
-    }
-    // Check that the current goals are met
-    if (this.detectorsUnhit === 0) {
-      goalFlag = true;
-    }
-    // Check that no mines are hit so it's safe
-    if (this.minesHit === 0) {
-      safeFlag = true;
-    }
-
-    if (!safeFlag) {
-      this.mutationSetGameState(GameStateEnum.MineExploded);
-      this.$emit('gameState', GameStateEnum.MineExploded);
-      return;
-    }
-    if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
-      this.mutationSetGameState(GameStateEnum.InProgress);
-      this.$emit('gameState', GameStateEnum.InProgress);
-    }
-    if (probabilityFlag && goalFlag && safeFlag) {
-      this.mutationSetGameState(GameStateEnum.Victory);
-      this.$emit('gameState', GameStateEnum.Victory);
-    }
-  }
-
-  /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
-   */
-  get detectorsHit(): number {
-    const detectorDetected = this.detections.filter((detection) => {
-      return detection.cell.isDetector;
-    });
-    return detectorDetected.length;
-  }
-
-  /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
-   */
-  get detectorsUnhit(): number {
-    return this.gameState.goals.length - this.detectorsHit;
-  }
-
-  /**
-   * Process the detection events and select the mines
-   * @returns hit mines count
-   */
-  get minesHit(): number {
-    const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine';
-    });
-    return minesDetected.length;
-  }
-
-  /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
-   */
-  get minesUnhit(): number {
-    return this.gameState.mines.length - this.minesHit;
-  }
-
-  /**
-   * Compute the total absorption at goals
-   * @returns total absorption
-   */
-  get updatePercentage() {
-    let sum = 0;
-    this.detections.forEach((detection) => {
-      this.gameState.goals.forEach((goal: Goal) => {
-        if (goal.cell.coord.equal(detection.cell.coord)) {
-          sum += detection.probability;
-        }
-      });
-    });
-    return sum;
-  }
-
-  get gameStateClass() {
-    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
+  get totalAbsorption() {
+    return this.gameState.totalAbsorption;
   }
 
   /**
    * Total goal percentage
    * @returns sum of goal threshold
    */
-  get totalGoalPercentage(): number {
+  get totalGoal(): number {
     return this.gameState.totalGoalPercentage;
+  }
+
+  /**
+   * Compute success or failure class
+   * TODO: Should be a boolean
+   */
+  get gameStateClass(): string {
+    return this.totalAbsorption >= this.totalGoal ? 'success' : 'defeat';
   }
 
   /**
@@ -225,7 +132,6 @@ export default class GameGoals extends Vue {
       })
       .start();
     requestAnimationFrame(this.animateTween);
-    this.computeGameState();
   }
 }
 </script>

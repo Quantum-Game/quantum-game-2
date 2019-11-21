@@ -1,25 +1,24 @@
+import { GameStateEnum } from '@/engine/interfaces';
+import Goal from '@/engine/Goal';
+import Absorption from '@/engine/Absorption';
+import Cell from '@/engine/Cell';
+
 /**
  * GAME STATE CLASS
  * Computes the current game state
  */
-import { GameStateEnum, AbsorptionInterface } from '@/engine/interfaces';
-import Goal from '@/engine/Goal';
-import Cell from '@/engine/Cell';
-
 export default class GameStateEngine {
   probabilityFlag: boolean = false;
   goalFlag: boolean = false;
   safeFlag: boolean = false;
-  state: GameStateEnum;
   goals: Goal[];
   mines: Cell[];
-  absorptions: AbsorptionInterface[];
+  absorptions: Absorption[];
 
-  constructor(goals: Goal[], mines: Cell[] = [], absorptions: AbsorptionInterface[] = []) {
+  constructor(goals: Goal[], mines: Cell[] = [], absorptions: Absorption[] = []) {
     this.goals = goals;
     this.mines = mines;
     this.absorptions = absorptions;
-    this.state = GameStateEnum.Initial;
   }
 
   /**
@@ -35,70 +34,84 @@ export default class GameStateEngine {
     return sum;
   }
 
-  get minesCount() {
-    return this.mines.length;
+  /**
+   * Absorptions that happened on goal cells
+   */
+  get totalAbsorption(): number {
+    let sum = 0;
+    this.absorptions.forEach((absorption) => {
+      this.goals.forEach((goal) => {
+        if (goal.cell.coord.equal(absorption.coord)) {
+          sum += absorption.probability;
+        }
+      });
+    });
+    return sum;
   }
 
   /**
    * Compute game state and sets Vuex
    */
-  computeGameState() {
-    // let probabilityFlag = false;
-    // let goalFlag = false;
-    // let safeFlag = false;
-    // // Compute the current detection probability and compare it to goals
-    // if (this.percentage >= this.totalGoalPercentage) {
-    //   probabilityFlag = true;
-    // }
-    // // Check that the current goals are met
-    // if (this.detectorsUnhit === 0) {
-    //   goalFlag = true;
-    // }
-    // // Check that no mines are hit so it's safe
-    // if (this.minesHit === 0) {
-    //   safeFlag = true;
+  get gameState(): GameStateEnum {
+    let probabilityFlag = false;
+    let goalFlag = false;
+    let safeFlag = false;
+    // Compute the current detection probability and compare it to goals
+    if (this.totalAbsorption >= this.totalGoalPercentage) {
+      probabilityFlag = true;
+    }
+    // Check that the current goals are met
+    if (this.goalsUnhit === 0) {
+      goalFlag = true;
+    }
+    // Check that no mines are hit so it's safe
+    if (this.minesHit.length === 0) {
+      safeFlag = true;
+    }
+
+    // Compute gameState from flags
+    if (!safeFlag) {
+      return GameStateEnum.MineExploded;
+    }
+    if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
+      return GameStateEnum.InProgress;
+    }
+    if (probabilityFlag && goalFlag && safeFlag) {
+      return GameStateEnum.Victory;
+    }
+    return GameStateEnum.InProgress;
+  }
+
+  /**
+   * Process the detection events and link them to goals
+   * @returns hit detector count
+   */
+  get goalsHit(): Goal[] {
+    const goalsHit: Goal[] = [];
+    this.absorptions.forEach((absorption) => {
+      this.goals.forEach((goal) => {
+        goalsHit.push(goal);
+      });
+    });
+    return goalsHit;
+  }
+
+  /**
+   * Process the detection events and select the detectors
+   * @returns hit detector count
+   */
+  get goalsUnhit(): number {
+    return this.goals.length - this.goalsHit.length;
+  }
+
+  /**
+   * Process the detection events and select the mines
+   * @returns hit mines count
+   */
+  get minesHit(): Cell[] {
+    const minesDetected = this.absorptions.filter((absorption) => {
+      return absorption.cell.element.name === 'Mine';
+    });
+    return minesDetected;
   }
 }
-//     // if (!safeFlag) {
-//     //   this.mutationSetGameState(GameState.MineExploded);
-//     //   this.$emit('gameState', GameState.MineExploded);
-//     //   return;
-//     // }
-//     // if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
-//     //   this.mutationSetGameState(GameState.InProgress);
-//     //   this.$emit('gameState', GameState.InProgress);
-//     // }
-//     // if (probabilityFlag && goalFlag && safeFlag) {
-//     //   this.mutationSetGameState(GameState.Victory);
-//     //   this.$emit('gameState', GameState.Victory);
-//     // }
-
-//   /**
-//    * Process the detection events and select the detectors
-//    * @returns hit detector count
-//    */
-//   get detectorsHit(): number {
-//     const detectorDetected = this.detections.filter((detection) => {
-//       return detection.cell.isDetector;
-//     });
-//     return detectorDetected.length;
-//   }
-
-//   /**
-//    * Process the detection events and select the detectors
-//    * @returns hit detector count
-//    */
-//   get detectorsUnhit(): number {
-//     return this.goals.length - this.detectorsHit;
-//   }
-
-//   /**
-//    * Process the detection events and select the mines
-//    * @returns hit mines count
-//    */
-//   get minesHit(): number {
-//     const minesDetected = this.detections.filter((detection) => {
-//       return detection.cell.element.name === 'Mine';
-//     });
-//     return minesDetected.length;
-//   }
