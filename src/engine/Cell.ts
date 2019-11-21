@@ -66,6 +66,14 @@ export default class Cell {
   }
 
   /**
+   * Is element a mine?
+   * @returns true if mine
+   */
+  get isMine(): boolean {
+    return this.element.name === 'Mine';
+  }
+
+  /**
    * Ouput the rotation with an unicode arrow
    * @returns unicode arrow describing rotation
    */
