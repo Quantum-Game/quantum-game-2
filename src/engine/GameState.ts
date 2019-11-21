@@ -92,7 +92,9 @@ export default class GameState {
     const goalsHit: Goal[] = [];
     this.absorptions.forEach((absorption) => {
       this.goals.forEach((goal) => {
-        goalsHit.push(goal);
+        if (absorption.cell.coord.equal(goal.cell.coord)) {
+          goalsHit.push(goal);
+        }
       });
     });
     return goalsHit;
@@ -122,5 +124,19 @@ export default class GameState {
    */
   get minesUnhit(): number {
     return this.mines.length - this.minesHit.length;
+  }
+
+  /**
+   * Override toString() method.
+   */
+  toString(): string {
+    let result = `--- GameState: ${this.gameState} ---\n`;
+    result += `- PROB FLAG: ${this.probabilityFlag ? 'OK' : 'KO'}\n`;
+    result += `Probability ${this.totalAbsorption}% / ${this.totalGoal}%\n`;
+    result += `- GOAL FLAG: ${this.goalFlag ? 'OK' : 'KO'}\n`;
+    result += `Goals hit(${this.goalsHit.length}) + unhit(${this.goalsUnhit}) = ${this.goals.length}\n`;
+    result += `- SAFE FLAG: ${this.safeFlag ? 'OK' : 'KO'}\n`;
+    result += `Mines hit(${this.minesHit.length}) + unhit(${this.minesUnhit}) = ${this.mines.length}\n`;
+    return result;
   }
 }

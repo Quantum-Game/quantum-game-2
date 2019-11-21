@@ -1,12 +1,12 @@
 import _ from 'lodash';
 import { Photons } from 'quantum-tensors';
 import { weightedRandomInt } from './utils';
+import { GridInterface, AbsorptionInterface } from './interfaces';
 import QuantumFrame from './QuantumFrame';
 import Grid from './Grid';
-import { GridInterface, AbsorptionInterface } from './interfaces';
+import Coord from './Coord';
 import Cell from './Cell';
 import Particle from './Particle';
-import { Coord } from './classes';
 import Absorption from './Absorption';
 
 /**
@@ -90,7 +90,7 @@ export default class QuantumSimulation {
       console.debug('POST-SIMULATION LOG:');
       console.debug('probabilityPerFrame', this.probabilityPerFrame);
       console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
-      console.debug('totalAbsorptionPerTile', this.totalAbsorptionPerTile);
+      console.debug('totalAbsorptionPerTile', this.absorptions);
       console.debug('An example of realization:');
       // const randomSample = this.sampleRandomRealization();
       // randomSample.statePerFrame.forEach((state) => console.debug(state.ketString()));
@@ -136,8 +136,9 @@ export default class QuantumSimulation {
   /**
    * Convert AbsorptionInterface to Absorption class instances
    * @param AbsorptionInterface[]
+   * @returns absorption instance list (cell, probability)
    */
-  get totalAbsorptionPerTile(): Absorption[] {
+  get absorptions(): Absorption[] {
     return this.totalAbsorptionInterfacePerTile.map((absorptionI: AbsorptionInterface) => {
       const coord = Coord.importCoord(absorptionI.coord);
       const cell = this.board.get(coord);
@@ -151,8 +152,8 @@ export default class QuantumSimulation {
    * @param coord coord to check for detection
    */
   isDetectionEvent(coord: Coord): boolean {
-    const coords = this.totalAbsorptionPerTile.map((absorption) => {
-      return Coord.importCoord(absorption.coord);
+    const coords = this.absorptions.map((absorption) => {
+      return Coord.importCoord(absorption.cell.coord);
     });
     return _.includes(coords, coord);
   }
