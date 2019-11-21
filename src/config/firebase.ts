@@ -24,6 +24,8 @@ auth.onAuthStateChanged((user) => {
   }
 });
 
+// cheat 
+
 export { db, auth };
 
 export default firebase;
