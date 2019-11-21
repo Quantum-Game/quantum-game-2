@@ -40,7 +40,7 @@
           :path-particles="pathParticles"
           :hints="hints"
           :grid="level.grid"
-          :probabilities="probabilities"
+          :probabilities="detections"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"
@@ -100,6 +100,7 @@ import GameBoard from '@/components/Board/index.vue';
 import GameGraph from '@/components/GamePage/GameGraph.vue';
 import AppButton from '@/components/AppButton.vue';
 import AppOverlay from '@/components/AppOverlay.vue';
+import Absorption from '../../engine/Absorption';
 
 @Component({
   components: {
@@ -206,40 +207,11 @@ export default class Game extends Vue {
    * Output cells linked to detection events
    * @returns Cell and percentage
    */
-  get detections(): { cell: Cell; probability: number }[] {
-    interface probabilityCellInterface {
-      cell: Cell;
-      probability: number;
-    }
+  get detections(): Absorption[] {
     // Filter out of grid cells
-    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: AbsorptionInterface) => {
-        return absorption.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
-      }
-    );
-    // Convert to cells format
-    const detections: probabilityCellInterface[] = absorptions.map(
-      (absorption: AbsorptionInterface) => {
-        const coord = Coord.importCoord(absorption.coord);
-        const cell = this.level.grid.get(coord);
-        cell.energized = true;
-        return { cell, probability: absorption.probability };
-      }
-    );
-    return detections;
-  }
-
-  /**
-   * Process the detection events who happen in the grid
-   *  @returns absorptions
-   */
-  get probabilities() {
-    const absorptions = this.simulation.totalAbsorptionPerTile.filter(
-      (absorption: AbsorptionInterface) => {
-        return absorption.coord.x !== -1;
-      }
-    );
-    return absorptions;
+    return this.simulation.totalAbsorptionPerTile.filter((absorption: Absorption) => {
+      return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
+    });
   }
 
   /**

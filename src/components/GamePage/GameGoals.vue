@@ -19,15 +19,19 @@
       </div>
     </vc-donut>
     <div class="temp">
-      <div>Goal: {{ totalGoal }} %</div>
+      <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
 
     <!-- GOALS -->
     <div v-if="gameState.goals.length > 0" class="bottom-icons">
-      <span v-for="(goal, index) in goalsHit" :key="'detectorh' + index" class="hit">
+      <span
+        v-for="(goal, index) in gameState.goalsHit.length"
+        :key="'detectorh' + index"
+        class="hit"
+      >
         <img src="@/assets/graphics/detectorIconRed.svg" alt="Key Icon" width="30" />
       </span>
-      <span v-for="(goal, index) in goalsUnhit" :key="'detectoru' + index" class="unhit">
+      <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/graphics/detectorIconGreen.svg" alt="Key Icon" width="30" />
       </span>
       <div>
@@ -39,11 +43,11 @@
     </div>
 
     <!-- MINES -->
-    <div v-if="gameState.mines > 0" class="bottom-icons">
-      <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
+    <div v-if="gameState.mines.length > 0" class="bottom-icons">
+      <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
         <img src="@/assets/graphics/mineIconRed.svg" alt="Key Icon" width="34" />
       </span>
-      <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
+      <span v-for="(mine, index) in gameState.minesUnhit" :key="'mineu' + index" class="unhit">
         <img src="@/assets/graphics/mineIconEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>
@@ -76,31 +80,15 @@ export default class GameGoals extends Vue {
   @Prop() readonly gameState!: GameState;
   @Prop() readonly detections!: { cell: Cell; probability: number }[];
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
-  tweenedPercent: number = this.totalAbsorption;
+  tweenedPercent: number = this.gameState.totalAbsorption;
   width = 100;
-
-  /**
-   * Compute the total absorption at goals
-   * @returns total absorption
-   */
-  get totalAbsorption() {
-    return this.gameState.totalAbsorption;
-  }
-
-  /**
-   * Total goal percentage
-   * @returns sum of goal threshold
-   */
-  get totalGoal(): number {
-    return this.gameState.totalGoalPercentage;
-  }
 
   /**
    * Compute success or failure class
    * TODO: Should be a boolean
    */
   get gameStateClass(): string {
-    return this.totalAbsorption >= this.totalGoal ? 'success' : 'defeat';
+    return this.gameState.totalAbsorption >= this.gameState.totalGoal ? 'success' : 'defeat';
   }
 
   /**
@@ -123,7 +111,10 @@ export default class GameGoals extends Vue {
     ];
   }
 
-  @Watch('percentage')
+  /**
+   * Animate donut increase / decrease
+   */
+  @Watch('gameState')
   onPercentChanged(val: number, oldVal: number) {
     new Tween({ value: oldVal })
       .to({ value: val }, 500)

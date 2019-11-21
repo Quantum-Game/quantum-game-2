@@ -7,6 +7,7 @@ import { GridInterface, AbsorptionInterface } from './interfaces';
 import Cell from './Cell';
 import Particle from './Particle';
 import { Coord } from './classes';
+import Absorption from './Absorption';
 
 /**
  * QUANTUM SIMULATION CLASS
@@ -38,7 +39,6 @@ export default class QuantumSimulation {
         `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
       );
     }
-    // const lasers = this.board.lasers.active.cells;
     const lasers = this.board.emitters.active.cells;
     if (lasers.length !== 1) {
       throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
@@ -73,11 +73,16 @@ export default class QuantumSimulation {
     this.frames.push(frame);
   }
 
-  nextFrames(n: number = 20, stopIfProbabilityBelow = 1e-6): void {
+  /**
+   * Compute next frames until probability threshold
+   * @param n default number of frames
+   * @param stopThreshold stop if probability below threshold
+   */
+  nextFrames(n: number = 20, stopThreshold = 1e-6): void {
     const logging = false;
     for (let i = 0; i < n; i += 1) {
       this.nextFrame();
-      if (this.lastFrame.probability < stopIfProbabilityBelow) {
+      if (this.lastFrame.probability < stopThreshold) {
         break;
       }
     }
@@ -116,7 +121,7 @@ export default class QuantumSimulation {
    * @returns E.g.
    * [{x: 2, y: 1, probability: 0.25}, {x: 3, y: 5, probability: 0.25}, {x: -1, y: -1, probability: 0.25}]
    */
-  get totalAbsorptionPerTile(): AbsorptionInterface[] {
+  get totalAbsorptionInterfacePerTile(): AbsorptionInterface[] {
     return _(this.frames)
       .flatMap((frame) => frame.absorptions)
       .groupBy((absorption) => `(${absorption.coord.x}.${absorption.coord.y})`)
@@ -126,6 +131,19 @@ export default class QuantumSimulation {
         probability: _.sumBy(absorptions, 'probability')
       }))
       .value();
+  }
+
+  /**
+   * Convert AbsorptionInterface to Absorption class instances
+   * @param AbsorptionInterface[]
+   */
+  get totalAbsorptionPerTile(): Absorption[] {
+    return this.totalAbsorptionInterfacePerTile.map((absorptionI: AbsorptionInterface) => {
+      const coord = Coord.importCoord(absorptionI.coord);
+      const cell = this.board.get(coord);
+      cell.energized = true;
+      return new Absorption(cell, absorptionI.probability);
+    });
   }
 
   /**
