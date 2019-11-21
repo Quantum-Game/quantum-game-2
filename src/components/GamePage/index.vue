@@ -25,7 +25,7 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals :game-state="level.gameState" />
+        <game-goals :game-state="level.gameState" :percentage="level.gameState.totalAbsorption" />
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -202,6 +202,7 @@ export default class Game extends Vue {
     this.level.grid.resetEnergized();
     this.level.gameState.absorptions = this.filteredAbsorptions;
     console.log(this.level.gameState.toString());
+    this.mutationSetGameState(this.level.gameState.gameState);
     this.mutationSetSimulationState(false);
   }
 

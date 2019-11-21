@@ -135,16 +135,21 @@ export default class QuantumSimulation {
 
   /**
    * Convert AbsorptionInterface to Absorption class instances
+   * Filter the escaping particle absorption events
    * @param AbsorptionInterface[]
    * @returns absorption instance list (cell, probability)
    */
   get absorptions(): Absorption[] {
-    return this.totalAbsorptionInterfacePerTile.map((absorptionI: AbsorptionInterface) => {
+    const absorptions: Absorption[] = [];
+    this.totalAbsorptionInterfacePerTile.forEach((absorptionI: AbsorptionInterface) => {
       const coord = Coord.importCoord(absorptionI.coord);
-      const cell = this.board.get(coord);
-      cell.energized = true;
-      return new Absorption(cell, absorptionI.probability);
+      if (!coord.outOfGrid) {
+        const cell = this.board.get(coord);
+        cell.energized = true;
+        absorptions.push(new Absorption(cell, absorptionI.probability));
+      }
     });
+    return absorptions;
   }
 
   /**
