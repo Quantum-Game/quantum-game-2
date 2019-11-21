@@ -74,6 +74,19 @@ export default class Cell {
   }
 
   /**
+   * Is element a complicated rotation?
+   * @returns true if quarter wave plate or polarizer
+   */
+  get isPolarizerOrWavePlate(): boolean {
+    return (
+      this.element.name === 'PolarizerH' ||
+      this.element.name === 'PolarizerV' ||
+      this.element.name === 'QuarterWavePlateH' ||
+      this.element.name === 'QuarterWavePlateV'
+    );
+  }
+
+  /**
    * Ouput the rotation with an unicode arrow
    * @returns unicode arrow describing rotation
    */
