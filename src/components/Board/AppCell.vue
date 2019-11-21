@@ -3,8 +3,8 @@
     ref="cellRef"
     :style="positionStyle"
     :class="computedCellClass"
-    @mousedown="handleCellClick"
-    @mouseup="handleCellUp"
+    @mousedown="deviceTargetDown"
+    @mouseup="deviceTargetUp"
   >
     <rect
       :width="tileSize"
@@ -101,6 +101,40 @@ export default class AppCell extends Mixins(getPosition) {
    *  2. determines if the updateCell event should be emitted
    *  @returns void
    */
+
+  deviceTargetDown() {
+    return window.innerWidth <= 1024 ? this.handleCellTouch() : this.handleCellClick();
+  }
+
+  deviceTargetUp() {
+    return window.innerWidth >= 1024 && this.handleCellUp();
+  }
+
+  handleCellTouch(): void {
+    if (
+      this.cell.frozen ||
+      (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
+      (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
+    ) {
+      this.mutationResetActiveCell();
+    } else {
+      if (!this.cellSelected) {
+        if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
+          this.border = 'white';
+          this.mutationSetActiveCell(this.cell);
+          return;
+        }
+        this.border = '';
+        this.mutationResetActiveCell();
+        return;
+      }
+      if (this.isActiveCell && this.cell.isFromGrid) {
+        this.cell.rotate();
+      }
+      this.$emit('updateCell', this.cell);
+      this.mutationResetActiveCell();
+    }
+  }
 
   mouseMove(e: any): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
