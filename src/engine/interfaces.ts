@@ -131,6 +131,16 @@ export interface ElementInterface {
   group: string;
   description: string;
   ascii: string[];
+  params?: ElementParameterInterface[];
+}
+
+/**
+ * ELEMENT PARAMETER INTERFACE
+ * Element parameter interface composed of primitive types
+ */
+export interface ElementParameterInterface {
+  key: string;
+  value: number;
 }
 
 /**
@@ -196,10 +206,8 @@ export const enum Elem {
   Absorber = 'Absorber',
   DetectorFour = 'DetectorFour',
   // Polarization
-  PolarizerH = 'PolarizerH',
-  PolarizerV = 'PolarizerV',
-  QuarterWavePlateH = 'QuarterWavePlateH',
-  QuarterWavePlateV = 'QuarterWavePlateV',
+  Polarizer = 'Polarizer',
+  QuarterWavePlate = 'QuarterWavePlate',
   SugarSolution = 'SugarSolution',
   FaradayRotator = 'FaradayRotator',
   // Phase
@@ -231,10 +239,8 @@ export const enum ElemLower {
   Absorber = 'absorber',
   DetectorFour = 'detector-four',
   // Polarization
-  PolarizerH = 'polarizer-h',
-  PolarizerV = 'polarizer-v',
-  QuarterWavePlateH = 'quarter-wave-plate-h',
-  QuarterWavePlateV = 'quarter-wave-plate-v',
+  Polarizer = 'polarizer',
+  QuarterWavePlate = 'quarter-wave-plate',
   SugarSolution = 'sugar-solution',
   FaradayRotator = 'faraday-rotator',
   // Phase
@@ -258,7 +264,7 @@ export const enum Group {
  * Element groups
  */
 export const ElemGroups: { [symbol: string]: Elem[] } = {
-  Basic: [Elem.Void, Elem.Wall, Elem.Gate],
+  Basic: [Elem.Void],
   Source: [Elem.Laser, Elem.NonLinearCrystal],
   Direction: [
     Elem.Mirror,
@@ -267,15 +273,16 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.CoatedBeamSplitter,
     Elem.CornerCube
   ],
-  Absorption: [Elem.Detector, Elem.Rock, Elem.Mine, Elem.Absorber, Elem.DetectorFour],
-  Polarization: [
-    Elem.PolarizerH,
-    Elem.PolarizerV,
-    Elem.QuarterWavePlateH,
-    Elem.QuarterWavePlateV,
-    Elem.SugarSolution,
-    Elem.FaradayRotator
+  Absorption: [
+    Elem.Gate,
+    Elem.Detector,
+    Elem.Rock,
+    Elem.Mine,
+    Elem.Absorber,
+    Elem.DetectorFour,
+    Elem.Wall
   ],
+  Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
   Phase: [Elem.Glass, Elem.VacuumJar]
 };
 
@@ -291,6 +298,5 @@ export const enum GameStateEnum {
   // Defeat
   MineExploded = 'MineExploded',
   GoalsNotCompleted = 'GoalsNotCompleted',
-  ProbabilityTooLow = 'ProbabilityTooLow',
-  InfiniteLoop = 'InfiniteLoop'
+  ProbabilityTooLow = 'ProbabilityTooLow'
 }

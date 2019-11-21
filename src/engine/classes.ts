@@ -8,3 +8,4 @@ export { default as Coord } from './Coord';
 export { default as Hint } from './Hint';
 export { default as Goal } from './Goal';
 export { default as Particle } from './Particle';
+export { default as Absorption } from './Absorption';

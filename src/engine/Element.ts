@@ -1,11 +1,33 @@
-// TODO: Refactor to extended class based logic
+// TODO: Add allowed angle property
 import * as qt from 'quantum-tensors';
-import { ElementInterface, Elem } from './interfaces';
-import jsonElements from './dataElements';
+import { Elem } from './interfaces';
+import {
+  Absorber,
+  BeamSplitter,
+  CoatedBeamSplitter,
+  CornerCube,
+  Detector,
+  DetectorFour,
+  FaradayRotator,
+  Gate,
+  Glass,
+  Laser,
+  Mine,
+  Mirror,
+  NonLinearCrystal,
+  Polarizer,
+  QuarterWavePlate,
+  Rock,
+  SugarSolution,
+  VacuumJar,
+  Wall,
+  Void,
+  PolarizingBeamSplitter
+} from './Elements/index';
 
 /**
- * Class responsible for elements
- * Rendering abstraction should be moved to Glyph
+ * ELEMENT CLASS
+ * Loads the elements from the JSON file
  */
 export default class Element {
   name: string;
@@ -26,57 +48,54 @@ export default class Element {
   }
 
   /**
-   * Return quantum operators to be applied to states
-   * @param param parameters to pass for operator creation
-   * @returns operator
+   * Create a instance of the descendant class from Element
+   * @param name element name
+   * @returns element class instance
    */
-  transition(param: number): qt.Operator {
-    switch (this.name) {
-      case Elem.Mirror:
-        return qt.mirror(param);
-      case Elem.CornerCube:
-        return qt.cornerCube();
-      case Elem.BeamSplitter:
-        return qt.beamSplitter(param);
+  static fromName(name: string): Element {
+    switch (name) {
       case Elem.Absorber:
-        return qt.attenuator(Math.SQRT1_2);
-      case Elem.VacuumJar:
-        return qt.vacuumJar();
-      case Elem.Glass:
-        return qt.glassSlab();
+        return new Absorber();
+      case Elem.BeamSplitter:
+        return new BeamSplitter();
+      case Elem.CoatedBeamSplitter:
+        return new CoatedBeamSplitter();
+      case Elem.CornerCube:
+        return new CornerCube();
       case Elem.Detector:
-        return qt.attenuator(0);
+        return new Detector();
       case Elem.DetectorFour:
-        return qt.attenuator(0);
-      case Elem.Laser:
-        return qt.attenuator(0);
-      case Elem.NonLinearCrystal:
-        return qt.attenuator(1);
-      case Elem.Void:
-        return qt.attenuator(1);
-      case Elem.SugarSolution:
-        return qt.sugarSolution(0.125);
-      case Elem.PolarizingBeamSplitter:
-        if (param === 0) {
-          return qt.polarizingBeamsplitter(135);
-        }
-        return qt.polarizingBeamsplitter(45);
-      case Elem.PolarizerH:
-        return qt.quarterWavePlateWE(param);
-      case Elem.PolarizerV:
-        return qt.quarterWavePlateNS(param);
-      case Elem.QuarterWavePlateH:
-        return qt.quarterWavePlateWE(param);
-      case Elem.QuarterWavePlateV:
-        return qt.quarterWavePlateNS(param);
+        return new DetectorFour();
       case Elem.FaradayRotator:
-        return qt.faradayRotator(param);
+        return new FaradayRotator();
+      case Elem.Gate:
+        return new Gate();
+      case Elem.Glass:
+        return new Glass();
+      case Elem.Laser:
+        return new Laser();
       case Elem.Mine:
-        return qt.attenuator(0);
+        return new Mine();
+      case Elem.Mirror:
+        return new Mirror();
+      case Elem.NonLinearCrystal:
+        return new NonLinearCrystal();
+      case Elem.Polarizer:
+        return new Polarizer();
+      case Elem.PolarizingBeamSplitter:
+        return new PolarizingBeamSplitter();
+      case Elem.QuarterWavePlate:
+        return new QuarterWavePlate();
       case Elem.Rock:
-        return qt.attenuator(0);
+        return new Rock();
+      case Elem.SugarSolution:
+        return new SugarSolution();
+      case Elem.VacuumJar:
+        return new VacuumJar();
+      case Elem.Void:
+        return new Void();
       case Elem.Wall:
-        return qt.attenuator(0);
+        return new Wall();
       default:
         throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
     }
@@ -97,41 +116,5 @@ export default class Element {
    */
   toString(): string {
     return this.name;
-  }
-
-  /**
-   * Export element in primitives
-   * @returns ElementInterface
-   */
-  exportElement(): ElementInterface {
-    return {
-      name: this.name,
-      group: this.group,
-      description: this.description,
-      ascii: this.ascii
-    };
-  }
-
-  /**
-   * Create an element from an interface
-   * @param obj Create element from interface
-   */
-  static importElement(obj: ElementInterface): Element {
-    return new Element(obj.name, obj.group, obj.description, obj.ascii);
-  }
-
-  /**
-   * Returns an element from its name
-   * @param name Element from enum of element names
-   * @returns Element
-   */
-  static fromName(name: string): Element {
-    const element = jsonElements.find((elem) => {
-      return elem.name === name;
-    });
-    if (element) {
-      return Element.importElement(element!);
-    }
-    throw new Error(`Element: ${name} is not implemented.`);
   }
 }

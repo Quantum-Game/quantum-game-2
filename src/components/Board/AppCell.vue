@@ -316,16 +316,21 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
+   * TODO: Block rotation of QWP and Polarizers
    * styles used for wrapper positioning
    * using the getPosition mixin;
    * @returns a style object
    */
   get positionStyle(): any {
+    let { rotation } = this.cell;
+    if (this.cell.isPolarizerOrWavePlate) {
+      rotation = 0;
+    }
     let styleObj = {};
     styleObj = {
       'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
       transform: `
-        rotate(-${this.cell.rotation}deg)
+        rotate(-${rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
     };
     return styleObj;
