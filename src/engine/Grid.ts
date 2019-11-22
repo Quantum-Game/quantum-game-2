@@ -1,6 +1,6 @@
 // FIXME: Figure a way to have uid and coord access to cells
 import * as qt from 'quantum-tensors';
-import { CellInterface, GridInterface, ParticleInterface } from './interfaces';
+import { CellInterface, GridInterface, ParticleInterface, Elem } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
@@ -22,7 +22,7 @@ export default class Grid extends Cluster {
     for (let y = 0; y < rows; y += 1) {
       for (let x = 0; x < cols; x += 1) {
         const coord = Coord.importCoord({ y, x });
-        const element = Element.fromName('Void');
+        const element = Cell.fromName(Elem.Void);
         const cell = new Cell(coord, element);
         this.cells.push(cell);
       }
@@ -273,7 +273,7 @@ export default class Grid extends Cluster {
       cells: [
         {
           coord: { x: 0, y: 1 },
-          element: 'Laser',
+          element: Elem.Laser,
           rotation: 0,
           active: true,
           frozen: true

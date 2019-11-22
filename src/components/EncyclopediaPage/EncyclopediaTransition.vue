@@ -62,8 +62,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: '0' }) defaultRotation!: number;
   rotation = this.defaultRotation;
 
-  // this code begs a rewrite
-  // cell = new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
+  // TODO: this code begs a rewrite
   grid = Grid.emptyGrid(3, 3);
   dimOrder = 'dir pol';
   intializeFrom = [
@@ -80,7 +79,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   };
 
   get cell(): Cell {
-    return new Cell(new Coord(1, 1), Element.fromName(this.elementName), this.rotation);
+    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
   }
 
   created() {

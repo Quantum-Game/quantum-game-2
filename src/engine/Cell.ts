@@ -1,6 +1,29 @@
 import { CoordInterface, CellInterface, Elem } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
+import {
+  Absorber,
+  BeamSplitter,
+  CoatedBeamSplitter,
+  CornerCube,
+  Detector,
+  DetectorFour,
+  FaradayRotator,
+  Gate,
+  Glass,
+  Laser,
+  Mine,
+  Mirror,
+  NonLinearCrystal,
+  Polarizer,
+  QuarterWavePlate,
+  Rock,
+  SugarSolution,
+  VacuumJar,
+  Wall,
+  Void,
+  PolarizingBeamSplitter
+} from '@/engine/Elements/index';
 import { angleToSymbol } from './Helpers';
 /**
  * CELL CLASS
@@ -214,7 +237,7 @@ export default class Cell {
    */
   static importCell(obj: CellInterface): Cell {
     const coord = Coord.importCoord(obj.coord);
-    const element = Element.fromName(obj.element);
+    const element = Cell.fromName(obj.element);
     return new Cell(coord, element, obj.rotation, obj.frozen, obj.active, obj.energized);
   }
 
@@ -225,7 +248,7 @@ export default class Cell {
    */
   static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI);
-    const element = Element.fromName('Void');
+    const element = Cell.fromName(Elem.Void);
     return new Cell(coord, element);
   }
 
@@ -235,10 +258,64 @@ export default class Cell {
    * @returns a toolbox cell
    */
   static createToolboxCell(name: string): Cell {
-    const element = Element.fromName(name);
+    const element = Cell.fromName(name);
     const coord = new Coord(-1, -1);
     const cell = new Cell(coord, element);
     cell.tool = true;
     return cell;
+  }
+
+  /**
+   * Create a instance of the descendant class from Element
+   * @param name element name
+   * @returns element class instance
+   */
+  static fromName(name: string): Element {
+    switch (name) {
+      case Elem.Absorber:
+        return new Absorber();
+      case Elem.BeamSplitter:
+        return new BeamSplitter();
+      case Elem.CoatedBeamSplitter:
+        return new CoatedBeamSplitter();
+      case Elem.CornerCube:
+        return new CornerCube();
+      case Elem.Detector:
+        return new Detector();
+      case Elem.DetectorFour:
+        return new DetectorFour();
+      case Elem.FaradayRotator:
+        return new FaradayRotator();
+      case Elem.Gate:
+        return new Gate();
+      case Elem.Glass:
+        return new Glass();
+      case Elem.Laser:
+        return new Laser();
+      case Elem.Mine:
+        return new Mine();
+      case Elem.Mirror:
+        return new Mirror();
+      case Elem.NonLinearCrystal:
+        return new NonLinearCrystal();
+      case Elem.Polarizer:
+        return new Polarizer();
+      case Elem.PolarizingBeamSplitter:
+        return new PolarizingBeamSplitter();
+      case Elem.QuarterWavePlate:
+        return new QuarterWavePlate();
+      case Elem.Rock:
+        return new Rock();
+      case Elem.SugarSolution:
+        return new SugarSolution();
+      case Elem.VacuumJar:
+        return new VacuumJar();
+      case Elem.Void:
+        return new Void();
+      case Elem.Wall:
+        return new Wall();
+      default:
+        throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
+    }
   }
 }
