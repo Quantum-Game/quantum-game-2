@@ -13,16 +13,14 @@ export default class BeamSplitter extends Element {
   ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘'];
   angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315];
 
-  rotation: number;
-  percentage: number;
+  percentage: number = 50;
 
-  constructor(rotation: number = 0, percentage: number = 50) {
+  constructor(percentage: number = 50) {
     super(Elem.BeamSplitter, Group.Direction);
-    this.rotation = rotation;
     this.percentage = percentage;
   }
 
-  transition() {
-    return qt.beamSplitter(this.rotation);
+  transition(rotation: number) {
+    return qt.beamSplitter(rotation);
   }
 }

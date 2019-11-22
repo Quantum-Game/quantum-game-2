@@ -13,7 +13,7 @@ export default class CoatedBeamSplitter extends Element {
   ascii: string[] = ['⇒', '⇗', '⇑', '⇖', '⇐', '⇙', '⇓', '⇘'];
   angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315];
 
-  rotation: number;
+  rotation: number = 0;
 
   constructor(rotation: number = 0) {
     super(Elem.CoatedBeamSplitter, Group.Direction);
@@ -21,7 +21,7 @@ export default class CoatedBeamSplitter extends Element {
   }
 
   // FIXME: Add qt operator for coated beam splitter, using beamsplitter meanwhile
-  transition() {
-    return qt.beamSplitter(this.rotation);
+  transition(rotation: number) {
+    return qt.beamSplitter(rotation);
   }
 }

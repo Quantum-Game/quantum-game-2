@@ -1,3 +1,4 @@
+import * as qt from 'quantum-tensors';
 import { CoordInterface, CellInterface, Elem } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
@@ -33,6 +34,8 @@ export default class Cell {
   coord: Coord;
   element: Element;
   rotation: number;
+  polarization: number;
+  percentage: number;
   frozen: boolean;
   active: boolean;
   energized: boolean;
@@ -42,6 +45,8 @@ export default class Cell {
     coord: Coord,
     element: Element,
     rotation = 0,
+    polarization = 0,
+    percentage = 0,
     frozen = false,
     active = false,
     energized = false,
@@ -49,6 +54,9 @@ export default class Cell {
   ) {
     this.coord = coord;
     this.element = element;
+    this.rotation = rotation;
+    this.polarization = polarization;
+    this.percentage = percentage;
     this.rotation = rotation;
     this.frozen = frozen;
     this.active = active;
@@ -225,6 +233,8 @@ export default class Cell {
       coord: this.coord.exportCoord(),
       element: this.element.name,
       rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage,
       frozen: this.frozen,
       active: this.active,
       energized: this.energized
@@ -238,7 +248,16 @@ export default class Cell {
   static importCell(obj: CellInterface): Cell {
     const coord = Coord.importCoord(obj.coord);
     const element = Cell.fromName(obj.element);
-    return new Cell(coord, element, obj.rotation, obj.frozen, obj.active, obj.energized);
+    return new Cell(
+      coord,
+      element,
+      obj.rotation,
+      obj.polarization,
+      obj.percentage,
+      obj.frozen,
+      obj.active,
+      obj.energized
+    );
   }
 
   /**
@@ -263,6 +282,18 @@ export default class Cell {
     const cell = new Cell(coord, element);
     cell.tool = true;
     return cell;
+  }
+
+  /**
+   * TODO: Allow other parameters to be passed to the element transition
+   * Get operator from transition
+   * @param name
+   */
+  get operator(): [number, number, qt.Operator] {
+    const { x, y } = this.coord;
+    const transition = this.element.transition(this.rotation, this.polarization, this.percentage);
+    console.log(`X: ${x} Y: ${y} - ${transition}`);
+    return [x, y, transition];
   }
 
   /**

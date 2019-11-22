@@ -1,33 +1,9 @@
-// TODO: Add allowed angle property
 import * as qt from 'quantum-tensors';
 import { Elem, Group } from './interfaces';
-// import {
-//   Absorber,
-//   BeamSplitter,
-//   CoatedBeamSplitter,
-//   CornerCube,
-//   Detector,
-//   DetectorFour,
-//   FaradayRotator,
-//   Gate,
-//   Glass,
-//   Laser,
-//   Mine,
-//   Mirror,
-//   NonLinearCrystal,
-//   Polarizer,
-//   QuarterWavePlate,
-//   Rock,
-//   SugarSolution,
-//   VacuumJar,
-//   Wall,
-//   Void,
-//   PolarizingBeamSplitter
-// } from './Elements/index';
 
 /**
  * ELEMENT CLASS
- * Loads the elements from the JSON file
+ * Used by the cell to compute the transition matrices
  */
 export default class Element {
   name: Elem;
@@ -35,19 +11,25 @@ export default class Element {
   description: string;
   ascii: string[];
   angles: number[];
+  polarization: number;
+  percentage: number;
 
   constructor(
     name: Elem,
     group: Group,
     description = '',
     ascii: string[] = ['>', '^', '<', 'v'],
-    angles: number[] = [0, 90, 180, 270]
+    angles: number[] = [0, 90, 180, 270],
+    polarization: number = 0,
+    percentage: number = 0
   ) {
     this.name = name;
     this.group = group;
     this.description = description;
     this.ascii = ascii;
     this.angles = angles;
+    this.polarization = polarization;
+    this.percentage = percentage;
   }
 
   /**
@@ -68,63 +50,87 @@ export default class Element {
 
   /**
    * Transition is a member of extended element classes
-   * FIXME: Find a way to drill through
+   * FIXME: Find a way to drill through child classes
+   *
+   * Return quantum operators to be applied to states
+   * @param param parameters to pass for operator creation
+   * @returns operator
    */
-  transition(rotation: number = 0) {
-    return qt.attenuator(rotation);
+  transition(rotation: number, polarization: number, percentage: number): qt.Operator {
+    switch (this.name) {
+      case Elem.Absorber:
+        // return qt.attenuator(percentage);
+        return qt.attenuator(Math.SQRT1_2);
+
+      case Elem.BeamSplitter:
+        return qt.beamSplitter(rotation);
+
+      case Elem.CoatedBeamSplitter:
+        return qt.beamSplitter(rotation);
+
+      case Elem.CornerCube:
+        return qt.cornerCube();
+
+      case Elem.Detector:
+        return qt.attenuator(0);
+
+      case Elem.DetectorFour:
+        return qt.attenuator(0);
+
+      case Elem.FaradayRotator:
+        return qt.faradayRotator(rotation);
+
+      case Elem.Gate:
+        return qt.attenuator(0);
+
+      case Elem.Glass:
+        return qt.glassSlab();
+
+      case Elem.Laser:
+        return qt.attenuator(0);
+
+      case Elem.Mine:
+        return qt.attenuator(0);
+
+      case Elem.Mirror:
+        return qt.mirror(rotation);
+
+      case Elem.NonLinearCrystal:
+        return qt.attenuator(1);
+
+      case Elem.QuarterWavePlate:
+        if (rotation === 0) {
+          return qt.quarterWavePlateWE(rotation);
+        }
+        return qt.quarterWavePlateNS(rotation);
+
+      case Elem.Polarizer:
+        return qt.polarizer(rotation, polarization);
+
+      case Elem.PolarizingBeamSplitter:
+        if (rotation === 0) {
+          return qt.polarizingBeamsplitter(135);
+        }
+        return qt.polarizingBeamsplitter(45);
+
+      case Elem.Rock:
+        return qt.attenuator(0);
+
+      case Elem.SugarSolution:
+        // return qt.sugarSolution(percentage);
+        return qt.sugarSolution(0.125);
+
+      case Elem.VacuumJar:
+        return qt.vacuumJar();
+
+      case Elem.Void:
+        return qt.attenuator(1);
+
+      case Elem.Wall:
+        return qt.attenuator(0);
+
+      default:
+        throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
+    }
   }
 }
-
-// /**
-//  * Create a instance of the descendant class from Element
-//  * @param name element name
-//  * @returns element class instance
-//  */
-// static fromName(name: string): Element {
-//   switch (name) {
-//     case Elem.Absorber:
-//       return new Absorber();
-//     case Elem.BeamSplitter:
-//       return new BeamSplitter();
-//     case Elem.CoatedBeamSplitter:
-//       return new CoatedBeamSplitter();
-//     case Elem.CornerCube:
-//       return new CornerCube();
-//     case Elem.Detector:
-//       return new Detector();
-//     case Elem.DetectorFour:
-//       return new DetectorFour();
-//     case Elem.FaradayRotator:
-//       return new FaradayRotator();
-//     case Elem.Gate:
-//       return new Gate();
-//     case Elem.Glass:
-//       return new Glass();
-//     case Elem.Laser:
-//       return new Laser();
-//     case Elem.Mine:
-//       return new Mine();
-//     case Elem.Mirror:
-//       return new Mirror();
-//     case Elem.NonLinearCrystal:
-//       return new NonLinearCrystal();
-//     case Elem.Polarizer:
-//       return new Polarizer();
-//     case Elem.PolarizingBeamSplitter:
-//       return new PolarizingBeamSplitter();
-//     case Elem.QuarterWavePlate:
-//       return new QuarterWavePlate();
-//     case Elem.Rock:
-//       return new Rock();
-//     case Elem.SugarSolution:
-//       return new SugarSolution();
-//     case Elem.VacuumJar:
-//       return new VacuumJar();
-//     case Elem.Void:
-//       return new Void();
-//     case Elem.Wall:
-//       return new Wall();
-//     default:
-//       throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
-//   }
-// }

@@ -24,14 +24,6 @@ export default class Goal extends Cell {
   }
 
   /**
-   * Returns a percentage of the current value compared to the expected value.
-   * @returns number from 0 to 1 describing percentage
-   */
-  percentage(value: number): number {
-    return (value / this.threshold) * 100;
-  }
-
-  /**
    * Override toString() method to display the goal
    * @returns string
    */
