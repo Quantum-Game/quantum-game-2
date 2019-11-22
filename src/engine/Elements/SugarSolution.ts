@@ -21,6 +21,7 @@ export default class SugarSolution extends Element {
   }
 
   transition(options: TransitionInterface) {
-    return qt.sugarSolution(options.percentage);
+    // return qt.sugarSolution(options.percentage);
+    return qt.sugarSolution(0.125);
   }
 }

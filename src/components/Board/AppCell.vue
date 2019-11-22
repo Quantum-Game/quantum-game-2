@@ -313,10 +313,7 @@ export default class AppCell extends Mixins(getPosition) {
    * @returns a style object
    */
   get positionStyle(): any {
-    let { rotation } = this.cell;
-    if (this.cell.isPolarizerOrWavePlate) {
-      rotation = 0;
-    }
+    const { rotation } = this.cell;
     let styleObj = {};
     styleObj = {
       'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,

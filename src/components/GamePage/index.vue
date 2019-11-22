@@ -197,7 +197,7 @@ export default class Game extends Vue {
     const gridInterface = this.level.exportLevel().grid;
     this.simulation = QuantumSimulation.importBoard(gridInterface);
     this.simulation.initializeFromLaser('H');
-    this.simulation.nextFrames(35);
+    this.simulation.nextFrames(40);
     // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     // Set absorption events
