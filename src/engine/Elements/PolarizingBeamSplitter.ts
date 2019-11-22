@@ -13,16 +13,13 @@ export default class PolarizingBeamSplitter extends Element {
   ascii: string[] = ['⬲', '⟴'];
   angles: number[] = [0, 180];
 
-  rotation: number;
-
-  constructor(rotation: number = 0) {
+  constructor() {
     super(Elem.PolarizingBeamSplitter, Group.Direction);
-    this.rotation = rotation;
   }
 
   // FIXME: Change orientation in quantum-tensors
-  transition() {
-    if (this.rotation === 0) {
+  transition(rotation: number = 0) {
+    if (rotation === 0) {
       return qt.polarizingBeamsplitter(135);
     }
     return qt.polarizingBeamsplitter(45);

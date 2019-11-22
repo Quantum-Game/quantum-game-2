@@ -13,10 +13,6 @@ export default class Detector extends Element {
   ascii: string[] = ['⭲', '⭱', '⭰', '⭳'];
   angles: number[] = [0, 90, 180, 270];
 
-  rotation: number = 0;
-  polarization: number = 0;
-  percentage: number = 0;
-
   constructor() {
     super(Elem.Detector, Group.Absorption);
   }
