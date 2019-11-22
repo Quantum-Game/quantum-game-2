@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -20,10 +20,10 @@ export default class QuarterWavePlate extends Element {
     this.polarization = polarization;
   }
 
-  transition(rotation: number = 0, polarization: number = this.polarization) {
-    if (rotation === 90 || rotation === 270) {
-      return qt.quarterWavePlateNS(polarization);
+  transition(options: TransitionInterface) {
+    if (options.rotation === 90 || options.rotation === 270) {
+      return qt.quarterWavePlateNS(options.polarization);
     }
-    return qt.quarterWavePlateWE(polarization);
+    return qt.quarterWavePlateWE(options.polarization);
   }
 }

@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -20,7 +20,7 @@ export default class Polarizer extends Element {
     this.polarization = polarization;
   }
 
-  transition(rotation: number = 0, polarization: number = 0) {
-    return qt.polarizer(rotation, polarization);
+  transition(options: TransitionInterface) {
+    return qt.polarizer(options.rotation, options.polarization);
   }
 }

@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { CoordInterface, CellInterface, Elem } from './interfaces';
+import { CoordInterface, CellInterface, Elem, TransitionInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import {
@@ -291,8 +291,12 @@ export default class Cell {
    */
   get operator(): [number, number, qt.Operator] {
     const { x, y } = this.coord;
-    const transition = this.element.transition(this.rotation, this.polarization, this.percentage);
-    console.log(`X: ${x} Y: ${y} - ${transition}`);
+    const options: TransitionInterface = {
+      rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage
+    };
+    const transition = this.element.transition(options);
     return [x, y, transition];
   }
 
