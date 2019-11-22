@@ -148,6 +148,9 @@ export default class Cluster {
   get sourceGroup(): Cluster {
     return new Cluster(this.lasers.cells.concat(this.nonlinearcrystals.cells));
   }
+  get emitters(): Cluster {
+    return this.sourceGroup;
+  }
 
   // Direction group
   get mirrors(): Cluster {

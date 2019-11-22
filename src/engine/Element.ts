@@ -32,12 +32,20 @@ export default class Element {
   name: Elem;
   group: Group;
   description: string;
+  ascii: string[];
   angles: number[];
 
-  constructor(name: Elem, group: Group, description = '', angles: number[] = [0, 90, 180, 270]) {
+  constructor(
+    name: Elem,
+    group: Group,
+    description = '',
+    ascii: string[] = ['>', '^', '<', 'v'],
+    angles: number[] = [0, 90, 180, 270]
+  ) {
     this.name = name;
     this.group = group;
     this.description = description;
+    this.ascii = ascii;
     this.angles = angles;
   }
 
