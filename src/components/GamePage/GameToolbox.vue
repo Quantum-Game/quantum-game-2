@@ -1,7 +1,10 @@
 <template>
-  <div class="toolbox" :cell="cell" @mouseup="handleCellDrop(toolbox.uniqueCellList[0])">
-    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool" :viewBox="viewBox"
-    preserveAspectRatio="xMidYMid meet">
+  <div class="toolbox" :cell="cell">
+    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool" 
+    :viewBox="viewBox"
+    preserveAspectRatio="xMidYMid meet"
+    @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
+    >
       <g :class="computedClass(cell)">
         <app-cell
           :cell="cell"

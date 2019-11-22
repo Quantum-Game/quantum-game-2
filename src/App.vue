@@ -10,9 +10,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
-  @media screen and (max-width: 800px) {
-   // overflow-y: hidden;
-  }
 }
 #app {
   display: flex;
