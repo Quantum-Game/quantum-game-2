@@ -23,7 +23,6 @@ auth.onAuthStateChanged((user) => {
     $userStore.dispatch('FETCH_USER', user);
   }
 });
-
 export { db, auth };
 
 export default firebase;

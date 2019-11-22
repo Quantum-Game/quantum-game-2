@@ -108,6 +108,11 @@ export default class EncyclopediaArticle extends Vue {
     line-height: 2em;
     text-align: left;
   }
+  @media screen and (max-width: 1000px) {
+    article {
+      width: 100%;
+    }    
+  }
 }
 
 h1 {
