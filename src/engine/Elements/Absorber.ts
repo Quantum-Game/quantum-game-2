@@ -20,6 +20,7 @@ export default class Absorber extends Element {
   }
 
   transition(options: TransitionInterface) {
-    return qt.attenuator(options.percentage);
+    return qt.attenuator(Math.SQRT1_2);
+    // return qt.attenuator(options.percentage);
   }
 }

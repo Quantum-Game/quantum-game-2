@@ -25,8 +25,9 @@
       },
       {
         "coord": { "y": 1, "x": 5 },
-        "element": "PolarizerH",
-        "rotation": 270,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false
@@ -65,8 +66,9 @@
       },
       {
         "coord": { "y": 4, "x": 5 },
-        "element": "PolarizerH",
-        "rotation": 180,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false
@@ -81,8 +83,9 @@
       },
       {
         "coord": { "y": 4, "x": 9 },
-        "element": "PolarizerH",
-        "rotation": 270,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false
@@ -105,8 +108,9 @@
       },
       {
         "coord": { "y": 6, "x": 9 },
-        "element": "PolarizerH",
-        "rotation": 180,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false
