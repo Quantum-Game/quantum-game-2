@@ -130,7 +130,7 @@ export default class Toolbox {
   static importToolbox(tools: string[]): Toolbox {
     const coord = new Coord(-1, -1);
     const toolCells = tools.map((tool) => {
-      const element = Element.fromName(tool);
+      const element = Cell.fromName(tool);
       return new Cell(coord, element);
     });
     return new Toolbox(toolCells);

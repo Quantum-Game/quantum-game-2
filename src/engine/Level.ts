@@ -128,7 +128,7 @@ export default class Level {
     const cols = obj.width;
     const grid = new Grid(rows, cols);
     obj.tiles.forEach((tile) => {
-      const element = Element.fromName(convertFromClassicNames(tile.name));
+      const element = Cell.fromName(convertFromClassicNames(tile.name));
       const rotation = tile.rotation * element.rotationAngle;
       const coord = new Coord(tile.j, tile.i);
       const cell = new Cell(coord, element, rotation, tile.frozen);
