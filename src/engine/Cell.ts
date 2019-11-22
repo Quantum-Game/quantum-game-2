@@ -1,4 +1,4 @@
-import { CoordInterface, CellInterface } from './interfaces';
+import { CoordInterface, CellInterface, Elem } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import { angleToSymbol } from './Helpers';
@@ -46,7 +46,7 @@ export default class Cell {
    * @returns true if blank
    */
   get isVoid(): boolean {
-    return this.element.name === 'Void';
+    return this.element.name === Elem.Void;
   }
 
   /**
@@ -54,7 +54,7 @@ export default class Cell {
    * @returns true if detector
    */
   get isDetector(): boolean {
-    return this.element.name === 'Detector' || this.element.name === 'DetectorFour';
+    return this.element.name === Elem.Detector || this.element.name === Elem.DetectorFour;
   }
 
   /**
@@ -62,7 +62,7 @@ export default class Cell {
    * @returns true if laser
    */
   get isLaser(): boolean {
-    return this.element.name === 'Laser';
+    return this.element.name === Elem.Laser;
   }
 
   /**
@@ -70,7 +70,7 @@ export default class Cell {
    * @returns true if mine
    */
   get isMine(): boolean {
-    return this.element.name === 'Mine';
+    return this.element.name === Elem.Mine;
   }
 
   /**
@@ -78,12 +78,7 @@ export default class Cell {
    * @returns true if quarter wave plate or polarizer
    */
   get isPolarizerOrWavePlate(): boolean {
-    return (
-      this.element.name === 'PolarizerH' ||
-      this.element.name === 'PolarizerV' ||
-      this.element.name === 'QuarterWavePlateH' ||
-      this.element.name === 'QuarterWavePlateV'
-    );
+    return this.element.name === Elem.Polarizer || this.element.name === Elem.QuarterWavePlate;
   }
 
   /**
@@ -130,7 +125,7 @@ export default class Cell {
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
   reset(): Cell {
-    this.element.name = 'Void';
+    this.element.name = Elem.Void;
     this.rotation = 0;
     this.active = false;
     this.frozen = false;
