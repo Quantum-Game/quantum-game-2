@@ -6,11 +6,12 @@ import Element from '@/engine/Element';
  * MINE CLASS
  */
 export default class Mine extends Element {
-  name: string = Elem.Mine;
-  group: string = Group.Absorption;
+  name: Elem = Elem.Mine;
+  group: Group = Group.Absorption;
   description: string =
     'Once it absorbs a single photon, it sets off. Old french submarine captains can sometimes disarm them.';
   ascii: string[] = ['!'];
+  angles: number[] = [0];
 
   constructor() {
     super(Elem.Mine, Group.Absorption);

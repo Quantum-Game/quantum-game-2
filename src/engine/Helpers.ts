@@ -130,13 +130,13 @@ export function convertFromClassicNames(classic: string): string {
       return Elem.DetectorFour;
     // Polarization
     case 'PolarizerNS':
-      return Elem.PolarizerV;
+      return Elem.Polarizer;
     case 'PolarizerWE':
-      return Elem.PolarizerH;
+      return Elem.Polarizer;
     case 'QuarterWavePlateNS':
-      return Elem.QuarterWavePlateV;
+      return Elem.QuarterWavePlate;
     case 'QuarterWavePlateWE':
-      return Elem.QuarterWavePlateH;
+      return Elem.QuarterWavePlate;
     case 'SugarSolution':
       return Elem.SugarSolution;
     case 'FaradayRotator':

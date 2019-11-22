@@ -6,8 +6,8 @@ import Element from '@/engine/Element';
  * GATE CLASS
  */
 export default class Gate extends Element {
-  name: string = Elem.Gate;
-  group: string = Group.Absorption;
+  name: Elem = Elem.Gate;
+  group: Group = Group.Absorption;
   description: string = 'A gate that can be opened if next to a fed plant.';
   ascii: string[] = ['M'];
 

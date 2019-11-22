@@ -6,10 +6,11 @@ import Element from '@/engine/Element';
  * MIRROR CLASS
  */
 export default class Mirror extends Element {
-  name: string = Elem.Mirror;
-  group: string = Group.Direction;
+  name: Elem = Elem.Mirror;
+  group: Group = Group.Direction;
   description: string = 'Metallic or dielectric mirror.';
   ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\'];
+  angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315];
 
   rotation: number = 0;
 

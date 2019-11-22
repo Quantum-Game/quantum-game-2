@@ -6,11 +6,12 @@ import Element from '@/engine/Element';
  * FARADAY ROTATOR CLASS
  */
 export default class FaradayRotator extends Element {
-  name: string = Elem.FaradayRotator;
-  group: string = Group.Polarization;
+  name: Elem = Elem.FaradayRotator;
+  group: Group = Group.Polarization;
   description: string =
     'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.';
   ascii: string[] = ['🠶', '🠵', '🠴', '🠷'];
+  angles: number[] = [0, 90, 180, 270];
 
   rotation: number = 0;
 
