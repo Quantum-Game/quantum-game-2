@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -18,7 +18,7 @@ export default class CoatedBeamSplitter extends Element {
   }
 
   // FIXME: Add qt operator for coated beam splitter, using beamsplitter meanwhile
-  transition(rotation: number) {
-    return qt.beamSplitter(rotation);
+  transition(options: TransitionInterface) {
+    return qt.beamSplitter(options.rotation);
   }
 }

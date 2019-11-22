@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -20,7 +20,7 @@ export default class SugarSolution extends Element {
     this.percentage = percentage;
   }
 
-  transition(percentage: number = this.percentage) {
-    return qt.sugarSolution(percentage);
+  transition(options: TransitionInterface) {
+    return qt.sugarSolution(options.percentage);
   }
 }

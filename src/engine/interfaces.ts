@@ -125,6 +125,16 @@ export interface CellInterface {
 }
 
 /**
+ * ELEMENT TRANSITION INTERFACE
+ * A transition interface composed of primitives to get operators
+ */
+export interface TransitionInterface {
+  rotation: number;
+  polarization: number;
+  percentage: number;
+}
+
+/**
  * ELEMENT INTERFACE
  * Element interface composed of primitive types
  */

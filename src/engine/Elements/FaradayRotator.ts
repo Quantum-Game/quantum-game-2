@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -17,7 +17,7 @@ export default class FaradayRotator extends Element {
     super(Elem.FaradayRotator, Group.Polarization);
   }
 
-  transition(rotation: number) {
-    return qt.faradayRotator(rotation);
+  transition(options: TransitionInterface) {
+    return qt.faradayRotator(options.rotation);
   }
 }

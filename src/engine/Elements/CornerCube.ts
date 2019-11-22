@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors';
-import { Elem, Group } from '@/engine/interfaces';
+import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
 import Element from '@/engine/Element';
 
 /**
@@ -16,7 +16,7 @@ export default class CornerCube extends Element {
     super(Elem.CornerCube, Group.Direction);
   }
 
-  transition() {
+  transition(options: TransitionInterface) {
     return qt.cornerCube();
   }
 }
