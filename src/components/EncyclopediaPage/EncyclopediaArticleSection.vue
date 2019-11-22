@@ -57,7 +57,7 @@ section.entry-section {
     font-weight: bold;
     text-align: justify;
     @media screen and (max-width: 1000px) {
-      text-align: center;      
+      text-align: center;
     }
     &:after {
       display: inline-block;

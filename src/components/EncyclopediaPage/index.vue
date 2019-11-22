@@ -54,5 +54,4 @@ export default class Info extends Vue {
   text-decoration: none;
   margin-top: 40px;
 }
-
 </style>

@@ -111,7 +111,7 @@ export default class EncyclopediaArticle extends Vue {
   @media screen and (max-width: 1000px) {
     article {
       width: 100%;
-    }    
+    }
   }
 }
 

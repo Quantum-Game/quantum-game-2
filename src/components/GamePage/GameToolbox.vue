@@ -1,9 +1,12 @@
 <template>
   <div class="toolbox" :cell="cell">
-    <svg v-for="(cell, index) in toolbox.uniqueCellList" :key="index" class="tool" 
-    :viewBox="viewBox"
-    preserveAspectRatio="xMidYMid meet"
-    @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
+    <svg
+      v-for="(cell, index) in toolbox.uniqueCellList"
+      :key="index"
+      class="tool"
+      :viewBox="viewBox"
+      preserveAspectRatio="xMidYMid meet"
+      @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
     >
       <g :class="computedClass(cell)">
         <app-cell
@@ -63,16 +66,16 @@ export default class GameToolbox extends Vue {
     this.$emit('updateCell', cell);
   }
 
-viewBox: string = "-8 0 80 80";
-counterX: string = "40%";
+  viewBox: string = '-8 0 80 80';
+  counterX: string = '40%';
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
-      this.viewBox = "";
-      this.counterX = "50%";
+      this.viewBox = '';
+      this.counterX = '50%';
     } else {
-      this.viewBox = "-8 0 80 80";
-      this.counterX = "40%";
+      this.viewBox = '-8 0 80 80';
+      this.counterX = '40%';
     }
   }
 
