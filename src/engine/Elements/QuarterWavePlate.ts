@@ -13,19 +13,17 @@ export default class QuarterWavePlate extends Element {
   ascii: string[] = ['🡢', '🡥', '🡢', '🡥'];
   angles: number[] = [0, 90, 180, 270];
 
-  rotation: number = 0;
   polarization: number = 0;
 
-  constructor(rotation: number = 0, polarization: number = 0) {
+  constructor(polarization: number = 0) {
     super(Elem.QuarterWavePlate, Group.Polarization);
-    this.rotation = rotation;
     this.polarization = polarization;
   }
 
-  transition() {
-    if (this.rotation === 90 || this.rotation === 270) {
-      return qt.quarterWavePlateNS(this.polarization);
+  transition(rotation: number = 0, polarization: number = this.polarization) {
+    if (rotation === 90 || rotation === 270) {
+      return qt.quarterWavePlateNS(polarization);
     }
-    return qt.quarterWavePlateWE(this.polarization);
+    return qt.quarterWavePlateWE(polarization);
   }
 }

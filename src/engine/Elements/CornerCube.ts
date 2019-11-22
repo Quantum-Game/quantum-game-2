@@ -12,10 +12,6 @@ export default class CornerCube extends Element {
   ascii: string[] = ['*'];
   angles: number[] = [0];
 
-  rotation: number = 0;
-  polarization: number = 0;
-  percentage: number = 0;
-
   constructor() {
     super(Elem.CornerCube, Group.Direction);
   }

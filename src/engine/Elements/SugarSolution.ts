@@ -13,8 +13,6 @@ export default class SugarSolution extends Element {
   ascii: string[] = ['S'];
   angles: number[] = [0];
 
-  rotation: number = 0;
-  polarization: number = 0;
   percentage: number = 0.125;
 
   constructor(percentage: number = 0.125) {
@@ -22,7 +20,7 @@ export default class SugarSolution extends Element {
     this.percentage = percentage;
   }
 
-  transition() {
-    return qt.sugarSolution(this.percentage);
+  transition(percentage: number = this.percentage) {
+    return qt.sugarSolution(percentage);
   }
 }

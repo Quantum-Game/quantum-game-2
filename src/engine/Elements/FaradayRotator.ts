@@ -13,16 +13,11 @@ export default class FaradayRotator extends Element {
   ascii: string[] = ['🠶', '🠵', '🠴', '🠷'];
   angles: number[] = [0, 90, 180, 270];
 
-  rotation: number = 0;
-  polarization: number = 0;
-  percentage: number = 0;
-
-  constructor(rotation: number = 0) {
+  constructor() {
     super(Elem.FaradayRotator, Group.Polarization);
-    this.rotation = rotation;
   }
 
-  transition() {
-    return qt.faradayRotator(this.rotation);
+  transition(rotation: number) {
+    return qt.faradayRotator(rotation);
   }
 }

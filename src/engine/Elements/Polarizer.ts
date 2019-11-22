@@ -13,16 +13,14 @@ export default class Polarizer extends Element {
   ascii: string[] = ['🡢', '🡥', '🡢', '🡥'];
   angles: number[] = [0, 90, 180, 270];
 
-  rotation: number = 0;
   polarization: number = 0;
 
-  constructor(rotation: number = 0, polarization: number = 0) {
+  constructor(polarization: number = 0) {
     super(Elem.Polarizer, Group.Polarization);
-    this.rotation = rotation;
     this.polarization = polarization;
   }
 
-  transition() {
-    return qt.polarizer(this.rotation, this.polarization);
+  transition(rotation: number = 0, polarization: number = 0) {
+    return qt.polarizer(rotation, polarization);
   }
 }

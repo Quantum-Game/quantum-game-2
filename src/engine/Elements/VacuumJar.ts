@@ -13,8 +13,11 @@ export default class VacuumJar extends Element {
   ascii: string[] = ['↝'];
   angles: number[] = [0];
 
-  constructor() {
+  percentage: number = 0.25;
+
+  constructor(percentage: number = 0.25) {
     super(Elem.VacuumJar, Group.Phase);
+    this.percentage = percentage;
   }
 
   transition() {
