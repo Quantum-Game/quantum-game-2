@@ -6,10 +6,11 @@ import Element from '@/engine/Element';
  * WALL CLASS
  */
 export default class Wall extends Element {
-  name: string = Elem.Wall;
-  group: string = Group.Absorption;
+  name: Elem = Elem.Wall;
+  group: Group = Group.Absorption;
   description: string = 'Another brick in the wall.';
   ascii: string[] = ['▓'];
+  angles: number[] = [0];
 
   constructor() {
     super(Elem.Wall, Group.Absorption);

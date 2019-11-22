@@ -6,11 +6,12 @@ import Element from '@/engine/Element';
  * SUGAR SOLUTION CLASS
  */
 export default class SugarSolution extends Element {
-  name: string = Elem.SugarSolution;
-  group: string = Group.Polarization;
+  name: Elem = Elem.SugarSolution;
+  group: Group = Group.Polarization;
   description: string =
     'Table sugar is a chiral molecule – it does not look the same as its mirror reflection. We put it in an amount, so it rotates polarization by 45°.';
   ascii: string[] = ['S'];
+  angles: number[] = [0];
 
   sugar: number = 0.125;
 

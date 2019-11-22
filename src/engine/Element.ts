@@ -1,6 +1,5 @@
 // TODO: Add allowed angle property
-import * as qt from 'quantum-tensors';
-import { Elem } from './interfaces';
+import { Elem, Group } from './interfaces';
 import {
   Absorber,
   BeamSplitter,
@@ -30,21 +29,16 @@ import {
  * Loads the elements from the JSON file
  */
 export default class Element {
-  name: string;
-  group: string;
+  name: Elem;
+  group: Group;
   description: string;
-  ascii: string[];
+  angles: number[];
 
-  constructor(
-    name: string,
-    group: string,
-    description = '',
-    ascii: string[] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
-  ) {
+  constructor(name: Elem, group: Group, description = '', angles: number[] = [0, 90, 180, 270]) {
     this.name = name;
     this.group = group;
     this.description = description;
-    this.ascii = ascii;
+    this.angles = angles;
   }
 
   /**
@@ -103,11 +97,10 @@ export default class Element {
 
   /**
    * Compute the rotation angles from the number of tiles
-   * TODO: Find a better way
    * @returns amount to rotate the element
    */
   get rotationAngle(): number {
-    return 360 / this.ascii.length;
+    return 360 / this.angles.length;
   }
 
   /**

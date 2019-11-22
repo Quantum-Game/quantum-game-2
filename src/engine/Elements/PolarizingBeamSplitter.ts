@@ -6,11 +6,12 @@ import Element from '@/engine/Element';
  * POLARIZING BEAM SPLITTER CLASS
  */
 export default class PolarizingBeamSplitter extends Element {
-  name: string = Elem.PolarizingBeamSplitter;
-  group: string = Group.Direction;
+  name: Elem = Elem.PolarizingBeamSplitter;
+  group: Group = Group.Direction;
   description: string =
     'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).';
   ascii: string[] = ['⬲', '⟴'];
+  angles: number[] = [0, 180];
 
   rotation: number;
 
