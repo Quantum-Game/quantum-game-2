@@ -116,8 +116,10 @@ export interface ClusterInterface {
 export interface CellInterface {
   coord: CoordInterface;
   element: string;
-  rotation?: number;
   frozen: boolean;
+  rotation?: number;
+  polarization?: number;
+  percentage?: number;
   active?: boolean;
   energized?: boolean;
 }

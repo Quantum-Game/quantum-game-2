@@ -1,8 +1,7 @@
 // FIXME: Figure a way to have uid and coord access to cells
 import * as qt from 'quantum-tensors';
-import { CellInterface, GridInterface, ParticleInterface, Elem } from './interfaces';
+import { CellInterface, GridInterface, Elem } from './interfaces';
 import Coord from './Coord';
-import Element from './Element';
 import Cell from './Cell';
 import Cluster from './Cluster';
 
@@ -125,7 +124,7 @@ export default class Grid extends Cluster {
    */
   get operatorList(): [number, number, qt.Operator][] {
     return this.unvoid.cells.map((cell) => {
-      return [cell.coord.x, cell.coord.y, cell.element.transition(cell.rotation)];
+      return cell.operator;
     });
   }
 

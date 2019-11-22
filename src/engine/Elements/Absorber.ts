@@ -12,14 +12,14 @@ export default class Absorber extends Element {
   ascii: string[] = ['>', '^', '<', 'v'];
   angles: number[] = [0];
 
-  percentage: number;
+  percentage: number = Math.SQRT1_2;
 
   constructor(percentage: number = Math.SQRT1_2) {
     super(Elem.Absorber, Group.Absorption);
     this.percentage = percentage;
   }
 
-  transition() {
-    return qt.attenuator(this.percentage);
+  transition(percentage = this.percentage) {
+    return qt.attenuator(percentage);
   }
 }

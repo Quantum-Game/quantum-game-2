@@ -12,9 +12,11 @@ export default class Laser extends Element {
   ascii: string[] = ['>', '^', '<', 'v'];
   angles: number[] = [0, 90, 180, 270];
 
-  polarization: string;
+  rotation: number = 0;
+  polarization: number = 0;
+  percentage: number = 0;
 
-  constructor(polarization: string = 'H') {
+  constructor(polarization: number = 0) {
     super(Elem.Laser, Group.Source);
     this.polarization = polarization;
   }

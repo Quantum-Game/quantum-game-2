@@ -113,8 +113,11 @@ export default class EncyclopediaMatrixBoard extends Vue {
     this.rotation = cell.rotation;
   }
 
+  /**
+   * FIXME: Use the cell operator generator
+   */
   get operator() {
-    return this.cell.element.transition(this.rotation);
+    return this.cell.element.transition(this.rotation, 0, 0);
   }
 
   get basis(): string[] {
@@ -126,7 +129,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   get matrixElements() {
     if (this.dimOrder === 'dir pol') {
-      return this.operator.entries.map((entry) => {
+      return this.operator.entries.map((entry: any) => {
         return {
           i: 2 * entry.coordIn[0] + entry.coordIn[1],
           j: 2 * entry.coordOut[0] + entry.coordOut[1],
@@ -135,7 +138,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
         };
       });
     }
-    return this.operator.entries.map((entry) => {
+    return this.operator.entries.map((entry: any) => {
       return {
         i: entry.coordIn[0] + 4 * entry.coordIn[1],
         j: entry.coordOut[0] + 4 * entry.coordOut[1],

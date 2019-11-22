@@ -120,28 +120,6 @@ export default class Level {
 
   /**
    * Import a json level
-   * @param obj a level interface with primitives
-   * @returns a Level instance
-   */
-  static importClassicLevel(obj: ClassicLevelInterface): Level {
-    const rows = obj.height;
-    const cols = obj.width;
-    const grid = new Grid(rows, cols);
-    obj.tiles.forEach((tile) => {
-      const element = Cell.fromName(convertFromClassicNames(tile.name));
-      const rotation = tile.rotation * element.rotationAngle;
-      const coord = new Coord(tile.j, tile.i);
-      const cell = new Cell(coord, element, rotation, tile.frozen);
-      grid.set(cell);
-    });
-    const goals: Goal[] = [];
-    const hints: Hint[] = [];
-    const toolbox: Toolbox = new Toolbox([]);
-    return new Level(0, obj.name, obj.group, '', grid, goals, hints, toolbox);
-  }
-
-  /**
-   * Import a json level
    * @returns a Level instance
    */
   static createDummy(): Level {

@@ -12,14 +12,11 @@ export default class Mirror extends Element {
   ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\'];
   angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315];
 
-  rotation: number = 0;
-
   constructor(rotation: number = 0) {
     super(Elem.Mirror, Group.Direction);
-    this.rotation = rotation;
   }
 
-  transition() {
-    return qt.mirror(this.rotation);
+  transition(rotation: number) {
+    return qt.mirror(rotation);
   }
 }

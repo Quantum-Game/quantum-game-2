@@ -14,6 +14,8 @@ export default class FaradayRotator extends Element {
   angles: number[] = [0, 90, 180, 270];
 
   rotation: number = 0;
+  polarization: number = 0;
+  percentage: number = 0;
 
   constructor(rotation: number = 0) {
     super(Elem.FaradayRotator, Group.Polarization);
