@@ -99,7 +99,6 @@ header {
   @media screen and (max-width: 1000px) {
     flex-direction: column;
     width: 100%;
-    padding-top: 20px;
     h1 {
       font-size: 1em;
       display: flex;

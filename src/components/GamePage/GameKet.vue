@@ -213,6 +213,9 @@ export default class GameKet extends Vue {
   overflow: hidden;
   // max-height: 150px;
   align-content: space-between;
+  @media screen and (max-width: 1000px) {
+    padding: 0;    
+  }
   & .quantum-state-viewer {
     padding: 10px;
     display: flex;
@@ -330,7 +333,7 @@ h3 {
 
 .ketHidden {
   @media screen and (max-width: 1000px) {
-    height: 30px;
+    height: 20px;
   }
 }
 </style>

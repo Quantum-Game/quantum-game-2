@@ -92,6 +92,7 @@ export default class EncyclopediaArticle extends Vue {
     font-size: 2rem;
     font-weight: bold;
     padding-top: 30px;
+
   }
   & .short {
     font-size: 1rem;
@@ -109,8 +110,9 @@ export default class EncyclopediaArticle extends Vue {
     text-align: left;
   }
   @media screen and (max-width: 1000px) {
+    width: 100vw;
     article {
-      width: 100%;
+      width: 100vw;
     }    
   }
 }
@@ -125,6 +127,9 @@ h1 {
   justify-content: space-around;
   width: 100%;
   border-bottom: 1px solid #8e819d;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+  }
 }
 .placeholder {
   padding-top: 2rem;
@@ -142,4 +147,5 @@ h1 {
     }
   }
 }
+
 </style>

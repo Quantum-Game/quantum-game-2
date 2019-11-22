@@ -54,7 +54,7 @@ export default class AppLayout extends Vue {}
       text-align: left;
       color: white;
       @media screen and (max-width: 1000px) {
-        padding: 20px;
+        padding: 0 20px;
         min-height: 41px;
         width: 100%;
       }
