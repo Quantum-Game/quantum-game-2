@@ -57,8 +57,21 @@ export default class GameControls extends Vue {
   padding-bottom: 1rem;
   justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: 1000px) {
+    padding-bottom: 0;
+    div:nth-child(2), button {
+      display:none;
+    }
+  }
   .playback {
     display: flex !important;
+    @media screen and (max-width: 1000px) {
+      button {
+        display: flex;
+        width: 4.5vw;
+        height: 4.5vw;
+      }
+    }
   }
   & .view-mode {
     display: flex;
