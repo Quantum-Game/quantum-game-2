@@ -1,15 +1,5 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
-    <!-- <animateTransform
-      v-if="animate > 0"
-      attributeName="transform"
-      attributeType="XML"
-      type="translate"
-      from="0 0"
-      :to="toCoord"
-      :dur="animate + 's'"
-      repeatCount="indefinite"
-    />-->
     <g class="photon" :style="computeStyle">
       <g v-if="displayGaussian" class="gaussian">
         <path class="gaussian" :d="computeGaussianPath.pathUp" />

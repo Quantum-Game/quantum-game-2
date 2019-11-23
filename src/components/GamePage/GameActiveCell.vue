@@ -3,7 +3,7 @@
     <h3 class="explanation__title">{{ spacedName }}</h3>
     <p class="explanation__description">{{ hoveredCell.element.description }}</p>
     <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
-    <p>X: {{ hoveredCell.coord.x }} Y: {{ hoveredCell.coord.y }}</p>
+    <!-- <p>X: {{ hoveredCell.coord.x }} Y: {{ hoveredCell.coord.y }}</p> -->
     <slot></slot>
   </div>
 </template>
