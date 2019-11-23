@@ -1,124 +1,41 @@
 <template>
-  <svg>
-    <g>
-      <g>
-        <path
-          class="st0"
-          d="M37.8,3.5H28V9c9,1.2,16,11.1,16,23s-7,21.9-16,23v5.5h9.9C50.6,60.5,61,47.7,61,32S50.6,3.5,37.8,3.5z"
-        />
-        <path
-          class="st1"
-          d="M26.2,3.5C13.4,3.5,3,16.3,3,32s10.4,28.5,23.2,28.5S49.3,47.7,49.3,32S39,3.5,26.2,3.5z M28,55
-          c-9-1.2-16-11.1-16-23s7-21.9,16-23c9,1.2,16,11.1,16,23S37,53.9,28,55z"
-        />
-        <path
-          class="st0"
-          d="M11.9,32c0-12,7-21.9,16-23c-0.6-0.1-1.2-0.1-1.8-0.1C16.4,8.8,8.4,19.2,8.4,32s8,23.2,17.8,23.2
-          c0.6,0,1.2,0,1.8-0.1C19,53.9,11.9,44,11.9,32z"
-        />
+  <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+    <g :style="computeTrim">
+      <defs>
+        <circle id="SVGID_1_" cx="32" cy="32" r="28" />
+      </defs>
+      <!-- BARS -->
+      <g :style="computePolarization">
+        <rect x="8.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="14.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="20.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="26.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="32.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="38.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="44.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="50.5" y="-7" class="st2" width="3" height="69" />
       </g>
-      <!-- BARS INSIDE -->
-      <g>
-        <g>
-          <defs>
-            <ellipse id="QWPSVGID_1_" cx="28" cy="32" rx="16" ry="23" />
-          </defs>
-          <clipPath id="QWPSVGID_2_">
-            <use xlink:href="#QWPSVGID_1_" style="overflow:visible;" />
-          </clipPath>
-          <g class="st2">
-            <rect x="-5.8" y="10.2" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="16" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="21.8" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="27.6" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="33.4" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="39.2" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="45" class="st3" width="66.7" height="2.9" />
-            <rect x="-5.8" y="50.8" class="st3" width="66.7" height="2.9" />
-          </g>
-        </g>
-      </g>
+      <!-- OVAL TRIMMING PATH -->
+      <clipPath id="SVGID_2_">
+        <use xlink:href="#SVGID_1_" style="overflow:visible;" />
+      </clipPath>
     </g>
-    <!-- OUTLINE MAIN BODY -->
-    <g>
+
+    <g class="circular">
       <path
-        class="st4"
-        d="M37.8,3.5C50.6,3.5,61,16.3,61,32S50.6,60.5,37.8,60.5H28c0,0-1.2,0-1.8,0C13.4,60.5,3,47.7,3,32
-        S13.4,3.5,26.2,3.5c0.6,0,1.8,0,1.8,0H37.8 M37.8,2.5H28h-1.8C12.9,2.5,2,15.7,2,32s10.8,29.5,24.2,29.5H28h9.9
-        C51.1,61.5,62,48.3,62,32S51.1,2.5,37.8,2.5L37.8,2.5z"
+        class="st0"
+        d="M60.5,37.8V28H55c-1.2,9-11.1,16-23,16S10.1,37,9,28H3.5v9.9C3.5,50.6,16.3,61,32,61S60.5,50.6,60.5,37.8z"
       />
-    </g>
-    <!-- OUTLINE BARS INSIDE -->
-    <g>
-      <g>
-        <g>
-          <defs>
-            <ellipse id="QWPSVGID_3_" cx="28" cy="32" rx="16" ry="23" />
-          </defs>
-          <clipPath id="QWPSVGID_4_">
-            <use xlink:href="#QWPSVGID_3_" style="overflow:visible;" />
-          </clipPath>
-          <g class="st5">
-            <g>
-              <path
-                class="st4"
-                d="M60.9,10.2v2.9H-5.8v-2.9L60.9,10.2 M61.9,9.2h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,9.2L61.9,9.2z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,16v2.9H-5.8V16H60.9 M61.9,15h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1V16L61.9,15L61.9,15z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,21.8v2.9H-5.8v-2.9H60.9 M61.9,20.8h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,20.8L61.9,20.8z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,27.6v2.9H-5.8v-2.9H60.9 M61.9,26.6h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,26.6L61.9,26.6z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,33.4v2.9H-5.8v-2.9H60.9 M61.9,32.4h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,32.4L61.9,32.4z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,39.2v2.9H-5.8v-2.9H60.9 M61.9,38.2h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,38.2L61.9,38.2z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,45v2.9H-5.8V45H60.9 M61.9,44h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1V45L61.9,44L61.9,44z"
-              />
-            </g>
-            <g>
-              <path
-                class="st4"
-                d="M60.9,50.8v2.9H-5.8v-2.9H60.9 M61.9,49.8h-1H-5.8h-1v1v2.9v1h1h66.7h1v-1v-2.9L61.9,49.8L61.9,49.8z"
-              />
-            </g>
-          </g>
-        </g>
-      </g>
-      <g>
-        <g>
-          <path
-            class="st4"
-            d="M28,9c9,1.2,16,11.1,16,23s-7,21.9-16,23c-9-1.2-16-11.1-16-23S19,10.1,28,9 M28,8h-0.1
-            C18.3,9.2,11,19.6,11,32s7.3,22.8,16.9,24H28h0.1C37.7,54.8,45,44.5,45,32S37.7,9.2,28.1,8H28L28,8z"
-          />
-        </g>
-      </g>
+      <path
+        class="st1"
+        d="M60.5,26.2C60.5,13.4,47.7,3,32,3S3.5,13.4,3.5,26.2S16.3,49.4,32,49.4C47.7,49.3,60.5,39,60.5,26.2z M9,28
+    c1.2-9,11.1-16,23-16s21.9,7,23,16c-1.2,9-11.1,16-23,16S10.1,37,9,28z"
+      />
+      <path
+        class="st0"
+        d="M32,11.9c12,0,21.9,7,23,16c0.1-0.6,0.1-1.2,0.1-1.8c0-9.8-10.4-17.8-23.2-17.8s-23.2,8-23.2,17.8
+    c0,0.6,0,1.2,0.1,1.8C10.1,19,20,11.9,32,11.9z"
+      />
     </g>
   </svg>
 </template>
@@ -128,10 +45,34 @@ import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class QuarterWavePlateCell extends Piece {}
+export default class QuarterWavePlateCell extends Piece {
+  /**
+   * Compute inner grid rotation from cell polarization
+   */
+  get computePolarization() {
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
+    };
+  }
+  /**
+   * Compute inner grid rotation trimming from cell rotation
+   */
+  get computeTrim() {
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${this.cell.rotation}deg)`
+      // transform: `rotate(0deg)`
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.circular {
+  transform-origin: 32px 32px;
+  transform: rotate(270deg);
+}
 .st0 {
   fill: #41a0a5;
 }
@@ -139,12 +80,7 @@ export default class QuarterWavePlateCell extends Piece {}
   fill: #4ac4d1;
 }
 .st2 {
-  clip-path: url(#QWPSVGID_2_);
-}
-.st3 {
+  clip-path: url(#SVGID_2_);
   fill: #61dbef;
-}
-.st5 {
-  clip-path: url(#QWPSVGID_4_);
 }
 </style>

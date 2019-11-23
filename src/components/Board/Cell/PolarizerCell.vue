@@ -1,5 +1,26 @@
 <template>
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+    <g :style="computeTrim">
+      <defs>
+        <circle id="SVGID_1_" cx="32" cy="32" r="28" />
+      </defs>
+      <!-- BARS -->
+      <g :style="computePolarization">
+        <rect x="8.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="14.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="20.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="26.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="32.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="38.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="44.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="50.5" y="-7" class="st2" width="3" height="69" />
+      </g>
+      <!-- OVAL TRIMMING PATH -->
+      <clipPath id="SVGID_2_">
+        <use xlink:href="#SVGID_1_" style="overflow:visible;" />
+      </clipPath>
+    </g>
+
     <g class="circular">
       <path
         class="st0"
@@ -16,29 +37,6 @@
     c0,0.6,0,1.2,0.1,1.8C10.1,19,20,11.9,32,11.9z"
       />
     </g>
-    <g>
-      <defs>
-        <path
-          id="SVGID_1_"
-          d="M55,28c-1.2,9-11.1,16-23,16S10.1,37,9,28c1.2-9,11.1-16,23-16S53.8,19,55,28z"
-        />
-      </defs>
-
-      <g :style="computePolarization">
-        <rect x="14.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="20.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="8.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="26.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="32.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="38.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="44.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="50.5" y="-7" class="st2" width="3" height="69" />
-      </g>
-
-      <clipPath id="SVGID_2_">
-        <use xlink:href="#SVGID_1_" style="overflow:visible;" />
-      </clipPath>
-    </g>
   </svg>
 </template>
 
@@ -52,12 +50,19 @@ export default class PolarizerCell extends Piece {
    * Compute inner grid rotation from cell polarization
    */
   get computePolarization() {
-    console.log(`polarization: ${this.cell.polarization}`);
-    console.log(`rotation: ${this.cell.rotation}`);
-
     return {
       'transform-origin': `32px 32px`,
-      transform: `rotate(${this.cell.polarization}deg)`
+      transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
+    };
+  }
+  /**
+   * Compute inner grid rotation trimming from cell rotation
+   */
+  get computeTrim() {
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${this.cell.rotation}deg)`
+      // transform: `rotate(0deg)`
     };
   }
 }
