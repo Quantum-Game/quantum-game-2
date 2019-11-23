@@ -65,6 +65,14 @@ export default class Cell {
   }
 
   /**
+   * Ouput the rotation with an unicode arrow
+   * @returns unicode arrow describing rotation
+   */
+  get rotationAscii(): string {
+    return angleToSymbol(this.element.rotationAngle);
+  }
+
+  /**
    * Get ASCII character linked to cell's element and cell rotation
    * @returns ascii representation of rotated element
    */
@@ -110,14 +118,6 @@ export default class Cell {
    */
   get isPolarizerOrWavePlate(): boolean {
     return this.element.name === Elem.Polarizer || this.element.name === Elem.QuarterWavePlate;
-  }
-
-  /**
-   * Ouput the rotation with an unicode arrow
-   * @returns unicode arrow describing rotation
-   */
-  get rotationAscii(): string {
-    return angleToSymbol(this.element.rotationAngle);
   }
 
   /**
@@ -223,7 +223,7 @@ export default class Cell {
       this.active ? 'active' : 'inactive'
     } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
       this.rotation
-    }°`;
+    }° with polarization: ${this.polarization}° and percentage: ${this.percentage}%`;
   }
 
   /**
@@ -261,7 +261,6 @@ export default class Cell {
       obj.active,
       obj.energized
     );
-    // console.log('Import cell polarization: ' + cell.polarization);
     return cell;
   }
 

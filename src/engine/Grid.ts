@@ -30,6 +30,7 @@ export default class Grid extends Cluster {
 
   /**
    * Set a cell at a specific coordinate
+   * TODO: Replace with deepClone?
    * @param cell Cell to set at a grid coordinate
    * @returns boolean if operation is successfull
    */
@@ -37,10 +38,12 @@ export default class Grid extends Cluster {
     if (this.includes(cell.coord)) {
       const currentCell = this.get(cell.coord);
       currentCell.element = cell.element;
+      currentCell.rotation = cell.rotation;
+      currentCell.polarization = cell.polarization;
+      currentCell.percentage = cell.percentage;
       currentCell.frozen = cell.frozen;
       currentCell.active = cell.active;
       currentCell.energized = cell.energized;
-      currentCell.rotation = cell.rotation;
       currentCell.tool = cell.tool;
       return true;
     }

@@ -70,8 +70,6 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
-import { local } from 'd3-selection';
-import { warn } from 'vue-class-component/lib/util';
 import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
 import Toolbox from '@/engine/Toolbox';
 import MultiverseGraph from '@/engine/MultiverseGraph';
