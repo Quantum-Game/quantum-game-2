@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Vue, Component } from 'vue-property-decorator';
 import { LevelInterface } from '@/engine/interfaces';
 import AppLayout from '@/components/AppLayout.vue';

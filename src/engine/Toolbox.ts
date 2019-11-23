@@ -1,7 +1,5 @@
-import cloneDeep from 'lodash.clonedeep';
-import countBy from 'lodash.countby';
+import _ from 'lodash';
 import Coord from '@/engine/Coord';
-import Element from '@/engine/Element';
 import Cell from '@/engine/Cell';
 /**
  * TOOL INTERFACE
@@ -22,8 +20,8 @@ export default class Toolbox {
 
   constructor(tools: Cell[]) {
     const elements = tools.map((cell) => cell.element.name);
-    this.toolbox = countBy(elements);
-    this.originalToolbox = cloneDeep(this.toolbox);
+    this.toolbox = _.countBy(elements);
+    this.originalToolbox = _.cloneDeep(this.toolbox);
   }
 
   /**
