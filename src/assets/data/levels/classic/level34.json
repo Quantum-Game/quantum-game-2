@@ -25,8 +25,9 @@
       },
       {
         "coord": { "y": 3, "x": 4 },
-        "element": "PolarizerH",
-        "rotation": 315,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false

@@ -49,6 +49,7 @@ const classicLevels: LevelInterface[] = [
   level12,
   level13,
 
+  // Polarizer levels
   // level14,
   // level15,
   // level16,
@@ -63,14 +64,17 @@ const classicLevels: LevelInterface[] = [
   level24,
   level25,
   level26,
+
+  // Polarizer
   // level27,
+
   level28,
-  // level29,
-  // level30,
+  level29,
+  // level30, // Beamsplitter horizontal merge not consistent with V1
   // level31,
   level32,
-  level33
-  // level34
+  level33,
+  level34
 ];
 
 export default classicLevels;
