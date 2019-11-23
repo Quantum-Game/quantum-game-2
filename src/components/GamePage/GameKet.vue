@@ -214,7 +214,7 @@ export default class GameKet extends Vue {
   // max-height: 150px;
   align-content: space-between;
   @media screen and (max-width: 1000px) {
-    padding: 0;    
+    padding: 0;
   }
   & .quantum-state-viewer {
     padding: 10px;
