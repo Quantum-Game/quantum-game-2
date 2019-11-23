@@ -136,5 +136,9 @@
       "threshold": 0.5
     }
   ],
-  "tools": []
+  "tools": [
+    "SugarSolution",
+    "SugarSolution",
+    "Mirror"
+  ]
 }

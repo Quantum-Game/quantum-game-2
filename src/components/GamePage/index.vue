@@ -70,7 +70,6 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
-import cloneDeep from 'lodash.clonedeep';
 import { local } from 'd3-selection';
 import { warn } from 'vue-class-component/lib/util';
 import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
@@ -202,12 +201,12 @@ export default class Game extends Vue {
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     // Set absorption events
     this.level.gameState.absorptions = this.filteredAbsorptions;
-    console.debug(this.level.gameState.toString());
     // Reset simulation variables
     this.frameIndex = 0;
     this.setEnergizedCells();
     this.mutationSetGameState(this.level.gameState.gameState);
     this.mutationSetSimulationState(false);
+    // console.debug(this.level.gameState.toString());
   }
 
   /**

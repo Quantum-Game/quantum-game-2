@@ -77,5 +77,8 @@
       "threshold": 0.5
     }
   ],
-  "tools": ["BeamSplitter", "BeamSplitter"]
+  "tools": [
+    "BeamSplitter",
+    "BeamSplitter"
+  ]
 }

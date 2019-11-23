@@ -158,6 +158,8 @@ export default class Cell {
   reset(): Cell {
     this.element.name = Elem.Void;
     this.rotation = 0;
+    this.polarization = 0;
+    this.percentage = 0;
     this.active = false;
     this.frozen = false;
     this.energized = false;
@@ -243,12 +245,13 @@ export default class Cell {
 
   /**
    * Create a cell from a CellInterface
+   * TODO: Polarization should be passed to cell
    * @param obj CellInterface
    */
   static importCell(obj: CellInterface): Cell {
     const coord = Coord.importCoord(obj.coord);
     const element = Cell.fromName(obj.element);
-    return new Cell(
+    const cell = new Cell(
       coord,
       element,
       obj.rotation,
@@ -258,6 +261,8 @@ export default class Cell {
       obj.active,
       obj.energized
     );
+    // console.log('Import cell polarization: ' + cell.polarization);
+    return cell;
   }
 
   /**

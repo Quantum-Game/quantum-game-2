@@ -198,6 +198,10 @@ export default class Board extends Vue {
     return (val + 0.5) * this.tileSize;
   }
 
+  /**
+   * Place the photon on the grid
+   * TODO: Move the photon layer in its own vue component
+   */
   computeParticleStyle(particle: Particle): {} {
     const originX = this.centerCoord(particle.coord.x);
     const originY = this.centerCoord(particle.coord.y);
@@ -207,8 +211,8 @@ export default class Board extends Vue {
     };
   }
 
+  // emit drilling...
   updateCell(cell: Cell): void {
-    // emit drilling...
     this.$emit('updateCell', cell);
   }
 
@@ -216,29 +220,29 @@ export default class Board extends Vue {
    * Create laser path through the lasers points
    * @returns SVG laser path
    */
-  photonPath(): string {
-    let pathStr = '';
-    if (this.particles.length > 0) {
-      const originX = this.centerCoord(this.particles[0].coord.x);
-      const originY = this.centerCoord(this.particles[0].coord.y);
-      pathStr += `M ${originX} ${originY} `;
-    }
-    return pathStr;
-  }
+  // photonPath(): string {
+  //   let pathStr = '';
+  //   if (this.particles.length > 0) {
+  //     const originX = this.centerCoord(this.particles[0].coord.x);
+  //     const originY = this.centerCoord(this.particles[0].coord.y);
+  //     pathStr += `M ${originX} ${originY} `;
+  //   }
+  //   return pathStr;
+  // }
 
   // HELPING FUNCTIONS
-  element(y: number, x: number): CellInterface {
-    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
-    if (cells.length > 0) {
-      return cells[0].exportCell();
-    }
-    return {
-      coord: { x, y },
-      element: 'Void',
-      rotation: 0,
-      frozen: false
-    };
-  }
+  // element(y: number, x: number): CellInterface {
+  //   const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
+  //   if (cells.length > 0) {
+  //     return cells[0].exportCell();
+  //   }
+  //   return {
+  //     coord: { x, y },
+  //     element: 'Void',
+  //     rotation: 0,
+  //     frozen: false
+  //   };
+  // }
 }
 </script>
 

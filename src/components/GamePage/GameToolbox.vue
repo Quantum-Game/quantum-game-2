@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
 import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';

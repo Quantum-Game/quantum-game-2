@@ -104,5 +104,7 @@
       "threshold": 0.25
     }
   ],
-  "tools": ["Rock"]
+  "tools": [
+    "Rock"
+  ]
 }

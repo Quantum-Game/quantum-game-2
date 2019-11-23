@@ -43,9 +43,9 @@
           begin="0s"
           repeatCount="indefinite"
         />
-        <!-- eslint-enable -->
       </circle>
     </g>
+    <!-- eslint-enable -->
   </g>
 </template>
 
