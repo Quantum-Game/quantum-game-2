@@ -239,9 +239,11 @@ export default class GameGoals extends Vue {
   flex-direction: column;
   @media screen and (max-width: 1000px) {
     flex-direction: row;
-    padding-bottom: 0;
     justify-content: space-evenly;
     align-items: center;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   & .upper-icons {
@@ -254,6 +256,12 @@ export default class GameGoals extends Vue {
   & .bottom-icons {
     line-height: 150%;
     padding: 10px;
+    @media screen and (max-width: 1000px) {
+      line-height: 75%;
+      img {
+        width: 4vw !important;
+      }
+    }
   }
   & .chart {
     & div.inner-circle {
@@ -293,13 +301,26 @@ export default class GameGoals extends Vue {
 .temp {
   font-size: 0.8rem;
   margin-bottom: 2rem;
+  @media screen and (max-width: 1000px) {
+    margin-bottom: 0;
+  }
 }
 .defeat {
   color: white;
   //opacity: 0.2;
+  @media screen and (max-width: 1000px) {
+    b {
+      font-size: calc(8px + 4 * ((100vw - 320px) / 680));
+    }
+  }
 }
 .success {
   color: white;
+    @media screen and (max-width: 1000px) {
+    b {
+      font-size: calc(8px + 4 * ((100vw - 320px) / 680));
+    }
+  }
 }
 
 .cdc-container {
