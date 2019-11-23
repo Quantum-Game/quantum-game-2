@@ -1,6 +1,6 @@
 <template>
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
-    <g>
+    <g class="circular">
       <path
         class="st0"
         d="M60.5,37.8V28H55c-1.2,9-11.1,16-23,16S10.1,37,9,28H3.5v9.9C3.5,50.6,16.3,61,32,61S60.5,50.6,60.5,37.8z"
@@ -24,7 +24,7 @@
         />
       </defs>
 
-      <g>
+      <g :style="computePolarization">
         <rect x="14.5" y="-7" class="st2" width="3" height="69" />
         <rect x="20.5" y="-7" class="st2" width="3" height="69" />
         <rect x="8.5" y="-7" class="st2" width="3" height="69" />
@@ -34,6 +34,7 @@
         <rect x="44.5" y="-7" class="st2" width="3" height="69" />
         <rect x="50.5" y="-7" class="st2" width="3" height="69" />
       </g>
+
       <clipPath id="SVGID_2_">
         <use xlink:href="#SVGID_1_" style="overflow:visible;" />
       </clipPath>
@@ -42,14 +43,31 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class PolarizerCell extends Piece {}
+export default class PolarizerCell extends Piece {
+  /**
+   * Compute inner grid rotation from cell polarization
+   */
+  get computePolarization() {
+    console.log(`polarization: ${this.cell.polarization}`);
+    console.log(`rotation: ${this.cell.rotation}`);
+
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${this.cell.polarization}deg)`
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.circular {
+  transform-origin: 32px 32px;
+  transform: rotate(270deg);
+}
 .st0 {
   fill: #3c2c50;
 }

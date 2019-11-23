@@ -124,5 +124,10 @@
       "threshold": 0.125
     }
   ],
-  "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"]
+  "tools": [
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter",
+    "BeamSplitter"
+  ]
 }

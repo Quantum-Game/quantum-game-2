@@ -11,6 +11,7 @@ export default class Glass extends Element {
   description: string =
     'Higher refractive index makes light slower. We set its thickness so it retards the phase by λ/4. Useful for changing interference.';
   ascii: string[] = ['↜'];
+  angles: number[] = [0];
 
   // TODO: See how the phase shift should be encoded
   percentage: number = 0.25;

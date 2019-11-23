@@ -74,5 +74,8 @@
       "threshold": 1
     }
   ],
-  "tools": ["Mirror", "Mirror"]
+  "tools": [
+    "Mirror",
+    "Mirror"
+  ]
 }

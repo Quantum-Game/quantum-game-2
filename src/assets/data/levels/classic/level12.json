@@ -147,5 +147,7 @@
       "threshold": 0.5
     }
   ],
-  "tools": ["Absorber"]
+  "tools": [
+    "Absorber"
+  ]
 }

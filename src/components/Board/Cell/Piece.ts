@@ -14,4 +14,8 @@ export default class Piece extends Vue {
   get active() {
     return this.cell.active;
   }
+
+  get polarization() {
+    return this.cell.polarization;
+  }
 }

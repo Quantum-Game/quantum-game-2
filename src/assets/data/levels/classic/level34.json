@@ -26,8 +26,8 @@
       {
         "coord": { "y": 3, "x": 4 },
         "element": "Polarizer",
-        "rotation": 90,
-        "polarization": 0,
+        "rotation": 0,
+        "polarization": 45,
         "frozen": true,
         "active": false,
         "energized": false
@@ -173,5 +173,14 @@
       "threshold": 0.25
     }
   ],
-  "tools": []
+  "tools": [
+    "SugarSolution",
+    "Absorber",
+    "Mirror",
+    "Mirror",
+    "Glass",
+    "FaradayRotator",
+    "VacuumJar",
+    "PolarizingBeamSplitter"
+  ]
 }
