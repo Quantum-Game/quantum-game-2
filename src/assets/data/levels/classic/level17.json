@@ -18,7 +18,7 @@
       {
         "coord": { "y": 1, "x": 4 },
         "element": "Polarizer",
-        "rotation": 90,
+        "rotation": 0,
         "polarization": 0,
         "frozen": true,
         "active": false,
@@ -83,7 +83,7 @@
       {
         "coord": { "y": 5, "x": 2 },
         "element": "Polarizer",
-        "rotation": 90,
+        "rotation": 0,
         "polarization": 0,
         "frozen": true,
         "active": false,
@@ -108,8 +108,8 @@
       {
         "coord": { "y": 5, "x": 6 },
         "element": "Polarizer",
-        "rotation": 90,
-        "polarization": 0,
+        "rotation": 0,
+        "polarization": 90,
         "frozen": true,
         "active": false,
         "energized": false
@@ -125,8 +125,8 @@
       {
         "coord": { "y": 7, "x": 3 },
         "element": "Polarizer",
-        "rotation": 0,
-        "polarization": 0,
+        "rotation": 270,
+        "polarization": 90,
         "frozen": true,
         "active": false,
         "energized": false
