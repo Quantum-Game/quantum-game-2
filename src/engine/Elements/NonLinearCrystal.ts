@@ -16,7 +16,7 @@ export default class NonLinearCrystal extends Element {
     super(Elem.NonLinearCrystal, Group.Source);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(1);
   }
 }

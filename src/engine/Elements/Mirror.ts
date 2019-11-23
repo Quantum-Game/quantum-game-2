@@ -16,7 +16,7 @@ export default class Mirror extends Element {
     super(Elem.Mirror, Group.Direction);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.mirror(options.rotation);
   }
 }

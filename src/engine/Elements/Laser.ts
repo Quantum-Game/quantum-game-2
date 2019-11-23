@@ -19,7 +19,7 @@ export default class Laser extends Element {
     this.polarization = polarization;
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

@@ -36,7 +36,6 @@
 </template>
 
 <script lang="ts">
-import cloneDeep from 'lodash.clonedeep';
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import * as qt from 'quantum-tensors';
 import {
@@ -117,7 +116,11 @@ export default class EncyclopediaMatrixBoard extends Vue {
    * FIXME: Use the cell operator generator
    */
   get operator() {
-    return this.cell.element.transition(this.rotation, 0, 0);
+    return this.cell.element.transition({
+      rotation: this.rotation,
+      polarization: 0,
+      percentage: 0
+    });
   }
 
   get basis(): string[] {

@@ -18,7 +18,7 @@ export default class PolarizingBeamSplitter extends Element {
   }
 
   // FIXME: Change orientation in quantum-tensors
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     if (options.rotation === 0) {
       return qt.polarizingBeamsplitter(135);
     }

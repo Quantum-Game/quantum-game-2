@@ -16,7 +16,7 @@ export default class Wall extends Element {
     super(Elem.Wall, Group.Absorption);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

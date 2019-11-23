@@ -20,7 +20,7 @@ export default class Polarizer extends Element {
     this.polarization = polarization;
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.polarizer(options.rotation, options.polarization);
   }
 }

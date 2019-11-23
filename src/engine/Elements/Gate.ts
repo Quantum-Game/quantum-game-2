@@ -15,7 +15,7 @@ export default class Gate extends Element {
     super(Elem.Gate, Group.Absorption);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

@@ -20,7 +20,7 @@ export default class SugarSolution extends Element {
     this.percentage = percentage;
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     // return qt.sugarSolution(options.percentage);
     return qt.sugarSolution(0.125);
   }
