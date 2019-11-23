@@ -51,7 +51,7 @@ export default class Element {
   /**
    * Will be overriden by child transition
    */
-  transition(options: TransitionInterface) {
-    qt.attenuator(0);
+  transition(options: TransitionInterface): qt.Operator {
+    return qt.attenuator(0);
   }
 }

@@ -16,7 +16,7 @@ export default class CornerCube extends Element {
     super(Elem.CornerCube, Group.Direction);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.cornerCube();
   }
 }

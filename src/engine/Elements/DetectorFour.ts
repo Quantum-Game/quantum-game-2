@@ -17,7 +17,7 @@ export default class DetectorFour extends Element {
     super(Elem.DetectorFour, Group.Absorption);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

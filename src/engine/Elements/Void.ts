@@ -16,7 +16,7 @@ export default class Void extends Element {
     super(Elem.Void, Group.Basic);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(1);
   }
 }

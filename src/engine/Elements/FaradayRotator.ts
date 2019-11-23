@@ -17,7 +17,7 @@ export default class FaradayRotator extends Element {
     super(Elem.FaradayRotator, Group.Polarization);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.faradayRotator(options.rotation);
   }
 }

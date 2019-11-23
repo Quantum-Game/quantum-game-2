@@ -17,7 +17,7 @@ export default class Rock extends Element {
     super(Elem.Laser, Group.Source);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

@@ -18,7 +18,7 @@ export default class CoatedBeamSplitter extends Element {
   }
 
   // FIXME: Add qt operator for coated beam splitter, using beamsplitter meanwhile
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.beamSplitter(options.rotation);
   }
 }

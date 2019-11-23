@@ -17,7 +17,7 @@ export default class Mine extends Element {
     super(Elem.Mine, Group.Absorption);
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0);
   }
 }

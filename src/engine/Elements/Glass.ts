@@ -20,7 +20,7 @@ export default class Glass extends Element {
     this.percentage = percentage;
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     return qt.glassSlab();
   }
 }

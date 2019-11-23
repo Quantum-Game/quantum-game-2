@@ -20,7 +20,7 @@ export default class QuarterWavePlate extends Element {
     this.polarization = polarization;
   }
 
-  transition(options: TransitionInterface) {
+  transition(options: TransitionInterface): qt.Operator {
     if (options.rotation === 90 || options.rotation === 270) {
       return qt.quarterWavePlateNS(options.polarization);
     }
