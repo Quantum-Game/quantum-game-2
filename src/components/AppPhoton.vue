@@ -42,16 +42,16 @@
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import { select } from 'd3-selection';
+import { range } from 'd3-array';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
-import { range } from 'd3-array';
 import Particle from '@/engine/Particle';
 
 const d3 = {
-  scaleLinear,
-  scaleSequential,
   select,
   range,
+  scaleLinear,
+  scaleSequential,
   interpolateInferno,
   interpolateViridis
 };

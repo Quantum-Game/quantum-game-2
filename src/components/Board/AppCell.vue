@@ -126,6 +126,12 @@ export default class AppCell extends Mixins(getPosition) {
     cellRef: HTMLElement;
   };
 
+  mounted() {
+    if (!this.cell.isVoid) {
+      console.log(this.cell.toString());
+    }
+  }
+
   /**
    * Compute the cell class name
    * @returns Computed cell name string
@@ -288,11 +294,10 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
-   * changes border color indicating
-   * it can be moved
-   * @returns void
+   * changes border color indicating it can be moved
+   * @returns color
    */
-  computeBorder() {
+  computeBorder(): string {
     if (this.border !== '') {
       return this.border;
     }
@@ -307,7 +312,6 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
-   * TODO: Block rotation of QWP and Polarizers
    * styles used for wrapper positioning
    * using the getPosition mixin;
    * @returns a style object

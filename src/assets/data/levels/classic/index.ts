@@ -50,12 +50,12 @@ const classicLevels: LevelInterface[] = [
   level13,
 
   // Polarizer levels
-  // level14,
-  // level15,
-  // level16,
-  // level17,
-  // level18,
-  // level19,
+  level14,
+  level15,
+  level16,
+  level17,
+  level18,
+  level19,
 
   level20,
   level21,
