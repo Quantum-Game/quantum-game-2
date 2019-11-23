@@ -316,7 +316,7 @@ export default class GameGoals extends Vue {
 }
 .success {
   color: white;
-    @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1000px) {
     b {
       font-size: calc(8px + 4 * ((100vw - 320px) / 680));
     }

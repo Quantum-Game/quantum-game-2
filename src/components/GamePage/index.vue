@@ -499,7 +499,7 @@ h1 {
   @media screen and (max-width: 1000px) {
     a img {
       width: 7vw !important;
-    }    
+    }
   }
   .groupTitle {
     font-size: 14px;
