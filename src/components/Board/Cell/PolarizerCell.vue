@@ -1,9 +1,6 @@
 <template>
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
-    <g :style="computeTrim">
-      <defs>
-        <circle id="SVGID_1_" cx="32" cy="32" r="28" />
-      </defs>
+    <g>
       <!-- BARS -->
       <g :style="computePolarization">
         <rect x="8.5" y="-7" class="st2" width="3" height="69" />
@@ -16,8 +13,8 @@
         <rect x="50.5" y="-7" class="st2" width="3" height="69" />
       </g>
       <!-- OVAL TRIMMING PATH -->
-      <clipPath id="SVGID_2_">
-        <use xlink:href="#SVGID_1_" style="overflow:visible;" />
+      <clipPath id="clip">
+        <circle cx="32" cy="32" r="28" />
       </clipPath>
     </g>
 
@@ -55,16 +52,6 @@ export default class PolarizerCell extends Piece {
       transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
     };
   }
-  /**
-   * Compute inner grid rotation trimming from cell rotation
-   */
-  get computeTrim() {
-    return {
-      'transform-origin': `32px 32px`,
-      transform: `rotate(${this.cell.rotation}deg)`
-      // transform: `rotate(0deg)`
-    };
-  }
 }
 </script>
 
@@ -80,7 +67,7 @@ export default class PolarizerCell extends Piece {
   fill: #4e3b6b;
 }
 .st2 {
-  clip-path: url(#SVGID_2_);
+  clip-path: url(#clip);
   fill: #5a4278;
 }
 </style>
