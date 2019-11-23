@@ -16,6 +16,7 @@
 </template>
 
 <script lang="ts">
+// TODO: Make polarizing beam splitter less confusing
 import { Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
@@ -26,6 +27,7 @@ export default class PolarizingBeamSplitterCell extends Piece {}
 <style lang="scss" scoped>
 .st0 {
   fill: #61dbef;
+  opacity: 0.7;
 }
 .st1 {
   fill: #4ac4d1;
