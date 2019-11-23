@@ -126,12 +126,6 @@ export default class AppCell extends Mixins(getPosition) {
     cellRef: HTMLElement;
   };
 
-  mounted() {
-    if (!this.cell.isVoid) {
-      console.log(this.cell.toString());
-    }
-  }
-
   /**
    * Compute the cell class name
    * @returns Computed cell name string
