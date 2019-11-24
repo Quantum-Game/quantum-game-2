@@ -49,10 +49,13 @@
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
+          @rewind="rewind"
           @step-back="stepBack"
-          @step-forward="stepForward"
           @play="play"
+          @step-forward="stepForward"
+          @fast-forward="fastForward"
           @reload="reload"
+          @downloadLevel="downloadLevel"
         />
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
@@ -217,19 +220,6 @@ export default class Game extends Vue {
   }
 
   /**
-   * Export the level in JSON format and uploads it
-   * @returns level in JSON format
-   */
-  handleSave(): void {
-    const json = JSON.stringify(this.level.exportLevel(), null, 2);
-    const blob = new Blob([json], { type: 'octet/stream' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'level.json';
-    link.click();
-  }
-
-  /**
    * Change active frame with provided Id
    */
   handleChangeActiveFrame(activeId: number): void {
@@ -267,10 +257,35 @@ export default class Game extends Vue {
   }
 
   /**
-   * Reload the current page
+   * Launch overlay if it's the last frame and the player has a game state set
    */
-  reload() {
-    window.location.reload(false);
+  get computedGameState() {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.gameState;
+    }
+    return 'InProgress';
+  }
+
+  /**
+   * Show previous frame and check it exists
+   *  @returns frameIndex
+   */
+  rewind() {
+    this.frameIndex = 0;
+  }
+
+  /**
+   * Show previous frame and check it exists
+   *  @returns frameIndex
+   */
+  stepBack() {
+    const newframeIndex = this.frameIndex - 1;
+    if (newframeIndex < 0) {
+      console.error("Can't access frames before simulation...");
+      return false;
+    }
+    this.frameIndex = newframeIndex;
+    return this.frameIndex;
   }
 
   /**
@@ -292,16 +307,6 @@ export default class Game extends Vue {
   }
 
   /**
-   * Launch overlay if it's the last frame and the player has a game state set
-   */
-  get computedGameState() {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.gameState;
-    }
-    return 'InProgress';
-  }
-
-  /**
    * Show next frame and check it exists
    *  @returns frameIndex
    */
@@ -316,17 +321,30 @@ export default class Game extends Vue {
   }
 
   /**
-   * Show previous frame and check it exists
-   *  @returns frameIndex
+   * Reload the current page
    */
-  stepBack() {
-    const newframeIndex = this.frameIndex - 1;
-    if (newframeIndex < 0) {
-      console.error("Can't access frames before simulation...");
-      return false;
-    }
-    this.frameIndex = newframeIndex;
-    return this.frameIndex;
+  fastForward() {
+    this.frameIndex = this.simulation.frames.length - 1;
+  }
+
+  /**
+   * Reload the current page
+   */
+  reload() {
+    window.location.reload(false);
+  }
+
+  /**
+   * Export the level in JSON format and uploads it
+   * @returns level in JSON format
+   */
+  downloadLevel(): void {
+    const json = JSON.stringify(this.level.exportLevel(), null, 2);
+    const blob = new Blob([json], { type: 'octet/stream' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'level.json';
+    link.click();
   }
 
   /**

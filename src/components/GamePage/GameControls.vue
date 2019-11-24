@@ -13,15 +13,13 @@
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
     </span>
+    <!-- LEVEL CONTROLS -->
     <span class="view-mode">
       <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
-      <button type="button" :style="computeSaveStyle" @click="$emit('saveLevel')" />
-      <button type="button" :style="computeDownloadStyle" @click="$emit('download')" />
+      <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
+      <button type="button" :style="computeSaveStyle" @click="handleSave()" />
     </span>
-    <!-- SAVE BUTTONS -->
-    <!-- <save-level /> -->
-    <!-- <app-button @click.native="handleSave">S</app-button> -->
   </div>
 </template>
 
@@ -29,21 +27,16 @@
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import { GameStateEnum } from '@/engine/interfaces';
-import AppButton from '@/components/AppButton.vue';
-import SaveLevel from '@/components/SaveLevel.vue';
+import $userStore from '@/store/userStore';
 
-@Component({
-  components: {
-    AppButton,
-    SaveLevel
-  }
-})
+@Component
 export default class GameControls extends Vue {
-  // FIXME: Can somehow accelerate photon speed by clicking play multiple times
+  // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
   @State('gameState') gameState!: GameStateEnum;
   @State('simulationState') simulationState!: boolean;
+  scaleControls = 0.8;
   soundFlag = true;
 
   toggleSound(): void {
@@ -65,14 +58,16 @@ export default class GameControls extends Vue {
   get computeRewindStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/rewind.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
   get computeBackStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_back.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
@@ -92,35 +87,40 @@ export default class GameControls extends Vue {
   get computeForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_forward.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
   get computeFastForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/fast_forward.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
   get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/reload.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3
-    };
-  }
-
-  get computeSaveStyle(): {} {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
   get computeDownloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/download.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
+    };
+  }
+
+  get computeSaveStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
   }
 
@@ -128,13 +128,34 @@ export default class GameControls extends Vue {
     if (this.soundFlag) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_off.svg`)})`, //eslint-disable-line
-        opacity: this.playFlag ? 1 : 0.3
+        opacity: this.playFlag ? 1 : 0.3,
+        transform: `scale(${this.scaleControls})`
       };
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_on.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
+      transform: `scale(${this.scaleControls})`
     };
+  }
+
+  get isLoggedIn() {
+    return $userStore.getters.isLoggedIn;
+  }
+
+  saveLevel() {
+    $userStore.dispatch('SAVE_LEVEL', this.$store.state);
+  }
+  updateLevel() {
+    $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
+  }
+
+  handleSave() {
+    if (!this.$route.meta.levelSaved) {
+      this.saveLevel();
+    } else {
+      this.updateLevel();
+    }
   }
 }
 </script>
