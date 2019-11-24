@@ -4,7 +4,7 @@
     <span class="playback">
       <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" />
       <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
-      <button type="button" :style="computePlayStyle" @click="$emit('play')" />
+      <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
       <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
       <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" />
     </span>
@@ -15,10 +15,13 @@
     </span>
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
+      <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
+      <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
       <button type="button" :style="computeSaveStyle" @click="handleSave()" />
+      <button type="button" :style="computeMapStyle" @click="handleMap()" />
+      <button type="button" :style="computeAccountStyle" @click="handleAccount()" />
     </span>
   </div>
 </template>
@@ -36,7 +39,7 @@ export default class GameControls extends Vue {
   @Prop() readonly totalFrames!: number;
   @State('gameState') gameState!: GameStateEnum;
   @State('simulationState') simulationState!: boolean;
-  scaleControls = 0.8;
+  // scaleControls = 0.8;
   soundFlag = true;
 
   toggleSound(): void {
@@ -58,16 +61,14 @@ export default class GameControls extends Vue {
   get computeRewindStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/rewind.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
 
   get computeBackStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_back.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
 
@@ -87,40 +88,21 @@ export default class GameControls extends Vue {
   get computeForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_forward.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
 
   get computeFastForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/fast_forward.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
 
   get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/reload.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
-    };
-  }
-
-  get computeDownloadStyle(): {} {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/download.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
-    };
-  }
-
-  get computeSaveStyle(): {} {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag ? 1 : 0.3
     };
   }
 
@@ -128,18 +110,63 @@ export default class GameControls extends Vue {
     if (this.soundFlag) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_off.svg`)})`, //eslint-disable-line
-        opacity: this.playFlag ? 1 : 0.3,
-        transform: `scale(${this.scaleControls})`
+        opacity: this.playFlag ? 1 : 0.3
       };
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_on.svg`)})`, //eslint-disable-line
-      opacity: this.playFlag ? 1 : 0.3,
-      transform: `scale(${this.scaleControls})`
+      opacity: this.playFlag ? 1 : 0.3
     };
   }
 
-  get isLoggedIn() {
+  get computeDownloadStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/download.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeSaveStyle(): {} {
+    if (this.isLoggedIn) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+      opacity: 0.3
+    };
+  }
+
+  get computeAccountStyle(): {} {
+    if (this.isLoggedIn) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/account.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/account_register.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeOptionsStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/options.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeMapStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/map.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get isLoggedIn(): boolean {
     return $userStore.getters.isLoggedIn;
   }
 
@@ -157,16 +184,40 @@ export default class GameControls extends Vue {
       this.updateLevel();
     }
   }
+
+  handleAccount() {
+    if (!this.isLoggedIn) {
+      this.$router.push('/login');
+    } else {
+      this.$router.push('/myaccount');
+    }
+  }
+
+  handleOptions() {
+    this.$router.push('/options');
+  }
+
+  handleMap() {
+    this.$router.push('/levels');
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 button {
-  height: 30px;
-  width: 30px;
+  height: 24px;
+  width: 24px;
   margin: 0.2rem 0.4rem;
   background-color: transparent;
   border: none;
+  transition: all 0.2s ease-in-out;
+  #play {
+    height: 32px;
+    width: 32px;
+  }
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 .gameState {
   font-size: 12px;

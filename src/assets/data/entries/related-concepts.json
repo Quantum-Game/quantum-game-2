@@ -5,8 +5,8 @@
     "short": "Polarization is the direction of oscillation of an electromagnetic wave.",
     "grids": [
       {
-        "cols": 0,
-        "rows": 0,
+        "cols": 3,
+        "rows": 3,
         "cells": []
       }
     ],
