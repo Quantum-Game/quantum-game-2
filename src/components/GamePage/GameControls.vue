@@ -2,17 +2,23 @@
   <div class="controls">
     <!-- SIMULATION CONTROLS -->
     <span class="playback">
+      <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" />
       <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
       <button type="button" :style="computePlayStyle" @click="$emit('play')" />
       <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
-      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
+      <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" />
     </span>
     <!-- FRAME INFO -->
     <span class="frameInfo">
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
     </span>
-    <span class="view-mode"></span>
+    <span class="view-mode">
+      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
+      <button type="button" :style="computeSoundStyle" @click="toggleSound" />
+      <button type="button" :style="computeSaveStyle" @click="$emit('saveLevel')" />
+      <button type="button" :style="computeDownloadStyle" @click="$emit('download')" />
+    </span>
     <!-- SAVE BUTTONS -->
     <!-- <save-level /> -->
     <!-- <app-button @click.native="handleSave">S</app-button> -->
@@ -38,27 +44,39 @@ export default class GameControls extends Vue {
   @Prop() readonly totalFrames!: number;
   @State('gameState') gameState!: GameStateEnum;
   @State('simulationState') simulationState!: boolean;
+  soundFlag = true;
 
-  get playFlag() {
+  toggleSound(): void {
+    this.soundFlag = !this.soundFlag;
+  }
+
+  get playFlag(): boolean {
     return !this.simulationState;
   }
 
-  get stepForwardFlag() {
+  get stepForwardFlag(): boolean {
     return this.frameIndex + 1 !== this.totalFrames;
   }
 
-  get stepBackFlag() {
+  get stepBackFlag(): boolean {
     return this.frameIndex > 0;
   }
 
-  get computeBackStyle() {
+  get computeRewindStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/step_back.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/rewind.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
 
-  get computePlayStyle() {
+  get computeBackStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_back.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+    };
+  }
+
+  get computePlayStyle(): {} {
     if (this.simulationState) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/b-buttons/pause.svg`)})`, //eslint-disable-line
@@ -71,16 +89,50 @@ export default class GameControls extends Vue {
     };
   }
 
-  get computeForwardStyle() {
+  get computeForwardStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/step_forward.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
 
-  get computeReloadStyle() {
+  get computeFastForwardStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/fast_forward.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+    };
+  }
+
+  get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/b-buttons/reload.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeSaveStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeDownloadStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/download.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeSoundStyle(): {} {
+    if (this.soundFlag) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_off.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_on.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }

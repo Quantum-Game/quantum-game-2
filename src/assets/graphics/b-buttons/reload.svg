@@ -1,6 +1,7 @@
-<svg version="1.1" id="prefix__Layer_1" xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 30 30" xml:space="preserve">
-    <style>
+<svg version="1.1" id="prefix__Layer_1" 
+  xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 30 30" xml:space="preserve">
+  <style>
         .prefix__st0{fill:#fff}
-    </style>
-    <path class="prefix__st0" d="M4.6 15.3l4.8-4.6H6.5C8 7.6 11.3 5.4 15 5.4c4.6 0 8.5 3.3 9.4 7.6h2.4C25.9 7.3 21 3 15 3 9.9 3 5.6 6.2 3.9 10.7h-3l3.7 4.6zM29.2 19.2l-3.8-4.6-4.8 4.6h3c-1.6 3.2-4.8 5.4-8.6 5.4-4.6 0-8.5-3.3-9.4-7.6H3.2c1 5.7 5.9 10 11.8 10 5.1 0 9.5-3.2 11.2-7.8h3z"/>
+  </style>
+  <path class="prefix__st0" d="M4.6 15.3l4.8-4.6H6.5C8 7.6 11.3 5.4 15 5.4c4.6 0 8.5 3.3 9.4 7.6h2.4C25.9 7.3 21 3 15 3 9.9 3 5.6 6.2 3.9 10.7h-3l3.7 4.6zM29.2 19.2l-3.8-4.6-4.8 4.6h3c-1.6 3.2-4.8 5.4-8.6 5.4-4.6 0-8.5-3.3-9.4-7.6H3.2c1 5.7 5.9 10 11.8 10 5.1 0 9.5-3.2 11.2-7.8h3z"/>
 </svg>
