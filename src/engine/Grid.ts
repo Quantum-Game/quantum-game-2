@@ -238,11 +238,30 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * List of cells at the border of the grid
+   * Used to find the exit route of particles
+   * @returns
+   */
+  get borderCells(): Cell[] {
+    return this.cells.filter((cell: Cell) => {
+      if (
+        cell.coord.x === 0 ||
+        cell.coord.x === this.cols ||
+        cell.coord.y === 0 ||
+        cell.coord.y === this.rows
+      ) {
+        return cell;
+      }
+    });
+  }
+
+  /**
    * An escaping particle should be one coord away from its escaping position
    * @param coord espaced coordinate
    * @returns escape cell
    */
   lastCellBeforeEscape(coord: Coord): Cell {
+    console.log(`Particle escaping @: ${coord.toString()}`);
     if (this.includes(coord)) {
       throw new Error(`Not an escaping particle coordinate: ${coord}`);
     }

@@ -13,6 +13,35 @@
       <!-- LASER PATH -->
       <board-lasers :pathParticles="pathParticles" />
 
+      <!-- FATE -->
+      <g class="fate">
+        <circle
+          :cx="(fate.coord.x + 0.5) * tileSize"
+          :cy="(fate.coord.y + 0.5) * tileSize"
+          fill="red"
+          r="32"
+          stroke="purple"
+          stroke-width="6"
+        >
+          <animate
+            attributeName="opacity"
+            from="1"
+            to="0"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="r"
+            from="32"
+            to="64"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+
       <!-- PHOTONS -->
       <g
         v-for="(particle, index) in particles"
@@ -57,35 +86,6 @@
       >
         {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
-
-      <!-- FATE -->
-      <g class="fate">
-        <circle
-          :cx="(fate.coord.x + 0.5) * tileSize"
-          :cy="(fate.coord.y + 0.5) * tileSize"
-          fill="none"
-          r="32"
-          stroke="purple"
-          stroke-width="3"
-        >
-          <animate
-            attributeName="opacity"
-            from="1"
-            to="0"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="r"
-            from="32"
-            to="64"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-        </circle>
-      </g>
 
       <!-- SPEECH BUBBLES -->
       <speech-bubble

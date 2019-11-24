@@ -214,13 +214,14 @@ export default class QuantumSimulation {
     const absorption = lastFrameAbs[absorptionId];
     const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
 
-    // if particle escape it has at least an adjacent cell inside grid
+    // if particle escaped it has at least an adjacent cell inside grid
     const coord = Coord.importCoord(absorption.coord);
     let cell;
     if (this.grid.includes(coord)) {
       cell = this.grid.get(coord);
     } else {
-      cell = this.grid.lastCellBeforeEscape(coord);
+      // cell = this.grid.lastCellBeforeEscape(coord);
+      cell = Cell.createDummy({ x: -1, y: -1 });
     }
 
     return {
