@@ -268,8 +268,8 @@ export default class Grid extends Cluster {
    * Create a dummy grid object
    * @returns dummy Grid
    */
-  public static dummyGrid(rows = 3, cols = 3): Grid {
-    const gridI: GridInterface = {
+  public static dummyGridInterface(rows = 3, cols = 3): GridInterface {
+    return {
       rows,
       cols,
       cells: [
@@ -282,7 +282,14 @@ export default class Grid extends Cluster {
         }
       ]
     };
-    const grid = Grid.importGrid(gridI);
+  }
+
+  /**
+   * Create a dummy grid object
+   * @returns dummy Grid
+   */
+  public static dummyGrid(rows = 3, cols = 3): Grid {
+    const grid = Grid.importGrid(this.dummyGridInterface());
     return grid;
   }
 

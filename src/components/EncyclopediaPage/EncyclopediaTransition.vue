@@ -13,12 +13,11 @@
         @columnMouseover="updateIndicators($event)"
       />
       <div class="eboard">
-        <!-- FUGLY -->
         <encyclopedia-board
-          :key="`${JSON.stringify(indicators)}`"
+          :key="JSON.stringify(indicators)"
+          class="board"
           :grid-obj="grid.exportGrid()"
           :indicators="indicators"
-          class="board"
           :max-steps="2"
           :default-step="2"
           :exact-steps="true"
@@ -27,9 +26,9 @@
       </div>
       <div>
         <span>Select dimension order:</span>
-        <select v-model="dimOrder">
-          <option value="dir pol">dir pol</option>
-          <option value="pol dir">pol dir</option>
+        <select v-model="dirPolOrder">
+          <option :value="true">dir pol</option>
+          <option :value="false">pol dir</option>
         </select>
       </div>
     </div>
@@ -63,10 +62,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
   @Prop({ default: '0' }) defaultRotation!: number;
-  rotation = this.defaultRotation;
 
-  grid = Grid.emptyGrid(3, 3);
-  dimOrder = 'dir pol';
+  rotation: number = this.defaultRotation;
+  dirPolOrder: boolean = true;
+  grid: Grid = Grid.emptyGrid(3, 3);
   indicators: IndicatorInterface[] = [
     {
       x: 0,
@@ -80,16 +79,19 @@ export default class EncyclopediaMatrixBoard extends Vue {
     grid: HTMLElement;
   };
 
-  created() {
+  created(): void {
     this.grid.set(this.cell);
-    console.debug(this.grid.ascii);
+  }
+
+  get cell(): Cell {
+    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
   }
 
   /**
-   * Create a default cell with correct element in the center of the grid
+   * Updates rotation from the cell event
    */
-  get cell(): Cell {
-    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
+  updateRotation(cell: Cell): void {
+    this.rotation = cell.rotation;
   }
 
   /**
@@ -99,7 +101,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
    */
   updateIndicators(colId: number): void {
     this.grid.set(this.cell);
-    if (this.dimOrder === 'dir pol') {
+    if (this.dirPolOrder) {
       const direction = [
         DirEnum['>'],
         DirEnum['>'],
@@ -148,14 +150,16 @@ export default class EncyclopediaMatrixBoard extends Vue {
       const y = [1, 2, 1, 0, 1, 2, 1, 0][colId];
       this.indicators = [{ x, y, direction, polarization }];
     }
-    console.log(this.indicators);
   }
 
   /**
-   * Update the rotation of the mini board element
+   * Get the basis direction and polarization strings
    */
-  updateRotation(cell: Cell): void {
-    this.rotation = cell.rotation;
+  get basis(): string[] {
+    if (this.dirPolOrder) {
+      return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
+    }
+    return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣'];
   }
 
   /**
@@ -165,18 +169,8 @@ export default class EncyclopediaMatrixBoard extends Vue {
     return this.cell.operator[2];
   }
 
-  /**
-   * Get the basis direction and polarization strings
-   */
-  get basis(): string[] {
-    if (this.dimOrder === 'dir pol') {
-      return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
-    }
-    return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣'];
-  }
-
   get matrixElements() {
-    if (this.dimOrder === 'dir pol') {
+    if (this.dirPolOrder) {
       return this.operator.entries.map((entry: any) => {
         return {
           i: 2 * entry.coordIn[0] + entry.coordIn[1],
@@ -199,11 +193,14 @@ export default class EncyclopediaMatrixBoard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.eboard {
-  display: inline-block;
-}
-.operatorText {
-  padding: 10px;
-  font-size: 10px;
+.container {
+  min-height: 500px;
+  .eboard {
+    display: inline-block;
+  }
+  .operatorText {
+    padding: 10px;
+    font-size: 10px;
+  }
 }
 </style>

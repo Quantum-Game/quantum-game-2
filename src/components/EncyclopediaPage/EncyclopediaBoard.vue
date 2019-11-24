@@ -78,10 +78,6 @@ import AppCell from '@/components/Board/AppCell.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
-import { Laser } from '@/engine/Elements';
-
-const dummyGrid = Grid.dummyGrid();
-const dummyGridInterface = dummyGrid.exportGrid();
 
 @Component({
   components: {
@@ -92,66 +88,23 @@ const dummyGridInterface = dummyGrid.exportGrid();
   }
 })
 export default class EncyclopediaBoard extends Vue {
-  @Prop({ default: () => dummyGridInterface }) gridObj!: GridInterface;
+  @Prop({ default: () => Grid.dummyGridInterface() }) gridObj!: GridInterface;
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
   @Prop({ default: () => [] }) readonly indicators!: IndicatorInterface[];
   @Prop({ default: false }) readonly exactSteps!: boolean;
   @Prop({ default: 64 }) readonly tileSize!: number;
 
-  grid = new Grid(
-    this.gridObj.rows,
-    this.gridObj.cols,
-    this.gridObj.cells.map((jsonCell) => Cell.importCell(jsonCell))
-  );
-  selectedFrameId = this.defaultStep;
+  grid = Grid.importGrid(this.gridObj);
   simulation: QuantumSimulation = new QuantumSimulation(this.grid);
+  selectedFrameId = this.defaultStep;
 
   $refs!: {
     grid: HTMLElement;
   };
 
-  created() {
+  created(): void {
     this.reset();
-  }
-
-  reset() {
-    this.simulation = new QuantumSimulation(this.grid);
-    if (this.indicators.length === 0) {
-      this.simulation.initializeFromLaser(PolEnum.H);
-    } else if (this.indicators.length === 1) {
-      this.simulation.initializeFromIndicator(this.indicators[0]);
-    } else {
-      throw new Error('EncyclopediaBoard not yet prepared for more photons.');
-    }
-
-    if (this.exactSteps) {
-      this.simulation.nextFrames(this.maxSteps, -1);
-    } else {
-      this.simulation.nextFrames(this.maxSteps);
-    }
-
-    this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
-  }
-
-  get frames() {
-    return this.simulation.frames;
-  }
-
-  get allParticles() {
-    return this.simulation.allParticles;
-  }
-
-  get selectedFrame() {
-    return this.frames[this.selectedFrameId];
-  }
-
-  get nonVoidCells() {
-    return this.grid.unvoid.cells;
-  }
-
-  get frameNumber(): number {
-    return this.frames.length;
   }
 
   /**
@@ -161,6 +114,47 @@ export default class EncyclopediaBoard extends Vue {
     cell.rotate();
     this.reset();
     this.$emit('updateRotation', cell);
+  }
+
+  /**
+   * Recompute quantum simulation
+   * Set steps and selected frame
+   */
+  reset(): void {
+    this.simulation = new QuantumSimulation(this.grid);
+    if (this.indicators.length === 0) {
+      this.simulation.initializeFromLaser(PolEnum.H);
+    } else if (this.indicators.length === 1) {
+      this.simulation.initializeFromIndicator(this.indicators[0]);
+    } else {
+      throw new Error('EncyclopediaBoard not yet prepared for more photons.');
+    }
+    if (this.exactSteps) {
+      this.simulation.nextFrames(this.maxSteps, -1);
+    } else {
+      this.simulation.nextFrames(this.maxSteps);
+    }
+    this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
+  }
+
+  get frames(): QuantumFrame[] {
+    return this.simulation.frames;
+  }
+
+  get selectedFrame(): QuantumFrame {
+    return this.frames[this.selectedFrameId];
+  }
+
+  get frameNumber(): number {
+    return this.frames.length;
+  }
+
+  get allParticles(): Particle[] {
+    return this.simulation.allParticles;
+  }
+
+  get nonVoidCells(): Cell[] {
+    return this.grid.unvoid.cells;
   }
 
   get totalWidth(): number {
