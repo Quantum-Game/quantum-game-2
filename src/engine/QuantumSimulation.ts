@@ -33,18 +33,18 @@ export default class QuantumSimulation {
       throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
     }
     // Override laser cell polarization if an optional argument is provided
-    const { indicator } = lasers[0];
+    const laserIndicator = lasers[0].indicator;
     if (polOverride) {
-      indicator.polarization = polOverride;
+      laserIndicator.polarization = polOverride;
     }
     // Create initial frame
     this.frames = [];
     const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows);
     initFrame.photons.addPhotonIndicator(
-      indicator.x,
-      indicator.y,
-      indicator.direction,
-      indicator.polarization
+      laserIndicator.x,
+      laserIndicator.y,
+      laserIndicator.direction,
+      laserIndicator.polarization
     );
     this.frames.push(initFrame);
   }
@@ -75,9 +75,9 @@ export default class QuantumSimulation {
 
   /**
    * Compute the next simulation frame
-   * TODO: Should return a new frame which is then added to frames
+   * @returns QuantumFrame
    */
-  nextFrame(): void {
+  nextFrame(): QuantumFrame {
     if (this.frames.length === 0) {
       throw new Error(
         `Cannot do nextFrame when there are no frames. initializeFromLaser or something else.`
@@ -85,7 +85,7 @@ export default class QuantumSimulation {
     }
     const frame = QuantumFrame.fromPhotons(this.lastFrame.photons);
     frame.propagateAndInteract(this.grid.operatorList);
-    this.frames.push(frame);
+    return frame;
   }
 
   /**
@@ -96,7 +96,7 @@ export default class QuantumSimulation {
   nextFrames(n: number = 20, stopThreshold = 1e-6): void {
     const logging = false;
     for (let i = 0; i < n; i += 1) {
-      this.nextFrame();
+      this.frames.push(this.nextFrame());
       if (this.lastFrame.probability < stopThreshold) {
         break;
       }

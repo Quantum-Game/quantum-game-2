@@ -83,7 +83,8 @@ import {
   AbsorptionInterface,
   HintInterface,
   GameStateEnum,
-  GridInterface
+  GridInterface,
+  PolEnum
 } from '@/engine/interfaces';
 import levels from '@/assets/data/levels';
 import GameGoals from '@/components/GamePage/GameGoals.vue';
@@ -172,7 +173,7 @@ export default class Game extends Vue {
   updateSimulation(): void {
     // Compute simulation frames
     this.simulation = new QuantumSimulation(this.level.grid);
-    this.simulation.initializeFromLaser('H');
+    this.simulation.initializeFromLaser();
     this.simulation.nextFrames(40);
     // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation);

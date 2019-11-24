@@ -16,7 +16,7 @@
         <encyclopedia-board
           :key="`${JSON.stringify(intializeFrom)}`"
           :grid-obj="grid.exportGrid()"
-          :initialize-from="intializeFrom"
+          :indicators="indicators"
           class="board"
           :max-steps="2"
           :default-step="2"
@@ -64,14 +64,14 @@ export default class EncyclopediaMatrixBoard extends Vue {
   // TODO: this code begs a rewrite
   grid = Grid.emptyGrid(3, 3);
   dimOrder = 'dir pol';
-  intializeFrom = [
-    {
-      x: 0,
-      y: 1,
-      dirStr: '>',
-      polStr: 'H'
-    }
-  ];
+  // intializeFrom = [
+  //   {
+  //     x: 0,
+  //     y: 1,
+  //     dirStr: '>',
+  //     polStr: 'H'
+  //   }
+  // ];
 
   $refs!: {
     grid: HTMLElement;
