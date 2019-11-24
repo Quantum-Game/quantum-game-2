@@ -64,7 +64,7 @@
 import { Vue, Prop, Component } from 'vue-property-decorator';
 import { Grid, Cell } from '@/engine/classes';
 import Particle from '@/engine/Particle';
-import { ParticleInterface, GridInterface } from '@/engine/interfaces';
+import { ParticleInterface, GridInterface, PolEnum, IndicatorInterface } from '@/engine/interfaces';
 import AppPhoton from '@/components/AppPhoton.vue';
 import BoardDots from '@/components/Board/BoardDots.vue';
 import BoardLasers from '@/components/Board/BoardLasers.vue';
@@ -72,19 +72,10 @@ import AppCell from '@/components/Board/AppCell.vue';
 import GameKet from '@/components/GamePage/GameKet.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
 import QuantumSimulation from '@/engine/QuantumSimulation';
+import { Laser } from '@/engine/Elements';
 
 const dummyGrid = Grid.dummyGrid();
 const dummyGridInterface = dummyGrid.exportGrid();
-
-/**
- * Temporary for initializinf
- */
-interface photonIndicator {
-  x: number;
-  y: number;
-  dirStr: string;
-  polStr: string;
-}
 
 @Component({
   components: {
@@ -98,7 +89,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => dummyGridInterface }) gridObj!: GridInterface;
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
-  @Prop({ default: () => [] }) readonly initializeFrom!: photonIndicator[];
+  @Prop({ default: () => [] }) readonly indicators!: IndicatorInterface[];
   @Prop({ default: false }) readonly exactSteps!: boolean;
 
   tileSize = 64; // sounds like a prop or constant
@@ -120,11 +111,10 @@ export default class EncyclopediaBoard extends Vue {
 
   reset() {
     this.simulation = new QuantumSimulation(this.grid);
-    if (this.initializeFrom.length === 0) {
-      this.simulation.initializeFromLaser('H');
-    } else if (this.initializeFrom.length === 1) {
-      const [{ x, y, dirStr, polStr }, ...rest] = this.initializeFrom;
-      this.simulation.initializeFromIndicator(x, y, dirStr, polStr);
+    if (this.indicators.length === 0) {
+      this.simulation.initializeFromLaser(PolEnum.H);
+    } else if (this.indicators.length === 1) {
+      this.simulation.initializeFromIndicator(this.indicators[0]);
     } else {
       throw new Error('EncyclopediaBoard not yet prepared for more photons.');
     }

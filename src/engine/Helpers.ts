@@ -1,4 +1,4 @@
-import { Elem, LaserPolarization, LaserDirection } from '@/engine/interfaces';
+import { Elem, PolEnum, DirEnum } from '@/engine/interfaces';
 
 /**
  * Pick a random index of an array according to weights.
@@ -96,14 +96,14 @@ export function symbolToAngle(direction: string): number {
 /**
  * Output an enum describing laser starting polarization
  */
-export function startingPolarization(polarization: number): LaserPolarization {
+export function startingPolarization(polarization: number): PolEnum {
   switch (polarization) {
     case 0:
     case 180:
-      return LaserPolarization.H;
+      return PolEnum.H;
     case 90:
     case 270:
-      return LaserPolarization.V;
+      return PolEnum.V;
     default:
       throw new Error(`Wrong starting polarization: ${polarization}`);
   }
@@ -112,16 +112,16 @@ export function startingPolarization(polarization: number): LaserPolarization {
 /**
  * Output an enum describing laser starting polarization
  */
-export function startingDirection(rotation: number): LaserDirection {
+export function startingDirection(rotation: number): DirEnum {
   switch (rotation) {
     case 0:
-      return LaserDirection['>'];
+      return DirEnum['>'];
     case 90:
-      return LaserDirection['^'];
+      return DirEnum['^'];
     case 180:
-      return LaserDirection['<'];
+      return DirEnum['<'];
     case 270:
-      return LaserDirection.v;
+      return DirEnum.v;
     default:
       throw new Error(`Wrong starting direction: ${rotation}`);
   }

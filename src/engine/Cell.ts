@@ -1,5 +1,11 @@
 import * as qt from 'quantum-tensors';
-import { CoordInterface, CellInterface, Elem, TransitionInterface } from './interfaces';
+import {
+  CoordInterface,
+  CellInterface,
+  Elem,
+  TransitionInterface,
+  IndicatorInterface
+} from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import {
@@ -25,7 +31,7 @@ import {
   Void,
   PolarizingBeamSplitter
 } from '@/engine/Elements/index';
-import { angleToSymbol } from './Helpers';
+import { angleToSymbol, startingPolarization, startingDirection } from './Helpers';
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate
@@ -125,6 +131,22 @@ export default class Cell {
    */
   get isFromToolbox(): boolean {
     return this.coord.x === -1 && this.coord.y === -1;
+  }
+
+  /**
+   * Create a photon indicator for quantum simulation
+   * @returns Indicator for qt.photons
+   */
+  get indicator(): IndicatorInterface {
+    if (this.isLaser) {
+      return {
+        x: this.coord.x,
+        y: this.coord.y,
+        direction: startingDirection(this.rotation),
+        polarization: startingPolarization(this.polarization)
+      };
+    }
+    throw new Error(`Cannot create photon indicator from ${this.element.name}`);
   }
 
   /**

@@ -299,9 +299,19 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
 };
 
 /**
+ * Photon indicator interface for glue code with qt Photons
+ */
+export interface IndicatorInterface {
+  x: number;
+  y: number;
+  direction: DirEnum;
+  polarization: PolEnum;
+}
+
+/**
  * Laser starting polarization enum
  */
-export const enum LaserPolarization {
+export const enum PolEnum {
   V = 'V',
   H = 'H'
 }
@@ -309,7 +319,7 @@ export const enum LaserPolarization {
 /**
  * Laser starting direction enum
  */
-export const enum LaserDirection {
+export const enum DirEnum {
   '>' = '>',
   '^' = '^',
   '<' = '<',

@@ -1,22 +1,12 @@
 import _ from 'lodash';
 import { Photons } from 'quantum-tensors';
-import { weightedRandomInt, startingDirection, startingPolarization } from '@/engine/Helpers';
-import { GridInterface, AbsorptionInterface } from '@/engine/interfaces';
+import { weightedRandomInt } from '@/engine/Helpers';
+import { AbsorptionInterface, IndicatorInterface, PolEnum } from '@/engine/interfaces';
 import Coord from '@/engine/Coord';
 import Grid from '@/engine/Grid';
 import Particle from '@/engine/Particle';
 import Absorption from '@/engine/Absorption';
 import QuantumFrame from '@/engine/QuantumFrame';
-
-/**
- * Indicator interface for glue code with qt Photons
- */
-export interface IndicatorInterface {
-  x: number;
-  y: number;
-  direction: number;
-  polarization: number;
-}
 
 /**
  * QUANTUM SIMULATION CLASS
@@ -33,45 +23,45 @@ export default class QuantumSimulation {
 
   /**
    * Create the initial frame of the simulation
-   * If a polarization is specified in the laser element then start with this polarization.
-   * @param pol Starting polarization
+   * Using the polarization defined in the laser json
+   * @param pol Override of the starting polarization
    */
-  initializeFromLaser(): void {
+  initializeFromLaser(polOverride?: PolEnum): void {
     // Select initial laser
     const lasers = this.grid.emitters.active.cells;
     if (lasers.length !== 1) {
       throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
     }
-    const laser = lasers[0];
+    // Override laser cell polarization if an optional argument is provided
+    const { indicator } = lasers[0];
+    if (polOverride) {
+      indicator.polarization = polOverride;
+    }
     // Create initial frame
     this.frames = [];
     const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows);
     initFrame.photons.addPhotonIndicator(
-      laser.coord.x,
-      laser.coord.y,
-      startingDirection(laser.rotation),
-      startingPolarization(laser.polarization)
+      indicator.x,
+      indicator.y,
+      indicator.direction,
+      indicator.polarization
     );
     this.frames.push(initFrame);
   }
 
   /**
-   * Initialize simulation from indicator (ket?)
-   * TODO: Use enum instead of two one character strings
-   * @param x number
-   * @param y number
-   * @param dir string
-   * @param pol string
+   * Initialize simulation from indicator
+   * @param indicator IndicatorInterface
    */
-  initializeFromIndicator(x: number, y: number, dir = '>', pol = 'H'): void {
+  initializeFromIndicator(indicator: IndicatorInterface): void {
     this.frames = [];
-    if (this.frames.length !== 0) {
-      throw new Error(
-        `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
-      );
-    }
     const frame = new QuantumFrame(this.grid.cols, this.grid.rows);
-    frame.photons.addPhotonIndicator(x, y, dir, pol);
+    frame.photons.addPhotonIndicator(
+      indicator.x,
+      indicator.y,
+      indicator.direction,
+      indicator.polarization
+    );
     this.frames.push(frame);
   }
 
