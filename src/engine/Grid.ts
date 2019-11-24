@@ -243,16 +243,18 @@ export default class Grid extends Cluster {
    * @returns
    */
   get borderCells(): Cell[] {
-    return this.cells.filter((cell: Cell) => {
+    const borders: Cell[] = [];
+    this.cells.forEach((cell: Cell) => {
       if (
         cell.coord.x === 0 ||
         cell.coord.x === this.cols ||
         cell.coord.y === 0 ||
         cell.coord.y === this.rows
       ) {
-        return cell;
+        borders.push(cell);
       }
     });
+    return borders;
   }
 
   /**
