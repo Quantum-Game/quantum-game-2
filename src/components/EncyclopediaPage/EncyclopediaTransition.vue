@@ -10,11 +10,12 @@
         :width="300"
         :size="30"
         :margin="20"
-        @columnMouseover="updateInitialState($event)"
+        @columnMouseover="updateIndicators($event)"
       />
       <div class="eboard">
+        <!-- FUGLY -->
         <encyclopedia-board
-          :key="`${JSON.stringify(intializeFrom)}`"
+          :key="`${JSON.stringify(indicators)}`"
           :grid-obj="grid.exportGrid()"
           :indicators="indicators"
           class="board"
@@ -42,7 +43,10 @@ import {
   ParticleInterface,
   CellInterface,
   LevelInterface,
-  GridInterface
+  GridInterface,
+  IndicatorInterface,
+  DirEnum,
+  PolEnum
 } from '@/engine/interfaces';
 import { Coord, Level, Element, Particle, Grid, Cell } from '@/engine/classes';
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
@@ -61,48 +65,90 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: '0' }) defaultRotation!: number;
   rotation = this.defaultRotation;
 
-  // TODO: this code begs a rewrite
   grid = Grid.emptyGrid(3, 3);
   dimOrder = 'dir pol';
-  // intializeFrom = [
-  //   {
-  //     x: 0,
-  //     y: 1,
-  //     dirStr: '>',
-  //     polStr: 'H'
-  //   }
-  // ];
+  indicators: IndicatorInterface[] = [
+    {
+      x: 0,
+      y: 1,
+      direction: DirEnum['>'],
+      polarization: PolEnum.H
+    }
+  ];
 
   $refs!: {
     grid: HTMLElement;
   };
-
-  get cell(): Cell {
-    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
-  }
 
   created() {
     this.grid.set(this.cell);
     console.debug(this.grid.ascii);
   }
 
-  updateInitialState(colId: number): void {
-    // suuuper dirty
+  /**
+   * Create a default cell with correct element in the center of the grid
+   */
+  get cell(): Cell {
+    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
+  }
+
+  /**
+   * Update indicators with colId
+   * FIXME: Needs a serious refactor
+   * suuuper dirty
+   */
+  updateIndicators(colId: number): void {
     this.grid.set(this.cell);
     if (this.dimOrder === 'dir pol') {
-      const dirStr = ['>', '>', '^', '^', '<', '<', 'v', 'v'][colId];
-      const polStr = ['H', 'V', 'H', 'V', 'H', 'V', 'H', 'V'][colId];
+      const direction = [
+        DirEnum['>'],
+        DirEnum['>'],
+        DirEnum['^'],
+        DirEnum['^'],
+        DirEnum['<'],
+        DirEnum['<'],
+        DirEnum.v,
+        DirEnum.v
+      ][colId];
+      const polarization = [
+        PolEnum.H,
+        PolEnum.V,
+        PolEnum.H,
+        PolEnum.V,
+        PolEnum.H,
+        PolEnum.V,
+        PolEnum.H,
+        PolEnum.V
+      ][colId];
       const x = [0, 0, 1, 1, 2, 2, 1, 1][colId];
       const y = [1, 1, 2, 2, 1, 1, 0, 0][colId];
-      this.intializeFrom = [{ x, y, dirStr, polStr }];
+      this.indicators = [{ x, y, direction, polarization }];
     } else {
-      const dirStr = ['>', '^', '<', 'v', '>', '^', '<', 'v'][colId];
-      const polStr = ['H', 'H', 'H', 'H', 'V', 'V', 'V', 'V'][colId];
+      const direction = [
+        DirEnum['>'],
+        DirEnum['^'],
+        DirEnum['<'],
+        DirEnum.v,
+        DirEnum['>'],
+        DirEnum['^'],
+        DirEnum['<'],
+        DirEnum.v
+      ][colId];
+      const polarization = [
+        PolEnum.H,
+        PolEnum.H,
+        PolEnum.H,
+        PolEnum.H,
+        PolEnum.V,
+        PolEnum.V,
+        PolEnum.V,
+        PolEnum.V
+      ][colId];
       const x = [0, 1, 2, 1, 0, 1, 2, 1][colId];
       const y = [1, 2, 1, 0, 1, 2, 1, 0][colId];
-      this.intializeFrom = [{ x, y, dirStr, polStr }];
+      this.indicators = [{ x, y, direction, polarization }];
     }
-    console.log(this.intializeFrom);
+    console.log(this.indicators);
   }
 
   /**
@@ -113,16 +159,15 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   /**
-   * FIXME: Use the cell operator generator
+   * Return the generated cell operator and select the entries
    */
   get operator() {
-    return this.cell.element.transition({
-      rotation: this.rotation,
-      polarization: 0,
-      percentage: 0
-    });
+    return this.cell.operator[2];
   }
 
+  /**
+   * Get the basis direction and polarization strings
+   */
   get basis(): string[] {
     if (this.dimOrder === 'dir pol') {
       return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];

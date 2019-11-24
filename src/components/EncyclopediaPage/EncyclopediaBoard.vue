@@ -95,8 +95,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => dummyGridInterface }) gridObj!: GridInterface;
   @Prop({ default: () => 10 }) readonly maxSteps!: number;
   @Prop({ default: () => 2 }) readonly defaultStep!: number;
-  @Prop({ default: () => [{ x: 0, y: 1, dirStr: DirEnum['>'], polStr: PolEnum.H }] })
-  readonly indicators!: IndicatorInterface[];
+  @Prop({ default: () => [] }) readonly indicators!: IndicatorInterface[];
   @Prop({ default: false }) readonly exactSteps!: boolean;
   @Prop({ default: 64 }) readonly tileSize!: number;
 

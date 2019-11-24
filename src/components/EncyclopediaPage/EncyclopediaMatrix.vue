@@ -32,7 +32,7 @@
         :y="scale(d.j)"
         :width="size"
         :height="size"
-        :style="{ fill: colorComplex(d.re, d.im) }"
+        :style="{ fill: generateColor(d.re, d.im) }"
         @mouseover="tileMouseOver(d)"
       />
     </g>
@@ -60,6 +60,10 @@ export default class EncyclopediaOperatorViewer extends Vue {
 
   scale(i: number): number {
     return i * this.size;
+  }
+
+  generateColor(re: number, im: number) {
+    return colorComplex(re, im);
   }
 
   tileMouseOver(d: { i: number; j: number; re: number; im: number }) {
