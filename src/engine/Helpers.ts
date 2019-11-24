@@ -1,5 +1,30 @@
-import { Elem } from '@/engine/interfaces';
+import { Elem, LaserPolarization, LaserDirection } from '@/engine/interfaces';
 
+/**
+ * Pick a random index of an array according to weights.
+ * @param weights An array of weights. By default they should sum up to 1.
+ * @param normalize If to normalize array.
+ * @returns A number [0, ..., weights.length -1].
+ */
+export function weightedRandomInt(weights: number[], normalize = true): number {
+  let r = Math.random();
+  if (normalize) {
+    r *= weights.reduce((a, b) => a + b, 0);
+  }
+  let cumSum = 0;
+  for (let i = 0; i < weights.length; i += 1) {
+    cumSum += weights[i];
+    if (cumSum > r) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/**
+ * Convert a string in camelCase to dash-case
+ * @param str string to convert
+ */
 export function camelCaseToDash(str: string): string {
   return str
     .replace(/[^a-zA-Z0-9]+/g, '-')
@@ -65,6 +90,40 @@ export function symbolToAngle(direction: string): number {
       return 315;
     default:
       throw new Error('Something is wrong with provided direction string.');
+  }
+}
+
+/**
+ * Output an enum describing laser starting polarization
+ */
+export function startingPolarization(polarization: number): LaserPolarization {
+  switch (polarization) {
+    case 0:
+    case 180:
+      return LaserPolarization.H;
+    case 90:
+    case 270:
+      return LaserPolarization.V;
+    default:
+      throw new Error(`Wrong starting polarization: ${polarization}`);
+  }
+}
+
+/**
+ * Output an enum describing laser starting polarization
+ */
+export function startingDirection(rotation: number): LaserDirection {
+  switch (rotation) {
+    case 0:
+      return LaserDirection['>'];
+    case 90:
+      return LaserDirection['^'];
+    case 180:
+      return LaserDirection['<'];
+    case 270:
+      return LaserDirection.v;
+    default:
+      throw new Error(`Wrong starting direction: ${rotation}`);
   }
 }
 

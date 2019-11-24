@@ -2,7 +2,6 @@ import _ from 'lodash';
 import * as qt from 'quantum-tensors';
 
 import Coord from './Coord';
-import Absorption from './Absorption';
 import Particle from './Particle';
 import { AbsorptionInterface, ParticleInterface } from './interfaces';
 

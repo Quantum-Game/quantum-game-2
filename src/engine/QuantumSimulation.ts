@@ -1,55 +1,68 @@
 import _ from 'lodash';
 import { Photons } from 'quantum-tensors';
-import { weightedRandomInt } from './utils';
-import { GridInterface, AbsorptionInterface } from './interfaces';
-import QuantumFrame from './QuantumFrame';
-import Grid from './Grid';
-import Coord from './Coord';
-import Cell from './Cell';
-import Particle from './Particle';
-import Absorption from './Absorption';
+import { weightedRandomInt, startingDirection, startingPolarization } from '@/engine/Helpers';
+import { GridInterface, AbsorptionInterface } from '@/engine/interfaces';
+import Coord from '@/engine/Coord';
+import Grid from '@/engine/Grid';
+import Particle from '@/engine/Particle';
+import Absorption from '@/engine/Absorption';
+import QuantumFrame from '@/engine/QuantumFrame';
+
+/**
+ * Indicator interface for glue code with qt Photons
+ */
+export interface IndicatorInterface {
+  x: number;
+  y: number;
+  direction: number;
+  polarization: number;
+}
 
 /**
  * QUANTUM SIMULATION CLASS
  * Contains the frames of the simulation
  */
 export default class QuantumSimulation {
-  board: Grid;
+  grid: Grid;
   frames: QuantumFrame[];
 
-  constructor(board: Grid) {
-    this.board = board;
+  constructor(grid: Grid) {
+    this.grid = grid;
     this.frames = [];
   }
 
-  static importBoard(gridJSON: GridInterface): QuantumSimulation {
-    const cells = gridJSON.cells.map((jsonCell) => Cell.importCell(jsonCell));
-    const board = new Grid(gridJSON.rows, gridJSON.cols, cells);
-    return new QuantumSimulation(board);
-  }
-
-  get lastFrame() {
-    return this.frames[this.frames.length - 1];
-  }
-
-  initializeFromLaser(pol = 'V'): void {
-    this.frames = [];
-    if (this.frames.length !== 0) {
-      throw new Error(
-        `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
-      );
-    }
-    const lasers = this.board.emitters.active.cells;
+  /**
+   * Create the initial frame of the simulation
+   * If a polarization is specified in the laser element then start with this polarization.
+   * @param pol Starting polarization
+   */
+  initializeFromLaser(): void {
+    // Select initial laser
+    const lasers = this.grid.emitters.active.cells;
     if (lasers.length !== 1) {
       throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
     }
     const laser = lasers[0];
-
-    const frame = new QuantumFrame(this.board.cols, this.board.rows);
-    frame.photons.addPhotonIndicator(laser.coord.x, laser.coord.y, laser.ascii, pol);
-    this.frames.push(frame);
+    // Create initial frame
+    this.frames = [];
+    const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows);
+    initFrame.photons.addPhotonIndicator(
+      laser.coord.x,
+      laser.coord.y,
+      startingDirection(laser.rotation),
+      startingPolarization(laser.polarization)
+    );
+    this.frames.push(initFrame);
   }
 
+  /**
+   * Initialize simulation from indicator (ket?)
+   * TODO: Use enum instead of two one character strings
+   * @param x number
+   * @param y number
+   * @param dir string
+   * @param pol string
+   */
   initializeFromIndicator(x: number, y: number, dir = '>', pol = 'H'): void {
     this.frames = [];
     if (this.frames.length !== 0) {
@@ -57,11 +70,23 @@ export default class QuantumSimulation {
         `Cannot initialize QuantumSimulation. Already ${this.frames.length} != 0 frames.`
       );
     }
-    const frame = new QuantumFrame(this.board.cols, this.board.rows);
+    const frame = new QuantumFrame(this.grid.cols, this.grid.rows);
     frame.photons.addPhotonIndicator(x, y, dir, pol);
     this.frames.push(frame);
   }
 
+  /**
+   * Get last simulation frame
+   * @returns last QuantumFrame
+   */
+  get lastFrame(): QuantumFrame {
+    return this.frames[this.frames.length - 1];
+  }
+
+  /**
+   * Compute the next simulation frame
+   * TODO: Should return a new frame which is then added to frames
+   */
   nextFrame(): void {
     if (this.frames.length === 0) {
       throw new Error(
@@ -69,7 +94,7 @@ export default class QuantumSimulation {
       );
     }
     const frame = QuantumFrame.fromPhotons(this.lastFrame.photons);
-    frame.propagateAndInteract(this.board.operatorList);
+    frame.propagateAndInteract(this.grid.operatorList);
     this.frames.push(frame);
   }
 
@@ -101,7 +126,8 @@ export default class QuantumSimulation {
   }
 
   /**
-   * Quantum state probability for for a for each frame.
+   * Quantum state probability for each frame.
+   * @returns probability of frame
    */
   get probabilityPerFrame(): number[] {
     return this.frames.map((frame) => frame.probability);
@@ -144,7 +170,7 @@ export default class QuantumSimulation {
     this.totalAbsorptionInterfacePerTile.forEach((absorptionI: AbsorptionInterface) => {
       const coord = Coord.importCoord(absorptionI.coord);
       if (!coord.outOfGrid) {
-        const cell = this.board.get(coord);
+        const cell = this.grid.get(coord);
         cell.energized = true;
         absorptions.push(new Absorption(cell, absorptionI.probability));
       }
@@ -197,8 +223,9 @@ export default class QuantumSimulation {
     const absorption = lastFrameAbs[absorptionId];
     const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
 
+    // TODO: ugly, needs refactor
     const { x, y } = absorption.coord;
-    const name = x === -1 && y === -1 ? 'OutOfBoard' : this.board.cellFromXY(x, y).element.name;
+    const name = x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name;
 
     return {
       statePerFrame: states,

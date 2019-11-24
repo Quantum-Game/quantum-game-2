@@ -141,26 +141,6 @@ export default class Game extends Vue {
   }
 
   /**
-   * Export the level in JSON format and uploads it
-   * @returns level in JSON format
-   */
-  handleSave(): void {
-    const json = JSON.stringify(this.level.exportLevel(), null, 2);
-    const blob = new Blob([json], { type: 'octet/stream' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'level.json';
-    link.click();
-  }
-
-  /**
-   * Change active frame with provided Id
-   */
-  handleChangeActiveFrame(activeId: number): void {
-    this.frameIndex = activeId;
-  }
-
-  /**
    * Parse url to extract level number
    * if missing then fallback to '0' for infinity level / sandbox
    */
@@ -191,13 +171,12 @@ export default class Game extends Vue {
    */
   updateSimulation(): void {
     // Compute simulation frames
-    const gridInterface = this.level.exportLevel().grid;
-    this.simulation = QuantumSimulation.importBoard(gridInterface);
+    this.simulation = new QuantumSimulation(this.level.grid);
     this.simulation.initializeFromLaser('H');
     this.simulation.nextFrames(40);
     // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation);
-    // Set absorption events
+    // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions;
     // Reset simulation variables
     this.frameIndex = 0;
@@ -227,6 +206,26 @@ export default class Game extends Vue {
     return this.simulation.absorptions.filter((absorption: Absorption) => {
       return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
     });
+  }
+
+  /**
+   * Export the level in JSON format and uploads it
+   * @returns level in JSON format
+   */
+  handleSave(): void {
+    const json = JSON.stringify(this.level.exportLevel(), null, 2);
+    const blob = new Blob([json], { type: 'octet/stream' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = 'level.json';
+    link.click();
+  }
+
+  /**
+   * Change active frame with provided Id
+   */
+  handleChangeActiveFrame(activeId: number): void {
+    this.frameIndex = activeId;
   }
 
   /**

@@ -299,6 +299,24 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
 };
 
 /**
+ * Laser starting polarization enum
+ */
+export const enum LaserPolarization {
+  V = 'V',
+  H = 'H'
+}
+
+/**
+ * Laser starting direction enum
+ */
+export const enum LaserDirection {
+  '>' = '>',
+  '^' = '^',
+  '<' = '<',
+  'v' = 'v'
+}
+
+/**
  * Game state enum
  */
 export const enum GameStateEnum {
