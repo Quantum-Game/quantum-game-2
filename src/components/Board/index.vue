@@ -18,10 +18,10 @@
         <circle
           :cx="(fate.coord.x + 0.5) * tileSize"
           :cy="(fate.coord.y + 0.5) * tileSize"
-          fill="red"
-          r="32"
+          fill="purple"
+          r="30"
           stroke="purple"
-          stroke-width="6"
+          stroke-width="2"
         >
           <animate
             attributeName="opacity"

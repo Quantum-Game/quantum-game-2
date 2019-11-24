@@ -1,56 +1,104 @@
 <template>
   <div class="controls">
+    <!-- SIMULATION CONTROLS -->
     <span class="playback">
-      <game-controls-button
-        v-for="btn in playBackControls"
-        :key="btn"
-        :which-is="btn"
-        @click.native="$emit(btn)"
-      />
+      <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
+      <button type="button" :style="computePlayStyle" @click="$emit('play')" />
+      <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
+      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
     </span>
-    <save-level />
-    <span>
-      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }} </b>
-      <span>({{ gameState }})</span>
+    <!-- FRAME INFO -->
+    <span class="frameInfo">
+      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
+      <span class="gameState">({{ gameState }})</span>
     </span>
-    <span class="view-mode">
-      <game-controls-button
-        v-for="btn in viewControls"
-        :key="btn"
-        :which-is="btn"
-        @click.native="$emit(btn)"
-      />
-    </span>
-    <slot></slot>
+    <span class="view-mode"></span>
+    <!-- SAVE BUTTONS -->
+    <!-- <save-level /> -->
+    <!-- <app-button @click.native="handleSave">S</app-button> -->
   </div>
 </template>
 
 <script lang="ts">
-// FIXME: Way too overcomplicated and hides access to individual customization
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import { GameStateEnum } from '@/engine/interfaces';
-import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
+import AppButton from '@/components/AppButton.vue';
 import SaveLevel from '@/components/SaveLevel.vue';
 
 @Component({
   components: {
-    GameControlsButton,
+    AppButton,
     SaveLevel
   }
 })
 export default class GameControls extends Vue {
+  // FIXME: Can somehow accelerate photon speed by clicking play multiple times
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
   @State('gameState') gameState!: GameStateEnum;
-  // TODO: PLAY BUTTON SHOULD CHANGE TO PAUSE WHEN THE PHOTON IS MOVING
-  playBackControls = ['step-back', 'play', 'step-forward'];
-  // TODO: ADD VIEW CONTROLS WHEN MULTIVERSE MODE IS ADDED
-  viewControls = [];
+  @State('simulationState') simulationState!: boolean;
+
+  get playFlag() {
+    return !this.simulationState;
+  }
+
+  get stepForwardFlag() {
+    return this.frameIndex + 1 !== this.totalFrames;
+  }
+
+  get stepBackFlag() {
+    return this.frameIndex > 0;
+  }
+
+  get computeBackStyle() {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/step_back.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+    };
+  }
+
+  get computePlayStyle() {
+    if (this.simulationState) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/pause.svg`)})`, //eslint-disable-line
+        opacity: 1
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/play.svg`)})`, //eslint-disable-line
+      opacity: 1
+    };
+  }
+
+  get computeForwardStyle() {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/step_forward.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+    };
+  }
+
+  get computeReloadStyle() {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/reload.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+button {
+  height: 30px;
+  width: 30px;
+  margin: 0.2rem 0.4rem;
+  background-color: transparent;
+  border: none;
+}
+.gameState {
+  font-size: 12px;
+  padding-left: 10px;
+}
 .controls {
   width: 100%;
   border-bottom: 1px solid white;

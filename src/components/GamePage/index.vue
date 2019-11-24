@@ -49,12 +49,11 @@
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
-          @step-back="showPrevious"
-          @step-forward="showNext"
+          @step-back="stepBack"
+          @step-forward="stepForward"
           @play="play"
-        >
-          <app-button @click.native="handleSave">save level</app-button>
-        </game-controls>
+          @reload="reload"
+        />
         <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
@@ -268,6 +267,13 @@ export default class Game extends Vue {
   }
 
   /**
+   * Reload the current page
+   */
+  reload() {
+    window.location.reload(false);
+  }
+
+  /**
    *  Reset frameIndex, flip it up for every frame,
    *  then clear the interval
    * @returns void
@@ -299,7 +305,7 @@ export default class Game extends Vue {
    * Show next frame and check it exists
    *  @returns frameIndex
    */
-  showNext() {
+  stepForward() {
     const newframeIndex = this.frameIndex + 1;
     if (newframeIndex > this.simulation.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...");
@@ -313,7 +319,7 @@ export default class Game extends Vue {
    * Show previous frame and check it exists
    *  @returns frameIndex
    */
-  showPrevious() {
+  stepBack() {
     const newframeIndex = this.frameIndex - 1;
     if (newframeIndex < 0) {
       console.error("Can't access frames before simulation...");
@@ -352,10 +358,10 @@ export default class Game extends Vue {
         this.play();
         break;
       case 37:
-        this.showPrevious();
+        this.stepBack();
         break;
       case 39:
-        this.showNext();
+        this.stepForward();
         break;
       default:
         break;
