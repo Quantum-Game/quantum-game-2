@@ -3,6 +3,7 @@ import { Photons } from 'quantum-tensors';
 import { weightedRandomInt } from '@/engine/Helpers';
 import { AbsorptionInterface, IndicatorInterface, PolEnum } from '@/engine/interfaces';
 import Coord from '@/engine/Coord';
+import Cell from '@/engine/Cell';
 import Grid from '@/engine/Grid';
 import Particle from '@/engine/Particle';
 import Absorption from '@/engine/Absorption';
@@ -93,8 +94,8 @@ export default class QuantumSimulation {
    * @param n default number of frames
    * @param stopThreshold stop if probability below threshold
    */
-  nextFrames(n: number = 20, stopThreshold = 1e-6): void {
-    const logging = false;
+  computeFrames(n: number = 20, stopThreshold = 1e-6): void {
+    const logging = true;
     for (let i = 0; i < n; i += 1) {
       this.frames.push(this.nextFrame());
       if (this.lastFrame.probability < stopThreshold) {
@@ -202,7 +203,7 @@ export default class QuantumSimulation {
   sampleRandomRealization(): {
     statePerFrame: Photons[];
     probability: number;
-    fate: { x: number; y: number; name: string };
+    fate: Cell;
   } {
     // first, which frame
     const [...totalAbsorptionPerFrame] = this.totalAbsorptionPerFrame;
@@ -213,14 +214,27 @@ export default class QuantumSimulation {
     const absorption = lastFrameAbs[absorptionId];
     const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
 
-    // TODO: ugly, needs refactor
-    const { x, y } = absorption.coord;
-    const name = x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name;
+    // if particle escape it has at least an adjacent cell inside grid
+    const coord = Coord.importCoord(absorption.coord);
+    let cell;
+    if (this.grid.includes(coord)) {
+      cell = this.grid.get(coord);
+    } else {
+      cell = this.grid.lastCellBeforeEscape(coord);
+    }
 
     return {
       statePerFrame: states,
       probability: absorption.probability,
-      fate: { x, y, name }
+      fate: cell
     };
+  }
+
+  /**
+   * Compute particle detection path from sampleRandomRealization
+   * @returns fate cell
+   */
+  get fate(): Cell {
+    return this.sampleRandomRealization().fate;
   }
 }

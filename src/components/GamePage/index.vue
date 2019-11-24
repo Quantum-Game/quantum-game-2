@@ -38,6 +38,7 @@
         <game-board
           :particles="particles"
           :path-particles="pathParticles"
+          :fate="fate"
           :hints="hints"
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
@@ -174,7 +175,7 @@ export default class Game extends Vue {
     // Compute simulation frames
     this.simulation = new QuantumSimulation(this.level.grid);
     this.simulation.initializeFromLaser();
-    this.simulation.nextFrames(40);
+    this.simulation.computeFrames(40);
     // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation);
     // Set absorption events to compute gameState
@@ -184,7 +185,14 @@ export default class Game extends Vue {
     this.setEnergizedCells();
     this.mutationSetGameState(this.level.gameState.gameState);
     this.mutationSetSimulationState(false);
-    // console.debug(this.level.gameState.toString());
+    console.debug(this.level.gameState.toString());
+  }
+
+  /**
+   * Get fate from simulation random realization
+   */
+  get fate(): Cell {
+    return this.simulation.fate;
   }
 
   /**

@@ -58,6 +58,35 @@
         {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
 
+      <!-- FATE -->
+      <g class="fate">
+        <circle
+          :cx="(fate.coord.x + 0.5) * tileSize"
+          :cy="(fate.coord.y + 0.5) * tileSize"
+          fill="none"
+          r="32"
+          stroke="purple"
+          stroke-width="3"
+        >
+          <animate
+            attributeName="opacity"
+            from="1"
+            to="0"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="r"
+            from="32"
+            to="64"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
+
       <!-- SPEECH BUBBLES -->
       <speech-bubble
         v-for="(hint, index) in hints"
@@ -95,26 +124,23 @@ import Absorption from '../../engine/Absorption';
   }
 })
 export default class Board extends Vue {
-  data() {
-    return {
-      scalerStyle: {
-        transform: `scale(1)`
-      },
-      boardHeight: 0
-    };
-  }
   @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
   @Prop() readonly hints!: HintInterface[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: [] }) readonly absorptions!: Absorption[];
+  @Prop() readonly fate!: Cell;
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State hoveredParticles!: Particle[];
   @State hoveredCell!: Cell;
   @State activeCell!: Cell;
-  tileSize: number = 64;
 
+  tileSize: number = 64;
+  boardHeight = 0;
+  scalerStyle = {
+    transform: `scale(1)`
+  };
   $refs!: {
     gridWrapper: HTMLElement;
     boardScaler: HTMLElement;
@@ -130,6 +156,13 @@ export default class Board extends Vue {
    */
   play(): void {
     this.$emit('play', true);
+  }
+
+  /**
+   * Drilling from appCell to updateCell
+   */
+  updateCell(cell: Cell): void {
+    this.$emit('updateCell', cell);
   }
 
   /**
@@ -179,70 +212,26 @@ export default class Board extends Vue {
     return this.grid.rows * this.tileSize;
   }
 
-  computeProbStyle(absorption: Absorption) {
-    const originX = this.centerCoord(absorption.coord.x);
-    const originY = this.centerCoord(absorption.coord.y);
+  /**
+   * Compute fate cell position
+   */
+  computeFateStyle(coord: Coord) {
+    console.log(`FATE: ${this.fate.toString()}`);
     return {
-      // 'transform-origin': `${originX}px ${originY}px`,
-      transform: `translate: ${absorption.coord.x * this.tileSize}px ${absorption.coord.y *
-        this.tileSize}px`,
-      fill: 'white'
+      transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
+        this.tileSize}px`
     };
   }
 
   /**
-   * Compute the cell center at a specific coordinate for grid dots
-   * @returns x, y pixel coordinates
-   */
-  centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
-  }
-
-  /**
-   * Place the photon on the grid
-   * TODO: Move the photon layer in its own vue component
+   * Compute photon grid position
    */
   computeParticleStyle(particle: Particle): {} {
-    const originX = this.centerCoord(particle.coord.x);
-    const originY = this.centerCoord(particle.coord.y);
     return {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
     };
   }
-
-  // emit drilling...
-  updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell);
-  }
-
-  /**
-   * Create laser path through the lasers points
-   * @returns SVG laser path
-   */
-  // photonPath(): string {
-  //   let pathStr = '';
-  //   if (this.particles.length > 0) {
-  //     const originX = this.centerCoord(this.particles[0].coord.x);
-  //     const originY = this.centerCoord(this.particles[0].coord.y);
-  //     pathStr += `M ${originX} ${originY} `;
-  //   }
-  //   return pathStr;
-  // }
-
-  // HELPING FUNCTIONS
-  // element(y: number, x: number): CellInterface {
-  //   const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
-  //   if (cells.length > 0) {
-  //     return cells[0].exportCell();
-  //   }
-  //   return {
-  //     coord: { x, y },
-  //     element: 'Void',
-  //     rotation: 0,
-  //     frozen: false
-  //   };
-  // }
 }
 </script>
 

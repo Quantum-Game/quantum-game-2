@@ -6,7 +6,9 @@ import Cell from './Cell';
 import Cluster from './Cluster';
 
 /**
- * Grid class includes the grid instance that holds the cells
+ * GRID CLASS
+ * Includes the grid instance that holds the cells
+ * TODO: Create a function that gets the grid border cells
  */
 export default class Grid extends Cluster {
   public cols: number;
@@ -233,6 +235,21 @@ export default class Grid extends Cluster {
       }
     });
     return adjacents;
+  }
+
+  /**
+   * An escaping particle should be one coord away from its escaping position
+   * @param coord espaced coordinate
+   * @returns escape cell
+   */
+  lastCellBeforeEscape(coord: Coord): Cell {
+    if (this.includes(coord)) {
+      throw new Error(`Not an escaping particle coordinate: ${coord}`);
+    }
+    const lastCoord = coord.adjacent.find((adjacent) => {
+      return this.includes(adjacent);
+    });
+    return this.get(lastCoord!);
   }
 
   /**

@@ -130,9 +130,9 @@ export default class EncyclopediaBoard extends Vue {
       throw new Error('EncyclopediaBoard not yet prepared for more photons.');
     }
     if (this.exactSteps) {
-      this.simulation.nextFrames(this.maxSteps, -1);
+      this.simulation.computeFrames(this.maxSteps, -1);
     } else {
-      this.simulation.nextFrames(this.maxSteps);
+      this.simulation.computeFrames(this.maxSteps);
     }
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
   }
