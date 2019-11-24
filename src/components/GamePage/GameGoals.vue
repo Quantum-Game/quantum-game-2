@@ -29,10 +29,10 @@
         :key="'detectorh' + index"
         class="hit"
       >
-        <img src="@/assets/graphics/detectorFullIcon.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/icons/detectorFull.svg" alt="Key Icon" width="30" />
       </span>
       <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/graphics/detectorEmptyIcon.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/icons/detectorEmpty.svg" alt="Key Icon" width="30" />
       </span>
       <div>
         <span>
@@ -44,10 +44,10 @@
     <!-- MINES -->
     <div v-if="gameState.mines.length > 0" :class="safeClass">
       <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
-        <img src="@/assets/graphics/mineIconRed.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/icons/mineFull.svg" alt="Key Icon" width="34" />
       </span>
       <span v-for="(mine, index) in gameState.minesUnhit" :key="'mineu' + index" class="unhit">
-        <img src="@/assets/graphics/mineIconEmpty.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/icons/mineEmpty.svg" alt="Key Icon" width="34" />
       </span>
       <div>
         <span v-if="gameState.safeFlag" class="success">

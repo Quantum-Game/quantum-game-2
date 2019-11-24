@@ -60,14 +60,14 @@ export default class GameControls extends Vue {
 
   get computeRewindStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/rewind.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
 
   get computeBackStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_back.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_back.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
@@ -75,33 +75,33 @@ export default class GameControls extends Vue {
   get computePlayStyle(): {} {
     if (this.simulationState) {
       return {
-        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/pause.svg`)})`, //eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`, //eslint-disable-line
         opacity: 1
       };
     }
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/play.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`, //eslint-disable-line
       opacity: 1
     };
   }
 
   get computeForwardStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/skip_forward.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
 
   get computeFastForwardStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/fast_forward.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
 
   get computeReloadStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/reload.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
@@ -109,19 +109,19 @@ export default class GameControls extends Vue {
   get computeSoundStyle(): {} {
     if (this.soundFlag) {
       return {
-        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_off.svg`)})`, //eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
       };
     }
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/sound_on.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
 
   get computeDownloadStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/download.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
@@ -129,12 +129,12 @@ export default class GameControls extends Vue {
   get computeSaveStyle(): {} {
     if (this.isLoggedIn) {
       return {
-        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
       };
     }
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/save.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
       opacity: 0.3
     };
   }
@@ -142,26 +142,26 @@ export default class GameControls extends Vue {
   get computeAccountStyle(): {} {
     if (this.isLoggedIn) {
       return {
-        backgroundImage: `url(${require(`@/assets/graphics/b-buttons/account.svg`)})`, //eslint-disable-line
+        backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
       };
     }
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/account_register.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
 
   get computeOptionsStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/options.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
 
   get computeMapStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/b-buttons/map.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
     };
   }
