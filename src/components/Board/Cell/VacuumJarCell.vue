@@ -19,7 +19,7 @@
         c0-5.2,4.2-9.4,9.4-9.4h31.2c5.2,0,9.4,4.2,9.4,9.4V50.5z"
       />
     </g>
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st3"
         :style="{ fill: border }"

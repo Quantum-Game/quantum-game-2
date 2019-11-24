@@ -8,7 +8,7 @@
       :height="totalHeight"
     >
       <!-- DOTS -->
-      <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
+      <board-dots :rows="grid.rows" :cols="grid.cols" />
 
       <!-- LASER PATH -->
       <board-lasers :pathParticles="pathParticles" />

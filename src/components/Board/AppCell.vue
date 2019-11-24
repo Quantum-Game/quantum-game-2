@@ -1,8 +1,8 @@
 <template>
   <g
     ref="cellRef"
-    :style="positionStyle"
-    :class="computedCellClass"
+    :style="computeCellStyle"
+    :class="computeCellClass"
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
   >
@@ -10,8 +10,8 @@
     <rect
       :width="tileSize"
       :height="tileSize"
-      :class="rectBackgroundClass"
-      :style="rectPositionStyle"
+      :class="computeRectClass"
+      :style="computeRectStyle"
     />
 
     <!-- ELEMENT SVG -->
@@ -20,7 +20,7 @@
       :cell="cell"
       :class="computedCellName"
       :cell-size="tileSize"
-      :border="computeBorder()"
+      :border="computeBorder"
     />
 
     <!-- PULSATING CIRCLE -->
@@ -273,25 +273,10 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
-   * Computed class
-   */
-  get computedCellClass(): string[] {
-    return [
-      this.computedCellName,
-      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
-      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
-        ? 'frozen'
-        : '',
-      this.cell.isFromToolbox && !this.available ? 'transparent' : '',
-      this.cell.isLaser ? 'laser' : ''
-    ];
-  }
-
-  /**
    * changes border color indicating it can be moved
    * @returns color
    */
-  computeBorder(): string {
+  get computeBorder(): string {
     if (this.border !== '') {
       return this.border;
     }
@@ -306,11 +291,26 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
+   * Computed class
+   */
+  get computeCellClass(): string[] {
+    return [
+      this.computedCellName,
+      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
+      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
+        ? 'frozen'
+        : '',
+      this.cell.isFromToolbox && !this.available ? 'transparent' : '',
+      this.cell.isLaser ? 'laser' : ''
+    ];
+  }
+
+  /**
    * styles used for wrapper positioning
    * using the getPosition mixin;
    * @returns a style object
    */
-  get positionStyle(): any {
+  get computeCellStyle(): any {
     const { rotation } = this.cell;
     let styleObj = {};
     styleObj = {
@@ -321,10 +321,11 @@ export default class AppCell extends Mixins(getPosition) {
     };
     return styleObj;
   }
+
   /**
    * Undoes the parent element rotation
    */
-  get rectPositionStyle(): any {
+  get computeRectStyle(): any {
     let styleObj = {};
     const halfSize = this.tileSize / 2;
     styleObj = {
@@ -339,7 +340,7 @@ export default class AppCell extends Mixins(getPosition) {
    * highlight tile during a move
    * @returns highlight class
    */
-  get rectBackgroundClass() {
+  get computeRectClass() {
     return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect'];
   }
 

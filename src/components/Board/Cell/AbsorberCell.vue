@@ -1,13 +1,15 @@
 <template>
   <svg>
     <g>
+      <!-- BACKGROUND -->
       <path
-        id="_x3C_Qbackground_x3E_"
+        id="background"
         class="st0"
         d="M47.6,6H16.4C10.7,6,6,10.7,6,16.4v31.2C6,53.3,10.7,58,16.4,58h31.2
       C53.3,58,58,53.3,58,47.6V16.4C58,10.7,53.3,6,47.6,6z"
       />
-      <g id="_x3C_Qdots_x3E_">
+      <!-- DOTS -->
+      <g id="dots">
         <rect x="52.8" y="52.8" class="st1" width="2.1" height="2.1" />
         <rect x="52.8" y="46.6" class="st1" width="2.1" height="2.1" />
         <rect x="52.8" y="40.3" class="st1" width="2.1" height="2.1" />
@@ -74,7 +76,7 @@
         <rect x="9.1" y="9.1" class="st1" width="2.1" height="2.1" />
       </g>
     </g>
-    <g v-if="border" id="_x3C_Qbackground_x3E__1_">
+    <g v-if="border">
       <path
         class="st2"
         :style="{ fill: border }"

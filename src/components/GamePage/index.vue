@@ -71,6 +71,7 @@
 </template>
 
 <script lang="ts">
+import _ from 'lodash';
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
@@ -239,7 +240,7 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): string[] {
-    return this.simulation.allParticles;
+    return _.uniq(this.simulation.allParticles);
   }
 
   /**

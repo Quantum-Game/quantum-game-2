@@ -6,7 +6,7 @@
       <path class="st2" d="M52.4,24H62v14H28.2C34,35.9,42.9,31.8,52.4,24z" />
       <rect x="2" y="38" class="st3" width="60" height="2" />
     </g>
-    <g v-if="border" id="_x3C_Qoutline_x3E_">
+    <g v-if="border">
       <path
         class="st4"
         :style="{ fill: border }"

@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <g id="Qactive" class="st0">
+    <g class="st0">
       <g class="st1">
         <defs>
           <path
@@ -29,7 +29,7 @@
           <path class="st6" d="M12.3,19.5c0,0,2-5,7-6" />
         </g>
       </g>
-      <g id="EyesOpen_1_" class="st1">
+      <g id="eyesOpen" class="st1">
         <g>
           <circle class="st7" cx="19.7" cy="30.3" r="6.5" />
           <circle class="st8" cx="19.7" cy="30.3" r="3.3" />
@@ -70,7 +70,7 @@
           <path class="st6" d="M12.3,19.5c0,0,2-5,7-6" />
         </g>
       </g>
-      <g id="EyesOpen_2_" class="st1">
+      <g id="eyesOpen2" class="st1">
         <g>
           <circle class="st7" cx="19.7" cy="30.3" r="6.5" />
           <circle class="st8" cx="19.7" cy="30.3" r="3.3" />
@@ -141,9 +141,7 @@
       </g>
     </g>
     <!-- OUTLINE FOR PROBABILITY OF BEING HIT ONLY - NO ROTATION -->
-    <!-- <g class="st0"> -->
-
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st17"
         :style="{ fill: border }"
