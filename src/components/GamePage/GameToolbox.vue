@@ -102,6 +102,7 @@ body {
   // min-height: 300px;
   @media screen and (max-width: 1000px) {
     justify-content: space-evenly;
+    border-top: none;
     &::after {
       content: '';
       flex-grow: 99999999;
