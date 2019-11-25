@@ -97,7 +97,7 @@ header {
     }
   }
   @media screen and (max-width: 1000px) {
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     h1 {
       font-size: 1em;
@@ -110,6 +110,15 @@ header {
       justify-content: flex-start;
       align-items: center;
       min-height: 41px;
+      min-width: 35px;
+      width: 15%;
+    }
+    .right {
+      width: 0;
+      min-width: 0;
+    }
+    .middle {
+      width: 85%;
     }
   }
 }
@@ -150,6 +159,9 @@ main {
   }
   &.toolbox {
     border-top: 1px solid white;
+    @media screen and (max-width: 1000px) {
+      border-top: none;
+    }
     //background-color: rgba(255, 187, 0, 0.349);
   }
   &.goals {

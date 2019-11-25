@@ -59,8 +59,8 @@ export default class GameControls extends Vue {
   align-items: center;
   @media screen and (max-width: 1000px) {
     padding-bottom: 0;
-    div:nth-child(2), button {
-      display:none;
+    button {
+      display: none;
     }
   }
   .playback {

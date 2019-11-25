@@ -133,7 +133,6 @@ export default class AppMenu extends Vue {
       width: 6vw;
       height: 0.5vw;
       margin: 1vw 0;
-
     }
   }
 

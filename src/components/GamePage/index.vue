@@ -495,11 +495,11 @@ h1 {
 }
 .title {
   margin-bottom: 30;
-  margin-top: 0;
+  margin-top: 5px;
   @media screen and (max-width: 1000px) {
     a img {
-      width: 7vw !important;
-    }    
+      width: 6vw !important;
+    }
   }
   .groupTitle {
     font-size: 14px;
