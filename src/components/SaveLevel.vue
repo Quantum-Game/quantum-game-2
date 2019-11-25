@@ -1,7 +1,10 @@
 <template>
   <div>
+    <img class="saveIcon" :class="{ inactive: !isLoggedIn}" @click="handleClick" src="@/assets/save.svg" />
+
     <app-button
-      :class="{ inactive: !isLoggedIn }"
+      class="saveButton"
+      :class="{ inactive: !isLoggedIn}"
       type="special inline"
       @click.native="handleClick"
     >
@@ -33,6 +36,7 @@ export default class SaveLevel extends Vue {
   }
 
   handleClick() {
+    console.log('boop');
     if (!this.$route.meta.levelSaved) {
       this.saveLevel();
     } else {
@@ -41,3 +45,19 @@ export default class SaveLevel extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.saveIcon {
+  display: none !important;
+  @media screen and (max-width: 1000px) {
+    display: inline !important;
+    width: 4.5vw;
+    height: 4.5vw;
+  }
+}
+.saveButton {
+  @media screen and (max-width: 1000px) {
+    display: none !important;    
+  }
+}
+</style>

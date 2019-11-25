@@ -15,14 +15,14 @@ const firebaseConfig = {
   measurementId: process.env.VUE_APP_MeasurementId
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    $userStore.dispatch('FETCH_USER', user);
-  }
-});
-export { db, auth };
+// firebase.initializeApp(firebaseConfig);
+// const db = firebase.firestore();
+// const auth = firebase.auth();
+// auth.onAuthStateChanged((user) => {
+//   if (user) {
+//     $userStore.dispatch('FETCH_USER', user);
+//   }
+// });
+// export { db, auth };
 
 export default firebase;
