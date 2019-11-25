@@ -12,27 +12,29 @@
       :sections="sections"
       :start-angle="0"
     >
-      <!-- PROBABILITY -->
-      <div :class="probabilityClass">
+      <!-- INNER DONUT -->
+      <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
       </div>
     </vc-donut>
+
+    <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
 
     <!-- GOALS -->
-    <div v-if="gameState.goals.length > 0" :class="goalClass">
+    <div v-if="gameState.goals.length > 0" :class="computeGoalClass">
       <span
         v-for="(goal, index) in gameState.goalsHit.length"
         :key="'detectorh' + index"
         class="hit"
       >
-        <img src="@/assets/graphics/icons/detectorFull.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/icons/detectorFull.svg" width="30" />
       </span>
       <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/graphics/icons/detectorEmpty.svg" alt="Key Icon" width="30" />
+        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="30" />
       </span>
       <div>
         <span>
@@ -42,12 +44,12 @@
     </div>
 
     <!-- MINES -->
-    <div v-if="gameState.mines.length > 0" :class="safeClass">
+    <div v-if="gameState.mines.length > 0" :class="computeSafeClass">
       <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
-        <img src="@/assets/graphics/icons/mineFull.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/icons/mineFull.svg" width="34" />
       </span>
       <span v-for="(mine, index) in gameState.minesUnhit" :key="'mineu' + index" class="unhit">
-        <img src="@/assets/graphics/icons/mineEmpty.svg" alt="Key Icon" width="34" />
+        <img src="@/assets/graphics/icons/mineEmpty.svg" width="34" />
       </span>
       <div>
         <span v-if="gameState.safeFlag" class="success">
@@ -86,13 +88,13 @@ export default class GameGoals extends Vue {
   /**
    * Compute success or failure class from the gameState flags
    */
-  get probabilityClass(): string {
+  get computeProbabilityClass(): string {
     return this.gameState.probabilityFlag ? 'success' : 'defeat';
   }
-  get goalClass(): string[] {
+  get computeGoalClass(): string[] {
     return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons'];
   }
-  get safeClass(): string[] {
+  get computeSafeClass(): string[] {
     return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons'];
   }
 
@@ -100,7 +102,7 @@ export default class GameGoals extends Vue {
    * Computes donut slices
    * @returns list of slices with colors
    */
-  get sections() {
+  get sections(): { value: number; color: string }[] {
     return [
       { value: 100 - this.tweenedPercent, color: '#210235' },
       { value: this.tweenedPercent, color: '#5D00D5' }
@@ -121,7 +123,7 @@ export default class GameGoals extends Vue {
    * Animate donut increase / decrease on gameState change
    */
   @Watch('percentage')
-  onPercentChanged(val: number, oldVal: number) {
+  onPercentChanged(val: number, oldVal: number): void {
     new Tween({ value: oldVal })
       .to({ value: val }, 500)
       .on('update', ({ value }: { value: number }) => {
@@ -135,13 +137,9 @@ export default class GameGoals extends Vue {
 
 <style lang="scss" scoped>
 .goals-wrapper {
-  // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS
-  //border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 20px;
-  //border-bottom: 1px solid white;
   width: 100%;
-  // height: 320px;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 1000px) {
@@ -152,12 +150,10 @@ export default class GameGoals extends Vue {
     padding-top: 0;
     padding-bottom: 0;
   }
-
   & .upper-icons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    //justify-content: left;
     margin-bottom: 2rem;
   }
   & .bottom-icons {
@@ -171,12 +167,12 @@ export default class GameGoals extends Vue {
     }
   }
   & .chart {
+    margin-bottom: 1rem;
+    position: relative;
+
     & div.inner-circle {
       font-size: 2rem;
     }
-    margin-bottom: 1rem;
-
-    position: relative;
 
     &::after {
       content: '';
@@ -214,7 +210,7 @@ export default class GameGoals extends Vue {
 }
 .defeat {
   color: white;
-  //opacity: 0.2;
+  opacity: 0.9;
   @media screen and (max-width: 1000px) {
     b {
       font-size: calc(8px + 4 * ((100vw - 320px) / 680));

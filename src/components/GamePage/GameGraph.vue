@@ -48,7 +48,6 @@
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
           </text>
-          <!-- <path class="bar" :d="`M ${node.x} 0 L ${node.x} 500`" /> -->
           <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
         <!-- EDGE -->
@@ -88,7 +87,7 @@ export default class GameGraph extends Vue {
     this.$emit('changeActiveFrame', activeId);
   }
 
-  get totalFrames() {
+  get totalFrames(): number {
     return this.multiverse.qs.frames.length;
   }
 
@@ -96,11 +95,11 @@ export default class GameGraph extends Vue {
     const { height } = this.graph.graph();
     return {
       height: `${height}px`,
-      // 'min-height': this.totalFrames * 30,
       'max-height': '500px'
     };
   }
 
+  // TODO: Node, edge and arrowhead are similar
   computeNodeClass(node: { fIndex: number; leaf: boolean; root: boolean }): string[] {
     let timeClass = '';
     if (node.fIndex < this.activeId) {
@@ -137,27 +136,28 @@ export default class GameGraph extends Vue {
     return `url(#arrowhead-${timeClass})`;
   }
 
-  get computedStyle() {
+  get computedStyle(): {} {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
     return {
       transform: `translate(${xCenterOffset}px, 0px)`
     };
   }
+
   /**
    * Getters
    */
-  get graph() {
+  get graph(): any {
     return this.multiverse.graph;
   }
 
-  get nodes() {
+  get nodes(): any[] {
     const uids = this.multiverse.graph.nodes();
     return uids.map((uid: string) => {
       return this.graph.node(uid);
     });
   }
 
-  get edges() {
+  get edges(): any[] {
     const edgeIds = this.multiverse.graph.edges();
     return edgeIds.map((edgeId: { u: string; v: string }) => {
       return this.graph.edge(edgeId);
@@ -176,12 +176,12 @@ export default class GameGraph extends Vue {
   /**
    * Debug the computed nodes and edges properties
    */
-  debugNodes() {
+  debugNodes(): void {
     this.multiverse.graph.nodes().forEach((node: any) => {
       console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
     });
   }
-  debugEdges() {
+  debugEdges(): void {
     this.edges.forEach((edge: any) => {
       console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`);
     });
@@ -242,7 +242,6 @@ $leaf: magenta;
       fill: $root;
       stroke: $root;
     }
-
     rect {
       width: 20px;
       height: 20px;

@@ -124,12 +124,12 @@ import Absorption from '../../engine/Absorption';
   }
 })
 export default class Board extends Vue {
-  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
-  @Prop() readonly hints!: HintInterface[];
+  @Prop() readonly fate!: Cell;
+  @Prop({ default: [] }) readonly hints!: HintInterface[];
+  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
   @Prop({ default: [] }) readonly absorptions!: Absorption[];
-  @Prop() readonly fate!: Cell;
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State hoveredParticles!: Particle[];

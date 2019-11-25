@@ -35,11 +35,11 @@ import $userStore from '@/store/userStore';
 @Component
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
+  // TODO: Might move back to a GameControlsButton, fucks up display logic
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
   @State('gameState') gameState!: GameStateEnum;
   @State('simulationState') simulationState!: boolean;
-  // scaleControls = 0.8;
   soundFlag = true;
 
   toggleSound(): void {
@@ -211,16 +211,17 @@ button {
   background-color: transparent;
   border: none;
   transition: all 0.2s ease-in-out;
-  #play {
-    height: 32px;
-    width: 32px;
-  }
   &:hover {
     transform: scale(1.2);
   }
 }
+#play {
+  height: 30px;
+  width: 30px;
+  margin: 0 0.2rem;
+}
 .gameState {
-  font-size: 12px;
+  font-size: 0.75rem;
   padding-left: 10px;
 }
 .controls {
