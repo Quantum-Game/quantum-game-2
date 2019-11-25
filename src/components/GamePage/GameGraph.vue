@@ -1,6 +1,6 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
-    <svg :style="computedSvgStyle">
+    <svg :style="computeSvgStyle">
       <!-- ARROWHEAD -->
       <defs>
         <marker
@@ -42,7 +42,7 @@
       </defs>
 
       <!-- NODE -->
-      <g :style="computedStyle">
+      <g :style="computeNodeStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
           <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
           <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
@@ -91,11 +91,18 @@ export default class GameGraph extends Vue {
     return this.multiverse.qs.frames.length;
   }
 
-  get computedSvgStyle(): {} {
+  get computeSvgStyle(): {} {
     const { height } = this.graph.graph();
     return {
       height: `${height}px`,
       'max-height': '500px'
+    };
+  }
+
+  get computeNodeStyle(): {} {
+    const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
+    return {
+      transform: `translate(${xCenterOffset}px, 0px)`
     };
   }
 
@@ -134,13 +141,6 @@ export default class GameGraph extends Vue {
       timeClass = 'future';
     }
     return `url(#arrowhead-${timeClass})`;
-  }
-
-  get computedStyle(): {} {
-    const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
-    return {
-      transform: `translate(${xCenterOffset}px, 0px)`
-    };
   }
 
   /**

@@ -28,15 +28,15 @@ export default class EncyclopediaArticleSection extends Vue {
   // hack, as having a computed property that's using refs
   // as an initial data property causes errors - refs are
   // not existant then.
-  mounted() {
+  mounted(): void {
     this.isOpen = this.shouldBeOpenOnInit;
   }
 
-  handleTitleClick(e: { target: Element }) {
+  handleTitleClick(e: { target: Element }): void {
     this.isOpen = !this.isOpen;
   }
 
-  get style() {
+  get style(): {} {
     return {
       maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
     };

@@ -18,7 +18,7 @@
 
 <script lang="ts">
 // TODO: Needs to be extended for instructions overlay
-// FIXME: Rethink overlay and gameState logic
+// FIXME: Rethink overlay
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
 import VueConfetti from 'vue-confetti';
@@ -34,7 +34,6 @@ Vue.use(VueConfetti);
 })
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum;
-  // @State('gameState') gameState!: GameState;
   $confetti!: {
     start: (params: any) => void;
     stop: () => void;
@@ -102,12 +101,11 @@ export default class AppOverlay extends Vue {
   transition: opacity 0.5s;
 }
 .Victory-enter,
-.Victory-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.Victory-leave-to {
   opacity: 0;
 }
 
 .Victory.wrapper {
-  //background-color: rgba(179, 7, 136, 0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -128,12 +126,9 @@ export default class AppOverlay extends Vue {
     margin: 10px;
   }
 }
-// .MineExploded-enter-active,
-// .MineExploded-leave-active {
-//   //transition: opacity 5s;
-// }
+
 .MineExploded-enter,
-.MineExploded-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.MineExploded-leave-to {
   opacity: 0;
 }
 

@@ -16,9 +16,9 @@
 
     <!-- ELEMENT SVG -->
     <component
-      :is="computedCellName"
+      :is="computeCellName"
       :cell="cell"
-      :class="computedCellName"
+      :class="computeCellName"
       :cell-size="tileSize"
       :border="computeBorder"
     />
@@ -128,9 +128,9 @@ export default class AppCell extends Mixins(getPosition) {
 
   /**
    * Compute the cell class name
-   * @returns Computed cell name string
+   * @returns Compute cell name string
    */
-  get computedCellName(): string {
+  get computeCellName(): string {
     return `${this.cell.element.name}Cell`;
   }
 
@@ -295,7 +295,7 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get computeCellClass(): string[] {
     return [
-      this.computedCellName,
+      this.computeCellName,
       this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
       (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
         ? 'frozen'
