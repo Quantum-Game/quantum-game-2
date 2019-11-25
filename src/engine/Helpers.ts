@@ -1,6 +1,6 @@
 import { Elem, PolEnum, DirEnum } from '@/engine/interfaces';
 
-const TAU = 2 * Math.PI;
+export const TAU = 2 * Math.PI;
 
 /**
  * Pick a random index of an array according to weights.

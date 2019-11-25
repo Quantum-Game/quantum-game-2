@@ -1,8 +1,10 @@
 <template>
   <div class="game">
+    <!-- DRAG AND DROP CELL -->
     <div class="hoverCell"></div>
+
     <!-- OVERLAY -->
-    <app-overlay :game-state="computedGameState" @click.native="frameIndex = 0">
+    <app-overlay :game-state="displayGameState" class="overlay" @click.native="frameIndex = 0">
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevel">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -38,7 +40,7 @@
         <game-board
           :particles="particles"
           :path-particles="pathParticles"
-          :fate="fate"
+          :fate="displayFate"
           :hints="hints"
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
@@ -62,7 +64,7 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="toolbox" @updateCell="updateCell" />
+        <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
         <game-active-cell />
         <game-photons :particles="activeFrame.particles" />
       </section>
@@ -136,12 +138,12 @@ export default class Game extends Vue {
   absorptionThreshold: number = 0.0001;
 
   // LIFECYCLE
-  created() {
+  created(): void {
     this.loadLevel();
     window.addEventListener('keyup', this.handleArrowPress);
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
     window.removeEventListener('keyup', this.handleArrowPress);
   }
 
@@ -193,9 +195,23 @@ export default class Game extends Vue {
 
   /**
    * Get fate from simulation random realization
+   * Display on the last frame of simulation, death then fate
    */
-  get fate(): Cell {
-    return this.simulation.fate;
+  get displayFate(): Cell {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.simulation.fate;
+    }
+    return Cell.createDummy({ x: -1, y: -1 });
+  }
+
+  /**
+   * Launch overlay if it's the last frame and the player has a game state set
+   */
+  get displayGameState() {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.gameState;
+    }
+    return 'InProgress';
   }
 
   /**
@@ -255,16 +271,6 @@ export default class Game extends Vue {
    */
   get particles(): Particle[] {
     return this.activeFrame.particles;
-  }
-
-  /**
-   * Launch overlay if it's the last frame and the player has a game state set
-   */
-  get computedGameState() {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.gameState;
-    }
-    return 'InProgress';
   }
 
   /**
@@ -433,20 +439,13 @@ export default class Game extends Vue {
     this.updateSimulation();
   }
 
+  // Used to store in local storage the current state of the game
   saveLevelToStore() {
-    // console.error(this.cellPositionsArray);
     const currentStateJSONString = JSON.stringify(this.level.exportLevel());
     localStorage.setItem(this.currentLevelName, currentStateJSONString);
   }
-
   clearLS() {
-    // console.error(localStorage.getItem(this.$route.params.id));
     localStorage.removeItem(this.currentLevelName);
-  }
-
-  saveLS() {
-    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
-    localStorage.setItem(this.currentLevelName, currentStateJSONString);
   }
 
   // GETTERS
@@ -466,10 +465,6 @@ export default class Game extends Vue {
     return this.level.hints.map((hint) => hint.exportHint());
   }
 
-  get toolbox() {
-    return this.level.toolbox;
-  }
-
   get cellPositionsArray() {
     const array: number[] = [];
     this.level.grid.cells
@@ -487,29 +482,40 @@ export default class Game extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.backButton {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  cursor: pointer;
+// Drag & drop
+.hoverCell {
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
 }
-h1 {
+// Overlay
+.overlay {
+  .backButton {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    cursor: pointer;
+  }
+}
+
+// Title
+h1.title {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-}
-.title {
+  font-size: 1.5rem;
   margin-bottom: 30;
   margin-top: 0;
+  .groupTitle {
+    font-size: 14px;
+    color: grey;
+  }
   @media screen and (max-width: 1000px) {
     a img {
       width: 7vw !important;
     }
   }
-  .groupTitle {
-    font-size: 14px;
-    color: grey;
-  }
 }
+
 .grid {
   width: 100%;
   max-height: 100vh;
@@ -550,11 +556,5 @@ h1 {
 }
 .levelLink {
   text-decoration: none;
-}
-
-.hoverCell {
-  pointer-events: none;
-  position: absolute;
-  z-index: 10;
 }
 </style>

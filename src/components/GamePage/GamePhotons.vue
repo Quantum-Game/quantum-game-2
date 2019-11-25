@@ -16,9 +16,6 @@
         />
         <div class="info">
           <p>Ket: {{ particle.toKetString() }}</p>
-          <!-- <p>Coord: [{{ `X: ${particle.x}, Y: ${particle.y}` }}]</p>
-          <p>Direction: {{ particle.directionToAscii() }} ({{ particle.direction }}°)</p>
-          <p>Probability: {{ particle.probability.toFixed(2) * 100 }}%</p> -->
         </div>
       </div>
     </div>
@@ -54,7 +51,6 @@ export default class GamePhotons extends Vue {
   border-bottom: 1px solid white;
   border-top: 1px solid #8e819d;
   width: 100%;
-  // width: 150px;
   display: block;
   text-align: left;
   @media screen and (max-width: 1000px) {
@@ -68,7 +64,6 @@ export default class GamePhotons extends Vue {
     text-transform: uppercase;
   }
   .info {
-    // display: none;
     font-size: 0.8rem;
   }
 }
