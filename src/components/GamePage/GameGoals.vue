@@ -22,7 +22,7 @@
       <div class="mobile_progressBar">
         <div class="mobile_progressBarFill" :style="{width: (totalGoalPercentage + '%')}"></div>
       </div>
-      <div>Goaal: {{ totalGoalPercentage }} %</div>
+      <div>Goal: {{ totalGoalPercentage }} %</div>
     </div>
 
     <!-- GOALS -->
