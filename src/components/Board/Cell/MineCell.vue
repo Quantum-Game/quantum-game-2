@@ -4,7 +4,6 @@
       <!-- ACTIVE RED BOMB - AFTER HIT BY PHOTON -->
       <path
         v-if="border"
-        id="Qactive"
         class="st0"
         d="M59.5,34.5v-5H53c-0.5-4-2-7.6-4.4-10.6l4.6-4.6l-3.5-3.5l-4.6,4.6
         c-3-2.4-6.6-3.9-10.6-4.4V4.5h-5v6.4c-4,0.5-7.6,2-10.6,4.4l-4.6-4.6l-3.5,3.5l4.6,4.6c-2.4,3-3.9,6.6-4.4,10.6H4.5v5h6.4
@@ -26,7 +25,7 @@
       />
     </g>
     <!-- OUTLINE -->
-    <g v-if="border" id="_x3C_Qoutline_x3E_">
+    <g v-if="border">
       <path
         class="st3"
         :style="{ fill: border }"

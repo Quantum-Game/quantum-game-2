@@ -1,54 +1,229 @@
 <template>
   <div class="controls">
+    <!-- SIMULATION CONTROLS -->
     <span class="playback">
-      <game-controls-button
-        v-for="btn in playBackControls"
-        :key="btn"
-        :which-is="btn"
-        @click.native="$emit(btn)"
-      />
+      <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" />
+      <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
+      <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
+      <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
+      <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" />
     </span>
-    <save-level />
-    <span>
-      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }} </b>
-      <span>({{ gameState }})</span>
+    <!-- FRAME INFO -->
+    <span class="frameInfo">
+      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
+      <span class="gameState">({{ gameState }})</span>
     </span>
+    <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <game-controls-button
-        v-for="btn in viewControls"
-        :key="btn"
-        :which-is="btn"
-        @click.native="$emit(btn)"
-      />
+      <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
+      <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
+      <button type="button" :style="computeSoundStyle" @click="toggleSound" />
+      <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
+      <button type="button" :style="computeSaveStyle" @click="handleSave()" />
+      <button type="button" :style="computeMapStyle" @click="handleMap()" />
+      <button type="button" :style="computeAccountStyle" @click="handleAccount()" />
     </span>
-    <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
 import { State, Getter, Mutation } from 'vuex-class';
-import GameControlsButton from '@/components/GamePage/GameControlsButton.vue';
-import SaveLevel from '@/components/SaveLevel.vue';
+import { GameStateEnum } from '@/engine/interfaces';
+import $userStore from '@/store/userStore';
 
-@Component({
-  components: {
-    GameControlsButton,
-    SaveLevel
-  }
-})
+@Component
 export default class GameControls extends Vue {
+  // FIXME: Can somehow accelerate photon speed by spamming play
+  // TODO: Might move back to a GameControlsButton, fucks up display logic
   @Prop() readonly frameIndex!: number;
   @Prop() readonly totalFrames!: number;
-  @State('gameState') gameState!: string;
-  // PLAY BUTTON SHOULD CHANGE TO PAUSE WHEN THE PHOTON IS MOVING
-  playBackControls = ['step-back', 'play', 'step-forward'];
-  // ADD VIEW CONTROLS WHEN MULTIVERSE MODE IS ADDED
-  viewControls = [];
+  @State('gameState') gameState!: GameStateEnum;
+  @State('simulationState') simulationState!: boolean;
+  soundFlag = true;
+
+  toggleSound(): void {
+    this.soundFlag = !this.soundFlag;
+  }
+
+  get playFlag(): boolean {
+    return !this.simulationState;
+  }
+
+  get stepForwardFlag(): boolean {
+    return this.frameIndex + 1 !== this.totalFrames;
+  }
+
+  get stepBackFlag(): boolean {
+    return this.frameIndex > 0;
+  }
+
+  get computeRewindStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+    };
+  }
+
+  get computeBackStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_back.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+    };
+  }
+
+  get computePlayStyle(): {} {
+    if (this.simulationState) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`, //eslint-disable-line
+        opacity: 1
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`, //eslint-disable-line
+      opacity: 1
+    };
+  }
+
+  get computeForwardStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_forward.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+    };
+  }
+
+  get computeFastForwardStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+    };
+  }
+
+  get computeReloadStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeSoundStyle(): {} {
+    if (this.soundFlag) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeDownloadStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeSaveStyle(): {} {
+    if (this.isLoggedIn) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
+      opacity: 0.3
+    };
+  }
+
+  get computeAccountStyle(): {} {
+    if (this.isLoggedIn) {
+      return {
+        backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`, //eslint-disable-line
+        opacity: this.playFlag ? 1 : 0.3
+      };
+    }
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeOptionsStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get computeMapStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    };
+  }
+
+  get isLoggedIn(): boolean {
+    return $userStore.getters.isLoggedIn;
+  }
+
+  saveLevel() {
+    $userStore.dispatch('SAVE_LEVEL', this.$store.state);
+  }
+  updateLevel() {
+    $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
+  }
+
+  handleSave() {
+    if (!this.$route.meta.levelSaved) {
+      this.saveLevel();
+    } else {
+      this.updateLevel();
+    }
+  }
+
+  handleAccount() {
+    if (!this.isLoggedIn) {
+      this.$router.push('/login');
+    } else {
+      this.$router.push('/myaccount');
+    }
+  }
+
+  handleOptions() {
+    this.$router.push('/options');
+  }
+
+  handleMap() {
+    this.$router.push('/levels');
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+button {
+  height: 24px;
+  width: 24px;
+  margin: 0.2rem 0.4rem;
+  background-color: transparent;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+#play {
+  height: 30px;
+  width: 30px;
+  margin: 0 0.2rem;
+}
+.gameState {
+  font-size: 0.75rem;
+  padding-left: 10px;
+}
 .controls {
   width: 100%;
   border-bottom: 1px solid white;

@@ -5,10 +5,10 @@ import 'firebase/firestore';
 import $userStore from '@/store/userStore';
 
 const firebaseConfig = {
-  apiKey: process.env.VUE_APP_Api_Key,
+  apiKey: `${process.env.VUE_APP_Api_Key}`,
   authDomain: process.env.VUE_APP_AuthDomain,
   databaseURL: process.env.VUE_APP_DatabaseURL,
-  projectId: process.env.VUE_APP_ProjectId,
+  projectId: `${process.env.VUE_APP_ProjectId}`,
   storageBucket: process.env.VUE_APP_StorageBucket,
   messagingSenderId: process.env.VUE_APP_MessagingSenderId,
   appId: process.env.VUE_APP_AppId,

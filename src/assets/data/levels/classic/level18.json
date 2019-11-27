@@ -249,5 +249,11 @@
       "threshold": 0.25
     }
   ],
-  "tools": ["PolarizingBeamSplitter", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution"]
+  "tools": [
+    "PolarizingBeamSplitter",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution",
+    "SugarSolution"
+  ]
 }

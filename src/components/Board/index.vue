@@ -8,10 +8,39 @@
       :height="totalHeight"
     >
       <!-- DOTS -->
-      <board-dots :rows="grid.rows + 1" :cols="grid.cols + 1" />
+      <board-dots :rows="grid.rows" :cols="grid.cols" />
 
       <!-- LASER PATH -->
       <board-lasers :pathParticles="pathParticles" />
+
+      <!-- FATE -->
+      <g class="fate">
+        <circle
+          :cx="(fate.coord.x + 0.5) * tileSize"
+          :cy="(fate.coord.y + 0.5) * tileSize"
+          fill="purple"
+          r="30"
+          stroke="purple"
+          stroke-width="2"
+        >
+          <animate
+            attributeName="opacity"
+            from="1"
+            to="0"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+          <animate
+            attributeName="r"
+            from="32"
+            to="64"
+            dur="1.5s"
+            begin="0s"
+            repeatCount="indefinite"
+          />
+        </circle>
+      </g>
 
       <!-- PHOTONS -->
       <g
@@ -42,18 +71,20 @@
         :tileSize="tileSize"
         @updateCell="updateCell"
         @mouseover.native="handleMouseEnter(cell.coord)"
+        @mouseleave.native="handleMouseLeave(cell.coord)"
+        @play="play"
       />
 
       <!-- PROBABILITY -->
       <text
-        v-for="(probability, i) in probabilities"
+        v-for="(absorption, i) in absorptions"
         :key="'probability' + i"
-        :x="(probability.x + 0.5) * 64"
-        :y="probability.y * 64"
+        :x="(absorption.cell.coord.x + 0.5) * 64"
+        :y="absorption.cell.coord.y * 64"
         text-anchor="middle"
         class="probability"
       >
-        {{ (probability.probability * 100).toFixed(1) }}%
+        {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
 
       <!-- SPEECH BUBBLES -->
@@ -81,6 +112,7 @@ import BoardLasers from '@/components/Board/BoardLasers.vue';
 import BoardDots from '@/components/Board/BoardDots.vue';
 import AppPhoton from '@/components/AppPhoton.vue';
 import SpeechBubble from '@/components/SpeechBubble.vue';
+import Absorption from '../../engine/Absorption';
 
 @Component({
   components: {
@@ -92,26 +124,23 @@ import SpeechBubble from '@/components/SpeechBubble.vue';
   }
 })
 export default class Board extends Vue {
-  data() {
-    return {
-      scalerStyle: {
-        transform: `scale(1)`
-      },
-      boardHeight: 0
-    };
-  }
-  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop() readonly grid!: Grid;
-  @Prop() readonly hints!: HintInterface[];
+  @Prop() readonly fate!: Cell;
+  @Prop({ default: [] }) readonly hints!: HintInterface[];
+  @Prop({ default: [] }) readonly particles!: Particle[];
   @Prop({ default: [] }) readonly pathParticles!: Particle[];
-  @Prop({ default: '' }) readonly probabilities!: string;
+  @Prop({ default: [] }) readonly absorptions!: Absorption[];
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
   @State hoveredParticles!: Particle[];
   @State hoveredCell!: Cell;
   @State activeCell!: Cell;
-  tileSize: number = 64;
 
+  tileSize: number = 64;
+  boardHeight = 0;
+  scalerStyle = {
+    transform: `scale(1)`
+  };
   $refs!: {
     gridWrapper: HTMLElement;
     boardScaler: HTMLElement;
@@ -120,6 +149,20 @@ export default class Board extends Vue {
   mounted() {
     window.addEventListener('resize', this.assessTileSize);
     this.assessTileSize();
+  }
+
+  /**
+   * Drilling from appCell to Game to allow clicking laser to start simulation
+   */
+  play(): void {
+    this.$emit('play', true);
+  }
+
+  /**
+   * Drilling from appCell to updateCell
+   */
+  updateCell(cell: Cell): void {
+    this.$emit('updateCell', cell);
   }
 
   /**
@@ -135,7 +178,17 @@ export default class Board extends Vue {
     }
     if (particles.length > 0) {
       this.mutationSetHoveredParticles(particles);
-    } else {
+    }
+  }
+
+  /**
+   * Handle mouse over from cell and photons
+   */
+  handleMouseLeave(coord: Coord) {
+    const particles = this.particles.filter((particle) => {
+      return particle.coord.equal(coord);
+    });
+    if (particles.length > 0) {
       this.mutationSetHoveredParticles([]);
     }
   }
@@ -149,7 +202,6 @@ export default class Board extends Vue {
       const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
       this.$data.boardHeight = currentHeight;
     }, 1);
-    // this.tileSize = currentWidth / this.grid.cols;
     this.tileSize = 64;
   }
 
@@ -160,63 +212,24 @@ export default class Board extends Vue {
     return this.grid.rows * this.tileSize;
   }
 
-  computeProbStyle(probability: { x: number; y: number; probability: number }) {
-    const originX = this.centerCoord(probability.x);
-    const originY = this.centerCoord(probability.y);
+  /**
+   * Compute fate cell position
+   */
+  computeFateStyle(coord: Coord) {
+    console.log(`FATE: ${this.fate.toString()}`);
     return {
-      // 'transform-origin': `${originX}px ${originY}px`,
-      transform: `translate: ${probability.x * this.tileSize}px ${probability.y * this.tileSize}px`,
-      fill: 'white'
+      transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
+        this.tileSize}px`
     };
   }
 
   /**
-   * Compute the cell center at a specific coordinate for grid dots
-   * @returns x, y pixel coordinates
+   * Compute photon grid position
    */
-  centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
-  }
-
   computeParticleStyle(particle: Particle): {} {
-    const originX = this.centerCoord(particle.coord.x);
-    const originY = this.centerCoord(particle.coord.y);
     return {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
-    };
-  }
-
-  updateCell(cell: Cell): void {
-    // emit drilling...
-    this.$emit('updateCell', cell);
-  }
-
-  /**
-   * Create laser path through the lasers points
-   * @returns SVG laser path
-   */
-  photonPath(): string {
-    let pathStr = '';
-    if (this.particles.length > 0) {
-      const originX = this.centerCoord(this.particles[0].coord.x);
-      const originY = this.centerCoord(this.particles[0].coord.y);
-      pathStr += `M ${originX} ${originY} `;
-    }
-    return pathStr;
-  }
-
-  // HELPING FUNCTIONS
-  element(y: number, x: number): CellInterface {
-    const cells = this.grid.cells.filter((cell: Cell) => cell.coord.x === x && cell.coord.y === y);
-    if (cells.length > 0) {
-      return cells[0].exportCell();
-    }
-    return {
-      coord: { x, y },
-      element: 'Void',
-      rotation: 0,
-      frozen: false
     };
   }
 }
@@ -231,11 +244,11 @@ export default class Board extends Vue {
 .board_scaler {
   max-width: 1400px;
   @media screen and (min-width: 1001px) {
-    margin-bottom: 100px;
+    // margin-bottom: 100px;
   }
 }
 .grid {
-  transform-origin: 0 50%;
+  transform-origin: 0 0%;
   @media screen and (max-width: 1000px) {
     transform-origin: 0 0;
   }

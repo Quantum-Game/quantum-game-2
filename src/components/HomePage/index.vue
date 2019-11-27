@@ -1,7 +1,7 @@
 <template>
   <div class="home-page-wrapper">
     <div class="row-full">
-      <img src="@/assets/QG_logo.svg" alt="QuantumGame" />
+      <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
     <router-link to="/level/1">
       <app-button type="big">PLAY</app-button>
@@ -34,13 +34,13 @@
         <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
         of the National University of Singapore.
       </p>
-      <img src="@/assets/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
+      <img src="@/assets/graphics/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
       <p>
         You can play the old version
         <a href="http://play.quantumgame.io/" target="_blank">here</a>.
       </p>
       <div class="image">
-        <img src="@/assets/Rock.svg" alt="Rock" />
+        <img src="@/assets/graphics/Rock.svg" alt="Rock" />
       </div>
     </div>
   </div>

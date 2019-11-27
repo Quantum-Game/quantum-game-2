@@ -1,14 +1,14 @@
 // FIXME: Figure a way to have uid and coord access to cells
-// FIXME: Figure out blank cells in constructor
 import * as qt from 'quantum-tensors';
-import { CellInterface, GridInterface, ParticleInterface } from './interfaces';
+import { CellInterface, GridInterface, Elem } from './interfaces';
 import Coord from './Coord';
-import Element from './Element';
 import Cell from './Cell';
 import Cluster from './Cluster';
 
 /**
- * Grid class includes the grid instance that holds the cells
+ * GRID CLASS
+ * Includes the grid instance that holds the cells
+ * TODO: Create a function that gets the grid border cells
  */
 export default class Grid extends Cluster {
   public cols: number;
@@ -23,7 +23,7 @@ export default class Grid extends Cluster {
     for (let y = 0; y < rows; y += 1) {
       for (let x = 0; x < cols; x += 1) {
         const coord = Coord.importCoord({ y, x });
-        const element = Element.fromName('Void');
+        const element = Cell.fromName(Elem.Void);
         const cell = new Cell(coord, element);
         this.cells.push(cell);
       }
@@ -32,6 +32,7 @@ export default class Grid extends Cluster {
 
   /**
    * Set a cell at a specific coordinate
+   * TODO: Replace with deepClone?
    * @param cell Cell to set at a grid coordinate
    * @returns boolean if operation is successfull
    */
@@ -39,10 +40,12 @@ export default class Grid extends Cluster {
     if (this.includes(cell.coord)) {
       const currentCell = this.get(cell.coord);
       currentCell.element = cell.element;
+      currentCell.rotation = cell.rotation;
+      currentCell.polarization = cell.polarization;
+      currentCell.percentage = cell.percentage;
       currentCell.frozen = cell.frozen;
       currentCell.active = cell.active;
       currentCell.energized = cell.energized;
-      currentCell.rotation = cell.rotation;
       currentCell.tool = cell.tool;
       return true;
     }
@@ -60,6 +63,11 @@ export default class Grid extends Cluster {
     })[0];
   }
 
+  /**
+   * Retrieve a cell from the grid
+   * @param x X coordinate
+   * @param y Y coordinate
+   */
   public cellFromXY(x: number, y: number): Cell {
     const coord = Coord.importCoord({ x, y });
     return this.cells.filter((cell) => {
@@ -79,11 +87,29 @@ export default class Grid extends Cluster {
   }
 
   /**
+   * Get the total number of the mines of the grid
+   * @returns number of mines in the grid
+   */
+  get mineCount() {
+    return this.mines.cells.length;
+  }
+
+  /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
   resetUnfrozen(): void {
     this.unfrozen.cells.forEach((cell) => {
       cell.reset();
+    });
+  }
+
+  /**
+   * Energize the following list of cells
+   */
+  setEnergized(coords: Coord[]): void {
+    coords.forEach((coord) => {
+      const cell = this.get(coord);
+      cell.energized = true;
     });
   }
 
@@ -103,7 +129,7 @@ export default class Grid extends Cluster {
    */
   get operatorList(): [number, number, qt.Operator][] {
     return this.unvoid.cells.map((cell) => {
-      return [cell.coord.x, cell.coord.y, cell.element.transition(cell.rotation)];
+      return cell.operator;
     });
   }
 
@@ -197,43 +223,6 @@ export default class Grid extends Cluster {
   }
 
   /**
-   * Set the cells as energized if on this laser path.
-   * @param paths laser path to energize
-   */
-  energizeCells(paths: ParticleInterface[]): void {
-    const pathCoords: Coord[] = paths.map((pathParticle) => Coord.importCoord(pathParticle.coord));
-    this.cells.forEach((cell: Cell) => {
-      if (cell.coord.isIncludedIn(pathCoords) && cell.element.name !== 'Void') {
-        // eslint-disable-next-line no-param-reassign
-        cell.energized = true;
-      } else {
-        // eslint-disable-next-line no-param-reassign
-        cell.energized = false;
-      }
-    });
-  }
-
-  /**
-   * Set the adjacent cells as active if they are near an energized detector
-   */
-  activateCells(): void {
-    this.unvoid.cells.forEach((cell) => {
-      if (cell.element.name !== 'laser') {
-        // eslint-disable-next-line no-param-reassign
-        cell.active = false;
-      }
-      const energizedAdjacent = this.adjacentCells(cell.coord).filter((adjacent) => {
-        return adjacent.energized && adjacent.element.name === 'detector';
-      });
-      if (energizedAdjacent.length > 0) {
-        console.debug(`Cell ${cell.toString()} has 1+ active detectors as adjacent cell.`);
-        // eslint-disable-next-line no-param-reassign
-        cell.active = true;
-      }
-    });
-  }
-
-  /**
    * Return adjacent cells to a coordinate
    * @param coord Coordinate
    * @returns a list of adjacent cells
@@ -246,6 +235,42 @@ export default class Grid extends Cluster {
       }
     });
     return adjacents;
+  }
+
+  /**
+   * List of cells at the border of the grid
+   * Used to find the exit route of particles
+   * @returns
+   */
+  get borderCells(): Cell[] {
+    const borders: Cell[] = [];
+    this.cells.forEach((cell: Cell) => {
+      if (
+        cell.coord.x === 0 ||
+        cell.coord.x === this.cols ||
+        cell.coord.y === 0 ||
+        cell.coord.y === this.rows
+      ) {
+        borders.push(cell);
+      }
+    });
+    return borders;
+  }
+
+  /**
+   * An escaping particle should be one coord away from its escaping position
+   * @param coord espaced coordinate
+   * @returns escape cell
+   */
+  lastCellBeforeEscape(coord: Coord): Cell {
+    console.log(`Particle escaping @: ${coord.toString()}`);
+    if (this.includes(coord)) {
+      throw new Error(`Not an escaping particle coordinate: ${coord}`);
+    }
+    const lastCoord = coord.adjacent.find((adjacent) => {
+      return this.includes(adjacent);
+    });
+    return this.get(lastCoord!);
   }
 
   /**
@@ -281,21 +306,28 @@ export default class Grid extends Cluster {
    * Create a dummy grid object
    * @returns dummy Grid
    */
-  public static dummyGrid(rows = 3, cols = 3): Grid {
-    const gridI: GridInterface = {
+  public static dummyGridInterface(rows = 3, cols = 3): GridInterface {
+    return {
       rows,
       cols,
       cells: [
         {
           coord: { x: 0, y: 1 },
-          element: 'Laser',
+          element: Elem.Laser,
           rotation: 0,
           active: true,
           frozen: true
         }
       ]
     };
-    const grid = Grid.importGrid(gridI);
+  }
+
+  /**
+   * Create a dummy grid object
+   * @returns dummy Grid
+   */
+  public static dummyGrid(rows = 3, cols = 3): Grid {
+    const grid = Grid.importGrid(this.dummyGridInterface());
     return grid;
   }
 

@@ -8,7 +8,7 @@
       preserveAspectRatio="xMidYMid meet"
       @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
     >
-      <g :class="computedClass(cell)">
+      <g :class="computeClass(cell)">
         <app-cell
           :cell="cell"
           :available="isAvailable(cell)"
@@ -22,13 +22,12 @@
         </text>
       </g>
     </svg>
-    <slot> </slot>
+    <slot></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import countBy from 'lodash.countby';
 import { State, Mutation } from 'vuex-class';
 import Toolbox from '@/engine/Toolbox';
 import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
@@ -43,17 +42,25 @@ export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox;
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  cell = {};
+  viewBox: string = '-8 0 80 80';
+  counterX: string = '40%';
 
-  handleMouseEnter(cell: Cell) {
+  mounted() {
+    window.addEventListener('resize', this.calculateViewBox);
+    this.calculateViewBox();
+  }
+
+  handleMouseEnter(cell: Cell): void {
     this.mutationSetHoveredCell(cell);
   }
 
-  handleCellDrop(cell: Cell) {
+  handleCellDrop(cell: Cell): void {
     this.mutationSetHoveredCell(cell);
     this.$emit('updateCell', cell);
   }
 
-  computedClass(cell: Cell): string {
+  computeClass(cell: Cell): string {
     return this.isAvailable(cell) ? 'active' : 'inactive';
   }
 
@@ -61,13 +68,10 @@ export default class GameToolbox extends Vue {
     return this.toolbox.getCount(cell.element.name) > 0;
   }
 
-  updateCell(cell: Cell) {
-    // events drilling up...
+  // events drilling up...
+  updateCell(cell: Cell): void {
     this.$emit('updateCell', cell);
   }
-
-  viewBox: string = '-8 0 80 80';
-  counterX: string = '40%';
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
@@ -77,11 +81,6 @@ export default class GameToolbox extends Vue {
       this.viewBox = '-8 0 80 80';
       this.counterX = '40%';
     }
-  }
-
-  mounted() {
-    window.addEventListener('resize', this.calculateViewBox);
-    this.calculateViewBox();
   }
 }
 </script>
@@ -99,7 +98,6 @@ body {
   border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 10px;
-  // min-height: 300px;
   @media screen and (max-width: 1000px) {
     justify-content: space-evenly;
     &::after {
@@ -114,7 +112,6 @@ body {
     height: 90px;
     @media screen and (max-width: 1000px) {
       width: 64px;
-      //margin-right: 5px;
       height: 90px;
       padding: 0;
       width: auto;
@@ -123,24 +120,21 @@ body {
       min-height: 0;
       flex-grow: 1;
       flex-basis: 20%;
-      //4margin: -30px 0;
     }
     .counter {
       transform-origin: 50% 100%;
+      fill: white;
+      text-anchor: middle;
+      margin: 0;
+      font-size: 0.8rem;
     }
-  }
-  .inactive {
-    opacity: 0.5;
-  }
-  .active {
-    opacity: 1;
-    visibility: visible !important;
-  }
-  .counter {
-    fill: white;
-    text-anchor: middle;
-    margin: 0;
-    font-size: 0.8rem;
+    .inactive {
+      opacity: 0.5;
+    }
+    .active {
+      opacity: 1;
+      visibility: visible;
+    }
   }
 }
 </style>

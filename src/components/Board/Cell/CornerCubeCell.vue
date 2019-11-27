@@ -17,7 +17,7 @@
         <polygon class="st1" points="37.3,30.5 35.7,31.4 47.9,49.9 49.5,49     " />
       </g>
     </g>
-    <g v-if="border" id="_x3C_Qoutline_x3E_">
+    <g v-if="border">
       <path
         class="st2"
         :style="{ fill: border }"

@@ -1,9 +1,11 @@
 <template>
   <transition :name="gameState">
-    <!-- FIXME -->
-    <div v-if="explosion" :class="gameState" class="wrapper"></div>
-
-    <div v-else-if="gameState === 'Victory'" :class="gameState" class="wrapper">
+    <div v-if="explosion" :class="computeClass">
+      <h2>
+        Mine Exploded
+      </h2>
+    </div>
+    <div v-else-if="victory" :class="computeClass">
       <div class="victory-circle">
         <h2>
           You won!
@@ -15,9 +17,13 @@
 </template>
 
 <script lang="ts">
+// TODO: Needs to be extended for instructions overlay
+// FIXME: Rethink overlay
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
+import { State, Getter, Mutation } from 'vuex-class';
 import VueConfetti from 'vue-confetti';
 import AppButton from '@/components/AppButton.vue';
+import { GameStateEnum } from '@/engine/interfaces';
 
 Vue.use(VueConfetti);
 
@@ -27,7 +33,7 @@ Vue.use(VueConfetti);
   }
 })
 export default class AppOverlay extends Vue {
-  @Prop() readonly gameState!: string;
+  @Prop() readonly gameState!: GameStateEnum;
   $confetti!: {
     start: (params: any) => void;
     stop: () => void;
@@ -35,23 +41,34 @@ export default class AppOverlay extends Vue {
   explosion: boolean = false;
   explosionTimeout: number = 0;
 
-  mineExploding() {
+  mineExploding(): void {
     this.explosion = true;
     this.explosionTimeout = setTimeout(() => {
       this.explosion = false;
     }, 300);
   }
 
+  get computeClass(): string[] {
+    return [this.gameState.toString(), 'wrapper'];
+  }
+
+  get victory(): boolean {
+    return this.gameState === GameStateEnum.Victory;
+  }
+
+  get mineExploded(): boolean {
+    return this.gameState === GameStateEnum.MineExploded;
+  }
+
   @Watch('gameState')
-  handleGameStateChange(newGameState: string, oldGameState: string) {
-    if (newGameState === 'Victory') {
+  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum) {
+    if (newGameState === GameStateEnum.Victory) {
       this.$confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
         particles: [
           {
             dropRate: 15
-            // type:'rect',
           }
         ],
         defaultColors: [
@@ -69,9 +86,9 @@ export default class AppOverlay extends Vue {
           '#ba00ff' // purple 02
         ]
       });
-    } else if (newGameState === 'MineExploded') {
+    } else if (newGameState === GameStateEnum.MineExploded) {
       this.mineExploding();
-    } else if (oldGameState === 'Victory') {
+    } else if (oldGameState === GameStateEnum.Victory) {
       this.$confetti.stop();
     }
   }
@@ -84,12 +101,11 @@ export default class AppOverlay extends Vue {
   transition: opacity 0.5s;
 }
 .Victory-enter,
-.Victory-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.Victory-leave-to {
   opacity: 0;
 }
 
 .Victory.wrapper {
-  //background-color: rgba(179, 7, 136, 0);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -110,12 +126,9 @@ export default class AppOverlay extends Vue {
     margin: 10px;
   }
 }
-// .MineExploded-enter-active,
-// .MineExploded-leave-active {
-//   //transition: opacity 5s;
-// }
+
 .MineExploded-enter,
-.MineExploded-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.MineExploded-leave-to {
   opacity: 0;
 }
 

@@ -6,7 +6,7 @@
         <app-photon
           :particle="particle"
           :width="width"
-          :height="120"
+          :height="100"
           :margin="0"
           :display-magnetic="true"
           :display-electric="true"
@@ -16,9 +16,6 @@
         />
         <div class="info">
           <p>Ket: {{ particle.toKetString() }}</p>
-          <!-- <p>Coord: [{{ `X: ${particle.x}, Y: ${particle.y}` }}]</p>
-          <p>Direction: {{ particle.directionToAscii() }} ({{ particle.direction }}°)</p>
-          <p>Probability: {{ particle.probability.toFixed(2) * 100 }}%</p> -->
         </div>
       </div>
     </div>
@@ -42,7 +39,7 @@ import AppButton from '@/components/AppButton.vue';
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[];
   @Prop() readonly particles!: Particle[];
-  width: number = 100;
+  width: number = 180;
   $refs!: {
     wrapper: HTMLElement;
   };
@@ -54,7 +51,6 @@ export default class GamePhotons extends Vue {
   border-bottom: 1px solid white;
   border-top: 1px solid #8e819d;
   width: 100%;
-  // width: 150px;
   display: block;
   text-align: left;
   @media screen and (max-width: 1000px) {
@@ -68,7 +64,6 @@ export default class GamePhotons extends Vue {
     text-transform: uppercase;
   }
   .info {
-    // display: none;
     font-size: 0.8rem;
   }
 }

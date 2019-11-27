@@ -1,95 +1,43 @@
-// TODO: Remove display logic to Glyph class
-// TODO: Refactor to extended class based logic
 import * as qt from 'quantum-tensors';
-import { ElementInterface, Elem } from './interfaces';
-import jsonElements from './dataElements';
+import { Elem, Group, TransitionInterface } from './interfaces';
 
 /**
- * Class responsible for elements
- * Rendering abstraction should be moved to Glyph
+ * ELEMENT CLASS
+ * Used by the cell to compute the transition matrices
  */
 export default class Element {
-  name: string;
-  group: string;
+  name: Elem;
+  group: Group;
   description: string;
   ascii: string[];
+  angles: number[];
+  polarization: number;
+  percentage: number;
 
   constructor(
-    name: string,
-    group: string,
+    name: Elem,
+    group: Group,
     description = '',
-    ascii: string[] = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
+    ascii: string[] = ['>', '^', '<', 'v'],
+    angles: number[] = [0, 90, 180, 270],
+    polarization: number = 0,
+    percentage: number = 0
   ) {
     this.name = name;
     this.group = group;
     this.description = description;
     this.ascii = ascii;
-  }
-
-  /**
-   * Return quantum operators to be applied to states
-   * @param param parameters to pass for operator creation
-   * @returns operator
-   */
-  transition(param: number): qt.Operator {
-    switch (this.name) {
-      case Elem.Mirror:
-        return qt.mirror(param);
-      case Elem.CornerCube:
-        return qt.cornerCube();
-      case Elem.BeamSplitter:
-        return qt.beamSplitter(param);
-      case Elem.Absorber:
-        return qt.attenuator(Math.SQRT1_2);
-      case Elem.VacuumJar:
-        return qt.vacuumJar();
-      case Elem.Glass:
-        return qt.glassSlab();
-      case Elem.Detector:
-        return qt.attenuator(0);
-      case Elem.DetectorFour:
-        return qt.attenuator(0);
-      case Elem.Laser:
-        return qt.attenuator(0);
-      case Elem.NonLinearCrystal:
-        return qt.attenuator(1);
-      case Elem.Void:
-        return qt.attenuator(1);
-      case Elem.SugarSolution:
-        return qt.sugarSolution(0.125);
-      case Elem.PolarizingBeamSplitter:
-        if (param === 0) {
-          return qt.polarizingBeamsplitter(135);
-        }
-        return qt.polarizingBeamsplitter(45);
-      case Elem.PolarizerH:
-        return qt.quarterWavePlateWE(param);
-      case Elem.PolarizerV:
-        return qt.quarterWavePlateNS(param);
-      case Elem.QuarterWavePlateH:
-        return qt.quarterWavePlateWE(param);
-      case Elem.QuarterWavePlateV:
-        return qt.quarterWavePlateNS(param);
-      case Elem.FaradayRotator:
-        return qt.faradayRotator(param);
-      case Elem.Mine:
-        return qt.attenuator(0);
-      case Elem.Rock:
-        return qt.attenuator(0);
-      case Elem.Wall:
-        return qt.attenuator(0);
-      default:
-        throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
-    }
+    this.angles = angles;
+    this.polarization = polarization;
+    this.percentage = percentage;
   }
 
   /**
    * Compute the rotation angles from the number of tiles
-   * TODO: Find a better way
    * @returns amount to rotate the element
    */
   get rotationAngle(): number {
-    return 360 / this.ascii.length;
+    return 360 / this.angles.length;
   }
 
   /**
@@ -101,38 +49,9 @@ export default class Element {
   }
 
   /**
-   * Export element in primitives
-   * @returns ElementInterface
+   * Will be overriden by child transition
    */
-  exportElement(): ElementInterface {
-    return {
-      name: this.name,
-      group: this.group,
-      description: this.description,
-      ascii: this.ascii
-    };
-  }
-
-  /**
-   * Create an element from an interface
-   * @param obj Create element from interface
-   */
-  static importElement(obj: ElementInterface): Element {
-    return new Element(obj.name, obj.group, obj.description, obj.ascii);
-  }
-
-  /**
-   * Returns an element from its name
-   * @param name Element from enum of element names
-   * @returns Element
-   */
-  static fromName(name: string): Element {
-    const element = jsonElements.find((elem) => {
-      return elem.name === name;
-    });
-    if (element) {
-      return Element.importElement(element!);
-    }
-    throw new Error(`Element: ${name} is not implemented.`);
+  transition(options: TransitionInterface): qt.Operator {
+    return qt.attenuator(0);
   }
 }

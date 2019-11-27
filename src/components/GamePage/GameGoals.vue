@@ -12,45 +12,52 @@
       :sections="sections"
       :start-angle="0"
     >
-      <!-- PROBABILITY -->
-      <div :class="gameStateClass">
+      <!-- INNER DONUT -->
+      <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
         <div>PROBABILITY</div>
       </div>
     </vc-donut>
-    <div class="temp">
-      <div>Goal: {{ totalGoalPercentage }} %</div>
+
+    <!-- GOAL PERCENTAGE -->
+    <div class="goalPercentage">
+      <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
 
     <!-- GOALS -->
-    <div v-if="goals.length > 0" class="bottom-icons">
-      <span v-for="(goal, index) in detectorsHit" :key="'detectorh' + index" class="hit">
-        <img src="@/assets/detectorIconRed.svg" alt="Key Icon" width="30" />
+    <div v-if="gameState.goals.length > 0" :class="computeGoalClass">
+      <span
+        v-for="(goal, index) in gameState.goalsHit.length"
+        :key="'detectorh' + index"
+        class="hit"
+      >
+        <img src="@/assets/graphics/icons/detectorFull.svg" width="30" />
       </span>
-      <span v-for="(goal, index) in detectorsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/detectorIconGreen.svg" alt="Key Icon" width="30" />
+      <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
+        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="30" />
       </span>
       <div>
-        <span v-if="detectorsHit !== goals.length" class="defeat">
+        <span>
           <b>DETECTORS</b>
         </span>
-        <span v-else class="success"><b>DETECTORS</b></span>
       </div>
     </div>
 
     <!-- MINES -->
-    <div v-if="mines > 0" class="bottom-icons">
-      <span v-for="(mine, index) in minesHit" :key="'mineh' + index" class="hit">
-        <img src="@/assets/mineIconRed.svg" alt="Key Icon" width="34" />
+    <div v-if="gameState.mines.length > 0" :class="computeSafeClass">
+      <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
+        <img src="@/assets/graphics/icons/mineFull.svg" width="34" />
       </span>
-      <span v-for="(mine, index) in minesUnhit" :key="'mineu' + index" class="unhit">
-        <img src="@/assets/mineIconEmpty.svg" alt="Key Icon" width="34" />
+      <span v-for="(mine, index) in gameState.minesUnhit" :key="'mineu' + index" class="unhit">
+        <img src="@/assets/graphics/icons/mineEmpty.svg" width="34" />
       </span>
       <div>
-        <span v-if="minesHit > 0" class="defeat">
+        <span v-if="gameState.safeFlag" class="success">
+          <b>SAFE</b>
+        </span>
+        <span v-else class="defeat">
           <b>DANGER!</b>
         </span>
-        <span v-else class="success"><b>SAFE</b></span>
       </div>
     </div>
   </div>
@@ -58,11 +65,14 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
+import { State, Getter, Mutation } from 'vuex-class';
 import { Tween, update as updateTween } from 'es6-tween';
-import { GameState } from '@/engine/interfaces';
+import { GameStateEnum } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Goal from '@/engine/Goal';
+import GameState from '@/engine/GameState';
 import AppCell from '@/components/Board/AppCell.vue';
+import Game from '@/components/GamePage/index.vue';
 
 @Component({
   components: {
@@ -70,124 +80,37 @@ import AppCell from '@/components/Board/AppCell.vue';
   }
 })
 export default class GameGoals extends Vue {
-  @Prop() readonly detectors!: number;
-  @Prop() readonly mines!: number;
-  @Prop() readonly detections!: { cell: Cell; probability: number }[];
-  @Prop() readonly goals!: any;
+  @Prop() readonly gameState!: GameState;
   @Prop() readonly percentage!: number;
-  tweenedPercent: number = this.percentage;
+  tweenedPercent: number = this.gameState.totalAbsorption;
   width = 100;
 
   /**
-   * Compute game state and sets Vuex
+   * Compute success or failure class from the gameState flags
    */
-  computeGameState() {
-    let probabilityFlag = false;
-    let goalFlag = false;
-    let safeFlag = false;
-    // Compute the current detection probability and compare it to goals
-    if (this.percentage >= this.totalGoalPercentage) {
-      probabilityFlag = true;
-    }
-    // Check that the current goals are met
-    if (this.detectorsUnhit === 0) {
-      goalFlag = true;
-    }
-    // Check that no mines are hit so it's safe
-    if (this.minesHit === 0) {
-      safeFlag = true;
-    }
-
-    if (!safeFlag) {
-      this.$store.commit('SET_GAME_STATE', GameState.MineExploded);
-      this.$emit('gameState', GameState.MineExploded);
-      return;
-    }
-    if ((!goalFlag && probabilityFlag) || (goalFlag && !probabilityFlag)) {
-      this.$store.commit('SET_GAME_STATE', GameState.InProgress);
-      this.$emit('gameState', GameState.InProgress);
-    }
-    if (probabilityFlag && goalFlag && safeFlag) {
-      this.$store.commit('SET_GAME_STATE', GameState.Victory);
-      this.$emit('gameState', GameState.Victory);
-    }
+  get computeProbabilityClass(): string {
+    return this.gameState.probabilityFlag ? 'success' : 'defeat';
+  }
+  get computeGoalClass(): string[] {
+    return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons'];
+  }
+  get computeSafeClass(): string[] {
+    return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons'];
   }
 
   /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
+   * Computes donut slices
+   * @returns list of slices with colors
    */
-  get detectorsHit(): number {
-    const detectorDetected = this.detections.filter((detection) => {
-      return detection.cell.isDetector;
-    });
-    return detectorDetected.length;
+  get sections(): { value: number; color: string }[] {
+    return [
+      { value: 100 - this.tweenedPercent, color: '#210235' },
+      { value: this.tweenedPercent, color: '#5D00D5' }
+    ];
   }
 
   /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
-   */
-  get detectorsUnhit(): number {
-    return this.goals.length - this.detectorsHit;
-  }
-
-  /**
-   * Process the detection events and select the mines
-   * @returns hit mines count
-   */
-  get minesHit(): number {
-    const minesDetected = this.detections.filter((detection) => {
-      return detection.cell.element.name === 'Mine';
-    });
-    return minesDetected.length;
-  }
-
-  /**
-   * Process the detection events and select the detectors
-   * @returns hit detector count
-   */
-  get minesUnhit(): number {
-    return this.mines - this.minesHit;
-  }
-
-  /**
-   * Compute the total absorption at goals
-   * @returns total absorption
-   */
-  get updatePercentage() {
-    let sum = 0;
-    this.detections.forEach((detection) => {
-      this.goals.forEach((goal: Goal) => {
-        if (goal.coord.equal(detection.cell.coord)) {
-          sum += detection.probability;
-        }
-      });
-    });
-    return sum;
-  }
-
-  /**
-   * Total goal percentage
-   * @returns sum of goal threshold
-   */
-  get totalGoalPercentage() {
-    let sum = 0;
-    this.goals.forEach((goal: Goal) => {
-      sum += goal.threshold;
-    });
-    return sum * 100;
-  }
-
-  /**
-   * Total goal percentage
-   * @returns sum of goal threshold
-   */
-  get unavailableGoalPercentage() {
-    return 100 - this.totalGoalPercentage;
-  }
-
-  /**
+   * Create the donut animation tween
    * @param time tween time
    */
   animateTween(time: number): void {
@@ -197,23 +120,10 @@ export default class GameGoals extends Vue {
   }
 
   /**
-   * Computes donut slices
-   * @returns list of slices with colors
-   * FIXME: See level 7 problem
+   * Animate donut increase / decrease on gameState change
    */
-  get sections() {
-    return [
-      { value: 100 - this.tweenedPercent, color: '#210235' },
-      { value: this.tweenedPercent, color: '#5D00D5' }
-    ];
-  }
-
-  get gameStateClass() {
-    return this.percentage >= this.totalGoalPercentage ? 'success' : 'defeat';
-  }
-
   @Watch('percentage')
-  onPercentChanged(val: number, oldVal: number) {
+  onPercentChanged(val: number, oldVal: number): void {
     new Tween({ value: oldVal })
       .to({ value: val }, 500)
       .on('update', ({ value }: { value: number }) => {
@@ -221,20 +131,15 @@ export default class GameGoals extends Vue {
       })
       .start();
     requestAnimationFrame(this.animateTween);
-    this.computeGameState();
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .goals-wrapper {
-  // BORDER-TOP TURNED ON WHEN THERE ARE UPPER ICONS
-  //border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 20px;
-  //border-bottom: 1px solid white;
   width: 100%;
-  // height: 320px;
   display: flex;
   flex-direction: column;
   @media screen and (max-width: 1000px) {
@@ -245,12 +150,10 @@ export default class GameGoals extends Vue {
     padding-top: 0;
     padding-bottom: 0;
   }
-
   & .upper-icons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    //justify-content: left;
     margin-bottom: 2rem;
   }
   & .bottom-icons {
@@ -264,12 +167,12 @@ export default class GameGoals extends Vue {
     }
   }
   & .chart {
+    margin-bottom: 1rem;
+    position: relative;
+
     & div.inner-circle {
       font-size: 2rem;
     }
-    margin-bottom: 1rem;
-
-    position: relative;
 
     &::after {
       content: '';
@@ -298,7 +201,7 @@ export default class GameGoals extends Vue {
     text-anchor: middle;
   }
 }
-.temp {
+.goalPercentage {
   font-size: 0.8rem;
   margin-bottom: 2rem;
   @media screen and (max-width: 1000px) {
@@ -307,7 +210,7 @@ export default class GameGoals extends Vue {
 }
 .defeat {
   color: white;
-  //opacity: 0.2;
+  opacity: 0.9;
   @media screen and (max-width: 1000px) {
     b {
       font-size: calc(8px + 4 * ((100vw - 320px) / 680));

@@ -44,9 +44,20 @@
     "short": "Using sound, it shifts the frequency of light by a certain amount.",
     "grids": [
       {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
+        "cols": 3,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          }
+        ]
       }
     ],
     "sections": [
@@ -83,7 +94,7 @@
         "cells": [
           {
             "coord": {
-              "y": 0,
+              "y": 1,
               "x": 0
             },
             "element": "Laser",
@@ -93,7 +104,7 @@
           },
           {
             "coord": {
-              "y": 0,
+              "y": 1,
               "x": 2
             },
             "element": "BeamSplitter",
@@ -109,7 +120,7 @@
         "cells": [
           {
             "coord": {
-              "y": 0,
+              "y": 1,
               "x": 0
             },
             "element": "Laser",
@@ -120,7 +131,7 @@
           },
           {
             "coord": {
-              "y": 0,
+              "y": 1,
               "x": 2
             },
             "element": "BeamSplitter",
@@ -288,7 +299,7 @@
       },
       {
         "title": "Related concepts:",
-        "content": "<p>-photoelectric effect"
+        "content": "<p>-photoelectric effect</p>"
       }
     ]
   },
@@ -343,7 +354,7 @@
       },
       {
         "title": "Related concepts:",
-        "content": "<p>-photoelectric effect"
+        "content": "<p>-photoelectric effect</p>"
       }
     ]
   },
@@ -443,9 +454,20 @@
     "short": "An on-demand single photon source. (CLICK to EMIT!)",
     "grids": [
       {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          }
+        ]
       }
     ],
     "sections": [
@@ -472,7 +494,7 @@
     ]
   },
   "mine": {
-    "title": "Mirror",
+    "title": "Mine",
     "elementName": "Mine",
     "short": "COMING SOON!",
     "grids": [
@@ -567,9 +589,30 @@
     "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
     "grids": [
       {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          },
+          {
+            "coord": {
+              "y": 1,
+              "x": 2
+            },
+            "element": "NonLinearCrystal",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          }
+        ]
       }
     ],
     "sections": [
@@ -619,8 +662,9 @@
               "y": 1,
               "x": 2
             },
-            "element": "PolarizerH",
-            "rotation": 135,
+            "element": "Polarizer",
+            "rotation": 0,
+            "polarization": 45,
             "frozen": false,
             "active": false
           }
@@ -664,10 +708,20 @@
           {
             "coord": {
               "y": 1,
+              "x": 1
+            },
+            "element": "SugarSolution",
+            "rotation": 0,
+            "frozen": false,
+            "active": false
+          },
+          {
+            "coord": {
+              "y": 1,
               "x": 2
             },
             "element": "PolarizingBeamSplitter",
-            "rotation": 135,
+            "rotation": 0,
             "frozen": false,
             "active": false
           }
@@ -706,7 +760,8 @@
               "x": 2
             },
             "element": "QuarterWavePlate",
-            "rotation": 135,
+            "rotation": 0,
+            "polarization": 135,
             "frozen": false,
             "active": false
           }
@@ -731,7 +786,7 @@
   "rock": {
     "title": "Rock",
     "elementName": "Rock",
-    "short": "##COMING SOON!",
+    "short": "COMING SOON!",
     "grids": [
       {
         "cols": 4,
@@ -763,7 +818,7 @@
     "sections": [
       {
         "title": "",
-        "content": "<p>##COMING SOON!</p>"
+        "content": "<p>COMING SOON!</p>"
       }
     ]
   },
@@ -824,9 +879,20 @@
     "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
     "grids": [
       {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "y": 1,
+              "x": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true,
+            "active": true
+          }
+        ]
       }
     ],
     "sections": [

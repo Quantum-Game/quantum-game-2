@@ -94,7 +94,7 @@
         </g>
       </g>
     </g>
-    <g v-if="border" id="_x3C_Qoutline_x3E_">
+    <g v-if="border">
       <path
         class="st2"
         :style="{ fill: border }"

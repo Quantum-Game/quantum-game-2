@@ -1,7 +1,7 @@
 <template>
   <g class="dots">
-    <g v-for="(row, y) in rows" :key="y">
-      <g v-for="(column, x) in cols" :key="x">
+    <g v-for="(row, y) in rows + 1" :key="y">
+      <g v-for="(column, x) in cols + 1" :key="x">
         <circle :cx="x * tileSize" :cy="y * tileSize" r="1.5" fill="#edeaf4" />
       </g>
     </g>
@@ -9,6 +9,7 @@
 </template>
 
 <script lang="ts">
+// FIXME: bug/feature border dots are cut in half
 import { Vue, Component, Prop } from 'vue-property-decorator';
 
 @Component
