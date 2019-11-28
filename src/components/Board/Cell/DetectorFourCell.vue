@@ -199,7 +199,7 @@
       </g>
     </g>
     <!-- OUTLINE - WHEN THERE IS PROBABILITY OF BEING HIT, NO ROTATION -->
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st4"
         :style="{ fill: border }"

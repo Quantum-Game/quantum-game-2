@@ -1,9 +1,14 @@
 <template>
   <div v-if="hoveredParticles.length === 0" class="explanation">
-    <h3 class="explanation__title">{{ spacedName }}</h3>
-    <p class="explanation__description">{{ hoveredCell.element.description }}</p>
-    <router-link :to="hyphenedEntryURL" class="explanation__link">LEARN MORE</router-link>
-    <slot></slot>
+    <h3 class="title">
+      {{ spacedName }}
+    </h3>
+    <p class="description">
+      {{ hoveredCell.element.description }}
+    </p>
+    <router-link :to="hyphenedEntryURL" class="link">
+      LEARN MORE
+    </router-link>
   </div>
 </template>
 
@@ -56,30 +61,20 @@ export default class GameActiveCell extends Vue {
   @media screen and (max-width: 1000px) {
     display: none;
   }
-  & .explanation__tile {
-    margin: 0;
+  & .title {
+    margin-top: 8px;
     font-size: 1rem;
+    text-transform: uppercase;
   }
-  & .explanation__description {
+  & .description {
     text-align: left;
     font-size: 0.8rem;
-    // font-size: 13px;
     line-height: 150%;
   }
-
-  & .explanation__link {
+  & .link {
     color: #837e9b;
     font-size: 0.8rem;
     text-decoration: none;
   }
-
-  .coord {
-    font-size: 12px;
-    color: grey;
-  }
-}
-
-h3 {
-  text-transform: uppercase;
 }
 </style>

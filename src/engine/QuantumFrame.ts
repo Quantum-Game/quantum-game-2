@@ -2,14 +2,10 @@ import _ from 'lodash';
 import * as qt from 'quantum-tensors';
 
 import Coord from './Coord';
-import Particle, { Qparticle } from './Particle';
+import Particle from './Particle';
+import { AbsorptionInterface, ParticleInterface } from './interfaces';
 
-export interface AbsorptionsInterface {
-  x: number;
-  y: number;
-  probability: number;
-}
-
+// TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface particleCoordInterface {
   kind: string; // for now only 'photon'
   x: number;
@@ -18,12 +14,14 @@ export interface particleCoordInterface {
   pol: number; // 0: H, 1: V
 }
 
+// TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface ketComponentInterface {
   amplitude: qt.Complex;
   particleCoords: particleCoordInterface[];
 }
 
 /**
+ * QUANTUM FRAME CLASS
  * QuantumFrame is essentially a wrapper on Photons from qunatum-tensors.
  * It hold quantum state at a given time, and nothing more.
  * All other things are accessible with getters.
@@ -31,7 +29,7 @@ export interface ketComponentInterface {
  */
 export default class QuantumFrame {
   readonly photons: qt.Photons;
-  absorptions: AbsorptionsInterface[];
+  absorptions: AbsorptionInterface[];
   // note: later we may need to clean such low values within the engine
   probThreshold = 1e-6;
   // things below right now mostly for debugging puroses
@@ -88,15 +86,13 @@ export default class QuantumFrame {
     this.probPropagated = this.probability;
     this.absorptions = operatorList
       .map(([x, y, op]) => ({
-        x,
-        y,
+        coord: { x, y },
         probability: this.photons.measureAbsorptionAtOperator(x, y, op)
       }))
       .filter((d) => d.probability > this.probThreshold);
     if (this.probBefore - this.probPropagated > this.probThreshold) {
       this.absorptions.push({
-        x: -1,
-        y: -1,
+        coord: { x: -1, y: -1 },
         probability: this.probBefore - this.probPropagated
       });
     }
@@ -104,9 +100,9 @@ export default class QuantumFrame {
     this.probAfter = this.probability;
   }
 
+  // should be same as this.probAfter
   get totalProbabilityLoss(): number {
     return this.absorptions.map((absorption) => absorption.probability).reduce((a, b) => a + b, 0);
-    // should be same as this.probAfter
   }
 
   /**
@@ -115,16 +111,16 @@ export default class QuantumFrame {
   get polarizationSuperpositions(): Particle[] {
     return this.photons
       .aggregatePolarization()
-      .map((q: Qparticle) => {
+      .map((q: ParticleInterface) => {
         const coord = new Coord(q.y, q.x);
-        return new Particle(coord, q.direction, 0, 0, q.are, q.aim, q.bre, q.bim);
+        return new Particle(coord, q.direction, q.are, q.aim, q.bre, q.bim);
       })
       .filter((particle) => particle.probability > this.probThreshold);
   }
 
   /**
    * Shorthand for polarization superpositions
-   * @remark From Piotr: well, I created name polarizationSuperpositions excatly
+   * @remark From Piotr: well, I created name polarizationSuperpositions exactly
    * to avoid words like particle, which is confusing, and has many meanings
    * in the context of the game.
    */

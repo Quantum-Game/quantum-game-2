@@ -60,15 +60,15 @@ export default class AppMenu extends Vue {
     }
   ];
 
-  created() {
+  created(): void {
     window.addEventListener('keyup', this.handleEscPress);
   }
 
-  closeMenu() {
+  closeMenu(): void {
     this.isMenuOpen = false;
   }
 
-  handleContinueClick(e: MouseEvent) {
+  handleContinueClick(e: MouseEvent): void {
     // if we are in the encyclopedia, the continue
     // should take us to the previous played level
     // otherwuise in case we are playing:
@@ -78,27 +78,27 @@ export default class AppMenu extends Vue {
     }
   }
 
-  toggleMenu() {
+  toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
-  handleEscPress(e: { which: number }) {
+  handleEscPress(e: { which: number }): void {
     if (e.which === 27) {
       this.toggleMenu();
     }
   }
 
-  beforeDestroy() {
+  beforeDestroy(): void {
     window.removeEventListener('keyup', this.handleEscPress);
   }
 
-  get continueLink() {
+  get continueLink(): string {
     return `/level/${this.currentLevelID}`;
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 .q-menu-wrapper {
   min-height: 42px;
   @media screen and (max-width: 1000px) {

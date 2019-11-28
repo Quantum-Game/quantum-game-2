@@ -1,7 +1,37 @@
-import { CoordInterface, CellInterface } from './interfaces';
+import * as qt from 'quantum-tensors';
+import {
+  CoordInterface,
+  CellInterface,
+  Elem,
+  TransitionInterface,
+  IndicatorInterface
+} from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
-import { angleToSymbol } from './Helpers';
+import {
+  Absorber,
+  BeamSplitter,
+  CoatedBeamSplitter,
+  CornerCube,
+  Detector,
+  DetectorFour,
+  FaradayRotator,
+  Gate,
+  Glass,
+  Laser,
+  Mine,
+  Mirror,
+  NonLinearCrystal,
+  Polarizer,
+  QuarterWavePlate,
+  Rock,
+  SugarSolution,
+  VacuumJar,
+  Wall,
+  Void,
+  PolarizingBeamSplitter
+} from '@/engine/Elements/index';
+import { angleToSymbol, startingPolarization, startingDirection } from './Helpers';
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate
@@ -10,6 +40,8 @@ export default class Cell {
   coord: Coord;
   element: Element;
   rotation: number;
+  polarization: number;
+  percentage: number;
   frozen: boolean;
   active: boolean;
   energized: boolean;
@@ -19,6 +51,8 @@ export default class Cell {
     coord: Coord,
     element: Element,
     rotation = 0,
+    polarization = 0,
+    percentage = 0,
     frozen = false,
     active = false,
     energized = false,
@@ -27,10 +61,21 @@ export default class Cell {
     this.coord = coord;
     this.element = element;
     this.rotation = rotation;
+    this.polarization = polarization;
+    this.percentage = percentage;
+    this.rotation = rotation;
     this.frozen = frozen;
     this.active = active;
     this.energized = energized;
     this.tool = tool;
+  }
+
+  /**
+   * Ouput the rotation with an unicode arrow
+   * @returns unicode arrow describing rotation
+   */
+  get rotationAscii(): string {
+    return angleToSymbol(this.element.rotationAngle);
   }
 
   /**
@@ -46,23 +91,39 @@ export default class Cell {
    * @returns true if blank
    */
   get isVoid(): boolean {
-    return this.element.name === 'Void';
+    return this.element.name === Elem.Void;
   }
 
   /**
-   * Is element blank?
-   * @returns true if blank
+   * Is element a detector?
+   * @returns true if detector
    */
   get isDetector(): boolean {
-    return this.element.name === 'Detector' || this.element.name === 'DetectorFour';
+    return this.element.name === Elem.Detector || this.element.name === Elem.DetectorFour;
   }
 
   /**
-   * Ouput the rotation with an unicode arrow
-   * @returns unicode arrow describing rotation
+   * Is element a laser?
+   * @returns true if laser
    */
-  get rotationAscii(): string {
-    return angleToSymbol(this.element.rotationAngle);
+  get isLaser(): boolean {
+    return this.element.name === Elem.Laser;
+  }
+
+  /**
+   * Is element a mine?
+   * @returns true if mine
+   */
+  get isMine(): boolean {
+    return this.element.name === Elem.Mine;
+  }
+
+  /**
+   * Is element a complicated rotation?
+   * @returns true if quarter wave plate or polarizer
+   */
+  get isPolarizerOrWavePlate(): boolean {
+    return this.element.name === Elem.Polarizer || this.element.name === Elem.QuarterWavePlate;
   }
 
   /**
@@ -70,6 +131,22 @@ export default class Cell {
    */
   get isFromToolbox(): boolean {
     return this.coord.x === -1 && this.coord.y === -1;
+  }
+
+  /**
+   * Create a photon indicator for quantum simulation
+   * @returns Indicator for qt.photons
+   */
+  get indicator(): IndicatorInterface {
+    if (this.isLaser) {
+      return {
+        x: this.coord.x,
+        y: this.coord.y,
+        direction: startingDirection(this.rotation),
+        polarization: startingPolarization(this.polarization)
+      };
+    }
+    throw new Error(`Cannot create photon indicator from ${this.element.name}`);
   }
 
   /**
@@ -101,8 +178,10 @@ export default class Cell {
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
   reset(): Cell {
-    this.element.name = 'Void';
+    this.element.name = Elem.Void;
     this.rotation = 0;
+    this.polarization = 0;
+    this.percentage = 0;
     this.active = false;
     this.frozen = false;
     this.energized = false;
@@ -166,7 +245,7 @@ export default class Cell {
       this.active ? 'active' : 'inactive'
     } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
       this.rotation
-    }°`;
+    }° with polarization: ${this.polarization}° and percentage: ${this.percentage}%`;
   }
 
   /**
@@ -178,6 +257,8 @@ export default class Cell {
       coord: this.coord.exportCoord(),
       element: this.element.name,
       rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage,
       frozen: this.frozen,
       active: this.active,
       energized: this.energized
@@ -186,12 +267,23 @@ export default class Cell {
 
   /**
    * Create a cell from a CellInterface
+   * TODO: Polarization should be passed to cell
    * @param obj CellInterface
    */
   static importCell(obj: CellInterface): Cell {
     const coord = Coord.importCoord(obj.coord);
-    const element = Element.fromName(obj.element);
-    return new Cell(coord, element, obj.rotation, obj.frozen, obj.active, obj.energized);
+    const element = Cell.fromName(obj.element);
+    const cell = new Cell(
+      coord,
+      element,
+      obj.rotation,
+      obj.polarization,
+      obj.percentage,
+      obj.frozen,
+      obj.active,
+      obj.energized
+    );
+    return cell;
   }
 
   /**
@@ -201,7 +293,7 @@ export default class Cell {
    */
   static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI);
-    const element = Element.fromName('Void');
+    const element = Cell.fromName(Elem.Void);
     return new Cell(coord, element);
   }
 
@@ -211,10 +303,80 @@ export default class Cell {
    * @returns a toolbox cell
    */
   static createToolboxCell(name: string): Cell {
-    const element = Element.fromName(name);
+    const element = Cell.fromName(name);
     const coord = new Coord(-1, -1);
     const cell = new Cell(coord, element);
     cell.tool = true;
     return cell;
+  }
+
+  /**
+   * TODO: Allow other parameters to be passed to the element transition
+   * Get operator from transition
+   * @param name
+   */
+  get operator(): [number, number, qt.Operator] {
+    const { x, y } = this.coord;
+    const options: TransitionInterface = {
+      rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage
+    };
+    const transition = this.element.transition(options);
+    return [x, y, transition];
+  }
+
+  /**
+   * Create a instance of the descendant class from Element
+   * @param name element name
+   * @returns element class instance
+   */
+  static fromName(name: string): Element {
+    switch (name) {
+      case Elem.Absorber:
+        return new Absorber();
+      case Elem.BeamSplitter:
+        return new BeamSplitter();
+      case Elem.CoatedBeamSplitter:
+        return new CoatedBeamSplitter();
+      case Elem.CornerCube:
+        return new CornerCube();
+      case Elem.Detector:
+        return new Detector();
+      case Elem.DetectorFour:
+        return new DetectorFour();
+      case Elem.FaradayRotator:
+        return new FaradayRotator();
+      case Elem.Gate:
+        return new Gate();
+      case Elem.Glass:
+        return new Glass();
+      case Elem.Laser:
+        return new Laser();
+      case Elem.Mine:
+        return new Mine();
+      case Elem.Mirror:
+        return new Mirror();
+      case Elem.NonLinearCrystal:
+        return new NonLinearCrystal();
+      case Elem.Polarizer:
+        return new Polarizer();
+      case Elem.PolarizingBeamSplitter:
+        return new PolarizingBeamSplitter();
+      case Elem.QuarterWavePlate:
+        return new QuarterWavePlate();
+      case Elem.Rock:
+        return new Rock();
+      case Elem.SugarSolution:
+        return new SugarSolution();
+      case Elem.VacuumJar:
+        return new VacuumJar();
+      case Elem.Void:
+        return new Void();
+      case Elem.Wall:
+        return new Wall();
+      default:
+        throw new Error(`Element ${this.name} not included in quantum-tensors operators..`);
+    }
   }
 }

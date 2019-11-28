@@ -1,30 +1,58 @@
 <template>
   <g
     ref="cellRef"
-    :style="positionStyle"
-    :class="computedCellClass"
+    :style="computeCellStyle"
+    :class="computeCellClass"
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
   >
+    <!-- BOUNDING RECTANGLE -->
     <rect
       :width="tileSize"
       :height="tileSize"
-      :class="rectBackgroundClass"
-      :style="rectPositionStyle"
+      :class="computeRectClass"
+      :style="computeRectStyle"
     />
+
+    <!-- ELEMENT SVG -->
     <component
-      :is="computedCellName"
+      :is="computeCellName"
       :cell="cell"
-      :class="computedCellName"
+      :class="computeCellName"
       :cell-size="tileSize"
-      :border="computeBorder()"
+      :border="computeBorder"
     />
+
+    <!-- PULSATING CIRCLE -->
+    <!-- eslint-disable -->
+    <g v-if="displayPulsation">
+      <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
+        <animate
+          attributeName="opacity"
+          from="1"
+          to="0"
+          dur="1.5s"
+          begin="0s"
+          repeatCount="indefinite"
+        />
+        <animate
+          attributeName="r"
+          from="32"
+          to="64"
+          dur="1.5s"
+          begin="0s"
+          repeatCount="indefinite"
+        />
+      </circle>
+    </g>
+    <!-- eslint-enable -->
   </g>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
 import { Mutation, State } from 'vuex-class';
+import { GameStateEnum } from '@/engine/interfaces';
 import Cell from '@/engine/Cell';
 import Level from '@/engine/Level';
 import Particle from '@/engine/Particle';
@@ -86,6 +114,8 @@ export default class AppCell extends Mixins(getPosition) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
+  @State simulationState!: string;
+  @State gameState!: GameStateEnum;
   @State activeCell!: Cell;
   @State cellSelected!: boolean;
   @State hoveredCell!: Cell;
@@ -95,6 +125,15 @@ export default class AppCell extends Mixins(getPosition) {
   $refs!: {
     cellRef: HTMLElement;
   };
+
+  /**
+   * Compute the cell class name
+   * @returns Compute cell name string
+   */
+  get computeCellName(): string {
+    return `${this.cell.element.name}Cell`;
+  }
+
   /**
    *  handles clicking, namely
    *  1. distinguishes a selecting vs a placing click
@@ -176,10 +215,11 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   handleCellClick(): void {
-    // TODO: if tool from toolbox check availability before selection
-    // TODO: swap from grid tool to different toolbox tool
-    // do nothing, if:
-    if (
+    // START SIMULATION: Drilling to Game
+    if (this.cell.isLaser && this.cell.frozen) {
+      this.$emit('play', true);
+    } else if (
+      // TOOLBOX LOGIC
       this.cell.frozen ||
       // if it s a click on a tool thats unavailable:
       (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
@@ -193,6 +233,7 @@ export default class AppCell extends Mixins(getPosition) {
         this.cell.rotate();
         this.isRotate = false;
       }
+
       if (!this.cellSelected) {
         // FIRST CLICK
         // If from toolbox needs to have available elements
@@ -222,42 +263,20 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
-   * Computed class
+   * Display pulsating ring around laser
    */
-  get computedCellClass(): string[] {
-    return [
-      this.computedCellName,
-      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
-      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
-        ? 'frozen'
-        : '',
-      this.cell.isFromToolbox && !this.available ? 'transparent' : ''
-    ];
+  get displayPulsation(): boolean {
+    if (this.cell.isLaser && this.gameState === GameStateEnum.Victory) {
+      return true;
+    }
+    return false;
   }
 
   /**
-   * Compute the cell class name
-   * @returns Computed cell name string
+   * changes border color indicating it can be moved
+   * @returns color
    */
-  get computedCellName(): string {
-    if (this.cell.element.name === 'PolarizerH' || this.cell.element.name === 'PolarizerV') {
-      return 'PolarizerCell';
-    }
-    if (
-      this.cell.element.name === 'QuarterWavePlateH' ||
-      this.cell.element.name === 'QuarterWavePlateV'
-    ) {
-      return 'QuarterWavePlateCell';
-    }
-    return `${this.cell.element.name}Cell`;
-  }
-
-  /**
-   * changes border color indicating
-   * it can be moved
-   * @returns void
-   */
-  computeBorder() {
+  get computeBorder(): string {
     if (this.border !== '') {
       return this.border;
     }
@@ -272,24 +291,41 @@ export default class AppCell extends Mixins(getPosition) {
   }
 
   /**
+   * Computed class
+   */
+  get computeCellClass(): string[] {
+    return [
+      this.computeCellName,
+      this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
+      (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
+        ? 'frozen'
+        : '',
+      this.cell.isFromToolbox && !this.available ? 'transparent' : '',
+      this.cell.isLaser ? 'laser' : ''
+    ];
+  }
+
+  /**
    * styles used for wrapper positioning
    * using the getPosition mixin;
    * @returns a style object
    */
-  get positionStyle(): any {
+  get computeCellStyle(): any {
+    const { rotation } = this.cell;
     let styleObj = {};
     styleObj = {
       'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
       transform: `
-        rotate(-${this.cell.rotation}deg)
+        rotate(-${rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
     };
     return styleObj;
   }
+
   /**
    * Undoes the parent element rotation
    */
-  get rectPositionStyle(): any {
+  get computeRectStyle(): any {
     let styleObj = {};
     const halfSize = this.tileSize / 2;
     styleObj = {
@@ -304,7 +340,7 @@ export default class AppCell extends Mixins(getPosition) {
    * highlight tile during a move
    * @returns highlight class
    */
-  get rectBackgroundClass() {
+  get computeRectClass() {
     return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect'];
   }
 
@@ -343,7 +379,9 @@ rect {
 }
 .frozen {
   cursor: not-allowed;
-  // cursor: pointer;
+  &.laser {
+    cursor: pointer;
+  }
 }
 .active {
   cursor: grab;

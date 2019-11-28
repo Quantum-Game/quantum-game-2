@@ -44,7 +44,7 @@
       />
       <path class="st3" d="M47.6,6H28.3c4.6,6.9,13.8,18.6,29.7,28.9V16.4C58,10.7,53.3,6,47.6,6z" />
     </g>
-    <g v-if="border" id="_x3C_Qoutline_x3E_">
+    <g v-if="border">
       <path
         class="st4"
         :style="{ fill: border }"

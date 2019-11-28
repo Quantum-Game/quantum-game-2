@@ -1,6 +1,24 @@
 <template>
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
     <g>
+      <!-- BARS -->
+      <g :style="computePolarization">
+        <rect x="8.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="14.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="20.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="26.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="32.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="38.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="44.5" y="-7" class="st2" width="3" height="69" />
+        <rect x="50.5" y="-7" class="st2" width="3" height="69" />
+      </g>
+      <!-- OVAL TRIMMING PATH -->
+      <clipPath id="clip">
+        <circle cx="32" cy="32" r="28" />
+      </clipPath>
+    </g>
+
+    <g class="circular">
       <path
         class="st0"
         d="M60.5,37.8V28H55c-1.2,9-11.1,16-23,16S10.1,37,9,28H3.5v9.9C3.5,50.6,16.3,61,32,61S60.5,50.6,60.5,37.8z"
@@ -16,40 +34,32 @@
     c0,0.6,0,1.2,0.1,1.8C10.1,19,20,11.9,32,11.9z"
       />
     </g>
-    <g>
-      <defs>
-        <path
-          id="SVGID_1_"
-          d="M55,28c-1.2,9-11.1,16-23,16S10.1,37,9,28c1.2-9,11.1-16,23-16S53.8,19,55,28z"
-        />
-      </defs>
-
-      <g>
-        <rect x="14.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="20.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="8.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="26.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="32.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="38.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="44.5" y="-7" class="st2" width="3" height="69" />
-        <rect x="50.5" y="-7" class="st2" width="3" height="69" />
-      </g>
-      <clipPath id="SVGID_2_">
-        <use xlink:href="#SVGID_1_" style="overflow:visible;" />
-      </clipPath>
-    </g>
   </svg>
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator';
+import { Vue, Prop, Component } from 'vue-property-decorator';
 import Piece from './Piece';
 
 @Component
-export default class PolarizerCell extends Piece {}
+export default class PolarizerCell extends Piece {
+  /**
+   * Compute inner grid rotation from cell polarization
+   */
+  get computePolarization() {
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>
+.circular {
+  transform-origin: 32px 32px;
+  transform: rotate(270deg);
+}
 .st0 {
   fill: #3c2c50;
 }
@@ -57,7 +67,7 @@ export default class PolarizerCell extends Piece {}
   fill: #4e3b6b;
 }
 .st2 {
-  clip-path: url(#SVGID_2_);
+  clip-path: url(#clip);
   fill: #5a4278;
 }
 </style>

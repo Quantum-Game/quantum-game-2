@@ -1,7 +1,7 @@
 <template>
   <svg>
     <g>
-      <circle class="st0" cx="31.9" cy="32" r="30" />
+      <circle class="st0" cx="32" cy="32" r="30" />
       <polygon class="st1" points="55.7,32 18.7,11 18.7,53   " />
       <g>
         <rect x="21.4" y="31.5" class="st0" width="20.5" height="1" />

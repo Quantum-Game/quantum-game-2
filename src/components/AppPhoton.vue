@@ -1,15 +1,5 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
-    <!-- <animateTransform
-      v-if="animate > 0"
-      attributeName="transform"
-      attributeType="XML"
-      type="translate"
-      from="0 0"
-      :to="toCoord"
-      :dur="animate + 's'"
-      repeatCount="indefinite"
-    />-->
     <g class="photon" :style="computeStyle">
       <g v-if="displayGaussian" class="gaussian">
         <path class="gaussian" :d="computeGaussianPath.pathUp" />
@@ -42,16 +32,16 @@
 <script lang="ts">
 import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
 import { select } from 'd3-selection';
+import { range } from 'd3-array';
 import { scaleLinear, scaleSequential } from 'd3-scale';
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
-import { range } from 'd3-array';
 import Particle from '@/engine/Particle';
 
 const d3 = {
-  scaleLinear,
-  scaleSequential,
   select,
   range,
+  scaleLinear,
+  scaleSequential,
   interpolateInferno,
   interpolateViridis
 };
@@ -90,7 +80,7 @@ export default class AppPhoton extends Vue {
   }
 
   get intensity() {
-    return this.particle.intensity;
+    return this.particle.probability;
   }
   get direction() {
     return this.particle.direction;

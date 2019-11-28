@@ -52,7 +52,7 @@
       <polygon class="st4" points="26.4,24 29.4,57 31.4,57 28.4,24   " />
       <path class="st2" d="M46.4,24v32h-28V24H46.4 M47.4,23h-30v34h30V23L47.4,23z" />
     </g>
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st5"
         :style="{ fill: border }"

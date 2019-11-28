@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <g v-if="border" id="Qactive">
+    <g v-if="border" id="active">
       <path
         class="st1"
         d="M7.5,58.5h-3c0-15.1,15.5-18,15.6-18l0.5,3L20.4,42l0.3,1.5C20.1,43.6,7.5,46,7.5,58.5z"
@@ -97,7 +97,7 @@
       </g>
     </g>
     <!-- BASIC STATE -->
-    <g v-else id="Qregular">
+    <g v-else id="regular">
       <g>
         <path
           class="st12"
@@ -185,8 +185,7 @@
       </g>
     </g>
     <!-- OUTLINE -->
-    <!-- <g v-if="border" id="Qoutline"> -->
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st8"
         :style="{ fill: border }"

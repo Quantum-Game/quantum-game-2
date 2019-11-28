@@ -5,7 +5,7 @@
       <polygon class="st1" points="29.1,39 16,25 3.1,25 16.2,39   " />
       <polygon class="st1" points="34.9,39 21.8,25 19.2,25 32.3,39   " />
     </g>
-    <g v-if="border" id="Qoutline">
+    <g v-if="border">
       <path
         class="st2"
         :style="{ fill: border }"

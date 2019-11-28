@@ -1,22 +1,8 @@
-// FIXME: Duplicate between path and coord
 import { Complex } from 'quantum-tensors';
 import { ParticleInterface, CoordInterface } from '@/engine/interfaces';
 import Coord from './Coord';
 import Cell from './Cell';
 import { toPercent, angleToSymbol } from './Helpers';
-
-/**
- * Particle interface retrieved from quantum-tensors
- */
-export interface Qparticle {
-  x: number;
-  y: number;
-  direction: number;
-  are: number;
-  aim: number;
-  bre: number;
-  bim: number;
-}
 
 /**
  * PARTICLE CLASS
@@ -25,59 +11,24 @@ export interface Qparticle {
 export default class Particle extends Coord {
   coord: Coord;
   direction: number;
-  intensity: number;
-  phase: number;
   a: Complex;
   b: Complex;
-  path: ParticleInterface[];
 
-  constructor(
-    coord: Coord,
-    direction: number,
-    intensity = 1,
-    phase = 0,
-    are = 1,
-    aim = 0,
-    bre = 0,
-    bim = 0,
-    path: ParticleInterface[] = [
-      {
-        coord,
-        direction,
-        intensity,
-        phase,
-        are,
-        aim,
-        bre,
-        bim
-      }
-    ]
-  ) {
+  constructor(coord: Coord, direction: number, are = 1, aim = 0, bre = 0, bim = 0) {
     super(coord.y, coord.x);
     this.coord = coord;
     this.direction = direction;
-    this.intensity = intensity;
-    this.phase = phase;
     this.a = new Complex(are, aim);
     this.b = new Complex(bre, bim);
-    this.path = path;
   }
 
-  /**
-   * Origin cell of the particle
-   * @returns start of the particle path
-   */
-  get origin(): Coord {
-    return Coord.importCoord(this.path[0].coord);
-  }
-
-  /**
-   * Check if the particle has any intensity
-   * @returns true if above threshold
-   */
-  get alive(): boolean {
-    return this.intensity > 0.001;
-  }
+  // /**
+  //  * Check if the particle has any intensity
+  //  * @returns true if above threshold
+  //  */
+  // get alive(): boolean {
+  //   return this.intensity > 0.001;
+  // }
 
   get are(): number {
     return this.a.re;
@@ -97,16 +48,7 @@ export default class Particle extends Coord {
    * @returns particle clone
    */
   get clone(): Particle {
-    return new Particle(
-      this.coord,
-      this.direction,
-      this.intensity,
-      this.phase,
-      this.are,
-      this.aim,
-      this.bre,
-      this.bim
-    );
+    return new Particle(this.coord, this.direction, this.are, this.aim, this.bre, this.bim);
   }
 
   /**
@@ -128,18 +70,6 @@ export default class Particle extends Coord {
       return 1;
     }
     return opacity;
-  }
-
-  /**
-   * Convert particle path to particle instances
-   * @returns particles
-   */
-  get pathParticle(): Particle[] {
-    const result: Particle[] = [];
-    this.path.forEach((particleI) => {
-      result.push(Particle.importParticle(particleI));
-    });
-    return result;
   }
 
   /**
@@ -170,16 +100,6 @@ export default class Particle extends Coord {
       default:
         throw new Error('Something went wrong with directions...');
     }
-  }
-
-  /**
-   *  Propagate the particle in a classical simulation
-   * @returns updated Particle
-   */
-  next(): Particle {
-    this.path.push(this.exportParticle());
-    this.coord = this.coord.fromAngle(this.direction);
-    return this;
   }
 
   /**
@@ -226,7 +146,7 @@ export default class Particle extends Coord {
    */
   toString(): string {
     return `Particle @ ${this.coord.toString()} moving ${this.direction}° with ${toPercent(
-      this.intensity
+      this.probability
     )} intensity and polarization | A:${this.a.re} + ${this.a.im}i & B:${this.b.re} + ${
       this.b.im
     }i\n`;
@@ -296,10 +216,9 @@ export default class Particle extends Coord {
    */
   exportParticle(): ParticleInterface {
     return {
-      coord: this.coord,
+      x: this.coord.x,
+      y: this.coord.y,
       direction: this.direction,
-      intensity: this.intensity,
-      phase: this.phase,
       are: this.are,
       aim: this.aim,
       bre: this.bre,
@@ -312,17 +231,8 @@ export default class Particle extends Coord {
    * @param obj particle interface
    */
   static importParticle(obj: ParticleInterface): Particle {
-    const coord = Coord.importCoord(obj.coord);
-    return new Particle(
-      coord,
-      obj.direction,
-      obj.intensity,
-      obj.phase,
-      obj.are,
-      obj.aim,
-      obj.bre,
-      obj.bim
-    );
+    const coord = new Coord(obj.y, obj.x);
+    return new Particle(coord, obj.direction, obj.are, obj.aim, obj.bre, obj.bim);
   }
 
   /**

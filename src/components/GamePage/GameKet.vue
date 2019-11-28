@@ -3,7 +3,7 @@
     <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     >
-    <!-- VIEWR -->
+    <!-- VIEWER -->
     <div class="quantum-state-viewer">
       <span
         v-for="(ketComponent, index) in ketComponents"
@@ -20,7 +20,7 @@
           <circle
             cx="8"
             cy="8"
-            :r="diskScale(ketComponent.amplitude.r)"
+            :r="discScale(ketComponent.amplitude.r)"
             :fill="complexToColor(ketComponent.amplitude)"
           />
         </svg>
@@ -39,7 +39,7 @@
           ⟩
         </span>
       </span>
-      <div v-if="showLegend" class="legend">
+      <div v-if="showLegend && ketComponents.length > 0" class="legend">
         <span v-if="selectedStyle === 'color-disk'">
           <span class="legend-coord-xy"> x,y coordinates</span>
           <span class="legend-dir">direction</span>
@@ -60,7 +60,8 @@
           class="absorption"
         >
           {{ toPercent(absorption.probability) }}% in
-          {{ elementName(absorption.x, absorption.y) }} at ({{ absorption.x }}, {{ absorption.y }})
+          {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
+          {{ absorption.coord.y }})
         </span>
       </div>
     </div>
@@ -76,56 +77,12 @@
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
 import { Complex } from 'quantum-tensors';
 import { CellInterface, CoordInterface } from '@/engine/interfaces';
+import { hslToHex, TAU } from '@/engine/Helpers';
 import Particle from '@/engine/Particle';
 import Grid from '@/engine/Grid';
 import AppPhoton from '@/components/AppPhoton.vue';
 import AppButton from '@/components/AppButton.vue';
 import QuantumFrame from '@/engine/QuantumFrame';
-
-const TAU = 2 * Math.PI;
-
-/**
- * Stolen from https://stackoverflow.com/questions/36721830/convert-hsl-to-rgb-and-hex
- * Alternatively: d3.hsl
- */
-function hslToHex(hParam: number, sParam: number, lParam: number) {
-  let h = hParam;
-  let s = sParam;
-  let l = lParam;
-  h /= 360;
-  s /= 100;
-  l /= 100;
-  let r;
-  let g;
-  let b;
-  if (s === 0) {
-    r = l;
-    g = l;
-    b = l; // achromatic
-  } else {
-    const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
-      const p = pParam;
-      const q = qParam;
-      let t = tParam;
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
-    };
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
-  }
-  const toHex = (x: number) => {
-    const hex = Math.round(x * 255).toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
-  };
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
 
 @Component({
   components: {
@@ -134,21 +91,18 @@ function hslToHex(hParam: number, sParam: number, lParam: number) {
   }
 })
 export default class GameKet extends Vue {
-  data() {
-    return {
-      ketHidden: true
-    };
-  }
-
+  // TODO: Currently kinda ugly
+  // TODO: Move logic to engine Helpers
   @Prop() readonly frame!: QuantumFrame;
   @Prop() readonly grid!: Grid;
   @Prop({ default: true }) readonly showLegend!: boolean;
 
+  ketHidden = true;
   styles = ['polar', 'cartesian', 'color-disk'];
   selectedStyle = 'polar';
 
   toggleKets(): void {
-    this.$data.ketHidden = !this.$data.ketHidden;
+    this.ketHidden = !this.ketHidden;
   }
 
   toPercent(x: number, precision = 1): string {
@@ -159,15 +113,15 @@ export default class GameKet extends Vue {
     return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name;
   }
 
-  renderComplexPolar(z: Complex, precision = 2) {
+  renderComplexPolar(z: Complex, precision = 2): string {
     return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
   }
 
-  renderComplexCartesian(z: Complex, precision = 2) {
+  renderComplexCartesian(z: Complex, precision = 2): string {
     return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
   }
 
-  diskScale(r: number): number {
+  discScale(r: number): number {
     return 8 * r;
   }
 
@@ -178,12 +132,10 @@ export default class GameKet extends Vue {
 
   renderDir(dir: number) {
     return ['⤑', '⇡', '⇠', '⇣'][dir];
-    // or return ["⟷", "↕︎"][pol];
   }
 
   renderPol(pol: number) {
     return ['H', 'V'][pol];
-    // or return ["⟷", "↕︎"][pol];
   }
 
   get absorptions() {
@@ -211,7 +163,6 @@ export default class GameKet extends Vue {
   text-align: center;
   transition: height 0.5s;
   overflow: hidden;
-  // max-height: 150px;
   align-content: space-between;
   @media screen and (max-width: 1000px) {
     padding: 0;
@@ -267,11 +218,9 @@ export default class GameKet extends Vue {
         margin: 5px;
       }
       & .ket-disk {
-        //padding: 2px;
         margin-left: 5px;
       }
       & .ket-coord {
-        //background-color: #2e006a;
         color: white;
         padding: 1px;
         margin: 5px;
@@ -287,7 +236,6 @@ export default class GameKet extends Vue {
   & .btn-group {
     text-align: center;
     display: flex;
-    // flex-direction: column;
     justify-content: center;
     & button {
       font-size: 0.8rem;

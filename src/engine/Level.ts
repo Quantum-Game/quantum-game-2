@@ -1,4 +1,4 @@
-import { LevelInterface, ClassicLevelInterface } from './interfaces';
+import { LevelInterface, ClassicLevelInterface, GoalInterface } from './interfaces';
 import Coord from './Coord';
 import Element from './Element';
 import Cell from './Cell';
@@ -6,6 +6,7 @@ import Grid from './Grid';
 import Toolbox from './Toolbox';
 import Goal from './Goal';
 import Hint from './Hint';
+import GameState from './GameState';
 import { convertFromClassicNames } from './Helpers';
 
 /**
@@ -23,6 +24,7 @@ export default class Level {
   goals: Goal[];
   hints: Hint[];
   toolbox: Toolbox;
+  gameState: GameState;
 
   constructor(
     id: number,
@@ -50,6 +52,9 @@ export default class Level {
     } else {
       this.toolbox = toolbox;
     }
+
+    // Initiate game state
+    this.gameState = new GameState(this.goals, this.grid.mines.cells);
 
     // Remove toolbox cells from grid
     this.grid.resetUnfrozen();
@@ -103,32 +108,14 @@ export default class Level {
    */
   static importLevel(obj: LevelInterface): Level {
     const grid = Grid.importGrid(obj.grid);
-    const goals = Goal.importGoal(obj.goals);
+    const goals = obj.goals.map((goalI: GoalInterface) => {
+      const coord = Coord.importCoord(goalI.coord);
+      const cell = grid.get(coord);
+      return new Goal(cell, goalI.threshold);
+    });
     const hints = Hint.importHint(obj.hints);
     const toolbox = Toolbox.importToolbox(obj.tools);
     return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox);
-  }
-
-  /**
-   * Import a json level
-   * @param obj a level interface with primitives
-   * @returns a Level instance
-   */
-  static importClassicLevel(obj: ClassicLevelInterface): Level {
-    const rows = obj.height;
-    const cols = obj.width;
-    const grid = new Grid(rows, cols);
-    obj.tiles.forEach((tile) => {
-      const element = Element.fromName(convertFromClassicNames(tile.name));
-      const rotation = tile.rotation * element.rotationAngle;
-      const coord = new Coord(tile.j, tile.i);
-      const cell = new Cell(coord, element, rotation, tile.frozen);
-      grid.set(cell);
-    });
-    const goals: Goal[] = [];
-    const hints: Hint[] = [];
-    const toolbox: Toolbox = new Toolbox([]);
-    return new Level(0, obj.name, obj.group, '', grid, goals, hints, toolbox);
   }
 
   /**

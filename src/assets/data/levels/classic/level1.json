@@ -14,9 +14,9 @@
         },
         "element": "Laser",
         "rotation": 0,
+        "polarization": 0,
         "frozen": true,
-        "active": true,
-        "energized": false
+        "active": true
       },
       {
         "coord": {
@@ -26,8 +26,7 @@
         "element": "Rock",
         "rotation": 0,
         "frozen": true,
-        "active": false,
-        "energized": true
+        "active": false
       },
       {
         "coord": {
@@ -74,5 +73,8 @@
       "threshold": 1
     }
   ],
-  "tools": ["Mirror", "Mirror"]
+  "tools": [
+    "Mirror",
+    "Mirror"
+  ]
 }

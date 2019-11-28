@@ -1,5 +1,7 @@
 <template>
-  <button :class="computedClass"><slot></slot></button>
+  <button :class="computeClass">
+    <slot></slot>
+  </button>
 </template>
 
 <script lang="ts">
@@ -16,13 +18,13 @@ export default class AppButton extends Vue {
     return this.hoverColor;
   }
 
-  get computedClass() {
+  get computeClass() {
     return [this.type, this.inline && 'inline', this.overlay && 'overlay-btn'];
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped lang="scss">
 button {
   display: inline-block;
   padding: 0;
@@ -43,51 +45,51 @@ button {
   &.inline {
     display: inline;
   }
-}
 
-.basic {
-  background-color: #5c00d3;
-  border-bottom: 4px solid #120223;
-  &:hover {
-    background-color: #4302bf;
-    transition: 0.5s;
-    text-decoration: none;
+  &.basic {
+    background-color: #5c00d3;
+    border-bottom: 4px solid #120223;
+    &:hover {
+      background-color: #4302bf;
+      transition: 0.5s;
+      text-decoration: none;
+    }
   }
-}
 
-.special {
-  background-color: #ff0055;
-  border-bottom: 4px solid #890236;
-  &:hover {
-    background-color: #e80054;
-    transition: 0.5s;
-    text-decoration: none;
-  }
-}
-
-.big {
-  background-color: #5c00d3;
-  font-size: 1.5rem;
-  border-bottom: 4px solid #120223;
-  &:hover {
-    background-color: #4302bf;
-    transition: 0.5s;
-    text-decoration: none;
-  }
-}
-
-.inactive {
-  opacity: 0.3;
-  cursor: initial;
-  outline: none;
-  &:hover {
+  &.special {
     background-color: #ff0055;
-    transition: none;
+    border-bottom: 4px solid #890236;
+    &:hover {
+      background-color: #e80054;
+      transition: 0.5s;
+      text-decoration: none;
+    }
   }
-}
 
-.overlay-btn {
-  margin: 5px;
-  text-decoration: none;
+  &.big {
+    background-color: #5c00d3;
+    font-size: 1.5rem;
+    border-bottom: 4px solid #120223;
+    &:hover {
+      background-color: #4302bf;
+      transition: 0.5s;
+      text-decoration: none;
+    }
+  }
+
+  &.inactive {
+    opacity: 0.3;
+    cursor: initial;
+    outline: none;
+    &:hover {
+      background-color: #ff0055;
+      transition: none;
+    }
+  }
+
+  &.overlay-btn {
+    margin: 5px;
+    text-decoration: none;
+  }
 }
 </style>

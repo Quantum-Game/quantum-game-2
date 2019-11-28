@@ -17,24 +17,27 @@
       },
       {
         "coord": { "y": 3, "x": 3 },
-        "element": "PolarizerH",
-        "rotation": 270,
+        "element": "Polarizer",
+        "rotation": 0,
+        "polarization": 0,
         "frozen": true,
         "active": false,
         "energized": false
       },
       {
         "coord": { "y": 3, "x": 5 },
-        "element": "PolarizerH",
-        "rotation": 315,
+        "element": "Polarizer",
+        "rotation": 90,
+        "polarization": 0,
         "frozen": false,
         "active": false,
         "energized": false
       },
       {
         "coord": { "y": 3, "x": 7 },
-        "element": "PolarizerH",
-        "rotation": 180,
+        "element": "Polarizer",
+        "rotation": 0,
+        "polarization": 90,
         "frozen": true,
         "active": false,
         "energized": false
@@ -56,5 +59,7 @@
       "threshold": 1
     }
   ],
-  "tools": []
+  "tools": [
+    "Polarizer"
+  ]
 }

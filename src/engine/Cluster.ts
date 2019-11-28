@@ -138,18 +138,21 @@ export default class Cluster {
     return new Cluster(this.cells.filter((cell) => !cell.frozen));
   }
 
-  // Emitters
+  // Source Group
   get lasers(): Cluster {
     return this.filteredBy(Elem.Laser);
   }
   get nonlinearcrystals(): Cluster {
     return this.filteredBy(Elem.NonLinearCrystal);
   }
-  get emitters(): Cluster {
+  get sourceGroup(): Cluster {
     return new Cluster(this.lasers.cells.concat(this.nonlinearcrystals.cells));
   }
+  get emitters(): Cluster {
+    return this.sourceGroup;
+  }
 
-  // Reflectors
+  // Direction group
   get mirrors(): Cluster {
     return this.filteredBy(Elem.Mirror);
   }
@@ -165,7 +168,7 @@ export default class Cluster {
   get cornercubes(): Cluster {
     return this.filteredBy(Elem.CornerCube);
   }
-  get reflectors(): Cluster {
+  get directionGroup(): Cluster {
     return new Cluster(
       this.mirrors.cells.concat(
         this.beamsplitters.cells,
@@ -176,7 +179,7 @@ export default class Cluster {
     );
   }
 
-  // Absorbers
+  // Absorption group
   get detectors(): Cluster {
     return this.filteredBy(Elem.Detector);
   }
@@ -186,10 +189,10 @@ export default class Cluster {
   get rocks(): Cluster {
     return this.filteredBy(Elem.Rock);
   }
-  get fourdetectors(): Cluster {
+  get omnidetectors(): Cluster {
     return this.filteredBy(Elem.DetectorFour);
   }
-  get filters(): Cluster {
+  get absorbers(): Cluster {
     return this.filteredBy(Elem.Absorber);
   }
   get walls(): Cluster {
@@ -204,57 +207,50 @@ export default class Cluster {
   get openedGates(): Cluster {
     return this.gates.active;
   }
-  get absorbers(): Cluster {
+  get absorptionGroup(): Cluster {
     return new Cluster(
       this.detectors.cells.concat(
         this.mines.cells,
         this.rocks.cells,
-        this.fourdetectors.cells,
-        this.filters.cells,
+        this.omnidetectors.cells,
+        this.absorbers.cells,
         this.walls.cells,
         this.closedGates.cells
       )
     );
   }
-  // Polarizers
-  get polarizersH(): Cluster {
-    return this.filteredBy(Elem.PolarizerH);
+
+  // Polarization group
+  get polarizers(): Cluster {
+    return this.filteredBy(Elem.Polarizer);
   }
-  get polarizersV(): Cluster {
-    return this.filteredBy(Elem.PolarizerV);
+  get quarterwaveplates(): Cluster {
+    return this.filteredBy(Elem.QuarterWavePlate);
   }
-  get waveplatesH(): Cluster {
-    return this.filteredBy(Elem.QuarterWavePlateH);
-  }
-  get waveplatesV(): Cluster {
-    return this.filteredBy(Elem.QuarterWavePlateV);
-  }
-  get sugars(): Cluster {
+  get sugarsolutions(): Cluster {
     return this.filteredBy(Elem.SugarSolution);
   }
   get faradays(): Cluster {
     return this.filteredBy(Elem.FaradayRotator);
   }
-  get polarizers(): Cluster {
+  get polarizationGroup(): Cluster {
     return new Cluster(
-      this.polarizersH.cells.concat(
-        this.polarizersV.cells,
-        this.waveplatesH.cells,
-        this.waveplatesV.cells,
-        this.sugars.cells,
+      this.polarizers.cells.concat(
+        this.quarterwaveplates.cells,
+        this.sugarsolutions.cells,
         this.faradays.cells
       )
     );
   }
 
-  // Phasers
+  // Phase group
   get vacuumjars(): Cluster {
     return this.filteredBy(Elem.VacuumJar);
   }
   get glasses(): Cluster {
     return this.filteredBy(Elem.Glass);
   }
-  get phaseshifters(): Cluster {
+  get phaseGroup(): Cluster {
     return new Cluster(this.vacuumjars.cells.concat(this.glasses.cells));
   }
 }

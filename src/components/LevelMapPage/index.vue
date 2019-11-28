@@ -5,9 +5,9 @@
         <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
           <h3>{{ group[0].group }}</h3>
           <ul v-for="(level, j) in group" :key="'level' + j" class="group">
-              <router-link class="levelLink" :to="`/level/${level.id}`">
-                {{ level.id }} - {{ level.name }}
-              </router-link>
+            <router-link class="levelLink" :to="`/level/${level.id}`">
+              {{ level.id }} - {{ level.name }}
+            </router-link>
           </ul>
         </div>
       </div>
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import * as _ from 'lodash';
+import _ from 'lodash';
 import { Vue, Component } from 'vue-property-decorator';
 import { LevelInterface } from '@/engine/interfaces';
 import AppLayout from '@/components/AppLayout.vue';
@@ -37,15 +37,15 @@ export default class LevelMapPage extends Vue {
 </script>
 
 <style lang="scss">
-.container {
-  column-count: 1;
-  padding: 5em;
-  @media screen and (max-width: 800px) {
-    column-count: 1;
-    padding: 0;
-  }
-}
 .main {
+  .container {
+    column-count: 1;
+    padding: 5em;
+    @media screen and (max-width: 800px) {
+      column-count: 1;
+      padding: 0;
+    }
+  }
   text-align: center;
   .groups {
     display: block;
@@ -64,12 +64,5 @@ export default class LevelMapPage extends Vue {
       color: white;
     }
   }
-  // & .main__level-list {
-  //   height: 100vh;
-  //   display: flex;
-  //   justify-content: space-around;
-  //   padding: 0;
-  //   margin: 10;
-  //   list-style: none;
 }
 </style>

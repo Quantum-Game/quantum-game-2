@@ -1,17 +1,17 @@
 import { GoalInterface } from './interfaces';
-import Coord from './Coord';
+import Cell from './Cell';
 
 /**
  * GOAL CLASS
  * The goals to be achieved by the player
  */
-export default class Goal extends Coord {
-  coord: Coord;
+export default class Goal extends Cell {
+  cell: Cell;
   threshold: number;
 
-  constructor(coord: Coord, threshold: number, value = 0) {
-    super(coord.y, coord.x);
-    this.coord = coord;
+  constructor(cell: Cell, threshold: number) {
+    super(cell.coord, cell.element);
+    this.cell = cell;
     this.threshold = threshold;
   }
 
@@ -24,19 +24,11 @@ export default class Goal extends Coord {
   }
 
   /**
-   * Returns a percentage of the current value compared to the expected value.
-   * @returns number from 0 to 1 describing percentage
-   */
-  percentage(value: number): number {
-    return (value / this.threshold) * 100;
-  }
-
-  /**
    * Override toString() method to display the goal
    * @returns string
    */
   toString(): string {
-    return `{#Goal ${this.threshold}% @ ${this.coord.toString()}`;
+    return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`;
   }
 
   /**
@@ -45,21 +37,9 @@ export default class Goal extends Coord {
    */
   exportGoal(): GoalInterface {
     return {
-      coord: this.coord.exportCoord(),
+      coord: this.cell.coord.exportCoord(),
       threshold: this.threshold
     };
-  }
-
-  /**
-   * Import goals from list of interfaces
-   * @param goalObjs List of interfaces
-   * @returns list of Goal instances
-   */
-  static importGoal(goalObjs: GoalInterface[]): Goal[] {
-    return goalObjs.map((goal) => {
-      const { coord } = goal;
-      return new Goal(Coord.importCoord(coord), goal.threshold);
-    });
   }
 
   /**
@@ -67,7 +47,6 @@ export default class Goal extends Coord {
    * @param goals list of goals
    * @returns formatted string describing goals
    */
-
   static manyToString(goals: Goal[]): string {
     let result = `${goals.length} active goals...\n`;
     goals.forEach((goal) => {

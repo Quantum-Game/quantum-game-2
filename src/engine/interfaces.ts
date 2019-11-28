@@ -3,10 +3,9 @@
  * Particle interface in primitives
  */
 export interface ParticleInterface {
-  coord: CoordInterface;
+  x: number;
+  y: number;
   direction: number;
-  intensity: number;
-  phase: number;
   are: number;
   aim: number;
   bre: number;
@@ -72,6 +71,15 @@ export interface GoalInterface {
 }
 
 /**
+ * GOAL INTERFACE
+ * Goal interface in primitives
+ */
+export interface AbsorptionInterface {
+  coord: CoordInterface;
+  probability: number;
+}
+
+/**
  * HINT INTERFACE
  * Hint interface in primitives
  */
@@ -108,10 +116,22 @@ export interface ClusterInterface {
 export interface CellInterface {
   coord: CoordInterface;
   element: string;
-  rotation?: number;
   frozen: boolean;
+  rotation?: number;
+  polarization?: number;
+  percentage?: number;
   active?: boolean;
   energized?: boolean;
+}
+
+/**
+ * ELEMENT TRANSITION INTERFACE
+ * A transition interface composed of primitives to get operators
+ */
+export interface TransitionInterface {
+  rotation: number;
+  polarization: number;
+  percentage: number;
 }
 
 /**
@@ -123,6 +143,16 @@ export interface ElementInterface {
   group: string;
   description: string;
   ascii: string[];
+  params?: ElementParameterInterface[];
+}
+
+/**
+ * ELEMENT PARAMETER INTERFACE
+ * Element parameter interface composed of primitive types
+ */
+export interface ElementParameterInterface {
+  key: string;
+  value: number;
 }
 
 /**
@@ -188,10 +218,8 @@ export const enum Elem {
   Absorber = 'Absorber',
   DetectorFour = 'DetectorFour',
   // Polarization
-  PolarizerH = 'PolarizerH',
-  PolarizerV = 'PolarizerV',
-  QuarterWavePlateH = 'QuarterWavePlateH',
-  QuarterWavePlateV = 'QuarterWavePlateV',
+  Polarizer = 'Polarizer',
+  QuarterWavePlate = 'QuarterWavePlate',
   SugarSolution = 'SugarSolution',
   FaradayRotator = 'FaradayRotator',
   // Phase
@@ -223,10 +251,8 @@ export const enum ElemLower {
   Absorber = 'absorber',
   DetectorFour = 'detector-four',
   // Polarization
-  PolarizerH = 'polarizer-h',
-  PolarizerV = 'polarizer-v',
-  QuarterWavePlateH = 'quarter-wave-plate-h',
-  QuarterWavePlateV = 'quarter-wave-plate-v',
+  Polarizer = 'polarizer',
+  QuarterWavePlate = 'quarter-wave-plate',
   SugarSolution = 'sugar-solution',
   FaradayRotator = 'faraday-rotator',
   // Phase
@@ -250,7 +276,7 @@ export const enum Group {
  * Element groups
  */
 export const ElemGroups: { [symbol: string]: Elem[] } = {
-  Basic: [Elem.Void, Elem.Wall, Elem.Gate],
+  Basic: [Elem.Void],
   Source: [Elem.Laser, Elem.NonLinearCrystal],
   Direction: [
     Elem.Mirror,
@@ -259,22 +285,51 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.CoatedBeamSplitter,
     Elem.CornerCube
   ],
-  Absorption: [Elem.Detector, Elem.Rock, Elem.Mine, Elem.Absorber, Elem.DetectorFour],
-  Polarization: [
-    Elem.PolarizerH,
-    Elem.PolarizerV,
-    Elem.QuarterWavePlateH,
-    Elem.QuarterWavePlateV,
-    Elem.SugarSolution,
-    Elem.FaradayRotator
+  Absorption: [
+    Elem.Gate,
+    Elem.Detector,
+    Elem.Rock,
+    Elem.Mine,
+    Elem.Absorber,
+    Elem.DetectorFour,
+    Elem.Wall
   ],
+  Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
   Phase: [Elem.Glass, Elem.VacuumJar]
 };
 
 /**
+ * Photon indicator interface for glue code with qt Photons
+ */
+export interface IndicatorInterface {
+  x: number;
+  y: number;
+  direction: DirEnum;
+  polarization: PolEnum;
+}
+
+/**
+ * Laser starting polarization enum
+ */
+export const enum PolEnum {
+  V = 'V',
+  H = 'H'
+}
+
+/**
+ * Laser starting direction enum
+ */
+export const enum DirEnum {
+  '>' = '>',
+  '^' = '^',
+  '<' = '<',
+  'v' = 'v'
+}
+
+/**
  * Game state enum
  */
-export const enum GameState {
+export const enum GameStateEnum {
   // Initial
   Initial = 'Initial',
   InProgress = 'InProgress',
@@ -283,6 +338,5 @@ export const enum GameState {
   // Defeat
   MineExploded = 'MineExploded',
   GoalsNotCompleted = 'GoalsNotCompleted',
-  ProbabilityTooLow = 'ProbabilityTooLow',
-  InfiniteLoop = 'InfiniteLoop'
+  ProbabilityTooLow = 'ProbabilityTooLow'
 }
