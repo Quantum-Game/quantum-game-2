@@ -511,7 +511,7 @@ h1.title {
   }
   @media screen and (max-width: 1000px) {
     a img {
-      width: 7vw !important;
+      width: 6vw !important;
     }
   }
 }

@@ -21,6 +21,9 @@
 
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
+      <div class="mobile_progressBar">
+        <div class="mobile_progressBarFill" :style="{width: (gameState.totalGoal + '%')}"></div>
+      </div>
       <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
 
@@ -149,6 +152,7 @@ export default class GameGoals extends Vue {
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 0;
+    margin-bottom: 5px;
   }
   & .upper-icons {
     display: flex;
@@ -161,6 +165,9 @@ export default class GameGoals extends Vue {
     padding: 10px;
     @media screen and (max-width: 1000px) {
       line-height: 75%;
+      div {
+        display: none;
+      }
       img {
         width: 4vw !important;
       }
@@ -204,8 +211,38 @@ export default class GameGoals extends Vue {
 .goalPercentage {
   font-size: 0.8rem;
   margin-bottom: 2rem;
+  position: relative;
   @media screen and (max-width: 1000px) {
     margin-bottom: 0;
+    div:last-child {
+      text-shadow: 1px 1px 1px black;
+      z-index: 2;
+      position: relative;
+      top: 0;
+      left: 0;
+    }
+    .mobile_progressBar {
+      position: absolute;
+      width: 110%;
+      height: 14px;
+      border: 1px solid limegreen;
+      border-radius: 4px;
+      top: 0;
+      left: -5%;
+      z-index: 1;
+
+    }
+    .mobile_progressBarFill {
+      position: absolute;
+      width: 0%;
+      height: 14px;
+      background-color: limegreen;
+      border-radius: 4px;
+      top: 0;
+      left: 0;
+      transition: width 1s ease-in-out;
+      z-index: 1;
+    }
   }
 }
 .defeat {

@@ -53,7 +53,7 @@ export default class GameLayout extends Vue {}
   -ms-user-select: none; // IE 10+
   user-select: none;
   @media screen and (min-width: 1300px) {
-    display: flex;
+    display:flex;
   }
 }
 
@@ -96,7 +96,7 @@ header {
     }
   }
   @media screen and (max-width: 1000px) {
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     h1 {
       font-size: 1em;
@@ -109,6 +109,15 @@ header {
       justify-content: flex-start;
       align-items: center;
       min-height: 41px;
+      min-width: 35px;
+      width: 15%;
+    }
+    .right {
+      width: 0;
+      min-width: 0;
+    }
+    .middle {
+      width: 85%;
     }
   }
 }
@@ -133,4 +142,12 @@ footer {
   padding: 1rem;
   opacity: 0.2;
 }
+
+main {
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+}
+
 </style>
