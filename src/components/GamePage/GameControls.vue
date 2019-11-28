@@ -219,6 +219,11 @@ button {
   height: 30px;
   width: 30px;
   margin: 0 0.2rem;
+  @media screen and (max-width: 1000px) {
+    width: 4.5vw;
+    height: 4.5vw;
+    margin: 0.2rem 0.4rem;
+  }
 }
 .gameState {
   font-size: 0.75rem;
@@ -242,6 +247,8 @@ button {
     display: flex !important;
     @media screen and (max-width: 1000px) {
       button {
+        background-repeat: no-repeat;
+        background-size: contain;
         display: flex;
         width: 4.5vw;
         height: 4.5vw;
