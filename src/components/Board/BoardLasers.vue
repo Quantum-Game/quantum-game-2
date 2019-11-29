@@ -7,8 +7,9 @@
         stroke-dasharray="8 8"
         fill="transparent"
         stroke="#FF0055"
-        :stroke-width="computeSize(particle)"
+        stroke-width="3"
         class="laserPath"
+        :stroke-opacity="computeSize(particle)"
       />
     </g>
   </g>
@@ -42,7 +43,7 @@ export default class Board extends Vue {
    * @returns laser path width
    */
   computeSize(particle: Particle): number {
-    return 2 + particle.probability * 3;
+    return particle.probability * 1.5;
   }
 }
 </script>
@@ -52,7 +53,7 @@ export default class Board extends Vue {
   width: 100%;
   height: 100%;
   .laserPath {
-    stroke-dasharray: 8;
+    stroke-dasharray: 4 12;
     animation-name: dash;
     animation-duration: 4s;
     animation-timing-function: linear;
