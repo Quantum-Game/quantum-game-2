@@ -53,6 +53,8 @@ export default class GamePhotons extends Vue {
   width: 100%;
   display: block;
   text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
   @media screen and (max-width: 1000px) {
     display: none;
   }
@@ -62,6 +64,8 @@ export default class GamePhotons extends Vue {
   }
   h3 {
     text-transform: uppercase;
+    margin-top: 8px;
+    font-size: 1rem;
   }
   .info {
     font-size: 0.8rem;
