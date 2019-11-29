@@ -46,6 +46,7 @@ export default class AppLayout extends Vue {}
     padding: 0;
     @media screen and (max-width: 1000px) {
       width: 100%;
+      padding: 0;
     }
     &.left {
       width: 16%;
@@ -67,6 +68,7 @@ export default class AppLayout extends Vue {}
       color: white;
       @media screen and (max-width: 1000px) {
         width: 100%;
+        padding: 0px !important;
       }
     }
   }

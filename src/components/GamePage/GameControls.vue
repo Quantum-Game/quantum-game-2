@@ -242,6 +242,12 @@ button {
     button {
       display: none;
     }
+    .frameInfo {
+      display: none;
+      display: flex;
+      flex-direction: column;
+      
+    }
   }
   .playback {
     display: flex !important;

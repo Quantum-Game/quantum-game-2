@@ -113,14 +113,13 @@ body {
     height: 90px;
     @media screen and (max-width: 1000px) {
       width: 64px;
-      height: 90px;
       padding: 0;
       width: auto;
-      height: auto;
       min-width: 35px;
       min-height: 0;
       flex-grow: 1;
       flex-basis: 20%;
+      height: 15vw;
     }
     .counter {
       transform-origin: 50% 100%;

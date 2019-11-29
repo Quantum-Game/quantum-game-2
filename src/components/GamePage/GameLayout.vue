@@ -82,6 +82,7 @@ export default class GameLayout extends Vue {}
   }
   & .right {
     z-index: 2;
+    padding: 0;
   }
 }
 
@@ -99,7 +100,8 @@ header {
     flex-direction: row;
     width: 100%;
     h1 {
-      font-size: 1em;
+      font-size: 1em !important;
+      margin-top: 10px !important;
       display: flex;
       align-items: center;
       margin-bottom: 0;
