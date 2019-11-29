@@ -92,7 +92,6 @@ export default class EncyclopediaArticle extends Vue {
     font-size: 2rem;
     font-weight: bold;
     padding-top: 30px;
-
   }
   & .short {
     font-size: 1rem;
@@ -147,5 +146,4 @@ h1 {
     }
   }
 }
-
 </style>

@@ -53,7 +53,7 @@ export default class GameLayout extends Vue {}
   -ms-user-select: none; // IE 10+
   user-select: none;
   @media screen and (min-width: 1300px) {
-    display:flex;
+    display: flex;
   }
 }
 
@@ -151,5 +151,4 @@ main {
     padding: 0 20px;
   }
 }
-
 </style>

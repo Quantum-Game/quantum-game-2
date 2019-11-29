@@ -246,7 +246,6 @@ button {
       display: none;
       display: flex;
       flex-direction: column;
-      
     }
   }
   .playback {

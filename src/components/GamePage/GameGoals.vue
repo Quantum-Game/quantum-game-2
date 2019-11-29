@@ -22,7 +22,7 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div class="mobile_progressBar">
-        <div class="mobile_progressBarFill" :style="{width: (gameState.totalGoal + '%')}"></div>
+        <div class="mobile_progressBarFill" :style="{ width: gameState.totalGoal + '%' }"></div>
       </div>
       <div>Goal: {{ gameState.totalGoal }} %</div>
     </div>
@@ -230,7 +230,6 @@ export default class GameGoals extends Vue {
       top: 0;
       left: -5%;
       z-index: 1;
-
     }
     .mobile_progressBarFill {
       position: absolute;
