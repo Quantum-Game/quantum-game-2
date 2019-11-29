@@ -11,7 +11,7 @@ body {
   box-sizing: border-box;
   overflow-x: hidden;
   @media screen and (max-width: 800px) {
-   // overflow-y: hidden;
+    // overflow-y: hidden;
   }
 }
 #app {
