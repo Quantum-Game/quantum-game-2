@@ -1,6 +1,6 @@
-import { Elem, PolEnum, DirEnum } from '@/engine/interfaces';
+import { Elem, PolEnum, DirEnum } from '@/engine/interfaces'
 
-export const TAU = 2 * Math.PI;
+export const TAU = 2 * Math.PI
 
 /**
  * Pick a random index of an array according to weights.
@@ -9,18 +9,18 @@ export const TAU = 2 * Math.PI;
  * @returns A number [0, ..., weights.length -1].
  */
 export function weightedRandomInt(weights: number[], normalize = true): number {
-  let r = Math.random();
+  let r = Math.random()
   if (normalize) {
-    r *= weights.reduce((a, b) => a + b, 0);
+    r *= weights.reduce((a, b) => a + b, 0)
   }
-  let cumSum = 0;
+  let cumSum = 0
   for (let i = 0; i < weights.length; i += 1) {
-    cumSum += weights[i];
+    cumSum += weights[i]
     if (cumSum > r) {
-      return i;
+      return i
     }
   }
-  return -1;
+  return -1
 }
 
 /**
@@ -35,7 +35,7 @@ export function camelCaseToDash(str: string): string {
     .replace(/([0-9])([^0-9])/g, '$1-$2')
     .replace(/([^0-9])([0-9])/g, '$1-$2')
     .replace(/-+/g, '-')
-    .toLowerCase();
+    .toLowerCase()
 }
 
 /**
@@ -43,42 +43,42 @@ export function camelCaseToDash(str: string): string {
  * Alternatively: d3.hsl
  */
 export function hslToHex(hParam: number, sParam: number, lParam: number): string {
-  let h = hParam;
-  let s = sParam;
-  let l = lParam;
-  h /= 360;
-  s /= 100;
-  l /= 100;
-  let r;
-  let g;
-  let b;
+  let h = hParam
+  let s = sParam
+  let l = lParam
+  h /= 360
+  s /= 100
+  l /= 100
+  let r
+  let g
+  let b
   if (s === 0) {
-    r = l;
-    g = l;
-    b = l; // achromatic
+    r = l
+    g = l
+    b = l // achromatic
   } else {
     const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
-      const p = pParam;
-      const q = qParam;
-      let t = tParam;
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
-    };
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
+      const p = pParam
+      const q = qParam
+      let t = tParam
+      if (t < 0) t += 1
+      if (t > 1) t -= 1
+      if (t < 1 / 6) return p + (q - p) * 6 * t
+      if (t < 1 / 2) return q
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+      return p
+    }
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+    r = hue2rgb(p, q, h + 1 / 3)
+    g = hue2rgb(p, q, h)
+    b = hue2rgb(p, q, h - 1 / 3)
   }
   const toHex = (x: number) => {
-    const hex = Math.round(x * 255).toString(16);
-    return hex.length === 1 ? `0${hex}` : hex;
-  };
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    const hex = Math.round(x * 255).toString(16)
+    return hex.length === 1 ? `0${hex}` : hex
+  }
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
 }
 
 /**
@@ -86,9 +86,9 @@ export function hslToHex(hParam: number, sParam: number, lParam: number): string
  * https://github.com/stared/quantum-game/blob/master/js/transition_heatmap.js
  */
 export function colorComplex(re: number, im: number): string {
-  const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360;
-  const r = Math.sqrt(re * re + im * im); // for pure color it should be always 1
-  return hslToHex(angleInDegrees, 100, 100 - 50 * r);
+  const angleInDegrees = ((Math.atan2(im, re) * 360) / TAU + 360) % 360
+  const r = Math.sqrt(re * re + im * im) // for pure color it should be always 1
+  return hslToHex(angleInDegrees, 100, 100 - 50 * r)
 }
 
 /**
@@ -99,23 +99,23 @@ export function colorComplex(re: number, im: number): string {
 export function angleToSymbol(angle: number): string {
   switch (angle) {
     case 0:
-      return '→';
+      return '→'
     case 45:
-      return '↗';
+      return '↗'
     case 90:
-      return '↑';
+      return '↑'
     case 135:
-      return '↖';
+      return '↖'
     case 180:
-      return '←';
+      return '←'
     case 225:
-      return '↙';
+      return '↙'
     case 270:
-      return '↓';
+      return '↓'
     case 315:
-      return '↘';
+      return '↘'
     default:
-      throw new Error(`Something is wrong with provided angle: ${angle}°`);
+      throw new Error(`Something is wrong with provided angle: ${angle}°`)
   }
 }
 
@@ -128,23 +128,23 @@ export function angleToSymbol(angle: number): string {
 export function symbolToAngle(direction: string): number {
   switch (direction) {
     case '→':
-      return 0;
+      return 0
     case '↗':
-      return 45;
+      return 45
     case '↑':
-      return 90;
+      return 90
     case '↖':
-      return 135;
+      return 135
     case '←':
-      return 180;
+      return 180
     case '↙':
-      return 225;
+      return 225
     case '↓':
-      return 270;
+      return 270
     case '↘':
-      return 315;
+      return 315
     default:
-      throw new Error('Something is wrong with provided direction string.');
+      throw new Error('Something is wrong with provided direction string.')
   }
 }
 
@@ -155,12 +155,12 @@ export function startingPolarization(polarization: number): PolEnum {
   switch (polarization) {
     case 0:
     case 180:
-      return PolEnum.H;
+      return PolEnum.H
     case 90:
     case 270:
-      return PolEnum.V;
+      return PolEnum.V
     default:
-      throw new Error(`Wrong starting polarization: ${polarization}`);
+      throw new Error(`Wrong starting polarization: ${polarization}`)
   }
 }
 
@@ -170,15 +170,15 @@ export function startingPolarization(polarization: number): PolEnum {
 export function startingDirection(rotation: number): DirEnum {
   switch (rotation) {
     case 0:
-      return DirEnum['>'];
+      return DirEnum['>']
     case 90:
-      return DirEnum['^'];
+      return DirEnum['^']
     case 180:
-      return DirEnum['<'];
+      return DirEnum['<']
     case 270:
-      return DirEnum.v;
+      return DirEnum.v
     default:
-      throw new Error(`Wrong starting direction: ${rotation}`);
+      throw new Error(`Wrong starting direction: ${rotation}`)
   }
 }
 
@@ -187,7 +187,7 @@ export function startingDirection(rotation: number): DirEnum {
  * @param arr Array to flatten
  */
 export function flatDeep(arr: Array<any>): Array<any> {
-  return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val) : val), []);
+  return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val) : val), [])
 }
 
 /**
@@ -196,7 +196,7 @@ export function flatDeep(arr: Array<any>): Array<any> {
  * @returns percentage string
  */
 export function toPercent(value: number): string {
-  return `${(value * 100).toFixed(2)}%`;
+  return `${(value * 100).toFixed(2)}%`
 }
 
 /**
@@ -207,7 +207,7 @@ export function toPercent(value: number): string {
 export function displayText(elementId: string, text: string): void {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   // document.getElementById(elementId)!.textContent = text;
-  console.debug(`Log #${elementId}: ${text}`);
+  console.debug(`Log #${elementId}: ${text}`)
 }
 
 /**
@@ -219,48 +219,48 @@ export function convertFromClassicNames(classic: string): string {
   switch (classic) {
     // Source
     case 'Source':
-      return Elem.Laser;
+      return Elem.Laser
     // Direction
     case 'ThinMirror':
-      return Elem.Mirror;
+      return Elem.Mirror
     case 'ThinSplitter':
-      return Elem.BeamSplitter;
+      return Elem.BeamSplitter
     case 'PolarizingSplitter':
-      return Elem.PolarizingBeamSplitter;
+      return Elem.PolarizingBeamSplitter
     case 'ThinSplitterCoated':
-      return Elem.CoatedBeamSplitter;
+      return Elem.CoatedBeamSplitter
     case 'CornerCube':
-      return Elem.CornerCube;
+      return Elem.CornerCube
     // Absorption
     case 'Detector':
-      return Elem.Detector;
+      return Elem.Detector
     case 'Rock':
-      return Elem.Rock;
+      return Elem.Rock
     case 'Mine':
-      return Elem.Mine;
+      return Elem.Mine
     case 'Absorber':
-      return Elem.Absorber;
+      return Elem.Absorber
     case 'DetectorFour':
-      return Elem.DetectorFour;
+      return Elem.DetectorFour
     // Polarization
     case 'PolarizerNS':
-      return Elem.Polarizer;
+      return Elem.Polarizer
     case 'PolarizerWE':
-      return Elem.Polarizer;
+      return Elem.Polarizer
     case 'QuarterWavePlateNS':
-      return Elem.QuarterWavePlate;
+      return Elem.QuarterWavePlate
     case 'QuarterWavePlateWE':
-      return Elem.QuarterWavePlate;
+      return Elem.QuarterWavePlate
     case 'SugarSolution':
-      return Elem.SugarSolution;
+      return Elem.SugarSolution
     case 'FaradayRotator':
-      return Elem.FaradayRotator;
+      return Elem.FaradayRotator
     // Phase
     case 'Glass':
-      return Elem.Glass;
+      return Elem.Glass
     case 'VacuumJar':
-      return Elem.VacuumJar;
+      return Elem.VacuumJar
     default:
-      throw new Error(`Error converting name from classic: ${classic}`);
+      throw new Error(`Error converting name from classic: ${classic}`)
   }
 }

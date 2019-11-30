@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import _ from 'lodash';
-import { Vue, Component } from 'vue-property-decorator';
-import { LevelInterface } from '@/engine/interfaces';
-import AppLayout from '@/components/AppLayout.vue';
-import levels from '@/assets/data/levels/index';
+import _ from 'lodash'
+import { Vue, Component } from 'vue-property-decorator'
+import { LevelInterface } from '@/engine/interfaces'
+import AppLayout from '@/components/AppLayout.vue'
+import levels from '@/assets/data/levels/index'
 
 @Component({
   components: {
@@ -30,8 +30,8 @@ import levels from '@/assets/data/levels/index';
 export default class LevelMapPage extends Vue {
   get groups() {
     return _.groupBy(levels, (level: LevelInterface) => {
-      return level.group;
-    });
+      return level.group
+    })
   }
 }
 </script>

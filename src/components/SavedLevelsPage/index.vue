@@ -37,11 +37,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator'
 /* eslint-disable-next-line */
 import $userStore from '@/store/userStore';
-import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton.vue';
+import AppLayout from '@/components/AppLayout.vue'
+import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
@@ -51,29 +51,29 @@ import AppButton from '@/components/AppButton.vue';
 })
 export default class SavedLevels extends Vue {
   get user() {
-    return $userStore.getters.userName;
+    return $userStore.getters.userName
   }
   get savedLevels() {
-    return $userStore.getters.savedLevelsList;
+    return $userStore.getters.savedLevelsList
   }
   get publicLevels() {
-    return $userStore.getters.publicLevels;
+    return $userStore.getters.publicLevels
   }
 
   removeLevel(id: string, isPublic: boolean) {
     if (isPublic) {
-      $userStore.dispatch('MAKE_LEVEL_PRIVATE', id);
+      $userStore.dispatch('MAKE_LEVEL_PRIVATE', id)
     }
-    $userStore.dispatch('REMOVE_LEVEL', id);
+    $userStore.dispatch('REMOVE_LEVEL', id)
   }
   makePublic(id: string) {
-    $userStore.dispatch('MAKE_LEVEL_PUBLIC', id);
+    $userStore.dispatch('MAKE_LEVEL_PUBLIC', id)
   }
   makePrivate(id: string) {
-    $userStore.dispatch('MAKE_LEVEL_PRIVATE', id);
+    $userStore.dispatch('MAKE_LEVEL_PRIVATE', id)
   }
   signOut() {
-    $userStore.dispatch('SIGN_OUT', this.user);
+    $userStore.dispatch('SIGN_OUT', this.user)
   }
 }
 </script>

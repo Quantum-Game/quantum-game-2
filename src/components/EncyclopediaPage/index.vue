@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { entriesNameList, relatedConceptsNameList } from '@/assets/data/entries';
-import AppLayout from '@/components/AppLayout.vue';
-import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue';
-import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue';
+import { Vue, Component } from 'vue-property-decorator'
+import { entriesNameList, relatedConceptsNameList } from '@/assets/data/entries'
+import AppLayout from '@/components/AppLayout.vue'
+import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
+import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
 
 @Component({
   components: {
@@ -23,8 +23,8 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   }
 })
 export default class Info extends Vue {
-  entryList: Array<any> = [];
-  keyConceptsList: Array<any> = [];
+  entryList: Array<any> = []
+  keyConceptsList: Array<any> = []
   readyEntries: string[] = [
     'beam-splitter',
     'detector-four',
@@ -32,16 +32,16 @@ export default class Info extends Vue {
     'faraday-rotator',
     'mirror',
     'sugar-solution'
-  ];
+  ]
 
   created() {
     entriesNameList.forEach((entryName: string) => {
-      const isReady = this.readyEntries.indexOf(entryName) > -1;
-      this.entryList.push({ name: entryName, ready: isReady });
-    });
+      const isReady = this.readyEntries.indexOf(entryName) > -1
+      this.entryList.push({ name: entryName, ready: isReady })
+    })
     relatedConceptsNameList.forEach((entryName: string) => {
-      this.keyConceptsList.push({ name: entryName, ready: true });
-    });
+      this.keyConceptsList.push({ name: entryName, ready: true })
+    })
   }
 }
 </script>

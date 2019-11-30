@@ -27,49 +27,49 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
-import { GameStateEnum } from '@/engine/interfaces';
-import $userStore from '@/store/userStore';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { State, Getter, Mutation } from 'vuex-class'
+import { GameStateEnum } from '@/engine/interfaces'
+import $userStore from '@/store/userStore'
 
 @Component
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   // TODO: Might move back to a GameControlsButton, fucks up display logic
-  @Prop() readonly frameIndex!: number;
-  @Prop() readonly totalFrames!: number;
-  @State('gameState') gameState!: GameStateEnum;
-  @State('simulationState') simulationState!: boolean;
-  soundFlag = true;
+  @Prop() readonly frameIndex!: number
+  @Prop() readonly totalFrames!: number
+  @State('gameState') gameState!: GameStateEnum
+  @State('simulationState') simulationState!: boolean
+  soundFlag = true
 
   toggleSound(): void {
-    this.soundFlag = !this.soundFlag;
+    this.soundFlag = !this.soundFlag
   }
 
   get playFlag(): boolean {
-    return !this.simulationState;
+    return !this.simulationState
   }
 
   get stepForwardFlag(): boolean {
-    return this.frameIndex + 1 !== this.totalFrames;
+    return this.frameIndex + 1 !== this.totalFrames
   }
 
   get stepBackFlag(): boolean {
-    return this.frameIndex > 0;
+    return this.frameIndex > 0
   }
 
   get computeRewindStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeBackStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/skip_back.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computePlayStyle(): {} {
@@ -77,33 +77,33 @@ export default class GameControls extends Vue {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`, //eslint-disable-line
         opacity: 1
-      };
+      }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`, //eslint-disable-line
       opacity: 1
-    };
+    }
   }
 
   get computeForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/skip_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeFastForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeSoundStyle(): {} {
@@ -111,19 +111,19 @@ export default class GameControls extends Vue {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
-      };
+      }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeDownloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeSaveStyle(): {} {
@@ -131,12 +131,12 @@ export default class GameControls extends Vue {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
-      };
+      }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`, //eslint-disable-line
       opacity: 0.3
-    };
+    }
   }
 
   get computeAccountStyle(): {} {
@@ -144,61 +144,61 @@ export default class GameControls extends Vue {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`, //eslint-disable-line
         opacity: this.playFlag ? 1 : 0.3
-      };
+      }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeOptionsStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get computeMapStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`, //eslint-disable-line
       opacity: this.playFlag ? 1 : 0.3
-    };
+    }
   }
 
   get isLoggedIn(): boolean {
-    return $userStore.getters.isLoggedIn;
+    return $userStore.getters.isLoggedIn
   }
 
   saveLevel() {
-    $userStore.dispatch('SAVE_LEVEL', this.$store.state);
+    $userStore.dispatch('SAVE_LEVEL', this.$store.state)
   }
   updateLevel() {
-    $userStore.dispatch('UPDATE_LEVEL', this.$store.state);
+    $userStore.dispatch('UPDATE_LEVEL', this.$store.state)
   }
 
   handleSave() {
     if (!this.$route.meta.levelSaved) {
-      this.saveLevel();
+      this.saveLevel()
     } else {
-      this.updateLevel();
+      this.updateLevel()
     }
   }
 
   handleAccount() {
     if (!this.isLoggedIn) {
-      this.$router.push('/login');
+      this.$router.push('/login')
     } else {
-      this.$router.push('/myaccount');
+      this.$router.push('/myaccount')
     }
   }
 
   handleOptions() {
-    this.$router.push('/options');
+    this.$router.push('/options')
   }
 
   handleMap() {
-    this.$router.push('/levels');
+    this.$router.push('/levels')
   }
 }
 </script>

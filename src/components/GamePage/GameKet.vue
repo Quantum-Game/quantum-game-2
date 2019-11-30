@@ -74,15 +74,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { Complex } from 'quantum-tensors';
-import { CellInterface, CoordInterface } from '@/engine/interfaces';
-import { hslToHex, TAU } from '@/engine/Helpers';
-import Particle from '@/engine/Particle';
-import Grid from '@/engine/Grid';
-import AppPhoton from '@/components/AppPhoton.vue';
-import AppButton from '@/components/AppButton.vue';
-import QuantumFrame from '@/engine/QuantumFrame';
+import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
+import { Complex } from 'quantum-tensors'
+import { CellInterface, CoordInterface } from '@/engine/interfaces'
+import { hslToHex, TAU } from '@/engine/Helpers'
+import Particle from '@/engine/Particle'
+import Grid from '@/engine/Grid'
+import AppPhoton from '@/components/AppPhoton.vue'
+import AppButton from '@/components/AppButton.vue'
+import QuantumFrame from '@/engine/QuantumFrame'
 
 @Component({
   components: {
@@ -93,57 +93,57 @@ import QuantumFrame from '@/engine/QuantumFrame';
 export default class GameKet extends Vue {
   // TODO: Currently kinda ugly
   // TODO: Move logic to engine Helpers
-  @Prop() readonly frame!: QuantumFrame;
-  @Prop() readonly grid!: Grid;
-  @Prop({ default: true }) readonly showLegend!: boolean;
+  @Prop() readonly frame!: QuantumFrame
+  @Prop() readonly grid!: Grid
+  @Prop({ default: true }) readonly showLegend!: boolean
 
-  ketHidden = true;
-  styles = ['polar', 'cartesian', 'color-disk'];
-  selectedStyle = 'polar';
+  ketHidden = true
+  styles = ['polar', 'cartesian', 'color-disk']
+  selectedStyle = 'polar'
 
   toggleKets(): void {
-    this.ketHidden = !this.ketHidden;
+    this.ketHidden = !this.ketHidden
   }
 
   toPercent(x: number, precision = 1): string {
-    return (100 * x).toFixed(precision);
+    return (100 * x).toFixed(precision)
   }
 
   elementName(x: number, y: number): string {
-    return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name;
+    return x === -1 && y === -1 ? 'OutOfBoard' : this.grid.cellFromXY(x, y).element.name
   }
 
   renderComplexPolar(z: Complex, precision = 2): string {
-    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`;
+    return `${z.r.toFixed(precision)} exp(i${z.phi.toFixed(precision)})`
   }
 
   renderComplexCartesian(z: Complex, precision = 2): string {
-    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`;
+    return `(${z.re.toFixed(precision)} + i${z.im.toFixed(precision)})`
   }
 
   discScale(r: number): number {
-    return 8 * r;
+    return 8 * r
   }
 
   complexToColor(z: Complex): string {
-    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360;
-    return hslToHex(angleInDegrees, 100, 50);
+    const angleInDegrees = ((z.arg() * 360) / TAU + 360) % 360
+    return hslToHex(angleInDegrees, 100, 50)
   }
 
   renderDir(dir: number) {
-    return ['⤑', '⇡', '⇠', '⇣'][dir];
+    return ['⤑', '⇡', '⇠', '⇣'][dir]
   }
 
   renderPol(pol: number) {
-    return ['H', 'V'][pol];
+    return ['H', 'V'][pol]
   }
 
   get absorptions() {
-    return this.frame.absorptions;
+    return this.frame.absorptions
   }
 
   get ketComponents() {
-    return this.frame.ketComponents;
+    return this.frame.ketComponents
   }
 }
 </script>

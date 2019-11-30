@@ -1,23 +1,23 @@
-import { HintInterface } from './interfaces';
-import Coord from './Coord';
+import { HintInterface } from './interfaces'
+import Coord from './Coord'
 
 /**
  * HINT CLASS
  * Hint will be active when simulation or gameplay events fire.
  */
 export default class Hint {
-  coord: Coord;
-  content: string;
-  color?: string;
-  rotation?: number;
-  active?: boolean;
+  coord: Coord
+  content: string
+  color?: string
+  rotation?: number
+  active?: boolean
 
   constructor(coord: Coord, content: string, color = 'purple', rotation = 0, active = true) {
-    this.coord = coord;
-    this.content = content;
-    this.color = color;
-    this.rotation = rotation;
-    this.active = active;
+    this.coord = coord
+    this.content = content
+    this.color = color
+    this.rotation = rotation
+    this.active = active
   }
 
   /**
@@ -25,7 +25,7 @@ export default class Hint {
    * @returns hint string
    */
   toString(): string {
-    return `{#HINT ${this.content} @ ${this.coord.toString()}}`;
+    return `{#HINT ${this.content} @ ${this.coord.toString()}}`
   }
 
   /**
@@ -39,7 +39,7 @@ export default class Hint {
       color: this.color,
       rotation: this.rotation,
       active: this.active
-    };
+    }
   }
 
   /**
@@ -49,8 +49,8 @@ export default class Hint {
    */
   static importHint(jsonHints: HintInterface[]): Hint[] {
     return jsonHints.map((hint) => {
-      const coord = Coord.importCoord(hint.coord);
-      return new Hint(coord, hint.content, hint.color, hint.rotation, hint.active);
-    });
+      const coord = Coord.importCoord(hint.coord)
+      return new Hint(coord, hint.content, hint.color, hint.rotation, hint.active)
+    })
   }
 }

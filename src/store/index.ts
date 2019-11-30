@@ -1,4 +1,4 @@
-import store from './store';
-import * as mutationNames from './mutation-types';
+import store from './store'
+import * as mutationNames from './mutation-types'
 
-export { store, mutationNames };
+export { store, mutationNames }

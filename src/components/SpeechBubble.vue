@@ -17,65 +17,65 @@
 </template>
 
 <script lang="ts">
-import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
-import Hint from '@/engine/Hint';
-import { getPosition } from '@/mixins';
+import { Vue, Mixins, Component, Prop } from 'vue-property-decorator'
+import Hint from '@/engine/Hint'
+import { getPosition } from '@/mixins'
 
 @Component
 export default class SpeechBubble extends Mixins(getPosition) {
-  @Prop() readonly hint!: Hint;
-  @Prop({ default: 64 }) readonly tileSize!: number;
-  positionX!: number;
-  positionY!: number;
+  @Prop() readonly hint!: Hint
+  @Prop({ default: 64 }) readonly tileSize!: number
+  positionX!: number
+  positionY!: number
 
   // this is where the tooltips width is set:
-  maxWidth = '220px';
+  maxWidth = '220px'
 
   contentRect = {
     width: 0,
     height: 0
-  };
-  shown = true;
+  }
+  shown = true
 
   $refs!: {
-    hint: HTMLElement;
-  };
+    hint: HTMLElement
+  }
 
   mounted() {
-    this.assessDimensions();
+    this.assessDimensions()
   }
 
   /*   used to measure the HTML elements dimensions to
       appropriatly wrap it and position
   */
   assessDimensions() {
-    this.contentRect = this.$refs.hint.getBoundingClientRect();
+    this.contentRect = this.$refs.hint.getBoundingClientRect()
   }
 
   hide() {
-    this.shown = false;
+    this.shown = false
   }
 
   get hintClass() {
-    return `hint--${this.hint.color}`;
+    return `hint--${this.hint.color}`
   }
 
   // used to give a bit of margins to the foreginObject
   get wrapperHeight() {
-    return this.contentRect.height + 15;
+    return this.contentRect.height + 15
   }
 
   get wrapperWidth() {
-    return this.contentRect.width + 15;
+    return this.contentRect.width + 15
   }
 
   // used for internal positioning with regard to hint's size
   get offsetX() {
-    return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2;
+    return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2
   }
 
   get offsetY() {
-    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3;
+    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3
   }
 }
 </script>

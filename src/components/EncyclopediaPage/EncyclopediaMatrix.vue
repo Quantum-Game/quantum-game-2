@@ -42,34 +42,34 @@
 <script lang="ts">
 // TODO: Allow to hover an empty column to see results
 // FIXME: Changing will reset the chosen cartesian/polar/color-disk (option menu?)
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { hslToHex, colorComplex } from '@/engine/Helpers';
+import { Component, Prop, Vue } from 'vue-property-decorator'
+import { hslToHex, colorComplex } from '@/engine/Helpers'
 
 @Component
 export default class EncyclopediaOperatorViewer extends Vue {
-  @Prop({ default: () => 800 }) private width!: number;
-  @Prop({ default: () => 600 }) private height!: number;
-  @Prop({ default: () => 40 }) private size!: number;
-  @Prop({ default: () => 40 }) private margin!: number;
-  @Prop({ default: () => [] }) private labelsIn!: number[];
-  @Prop({ default: () => [] }) private labelsOut!: number[];
+  @Prop({ default: () => 800 }) private width!: number
+  @Prop({ default: () => 600 }) private height!: number
+  @Prop({ default: () => 40 }) private size!: number
+  @Prop({ default: () => 40 }) private margin!: number
+  @Prop({ default: () => [] }) private labelsIn!: number[]
+  @Prop({ default: () => [] }) private labelsOut!: number[]
   @Prop({ default: () => [] }) private matrixElements!: {
-    i: number;
-    j: number;
-    re: number;
-    im: number;
-  }[];
+    i: number
+    j: number
+    re: number
+    im: number
+  }[]
 
   scale(i: number): number {
-    return i * this.size;
+    return i * this.size
   }
 
   generateColor(re: number, im: number) {
-    return colorComplex(re, im);
+    return colorComplex(re, im)
   }
 
   tileMouseOver(d: { i: number; j: number; re: number; im: number }) {
-    this.$emit('columnMouseover', d.i);
+    this.$emit('columnMouseover', d.i)
   }
 }
 </script>

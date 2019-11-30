@@ -1,18 +1,18 @@
-import { GoalInterface } from './interfaces';
-import Cell from './Cell';
+import { GoalInterface } from './interfaces'
+import Cell from './Cell'
 
 /**
  * GOAL CLASS
  * The goals to be achieved by the player
  */
 export default class Goal extends Cell {
-  cell: Cell;
-  threshold: number;
+  cell: Cell
+  threshold: number
 
   constructor(cell: Cell, threshold: number) {
-    super(cell.coord, cell.element);
-    this.cell = cell;
-    this.threshold = threshold;
+    super(cell.coord, cell.element)
+    this.cell = cell
+    this.threshold = threshold
   }
 
   /**
@@ -20,7 +20,7 @@ export default class Goal extends Cell {
    * @returns boolean if the goal is completed
    */
   completed(value: number): boolean {
-    return value >= this.threshold;
+    return value >= this.threshold
   }
 
   /**
@@ -28,7 +28,7 @@ export default class Goal extends Cell {
    * @returns string
    */
   toString(): string {
-    return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`;
+    return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`
   }
 
   /**
@@ -39,7 +39,7 @@ export default class Goal extends Cell {
     return {
       coord: this.cell.coord.exportCoord(),
       threshold: this.threshold
-    };
+    }
   }
 
   /**
@@ -48,10 +48,10 @@ export default class Goal extends Cell {
    * @returns formatted string describing goals
    */
   static manyToString(goals: Goal[]): string {
-    let result = `${goals.length} active goals...\n`;
+    let result = `${goals.length} active goals...\n`
     goals.forEach((goal) => {
-      result += `- ${goal.toString()}\n`;
-    });
-    return result;
+      result += `- ${goal.toString()}\n`
+    })
+    return result
   }
 }

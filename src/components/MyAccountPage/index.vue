@@ -28,16 +28,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator'
 /* eslint-disable-next-line */
 import $userStore from '@/store/userStore';
-import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton.vue';
+import AppLayout from '@/components/AppLayout.vue'
+import AppButton from '@/components/AppButton.vue'
 
 interface AccountLevel {
-  id: number;
-  status: '';
-  score: number;
+  id: number
+  status: ''
+  score: number
 }
 
 @Component({
@@ -51,29 +51,29 @@ export default class MyAccount extends Vue {
     id: 0,
     status: '',
     score: 0
-  };
+  }
 
   created() {
-    $userStore.dispatch('SET_INITIAL_PROGRESS');
+    $userStore.dispatch('SET_INITIAL_PROGRESS')
   }
 
   get user() {
-    return $userStore.getters.userName;
+    return $userStore.getters.userName
   }
   get progressArr() {
-    return $userStore.getters.progressArr;
+    return $userStore.getters.progressArr
   }
 
   signOut() {
-    $userStore.dispatch('SIGN_OUT', this.user);
+    $userStore.dispatch('SIGN_OUT', this.user)
   }
   saveProgressToDB() {
-    console.debug(this.progressArr);
-    $userStore.commit('SET_PROGRESS', this.progressArr);
-    $userStore.dispatch('SAVE_PROGRESS');
+    console.debug(this.progressArr)
+    $userStore.commit('SET_PROGRESS', this.progressArr)
+    $userStore.dispatch('SAVE_PROGRESS')
   }
   editLevel(lvl: AccountLevel) {
-    this.level = lvl;
+    this.level = lvl
   }
 }
 </script>

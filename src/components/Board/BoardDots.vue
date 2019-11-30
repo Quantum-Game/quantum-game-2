@@ -10,13 +10,13 @@
 
 <script lang="ts">
 // FIXME: bug/feature border dots are cut in half
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class BoardDots extends Vue {
-  @Prop() readonly rows!: number;
-  @Prop() readonly cols!: number;
-  @Prop({ default: 64 }) readonly tileSize!: number;
+  @Prop() readonly rows!: number
+  @Prop() readonly cols!: number
+  @Prop({ default: 64 }) readonly tileSize!: number
 }
 </script>
 

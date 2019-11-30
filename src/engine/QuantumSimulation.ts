@@ -1,25 +1,25 @@
-import _ from 'lodash';
-import { Photons } from 'quantum-tensors';
-import { weightedRandomInt } from '@/engine/Helpers';
-import { AbsorptionInterface, IndicatorInterface, PolEnum } from '@/engine/interfaces';
-import Coord from '@/engine/Coord';
-import Cell from '@/engine/Cell';
-import Grid from '@/engine/Grid';
-import Particle from '@/engine/Particle';
-import Absorption from '@/engine/Absorption';
-import QuantumFrame from '@/engine/QuantumFrame';
+import _ from 'lodash'
+import { Photons } from 'quantum-tensors'
+import { weightedRandomInt } from '@/engine/Helpers'
+import { AbsorptionInterface, IndicatorInterface, PolEnum } from '@/engine/interfaces'
+import Coord from '@/engine/Coord'
+import Cell from '@/engine/Cell'
+import Grid from '@/engine/Grid'
+import Particle from '@/engine/Particle'
+import Absorption from '@/engine/Absorption'
+import QuantumFrame from '@/engine/QuantumFrame'
 
 /**
  * QUANTUM SIMULATION CLASS
  * Contains the frames of the simulation
  */
 export default class QuantumSimulation {
-  grid: Grid;
-  frames: QuantumFrame[];
+  grid: Grid
+  frames: QuantumFrame[]
 
   constructor(grid: Grid) {
-    this.grid = grid;
-    this.frames = [];
+    this.grid = grid
+    this.frames = []
   }
 
   /**
@@ -29,25 +29,25 @@ export default class QuantumSimulation {
    */
   initializeFromLaser(polOverride?: PolEnum): void {
     // Select initial laser
-    const lasers = this.grid.emitters.active.cells;
+    const lasers = this.grid.emitters.active.cells
     if (lasers.length !== 1) {
-      throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`);
+      throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`)
     }
     // Override laser cell polarization if an optional argument is provided
-    const laserIndicator = lasers[0].indicator;
+    const laserIndicator = lasers[0].indicator
     if (polOverride) {
-      laserIndicator.polarization = polOverride;
+      laserIndicator.polarization = polOverride
     }
     // Create initial frame
-    this.frames = [];
-    const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows);
+    this.frames = []
+    const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows)
     initFrame.photons.addPhotonIndicator(
       laserIndicator.x,
       laserIndicator.y,
       laserIndicator.direction,
       laserIndicator.polarization
-    );
-    this.frames.push(initFrame);
+    )
+    this.frames.push(initFrame)
   }
 
   /**
@@ -55,15 +55,15 @@ export default class QuantumSimulation {
    * @param indicator IndicatorInterface
    */
   initializeFromIndicator(indicator: IndicatorInterface): void {
-    this.frames = [];
-    const frame = new QuantumFrame(this.grid.cols, this.grid.rows);
+    this.frames = []
+    const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
     frame.photons.addPhotonIndicator(
       indicator.x,
       indicator.y,
       indicator.direction,
       indicator.polarization
-    );
-    this.frames.push(frame);
+    )
+    this.frames.push(frame)
   }
 
   /**
@@ -71,7 +71,7 @@ export default class QuantumSimulation {
    * @returns last QuantumFrame
    */
   get lastFrame(): QuantumFrame {
-    return this.frames[this.frames.length - 1];
+    return this.frames[this.frames.length - 1]
   }
 
   /**
@@ -82,11 +82,11 @@ export default class QuantumSimulation {
     if (this.frames.length === 0) {
       throw new Error(
         `Cannot do nextFrame when there are no frames. initializeFromLaser or something else.`
-      );
+      )
     }
-    const frame = QuantumFrame.fromPhotons(this.lastFrame.photons);
-    frame.propagateAndInteract(this.grid.operatorList);
-    return frame;
+    const frame = QuantumFrame.fromPhotons(this.lastFrame.photons)
+    frame.propagateAndInteract(this.grid.operatorList)
+    return frame
   }
 
   /**
@@ -95,19 +95,19 @@ export default class QuantumSimulation {
    * @param stopThreshold stop if probability below threshold
    */
   computeFrames(n: number = 20, stopThreshold = 1e-6): void {
-    const logging = true;
+    const logging = true
     for (let i = 0; i < n; i += 1) {
-      this.frames.push(this.nextFrame());
+      this.frames.push(this.nextFrame())
       if (this.lastFrame.probability < stopThreshold) {
-        break;
+        break
       }
     }
     if (logging) {
-      console.debug('POST-SIMULATION LOG:');
-      console.debug('probabilityPerFrame', this.probabilityPerFrame);
-      console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame);
-      console.debug('totalAbsorptionPerTile', this.absorptions);
-      console.debug('An example of realization:');
+      console.debug('POST-SIMULATION LOG:')
+      console.debug('probabilityPerFrame', this.probabilityPerFrame)
+      console.debug('totalAbsorptionPerFrame', this.totalAbsorptionPerFrame)
+      console.debug('totalAbsorptionPerTile', this.absorptions)
+      console.debug('An example of realization:')
       // const randomSample = this.sampleRandomRealization();
       // randomSample.statePerFrame.forEach((state) => console.debug(state.ketString()));
       // console.debug(
@@ -121,14 +121,14 @@ export default class QuantumSimulation {
    * @returns probability of frame
    */
   get probabilityPerFrame(): number[] {
-    return this.frames.map((frame) => frame.probability);
+    return this.frames.map((frame) => frame.probability)
   }
 
   /**
    * Quantum state probability of absorption for each frame.
    */
   get totalAbsorptionPerFrame(): number[] {
-    return this.frames.map((frame) => frame.totalProbabilityLoss);
+    return this.frames.map((frame) => frame.totalProbabilityLoss)
   }
 
   /**
@@ -147,7 +147,7 @@ export default class QuantumSimulation {
         coord: absorptions[0].coord,
         probability: _.sumBy(absorptions, 'probability')
       }))
-      .value();
+      .value()
   }
 
   /**
@@ -157,16 +157,16 @@ export default class QuantumSimulation {
    * @returns absorption instance list (cell, probability)
    */
   get absorptions(): Absorption[] {
-    const absorptions: Absorption[] = [];
+    const absorptions: Absorption[] = []
     this.totalAbsorptionInterfacePerTile.forEach((absorptionI: AbsorptionInterface) => {
-      const coord = Coord.importCoord(absorptionI.coord);
+      const coord = Coord.importCoord(absorptionI.coord)
       if (!coord.outOfGrid) {
-        const cell = this.grid.get(coord);
-        cell.energized = true;
-        absorptions.push(new Absorption(cell, absorptionI.probability));
+        const cell = this.grid.get(coord)
+        cell.energized = true
+        absorptions.push(new Absorption(cell, absorptionI.probability))
       }
-    });
-    return absorptions;
+    })
+    return absorptions
   }
 
   /**
@@ -175,9 +175,9 @@ export default class QuantumSimulation {
    */
   isDetectionEvent(coord: Coord): boolean {
     const coords = this.absorptions.map((absorption) => {
-      return Coord.importCoord(absorption.cell.coord);
-    });
-    return _.includes(coords, coord);
+      return Coord.importCoord(absorption.cell.coord)
+    })
+    return _.includes(coords, coord)
   }
 
   /**
@@ -185,13 +185,13 @@ export default class QuantumSimulation {
    * @returns particle list
    */
   get allParticles(): Particle[] {
-    const result: Particle[] = [];
+    const result: Particle[] = []
     this.frames.forEach((frame) => {
       frame.particles.forEach((particle) => {
-        result.push(particle);
-      });
-    });
-    return result;
+        result.push(particle)
+      })
+    })
+    return result
   }
 
   /**
@@ -201,34 +201,34 @@ export default class QuantumSimulation {
    * @todo Maybe make it another object? Or use QuantumFrame?
    */
   sampleRandomRealization(): {
-    statePerFrame: Photons[];
-    probability: number;
-    fate: Cell;
+    statePerFrame: Photons[]
+    probability: number
+    fate: Cell
   } {
     // first, which frame
-    const [...totalAbsorptionPerFrame] = this.totalAbsorptionPerFrame;
-    const lastId = weightedRandomInt(this.totalAbsorptionPerFrame, false);
+    const [...totalAbsorptionPerFrame] = this.totalAbsorptionPerFrame
+    const lastId = weightedRandomInt(this.totalAbsorptionPerFrame, false)
     // -1 if no measurement, and we need to deal with that
-    const lastFrameAbs = this.frames[lastId].absorptions;
-    const absorptionId = weightedRandomInt(lastFrameAbs.map((d) => d.probability), true);
-    const absorption = lastFrameAbs[absorptionId];
-    const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize());
+    const lastFrameAbs = this.frames[lastId].absorptions
+    const absorptionId = weightedRandomInt(lastFrameAbs.map((d) => d.probability), true)
+    const absorption = lastFrameAbs[absorptionId]
+    const states = this.frames.slice(0, lastId).map((frame) => frame.photons.normalize())
 
     // if particle escaped it has at least an adjacent cell inside grid
-    const coord = Coord.importCoord(absorption.coord);
-    let cell;
+    const coord = Coord.importCoord(absorption.coord)
+    let cell
     if (this.grid.includes(coord)) {
-      cell = this.grid.get(coord);
+      cell = this.grid.get(coord)
     } else {
       // cell = this.grid.lastCellBeforeEscape(coord);
-      cell = Cell.createDummy({ x: -1, y: -1 });
+      cell = Cell.createDummy({ x: -1, y: -1 })
     }
 
     return {
       statePerFrame: states,
       probability: absorption.probability,
       fate: cell
-    };
+    }
   }
 
   /**
@@ -236,6 +236,6 @@ export default class QuantumSimulation {
    * @returns fate cell
    */
   get fate(): Cell {
-    return this.sampleRandomRealization().fate;
+    return this.sampleRandomRealization().fate
   }
 }

@@ -30,13 +30,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { Vue, Component } from 'vue-property-decorator'
+import { State } from 'vuex-class'
 
 @Component
 export default class AppMenu extends Vue {
-  @State('currentLevelID') currentLevelID!: number;
-  isMenuOpen: boolean = false;
+  @State('currentLevelID') currentLevelID!: number
+  isMenuOpen: boolean = false
   menuItems = [
     {
       name: 'LEVELS',
@@ -58,14 +58,14 @@ export default class AppMenu extends Vue {
       name: 'OPTIONS',
       url: '/options'
     }
-  ];
+  ]
 
   created(): void {
-    window.addEventListener('keyup', this.handleEscPress);
+    window.addEventListener('keyup', this.handleEscPress)
   }
 
   closeMenu(): void {
-    this.isMenuOpen = false;
+    this.isMenuOpen = false
   }
 
   handleContinueClick(e: MouseEvent): void {
@@ -73,27 +73,27 @@ export default class AppMenu extends Vue {
     // should take us to the previous played level
     // otherwuise in case we are playing:
     if (this.$route.name === 'level') {
-      e.preventDefault();
-      this.closeMenu();
+      e.preventDefault()
+      this.closeMenu()
     }
   }
 
   toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
+    this.isMenuOpen = !this.isMenuOpen
   }
 
   handleEscPress(e: { which: number }): void {
     if (e.which === 27) {
-      this.toggleMenu();
+      this.toggleMenu()
     }
   }
 
   beforeDestroy(): void {
-    window.removeEventListener('keyup', this.handleEscPress);
+    window.removeEventListener('keyup', this.handleEscPress)
   }
 
   get continueLink(): string {
-    return `/level/${this.currentLevelID}`;
+    return `/level/${this.currentLevelID}`
   }
 }
 </script>

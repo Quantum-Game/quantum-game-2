@@ -1,12 +1,12 @@
-import _ from 'lodash';
-import Coord from '@/engine/Coord';
-import Cell from '@/engine/Cell';
+import _ from 'lodash'
+import Coord from '@/engine/Coord'
+import Cell from '@/engine/Cell'
 /**
  * TOOL INTERFACE
  * Contains number of available elements to the player
  */
 export interface ToolInterface {
-  [symbol: string]: number;
+  [symbol: string]: number
 }
 
 /**
@@ -14,28 +14,28 @@ export interface ToolInterface {
  * Inventory contains the list of elements available to the player.
  */
 export default class Toolbox {
-  tools: Cell[] = [];
-  toolbox: ToolInterface = {};
-  originalToolbox: ToolInterface = {};
+  tools: Cell[] = []
+  toolbox: ToolInterface = {}
+  originalToolbox: ToolInterface = {}
 
   constructor(tools: Cell[]) {
-    const elements = tools.map((cell) => cell.element.name);
-    this.toolbox = _.countBy(elements);
-    this.originalToolbox = _.cloneDeep(this.toolbox);
+    const elements = tools.map((cell) => cell.element.name)
+    this.toolbox = _.countBy(elements)
+    this.originalToolbox = _.cloneDeep(this.toolbox)
   }
 
   /**
    * @returns names of present elements
    */
   get names(): string[] {
-    return Object.keys(this.toolbox);
+    return Object.keys(this.toolbox)
   }
 
   /**
    * Reset toolbox to original state
    */
   reset(): void {
-    this.toolbox = this.originalToolbox;
+    this.toolbox = this.originalToolbox
   }
 
   /**
@@ -43,7 +43,7 @@ export default class Toolbox {
    * @returns count of available elements in toolbox
    */
   getCount(name: string): number {
-    return this.toolbox[name];
+    return this.toolbox[name]
   }
 
   /**
@@ -51,7 +51,7 @@ export default class Toolbox {
    * @returns count of available elements in toolbox
    */
   getCountOriginal(name: string): number {
-    return this.originalToolbox[name];
+    return this.originalToolbox[name]
   }
 
   /**
@@ -59,7 +59,7 @@ export default class Toolbox {
    * @param name elements available
    */
   available(name: string): number {
-    return this.getCount(name);
+    return this.getCount(name)
   }
 
   /**
@@ -68,8 +68,8 @@ export default class Toolbox {
    * @param cell cell holding element to remove
    */
   addTool(cell: Cell, activeCell: Cell) {
-    const { name } = activeCell.element;
-    this.toolbox[name] += 1;
+    const { name } = activeCell.element
+    this.toolbox[name] += 1
   }
 
   /**
@@ -77,9 +77,9 @@ export default class Toolbox {
    * @param cell cell holdeing element to remove
    */
   removeTool(cell: Cell) {
-    const { name } = cell.element;
+    const { name } = cell.element
     if (this.toolbox[name] > 0) {
-      this.toolbox[name] -= 1;
+      this.toolbox[name] -= 1
     }
   }
 
@@ -89,8 +89,8 @@ export default class Toolbox {
    */
   get uniqueCellList(): Cell[] {
     return this.names.map((name) => {
-      return Cell.createToolboxCell(name);
-    });
+      return Cell.createToolboxCell(name)
+    })
   }
 
   /**
@@ -98,14 +98,14 @@ export default class Toolbox {
    * @returns cell[]
    */
   get fullCellList(): Cell[] {
-    const fullList: Cell[] = [];
+    const fullList: Cell[] = []
     this.names.forEach((name) => {
-      const cellCount = this.toolbox[name];
+      const cellCount = this.toolbox[name]
       for (let i = 0; i < cellCount; i += 1) {
-        fullList.push(Cell.createToolboxCell(name));
+        fullList.push(Cell.createToolboxCell(name))
       }
-    });
-    return fullList;
+    })
+    return fullList
   }
 
   /**
@@ -114,23 +114,23 @@ export default class Toolbox {
    * @returns string
    */
   toString(): string {
-    let resultStr = 'Toolbox contains:\n';
+    let resultStr = 'Toolbox contains:\n'
     this.names.forEach((name: string) => {
-      resultStr += `Tool: ${name} x ${this.toolbox[name]}`;
-    });
-    return resultStr;
+      resultStr += `Tool: ${name} x ${this.toolbox[name]}`
+    })
+    return resultStr
   }
 
   exportToolbox(): ToolInterface {
-    return this.toolbox;
+    return this.toolbox
   }
 
   static importToolbox(tools: string[]): Toolbox {
-    const coord = new Coord(-1, -1);
+    const coord = new Coord(-1, -1)
     const toolCells = tools.map((tool) => {
-      const element = Cell.fromName(tool);
-      return new Cell(coord, element);
-    });
-    return new Toolbox(toolCells);
+      const element = Cell.fromName(tool)
+      return new Cell(coord, element)
+    })
+    return new Toolbox(toolCells)
   }
 }

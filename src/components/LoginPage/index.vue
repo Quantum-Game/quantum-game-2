@@ -54,10 +54,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import $userStore from '@/store/userStore';
-import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton.vue';
+import { Vue, Component } from 'vue-property-decorator'
+import $userStore from '@/store/userStore'
+import AppLayout from '@/components/AppLayout.vue'
+import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
@@ -70,23 +70,23 @@ export default class Login extends Vue {
     email: '',
     password: '',
     rememberMe: true
-  };
+  }
 
   get error() {
-    return $userStore.getters.error;
+    return $userStore.getters.error
   }
 
   signIn() {
-    $userStore.dispatch('SIGN_IN', this.user);
+    $userStore.dispatch('SIGN_IN', this.user)
   }
   signInGithub() {
-    $userStore.dispatch('SIGN_IN_GITHUB');
+    $userStore.dispatch('SIGN_IN_GITHUB')
   }
   signInFacebook() {
-    $userStore.dispatch('SIGN_IN_FACEBOOK');
+    $userStore.dispatch('SIGN_IN_FACEBOOK')
   }
   signInGoogle() {
-    $userStore.dispatch('SIGN_IN_GOOGLE');
+    $userStore.dispatch('SIGN_IN_GOOGLE')
   }
 }
 </script>

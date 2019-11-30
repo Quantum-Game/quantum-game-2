@@ -33,13 +33,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces';
-import { getEntry } from '@/assets/data/entries/index';
-import AppButton from '@/components/AppButton.vue';
-import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue';
-import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
-import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue';
+import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
+import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces'
+import { getEntry } from '@/assets/data/entries/index'
+import AppButton from '@/components/AppButton.vue'
+import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
+import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
 
 @Component({
   components: {
@@ -55,29 +55,29 @@ export default class EncyclopediaArticle extends Vue {
     elementName: 'Mirror',
     grids: [],
     sections: []
-  };
+  }
 
   created() {
-    this.loadEntry();
+    this.loadEntry()
   }
 
   @Watch('$route')
   loadEntry() {
     if (this.entryURL) {
-      this.entry = getEntry(this.entryURL);
+      this.entry = getEntry(this.entryURL)
     }
     if (!this.entry.title) {
-      this.$router.push({ name: '404' });
+      this.$router.push({ name: '404' })
     }
   }
 
   get entryURL(): string {
-    return this.$route.params.entry;
+    return this.$route.params.entry
   }
 
   get theComponentsTransitionMapShouldBeDisplayed() {
-    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube'];
-    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0;
+    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
+    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0
   }
 }
 </script>

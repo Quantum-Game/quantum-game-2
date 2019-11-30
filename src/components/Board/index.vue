@@ -99,20 +99,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Mutation, State } from 'vuex-class';
-import Coord from '@/engine/Coord';
-import Cell from '@/engine/Cell';
-import Grid from '@/engine/Grid';
-import Level from '@/engine/Level';
-import Particle from '@/engine/Particle';
-import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces';
-import AppCell from '@/components/Board/AppCell.vue';
-import BoardLasers from '@/components/Board/BoardLasers.vue';
-import BoardDots from '@/components/Board/BoardDots.vue';
-import AppPhoton from '@/components/AppPhoton.vue';
-import SpeechBubble from '@/components/SpeechBubble.vue';
-import Absorption from '../../engine/Absorption';
+import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Mutation, State } from 'vuex-class'
+import Coord from '@/engine/Coord'
+import Cell from '@/engine/Cell'
+import Grid from '@/engine/Grid'
+import Level from '@/engine/Level'
+import Particle from '@/engine/Particle'
+import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces'
+import AppCell from '@/components/Board/AppCell.vue'
+import BoardLasers from '@/components/Board/BoardLasers.vue'
+import BoardDots from '@/components/Board/BoardDots.vue'
+import AppPhoton from '@/components/AppPhoton.vue'
+import SpeechBubble from '@/components/SpeechBubble.vue'
+import Absorption from '../../engine/Absorption'
 
 @Component({
   components: {
@@ -124,60 +124,60 @@ import Absorption from '../../engine/Absorption';
   }
 })
 export default class Board extends Vue {
-  @Prop() readonly grid!: Grid;
-  @Prop() readonly fate!: Cell;
-  @Prop({ default: [] }) readonly hints!: HintInterface[];
-  @Prop({ default: [] }) readonly particles!: Particle[];
-  @Prop({ default: [] }) readonly pathParticles!: Particle[];
-  @Prop({ default: [] }) readonly absorptions!: Absorption[];
-  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  @State hoveredParticles!: Particle[];
-  @State hoveredCell!: Cell;
-  @State activeCell!: Cell;
+  @Prop() readonly grid!: Grid
+  @Prop() readonly fate!: Cell
+  @Prop({ default: [] }) readonly hints!: HintInterface[]
+  @Prop({ default: [] }) readonly particles!: Particle[]
+  @Prop({ default: [] }) readonly pathParticles!: Particle[]
+  @Prop({ default: [] }) readonly absorptions!: Absorption[]
+  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  @State hoveredParticles!: Particle[]
+  @State hoveredCell!: Cell
+  @State activeCell!: Cell
 
-  tileSize: number = 64;
-  boardHeight = 0;
+  tileSize: number = 64
+  boardHeight = 0
   scalerStyle = {
     transform: `scale(1)`
-  };
+  }
   $refs!: {
-    gridWrapper: HTMLElement;
-    boardScaler: HTMLElement;
-  };
+    gridWrapper: HTMLElement
+    boardScaler: HTMLElement
+  }
 
   mounted() {
-    window.addEventListener('resize', this.assessTileSize);
-    this.assessTileSize();
+    window.addEventListener('resize', this.assessTileSize)
+    this.assessTileSize()
   }
 
   /**
    * Drilling from appCell to Game to allow clicking laser to start simulation
    */
   play(): void {
-    this.$emit('play', true);
+    this.$emit('play', true)
   }
 
   /**
    * Drilling from appCell to updateCell
    */
   updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell);
+    this.$emit('updateCell', cell)
   }
 
   /**
    * Handle mouse over from cell and photons
    */
   handleMouseEnter(coord: Coord) {
-    const cell = this.grid.get(coord);
+    const cell = this.grid.get(coord)
     const particles = this.particles.filter((particle) => {
-      return particle.coord.equal(coord);
-    });
+      return particle.coord.equal(coord)
+    })
     if (cell !== this.hoveredCell && !cell.isVoid) {
-      this.mutationSetHoveredCell(cell);
+      this.mutationSetHoveredCell(cell)
     }
     if (particles.length > 0) {
-      this.mutationSetHoveredParticles(particles);
+      this.mutationSetHoveredParticles(particles)
     }
   }
 
@@ -186,41 +186,41 @@ export default class Board extends Vue {
    */
   handleMouseLeave(coord: Coord) {
     const particles = this.particles.filter((particle) => {
-      return particle.coord.equal(coord);
-    });
+      return particle.coord.equal(coord)
+    })
     if (particles.length > 0) {
-      this.mutationSetHoveredParticles([]);
+      this.mutationSetHoveredParticles([])
     }
   }
 
   assessTileSize(): void {
-    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width;
+    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
     this.$data.scalerStyle = {
       transform: `scale(${currentWidth / 845})`
-    };
+    }
     setTimeout(() => {
-      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height;
-      this.$data.boardHeight = currentHeight;
-    }, 1);
-    this.tileSize = 64;
+      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
+      this.$data.boardHeight = currentHeight
+    }, 1)
+    this.tileSize = 64
   }
 
   get totalWidth(): number {
-    return this.grid.cols * this.tileSize;
+    return this.grid.cols * this.tileSize
   }
   get totalHeight(): number {
-    return this.grid.rows * this.tileSize;
+    return this.grid.rows * this.tileSize
   }
 
   /**
    * Compute fate cell position
    */
   computeFateStyle(coord: Coord) {
-    console.log(`FATE: ${this.fate.toString()}`);
+    console.log(`FATE: ${this.fate.toString()}`)
     return {
       transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
         this.tileSize}px`
-    };
+    }
   }
 
   /**
@@ -230,7 +230,7 @@ export default class Board extends Vue {
     return {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
-    };
+    }
   }
 }
 </script>

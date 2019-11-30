@@ -64,127 +64,127 @@
 </template>
 
 <script lang="ts">
-import dagre from 'dagre';
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import MultiverseGraph from '@/engine/MultiverseGraph';
+import dagre from 'dagre'
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import MultiverseGraph from '@/engine/MultiverseGraph'
 
 @Component({
   components: {}
 })
 export default class GameGraph extends Vue {
-  @Prop() readonly multiverse!: MultiverseGraph;
-  @Prop() readonly activeId!: number;
+  @Prop() readonly multiverse!: MultiverseGraph
+  @Prop() readonly activeId!: number
   $refs!: {
-    multiverseWrapper: HTMLElement;
-  };
-  rect = { width: 0, height: 0 };
+    multiverseWrapper: HTMLElement
+  }
+  rect = { width: 0, height: 0 }
 
   mounted() {
-    this.rect = this.$refs.multiverseWrapper.getBoundingClientRect();
+    this.rect = this.$refs.multiverseWrapper.getBoundingClientRect()
   }
 
   handleMouseOver(activeId: number): void {
-    this.$emit('changeActiveFrame', activeId);
+    this.$emit('changeActiveFrame', activeId)
   }
 
   get totalFrames(): number {
-    return this.multiverse.qs.frames.length;
+    return this.multiverse.qs.frames.length
   }
 
   get computeSvgStyle(): {} {
-    const { height } = this.graph.graph();
+    const { height } = this.graph.graph()
     return {
       height: `${height}px`,
       'max-height': '500px'
-    };
+    }
   }
 
   get computeNodeStyle(): {} {
-    const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2;
+    const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2
     return {
       transform: `translate(${xCenterOffset}px, 0px)`
-    };
+    }
   }
 
   // TODO: Node, edge and arrowhead are similar
   computeNodeClass(node: { fIndex: number; leaf: boolean; root: boolean }): string[] {
-    let timeClass = '';
+    let timeClass = ''
     if (node.fIndex < this.activeId) {
-      timeClass = 'past';
+      timeClass = 'past'
     } else if (node.fIndex === this.activeId) {
-      timeClass = 'present';
+      timeClass = 'present'
     } else {
-      timeClass = 'future';
+      timeClass = 'future'
     }
-    return ['node', timeClass, node.root ? 'root' : '', node.leaf ? 'leaf' : ''];
+    return ['node', timeClass, node.root ? 'root' : '', node.leaf ? 'leaf' : '']
   }
 
   computeEdgeClass(edge: { fIndex: number }): string[] {
-    let timeClass = '';
+    let timeClass = ''
     if (edge.fIndex < this.activeId) {
-      timeClass = 'past';
+      timeClass = 'past'
     } else if (edge.fIndex === this.activeId) {
-      timeClass = 'present';
+      timeClass = 'present'
     } else {
-      timeClass = 'future';
+      timeClass = 'future'
     }
-    return ['edge', timeClass];
+    return ['edge', timeClass]
   }
 
   computeArrowHead(edge: { fIndex: number }): string {
-    let timeClass = '';
+    let timeClass = ''
     if (edge.fIndex < this.activeId) {
-      timeClass = 'past';
+      timeClass = 'past'
     } else if (edge.fIndex === this.activeId) {
-      timeClass = 'present';
+      timeClass = 'present'
     } else {
-      timeClass = 'future';
+      timeClass = 'future'
     }
-    return `url(#arrowhead-${timeClass})`;
+    return `url(#arrowhead-${timeClass})`
   }
 
   /**
    * Getters
    */
   get graph(): any {
-    return this.multiverse.graph;
+    return this.multiverse.graph
   }
 
   get nodes(): any[] {
-    const uids = this.multiverse.graph.nodes();
+    const uids = this.multiverse.graph.nodes()
     return uids.map((uid: string) => {
-      return this.graph.node(uid);
-    });
+      return this.graph.node(uid)
+    })
   }
 
   get edges(): any[] {
-    const edgeIds = this.multiverse.graph.edges();
+    const edgeIds = this.multiverse.graph.edges()
     return edgeIds.map((edgeId: { u: string; v: string }) => {
-      return this.graph.edge(edgeId);
-    });
+      return this.graph.edge(edgeId)
+    })
   }
 
   computeEdgePath(points: { x: number; y: number }[]): string {
-    let path = '';
+    let path = ''
     if (points.length > 2) {
-      path += `M ${points[0].x} ${points[0].y}`;
+      path += `M ${points[0].x} ${points[0].y}`
       // path += `L ${points[1].x} ${points[1].y}`;
-      path += `L ${points[2].x} ${points[2].y}`;
+      path += `L ${points[2].x} ${points[2].y}`
     }
-    return path;
+    return path
   }
   /**
    * Debug the computed nodes and edges properties
    */
   debugNodes(): void {
     this.multiverse.graph.nodes().forEach((node: any) => {
-      console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`);
-    });
+      console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`)
+    })
   }
   debugEdges(): void {
     this.edges.forEach((edge: any) => {
-      console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`);
-    });
+      console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`)
+    })
   }
 }
 </script>

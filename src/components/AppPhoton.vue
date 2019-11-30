@@ -30,12 +30,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import { select } from 'd3-selection';
-import { range } from 'd3-array';
-import { scaleLinear, scaleSequential } from 'd3-scale';
-import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic';
-import Particle from '@/engine/Particle';
+import { Component, Emit, Vue, Prop } from 'vue-property-decorator'
+import { select } from 'd3-selection'
+import { range } from 'd3-array'
+import { scaleLinear, scaleSequential } from 'd3-scale'
+import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
+import Particle from '@/engine/Particle'
 
 const d3 = {
   select,
@@ -44,63 +44,63 @@ const d3 = {
   scaleSequential,
   interpolateInferno,
   interpolateViridis
-};
+}
 
 @Component
 export default class AppPhoton extends Vue {
-  @Prop() readonly particle!: Particle;
-  @Prop({ default: 0 }) readonly animate!: number;
-  @Prop({ default: 64 }) readonly width!: number;
-  @Prop({ default: 64 }) readonly height!: number;
-  @Prop({ default: 20 }) readonly margin!: number;
-  @Prop({ default: 20 }) readonly k!: number;
-  @Prop({ default: 0.3 }) readonly sigma!: number;
-  @Prop({ default: 0.001 }) readonly range!: number;
-  @Prop({ default: false }) readonly displayMagnetic!: boolean;
-  @Prop({ default: true }) readonly displayElectric!: boolean;
-  @Prop({ default: true }) readonly displayGaussian!: boolean;
-  @Prop({ default: true }) readonly displayOpacity!: boolean;
-  @Prop({ default: true }) readonly displayDirection!: boolean;
-  @Prop({ default: true }) readonly normalize!: boolean;
-  @Prop({ default: 1.3 }) readonly squeezeFactor!: number;
+  @Prop() readonly particle!: Particle
+  @Prop({ default: 0 }) readonly animate!: number
+  @Prop({ default: 64 }) readonly width!: number
+  @Prop({ default: 64 }) readonly height!: number
+  @Prop({ default: 20 }) readonly margin!: number
+  @Prop({ default: 20 }) readonly k!: number
+  @Prop({ default: 0.3 }) readonly sigma!: number
+  @Prop({ default: 0.001 }) readonly range!: number
+  @Prop({ default: false }) readonly displayMagnetic!: boolean
+  @Prop({ default: true }) readonly displayElectric!: boolean
+  @Prop({ default: true }) readonly displayGaussian!: boolean
+  @Prop({ default: true }) readonly displayOpacity!: boolean
+  @Prop({ default: true }) readonly displayDirection!: boolean
+  @Prop({ default: true }) readonly normalize!: boolean
+  @Prop({ default: 1.3 }) readonly squeezeFactor!: number
 
   /**
    * Getters from particle
    */
   get step() {
-    return 1 / this.width;
+    return 1 / this.width
   }
 
   get normalization() {
     if (this.normalize) {
-      const { are, aim, bre, bim } = this.particle;
-      return Math.sqrt(are ** 2 + aim ** 2 + bre ** 2 + bim ** 2);
+      const { are, aim, bre, bim } = this.particle
+      return Math.sqrt(are ** 2 + aim ** 2 + bre ** 2 + bim ** 2)
     }
-    return 1;
+    return 1
   }
 
   get intensity() {
-    return this.particle.probability;
+    return this.particle.probability
   }
   get direction() {
-    return this.particle.direction;
+    return this.particle.direction
   }
   get are() {
-    return this.particle.are / this.normalization;
+    return this.particle.are / this.normalization
   }
   get aim() {
-    return this.particle.aim / this.normalization;
+    return this.particle.aim / this.normalization
   }
   get bre() {
-    return this.particle.bre / this.normalization;
+    return this.particle.bre / this.normalization
   }
   get bim() {
-    return this.particle.bim / this.normalization;
+    return this.particle.bim / this.normalization
   }
 
   get opacity(): number {
-    const scalingPow = 0.5;
-    return this.particle.probability ** scalingPow;
+    const scalingPow = 0.5
+    return this.particle.probability ** scalingPow
   }
 
   get computeStyle() {
@@ -108,39 +108,39 @@ export default class AppPhoton extends Vue {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
       transform: `rotate(${this.displayDirection ? this.particle.direction : 0}deg)`
-    };
+    }
   }
 
   /**
    * Compute electric path from points
    */
   computeElectricPath(z: number): string {
-    let path = '';
-    const ox = this.xScale(z - this.step);
+    let path = ''
+    const ox = this.xScale(z - this.step)
     const oy = this.yScale(
       this.gaussianComplex(this.are, this.aim, z - this.step, this.k, this.sigma)
-    );
-    const tx = this.xScale(z);
-    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.k, this.sigma));
-    path += `M ${ox} ${oy} `;
-    path += `L ${tx} ${ty} `;
-    return path;
+    )
+    const tx = this.xScale(z)
+    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.k, this.sigma))
+    path += `M ${ox} ${oy} `
+    path += `L ${tx} ${ty} `
+    return path
   }
 
   /**
    * Compute electric path from points
    */
   computeMagneticPath(z: number): string {
-    let path = '';
-    const ox = this.xScale(z - this.step);
+    let path = ''
+    const ox = this.xScale(z - this.step)
     const oy = this.yScale(
       this.gaussianComplex(this.bre, this.bim, z - this.step, this.k, this.sigma)
-    );
-    const tx = this.xScale(z);
-    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.k, this.sigma));
-    path += `M ${ox} ${oy} `;
-    path += `L ${tx} ${ty}`;
-    return path;
+    )
+    const tx = this.xScale(z)
+    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.k, this.sigma))
+    path += `M ${ox} ${oy} `
+    path += `L ${tx} ${ty}`
+    return path
   }
 
   /**
@@ -148,24 +148,24 @@ export default class AppPhoton extends Vue {
    * @return bots svg paths as strings
    */
   get computeGaussianPath(): { pathUp: string; pathDown: string } {
-    let pathUp = '';
-    let pathDown = '';
+    let pathUp = ''
+    let pathDown = ''
     this.zs.forEach((z, index) => {
-      const x = this.xScale(z);
-      const y = this.yScale(this.gaussian(z));
+      const x = this.xScale(z)
+      const y = this.yScale(this.gaussian(z))
       if (index === 0) {
-        pathUp += `M ${x} ${y} `;
-        pathDown += `M ${x} ${this.availableHeight - y} `;
+        pathUp += `M ${x} ${y} `
+        pathDown += `M ${x} ${this.availableHeight - y} `
       } else {
-        pathUp += `L ${x} ${y} `;
-        pathDown += `L ${x} ${this.availableHeight - y} `;
+        pathUp += `L ${x} ${y} `
+        pathDown += `L ${x} ${this.availableHeight - y} `
       }
-    });
-    return { pathUp, pathDown };
+    })
+    return { pathUp, pathDown }
   }
 
   get availableHeight() {
-    return this.height - this.margin;
+    return this.height - this.margin
   }
 
   /**
@@ -175,7 +175,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([this.margin, this.width - this.margin]);
+      .range([this.margin, this.width - this.margin])
   }
   /**
    * Get vertical scaling
@@ -185,7 +185,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-this.squeezeFactor, this.squeezeFactor])
-      .range([0, this.availableHeight]);
+      .range([0, this.availableHeight])
   }
   /**
    * Get magnetic scaling
@@ -194,7 +194,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([0.5, 6]);
+      .range([0.5, 6])
   }
   /**
    * Get electric scaling
@@ -203,7 +203,7 @@ export default class AppPhoton extends Vue {
     return d3
       .scaleLinear()
       .domain([-1, 1])
-      .range([1, 4]);
+      .range([1, 4])
   }
 
   /**
@@ -211,10 +211,10 @@ export default class AppPhoton extends Vue {
    * @returns string
    */
   get toCoord(): string {
-    const tileSize = 64;
-    const x = this.particle.relativeTarget.x * tileSize;
-    const y = this.particle.relativeTarget.y * tileSize;
-    return `${x} ${y}`;
+    const tileSize = 64
+    const x = this.particle.relativeTarget.x * tileSize
+    const y = this.particle.relativeTarget.y * tileSize
+    return `${x} ${y}`
   }
 
   /**
@@ -222,13 +222,13 @@ export default class AppPhoton extends Vue {
    * @returns a range of steps
    */
   get zs(): number[] {
-    return d3.range(-1, 1, this.step);
+    return d3.range(-1, 1, this.step)
   }
 
   /**
    * Magnetic field color scheme.
    */
-  mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1]);
+  mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1])
 
   /**
    * Electric field color scheme.
@@ -238,27 +238,27 @@ export default class AppPhoton extends Vue {
   eColor = d3
     .scaleLinear<string>()
     .domain([-1, 0, 1])
-    .range(['#ffbb3b', '#ff0055', '#5c00d3']); // YELLOW RED PURPLE
+    .range(['#ffbb3b', '#ff0055', '#5c00d3']) // YELLOW RED PURPLE
 
   /**
    * Compute graph properties from complex values
    */
   computeComplex(re: number, im: number, z: number, k = 20): number {
-    return re * Math.cos(k * z) + im * Math.sin(k * z);
+    return re * Math.cos(k * z) + im * Math.sin(k * z)
   }
 
   /**
    * Gaussian scaling
    */
   gaussian(z: number, sigma = 0.3): number {
-    return Math.exp((-z * z) / (2 * sigma * sigma));
+    return Math.exp((-z * z) / (2 * sigma * sigma))
   }
 
   /**
    * Gaussian scaling of the graph
    */
   gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
-    return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma));
+    return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma))
   }
 }
 </script>

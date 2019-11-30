@@ -73,14 +73,14 @@
 </template>
 
 <script lang="ts">
-import _ from 'lodash';
-import { Vue, Component, Watch } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
-import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes';
-import Toolbox from '@/engine/Toolbox';
-import MultiverseGraph from '@/engine/MultiverseGraph';
-import QuantumFrame from '@/engine/QuantumFrame';
-import QuantumSimulation from '@/engine/QuantumSimulation';
+import _ from 'lodash'
+import { Vue, Component, Watch } from 'vue-property-decorator'
+import { State, Getter, Mutation } from 'vuex-class'
+import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes'
+import Toolbox from '@/engine/Toolbox'
+import MultiverseGraph from '@/engine/MultiverseGraph'
+import QuantumFrame from '@/engine/QuantumFrame'
+import QuantumSimulation from '@/engine/QuantumSimulation'
 import {
   CellInterface,
   LevelInterface,
@@ -91,20 +91,20 @@ import {
   GameStateEnum,
   GridInterface,
   PolEnum
-} from '@/engine/interfaces';
-import levels from '@/assets/data/levels';
-import GameGoals from '@/components/GamePage/GameGoals.vue';
-import GameActiveCell from '@/components/GamePage/GameActiveCell.vue';
-import GameToolbox from '@/components/GamePage/GameToolbox.vue';
-import GameControls from '@/components/GamePage/GameControls.vue';
-import GamePhotons from '@/components/GamePage/GamePhotons.vue';
-import GameKet from '@/components/GamePage/GameKet.vue';
-import GameLayout from '@/components/GamePage/GameLayout.vue';
-import GameBoard from '@/components/Board/index.vue';
-import GameGraph from '@/components/GamePage/GameGraph.vue';
-import AppButton from '@/components/AppButton.vue';
-import AppOverlay from '@/components/AppOverlay.vue';
-import Absorption from '../../engine/Absorption';
+} from '@/engine/interfaces'
+import levels from '@/assets/data/levels'
+import GameGoals from '@/components/GamePage/GameGoals.vue'
+import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
+import GameToolbox from '@/components/GamePage/GameToolbox.vue'
+import GameControls from '@/components/GamePage/GameControls.vue'
+import GamePhotons from '@/components/GamePage/GamePhotons.vue'
+import GameKet from '@/components/GamePage/GameKet.vue'
+import GameLayout from '@/components/GamePage/GameLayout.vue'
+import GameBoard from '@/components/Board/index.vue'
+import GameGraph from '@/components/GamePage/GameGraph.vue'
+import AppButton from '@/components/AppButton.vue'
+import AppOverlay from '@/components/AppOverlay.vue'
+import Absorption from '../../engine/Absorption'
 
 @Component({
   components: {
@@ -122,29 +122,29 @@ import Absorption from '../../engine/Absorption';
   }
 })
 export default class Game extends Vue {
-  level = Level.createDummy();
-  @State('currentLevelID') currentLevelID!: number;
-  @State('activeCell') activeCell!: Cell;
-  @State('gameState') gameState!: GameStateEnum;
-  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void;
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void;
-  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  frameIndex: number = 0;
-  simulation: any = {};
-  multiverseGraph: any = {};
-  error: string = '';
-  playInterval: number = 0;
-  absorptionThreshold: number = 0.0001;
+  level = Level.createDummy()
+  @State('currentLevelID') currentLevelID!: number
+  @State('activeCell') activeCell!: Cell
+  @State('gameState') gameState!: GameStateEnum
+  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
+  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
+  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  frameIndex: number = 0
+  simulation: any = {}
+  multiverseGraph: any = {}
+  error: string = ''
+  playInterval: number = 0
+  absorptionThreshold: number = 0.0001
 
   // LIFECYCLE
   created(): void {
-    this.loadLevel();
-    window.addEventListener('keyup', this.handleArrowPress);
+    this.loadLevel()
+    window.addEventListener('keyup', this.handleArrowPress)
   }
 
   beforeDestroy(): void {
-    window.removeEventListener('keyup', this.handleArrowPress);
+    window.removeEventListener('keyup', this.handleArrowPress)
   }
 
   /**
@@ -152,7 +152,7 @@ export default class Game extends Vue {
    * if missing then fallback to '0' for infinity level / sandbox
    */
   get levelId(): number {
-    return parseInt(this.$route.params.id || '0', 10);
+    return parseInt(this.$route.params.id || '0', 10)
   }
 
   /**
@@ -160,16 +160,16 @@ export default class Game extends Vue {
    */
   @Watch('$route')
   loadLevel(): void {
-    this.error = '';
-    this.mutationSetCurrentLevelID(this.levelId);
-    const levelI = levels[this.levelId];
-    this.level = Level.importLevel(levelI);
+    this.error = ''
+    this.mutationSetCurrentLevelID(this.levelId)
+    const levelI = levels[this.levelId]
+    this.level = Level.importLevel(levelI)
     // Set hovered cell as first element of toolbox
     if (this.level.toolbox.uniqueCellList.length > 0) {
-      this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0]);
+      this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0])
     }
     // Process simulation
-    this.updateSimulation();
+    this.updateSimulation()
   }
 
   /**
@@ -178,19 +178,19 @@ export default class Game extends Vue {
    */
   updateSimulation(): void {
     // Compute simulation frames
-    this.simulation = new QuantumSimulation(this.level.grid);
-    this.simulation.initializeFromLaser();
-    this.simulation.computeFrames(40);
+    this.simulation = new QuantumSimulation(this.level.grid)
+    this.simulation.initializeFromLaser()
+    this.simulation.computeFrames(40)
     // Post-process simulation to create particle graph
-    this.multiverseGraph = new MultiverseGraph(this.simulation);
+    this.multiverseGraph = new MultiverseGraph(this.simulation)
     // Set absorption events to compute gameState
-    this.level.gameState.absorptions = this.filteredAbsorptions;
+    this.level.gameState.absorptions = this.filteredAbsorptions
     // Reset simulation variables
-    this.frameIndex = 0;
-    this.setEnergizedCells();
-    this.mutationSetGameState(this.level.gameState.gameState);
-    this.mutationSetSimulationState(false);
-    console.debug(this.level.gameState.toString());
+    this.frameIndex = 0
+    this.setEnergizedCells()
+    this.mutationSetGameState(this.level.gameState.gameState)
+    this.mutationSetSimulationState(false)
+    console.debug(this.level.gameState.toString())
   }
 
   /**
@@ -199,9 +199,9 @@ export default class Game extends Vue {
    */
   get displayFate(): Cell {
     if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.simulation.fate;
+      return this.simulation.fate
     }
-    return Cell.createDummy({ x: -1, y: -1 });
+    return Cell.createDummy({ x: -1, y: -1 })
   }
 
   /**
@@ -209,20 +209,20 @@ export default class Game extends Vue {
    */
   get displayGameState() {
     if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.gameState;
+      return this.gameState
     }
-    return 'InProgress';
+    return 'InProgress'
   }
 
   /**
    * Set the energized cells from the simulation
    */
   setEnergizedCells() {
-    this.level.grid.resetEnergized();
+    this.level.grid.resetEnergized()
     const coords = this.filteredAbsorptions.map((absorption) => {
-      return absorption.cell.coord;
-    });
-    this.level.grid.setEnergized(coords);
+      return absorption.cell.coord
+    })
+    this.level.grid.setEnergized(coords)
   }
 
   /**
@@ -232,15 +232,15 @@ export default class Game extends Vue {
   get filteredAbsorptions(): Absorption[] {
     // Filter out of grid cells
     return this.simulation.absorptions.filter((absorption: Absorption) => {
-      return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold;
-    });
+      return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold
+    })
   }
 
   /**
    * Change active frame with provided Id
    */
   handleChangeActiveFrame(activeId: number): void {
-    this.frameIndex = activeId;
+    this.frameIndex = activeId
   }
 
   /**
@@ -248,7 +248,7 @@ export default class Game extends Vue {
    *  @returns goals
    */
   get framePercentage() {
-    return this.activeFrame.probability * 100;
+    return this.activeFrame.probability * 100
   }
 
   /**
@@ -256,21 +256,21 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): string[] {
-    return _.uniq(this.simulation.allParticles);
+    return _.uniq(this.simulation.allParticles)
   }
 
   /**
    * Get the current simulation frame
    */
   get activeFrame(): QuantumFrame {
-    return this.simulation.frames[this.frameIndex];
+    return this.simulation.frames[this.frameIndex]
   }
 
   /**
    * Current simulation frame particles
    */
   get particles(): Particle[] {
-    return this.activeFrame.particles;
+    return this.activeFrame.particles
   }
 
   /**
@@ -278,7 +278,7 @@ export default class Game extends Vue {
    *  @returns frameIndex
    */
   rewind() {
-    this.frameIndex = 0;
+    this.frameIndex = 0
   }
 
   /**
@@ -286,13 +286,13 @@ export default class Game extends Vue {
    *  @returns frameIndex
    */
   stepBack() {
-    const newframeIndex = this.frameIndex - 1;
+    const newframeIndex = this.frameIndex - 1
     if (newframeIndex < 0) {
-      console.error("Can't access frames before simulation...");
-      return false;
+      console.error("Can't access frames before simulation...")
+      return false
     }
-    this.frameIndex = newframeIndex;
-    return this.frameIndex;
+    this.frameIndex = newframeIndex
+    return this.frameIndex
   }
 
   /**
@@ -301,16 +301,16 @@ export default class Game extends Vue {
    * @returns void
    */
   play() {
-    this.frameIndex = 0;
+    this.frameIndex = 0
     this.playInterval = setInterval(() => {
       if (this.frameIndex < this.simulation.frames.length - 1) {
-        this.frameIndex += 1;
+        this.frameIndex += 1
       } else {
-        this.mutationSetSimulationState(false);
-        clearInterval(this.playInterval);
+        this.mutationSetSimulationState(false)
+        clearInterval(this.playInterval)
       }
-    }, 200);
-    this.mutationSetSimulationState(true);
+    }, 200)
+    this.mutationSetSimulationState(true)
   }
 
   /**
@@ -318,27 +318,27 @@ export default class Game extends Vue {
    *  @returns frameIndex
    */
   stepForward() {
-    const newframeIndex = this.frameIndex + 1;
+    const newframeIndex = this.frameIndex + 1
     if (newframeIndex > this.simulation.frames.length - 1) {
-      console.error("Can't access frames that are not computed yet...");
-      return false;
+      console.error("Can't access frames that are not computed yet...")
+      return false
     }
-    this.frameIndex = newframeIndex;
-    return this.frameIndex;
+    this.frameIndex = newframeIndex
+    return this.frameIndex
   }
 
   /**
    * Reload the current page
    */
   fastForward() {
-    this.frameIndex = this.simulation.frames.length - 1;
+    this.frameIndex = this.simulation.frames.length - 1
   }
 
   /**
    * Reload the current page
    */
   reload() {
-    window.location.reload(false);
+    window.location.reload(false)
   }
 
   /**
@@ -346,12 +346,12 @@ export default class Game extends Vue {
    * @returns level in JSON format
    */
   downloadLevel(): void {
-    const json = JSON.stringify(this.level.exportLevel(), null, 2);
-    const blob = new Blob([json], { type: 'octet/stream' });
-    const link = document.createElement('a');
-    link.href = window.URL.createObjectURL(blob);
-    link.download = 'level.json';
-    link.click();
+    const json = JSON.stringify(this.level.exportLevel(), null, 2)
+    const blob = new Blob([json], { type: 'octet/stream' })
+    const link = document.createElement('a')
+    link.href = window.URL.createObjectURL(blob)
+    link.download = 'level.json'
+    link.click()
   }
 
   /**
@@ -380,33 +380,33 @@ export default class Game extends Vue {
       //   this.level.grid.reflectAll();
       //   break;
       case 32:
-        this.play();
-        break;
+        this.play()
+        break
       case 37:
-        this.stepBack();
-        break;
+        this.stepBack()
+        break
       case 39:
-        this.stepForward();
-        break;
+        this.stepForward()
+        break
       default:
-        break;
+        break
     }
   }
 
   removeFromCurrentTools(cell: Cell) {
-    this.level.toolbox.removeTool(cell);
+    this.level.toolbox.removeTool(cell)
   }
 
   addToCurrentTools(cell: Cell) {
-    this.level.toolbox.addTool(cell, this.activeCell);
+    this.level.toolbox.addTool(cell, this.activeCell)
   }
 
   setCurrentTools(cells: Cell[]) {
-    this.level.toolbox = new Toolbox(cells);
+    this.level.toolbox = new Toolbox(cells)
   }
 
   resetCurrentTools() {
-    this.level.toolbox.reset();
+    this.level.toolbox.reset()
   }
 
   /**
@@ -417,66 +417,66 @@ export default class Game extends Vue {
    * @returns void
    */
   updateCell(cell: Cell): void {
-    const sourceCell = this.activeCell;
-    const targetCell = cell;
+    const sourceCell = this.activeCell
+    const targetCell = cell
     // handle moving from from / to toolbox
     if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
-      this.removeFromCurrentTools(this.activeCell);
+      this.removeFromCurrentTools(this.activeCell)
     } else if (
       this.activeCell.isFromGrid &&
       cell.isFromToolbox &&
       !this.activeCell.isVoid &&
       !cell.isVoid
     ) {
-      this.addToCurrentTools(cell);
-      this.level.grid.set(this.activeCell.reset());
+      this.addToCurrentTools(cell)
+      this.level.grid.set(this.activeCell.reset())
     }
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell);
+    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell)
     mutatedCells.forEach((mutatedCell: Cell) => {
-      this.level.grid.set(mutatedCell);
-    });
-    this.saveLevelToStore();
-    this.updateSimulation();
+      this.level.grid.set(mutatedCell)
+    })
+    this.saveLevelToStore()
+    this.updateSimulation()
   }
 
   // Used to store in local storage the current state of the game
   saveLevelToStore() {
-    const currentStateJSONString = JSON.stringify(this.level.exportLevel());
-    localStorage.setItem(this.currentLevelName, currentStateJSONString);
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel())
+    localStorage.setItem(this.currentLevelName, currentStateJSONString)
   }
   clearLS() {
-    localStorage.removeItem(this.currentLevelName);
+    localStorage.removeItem(this.currentLevelName)
   }
 
   // GETTERS
   get currentLevelName(): string {
-    return `level${this.levelId}`;
+    return `level${this.levelId}`
   }
 
   get previousLevel(): string {
-    return `/level/${this.levelId - 1}`;
+    return `/level/${this.levelId - 1}`
   }
 
   get nextLevel(): string {
-    return `/level/${this.levelId + 1}`;
+    return `/level/${this.levelId + 1}`
   }
 
   get hints(): HintInterface[] {
-    return this.level.hints.map((hint) => hint.exportHint());
+    return this.level.hints.map((hint) => hint.exportHint())
   }
 
   get cellPositionsArray() {
-    const array: number[] = [];
+    const array: number[] = []
     this.level.grid.cells
       .filter((cell) => {
-        return cell.element.name !== 'Void';
+        return cell.element.name !== 'Void'
       })
       .map((cell) => {
-        array.push(cell.coord.x);
-        array.push(cell.coord.y);
-        return cell;
-      });
-    return array;
+        array.push(cell.coord.x)
+        array.push(cell.coord.y)
+        return cell
+      })
+    return array
   }
 }
 </script>

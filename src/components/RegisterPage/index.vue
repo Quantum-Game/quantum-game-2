@@ -54,10 +54,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import $userStore from '@/store/userStore';
-import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton.vue';
+import { Vue, Component } from 'vue-property-decorator'
+import $userStore from '@/store/userStore'
+import AppLayout from '@/components/AppLayout.vue'
+import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
@@ -70,13 +70,13 @@ export default class Register extends Vue {
     email: '',
     password: '',
     name: ''
-  };
+  }
   get error() {
-    return $userStore.getters.error;
+    return $userStore.getters.error
   }
 
   signUp() {
-    $userStore.dispatch('SIGN_UP', this.user);
+    $userStore.dispatch('SIGN_UP', this.user)
   }
 }
 </script>

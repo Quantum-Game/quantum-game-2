@@ -38,8 +38,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import Piece from './Piece';
+import { Vue, Prop, Component } from 'vue-property-decorator'
+import Piece from './Piece'
 
 @Component
 export default class PolarizerCell extends Piece {
@@ -50,7 +50,7 @@ export default class PolarizerCell extends Piece {
     return {
       'transform-origin': `32px 32px`,
       transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
-    };
+    }
   }
 }
 </script>
