@@ -60,6 +60,7 @@ export default class MyAccount extends Vue {
   get user() {
     return $userStore.getters.userName
   }
+
   get progressArr() {
     return $userStore.getters.progressArr
   }
@@ -67,11 +68,13 @@ export default class MyAccount extends Vue {
   signOut() {
     $userStore.dispatch('SIGN_OUT', this.user)
   }
+
   saveProgressToDB() {
     console.debug(this.progressArr)
     $userStore.commit('SET_PROGRESS', this.progressArr)
     $userStore.dispatch('SAVE_PROGRESS')
   }
+
   editLevel(lvl: AccountLevel) {
     this.level = lvl
   }

@@ -150,6 +150,7 @@ export default class EncyclopediaBoard extends Vue {
   get totalWidth(): number {
     return this.grid.cols * this.tileSize
   }
+
   get totalHeight(): number {
     return this.grid.rows * this.tileSize
   }

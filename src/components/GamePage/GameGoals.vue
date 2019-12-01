@@ -89,9 +89,11 @@ export default class GameGoals extends Vue {
   get computeProbabilityClass(): string {
     return this.gameState.probabilityFlag ? 'success' : 'defeat'
   }
+
   get computeGoalClass(): string[] {
     return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons']
   }
+
   get computeSafeClass(): string[] {
     return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons']
   }

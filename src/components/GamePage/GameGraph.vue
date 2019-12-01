@@ -76,6 +76,7 @@ export default class GameGraph extends Vue {
   $refs!: {
     multiverseWrapper: HTMLElement
   }
+
   rect = { width: 0, height: 0 }
 
   mounted() {
@@ -172,16 +173,18 @@ export default class GameGraph extends Vue {
     }
     return path
   }
+
   /**
    * Debug the computed nodes and edges properties
    */
   debugNodes(): void {
-    this.multiverse.graph.nodes().forEach((node: any) => {
+    this.multiverse.graph.nodes().forEach((node: string) => {
       console.debug(`Node ${node}: ${JSON.stringify(this.graph.node(node))}`)
     })
   }
+
   debugEdges(): void {
-    this.edges.forEach((edge: any) => {
+    this.edges.forEach((edge: {}) => {
       console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`)
     })
   }

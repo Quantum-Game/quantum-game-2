@@ -10,6 +10,7 @@ export default class PolarizingBeamSplitter extends Element {
   public group: Group = Group.Direction
   public description: string =
     'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).'
+
   public ascii: string[] = ['⬲', '⟴']
   public angles: number[] = [0, 180]
 

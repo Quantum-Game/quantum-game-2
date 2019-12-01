@@ -140,6 +140,7 @@ export default class Board extends Vue {
   scalerStyle = {
     transform: `scale(1)`
   }
+
   $refs!: {
     gridWrapper: HTMLElement
     boardScaler: HTMLElement
@@ -207,6 +208,7 @@ export default class Board extends Vue {
   get totalWidth(): number {
     return this.grid.cols * this.tileSize
   }
+
   get totalHeight(): number {
     return this.grid.rows * this.tileSize
   }

@@ -25,12 +25,15 @@ export default class Particle extends Coord {
   public get are(): number {
     return this.a.re
   }
+
   public get aim(): number {
     return this.a.im
   }
+
   public get bre(): number {
     return this.b.re
   }
+
   public get bim(): number {
     return this.b.im
   }

@@ -76,7 +76,7 @@
 import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
-import { Level, Particle, Cell } from '@/engine/classes'
+import { Cell, Grid, Level, Particle } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
@@ -121,8 +121,8 @@ export default class Game extends Vue {
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   frameIndex: number = 0
-  simulation: any = {}
-  multiverseGraph: any = {}
+  simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
+  multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
   error: string = ''
   playInterval: number = 0
   absorptionThreshold: number = 0.0001
@@ -245,7 +245,7 @@ export default class Game extends Vue {
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get pathParticles(): string[] {
+  get pathParticles(): Particle[] {
     return _.uniq(this.simulation.allParticles)
   }
 
@@ -434,6 +434,7 @@ export default class Game extends Vue {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     localStorage.setItem(this.currentLevelName, currentStateJSONString)
   }
+
   clearLS() {
     localStorage.removeItem(this.currentLevelName)
   }

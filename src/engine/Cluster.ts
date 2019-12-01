@@ -120,24 +120,31 @@ export default class Cluster {
   public get void(): Cluster {
     return new Cluster(this.filteredBy(Elem.Void).cells)
   }
+
   public get unvoid(): Cluster {
     return new Cluster(this.filteredByNot(Elem.Void).cells)
   }
+
   public get active(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => cell.active))
   }
+
   public get inactive(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => !cell.active))
   }
+
   public get energized(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => cell.energized))
   }
+
   public get unenergized(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => !cell.energized))
   }
+
   public get frozen(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => cell.frozen))
   }
+
   public get unfrozen(): Cluster {
     return new Cluster(this.cells.filter((cell): boolean => !cell.frozen))
   }
@@ -146,12 +153,15 @@ export default class Cluster {
   public get lasers(): Cluster {
     return this.filteredBy(Elem.Laser)
   }
+
   public get nonlinearcrystals(): Cluster {
     return this.filteredBy(Elem.NonLinearCrystal)
   }
+
   public get sourceGroup(): Cluster {
     return new Cluster(this.lasers.cells.concat(this.nonlinearcrystals.cells))
   }
+
   public get emitters(): Cluster {
     return this.sourceGroup
   }
@@ -160,18 +170,23 @@ export default class Cluster {
   public get mirrors(): Cluster {
     return this.filteredBy(Elem.Mirror)
   }
+
   public get beamsplitters(): Cluster {
     return this.filteredBy(Elem.BeamSplitter)
   }
+
   public get coatedbeamsplitters(): Cluster {
     return this.filteredBy(Elem.CoatedBeamSplitter)
   }
+
   public get polarbeamsplitters(): Cluster {
     return this.filteredBy(Elem.PolarizingBeamSplitter)
   }
+
   public get cornercubes(): Cluster {
     return this.filteredBy(Elem.CornerCube)
   }
+
   public get directionGroup(): Cluster {
     return new Cluster(
       this.mirrors.cells.concat(
@@ -187,30 +202,39 @@ export default class Cluster {
   public get detectors(): Cluster {
     return this.filteredBy(Elem.Detector)
   }
+
   public get mines(): Cluster {
     return this.filteredBy(Elem.Mine)
   }
+
   public get rocks(): Cluster {
     return this.filteredBy(Elem.Rock)
   }
+
   public get omnidetectors(): Cluster {
     return this.filteredBy(Elem.DetectorFour)
   }
+
   public get absorbers(): Cluster {
     return this.filteredBy(Elem.Absorber)
   }
+
   public get walls(): Cluster {
     return this.filteredBy(Elem.Wall)
   }
+
   public get gates(): Cluster {
     return this.filteredBy(Elem.Gate)
   }
+
   public get closedGates(): Cluster {
     return this.gates.inactive
   }
+
   public get openedGates(): Cluster {
     return this.gates.active
   }
+
   public get absorptionGroup(): Cluster {
     return new Cluster(
       this.detectors.cells.concat(
@@ -228,15 +252,19 @@ export default class Cluster {
   public get polarizers(): Cluster {
     return this.filteredBy(Elem.Polarizer)
   }
+
   public get quarterwaveplates(): Cluster {
     return this.filteredBy(Elem.QuarterWavePlate)
   }
+
   public get sugarsolutions(): Cluster {
     return this.filteredBy(Elem.SugarSolution)
   }
+
   public get faradays(): Cluster {
     return this.filteredBy(Elem.FaradayRotator)
   }
+
   public get polarizationGroup(): Cluster {
     return new Cluster(
       this.polarizers.cells.concat(
@@ -251,9 +279,11 @@ export default class Cluster {
   public get vacuumjars(): Cluster {
     return this.filteredBy(Elem.VacuumJar)
   }
+
   public get glasses(): Cluster {
     return this.filteredBy(Elem.Glass)
   }
+
   public get phaseGroup(): Cluster {
     return new Cluster(this.vacuumjars.cells.concat(this.glasses.cells))
   }

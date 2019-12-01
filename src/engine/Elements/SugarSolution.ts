@@ -10,6 +10,7 @@ export default class SugarSolution extends Element {
   public group: Group = Group.Polarization
   public description: string =
     'Table sugar is a chiral molecule – it does not look the same as its mirror reflection. We put it in an amount, so it rotates polarization by 45°.'
+
   public ascii: string[] = ['S']
   public angles: number[] = [0]
 

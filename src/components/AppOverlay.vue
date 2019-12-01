@@ -37,6 +37,7 @@ export default class AppOverlay extends Vue {
     start: (params: {}) => void
     stop: () => void
   }
+
   explosion: boolean = false
   explosionTimeout: number = 0
 

@@ -10,6 +10,7 @@ export default class FaradayRotator extends Element {
   public group: Group = Group.Polarization
   public description: string =
     'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.'
+
   public ascii: string[] = ['🠶', '🠵', '🠴', '🠷']
   public angles: number[] = [0, 90, 180, 270]
 

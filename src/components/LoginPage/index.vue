@@ -79,12 +79,15 @@ export default class Login extends Vue {
   signIn() {
     $userStore.dispatch('SIGN_IN', this.user)
   }
+
   signInGithub() {
     $userStore.dispatch('SIGN_IN_GITHUB')
   }
+
   signInFacebook() {
     $userStore.dispatch('SIGN_IN_FACEBOOK')
   }
+
   signInGoogle() {
     $userStore.dispatch('SIGN_IN_GOOGLE')
   }

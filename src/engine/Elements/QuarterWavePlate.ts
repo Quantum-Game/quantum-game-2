@@ -10,6 +10,7 @@ export default class QuarterWavePlate extends Element {
   public group: Group = Group.Polarization
   public description: string =
     'It delays one polarization (with darker lines) by λ/4. When applied correctly, it can change linear polarization into circular, and vice versa.'
+
   public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
   public angles: number[] = [0, 90, 180, 270]
 

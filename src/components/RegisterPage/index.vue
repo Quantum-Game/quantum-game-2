@@ -71,6 +71,7 @@ export default class Register extends Vue {
     password: '',
     name: ''
   }
+
   get error() {
     return $userStore.getters.error
   }

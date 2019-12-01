@@ -36,6 +36,7 @@ export default class OptionsPage extends Vue {
   @options.Mutation(SET_GAME_SPEED_INTERVAL) mutationSetGameSpeedInterval!: (
     newInterval: number
   ) => void
+
   @options.Getter('gameSpeedInterval') gameSpeedInterval!: number
 
   options = {

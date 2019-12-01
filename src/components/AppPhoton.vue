@@ -82,18 +82,23 @@ export default class AppPhoton extends Vue {
   get intensity() {
     return this.particle.probability
   }
+
   get direction() {
     return this.particle.direction
   }
+
   get are() {
     return this.particle.are / this.normalization
   }
+
   get aim() {
     return this.particle.aim / this.normalization
   }
+
   get bre() {
     return this.particle.bre / this.normalization
   }
+
   get bim() {
     return this.particle.bim / this.normalization
   }
@@ -173,6 +178,7 @@ export default class AppPhoton extends Vue {
       .domain([-1, 1])
       .range([this.margin, this.width - this.margin])
   }
+
   /**
    * Get vertical scaling
    * FIXME: squeezeFactor
@@ -183,6 +189,7 @@ export default class AppPhoton extends Vue {
       .domain([-this.squeezeFactor, this.squeezeFactor])
       .range([0, this.availableHeight])
   }
+
   /**
    * Get magnetic scaling
    */
@@ -192,6 +199,7 @@ export default class AppPhoton extends Vue {
       .domain([-1, 1])
       .range([0.5, 6])
   }
+
   /**
    * Get electric scaling
    */

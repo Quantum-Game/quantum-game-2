@@ -10,6 +10,7 @@ export default class Polarizer extends Element {
   public group: Group = Group.Polarization
   public description: string =
     'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.'
+
   public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
   public angles: number[] = [0, 90, 180, 270]
 

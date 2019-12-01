@@ -35,6 +35,7 @@ export default class SpeechBubble extends Mixins(Position) {
     width: 0,
     height: 0
   }
+
   shown = true
 
   $refs!: {

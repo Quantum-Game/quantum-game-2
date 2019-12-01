@@ -173,6 +173,7 @@ export default class GameControls extends Vue {
   saveLevel() {
     $userStore.dispatch('SAVE_LEVEL', this.$store.state)
   }
+
   updateLevel() {
     $userStore.dispatch('UPDATE_LEVEL', this.$store.state)
   }

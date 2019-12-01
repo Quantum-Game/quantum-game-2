@@ -10,6 +10,7 @@ export default class Mine extends Element {
   public group: Group = Group.Absorption
   public description: string =
     'Once it absorbs a single photon, it sets off. Old french submarine captains can sometimes disarm them.'
+
   public ascii: string[] = ['!']
   public angles: number[] = [0]
 

@@ -9,7 +9,7 @@ import Particle from '@/engine/Particle'
  * Creates a graph after post processing the current simulation frames
  */
 export default class MultiverseGraph {
-  public graph: any
+  public graph: any // eslint-disable-line
   public qs: QuantumSimulation
 
   public constructor(qs: QuantumSimulation) {
@@ -58,7 +58,7 @@ export default class MultiverseGraph {
       })
     })
     // Round the corners of the nodes
-    this.graph.nodes().forEach((v: any): void => {
+    this.graph.nodes().forEach((v: string): void => {
       const node = this.graph.node(v)
       node.rx = 5
       node.ry = 5

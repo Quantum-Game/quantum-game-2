@@ -10,6 +10,7 @@ export default class Rock extends Element {
   public group: Group = Group.Absorption
   public description: string =
     "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive."
+
   public ascii: string[] = ['♜']
   public angles: number[] = [0]
 

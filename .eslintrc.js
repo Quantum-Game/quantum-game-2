@@ -21,7 +21,7 @@ module.exports = {
       'error',
       { devDependencies: true, optionalDependencies: false, peerDependencies: false }
     ],
-    'lines-between-class-members': [0, 'always', { exceptAfterSingleLine: true }]
+    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }]
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
