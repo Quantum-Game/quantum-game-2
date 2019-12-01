@@ -56,7 +56,7 @@ import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import Level from '@/engine/Level'
 import Particle from '@/engine/Particle'
-import getPosition from '@/mixins/getPosition'
+import Position from '@/mixins/Position'
 import {
   LaserCell,
   NonLinearCrystalCell,
@@ -107,7 +107,7 @@ const borderColors = {
     VacuumJarCell
   }
 })
-export default class AppCell extends Mixins(getPosition) {
+export default class AppCell extends Mixins(Position) {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
   @Prop({ default: true }) readonly available!: boolean
@@ -307,7 +307,7 @@ export default class AppCell extends Mixins(getPosition) {
 
   /**
    * styles used for wrapper positioning
-   * using the getPosition mixin;
+   * using the Position mixin;
    * @returns a style object
    */
   get computeCellStyle(): any {

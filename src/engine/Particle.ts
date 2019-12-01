@@ -9,12 +9,12 @@ import { toPercent, angleToSymbol } from './Helpers'
  * Describes a vector with an origin, a direction and two complex numbers.
  */
 export default class Particle extends Coord {
-  coord: Coord
-  direction: number
-  a: Complex
-  b: Complex
+  public coord: Coord
+  public direction: number
+  public a: Complex
+  public b: Complex
 
-  constructor(coord: Coord, direction: number, are = 1, aim = 0, bre = 0, bim = 0) {
+  public constructor(coord: Coord, direction: number, are = 1, aim = 0, bre = 0, bim = 0) {
     super(coord.y, coord.x)
     this.coord = coord
     this.direction = direction
@@ -22,24 +22,16 @@ export default class Particle extends Coord {
     this.b = new Complex(bre, bim)
   }
 
-  // /**
-  //  * Check if the particle has any intensity
-  //  * @returns true if above threshold
-  //  */
-  // get alive(): boolean {
-  //   return this.intensity > 0.001;
-  // }
-
-  get are(): number {
+  public get are(): number {
     return this.a.re
   }
-  get aim(): number {
+  public get aim(): number {
     return this.a.im
   }
-  get bre(): number {
+  public get bre(): number {
     return this.b.re
   }
-  get bim(): number {
+  public get bim(): number {
     return this.b.im
   }
 
@@ -47,7 +39,7 @@ export default class Particle extends Coord {
    * Deep clone of a particle
    * @returns particle clone
    */
-  get clone(): Particle {
+  public get clone(): Particle {
     return new Particle(this.coord, this.direction, this.are, this.aim, this.bre, this.bim)
   }
 
@@ -55,7 +47,7 @@ export default class Particle extends Coord {
    * Checks the orientation of the particle for display
    * @returns true if vertical
    */
-  get isVertical(): boolean {
+  public get isVertical(): boolean {
     return this.direction === 0 || this.direction === 180
   }
 
@@ -63,7 +55,7 @@ export default class Particle extends Coord {
    * Opacity from complex values
    * @returns value to use to adapt opacity for frontend
    */
-  get probability(): number {
+  public get probability(): number {
     const scaling = 1
     const opacity = (this.a.abs2() + this.b.abs2()) ** scaling
     if (opacity > 1) {
@@ -77,7 +69,7 @@ export default class Particle extends Coord {
    * @param cell cell to test
    * @returns boolean if particle is on cell
    */
-  on(cell: Cell): boolean {
+  public on(cell: Cell): boolean {
     return this.coord.equal(cell.coord)
   }
 
@@ -87,7 +79,7 @@ export default class Particle extends Coord {
    * @param rows rows of the grid
    * @returns numbers of steps before exiting the grid
    */
-  stepsToExit(cols: number, rows: number): number {
+  public stepsToExit(cols: number, rows: number): number {
     switch (this.direction % 360) {
       case 0: // TOP
         return this.y
@@ -106,16 +98,8 @@ export default class Particle extends Coord {
    *  Propagate the particle following its direction
    * @returns next coord
    */
-  nextCoord(): Coord {
+  public nextCoord(): Coord {
     return this.coord.fromAngle(this.direction)
-  }
-
-  /**
-   * returns an ascii arrow of the particle direction angle
-   * @returns arrow ascii
-   */
-  directionToAscii() {
-    return angleToSymbol(this.direction)
   }
 
   /**
@@ -123,7 +107,7 @@ export default class Particle extends Coord {
    * Also - quick, dirty, no-LaTeX and pure string
    * Generating ket from Photons or QuantumFrame is preferred.
    */
-  toKetString(): string {
+  public toKetString(): string {
     const d = this
     const dirVis = new Map<number, string>()
     dirVis.set(0, '⇢')
@@ -144,7 +128,7 @@ export default class Particle extends Coord {
    * Override toString() method for debug
    * @returns a string describing the particle
    */
-  toString(): string {
+  public toString(): string {
     return `Particle @ ${this.coord.toString()} moving ${this.direction}° with ${toPercent(
       this.probability
     )} intensity and polarization | A:${this.a.re} + ${this.a.im}i & B:${this.b.re} + ${
@@ -156,7 +140,7 @@ export default class Particle extends Coord {
    * Get relative movement for the particle
    * @returns Coord using relative position
    */
-  get relativeTarget(): CoordInterface {
+  public get relativeTarget(): CoordInterface {
     switch (this.direction) {
       case 0:
         return { x: 1, y: 0 }
@@ -175,7 +159,7 @@ export default class Particle extends Coord {
    * export a svg path of the particle
    * @returns
    */
-  toSvg(): string {
+  public toSvg(): string {
     let pathStr = ''
     const originX = this.centerCoord(this.coord.x)
     const originY = this.centerCoord(this.coord.y)
@@ -206,7 +190,7 @@ export default class Particle extends Coord {
    * Compute the cell center at a specific coordinate for grid dots
    * @returns x, y pixel coordinates
    */
-  centerCoord(val: number, tileSize = 64): number {
+  public centerCoord(val: number, tileSize = 64): number {
     return (val + 0.5) * tileSize
   }
 
@@ -214,7 +198,7 @@ export default class Particle extends Coord {
    * Export particle interface in primitives
    * @returns particle interface
    */
-  exportParticle(): ParticleInterface {
+  public exportParticle(): ParticleInterface {
     return {
       x: this.coord.x,
       y: this.coord.y,
@@ -230,7 +214,7 @@ export default class Particle extends Coord {
    * Create a particle from a particle interface
    * @param obj particle interface
    */
-  static importParticle(obj: ParticleInterface): Particle {
+  public static importParticle(obj: ParticleInterface): Particle {
     const coord = new Coord(obj.y, obj.x)
     return new Particle(coord, obj.direction, obj.are, obj.aim, obj.bre, obj.bim)
   }
@@ -239,7 +223,7 @@ export default class Particle extends Coord {
    * Create a dummy particle
    * @returns dummy particle
    */
-  static createDummy(): Particle {
+  public static createDummy(): Particle {
     const coord = new Coord(0, 0)
     return new Particle(coord, 0)
   }
@@ -249,9 +233,9 @@ export default class Particle extends Coord {
    * @param particles list of particles
    * @returns string
    */
-  static manyToString(particles: Particle[]): string {
+  public static manyToString(particles: Particle[]): string {
     let result = ''
-    particles.forEach((particle) => {
+    particles.forEach((particle): void => {
       result += particle.toString()
     })
     return result

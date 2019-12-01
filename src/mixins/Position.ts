@@ -4,25 +4,24 @@ import { Cell } from '@/engine/classes'
 import { HintInterface } from '@/engine/interfaces'
 
 @Component
-export default class getPosition extends Vue {
-  cell!: Cell
-  hint!: HintInterface
-  tileSize!: number
-
-  coord = {
+export default class GetPosition extends Vue {
+  public cell!: Cell
+  public hint!: HintInterface
+  public tileSize!: number
+  public coord = {
     x: 0,
     y: 0
   }
 
-  created() {
+  private created(): void {
     this.setCoordOrigin()
   }
 
-  updated() {
+  private updated(): void {
     this.setCoordOrigin()
   }
 
-  setCoordOrigin() {
+  private setCoordOrigin(): void {
     if (this.hint) {
       this.coord = this.hint.coord
     } else {
@@ -30,31 +29,23 @@ export default class getPosition extends Vue {
     }
   }
 
-  centerCoord(val: number): number {
+  private centerCoord(val: number): number {
     return (val + 0.5) * this.tileSize
   }
 
-  get positionX(): number {
+  public get positionX(): number {
     return this.coord.x * this.tileSize
   }
 
-  get positionY(): number {
+  public get positionY(): number {
     return this.coord.y * this.tileSize
   }
 
-  get translationX(): number {
-    return this.cell.coord.x * this.tileSize
-  }
-
-  get translationY(): number {
-    return this.cell.coord.y * this.tileSize
-  }
-
-  get transformOriginX(): number {
+  public get transformOriginX(): number {
     return this.centerCoord(this.coord.x)
   }
 
-  get transformOriginY(): number {
+  public get transformOriginY(): number {
     return this.centerCoord(this.coord.y)
   }
 }

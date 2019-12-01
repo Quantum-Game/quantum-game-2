@@ -12,6 +12,15 @@ export interface ParticleInterface {
   bim: number
 }
 
+// TODO: Create primitive interface and associated class and move to interfaces.ts
+export interface ParticleCoordInterface {
+  kind: string // for now only 'photon'
+  x: number
+  y: number
+  dir: number // 0: > 1: ^, 2: <. 3: v
+  pol: number // 0: H, 1: V
+}
+
 /**
  * DETECTION INTERFACE
  */
