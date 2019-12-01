@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Vue, Mixins, Component, Prop } from 'vue-property-decorator'
 import Hint from '@/engine/Hint'
-import { getPosition } from '@/mixins'
+import getPosition from '@/mixins/getPosition'
 
 @Component
 export default class SpeechBubble extends Mixins(getPosition) {

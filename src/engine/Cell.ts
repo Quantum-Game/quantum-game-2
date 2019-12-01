@@ -37,17 +37,17 @@ import { angleToSymbol, startingPolarization, startingDirection } from './Helper
  * A cell is a rotated element at a coordinate
  */
 export default class Cell {
-  coord: Coord
-  element: Element
-  rotation: number
-  polarization: number
-  percentage: number
-  frozen: boolean
-  active: boolean
-  energized: boolean
-  tool: boolean
+  public coord: Coord
+  public element: Element
+  public rotation: number
+  public polarization: number
+  public percentage: number
+  public frozen: boolean
+  public active: boolean
+  public energized: boolean
+  public tool: boolean
 
-  constructor(
+  public constructor(
     coord: Coord,
     element: Element,
     rotation = 0,
@@ -71,18 +71,10 @@ export default class Cell {
   }
 
   /**
-   * Ouput the rotation with an unicode arrow
-   * @returns unicode arrow describing rotation
-   */
-  get rotationAscii(): string {
-    return angleToSymbol(this.element.rotationAngle)
-  }
-
-  /**
    * Get ASCII character linked to cell's element and cell rotation
    * @returns ascii representation of rotated element
    */
-  get ascii(): string {
+  public get ascii(): string {
     return this.element.ascii[this.rotation / this.element.rotationAngle]
   }
 
@@ -90,23 +82,15 @@ export default class Cell {
    * Is element blank?
    * @returns true if blank
    */
-  get isVoid(): boolean {
+  public get isVoid(): boolean {
     return this.element.name === Elem.Void
-  }
-
-  /**
-   * Is element a detector?
-   * @returns true if detector
-   */
-  get isDetector(): boolean {
-    return this.element.name === Elem.Detector || this.element.name === Elem.DetectorFour
   }
 
   /**
    * Is element a laser?
    * @returns true if laser
    */
-  get isLaser(): boolean {
+  public get isLaser(): boolean {
     return this.element.name === Elem.Laser
   }
 
@@ -114,22 +98,14 @@ export default class Cell {
    * Is element a mine?
    * @returns true if mine
    */
-  get isMine(): boolean {
+  public get isMine(): boolean {
     return this.element.name === Elem.Mine
-  }
-
-  /**
-   * Is element a complicated rotation?
-   * @returns true if quarter wave plate or polarizer
-   */
-  get isPolarizerOrWavePlate(): boolean {
-    return this.element.name === Elem.Polarizer || this.element.name === Elem.QuarterWavePlate
   }
 
   /**
    * Determine if the cell comes from a grid or a toolbox
    */
-  get isFromToolbox(): boolean {
+  public get isFromToolbox(): boolean {
     return this.coord.x === -1 && this.coord.y === -1
   }
 
@@ -137,7 +113,7 @@ export default class Cell {
    * Create a photon indicator for quantum simulation
    * @returns Indicator for qt.photons
    */
-  get indicator(): IndicatorInterface {
+  public get indicator(): IndicatorInterface {
     if (this.isLaser) {
       return {
         x: this.coord.x,
@@ -152,32 +128,14 @@ export default class Cell {
   /**
    * Determine if the cell comes from a grid or a toolbox
    */
-  get isFromGrid(): boolean {
+  public get isFromGrid(): boolean {
     return !this.isFromToolbox
-  }
-
-  /**
-   * Valid draggable source
-   * Source should be a tool on grid or toolbox
-   * @returns boolean
-   */
-  isValidSource(): boolean {
-    return !this.frozen && !this.isVoid && this.tool
-  }
-
-  /**
-   * Valid draggable target
-   * Target should be a tool or void on grid or toolbox
-   * @returns boolean
-   */
-  isValidTarget(): boolean {
-    return !this.frozen && (this.isVoid || this.tool)
   }
 
   /**
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
-  reset(): Cell {
+  public reset(): Cell {
     this.element.name = Elem.Void
     this.rotation = 0
     this.polarization = 0
@@ -194,7 +152,7 @@ export default class Cell {
    * Correcting the javascript modulo bug for negative values: https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
    * @param angle rotation angle in degrees
    */
-  rotate(angle: number = this.element.rotationAngle): void {
+  public rotate(angle: number = this.element.rotationAngle): void {
     if (!this.frozen) {
       if (Math.abs(angle) % this.element.rotationAngle !== 0) {
         throw new Error('Error in the supplied angle compared to the element rotation angle.')
@@ -207,38 +165,10 @@ export default class Cell {
   }
 
   /**
-   * Toggle the frozen status of the cell
-   */
-  toggleFreeze(): void {
-    this.frozen = !this.frozen
-  }
-
-  /**
-   * Toggle the active status of the cell, activate laser for example
-   */
-  toggleActive(): void {
-    this.active = !this.active
-  }
-
-  /**
-   * Toggle the energized status of the cell, cells are energized around an activated detector
-   */
-  toggleEnergized(): void {
-    this.energized = !this.energized
-  }
-
-  /**
-   * Toggle the energized status of the cell, cells are energized around an activated detector
-   */
-  toggleTool(): void {
-    this.tool = !this.tool
-  }
-
-  /**
    * Output a string describing the cell, overrides toString() method
    * @returns string describing the cell status
    */
-  toString(): string {
+  public toString(): string {
     return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} ${
       this.tool ? 'Tool' : 'Nothing'
     } Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
@@ -252,7 +182,7 @@ export default class Cell {
    * Export a cell interface
    * @returns CellInterface
    */
-  exportCell(): CellInterface {
+  public exportCell(): CellInterface {
     return {
       coord: this.coord.exportCoord(),
       element: this.element.name,
@@ -270,7 +200,7 @@ export default class Cell {
    * TODO: Polarization should be passed to cell
    * @param obj CellInterface
    */
-  static importCell(obj: CellInterface): Cell {
+  public static importCell(obj: CellInterface): Cell {
     const coord = Coord.importCoord(obj.coord)
     const element = Cell.fromName(obj.element)
     const cell = new Cell(
@@ -291,7 +221,7 @@ export default class Cell {
    * @param coord Coord
    * @returns a blank cell
    */
-  static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
+  public static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI)
     const element = Cell.fromName(Elem.Void)
     return new Cell(coord, element)
@@ -302,7 +232,7 @@ export default class Cell {
    * @param name string
    * @returns a toolbox cell
    */
-  static createToolboxCell(name: string): Cell {
+  public static createToolboxCell(name: string): Cell {
     const element = Cell.fromName(name)
     const coord = new Coord(-1, -1)
     const cell = new Cell(coord, element)
@@ -311,11 +241,10 @@ export default class Cell {
   }
 
   /**
-   * TODO: Allow other parameters to be passed to the element transition
    * Get operator from transition
    * @param name
    */
-  get operator(): [number, number, qt.Operator] {
+  public get operator(): [number, number, qt.Operator] {
     const { x, y } = this.coord
     const options: TransitionInterface = {
       rotation: this.rotation,
@@ -331,7 +260,7 @@ export default class Cell {
    * @param name element name
    * @returns element class instance
    */
-  static fromName(name: string): Element {
+  public static fromName(name: string): Element {
     switch (name) {
       case Elem.Absorber:
         return new Absorber()

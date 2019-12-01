@@ -56,7 +56,7 @@ import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import Level from '@/engine/Level'
 import Particle from '@/engine/Particle'
-import { getPosition } from '@/mixins'
+import getPosition from '@/mixins/getPosition'
 import {
   LaserCell,
   NonLinearCrystalCell,

@@ -62,7 +62,8 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { Grid, Cell } from '@/engine/classes'
+import Cell from '@/engine/Cell'
+import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
 import {
   ParticleInterface,

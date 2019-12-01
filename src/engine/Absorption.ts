@@ -6,10 +6,10 @@ import Cell from './Cell'
  * A cell and its probability of absorption
  */
 export default class Absorption extends Cell {
-  cell: Cell
-  probability: number
+  public cell: Cell
+  public probability: number
 
-  constructor(cell: Cell, probability: number) {
+  public constructor(cell: Cell, probability: number) {
     super(cell.coord, cell.element)
     this.cell = cell
     this.probability = probability
@@ -19,14 +19,14 @@ export default class Absorption extends Cell {
    * Is the particle escaping the grid?
    * @return boolean
    */
-  get isEscaping() {
+  public get isEscaping(): boolean {
     return this.cell.coord.outOfGrid
   }
 
   /**
    * Override toString()
    */
-  toString() {
+  public toString(): string {
     return `Absorbing ${this.probability} at ${this.cell.toString}`
   }
 
@@ -34,7 +34,7 @@ export default class Absorption extends Cell {
    * Export absorption as javascript primitives
    * @returns AbsorptionInterface
    */
-  exportAbsorption(): AbsorptionInterface {
+  public exportAbsorption(): AbsorptionInterface {
     return {
       coord: this.cell.coord.exportCoord(),
       probability: this.probability
