@@ -46,7 +46,7 @@ export default class QuarterWavePlateCell extends Piece {
   /**
    * Compute inner grid rotation from cell polarization
    */
-  get computePolarization() {
+  get computePolarization(): {} {
     return {
       'transform-origin': `32px 32px`,
       transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`

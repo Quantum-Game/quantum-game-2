@@ -28,7 +28,7 @@ import levels from '@/assets/data/levels/index'
   }
 })
 export default class LevelMapPage extends Vue {
-  get groups() {
+  get groups(): {} {
     return _.groupBy(levels, (level: LevelInterface) => {
       return level.group
     })

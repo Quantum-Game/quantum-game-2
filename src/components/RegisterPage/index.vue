@@ -54,6 +54,7 @@
 </template>
 
 <script lang="ts">
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Vue, Component } from 'vue-property-decorator'
 import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'

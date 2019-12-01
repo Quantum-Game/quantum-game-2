@@ -37,11 +37,11 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { IndicatorInterface, DirEnum, PolEnum } from '@/engine/interfaces'
+import { IndicatorInterface, DirEnum, PolEnum, MatrixElementInterface } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { OperatorEntry } from 'quantum-tensors'
+import { OperatorEntry, Operator } from 'quantum-tensors'
 
 @Component({
   components: {
@@ -157,11 +157,12 @@ export default class EncyclopediaMatrixBoard extends Vue {
   /**
    * Return the generated cell operator and select the entries
    */
-  get operator() {
+  get operator(): Operator {
     return this.cell.operator[2]
   }
 
-  get matrixElements() {
+  // TODO: find it in qt
+  get matrixElements(): MatrixElementInterface[] {
     if (this.dirPolOrder) {
       return this.operator.entries.map((entry: OperatorEntry) => {
         return {

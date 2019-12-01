@@ -57,12 +57,12 @@ export default class EncyclopediaArticle extends Vue {
     sections: []
   }
 
-  created() {
+  created(): void {
     this.loadEntry()
   }
 
   @Watch('$route')
-  loadEntry() {
+  loadEntry(): void {
     if (this.entryURL) {
       this.entry = getEntry(this.entryURL)
     }
@@ -75,7 +75,8 @@ export default class EncyclopediaArticle extends Vue {
     return this.$route.params.entry
   }
 
-  get theComponentsTransitionMapShouldBeDisplayed() {
+  // FIXME: Code smell
+  get theComponentsTransitionMapShouldBeDisplayed(): boolean {
     const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
     return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0
   }

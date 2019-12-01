@@ -197,7 +197,7 @@ export default class Game extends Vue {
   /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
-  get displayGameState() {
+  get displayGameState(): string {
     if (this.frameIndex === this.simulation.frames.length - 1) {
       return this.gameState
     }
@@ -207,7 +207,7 @@ export default class Game extends Vue {
   /**
    * Set the energized cells from the simulation
    */
-  setEnergizedCells() {
+  setEnergizedCells(): void {
     this.level.grid.resetEnergized()
     const coords = this.filteredAbsorptions.map((absorption) => {
       return absorption.cell.coord
@@ -237,7 +237,7 @@ export default class Game extends Vue {
    * Process the goals from level with the results of the quantum simulation
    *  @returns goals
    */
-  get framePercentage() {
+  get framePercentage(): number {
     return this.activeFrame.probability * 100
   }
 
@@ -267,7 +267,7 @@ export default class Game extends Vue {
    * Show previous frame and check it exists
    *  @returns frameIndex
    */
-  rewind() {
+  rewind(): void {
     this.frameIndex = 0
   }
 
@@ -275,11 +275,11 @@ export default class Game extends Vue {
    * Show previous frame and check it exists
    *  @returns frameIndex
    */
-  stepBack() {
+  stepBack(): number {
     const newframeIndex = this.frameIndex - 1
     if (newframeIndex < 0) {
       console.error("Can't access frames before simulation...")
-      return false
+      return 0
     }
     this.frameIndex = newframeIndex
     return this.frameIndex
@@ -290,7 +290,7 @@ export default class Game extends Vue {
    *  then clear the interval
    * @returns void
    */
-  play() {
+  play(): void {
     this.frameIndex = 0
     this.playInterval = setInterval(() => {
       if (this.frameIndex < this.simulation.frames.length - 1) {
@@ -307,11 +307,11 @@ export default class Game extends Vue {
    * Show next frame and check it exists
    *  @returns frameIndex
    */
-  stepForward() {
+  stepForward(): number {
     const newframeIndex = this.frameIndex + 1
     if (newframeIndex > this.simulation.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...")
-      return false
+      return this.simulation.frames.length - 1
     }
     this.frameIndex = newframeIndex
     return this.frameIndex
@@ -320,14 +320,14 @@ export default class Game extends Vue {
   /**
    * Reload the current page
    */
-  fastForward() {
+  fastForward(): void {
     this.frameIndex = this.simulation.frames.length - 1
   }
 
   /**
    * Reload the current page
    */
-  reload() {
+  reload(): void {
     window.location.reload(false)
   }
 
@@ -383,19 +383,19 @@ export default class Game extends Vue {
     }
   }
 
-  removeFromCurrentTools(cell: Cell) {
+  removeFromCurrentTools(cell: Cell): void {
     this.level.toolbox.removeTool(cell)
   }
 
-  addToCurrentTools(cell: Cell) {
+  addToCurrentTools(cell: Cell): void {
     this.level.toolbox.addTool(cell, this.activeCell)
   }
 
-  setCurrentTools(cells: Cell[]) {
+  setCurrentTools(cells: Cell[]): void {
     this.level.toolbox = new Toolbox(cells)
   }
 
-  resetCurrentTools() {
+  resetCurrentTools(): void {
     this.level.toolbox.reset()
   }
 
@@ -430,12 +430,12 @@ export default class Game extends Vue {
   }
 
   // Used to store in local storage the current state of the game
-  saveLevelToStore() {
+  saveLevelToStore(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     localStorage.setItem(this.currentLevelName, currentStateJSONString)
   }
 
-  clearLS() {
+  clearLS(): void {
     localStorage.removeItem(this.currentLevelName)
   }
 
@@ -454,20 +454,6 @@ export default class Game extends Vue {
 
   get hints(): HintInterface[] {
     return this.level.hints.map((hint) => hint.exportHint())
-  }
-
-  get cellPositionsArray() {
-    const array: number[] = []
-    this.level.grid.cells
-      .filter((cell) => {
-        return cell.element.name !== 'Void'
-      })
-      .map((cell) => {
-        array.push(cell.coord.x)
-        array.push(cell.coord.y)
-        return cell
-      })
-    return array
   }
 }
 </script>

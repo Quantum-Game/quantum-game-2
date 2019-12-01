@@ -38,8 +38,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-/* eslint-disable-next-line */
-import $userStore from '@/store/userStore';
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
 
@@ -50,7 +50,7 @@ import AppButton from '@/components/AppButton.vue'
   }
 })
 export default class SavedLevels extends Vue {
-  get user() {
+  get user(): string {
     return $userStore.getters.userName
   }
 

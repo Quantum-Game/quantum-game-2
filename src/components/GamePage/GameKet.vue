@@ -80,7 +80,8 @@ import { hslToHex, TAU } from '@/engine/Helpers'
 import Grid from '@/engine/Grid'
 import AppPhoton from '@/components/AppPhoton.vue'
 import AppButton from '@/components/AppButton.vue'
-import QuantumFrame from '@/engine/QuantumFrame'
+import QuantumFrame, { KetComponentInterface } from '@/engine/QuantumFrame'
+import { AbsorptionInterface } from '@/engine/interfaces'
 
 @Component({
   components: {
@@ -128,19 +129,19 @@ export default class GameKet extends Vue {
     return hslToHex(angleInDegrees, 100, 50)
   }
 
-  renderDir(dir: number) {
+  renderDir(dir: number): string {
     return ['⤑', '⇡', '⇠', '⇣'][dir]
   }
 
-  renderPol(pol: number) {
+  renderPol(pol: number): string {
     return ['H', 'V'][pol]
   }
 
-  get absorptions() {
+  get absorptions(): AbsorptionInterface[] {
     return this.frame.absorptions
   }
 
-  get ketComponents() {
+  get ketComponents(): KetComponentInterface[] {
     return this.frame.ketComponents
   }
 }

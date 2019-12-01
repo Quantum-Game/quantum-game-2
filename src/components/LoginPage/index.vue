@@ -66,6 +66,7 @@ import AppButton from '@/components/AppButton.vue'
   }
 })
 export default class Login extends Vue {
+  /* eslint-disable @typescript-eslint/explicit-function-return-type */
   user: {} = {
     email: '',
     password: '',

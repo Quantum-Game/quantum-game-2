@@ -79,7 +79,7 @@ export default class GameGraph extends Vue {
 
   rect = { width: 0, height: 0 }
 
-  mounted() {
+  mounted(): void {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect()
   }
 

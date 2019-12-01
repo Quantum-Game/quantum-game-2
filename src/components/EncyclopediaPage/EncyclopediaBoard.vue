@@ -100,7 +100,7 @@ export default class EncyclopediaBoard extends Vue {
   /**
    * Rotate element (e.g. to be used on click).
    */
-  rotate(cell: Cell) {
+  rotate(cell: Cell): void {
     cell.rotate()
     this.reset()
     this.$emit('updateRotation', cell)

@@ -146,7 +146,7 @@ export default class Board extends Vue {
     boardScaler: HTMLElement
   }
 
-  mounted() {
+  mounted(): void {
     window.addEventListener('resize', this.assessTileSize)
     this.assessTileSize()
   }
@@ -168,7 +168,7 @@ export default class Board extends Vue {
   /**
    * Handle mouse over from cell and photons
    */
-  handleMouseEnter(coord: Coord) {
+  handleMouseEnter(coord: Coord): void {
     const cell = this.grid.get(coord)
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord)
@@ -184,7 +184,7 @@ export default class Board extends Vue {
   /**
    * Handle mouse over from cell and photons
    */
-  handleMouseLeave(coord: Coord) {
+  handleMouseLeave(coord: Coord): void {
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord)
     })

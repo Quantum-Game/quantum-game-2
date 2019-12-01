@@ -170,15 +170,15 @@ export default class GameControls extends Vue {
     return $userStore.getters.isLoggedIn
   }
 
-  saveLevel() {
+  saveLevel(): void {
     $userStore.dispatch('SAVE_LEVEL', this.$store.state)
   }
 
-  updateLevel() {
+  updateLevel(): void {
     $userStore.dispatch('UPDATE_LEVEL', this.$store.state)
   }
 
-  handleSave() {
+  handleSave(): void {
     if (!this.$route.meta.levelSaved) {
       this.saveLevel()
     } else {
@@ -186,7 +186,7 @@ export default class GameControls extends Vue {
     }
   }
 
-  handleAccount() {
+  handleAccount(): void {
     if (!this.isLoggedIn) {
       this.$router.push('/login')
     } else {
@@ -194,11 +194,11 @@ export default class GameControls extends Vue {
     }
   }
 
-  handleOptions() {
+  handleOptions(): void {
     this.$router.push('/options')
   }
 
-  handleMap() {
+  handleMap(): void {
     this.$router.push('/levels')
   }
 }

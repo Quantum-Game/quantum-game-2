@@ -44,6 +44,7 @@
 // FIXME: Changing will reset the chosen cartesian/polar/color-disk (option menu?)
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { colorComplex } from '@/engine/Helpers'
+import { MatrixElementInterface } from '../../engine/interfaces'
 
 @Component
 export default class EncyclopediaOperatorViewer extends Vue {
@@ -53,23 +54,18 @@ export default class EncyclopediaOperatorViewer extends Vue {
   @Prop({ default: () => 40 }) private margin!: number
   @Prop({ default: () => [] }) private labelsIn!: number[]
   @Prop({ default: () => [] }) private labelsOut!: number[]
-  @Prop({ default: () => [] }) private matrixElements!: {
-    i: number
-    j: number
-    re: number
-    im: number
-  }[]
+  @Prop({ default: () => [] }) private matrixElements!: MatrixElementInterface[]
 
   scale(i: number): number {
     return i * this.size
   }
 
-  generateColor(re: number, im: number) {
+  generateColor(re: number, im: number): string {
     return colorComplex(re, im)
   }
 
-  tileMouseOver(d: { i: number; j: number; re: number; im: number }) {
-    this.$emit('columnMouseover', d.i)
+  tileMouseOver(tile: MatrixElementInterface): void {
+    this.$emit('columnMouseover', tile.i)
   }
 }
 </script>

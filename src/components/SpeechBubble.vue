@@ -42,40 +42,40 @@ export default class SpeechBubble extends Mixins(Position) {
     hint: HTMLElement
   }
 
-  mounted() {
+  mounted(): void {
     this.assessDimensions()
   }
 
   /*   used to measure the HTML elements dimensions to
       appropriatly wrap it and position
   */
-  assessDimensions() {
+  assessDimensions(): void {
     this.contentRect = this.$refs.hint.getBoundingClientRect()
   }
 
-  hide() {
+  hide(): void {
     this.shown = false
   }
 
-  get hintClass() {
+  get hintClass(): string {
     return `hint--${this.hint.color}`
   }
 
   // used to give a bit of margins to the foreginObject
-  get wrapperHeight() {
+  get wrapperHeight(): number {
     return this.contentRect.height + 15
   }
 
-  get wrapperWidth() {
+  get wrapperWidth(): number {
     return this.contentRect.width + 15
   }
 
   // used for internal positioning with regard to hint's size
-  get offsetX() {
+  get offsetX(): number {
     return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2
   }
 
-  get offsetY() {
+  get offsetY(): number {
     return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3
   }
 }

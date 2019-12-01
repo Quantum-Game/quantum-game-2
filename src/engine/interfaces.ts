@@ -173,6 +173,13 @@ export interface CoordInterface {
   y: number
 }
 
+export interface MatrixElementInterface {
+  i: number
+  j: number
+  re: number
+  im: number
+}
+
 /**
  * ENCYCLOPEDIA ENTRY LIST INTERFACE
  * Encyclopedia entry list in primitives

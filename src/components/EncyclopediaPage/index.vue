@@ -39,7 +39,7 @@ export default class Info extends Vue {
     'sugar-solution'
   ]
 
-  created() {
+  created(): void {
     entriesNameList.forEach((entryName: string) => {
       const isReady: boolean = this.readyEntries.indexOf(entryName) > -1
       this.entryList.push({ name: entryName, ready: isReady })
