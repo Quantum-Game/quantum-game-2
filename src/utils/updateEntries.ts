@@ -13,27 +13,28 @@ const mdOptions = {
 }
 const md = new MarkDownIt(mdOptions)
 
-function dashedToCamelCase(str) {
+function dashedToCamelCase(str: string): string {
   const alteredString = str.replace(/-(.)/g, (m, group1) => {
     return group1.toUpperCase()
   })
   return alteredString.charAt(0).toUpperCase() + alteredString.slice(1)
 }
 
-function scrubTheTags(stringToClean) {
+function scrubTheTags(stringToClean: string): string {
   const tagLength = stringToClean.indexOf('>') + 1
   const closingTagLength = tagLength + 1
   return stringToClean.slice(tagLength, stringToClean.length - closingTagLength)
 }
 
-function convertMarkdown(dir, target) {
+function convertMarkdown(dir: string, target: string): {} {
   let returnedObject = {}
   const dirEntries = fs.readdirSync(dir)
-  dirEntries.forEach((fileName) => {
+  dirEntries.forEach((fileName: string) => {
     // within each file:
     if (fileName.endsWith('md')) {
       const filePath = dir + fileName
       const entryName = fileName.substring(0, fileName.length - 3)
+      // FIXME: wat.png
       returnedObject = {
         ...returnedObject,
         [entryName]: {
@@ -140,7 +141,7 @@ function convertMarkdown(dir, target) {
   })
   const entriesFile = JSON.stringify(returnedObject, null, 2)
   console.debug(`extracting JSON from ${dir}`)
-  fs.writeFile(target, entriesFile, (err) => {
+  fs.writeFile(target, entriesFile, (err: string) => {
     if (err) throw err
   })
   console.debug(`${target.toString()} created!`)
