@@ -62,22 +62,22 @@ export default class SavedLevels extends Vue {
     return $userStore.getters.publicLevels
   }
 
-  removeLevel(id: string, isPublic: boolean) {
+  removeLevel(id: string, isPublic: boolean): void {
     if (isPublic) {
       $userStore.dispatch('MAKE_LEVEL_PRIVATE', id)
     }
     $userStore.dispatch('REMOVE_LEVEL', id)
   }
 
-  makePublic(id: string) {
+  makePublic(id: string): void {
     $userStore.dispatch('MAKE_LEVEL_PUBLIC', id)
   }
 
-  makePrivate(id: string) {
+  makePrivate(id: string): void {
     $userStore.dispatch('MAKE_LEVEL_PRIVATE', id)
   }
 
-  signOut() {
+  signOut(): void {
     $userStore.dispatch('SIGN_OUT', this.user)
   }
 }

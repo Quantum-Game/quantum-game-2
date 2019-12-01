@@ -77,7 +77,7 @@ export default class Register extends Vue {
     return $userStore.getters.error
   }
 
-  signUp() {
+  signUp(): void {
     $userStore.dispatch('SIGN_UP', this.user)
   }
 }

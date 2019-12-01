@@ -66,30 +66,30 @@ import AppButton from '@/components/AppButton.vue'
   }
 })
 export default class Login extends Vue {
-  /* eslint-disable @typescript-eslint/explicit-function-return-type */
   user: {} = {
     email: '',
     password: '',
     rememberMe: true
   }
 
+  /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
   get error() {
     return $userStore.getters.error
   }
 
-  signIn() {
+  signIn(): void {
     $userStore.dispatch('SIGN_IN', this.user)
   }
 
-  signInGithub() {
+  signInGithub(): void {
     $userStore.dispatch('SIGN_IN_GITHUB')
   }
 
-  signInFacebook() {
+  signInFacebook(): void {
     $userStore.dispatch('SIGN_IN_FACEBOOK')
   }
 
-  signInGoogle() {
+  signInGoogle(): void {
     $userStore.dispatch('SIGN_IN_GOOGLE')
   }
 }

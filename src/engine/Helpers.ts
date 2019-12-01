@@ -192,17 +192,6 @@ export function toPercent(value: number): string {
 }
 
 /**
- * Display text in HTML in ROTjs mode
- * @param elementId HTML element to use
- * @param text string to display
- */
-export function displayText(elementId: string, text: string): void {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  // document.getElementById(elementId)!.textContent = text;
-  console.debug(`Log #${elementId}: ${text}`)
-}
-
-/**
  * Convert V1 names to V2
  * @param classic name used in Quantum Game 1
  * @returns v2 name

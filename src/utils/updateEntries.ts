@@ -34,30 +34,30 @@ function convertMarkdown(dir: string, target: string): {} {
     if (fileName.endsWith('md')) {
       const filePath = dir + fileName
       const entryName = fileName.substring(0, fileName.length - 3)
-      // FIXME: wat.png
-      returnedObject = {
-        ...returnedObject,
-        [entryName]: {
-          title: '',
-          elementName: dashedToCamelCase(entryName),
-          short: '',
-          grids: [
-            {
-              cols: 0,
-              rows: 0,
-              cells: []
-            }
-          ],
-          sections: [
-            {
-              title: '',
-              content: ''
-            }
-          ]
-        }
+      const thisEntry = {
+        title: '',
+        elementName: dashedToCamelCase(entryName),
+        short: '',
+        grids: [
+          {
+            cols: 0,
+            rows: 0,
+            cells: []
+          }
+        ],
+        sections: [
+          {
+            title: '',
+            content: ''
+          }
+        ]
       }
 
-      const thisEntry = returnedObject[entryName]
+      returnedObject = {
+        ...returnedObject,
+        [entryName]: thisEntry
+      }
+
       // read the file in UTF8
       const readFile = fs.readFileSync(filePath, 'utf8')
       // transform it into markup

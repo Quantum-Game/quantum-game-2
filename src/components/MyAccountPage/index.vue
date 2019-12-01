@@ -53,11 +53,11 @@ export default class MyAccount extends Vue {
     score: 0
   }
 
-  created() {
+  created(): void {
     $userStore.dispatch('SET_INITIAL_PROGRESS')
   }
 
-  get user() {
+  get user(): string {
     return $userStore.getters.userName
   }
 
@@ -65,17 +65,17 @@ export default class MyAccount extends Vue {
     return $userStore.getters.progressArr
   }
 
-  signOut() {
+  signOut(): void {
     $userStore.dispatch('SIGN_OUT', this.user)
   }
 
-  saveProgressToDB() {
+  saveProgressToDB(): void {
     console.debug(this.progressArr)
     $userStore.commit('SET_PROGRESS', this.progressArr)
     $userStore.dispatch('SAVE_PROGRESS')
   }
 
-  editLevel(lvl: AccountLevel) {
+  editLevel(lvl: AccountLevel): void {
     this.level = lvl
   }
 }

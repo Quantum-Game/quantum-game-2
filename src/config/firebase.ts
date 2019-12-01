@@ -1,8 +1,7 @@
-/* eslint-disable */
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import $userStore from '@/store/userStore';
+import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+import $userStore from '@/store/userStore'
 
 const firebaseConfig = {
   apiKey: `${process.env.VUE_APP_Api_Key}`,
@@ -13,16 +12,16 @@ const firebaseConfig = {
   messagingSenderId: process.env.VUE_APP_MessagingSenderId,
   appId: process.env.VUE_APP_AppId,
   measurementId: process.env.VUE_APP_MeasurementId
-};
+}
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+firebase.initializeApp(firebaseConfig)
+const db = firebase.firestore()
+const auth = firebase.auth()
 auth.onAuthStateChanged((user) => {
   if (user) {
-    $userStore.dispatch('FETCH_USER', user);
+    $userStore.dispatch('FETCH_USER', user)
   }
-});
-export { db, auth };
+})
+export { db, auth }
 
-export default firebase;
+export default firebase

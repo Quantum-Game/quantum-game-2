@@ -99,7 +99,6 @@ export default class Grid extends Cluster {
    */
   public resetEnergized(): void {
     this.cells.forEach((cell): void => {
-      // eslint-disable-next-line
       cell.energized = false
     })
   }
@@ -172,7 +171,6 @@ export default class Grid extends Cluster {
   public moveAll(direction: number): void {
     console.debug(`Moving all in direction: ${direction}`)
     this.unvoid.cells.forEach((cell): void => {
-      // eslint-disable-next-line
       cell.coord = cell.coord.fromAngle(direction)
     })
   }
@@ -184,9 +182,7 @@ export default class Grid extends Cluster {
   public rotateAll(): void {
     console.debug(`Rotating grid`)
     this.unvoid.cells.forEach((cell): void => {
-      // eslint-disable-next-line
       cell.coord = new Coord(cell.coord.x, cell.coord.y)
-      // eslint-disable-next-line
       cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360
     })
   }
@@ -194,10 +190,8 @@ export default class Grid extends Cluster {
   public reflectAll(): void {
     console.debug(`Vertical reflecting grid`)
     this.unvoid.cells.forEach((cell): void => {
-      // eslint-disable-next-line
       cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x)
       if (cell.rotation % 180 === 0) {
-        // eslint-disable-next-line
         cell.rotation = (cell.rotation + 180) % 360
       }
     })
