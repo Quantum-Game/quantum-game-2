@@ -1,10 +1,9 @@
-import Vue from 'vue'
-import Component from 'vue-class-component'
+import { Vue, Component } from 'vue-property-decorator'
 import { Cell } from '@/engine/classes'
 import { HintInterface } from '@/engine/interfaces'
 
 @Component
-export default class GetPosition extends Vue {
+export default class Position extends Vue {
   public cell!: Cell
   public hint!: HintInterface
   public tileSize!: number
