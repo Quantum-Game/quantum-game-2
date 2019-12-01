@@ -1,7 +1,10 @@
 <svg version="1.1" id="prefix__Layer_1" 
   xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 30 30" xml:space="preserve">
   <style>
-        .prefix__st0{fill:#fff}
+        .st0{fill:#FFFFFF;}
   </style>
-  <path class="prefix__st0" d="M20.5 3h7v24h-7zM20.3 15L2.5 3v24z"/>
+  <g>
+	<rect x="20.5" y="3" class="st0" width="5" height="24"/>
+	<polygon class="st0" points="20.3,15 2.5,3 2.5,27 	"/>
+</g>
 </svg>

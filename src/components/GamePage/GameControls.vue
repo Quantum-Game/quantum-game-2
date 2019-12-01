@@ -2,17 +2,17 @@
   <div class="controls">
     <!-- SIMULATION CONTROLS -->
     <span class="playback">
-      <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" />
+      <!-- <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" /> -->
       <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
       <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
       <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
-      <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" />
+      <!-- <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" /> -->
     </span>
     <!-- FRAME INFO -->
-    <span class="frameInfo">
+    <!-- <span class="frameInfo">
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
-    </span>
+    </span> -->
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
       <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
@@ -20,8 +20,8 @@
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
       <button type="button" :style="computeSaveStyle" @click="handleSave()" />
-      <button type="button" :style="computeMapStyle" @click="handleMap()" />
-      <button type="button" :style="computeAccountStyle" @click="handleAccount()" />
+      <!-- <button type="button" :style="computeMapStyle" @click="handleMap()" /> -->
+      <!-- <button type="button" :style="computeAccountStyle" @click="handleAccount()" /> -->
     </span>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default class GameControls extends Vue {
 
   get computeBackStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_back.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_back.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
     };
   }
@@ -87,7 +87,7 @@ export default class GameControls extends Vue {
 
   get computeForwardStyle(): {} {
     return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/skip_forward.svg`)})`, //eslint-disable-line
+      backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_forward.svg`)})`, //eslint-disable-line
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     };
   }
@@ -205,15 +205,12 @@ export default class GameControls extends Vue {
 
 <style lang="scss" scoped>
 button {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   margin: 0.2rem 0.4rem;
   background-color: transparent;
   border: none;
   transition: all 0.2s ease-in-out;
-  &:hover {
-    transform: scale(1.2);
-  }
 }
 #play {
   height: 30px;
