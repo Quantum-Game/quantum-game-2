@@ -23,9 +23,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
-import { Mutation, State } from 'vuex-class'
-import { CellInterface, CoordInterface } from '@/engine/interfaces'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { State } from 'vuex-class'
 import Particle from '@/engine/Particle'
 import AppPhoton from '@/components/AppPhoton.vue'
 import AppButton from '@/components/AppButton.vue'

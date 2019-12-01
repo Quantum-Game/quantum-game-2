@@ -75,22 +75,15 @@
 <script lang="ts">
 import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { State, Getter, Mutation } from 'vuex-class'
-import { Level, Particle, Cell, Coord, Element, Grid, Goal } from '@/engine/classes'
+import { State, Mutation } from 'vuex-class'
+import { Level, Particle, Cell } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 import {
-  CellInterface,
-  LevelInterface,
-  ParticleInterface,
-  GoalInterface,
-  AbsorptionInterface,
   HintInterface,
-  GameStateEnum,
-  GridInterface,
-  PolEnum
+  GameStateEnum
 } from '@/engine/interfaces'
 import levels from '@/assets/data/levels'
 import GameGoals from '@/components/GamePage/GameGoals.vue'

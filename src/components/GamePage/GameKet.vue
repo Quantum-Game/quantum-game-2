@@ -76,9 +76,8 @@
 <script lang="ts">
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
 import { Complex } from 'quantum-tensors'
-import { CellInterface, CoordInterface } from '@/engine/interfaces'
+import { CellInterface } from '@/engine/interfaces'
 import { hslToHex, TAU } from '@/engine/Helpers'
-import Particle from '@/engine/Particle'
 import Grid from '@/engine/Grid'
 import AppPhoton from '@/components/AppPhoton.vue'
 import AppButton from '@/components/AppButton.vue'
