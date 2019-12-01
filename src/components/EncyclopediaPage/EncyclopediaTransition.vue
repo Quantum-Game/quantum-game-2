@@ -37,17 +37,12 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import * as qt from 'quantum-tensors'
 import {
-  ParticleInterface,
-  CellInterface,
-  LevelInterface,
-  GridInterface,
   IndicatorInterface,
   DirEnum,
   PolEnum
 } from '@/engine/interfaces'
-import { Coord, Level, Element, Particle, Grid, Cell } from '@/engine/classes'
+import { Coord, Grid, Cell } from '@/engine/classes'
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 

@@ -64,8 +64,7 @@
 </template>
 
 <script lang="ts">
-import dagre from 'dagre'
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 
 @Component({

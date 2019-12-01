@@ -57,7 +57,7 @@ export function hslToHex(hParam: number, sParam: number, lParam: number): string
     g = l
     b = l // achromatic
   } else {
-    const hue2rgb = (pParam: number, qParam: number, tParam: number) => {
+    const hue2rgb = (pParam: number, qParam: number, tParam: number): number => {
       const p = pParam
       const q = qParam
       let t = tParam
@@ -74,7 +74,7 @@ export function hslToHex(hParam: number, sParam: number, lParam: number): string
     g = hue2rgb(p, q, h)
     b = hue2rgb(p, q, h - 1 / 3)
   }
-  const toHex = (x: number) => {
+  const toHex = (x: number): string => {
     const hex = Math.round(x * 255).toString(16)
     return hex.length === 1 ? `0${hex}` : hex
   }
@@ -180,14 +180,6 @@ export function startingDirection(rotation: number): DirEnum {
     default:
       throw new Error(`Wrong starting direction: ${rotation}`)
   }
-}
-
-/**
- * Flatten an array
- * @param arr Array to flatten
- */
-export function flatDeep(arr: any[]): any[] {
-  return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val) : val), [])
 }
 
 /**

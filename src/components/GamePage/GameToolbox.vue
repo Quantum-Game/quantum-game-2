@@ -31,7 +31,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Mutation } from 'vuex-class'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
-import { Coord, Cell } from '@/engine/classes'
+import Cell from '@/engine/Cell'
 @Component({
   components: {
     AppCell

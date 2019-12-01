@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Mixins, Component, Prop } from 'vue-property-decorator'
+import { Mixins, Component, Prop } from 'vue-property-decorator'
 import Hint from '@/engine/Hint'
 import Position from '@/mixins/Position'
 

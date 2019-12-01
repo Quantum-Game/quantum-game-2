@@ -13,12 +13,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { Mutation, State } from 'vuex-class'
+import { Vue, Component } from 'vue-property-decorator'
+import { State } from 'vuex-class'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import { camelCaseToDash } from '@/engine/Helpers'
-import AppButton from '@/components/AppButton.vue'
 
 @Component
 export default class GameActiveCell extends Vue {

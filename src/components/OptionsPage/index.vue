@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { Mutation, Getter, namespace } from 'vuex-class'
+import { namespace } from 'vuex-class'
 import { SET_GAME_SPEED_INTERVAL } from '@/store/mutation-types'
 import { AppLayout } from '@/components'
 

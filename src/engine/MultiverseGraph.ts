@@ -92,7 +92,7 @@ export default class MultiverseGraph {
    * Find successors of a particle, used to generate photon path
    * @returns nodes
    */
-  public successors(particleUid: string): any[] {
+  public successors(particleUid: string): string {
     const successors = this.graph.children(particleUid)
     return successors
   }
@@ -159,8 +159,8 @@ export default class MultiverseGraph {
    * @param particle
    */
   public fromUid(uid: string): Particle {
-    const fIndex = parseInt(uid.match(/\d/g)![0], 10)
-    const pIndex = parseInt(uid.match(/\d/g)![1], 10)
+    const fIndex = parseInt(uid.match(/\d/g)![0], 10) /* eslint-disable-line */
+    const pIndex = parseInt(uid.match(/\d/g)![1], 10) /* eslint-disable-line */
     return this.qs.frames[fIndex].particles[pIndex]
   }
 

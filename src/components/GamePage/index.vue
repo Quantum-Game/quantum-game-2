@@ -81,10 +81,7 @@ import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
-import {
-  HintInterface,
-  GameStateEnum
-} from '@/engine/interfaces'
+import { HintInterface, GameStateEnum } from '@/engine/interfaces'
 import levels from '@/assets/data/levels'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'

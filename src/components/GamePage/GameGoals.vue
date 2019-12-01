@@ -68,14 +68,9 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { State, Getter, Mutation } from 'vuex-class'
 import { Tween, update as updateTween } from 'es6-tween'
-import { GameStateEnum } from '@/engine/interfaces'
-import Cell from '@/engine/Cell'
-import Goal from '@/engine/Goal'
 import GameState from '@/engine/GameState'
 import AppCell from '@/components/Board/AppCell.vue'
-import Game from '@/components/GamePage/index.vue'
 
 @Component({
   components: {

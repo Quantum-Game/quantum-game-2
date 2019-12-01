@@ -8,22 +8,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class EncyclopediaLinkList extends Vue {
-  data() {
-    return {
-      entriesExpanded: false
-    }
-  }
   @Prop() readonly entryList!: any[]
+  entriesExpanded = false
 
   toggleEntries(): void {
     this.$data.entriesExpanded = !this.$data.entriesExpanded
   }
 
-  spacedEntry(name: string) {
+  spacedEntry(name: string): string {
     const nameCopy = name
     return nameCopy.replace(/-/g, ' ')
   }

@@ -27,8 +27,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { State, Getter, Mutation } from 'vuex-class'
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import $userStore from '@/store/userStore'
 

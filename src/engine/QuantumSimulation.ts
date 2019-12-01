@@ -215,7 +215,7 @@ export default class QuantumSimulation {
     const lastFrameAbs = this.frames[lastId].absorptions
     const absorptionId = weightedRandomInt(lastFrameAbs.map((d): number => d.probability), true)
     const absorption = lastFrameAbs[absorptionId]
-    const states = this.frames.slice(0, lastId).map((frame): any => frame.photons.normalize())
+    const states = this.frames.slice(0, lastId).map((frame): Photons => frame.photons.normalize())
 
     // if particle escaped it has at least an adjacent cell inside grid
     const coord = Coord.importCoord(absorption.coord)

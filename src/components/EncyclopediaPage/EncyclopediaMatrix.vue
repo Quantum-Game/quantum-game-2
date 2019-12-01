@@ -43,7 +43,7 @@
 // TODO: Allow to hover an empty column to see results
 // FIXME: Changing will reset the chosen cartesian/polar/color-disk (option menu?)
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { hslToHex, colorComplex } from '@/engine/Helpers'
+import { colorComplex } from '@/engine/Helpers'
 
 @Component
 export default class EncyclopediaOperatorViewer extends Vue {
