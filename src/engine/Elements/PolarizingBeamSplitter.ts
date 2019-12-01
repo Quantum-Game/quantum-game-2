@@ -8,8 +8,7 @@ import Element from '@/engine/Element'
 export default class PolarizingBeamSplitter extends Element {
   public name: Elem = Elem.PolarizingBeamSplitter
   public group: Group = Group.Direction
-  public description: string =
-    'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).'
+  public description = 'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).'
 
   public ascii: string[] = ['⬲', '⟴']
   public angles: number[] = [0, 180]

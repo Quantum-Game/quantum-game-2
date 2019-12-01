@@ -8,15 +8,15 @@ import Element from '@/engine/Element'
 export default class BeamSplitter extends Element {
   public name: Elem = Elem.BeamSplitter
   public group: Group = Group.Direction
-  public description: string =
+  public description =
     'A thin slab of glass reflecting half the beam, and transmitting other half of it.'
 
   public ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
   public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  public percentage: number = 50
+  public percentage = 50
 
-  public constructor(percentage: number = 50) {
+  public constructor(percentage = 50) {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
   }

@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Mirror extends Element {
   public name: Elem = Elem.Mirror
   public group: Group = Group.Direction
-  public description: string = 'Metallic or dielectric mirror.'
+  public description = 'Metallic or dielectric mirror.'
   public ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\']
   public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 

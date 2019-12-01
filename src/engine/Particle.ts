@@ -111,18 +111,21 @@ export default class Particle extends Coord {
    * Generating ket from Photons or QuantumFrame is preferred.
    */
   public toKetString(): string {
-    const d = this
     const dirVis = new Map<number, string>()
     dirVis.set(0, '⇢')
     dirVis.set(90, '⇡')
     dirVis.set(180, '⇠')
     dirVis.set(270, '⇣')
     let result = ''
-    if (d.a.re !== 0 || d.a.im !== 0) {
-      result += `(${d.a.re.toFixed(2)} + ${d.a.im.toFixed(2)} i) | ${dirVis.get(d.direction)} H⟩`
+    if (this.a.re !== 0 || this.a.im !== 0) {
+      result += `(${this.a.re.toFixed(2)} + ${this.a.im.toFixed(2)} i) | ${dirVis.get(
+        this.direction
+      )} H⟩`
     }
-    if (d.b.re !== 0 || d.b.im !== 0) {
-      result += `(${d.b.re.toFixed(2)} + ${d.b.im.toFixed(2)} i) | ${dirVis.get(d.direction)} V⟩`
+    if (this.b.re !== 0 || this.b.im !== 0) {
+      result += `(${this.b.re.toFixed(2)} + ${this.b.im.toFixed(2)} i) | ${dirVis.get(
+        this.direction
+      )} V⟩`
     }
     return result
   }

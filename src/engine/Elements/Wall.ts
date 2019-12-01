@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Wall extends Element {
   public name: Elem = Elem.Wall
   public group: Group = Group.Absorption
-  public description: string = 'Another brick in the wall.'
+  public description = 'Another brick in the wall.'
   public ascii: string[] = ['▓']
   public angles: number[] = [0]
 

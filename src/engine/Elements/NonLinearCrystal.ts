@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class NonLinearCrystal extends Element {
   public name: Elem = Elem.NonLinearCrystal
   public group: Group = Group.Source
-  public description: string = 'A BBO crystal.'
+  public description = 'A BBO crystal.'
   public ascii: string[] = ['>', '^', '<', 'v']
   public angles: number[] = [0, 90, 180, 270]
 

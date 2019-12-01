@@ -56,7 +56,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: '0' }) defaultRotation!: number
 
   rotation: number = this.defaultRotation
-  dirPolOrder: boolean = true
+  dirPolOrder = true
   grid: Grid = Grid.emptyGrid(3, 3)
   indicators: IndicatorInterface[] = [
     {

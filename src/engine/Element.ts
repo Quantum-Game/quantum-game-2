@@ -20,8 +20,8 @@ export default class Element {
     description = '',
     ascii: string[] = ['>', '^', '<', 'v'],
     angles: number[] = [0, 90, 180, 270],
-    polarization: number = 0,
-    percentage: number = 0
+    polarization = 0,
+    percentage = 0
   ) {
     this.name = name
     this.group = group

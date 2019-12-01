@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Rock extends Element {
   public name: Elem = Elem.Rock
   public group: Group = Group.Absorption
-  public description: string =
+  public description =
     "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive."
 
   public ascii: string[] = ['♜']

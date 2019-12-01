@@ -38,8 +38,8 @@ export default class AppOverlay extends Vue {
     stop: () => void
   }
 
-  explosion: boolean = false
-  explosionTimeout: number = 0
+  explosion = false
+  explosionTimeout = 0
 
   mineExploding(): void {
     this.explosion = true

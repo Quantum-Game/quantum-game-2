@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Absorber extends Element {
   public name: Elem = Elem.Absorber
   public group: Group = Group.Absorption
-  public description: string = 'Filter with 50% absorption probability.'
+  public description = 'Filter with 50% absorption probability.'
   public ascii: string[] = ['A']
   public angles: number[] = [0]
 

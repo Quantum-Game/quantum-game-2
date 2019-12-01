@@ -135,7 +135,7 @@ export default class Board extends Vue {
   @State hoveredCell!: Cell
   @State activeCell!: Cell
 
-  tileSize: number = 64
+  tileSize = 64
   boardHeight = 0
   scalerStyle = {
     transform: `scale(1)`

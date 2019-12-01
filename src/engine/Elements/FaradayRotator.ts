@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class FaradayRotator extends Element {
   public name: Elem = Elem.FaradayRotator
   public group: Group = Group.Polarization
-  public description: string =
+  public description =
     'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.'
 
   public ascii: string[] = ['🠶', '🠵', '🠴', '🠷']

@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class CoatedBeamSplitter extends Element {
   public name: Elem = Elem.CoatedBeamSplitter
   public group: Group = Group.Direction
-  public description: string =
+  public description =
     'A thin slab of glass with a reflective layer - reflecting half the beam and transmitting the other half of it.'
 
   public ascii: string[] = ['⇒', '⇗', '⇑', '⇖', '⇐', '⇙', '⇓', '⇘']

@@ -68,7 +68,10 @@ export default class QuantumFrame {
           }
         }
       )
-      .filter((ketComponent): boolean => ketComponent.amplitude.r ** 2 > this.probThreshold)
+      .filter(
+        (ketComponent: KetComponentInterface): boolean =>
+          ketComponent.amplitude.r ** 2 > this.probThreshold
+      )
   }
 
   /**
@@ -124,7 +127,7 @@ export default class QuantumFrame {
           return new Particle(coord, q.direction, q.are, q.aim, q.bre, q.bim)
         }
       )
-      .filter((particle): boolean => particle.probability > this.probThreshold)
+      .filter((particle: Particle): boolean => particle.probability > this.probThreshold)
   }
 
   /**

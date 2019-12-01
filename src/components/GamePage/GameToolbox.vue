@@ -42,10 +42,10 @@ export default class GameToolbox extends Vue {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   cell = {}
-  viewBox: string = '-8 0 80 80'
-  counterX: string = '40%'
+  viewBox = '-8 0 80 80'
+  counterX = '40%'
 
-  mounted() {
+  mounted(): void {
     window.addEventListener('resize', this.calculateViewBox)
     this.calculateViewBox()
   }

@@ -120,7 +120,7 @@ export default class Grid extends Cluster {
    * @returns boolean if included
    */
   public includes(coord: Coord): boolean {
-    return coord.y >= 0 && coord.y < this.rows && (coord.x >= 0 && coord.x < this.cols)
+    return coord.y >= 0 && coord.y < this.rows && coord.x >= 0 && coord.x < this.cols
   }
 
   /**

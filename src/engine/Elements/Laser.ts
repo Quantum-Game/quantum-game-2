@@ -8,13 +8,13 @@ import Element from '@/engine/Element'
 export default class Laser extends Element {
   public name: Elem = Elem.Laser
   public group: Group = Group.Source
-  public description: string = 'An on-demand single photon source.'
+  public description = 'An on-demand single photon source.'
   public ascii: string[] = ['>', '^', '<', 'v']
   public angles: number[] = [0, 90, 180, 270]
 
-  public polarization: number = 0
+  public polarization = 0
 
-  public constructor(polarization: number = 0) {
+  public constructor(polarization = 0) {
     super(Elem.Laser, Group.Source)
     this.polarization = polarization
   }

@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class CornerCube extends Element {
   public name: Elem = Elem.CornerCube
   public group: Group = Group.Direction
-  public description: string = 'Reflects any incoming photon.'
+  public description = 'Reflects any incoming photon.'
   public ascii: string[] = ['*']
   public angles: number[] = [0]
 

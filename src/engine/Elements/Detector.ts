@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Detector extends Element {
   public name: Elem = Elem.Detector
   public group: Group = Group.Absorption
-  public description: string =
+  public description =
     'Detects and amplifies electric signal from each single photon, from a single direction. Your goal is to get photon there!'
 
   public ascii: string[] = ['⭲', '⭱', '⭰', '⭳']

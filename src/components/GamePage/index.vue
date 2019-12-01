@@ -120,12 +120,12 @@ export default class Game extends Vue {
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  frameIndex: number = 0
+  frameIndex = 0
   simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
   multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
-  error: string = ''
-  playInterval: number = 0
-  absorptionThreshold: number = 0.0001
+  error = ''
+  playInterval = 0
+  absorptionThreshold = 0.0001
 
   // LIFECYCLE
   created(): void {

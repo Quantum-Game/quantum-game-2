@@ -38,7 +38,7 @@ import AppButton from '@/components/AppButton.vue'
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[]
   @Prop() readonly particles!: Particle[]
-  width: number = 180
+  width = 180
   $refs!: {
     wrapper: HTMLElement
   }

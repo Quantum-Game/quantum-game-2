@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Mine extends Element {
   public name: Elem = Elem.Mine
   public group: Group = Group.Absorption
-  public description: string =
+  public description =
     'Once it absorbs a single photon, it sets off. Old french submarine captains can sometimes disarm them.'
 
   public ascii: string[] = ['!']

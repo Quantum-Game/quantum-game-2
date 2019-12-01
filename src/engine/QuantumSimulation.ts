@@ -94,7 +94,7 @@ export default class QuantumSimulation {
    * @param n default number of frames
    * @param stopThreshold stop if probability below threshold
    */
-  public computeFrames(n: number = 20, stopThreshold = 1e-6): void {
+  public computeFrames(n = 20, stopThreshold = 1e-6): void {
     const logging = true
     for (let i = 0; i < n; i += 1) {
       this.frames.push(this.nextFrame())
@@ -213,7 +213,10 @@ export default class QuantumSimulation {
     const lastId = weightedRandomInt(this.totalAbsorptionPerFrame, false)
     // -1 if no measurement, and we need to deal with that
     const lastFrameAbs = this.frames[lastId].absorptions
-    const absorptionId = weightedRandomInt(lastFrameAbs.map((d): number => d.probability), true)
+    const absorptionId = weightedRandomInt(
+      lastFrameAbs.map((d): number => d.probability),
+      true
+    )
     const absorption = lastFrameAbs[absorptionId]
     const states = this.frames.slice(0, lastId).map((frame): Photons => frame.photons.normalize())
 

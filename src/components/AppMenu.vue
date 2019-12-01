@@ -36,7 +36,7 @@ import { State } from 'vuex-class'
 @Component
 export default class AppMenu extends Vue {
   @State('currentLevelID') currentLevelID!: number
-  isMenuOpen: boolean = false
+  isMenuOpen = false
   menuItems = [
     {
       name: 'LEVELS',

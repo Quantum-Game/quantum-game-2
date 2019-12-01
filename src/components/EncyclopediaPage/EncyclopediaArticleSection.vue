@@ -23,7 +23,7 @@ export default class EncyclopediaArticleSection extends Vue {
     contentWrapper: HTMLElement
   }
 
-  isOpen: boolean = false
+  isOpen = false
 
   // hack, as having a computed property that's using refs
   // as an initial data property causes errors - refs are

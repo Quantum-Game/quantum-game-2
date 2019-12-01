@@ -8,7 +8,7 @@ import Element from '@/engine/Element'
 export default class Void extends Element {
   public name: Elem = Elem.Void
   public group: Group = Group.Basic
-  public description: string = 'The void...'
+  public description = 'The void...'
   public ascii: string[] = ['.']
   public angles: number[] = [0]
 
