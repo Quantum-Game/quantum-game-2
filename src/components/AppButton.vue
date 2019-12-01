@@ -14,8 +14,8 @@ export default class AppButton extends Vue {
   @Prop({ default: true }) readonly inline!: boolean
   @Prop() readonly overlay!: boolean
 
-  get computeClass() {
-    return [this.type, this.inline && 'inline', this.overlay && 'overlay-btn']
+  get computeClass(): string[] {
+    return [this.type, this.inline ? 'inline' : '', this.overlay ? 'overlay-btn' : '']
   }
 }
 </script>

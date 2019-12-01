@@ -67,11 +67,11 @@ export default class AppPhoton extends Vue {
   /**
    * Getters from particle
    */
-  get step() {
+  get step(): number {
     return 1 / this.width
   }
 
-  get normalization() {
+  get normalization(): number {
     if (this.normalize) {
       const { are, aim, bre, bim } = this.particle
       return Math.sqrt(are ** 2 + aim ** 2 + bre ** 2 + bim ** 2)
@@ -79,27 +79,27 @@ export default class AppPhoton extends Vue {
     return 1
   }
 
-  get intensity() {
+  get intensity(): number {
     return this.particle.probability
   }
 
-  get direction() {
+  get direction(): number {
     return this.particle.direction
   }
 
-  get are() {
+  get are(): number {
     return this.particle.are / this.normalization
   }
 
-  get aim() {
+  get aim(): number {
     return this.particle.aim / this.normalization
   }
 
-  get bre() {
+  get bre(): number {
     return this.particle.bre / this.normalization
   }
 
-  get bim() {
+  get bim(): number {
     return this.particle.bim / this.normalization
   }
 
@@ -108,7 +108,7 @@ export default class AppPhoton extends Vue {
     return this.particle.probability ** scalingPow
   }
 
-  get computeStyle() {
+  get computeStyle(): {} {
     return {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
@@ -165,13 +165,14 @@ export default class AppPhoton extends Vue {
     return { pathUp, pathDown }
   }
 
-  get availableHeight() {
+  get availableHeight(): number {
     return this.height - this.margin
   }
 
   /**
    * Get horizontal scaling
    */
+  /* eslint-disable-next-line */
   get xScale() {
     return d3
       .scaleLinear()
@@ -183,6 +184,7 @@ export default class AppPhoton extends Vue {
    * Get vertical scaling
    * FIXME: squeezeFactor
    */
+  /* eslint-disable-next-line */
   get yScale() {
     return d3
       .scaleLinear()
@@ -193,6 +195,7 @@ export default class AppPhoton extends Vue {
   /**
    * Get magnetic scaling
    */
+  /* eslint-disable-next-line */
   get mScale() {
     return d3
       .scaleLinear()
@@ -203,6 +206,7 @@ export default class AppPhoton extends Vue {
   /**
    * Get electric scaling
    */
+  /* eslint-disable-next-line */
   get eScale() {
     return d3
       .scaleLinear()

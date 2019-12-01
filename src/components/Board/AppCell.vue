@@ -138,12 +138,15 @@ export default class AppCell extends Mixins(Position) {
    *  2. determines if the updateCell event should be emitted
    *  @returns void
    */
-
-  deviceTargetDown() {
-    return window.innerWidth <= 1024 ? this.handleCellTouch() : this.handleCellClick()
+  deviceTargetDown(): void {
+    if (window.innerWidth <= 1024) {
+      this.handleCellTouch()
+    } else {
+      this.handleCellClick()
+    }
   }
 
-  deviceTargetUp() {
+  deviceTargetUp(): boolean | void {
     return window.innerWidth >= 1024 && this.handleCellUp()
   }
 
@@ -336,7 +339,7 @@ export default class AppCell extends Mixins(Position) {
    * highlight tile during a move
    * @returns highlight class
    */
-  get computeRectClass() {
+  get computeRectClass(): string[] {
     return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect']
   }
 
@@ -345,7 +348,7 @@ export default class AppCell extends Mixins(Position) {
    * indeed be highlighted
    * @returns boolean
    */
-  get shouldTileChangeColor() {
+  get shouldTileChangeColor(): boolean {
     return this.cellSelected && this.cell.isVoid
   }
 

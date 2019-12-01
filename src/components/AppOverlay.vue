@@ -61,7 +61,7 @@ export default class AppOverlay extends Vue {
   }
 
   @Watch('gameState')
-  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum) {
+  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
     if (newGameState === GameStateEnum.Victory) {
       this.$confetti.start({
         particlesPerFrame: 3,
