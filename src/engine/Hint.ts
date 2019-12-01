@@ -6,13 +6,13 @@ import Coord from './Coord'
  * Hint will be active when simulation or gameplay events fire.
  */
 export default class Hint {
-  coord: Coord
-  content: string
-  color?: string
-  rotation?: number
-  active?: boolean
+  public coord: Coord
+  public content: string
+  public color?: string
+  public rotation?: number
+  public active?: boolean
 
-  constructor(coord: Coord, content: string, color = 'purple', rotation = 0, active = true) {
+  public constructor(coord: Coord, content: string, color = 'purple', rotation = 0, active = true) {
     this.coord = coord
     this.content = content
     this.color = color
@@ -24,7 +24,7 @@ export default class Hint {
    * Override toString() method
    * @returns hint string
    */
-  toString(): string {
+  public toString(): string {
     return `{#HINT ${this.content} @ ${this.coord.toString()}}`
   }
 
@@ -32,7 +32,7 @@ export default class Hint {
    * Export hint in primitives
    * @returns hint interface
    */
-  exportHint(): HintInterface {
+  public exportHint(): HintInterface {
     return {
       coord: this.coord.exportCoord(),
       content: this.content,
@@ -47,10 +47,12 @@ export default class Hint {
    * @param jsonHints list of hints
    * @returns Hint instances
    */
-  static importHint(jsonHints: HintInterface[]): Hint[] {
-    return jsonHints.map((hint) => {
-      const coord = Coord.importCoord(hint.coord)
-      return new Hint(coord, hint.content, hint.color, hint.rotation, hint.active)
-    })
+  public static importHint(jsonHints: HintInterface[]): Hint[] {
+    return jsonHints.map(
+      (hint): Hint => {
+        const coord = Coord.importCoord(hint.coord)
+        return new Hint(coord, hint.content, hint.color, hint.rotation, hint.active)
+      }
+    )
   }
 }

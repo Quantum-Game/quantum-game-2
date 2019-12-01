@@ -11,7 +11,7 @@ export const TAU = 2 * Math.PI
 export function weightedRandomInt(weights: number[], normalize = true): number {
   let r = Math.random()
   if (normalize) {
-    r *= weights.reduce((a, b) => a + b, 0)
+    r *= weights.reduce((a, b): number => a + b, 0)
   }
   let cumSum = 0
   for (let i = 0; i < weights.length; i += 1) {

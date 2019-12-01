@@ -15,7 +15,7 @@ export interface ParticleInterface {
 /**
  * DETECTION INTERFACE
  */
-export interface detectionInterface {
+export interface DetectionInterface {
   coord: CoordInterface
   probability: number
 }

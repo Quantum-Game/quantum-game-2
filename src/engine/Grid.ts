@@ -14,7 +14,7 @@ export default class Grid extends Cluster {
   public cols: number
   public rows: number
 
-  constructor(rows: number, cols: number, cells?: Cell[]) {
+  public constructor(rows: number, cols: number, cells?: Cell[]) {
     super(cells)
     this.rows = rows
     this.cols = cols
@@ -58,7 +58,7 @@ export default class Grid extends Cluster {
    * @returns Cell
    */
   public get(coord: Coord): Cell {
-    return this.cells.filter((cell) => {
+    return this.cells.filter((cell): boolean => {
       return coord.equal(cell.coord)
     })[0]
   }
@@ -70,35 +70,16 @@ export default class Grid extends Cluster {
    */
   public cellFromXY(x: number, y: number): Cell {
     const coord = Coord.importCoord({ x, y })
-    return this.cells.filter((cell) => {
+    return this.cells.filter((cell): boolean => {
       return coord.equal(cell.coord)
     })[0]
   }
 
   /**
-   * Get center cell of the grid
-   * @returns center cell coordinates
-   */
-  get center(): Coord {
-    return Coord.importCoord({
-      y: Math.floor(this.cols / 2),
-      x: Math.floor(this.rows / 2)
-    })
-  }
-
-  /**
-   * Get the total number of the mines of the grid
-   * @returns number of mines in the grid
-   */
-  get mineCount() {
-    return this.mines.cells.length
-  }
-
-  /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
-  resetUnfrozen(): void {
-    this.unfrozen.cells.forEach((cell) => {
+  public resetUnfrozen(): void {
+    this.unfrozen.cells.forEach((cell): void => {
       cell.reset()
     })
   }
@@ -106,8 +87,8 @@ export default class Grid extends Cluster {
   /**
    * Energize the following list of cells
    */
-  setEnergized(coords: Coord[]): void {
-    coords.forEach((coord) => {
+  public setEnergized(coords: Coord[]): void {
+    coords.forEach((coord): void => {
       const cell = this.get(coord)
       cell.energized = true
     })
@@ -116,10 +97,10 @@ export default class Grid extends Cluster {
   /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
-  resetEnergized(): void {
-    this.cells.forEach((cell) => {
+  public resetEnergized(): void {
+    this.cells.forEach((cell): void => {
       // eslint-disable-next-line
-      cell.energized = false;
+      cell.energized = false
     })
   }
 
@@ -127,8 +108,8 @@ export default class Grid extends Cluster {
    * Retrieve the list of quantum operators from the elements
    * @returns list of operators
    */
-  get operatorList(): [number, number, qt.Operator][] {
-    return this.unvoid.cells.map((cell) => {
+  public get operatorList(): [number, number, qt.Operator][] {
+    return this.unvoid.cells.map((cell): [number, number, qt.Operator] => {
       return cell.operator
     })
   }
@@ -190,9 +171,9 @@ export default class Grid extends Cluster {
    */
   public moveAll(direction: number): void {
     console.debug(`Moving all in direction: ${direction}`)
-    this.unvoid.cells.forEach((cell) => {
+    this.unvoid.cells.forEach((cell): void => {
       // eslint-disable-next-line
-      cell.coord = cell.coord.fromAngle(direction);
+      cell.coord = cell.coord.fromAngle(direction)
     })
   }
 
@@ -202,22 +183,22 @@ export default class Grid extends Cluster {
    */
   public rotateAll(): void {
     console.debug(`Rotating grid`)
-    this.unvoid.cells.forEach((cell) => {
+    this.unvoid.cells.forEach((cell): void => {
       // eslint-disable-next-line
-      cell.coord = new Coord(cell.coord.x, cell.coord.y);
+      cell.coord = new Coord(cell.coord.x, cell.coord.y)
       // eslint-disable-next-line
-      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360;
+      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360
     })
   }
 
   public reflectAll(): void {
     console.debug(`Vertical reflecting grid`)
-    this.unvoid.cells.forEach((cell) => {
+    this.unvoid.cells.forEach((cell): void => {
       // eslint-disable-next-line
-      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x);
+      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x)
       if (cell.rotation % 180 === 0) {
         // eslint-disable-next-line
-        cell.rotation = (cell.rotation + 180) % 360;
+        cell.rotation = (cell.rotation + 180) % 360
       }
     })
   }
@@ -227,9 +208,9 @@ export default class Grid extends Cluster {
    * @param coord Coordinate
    * @returns a list of adjacent cells
    */
-  adjacentCells(coord: Coord): Cell[] {
+  public adjacentCells(coord: Coord): Cell[] {
     const adjacents: Cell[] = []
-    coord.adjacent.forEach((adjacent) => {
+    coord.adjacent.forEach((adjacent): void => {
       if (this.includes(adjacent)) {
         adjacents.push(this.get(adjacent))
       }
@@ -242,9 +223,9 @@ export default class Grid extends Cluster {
    * Used to find the exit route of particles
    * @returns
    */
-  get borderCells(): Cell[] {
+  public get borderCells(): Cell[] {
     const borders: Cell[] = []
-    this.cells.forEach((cell: Cell) => {
+    this.cells.forEach((cell: Cell): void => {
       if (
         cell.coord.x === 0 ||
         cell.coord.x === this.cols ||
@@ -262,14 +243,15 @@ export default class Grid extends Cluster {
    * @param coord espaced coordinate
    * @returns escape cell
    */
-  lastCellBeforeEscape(coord: Coord): Cell {
+  public lastCellBeforeEscape(coord: Coord): Cell {
     console.log(`Particle escaping @: ${coord.toString()}`)
     if (this.includes(coord)) {
       throw new Error(`Not an escaping particle coordinate: ${coord}`)
     }
-    const lastCoord = coord.adjacent.find((adjacent) => {
+    const lastCoord = coord.adjacent.find((adjacent): boolean => {
       return this.includes(adjacent)
     })
+    /* eslint-disable-next-line */
     return this.get(lastCoord!)
   }
 
@@ -295,7 +277,7 @@ export default class Grid extends Cluster {
    */
   public static importGrid(gridObj: GridInterface): Grid {
     const grid = new Grid(gridObj.rows, gridObj.cols)
-    gridObj.cells.forEach((cellObj) => {
+    gridObj.cells.forEach((cellObj): void => {
       const cell = Cell.importCell(cellObj)
       grid.set(cell)
     })
@@ -327,7 +309,7 @@ export default class Grid extends Cluster {
    * @returns dummy Grid
    */
   public static dummyGrid(rows = 3, cols = 3): Grid {
-    const grid = Grid.importGrid(this.dummyGridInterface())
+    const grid = Grid.importGrid(this.dummyGridInterface(rows, cols))
     return grid
   }
 
@@ -346,8 +328,8 @@ export default class Grid extends Cluster {
   public exportGrid(): GridInterface {
     const cells: CellInterface[] = []
     this.cells
-      .filter((cell) => !cell.isVoid)
-      .forEach((cell) => {
+      .filter((cell): boolean => !cell.isVoid)
+      .forEach((cell): void => {
         cells.push(cell.exportCell())
       })
     return {

@@ -6,10 +6,10 @@ import Cell from './Cell'
  * The goals to be achieved by the player
  */
 export default class Goal extends Cell {
-  cell: Cell
-  threshold: number
+  public cell: Cell
+  public threshold: number
 
-  constructor(cell: Cell, threshold: number) {
+  public constructor(cell: Cell, threshold: number) {
     super(cell.coord, cell.element)
     this.cell = cell
     this.threshold = threshold
@@ -19,7 +19,7 @@ export default class Goal extends Cell {
    * Is a goal completed
    * @returns boolean if the goal is completed
    */
-  completed(value: number): boolean {
+  public completed(value: number): boolean {
     return value >= this.threshold
   }
 
@@ -27,7 +27,7 @@ export default class Goal extends Cell {
    * Override toString() method to display the goal
    * @returns string
    */
-  toString(): string {
+  public toString(): string {
     return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`
   }
 
@@ -35,7 +35,7 @@ export default class Goal extends Cell {
    * Export goal to primitives
    * @returns a goal interface
    */
-  exportGoal(): GoalInterface {
+  public exportGoal(): GoalInterface {
     return {
       coord: this.cell.coord.exportCoord(),
       threshold: this.threshold
@@ -47,9 +47,9 @@ export default class Goal extends Cell {
    * @param goals list of goals
    * @returns formatted string describing goals
    */
-  static manyToString(goals: Goal[]): string {
+  public static manyToString(goals: Goal[]): string {
     let result = `${goals.length} active goals...\n`
-    goals.forEach((goal) => {
+    goals.forEach((goal): void => {
       result += `- ${goal.toString()}\n`
     })
     return result

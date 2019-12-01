@@ -1,13 +1,11 @@
-import { LevelInterface, ClassicLevelInterface, GoalInterface } from './interfaces'
+import { LevelInterface, GoalInterface, HintInterface } from './interfaces'
 import Coord from './Coord'
-import Element from './Element'
 import Cell from './Cell'
 import Grid from './Grid'
 import Toolbox from './Toolbox'
 import Goal from './Goal'
 import Hint from './Hint'
 import GameState from './GameState'
-import { convertFromClassicNames } from './Helpers'
 
 /**
  * LEVEL CLASS
@@ -16,17 +14,17 @@ import { convertFromClassicNames } from './Helpers'
  * Unfrozen elements are then processed into the players inventory
  */
 export default class Level {
-  id: number
-  name: string
-  group: string
-  description: string
-  grid: Grid
-  goals: Goal[]
-  hints: Hint[]
-  toolbox: Toolbox
-  gameState: GameState
+  public id: number
+  public name: string
+  public group: string
+  public description: string
+  public grid: Grid
+  public goals: Goal[]
+  public hints: Hint[]
+  public toolbox: Toolbox
+  public gameState: GameState
 
-  constructor(
+  public constructor(
     id: number,
     name: string,
     group: string,
@@ -65,7 +63,7 @@ export default class Level {
    * @param element
    * @returns number of available elements in the toolbox
    */
-  isAvailable(cell: Cell) {
+  public isAvailable(cell: Cell): boolean {
     return this.toolbox.available(cell.element.name) > 0
   }
 
@@ -73,13 +71,13 @@ export default class Level {
    * String output of a level
    * @returns a string describing the level
    */
-  toString(): string {
+  public toString(): string {
     let result = `LEVEL: ${this.name} [${this.grid.cols}x${this.grid.rows}]\n`
     result += `DESC: ${this.description}\n`
     result += `GROUP: ${this.group}\n`
     result += `${this.grid.toString()}\n`
-    result += `GOALS: ${this.goals.map((i) => i.toString())}\n`
-    result += `HINTS: ${this.hints.map((i) => i.toString())}\n`
+    result += `GOALS: ${this.goals.map((i): string => i.toString())}\n`
+    result += `HINTS: ${this.hints.map((i): string => i.toString())}\n`
     result += `TOOLBOX: ${this.toolbox.toString()}\n`
     return result
   }
@@ -88,16 +86,16 @@ export default class Level {
    * Export a json level
    * @returns a level interface of the current level
    */
-  exportLevel(): LevelInterface {
+  public exportLevel(): LevelInterface {
     return {
       id: this.id,
       name: this.name,
       group: this.group,
       description: this.description,
       grid: this.grid.exportGrid(),
-      hints: this.hints.map((hint) => hint.exportHint()),
-      goals: this.goals.map((goal) => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell) => cell.element.name)
+      hints: this.hints.map((hint): HintInterface => hint.exportHint()),
+      goals: this.goals.map((goal): GoalInterface => goal.exportGoal()),
+      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
     }
   }
 
@@ -106,13 +104,15 @@ export default class Level {
    * @param obj a level interface with primitives
    * @returns a Level instance
    */
-  static importLevel(obj: LevelInterface): Level {
+  public static importLevel(obj: LevelInterface): Level {
     const grid = Grid.importGrid(obj.grid)
-    const goals = obj.goals.map((goalI: GoalInterface) => {
-      const coord = Coord.importCoord(goalI.coord)
-      const cell = grid.get(coord)
-      return new Goal(cell, goalI.threshold)
-    })
+    const goals = obj.goals.map(
+      (goalI: GoalInterface): Goal => {
+        const coord = Coord.importCoord(goalI.coord)
+        const cell = grid.get(coord)
+        return new Goal(cell, goalI.threshold)
+      }
+    )
     const hints = Hint.importHint(obj.hints)
     const toolbox = Toolbox.importToolbox(obj.tools)
     return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox)
@@ -122,7 +122,7 @@ export default class Level {
    * Import a json level
    * @returns a Level instance
    */
-  static createDummy(): Level {
+  public static createDummy(): Level {
     return Level.importLevel({
       id: 0,
       name: 'Dummy',
