@@ -14,14 +14,7 @@ module.exports = {
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    // 'class-methods-use-this': 'off',
-    'no-tabs': 'error',
-    'import/no-extraneous-dependencies': [
-      'error',
-      { devDependencies: true, optionalDependencies: false, peerDependencies: false }
-    ],
-    'lines-between-class-members': ['error', 'always', { exceptAfterSingleLine: true }]
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
