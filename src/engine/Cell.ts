@@ -31,7 +31,7 @@ import {
   Void,
   PolarizingBeamSplitter
 } from '@/engine/Elements/index'
-import { angleToSymbol, startingPolarization, startingDirection } from './Helpers'
+import { startingPolarization, startingDirection } from './Helpers'
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate

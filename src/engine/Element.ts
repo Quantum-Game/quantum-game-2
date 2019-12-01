@@ -6,15 +6,15 @@ import { Elem, Group, TransitionInterface } from './interfaces'
  * Used by the cell to compute the transition matrices
  */
 export default class Element {
-  name: Elem
-  group: Group
-  description: string
-  ascii: string[]
-  angles: number[]
-  polarization: number
-  percentage: number
+  public name: Elem
+  public group: Group
+  public description: string
+  public ascii: string[]
+  public angles: number[]
+  public polarization: number
+  public percentage: number
 
-  constructor(
+  public constructor(
     name: Elem,
     group: Group,
     description = '',
@@ -36,7 +36,7 @@ export default class Element {
    * Compute the rotation angles from the number of tiles
    * @returns amount to rotate the element
    */
-  get rotationAngle(): number {
+  public get rotationAngle(): number {
     return 360 / this.angles.length
   }
 
@@ -44,14 +44,15 @@ export default class Element {
    * Override toString() method
    * @returns string describing element
    */
-  toString(): string {
+  public toString(): string {
     return this.name
   }
 
   /**
    * Will be overriden by child transition
    */
-  transition(options: TransitionInterface): qt.Operator {
+  /* eslint-disable-next-line */
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }
 }

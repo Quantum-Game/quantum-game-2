@@ -8,25 +8,25 @@ import Cell from './Cell'
  * List of cells and associated functions that can be chained together
  */
 export default class Cluster {
-  cells: Cell[]
+  public cells: Cell[]
 
   // Allow constructor with origin coord, number array and direction
-  constructor(cells: Cell[] = []) {
+  public constructor(cells: Cell[] = []) {
     this.cells = cells
   }
 
   // Retrieve list of coordinates of the cluster
-  get coords(): Coord[] {
-    return this.cells.map((cell) => cell.coord)
+  public get coords(): Coord[] {
+    return this.cells.map((cell): Coord => cell.coord)
   }
 
   // Retrieve list of elements of the cluster
-  get elements(): Element[] {
-    return this.cells.map((cell) => cell.element)
+  public get elements(): Element[] {
+    return this.cells.map((cell): Element => cell.element)
   }
 
   // Origin of the cluster is the first element coordinates.
-  get origin(): Coord {
+  public get origin(): Coord {
     return this.cells[0].coord
   }
 
@@ -37,15 +37,15 @@ export default class Cluster {
   public trim(): Cluster {
     const cluster = this.unvoid
     const trimmed: Cell[] = []
-    const minX = Math.min(...cluster.cells.map((cell) => cell.coord.x))
-    const minY = Math.min(...cluster.cells.map((cell) => cell.coord.y))
-    const maxX = Math.max(...cluster.cells.map((cell) => cell.coord.x))
-    const maxY = Math.max(...cluster.cells.map((cell) => cell.coord.y))
+    const minX = Math.min(...cluster.cells.map((cell): number => cell.coord.x))
+    const minY = Math.min(...cluster.cells.map((cell): number => cell.coord.y))
+    const maxX = Math.max(...cluster.cells.map((cell): number => cell.coord.x))
+    const maxY = Math.max(...cluster.cells.map((cell): number => cell.coord.y))
     const sizeX = maxX - minX
     const sizeY = maxY - minY
     console.debug(`The most compressed version is: X:${sizeX} Y: ${sizeY}`)
 
-    cluster.cells.forEach((cell) => {
+    cluster.cells.forEach((cell): void => {
       const trimmedCell = cell
       trimmedCell.coord.x -= minX
       trimmedCell.coord.y -= minY
@@ -61,9 +61,11 @@ export default class Cluster {
    * @returns Cluster
    */
   public static importCluster(jsonCells: CellInterface[]): Cluster {
-    const cells = jsonCells.map((jsonCell) => {
-      return Cell.importCell(jsonCell)
-    })
+    const cells = jsonCells.map(
+      (jsonCell): Cell => {
+        return Cell.importCell(jsonCell)
+      }
+    )
     return new Cluster(cells)
   }
 
@@ -72,12 +74,14 @@ export default class Cluster {
    */
   public exportCluster(): CellInterface[] {
     return this.cells
-      .filter((cell) => {
+      .filter((cell): boolean => {
         return cell.element.name !== Elem.Void
       })
-      .map((cell) => {
-        return cell.exportCell()
-      })
+      .map(
+        (cell): CellInterface => {
+          return cell.exportCell()
+        }
+      )
   }
 
   /**
@@ -85,7 +89,7 @@ export default class Cluster {
    * @returns string
    */
   public toString(): string {
-    return this.cells.map((cell) => cell.toString()).join(' | ')
+    return this.cells.map((cell): string => cell.toString()).join(' | ')
   }
 
   /**
@@ -95,7 +99,7 @@ export default class Cluster {
    */
   public filteredBy(name: string): Cluster {
     return new Cluster(
-      this.cells.filter((cell) => {
+      this.cells.filter((cell): boolean => {
         return cell.element.name === name
       })
     )
@@ -107,68 +111,68 @@ export default class Cluster {
    */
   public filteredByNot(name: string): Cluster {
     return new Cluster(
-      this.cells.filter((cell) => {
+      this.cells.filter((cell): boolean => {
         return cell.element.name !== name
       })
     )
   }
 
-  get void(): Cluster {
+  public get void(): Cluster {
     return new Cluster(this.filteredBy(Elem.Void).cells)
   }
-  get unvoid(): Cluster {
+  public get unvoid(): Cluster {
     return new Cluster(this.filteredByNot(Elem.Void).cells)
   }
-  get active(): Cluster {
-    return new Cluster(this.cells.filter((cell) => cell.active))
+  public get active(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => cell.active))
   }
-  get inactive(): Cluster {
-    return new Cluster(this.cells.filter((cell) => !cell.active))
+  public get inactive(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => !cell.active))
   }
-  get energized(): Cluster {
-    return new Cluster(this.cells.filter((cell) => cell.energized))
+  public get energized(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => cell.energized))
   }
-  get unenergized(): Cluster {
-    return new Cluster(this.cells.filter((cell) => !cell.energized))
+  public get unenergized(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => !cell.energized))
   }
-  get frozen(): Cluster {
-    return new Cluster(this.cells.filter((cell) => cell.frozen))
+  public get frozen(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => cell.frozen))
   }
-  get unfrozen(): Cluster {
-    return new Cluster(this.cells.filter((cell) => !cell.frozen))
+  public get unfrozen(): Cluster {
+    return new Cluster(this.cells.filter((cell): boolean => !cell.frozen))
   }
 
   // Source Group
-  get lasers(): Cluster {
+  public get lasers(): Cluster {
     return this.filteredBy(Elem.Laser)
   }
-  get nonlinearcrystals(): Cluster {
+  public get nonlinearcrystals(): Cluster {
     return this.filteredBy(Elem.NonLinearCrystal)
   }
-  get sourceGroup(): Cluster {
+  public get sourceGroup(): Cluster {
     return new Cluster(this.lasers.cells.concat(this.nonlinearcrystals.cells))
   }
-  get emitters(): Cluster {
+  public get emitters(): Cluster {
     return this.sourceGroup
   }
 
   // Direction group
-  get mirrors(): Cluster {
+  public get mirrors(): Cluster {
     return this.filteredBy(Elem.Mirror)
   }
-  get beamsplitters(): Cluster {
+  public get beamsplitters(): Cluster {
     return this.filteredBy(Elem.BeamSplitter)
   }
-  get coatedbeamsplitters(): Cluster {
+  public get coatedbeamsplitters(): Cluster {
     return this.filteredBy(Elem.CoatedBeamSplitter)
   }
-  get polarbeamsplitters(): Cluster {
+  public get polarbeamsplitters(): Cluster {
     return this.filteredBy(Elem.PolarizingBeamSplitter)
   }
-  get cornercubes(): Cluster {
+  public get cornercubes(): Cluster {
     return this.filteredBy(Elem.CornerCube)
   }
-  get directionGroup(): Cluster {
+  public get directionGroup(): Cluster {
     return new Cluster(
       this.mirrors.cells.concat(
         this.beamsplitters.cells,
@@ -180,34 +184,34 @@ export default class Cluster {
   }
 
   // Absorption group
-  get detectors(): Cluster {
+  public get detectors(): Cluster {
     return this.filteredBy(Elem.Detector)
   }
-  get mines(): Cluster {
+  public get mines(): Cluster {
     return this.filteredBy(Elem.Mine)
   }
-  get rocks(): Cluster {
+  public get rocks(): Cluster {
     return this.filteredBy(Elem.Rock)
   }
-  get omnidetectors(): Cluster {
+  public get omnidetectors(): Cluster {
     return this.filteredBy(Elem.DetectorFour)
   }
-  get absorbers(): Cluster {
+  public get absorbers(): Cluster {
     return this.filteredBy(Elem.Absorber)
   }
-  get walls(): Cluster {
+  public get walls(): Cluster {
     return this.filteredBy(Elem.Wall)
   }
-  get gates(): Cluster {
+  public get gates(): Cluster {
     return this.filteredBy(Elem.Gate)
   }
-  get closedGates(): Cluster {
+  public get closedGates(): Cluster {
     return this.gates.inactive
   }
-  get openedGates(): Cluster {
+  public get openedGates(): Cluster {
     return this.gates.active
   }
-  get absorptionGroup(): Cluster {
+  public get absorptionGroup(): Cluster {
     return new Cluster(
       this.detectors.cells.concat(
         this.mines.cells,
@@ -221,19 +225,19 @@ export default class Cluster {
   }
 
   // Polarization group
-  get polarizers(): Cluster {
+  public get polarizers(): Cluster {
     return this.filteredBy(Elem.Polarizer)
   }
-  get quarterwaveplates(): Cluster {
+  public get quarterwaveplates(): Cluster {
     return this.filteredBy(Elem.QuarterWavePlate)
   }
-  get sugarsolutions(): Cluster {
+  public get sugarsolutions(): Cluster {
     return this.filteredBy(Elem.SugarSolution)
   }
-  get faradays(): Cluster {
+  public get faradays(): Cluster {
     return this.filteredBy(Elem.FaradayRotator)
   }
-  get polarizationGroup(): Cluster {
+  public get polarizationGroup(): Cluster {
     return new Cluster(
       this.polarizers.cells.concat(
         this.quarterwaveplates.cells,
@@ -244,13 +248,13 @@ export default class Cluster {
   }
 
   // Phase group
-  get vacuumjars(): Cluster {
+  public get vacuumjars(): Cluster {
     return this.filteredBy(Elem.VacuumJar)
   }
-  get glasses(): Cluster {
+  public get glasses(): Cluster {
     return this.filteredBy(Elem.Glass)
   }
-  get phaseGroup(): Cluster {
+  public get phaseGroup(): Cluster {
     return new Cluster(this.vacuumjars.cells.concat(this.glasses.cells))
   }
 }

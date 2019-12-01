@@ -8,11 +8,11 @@ import Cell from '@/engine/Cell'
  * Computes the current game state from the goals and the absorptions.
  */
 export default class GameState {
-  goals: Goal[]
-  mines: Cell[]
-  absorptions: Absorption[]
+  public goals: Goal[]
+  public mines: Cell[]
+  public absorptions: Absorption[]
 
-  constructor(goals: Goal[], mines: Cell[] = [], absorptions: Absorption[] = []) {
+  public constructor(goals: Goal[], mines: Cell[] = [], absorptions: Absorption[] = []) {
     this.goals = goals
     this.mines = mines
     this.absorptions = absorptions
@@ -23,9 +23,9 @@ export default class GameState {
    * @param goals Goal[]
    * @returns percentage
    */
-  get totalGoal(): number {
+  public get totalGoal(): number {
     let sum = 0
-    this.goals.forEach((goal) => {
+    this.goals.forEach((goal): void => {
       sum += goal.threshold
     })
     return sum * 100
@@ -34,10 +34,10 @@ export default class GameState {
   /**
    * Absorptions that happened on goal cells
    */
-  get totalAbsorption(): number {
+  public get totalAbsorption(): number {
     let sum = 0
-    this.absorptions.forEach((absorption) => {
-      this.goals.forEach((goal) => {
+    this.absorptions.forEach((absorption): void => {
+      this.goals.forEach((goal): void => {
         if (goal.cell.coord.equal(absorption.coord)) {
           sum += absorption.probability
         }
@@ -49,28 +49,28 @@ export default class GameState {
   /**
    * Is the absorption above the required goal
    */
-  get probabilityFlag(): boolean {
+  public get probabilityFlag(): boolean {
     return this.totalAbsorption >= this.totalGoal
   }
 
   /**
    * Is every goal achieved.
    */
-  get goalFlag(): boolean {
+  public get goalFlag(): boolean {
     return this.goalsUnhit === 0
   }
 
   /**
    * Check that no mines are hit so it's safe
    */
-  get safeFlag(): boolean {
+  public get safeFlag(): boolean {
     return this.minesHit.length === 0
   }
 
   /**
    * Compute current game state from the different flags
    */
-  get gameState(): GameStateEnum {
+  public get gameState(): GameStateEnum {
     // Simulation will trigger mine
     if (!this.safeFlag) {
       return GameStateEnum.MineExploded
@@ -94,10 +94,10 @@ export default class GameState {
    * Process the detection events and link them to goals
    * @returns hit detector count
    */
-  get goalsHit(): Goal[] {
+  public get goalsHit(): Goal[] {
     const goalsHit: Goal[] = []
-    this.absorptions.forEach((absorption) => {
-      this.goals.forEach((goal) => {
+    this.absorptions.forEach((absorption): void => {
+      this.goals.forEach((goal): void => {
         if (absorption.cell.coord.equal(goal.cell.coord)) {
           goalsHit.push(goal)
         }
@@ -110,7 +110,7 @@ export default class GameState {
    * Process the detection events and select the detectors
    * @returns hit detector count
    */
-  get goalsUnhit(): number {
+  public get goalsUnhit(): number {
     return this.goals.length - this.goalsHit.length
   }
 
@@ -118,8 +118,8 @@ export default class GameState {
    * Process the detection events and select the mines
    * @returns hit mines count
    */
-  get minesHit(): Cell[] {
-    return this.absorptions.filter((absorption) => {
+  public get minesHit(): Cell[] {
+    return this.absorptions.filter((absorption): boolean => {
       return absorption.cell.isMine
     })
   }
@@ -128,14 +128,14 @@ export default class GameState {
    * Process the detection events and select the mines
    * @returns hit mines count
    */
-  get minesUnhit(): number {
+  public get minesUnhit(): number {
     return this.mines.length - this.minesHit.length
   }
 
   /**
    * Override toString() method.
    */
-  toString(): string {
+  public toString(): string {
     let result = `--- GameState: ${this.gameState} ---\n`
     result += `- PROB FLAG: ${this.probabilityFlag ? 'OK' : 'KO'}\n`
     result += `Probability ${this.totalAbsorption}% / ${this.totalGoal}%\n`

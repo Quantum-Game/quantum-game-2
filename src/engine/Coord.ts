@@ -7,10 +7,10 @@ import { CoordInterface } from './interfaces'
  * Indices start at 0
  */
 export default class Coord {
-  x: number
-  y: number
+  public x: number
+  public y: number
 
-  constructor(y: number, x: number) {
+  public constructor(y: number, x: number) {
     this.y = y
     this.x = x
   }
@@ -18,35 +18,35 @@ export default class Coord {
   /**
    * @returns coordinate at the top
    */
-  get up(): Coord {
+  public get up(): Coord {
     return Coord.importCoord({ y: this.y - 1, x: this.x })
   }
 
   /**
    * @returns coordinate at the bottom
    */
-  get down(): Coord {
+  public get down(): Coord {
     return Coord.importCoord({ y: this.y + 1, x: this.x })
   }
 
   /**
    * @returns coordinate at the left
    */
-  get left(): Coord {
+  public get left(): Coord {
     return Coord.importCoord({ y: this.y, x: this.x - 1 })
   }
 
   /**
    * @returns coordinate at the right
    */
-  get right(): Coord {
+  public get right(): Coord {
     return Coord.importCoord({ y: this.y, x: this.x + 1 })
   }
 
   /**
    * @returns list of adjacent cells
    */
-  get adjacent(): Coord[] {
+  public get adjacent(): Coord[] {
     return [this.up, this.right, this.down, this.left]
   }
 
@@ -55,7 +55,7 @@ export default class Coord {
    * beware, doesn't check out of bounds without grid/rows values
    * @returns boolean
    */
-  get outOfGrid(): boolean {
+  public get outOfGrid(): boolean {
     return this.x < 0 || this.y < 0
   }
 
@@ -63,7 +63,7 @@ export default class Coord {
    * Check if two coordinates are adjacent
    * @returns boolean if cells are adjacent
    */
-  isAdjacent(coord: Coord): boolean {
+  public isAdjacent(coord: Coord): boolean {
     return coord.isIncludedIn(this.adjacent)
   }
 
@@ -72,7 +72,7 @@ export default class Coord {
    * @param angle angle direction
    * @returns coordinate in direction
    */
-  fromAngle(directionAngle: number): Coord {
+  public fromAngle(directionAngle: number): Coord {
     switch (directionAngle % 360) {
       case 0:
         return this.right
@@ -92,7 +92,7 @@ export default class Coord {
    * @param coord other coordinate to test for equality
    * @returns boolean if equal
    */
-  equal(coord: Coord): boolean {
+  public equal(coord: Coord): boolean {
     return this.x === coord.x && this.y === coord.y
   }
 
@@ -101,9 +101,9 @@ export default class Coord {
    * @param coords list of coordinates
    * @returns boolean if coordinate is included in list
    */
-  isIncludedIn(coords: Coord[]): boolean {
+  public isIncludedIn(coords: Coord[]): boolean {
     return (
-      coords.filter((coord) => {
+      coords.filter((coord): boolean => {
         return this.equal(coord)
       }).length > 0
     )
@@ -114,7 +114,7 @@ export default class Coord {
    * @param rows width of grid
    * @returns uid of cell in a grid
    */
-  uid(rows: number): number {
+  public uid(rows: number): number {
     return this.y * rows + this.x
   }
 
@@ -123,7 +123,7 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  pos(cellSize: number): CoordInterface {
+  public pos(cellSize: number): CoordInterface {
     const y = this.y * cellSize
     const x = this.x * cellSize
     return { y, x }
@@ -134,7 +134,7 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  center(cellSize: number): CoordInterface {
+  public center(cellSize: number): CoordInterface {
     const y = (this.y + 0.5) * cellSize
     const x = (this.x + 0.5) * cellSize
     return { y, x }
@@ -144,7 +144,7 @@ export default class Coord {
    * Output as an array of numbers
    * @returns number array of coordinate
    */
-  get toArray(): number[] {
+  public get toArray(): number[] {
     return [this.y, this.x]
   }
 
@@ -152,7 +152,7 @@ export default class Coord {
    * Outputs a string for debug
    * @returns string describing the coordinate
    */
-  toString(): string {
+  public toString(): string {
     return `[Y:${this.y}, X:${this.x}]`
   }
 
@@ -160,7 +160,7 @@ export default class Coord {
    * Output to interface of primitives
    * @returns interface describing coordinate
    */
-  exportCoord(): CoordInterface {
+  public exportCoord(): CoordInterface {
     return {
       y: this.y,
       x: this.x
@@ -171,7 +171,7 @@ export default class Coord {
    * Create a coordinate class instance from a coordinate interface
    * @param obj Coordinate interface
    */
-  static importCoord(json: CoordInterface): Coord {
+  public static importCoord(json: CoordInterface): Coord {
     return new Coord(json.y, json.x)
   }
 
@@ -180,7 +180,7 @@ export default class Coord {
    * @param index unique id
    * @param cols width of grid
    */
-  static fromId(index: number, cols: number): Coord {
+  public static fromId(index: number, cols: number): Coord {
     const x = index % cols
     const y = Math.floor(index / cols)
     return Coord.importCoord({ y, x })
