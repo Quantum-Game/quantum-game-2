@@ -17,6 +17,7 @@ export default class Detector extends Element {
     super(Elem.Detector, Group.Absorption)
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }

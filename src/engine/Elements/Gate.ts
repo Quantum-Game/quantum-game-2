@@ -15,6 +15,7 @@ export default class Gate extends Element {
     super(Elem.Gate, Group.Absorption)
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }

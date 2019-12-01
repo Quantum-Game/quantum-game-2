@@ -19,6 +19,7 @@ export default class Laser extends Element {
     this.polarization = polarization
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }

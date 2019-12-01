@@ -20,6 +20,7 @@ export default class VacuumJar extends Element {
     this.percentage = percentage
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.vacuumJar()
   }

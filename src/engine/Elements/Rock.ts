@@ -17,6 +17,7 @@ export default class Rock extends Element {
     super(Elem.Laser, Group.Source)
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }

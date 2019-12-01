@@ -19,6 +19,7 @@ export default class Absorber extends Element {
     this.percentage = percentage
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(Math.SQRT1_2)
     // return qt.attenuator(options.percentage);

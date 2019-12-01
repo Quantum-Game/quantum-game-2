@@ -16,6 +16,7 @@ export default class Void extends Element {
     super(Elem.Void, Group.Basic)
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(1)
   }

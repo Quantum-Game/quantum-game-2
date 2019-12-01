@@ -16,6 +16,7 @@ export default class NonLinearCrystal extends Element {
     super(Elem.NonLinearCrystal, Group.Source)
   }
 
+  /* eslint-disable-next-line */
   public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(1)
   }
