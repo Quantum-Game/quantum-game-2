@@ -36,6 +36,7 @@ export { QuarterWavePlateCell }
 export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
 
+// FIXME: Code smell move to interfaces
 interface ICellList {
   [index: string]: Record<string, any>
 }

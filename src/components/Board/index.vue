@@ -104,9 +104,8 @@ import { Mutation, State } from 'vuex-class'
 import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
-import Level from '@/engine/Level'
 import Particle from '@/engine/Particle'
-import { ParticleInterface, CellInterface, HintInterface } from '@/engine/interfaces'
+import { HintInterface } from '@/engine/interfaces'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -215,7 +214,7 @@ export default class Board extends Vue {
   /**
    * Compute fate cell position
    */
-  computeFateStyle(coord: Coord) {
+  computeFateStyle(): {} {
     console.log(`FATE: ${this.fate.toString()}`)
     return {
       transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *

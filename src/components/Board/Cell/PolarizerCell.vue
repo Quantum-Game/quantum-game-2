@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
 @Component

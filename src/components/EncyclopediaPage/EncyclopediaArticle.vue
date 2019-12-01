@@ -33,8 +33,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
-import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces'
+import { Vue, Component, Watch } from 'vue-property-decorator'
+import { EntryInterface } from '@/engine/interfaces'
 import { getEntry } from '@/assets/data/entries/index'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'

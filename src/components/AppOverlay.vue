@@ -20,7 +20,6 @@
 // TODO: Needs to be extended for instructions overlay
 // FIXME: Rethink overlay
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
-import { State, Getter, Mutation } from 'vuex-class'
 import VueConfetti from 'vue-confetti'
 import AppButton from '@/components/AppButton.vue'
 import { GameStateEnum } from '@/engine/interfaces'
@@ -35,7 +34,7 @@ Vue.use(VueConfetti)
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
   $confetti!: {
-    start: (params: any) => void
+    start: (params: {}) => void
     stop: () => void
   }
   explosion: boolean = false

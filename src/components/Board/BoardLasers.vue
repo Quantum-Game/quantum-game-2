@@ -18,10 +18,7 @@
 // TODO: Try to fix jumping moving laser offset
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import { State } from 'vuex-class'
-import { ParticleInterface } from '@/engine/interfaces'
 import Particle from '@/engine/Particle'
-import Grid from '@/engine/Grid'
-import Level from '@/engine/Level'
 
 @Component
 export default class Board extends Vue {

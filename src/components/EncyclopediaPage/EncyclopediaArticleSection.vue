@@ -32,7 +32,7 @@ export default class EncyclopediaArticleSection extends Vue {
     this.isOpen = this.shouldBeOpenOnInit
   }
 
-  handleTitleClick(e: { target: Element }): void {
+  handleTitleClick(): void {
     this.isOpen = !this.isOpen
   }
 

@@ -50,12 +50,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator'
+import { Component, Prop, Mixins, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
-import Level from '@/engine/Level'
-import Particle from '@/engine/Particle'
 import Position from '@/mixins/Position'
 import {
   LaserCell,
@@ -192,16 +190,14 @@ export default class AppCell extends Mixins(Position) {
   }
 
   dragStart(): void {
-    const gameLayout = document.querySelector('.game-layout') as HTMLElement
     this.border = 'white'
     this.mutationSetActiveCell(this.cell)
     window.addEventListener('mousemove', this.mouseMove)
     window.addEventListener('mouseup', this.dragEnd)
   }
 
-  dragEnd(e: any): void {
+  dragEnd(): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement
-    const grid = document.querySelector('.board_scaler') as HTMLElement
     const { cellRef } = this.$refs
 
     cellRef.style.opacity = '1'
@@ -310,7 +306,7 @@ export default class AppCell extends Mixins(Position) {
    * using the Position mixin;
    * @returns a style object
    */
-  get computeCellStyle(): any {
+  get computeCellStyle(): {} {
     const { rotation } = this.cell
     let styleObj = {}
     styleObj = {
@@ -325,7 +321,7 @@ export default class AppCell extends Mixins(Position) {
   /**
    * Undoes the parent element rotation
    */
-  get computeRectStyle(): any {
+  get computeRectStyle(): {} {
     let styleObj = {}
     const halfSize = this.tileSize / 2
     styleObj = {

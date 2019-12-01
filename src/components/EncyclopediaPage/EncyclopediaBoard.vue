@@ -3,13 +3,7 @@
     <div class="svg-container">
       <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
         <!-- DOTS -->
-        <g class="dots">
-          <g v-for="(row, y) in grid.rows + 1" :key="y">
-            <g v-for="(column, x) in grid.cols + 1" :key="x">
-              <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-            </g>
-          </g>
-        </g>
+        <board-dots :rows="grid.rows" :cols="grid.cols" />
 
         <!-- LASERS -->
         <board-lasers :path-particles="allParticles" />
@@ -65,13 +59,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
-import {
-  ParticleInterface,
-  GridInterface,
-  PolEnum,
-  IndicatorInterface,
-  DirEnum
-} from '@/engine/interfaces'
+import { ParticleInterface, GridInterface, PolEnum, IndicatorInterface } from '@/engine/interfaces'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
@@ -85,6 +73,7 @@ import QuantumSimulation from '@/engine/QuantumSimulation'
     AppPhoton,
     AppCell,
     BoardLasers,
+    BoardDots,
     GameKet
   }
 })
@@ -170,8 +159,6 @@ export default class EncyclopediaBoard extends Vue {
   }
 
   computeParticleStyle(particle: ParticleInterface): {} {
-    const originX = this.centerCoord(particle.x)
-    const originY = this.centerCoord(particle.y)
     return {
       transform: `
         translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`

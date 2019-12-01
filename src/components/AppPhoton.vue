@@ -11,8 +11,8 @@
           v-for="(z, index) in zs"
           :key="`electricPath-${index}`"
           :d="computeElectricPath(z)"
-          :stroke-width="eScale(gaussianComplex(bre, bim, z, k, sigma))"
-          :stroke="eColor(gaussianComplex(bre, bim, z, k, sigma))"
+          :stroke-width="eScale(gaussianComplex(bre, bim, z, sigma))"
+          :stroke="eColor(gaussianComplex(bre, bim, z, sigma))"
         />
       </g>
 
@@ -21,8 +21,8 @@
           v-for="(z, index) in zs"
           :key="`magneticPath-${index}`"
           :d="computeMagneticPath(z)"
-          :stroke-width="mScale(gaussianComplex(are, aim, z, k, sigma))"
-          :stroke="mColor(gaussianComplex(bre, bim, z, k, sigma))"
+          :stroke-width="mScale(gaussianComplex(are, aim, z, sigma))"
+          :stroke="mColor(gaussianComplex(bre, bim, z, sigma))"
         />
       </g>
     </g>
@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue, Prop } from 'vue-property-decorator'
 import { select } from 'd3-selection'
 import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
@@ -117,11 +117,9 @@ export default class AppPhoton extends Vue {
   computeElectricPath(z: number): string {
     let path = ''
     const ox = this.xScale(z - this.step)
-    const oy = this.yScale(
-      this.gaussianComplex(this.are, this.aim, z - this.step, this.k, this.sigma)
-    )
+    const oy = this.yScale(this.gaussianComplex(this.are, this.aim, z - this.step, this.sigma))
     const tx = this.xScale(z)
-    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.k, this.sigma))
+    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.sigma))
     path += `M ${ox} ${oy} `
     path += `L ${tx} ${ty} `
     return path
@@ -133,11 +131,9 @@ export default class AppPhoton extends Vue {
   computeMagneticPath(z: number): string {
     let path = ''
     const ox = this.xScale(z - this.step)
-    const oy = this.yScale(
-      this.gaussianComplex(this.bre, this.bim, z - this.step, this.k, this.sigma)
-    )
+    const oy = this.yScale(this.gaussianComplex(this.bre, this.bim, z - this.step, this.sigma))
     const tx = this.xScale(z)
-    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.k, this.sigma))
+    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.sigma))
     path += `M ${ox} ${oy} `
     path += `L ${tx} ${ty}`
     return path
@@ -257,7 +253,7 @@ export default class AppPhoton extends Vue {
   /**
    * Gaussian scaling of the graph
    */
-  gaussianComplex(re: number, im: number, z: number, k = 20, sigma = 0.3): number {
+  gaussianComplex(re: number, im: number, z: number, sigma = 0.3): number {
     return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma))
   }
 }
