@@ -17,7 +17,7 @@ export default class EncyclopediaLinkList extends Vue {
       entriesExpanded: false
     }
   }
-  @Prop() readonly entryList!: Array<any>
+  @Prop() readonly entryList!: any[]
 
   toggleEntries(): void {
     this.$data.entriesExpanded = !this.$data.entriesExpanded

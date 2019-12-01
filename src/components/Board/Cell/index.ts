@@ -37,7 +37,7 @@ export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
 
 interface ICellList {
-  [index: string]: Object
+  [index: string]: Record<string, any>
 }
 
 const CellList: ICellList = {

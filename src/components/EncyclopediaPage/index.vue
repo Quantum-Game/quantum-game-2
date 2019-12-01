@@ -23,8 +23,8 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   }
 })
 export default class Info extends Vue {
-  entryList: Array<any> = []
-  keyConceptsList: Array<any> = []
+  entryList: any[] = []
+  keyConceptsList: any[] = []
   readyEntries: string[] = [
     'beam-splitter',
     'detector-four',

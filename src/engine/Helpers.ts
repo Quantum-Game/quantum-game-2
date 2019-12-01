@@ -186,7 +186,7 @@ export function startingDirection(rotation: number): DirEnum {
  * Flatten an array
  * @param arr Array to flatten
  */
-export function flatDeep(arr: Array<any>): Array<any> {
+export function flatDeep(arr: any[]): any[] {
   return arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val) : val), [])
 }
 

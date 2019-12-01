@@ -1,4 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require('fs')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const MarkDownIt = require('markdown-it')
 
 const entriesDir = 'src/assets/encyclopedia/elements/'

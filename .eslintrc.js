@@ -4,19 +4,18 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/recommended',
-    'plugin:prettier/recommended',
-    '@vue/airbnb',
-    '@vue/typescript',
-    'prettier',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'prettier/@typescript-eslint',
-    'prettier/babel',
-    'prettier/unicorn',
-    'prettier/vue'
+    'plugin:vue/recommended',
+    '@vue/standard',
+    '@vue/typescript',
+    '@vue/prettier'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'import/no-extraneous-dependencies': 'off',
     'class-methods-use-this': 'off',
     'no-tabs': 'error',
     'import/no-extraneous-dependencies': [
