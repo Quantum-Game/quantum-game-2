@@ -6,21 +6,21 @@ import Element from '@/engine/Element'
  * BEAMSPLITTER CLASS
  */
 export default class BeamSplitter extends Element {
-  name: Elem = Elem.BeamSplitter
-  group: Group = Group.Direction
-  description: string =
+  public name: Elem = Elem.BeamSplitter
+  public group: Group = Group.Direction
+  public description: string =
     'A thin slab of glass reflecting half the beam, and transmitting other half of it.'
-  ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
-  angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
+  public ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
+  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  percentage: number = 50
+  public percentage: number = 50
 
-  constructor(percentage: number = 50) {
+  public constructor(percentage: number = 50) {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.beamSplitter(options.rotation)
   }
 }

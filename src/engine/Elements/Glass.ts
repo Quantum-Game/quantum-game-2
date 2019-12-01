@@ -6,22 +6,22 @@ import Element from '@/engine/Element'
  * GLASS CLASS
  */
 export default class Glass extends Element {
-  name: Elem = Elem.Glass
-  group: Group = Group.Phase
-  description: string =
+  public name: Elem = Elem.Glass
+  public group: Group = Group.Phase
+  public description: string =
     'Higher refractive index makes light slower. We set its thickness so it retards the phase by λ/4. Useful for changing interference.'
-  ascii: string[] = ['↜']
-  angles: number[] = [0]
+  public ascii: string[] = ['↜']
+  public angles: number[] = [0]
 
   // TODO: See how the phase shift should be encoded
-  percentage: number = 0.25
+  public percentage: number = 0.25
 
-  constructor(percentage: number = 0.25) {
+  public constructor(percentage: number = 0.25) {
     super(Elem.Glass, Group.Phase)
     this.percentage = percentage
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.glassSlab()
   }
 }

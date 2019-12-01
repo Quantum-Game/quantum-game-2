@@ -6,17 +6,17 @@ import Element from '@/engine/Element'
  * CORNER CUBE CLASS
  */
 export default class CornerCube extends Element {
-  name: Elem = Elem.CornerCube
-  group: Group = Group.Direction
-  description: string = 'Reflects any incoming photon.'
-  ascii: string[] = ['*']
-  angles: number[] = [0]
+  public name: Elem = Elem.CornerCube
+  public group: Group = Group.Direction
+  public description: string = 'Reflects any incoming photon.'
+  public ascii: string[] = ['*']
+  public angles: number[] = [0]
 
-  constructor() {
+  public constructor() {
     super(Elem.CornerCube, Group.Direction)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.cornerCube()
   }
 }

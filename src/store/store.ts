@@ -31,32 +31,32 @@ const store: StoreOptions<RootState> = {
   },
   mutations: {
     // set active level
-    [SET_GAME_STATE](state, gameState) {
+    [SET_GAME_STATE](state, gameState): void {
       state.gameState = gameState
     },
     // set active level
-    [SET_SIMULATION_STATE](state, simulationState) {
+    [SET_SIMULATION_STATE](state, simulationState): void {
       state.simulationState = simulationState
     },
     // set active cell
-    [SET_ACTIVE_CELL](state, cell) {
+    [SET_ACTIVE_CELL](state, cell): void {
       state.activeCell = cell
       state.cellSelected = true
     },
     // reset active cell
-    [RESET_ACTIVE_CELL](state) {
+    [RESET_ACTIVE_CELL](state): void {
       state.activeCell = initialCell
       state.cellSelected = false
     },
     // hovered cell functional
-    [SET_HOVERED_CELL](state, cell) {
+    [SET_HOVERED_CELL](state, cell): void {
       state.hoveredCell = cell
     },
     // hovered cell functional
-    [SET_HOVERED_PARTICLE](state, particles) {
+    [SET_HOVERED_PARTICLE](state, particles): void {
       state.hoveredParticles = particles
     },
-    [SET_CURRENT_LEVEL_ID](state, id) {
+    [SET_CURRENT_LEVEL_ID](state, id): void {
       state.currentLevelID = id
     }
   },

@@ -6,16 +6,16 @@ import Element from '@/engine/Element'
  * GATE CLASS
  */
 export default class Gate extends Element {
-  name: Elem = Elem.Gate
-  group: Group = Group.Absorption
-  description: string = 'A gate that can be opened if next to a fed plant.'
-  ascii: string[] = ['M']
+  public name: Elem = Elem.Gate
+  public group: Group = Group.Absorption
+  public description: string = 'A gate that can be opened if next to a fed plant.'
+  public ascii: string[] = ['M']
 
-  constructor() {
+  public constructor() {
     super(Elem.Gate, Group.Absorption)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }
 }

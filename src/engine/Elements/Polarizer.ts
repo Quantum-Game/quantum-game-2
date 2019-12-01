@@ -6,21 +6,21 @@ import Element from '@/engine/Element'
  * POLARIZER CLASS
  */
 export default class Polarizer extends Element {
-  name: Elem = Elem.Polarizer
-  group: Group = Group.Polarization
-  description: string =
+  public name: Elem = Elem.Polarizer
+  public group: Group = Group.Polarization
+  public description: string =
     'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.'
-  ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
-  angles: number[] = [0, 90, 180, 270]
+  public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
+  public angles: number[] = [0, 90, 180, 270]
 
-  polarization: number = 0
+  public polarization: number = 0
 
-  constructor(polarization: number = 0) {
+  public constructor(polarization: number = 0) {
     super(Elem.Polarizer, Group.Polarization)
     this.polarization = polarization
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.polarizer(options.rotation, options.polarization)
   }
 }

@@ -6,18 +6,18 @@ import Element from '@/engine/Element'
  * DETECTOR CLASS
  */
 export default class Detector extends Element {
-  name: Elem = Elem.Detector
-  group: Group = Group.Absorption
-  description: string =
+  public name: Elem = Elem.Detector
+  public group: Group = Group.Absorption
+  public description: string =
     'Detects and amplifies electric signal from each single photon, from a single direction. Your goal is to get photon there!'
-  ascii: string[] = ['⭲', '⭱', '⭰', '⭳']
-  angles: number[] = [0, 90, 180, 270]
+  public ascii: string[] = ['⭲', '⭱', '⭰', '⭳']
+  public angles: number[] = [0, 90, 180, 270]
 
-  constructor() {
+  public constructor() {
     super(Elem.Detector, Group.Absorption)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }
 }

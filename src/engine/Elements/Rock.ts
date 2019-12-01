@@ -6,18 +6,18 @@ import Element from '@/engine/Element'
  * ROCK CLASS
  */
 export default class Rock extends Element {
-  name: Elem = Elem.Rock
-  group: Group = Group.Absorption
-  description: string =
+  public name: Elem = Elem.Rock
+  public group: Group = Group.Absorption
+  public description: string =
     "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive."
-  ascii: string[] = ['♜']
-  angles: number[] = [0]
+  public ascii: string[] = ['♜']
+  public angles: number[] = [0]
 
-  constructor() {
+  public constructor() {
     super(Elem.Laser, Group.Source)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(0)
   }
 }

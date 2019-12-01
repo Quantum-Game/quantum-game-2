@@ -6,18 +6,18 @@ import Element from '@/engine/Element'
  * FARADAY ROTATOR CLASS
  */
 export default class FaradayRotator extends Element {
-  name: Elem = Elem.FaradayRotator
-  group: Group = Group.Polarization
-  description: string =
+  public name: Elem = Elem.FaradayRotator
+  public group: Group = Group.Polarization
+  public description: string =
     'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.'
-  ascii: string[] = ['🠶', '🠵', '🠴', '🠷']
-  angles: number[] = [0, 90, 180, 270]
+  public ascii: string[] = ['🠶', '🠵', '🠴', '🠷']
+  public angles: number[] = [0, 90, 180, 270]
 
-  constructor() {
+  public constructor() {
     super(Elem.FaradayRotator, Group.Polarization)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.faradayRotator(options.rotation)
   }
 }

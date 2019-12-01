@@ -6,20 +6,20 @@ import Element from '@/engine/Element'
  * ABSORBER CLASS
  */
 export default class Absorber extends Element {
-  name: Elem = Elem.Absorber
-  group: Group = Group.Absorption
-  description: string = 'Filter with 50% absorption probability.'
-  ascii: string[] = ['A']
-  angles: number[] = [0]
+  public name: Elem = Elem.Absorber
+  public group: Group = Group.Absorption
+  public description: string = 'Filter with 50% absorption probability.'
+  public ascii: string[] = ['A']
+  public angles: number[] = [0]
 
-  percentage: number = Math.SQRT1_2
+  public percentage: number = Math.SQRT1_2
 
-  constructor(percentage: number = Math.SQRT1_2) {
+  public constructor(percentage: number = Math.SQRT1_2) {
     super(Elem.Absorber, Group.Absorption)
     this.percentage = percentage
   }
 
-  transition(options: TransitionInterface): qt.Operator {
+  public transition(options: TransitionInterface): qt.Operator {
     return qt.attenuator(Math.SQRT1_2)
     // return qt.attenuator(options.percentage);
   }
