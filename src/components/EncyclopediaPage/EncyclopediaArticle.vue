@@ -75,7 +75,7 @@ export default class EncyclopediaArticle extends Vue {
     return this.$route.params.entry
   }
 
-  // FIXME: Code smell
+  // FIXME: Code smell, move to element value
   get theComponentsTransitionMapShouldBeDisplayed(): boolean {
     const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
     return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0

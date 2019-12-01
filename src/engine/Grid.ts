@@ -1,4 +1,5 @@
 // FIXME: Figure a way to have uid and coord access to cells
+// FIXME: Void cells
 import * as qt from 'quantum-tensors'
 import { CellInterface, GridInterface, Elem } from './interfaces'
 import Coord from './Coord'
@@ -8,7 +9,6 @@ import Cluster from './Cluster'
 /**
  * GRID CLASS
  * Includes the grid instance that holds the cells
- * TODO: Create a function that gets the grid border cells
  */
 export default class Grid extends Cluster {
   public cols: number

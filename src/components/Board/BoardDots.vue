@@ -9,7 +9,6 @@
 </template>
 
 <script lang="ts">
-// FIXME: bug/feature border dots are cut in half
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component

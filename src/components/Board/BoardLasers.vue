@@ -15,7 +15,6 @@
 </template>
 
 <script lang="ts">
-// TODO: Try to fix jumping moving laser offset
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import { State } from 'vuex-class'
 import Particle from '@/engine/Particle'

@@ -14,7 +14,6 @@ export default class Glass extends Element {
   public ascii: string[] = ['↜']
   public angles: number[] = [0]
 
-  // TODO: See how the phase shift should be encoded
   public percentage = 0.25
 
   public constructor(percentage = 0.25) {

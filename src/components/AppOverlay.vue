@@ -17,8 +17,7 @@
 </template>
 
 <script lang="ts">
-// TODO: Needs to be extended for instructions overlay
-// FIXME: Rethink overlay
+// FIXME: Needs to be extended for instructions overlay, rethink overlay
 import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
 import VueConfetti from 'vue-confetti'
 import AppButton from '@/components/AppButton.vue'

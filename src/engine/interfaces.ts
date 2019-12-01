@@ -12,7 +12,7 @@ export interface ParticleInterface {
   bim: number
 }
 
-// TODO: Create primitive interface and associated class and move to interfaces.ts
+// TODO: Should come as enum in a nicer format
 export interface ParticleCoordInterface {
   kind: string // for now only 'photon'
   x: number

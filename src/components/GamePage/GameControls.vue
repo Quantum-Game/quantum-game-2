@@ -35,7 +35,6 @@ import $userStore from '@/store/userStore'
 @Component
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
-  // TODO: Might move back to a GameControlsButton, fucks up display logic
   @Prop() readonly frameIndex!: number
   @Prop() readonly totalFrames!: number
   @State('gameState') gameState!: GameStateEnum

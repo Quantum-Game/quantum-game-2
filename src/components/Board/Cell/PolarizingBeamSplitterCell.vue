@@ -16,7 +16,6 @@
 </template>
 
 <script lang="ts">
-// TODO: Make polarizing beam splitter less confusing
 import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 

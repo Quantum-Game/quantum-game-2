@@ -9,6 +9,7 @@ import {
   ParticleCoordInterface,
   DetectionInterface
 } from './interfaces'
+import { VectorEntry } from 'quantum-tensors'
 
 // TODO: Create primitive interface and associated class and move to interfaces.ts
 export interface KetComponentInterface {
@@ -55,8 +56,9 @@ export default class QuantumFrame {
     const ns = _.range(this.photons.nPhotons)
     return this.photons.vector.entries
       .map(
-        (entry): KetComponentInterface => {
+        (entry: VectorEntry): KetComponentInterface => {
           const particleCoords = ns.map(
+            // FIXME: What is i?
             (i): ParticleCoordInterface => {
               const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4)
               return { kind: 'photon', x, y, dir, pol }
