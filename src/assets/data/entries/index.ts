@@ -3,7 +3,7 @@ import relatedConcepts from './related-concepts.json'
 import entries from './entries.json'
 
 export const typedEntries: EntryListInterface = entries
-export const typedRelatedConcepts: any = relatedConcepts
+export const typedRelatedConcepts: EntryListInterface = relatedConcepts
 
 // used by views/Info to render link lists:
 export const entriesNameList = Object.keys(typedEntries)
@@ -17,7 +17,7 @@ export function getEntry(name: string): EntryInterface {
   } else if (relatedConceptsNameList.includes(name)) {
     entry = typedRelatedConcepts[name]
   } else {
-    console.error(`no entry of name ${name} found!`)
+    throw new Error(`Encyclopedia Entry not found: ${name}`)
   }
   return entry
 }

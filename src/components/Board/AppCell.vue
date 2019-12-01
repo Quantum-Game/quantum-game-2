@@ -173,7 +173,7 @@ export default class AppCell extends Mixins(Position) {
     }
   }
 
-  mouseMove(e: any): void {
+  mouseMove(e: { pageX: number; pageY: number }): void {
     const hoverCell = document.querySelector('.hoverCell') as HTMLElement
     this.isRotate = true
     const { cellRef } = this.$refs

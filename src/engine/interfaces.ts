@@ -181,6 +181,11 @@ export interface EntryListInterface {
   [index: string]: EntryInterface
 }
 
+export interface EntryNameListInterface {
+  name: string
+  ready: boolean
+}
+
 /**
  * ENCYCLOPEDIA ENTRY INTERFACE
  * Encyclopedia entry interface in primitives

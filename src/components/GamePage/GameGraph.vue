@@ -146,18 +146,19 @@ export default class GameGraph extends Vue {
   /**
    * Getters
    */
+  // eslint-disable-next-line
   get graph(): any {
     return this.multiverse.graph
   }
 
-  get nodes(): any[] {
+  get nodes(): string[] {
     const uids = this.multiverse.graph.nodes()
     return uids.map((uid: string) => {
       return this.graph.node(uid)
     })
   }
 
-  get edges(): any[] {
+  get edges(): {}[] {
     const edgeIds = this.multiverse.graph.edges()
     return edgeIds.map((edgeId: { u: string; v: string }) => {
       return this.graph.edge(edgeId)

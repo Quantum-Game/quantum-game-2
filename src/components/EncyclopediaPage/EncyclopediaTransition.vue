@@ -41,6 +41,7 @@ import { IndicatorInterface, DirEnum, PolEnum } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
+import { OperatorEntry } from 'quantum-tensors'
 
 @Component({
   components: {
@@ -162,7 +163,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   get matrixElements() {
     if (this.dirPolOrder) {
-      return this.operator.entries.map((entry: any) => {
+      return this.operator.entries.map((entry: OperatorEntry) => {
         return {
           i: 2 * entry.coordIn[0] + entry.coordIn[1],
           j: 2 * entry.coordOut[0] + entry.coordOut[1],
@@ -171,7 +172,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
         }
       })
     }
-    return this.operator.entries.map((entry: any) => {
+    return this.operator.entries.map((entry: OperatorEntry) => {
       return {
         i: entry.coordIn[0] + 4 * entry.coordIn[1],
         j: entry.coordOut[0] + 4 * entry.coordOut[1],

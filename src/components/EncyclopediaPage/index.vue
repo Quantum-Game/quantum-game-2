@@ -15,6 +15,11 @@ import AppLayout from '@/components/AppLayout.vue'
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
 
+interface EntryListInterface {
+  name: string
+  ready: boolean
+}
+
 @Component({
   components: {
     AppLayout,
@@ -23,8 +28,8 @@ import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLink
   }
 })
 export default class Info extends Vue {
-  entryList: any[] = []
-  keyConceptsList: any[] = []
+  entryList: EntryListInterface[] = []
+  keyConceptsList: EntryListInterface[] = []
   readyEntries: string[] = [
     'beam-splitter',
     'detector-four',
@@ -36,7 +41,7 @@ export default class Info extends Vue {
 
   created() {
     entriesNameList.forEach((entryName: string) => {
-      const isReady = this.readyEntries.indexOf(entryName) > -1
+      const isReady: boolean = this.readyEntries.indexOf(entryName) > -1
       this.entryList.push({ name: entryName, ready: isReady })
     })
     relatedConceptsNameList.forEach((entryName: string) => {
