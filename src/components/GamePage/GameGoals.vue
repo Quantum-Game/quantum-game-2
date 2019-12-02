@@ -34,10 +34,10 @@
         :key="'detectorh' + index"
         class="hit"
       >
-        <img src="@/assets/graphics/icons/detectorFull.svg" width="30" />
+        <img src="@/assets/graphics/icons/detectorFull.svg" width="28" />
       </span>
       <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="30" />
+        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="28" />
       </span>
       <div>
         <span>
