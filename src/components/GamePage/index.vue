@@ -59,7 +59,6 @@
           @reload="reload"
           @downloadLevel="downloadLevel"
         />
-        <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -67,6 +66,7 @@
         <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
         <game-active-cell />
         <game-photons :particles="activeFrame.particles" />
+        <game-ket :frame="activeFrame" :grid="level.grid" />
       </section>
     </game-layout>
   </div>
