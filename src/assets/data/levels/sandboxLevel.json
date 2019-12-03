@@ -30,11 +30,6 @@
   "goals": [],
   "tools": [
     "Laser",
-    "Laser",
-    "Laser",
-    "NonLinearCrystal",
-    "NonLinearCrystal",
-    "NonLinearCrystal",
     "Mirror",
     "Mirror",
     "Mirror",
