@@ -1,23 +1,24 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * FARADAY ROTATOR CLASS
  */
 export default class FaradayRotator extends Element {
-  name: Elem = Elem.FaradayRotator;
-  group: Group = Group.Polarization;
-  description: string =
-    'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.';
-  ascii: string[] = ['🠶', '🠵', '🠴', '🠷'];
-  angles: number[] = [0, 90, 180, 270];
+  public name: Elem = Elem.FaradayRotator
+  public group: Group = Group.Polarization
+  public description =
+    'Rotates polarization with magnetic field by 45°. Has different symmetries than Sugar Solution. A building block for optical diodes.'
 
-  constructor() {
-    super(Elem.FaradayRotator, Group.Polarization);
+  public ascii: string[] = ['🠶', '🠵', '🠴', '🠷']
+  public angles: number[] = [0, 90, 180, 270]
+
+  public constructor() {
+    super(Elem.FaradayRotator, Group.Polarization)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.faradayRotator(options.rotation);
+  public transition(options: ITransition): qt.Operator {
+    return qt.faradayRotator(options.rotation)
   }
 }

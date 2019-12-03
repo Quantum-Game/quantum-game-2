@@ -16,26 +16,22 @@
 </template>
 
 <script lang="ts">
-// TODO: Try to fix jumping moving laser offset
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import { State } from 'vuex-class';
-import { ParticleInterface } from '@/engine/interfaces';
-import Particle from '@/engine/Particle';
-import Grid from '@/engine/Grid';
-import Level from '@/engine/Level';
+import { Vue, Prop, Component } from 'vue-property-decorator'
+import { State } from 'vuex-class'
+import Particle from '@/engine/Particle'
 
 @Component
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly pathParticles!: Particle[];
-  @State simulationState!: boolean;
-  tileSize: number = 64;
+  @Prop({ default: '' }) readonly pathParticles!: Particle[]
+  @State simulationState!: boolean
+  tileSize = 64
 
   /**
    * Compute the laser path
    * @returns SVG path
    */
   computePath(particle: Particle): string {
-    return particle.toSvg();
+    return particle.toSvg()
   }
 
   /**

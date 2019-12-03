@@ -17,65 +17,66 @@
 </template>
 
 <script lang="ts">
-import { Vue, Mixins, Component, Prop } from 'vue-property-decorator';
-import Hint from '@/engine/Hint';
-import { getPosition } from '@/mixins';
+import { Mixins, Component, Prop } from 'vue-property-decorator'
+import Hint from '@/engine/Hint'
+import Position from '@/mixins/Position'
 
 @Component
-export default class SpeechBubble extends Mixins(getPosition) {
-  @Prop() readonly hint!: Hint;
-  @Prop({ default: 64 }) readonly tileSize!: number;
-  positionX!: number;
-  positionY!: number;
+export default class SpeechBubble extends Mixins(Position) {
+  @Prop() readonly hint!: Hint
+  @Prop({ default: 64 }) readonly tileSize!: number
+  positionX!: number
+  positionY!: number
 
   // this is where the tooltips width is set:
-  maxWidth = '220px';
+  maxWidth = '220px'
 
   contentRect = {
     width: 0,
     height: 0
-  };
-  shown = true;
+  }
+
+  shown = true
 
   $refs!: {
-    hint: HTMLElement;
-  };
+    hint: HTMLElement
+  }
 
-  mounted() {
-    this.assessDimensions();
+  mounted(): void {
+    this.assessDimensions()
   }
 
   /*   used to measure the HTML elements dimensions to
       appropriatly wrap it and position
   */
-  assessDimensions() {
-    this.contentRect = this.$refs.hint.getBoundingClientRect();
+  assessDimensions(): void {
+    this.contentRect = this.$refs.hint.getBoundingClientRect()
   }
 
-  hide() {
-    this.shown = false;
+  hide(): void {
+    this.shown = false
   }
 
-  get hintClass() {
-    return `hint--${this.hint.color}`;
+  get hintClass(): string {
+    return `hint--${this.hint.color}`
   }
 
   // used to give a bit of margins to the foreginObject
-  get wrapperHeight() {
-    return this.contentRect.height + 15;
+  get wrapperHeight(): number {
+    return this.contentRect.height + 15
   }
 
-  get wrapperWidth() {
-    return this.contentRect.width + 15;
+  get wrapperWidth(): number {
+    return this.contentRect.width + 15
   }
 
   // used for internal positioning with regard to hint's size
-  get offsetX() {
-    return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2;
+  get offsetX(): number {
+    return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2
   }
 
-  get offsetY() {
-    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3;
+  get offsetY(): number {
+    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3
   }
 }
 </script>

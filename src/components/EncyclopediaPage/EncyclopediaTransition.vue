@@ -16,7 +16,7 @@
         <encyclopedia-board
           :key="JSON.stringify(indicators)"
           class="board"
-          :grid-obj="grid.exportGrid()"
+          :i-grid="grid.exportGrid()"
           :indicators="indicators"
           :max-steps="2"
           :default-step="2"
@@ -36,20 +36,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import * as qt from 'quantum-tensors';
-import {
-  ParticleInterface,
-  CellInterface,
-  LevelInterface,
-  GridInterface,
-  IndicatorInterface,
-  DirEnum,
-  PolEnum
-} from '@/engine/interfaces';
-import { Coord, Level, Element, Particle, Grid, Cell } from '@/engine/classes';
-import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue';
-import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
+import { Vue, Prop, Component } from 'vue-property-decorator'
+import { IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
+import { Coord, Grid, Cell } from '@/engine/classes'
+import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
+import { OperatorEntry, Operator } from 'quantum-tensors'
 
 @Component({
   components: {
@@ -58,40 +50,40 @@ import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.v
   }
 })
 export default class EncyclopediaMatrixBoard extends Vue {
-  @Prop({ default: 'Mirror' }) readonly elementName!: string;
-  @Prop({ default: () => 10 }) readonly maxSteps!: number;
-  @Prop({ default: () => 2 }) readonly defaultStep!: number;
-  @Prop({ default: '0' }) defaultRotation!: number;
+  @Prop({ default: 'Mirror' }) readonly elementName!: string
+  @Prop({ default: () => 10 }) readonly maxSteps!: number
+  @Prop({ default: () => 2 }) readonly defaultStep!: number
+  @Prop({ default: '0' }) defaultRotation!: number
 
-  rotation: number = this.defaultRotation;
-  dirPolOrder: boolean = true;
-  grid: Grid = Grid.emptyGrid(3, 3);
-  indicators: IndicatorInterface[] = [
+  rotation: number = this.defaultRotation
+  dirPolOrder = true
+  grid: Grid = Grid.emptyGrid(3, 3)
+  indicators: IIndicator[] = [
     {
       x: 0,
       y: 1,
       direction: DirEnum['>'],
       polarization: PolEnum.H
     }
-  ];
+  ]
 
   $refs!: {
-    grid: HTMLElement;
-  };
+    grid: HTMLElement
+  }
 
   created(): void {
-    this.grid.set(this.cell);
+    this.grid.set(this.cell)
   }
 
   get cell(): Cell {
-    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation);
+    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation)
   }
 
   /**
    * Updates rotation from the cell event
    */
   updateRotation(cell: Cell): void {
-    this.rotation = cell.rotation;
+    this.rotation = cell.rotation
   }
 
   /**
@@ -100,7 +92,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
    * suuuper dirty
    */
   updateIndicators(colId: number): void {
-    this.grid.set(this.cell);
+    this.grid.set(this.cell)
     if (this.dirPolOrder) {
       const direction = [
         DirEnum['>'],
@@ -111,7 +103,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
         DirEnum['<'],
         DirEnum.v,
         DirEnum.v
-      ][colId];
+      ][colId]
       const polarization = [
         PolEnum.H,
         PolEnum.V,
@@ -121,10 +113,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
         PolEnum.V,
         PolEnum.H,
         PolEnum.V
-      ][colId];
-      const x = [0, 0, 1, 1, 2, 2, 1, 1][colId];
-      const y = [1, 1, 2, 2, 1, 1, 0, 0][colId];
-      this.indicators = [{ x, y, direction, polarization }];
+      ][colId]
+      const x = [0, 0, 1, 1, 2, 2, 1, 1][colId]
+      const y = [1, 1, 2, 2, 1, 1, 0, 0][colId]
+      this.indicators = [{ x, y, direction, polarization }]
     } else {
       const direction = [
         DirEnum['>'],
@@ -135,7 +127,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
         DirEnum['^'],
         DirEnum['<'],
         DirEnum.v
-      ][colId];
+      ][colId]
       const polarization = [
         PolEnum.H,
         PolEnum.H,
@@ -145,10 +137,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
         PolEnum.V,
         PolEnum.V,
         PolEnum.V
-      ][colId];
-      const x = [0, 1, 2, 1, 0, 1, 2, 1][colId];
-      const y = [1, 2, 1, 0, 1, 2, 1, 0][colId];
-      this.indicators = [{ x, y, direction, polarization }];
+      ][colId]
+      const x = [0, 1, 2, 1, 0, 1, 2, 1][colId]
+      const y = [1, 2, 1, 0, 1, 2, 1, 0][colId]
+      this.indicators = [{ x, y, direction, polarization }]
     }
   }
 
@@ -157,37 +149,38 @@ export default class EncyclopediaMatrixBoard extends Vue {
    */
   get basis(): string[] {
     if (this.dirPolOrder) {
-      return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕'];
+      return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕']
     }
-    return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣'];
+    return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣']
   }
 
   /**
    * Return the generated cell operator and select the entries
    */
-  get operator() {
-    return this.cell.operator[2];
+  get operator(): Operator {
+    return this.cell.operator[2]
   }
 
-  get matrixElements() {
+  // TODO: find it in qt
+  get matrixElements(): IMatrixElement[] {
     if (this.dirPolOrder) {
-      return this.operator.entries.map((entry: any) => {
+      return this.operator.entries.map((entry: OperatorEntry) => {
         return {
           i: 2 * entry.coordIn[0] + entry.coordIn[1],
           j: 2 * entry.coordOut[0] + entry.coordOut[1],
           re: entry.value.re,
           im: entry.value.im
-        };
-      });
+        }
+      })
     }
-    return this.operator.entries.map((entry: any) => {
+    return this.operator.entries.map((entry: OperatorEntry) => {
       return {
         i: entry.coordIn[0] + 4 * entry.coordIn[1],
         j: entry.coordOut[0] + 4 * entry.coordOut[1],
         re: entry.value.re,
         im: entry.value.im
-      };
-    });
+      }
+    })
   }
 }
 </script>

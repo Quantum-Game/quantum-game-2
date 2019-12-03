@@ -1,9 +1,9 @@
 declare module '*.svg' {
-  import { VNode } from 'vue';
+  import { VNode } from 'vue'
 
   // DON'T DECLARE THIS INSIDE GLOBAL MODULE
-  type Svg = VNode;
+  type Svg = VNode
 
-  const content: Svg;
-  export default content;
+  const content: Svg
+  export default content
 }

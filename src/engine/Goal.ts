@@ -1,45 +1,56 @@
-import { GoalInterface } from './interfaces';
-import Cell from './Cell';
+import { IGoal } from './interfaces'
+import Coord from './Coord'
 
 /**
  * GOAL CLASS
  * The goals to be achieved by the player
  */
-export default class Goal extends Cell {
-  cell: Cell;
-  threshold: number;
+export default class Goal extends Coord {
+  public coord: Coord
+  public threshold: number
 
-  constructor(cell: Cell, threshold: number) {
-    super(cell.coord, cell.element);
-    this.cell = cell;
-    this.threshold = threshold;
+  public constructor(coord: Coord, threshold: number) {
+    super(coord.x, coord.y)
+    this.coord = coord
+    this.threshold = threshold
   }
 
   /**
    * Is a goal completed
    * @returns boolean if the goal is completed
    */
-  completed(value: number): boolean {
-    return value >= this.threshold;
+  public completed(value: number): boolean {
+    return value >= this.threshold
   }
 
   /**
    * Override toString() method to display the goal
    * @returns string
    */
-  toString(): string {
-    return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`;
+  public toString(): string {
+    return `{#Goal ${this.threshold}% @ ${this.coord.toString()}`
   }
 
   /**
    * Export goal to primitives
    * @returns a goal interface
    */
-  exportGoal(): GoalInterface {
+  public exportGoal(): IGoal {
     return {
-      coord: this.cell.coord.exportCoord(),
+      coord: this.coord.exportCoord(),
       threshold: this.threshold
-    };
+    }
+  }
+
+  /**
+   * Export goal to primitives
+   * @returns a goal interface
+   */
+  public static importGoals(iGoals: IGoal[]): Goal[] {
+    return iGoals.map((iGoal) => {
+      const coord = Coord.importCoord(iGoal.coord)
+      return new Goal(coord, iGoal.threshold)
+    })
   }
 
   /**
@@ -47,11 +58,11 @@ export default class Goal extends Cell {
    * @param goals list of goals
    * @returns formatted string describing goals
    */
-  static manyToString(goals: Goal[]): string {
-    let result = `${goals.length} active goals...\n`;
-    goals.forEach((goal) => {
-      result += `- ${goal.toString()}\n`;
-    });
-    return result;
+  public static manyToString(goals: Goal[]): string {
+    let result = `${goals.length} active goals...\n`
+    goals.forEach((goal): void => {
+      result += `- ${goal.toString()}\n`
+    })
+    return result
   }
 }

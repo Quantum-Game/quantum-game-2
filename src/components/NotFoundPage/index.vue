@@ -8,8 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Vue, Prop } from 'vue-property-decorator';
-import AppButton from '@/components/AppButton.vue';
+import { Component, Vue } from 'vue-property-decorator'
+import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {

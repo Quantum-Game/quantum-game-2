@@ -1,31 +1,31 @@
 // FIXME: Figure a way to have uid and coord access to cells
-import * as qt from 'quantum-tensors';
-import { CellInterface, GridInterface, Elem } from './interfaces';
-import Coord from './Coord';
-import Cell from './Cell';
-import Cluster from './Cluster';
+// FIXME: Void cells
+import * as qt from 'quantum-tensors'
+import { ICell, IGrid, Elem } from './interfaces'
+import Coord from './Coord'
+import Cell from './Cell'
+import Cluster from './Cluster'
 
 /**
  * GRID CLASS
  * Includes the grid instance that holds the cells
- * TODO: Create a function that gets the grid border cells
  */
 export default class Grid extends Cluster {
-  public cols: number;
-  public rows: number;
+  public cols: number
+  public rows: number
 
-  constructor(rows: number, cols: number, cells?: Cell[]) {
-    super(cells);
-    this.rows = rows;
-    this.cols = cols;
+  public constructor(rows: number, cols: number, cells?: Cell[]) {
+    super(cells)
+    this.rows = rows
+    this.cols = cols
 
     // Populate with blank tiles
     for (let y = 0; y < rows; y += 1) {
       for (let x = 0; x < cols; x += 1) {
-        const coord = Coord.importCoord({ y, x });
-        const element = Cell.fromName(Elem.Void);
-        const cell = new Cell(coord, element);
-        this.cells.push(cell);
+        const coord = Coord.importCoord({ y, x })
+        const element = Cell.fromName(Elem.Void)
+        const cell = new Cell(coord, element)
+        this.cells.push(cell)
       }
     }
   }
@@ -38,18 +38,18 @@ export default class Grid extends Cluster {
    */
   public set(cell: Cell): boolean {
     if (this.includes(cell.coord)) {
-      const currentCell = this.get(cell.coord);
-      currentCell.element = cell.element;
-      currentCell.rotation = cell.rotation;
-      currentCell.polarization = cell.polarization;
-      currentCell.percentage = cell.percentage;
-      currentCell.frozen = cell.frozen;
-      currentCell.active = cell.active;
-      currentCell.energized = cell.energized;
-      currentCell.tool = cell.tool;
-      return true;
+      const currentCell = this.get(cell.coord)
+      currentCell.element = cell.element
+      currentCell.rotation = cell.rotation
+      currentCell.polarization = cell.polarization
+      currentCell.percentage = cell.percentage
+      currentCell.frozen = cell.frozen
+      currentCell.active = cell.active
+      currentCell.energized = cell.energized
+      currentCell.tool = cell.tool
+      return true
     }
-    throw new Error(`Coordinate out of bounds. Cell: [${cell.coord.x}, ${cell.coord.y}]`);
+    throw new Error(`Coordinate out of bounds. Cell: [${cell.coord.x}, ${cell.coord.y}]`)
   }
 
   /**
@@ -58,9 +58,9 @@ export default class Grid extends Cluster {
    * @returns Cell
    */
   public get(coord: Coord): Cell {
-    return this.cells.filter((cell) => {
-      return coord.equal(cell.coord);
-    })[0];
+    return this.cells.filter((cell): boolean => {
+      return coord.equal(cell.coord)
+    })[0]
   }
 
   /**
@@ -69,68 +69,48 @@ export default class Grid extends Cluster {
    * @param y Y coordinate
    */
   public cellFromXY(x: number, y: number): Cell {
-    const coord = Coord.importCoord({ x, y });
-    return this.cells.filter((cell) => {
-      return coord.equal(cell.coord);
-    })[0];
-  }
-
-  /**
-   * Get center cell of the grid
-   * @returns center cell coordinates
-   */
-  get center(): Coord {
-    return Coord.importCoord({
-      y: Math.floor(this.cols / 2),
-      x: Math.floor(this.rows / 2)
-    });
-  }
-
-  /**
-   * Get the total number of the mines of the grid
-   * @returns number of mines in the grid
-   */
-  get mineCount() {
-    return this.mines.cells.length;
+    const coord = Coord.importCoord({ x, y })
+    return this.cells.filter((cell): boolean => {
+      return coord.equal(cell.coord)
+    })[0]
   }
 
   /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
-  resetUnfrozen(): void {
-    this.unfrozen.cells.forEach((cell) => {
-      cell.reset();
-    });
+  public resetUnfrozen(): void {
+    this.unfrozen.cells.forEach((cell): void => {
+      cell.reset()
+    })
   }
 
   /**
    * Energize the following list of cells
    */
-  setEnergized(coords: Coord[]): void {
-    coords.forEach((coord) => {
-      const cell = this.get(coord);
-      cell.energized = true;
-    });
+  public setEnergized(coords: Coord[]): void {
+    coords.forEach((coord): void => {
+      const cell = this.get(coord)
+      cell.energized = true
+    })
   }
 
   /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
-  resetEnergized(): void {
-    this.cells.forEach((cell) => {
-      // eslint-disable-next-line
-      cell.energized = false;
-    });
+  public resetEnergized(): void {
+    this.cells.forEach((cell): void => {
+      cell.energized = false
+    })
   }
 
   /**
    * Retrieve the list of quantum operators from the elements
    * @returns list of operators
    */
-  get operatorList(): [number, number, qt.Operator][] {
-    return this.unvoid.cells.map((cell) => {
-      return cell.operator;
-    });
+  public get operatorList(): [number, number, qt.Operator][] {
+    return this.unvoid.cells.map((cell): [number, number, qt.Operator] => {
+      return cell.operator
+    })
   }
 
   /**
@@ -139,7 +119,7 @@ export default class Grid extends Cluster {
    * @returns boolean if included
    */
   public includes(coord: Coord): boolean {
-    return coord.y >= 0 && coord.y < this.rows && (coord.x >= 0 && coord.x < this.cols);
+    return coord.y >= 0 && coord.y < this.rows && coord.x >= 0 && coord.x < this.cols
   }
 
   /**
@@ -147,41 +127,50 @@ export default class Grid extends Cluster {
    * @param sourceCell source cell
    * @param targetCell target cell
    * @returns boolean move was successfull
+   * FIXME: Error when moving from grid to grid
    */
   public move(sourceCell: Cell, targetCell: Cell): Cell[] {
-    const source = sourceCell;
-    const target = targetCell;
+    const source = sourceCell
+    const target = targetCell
+
+    // MOVE GRID TOOL TO VOID
     if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
-      const tempCoord = source.coord;
-      source.coord = target.coord;
-      target.coord = tempCoord;
-      target.tool = false;
-      source.tool = true;
-      this.set(source);
-      this.set(target);
-      return [source, target];
+      const tempCoord = source.coord
+      source.coord = target.coord
+      target.coord = tempCoord
+      target.tool = false
+      source.tool = true
+      console.log('GRID TOOL TO GRID VOID')
+      console.log('SOURCE: ' + source.toString())
+      console.log('TARGET: ' + target.toString())
+      this.set(source)
+      this.set(target)
+      return [source, target]
     }
 
     // SWAP GRID TOOL TO GRID TOOL
     if (source.isFromGrid && source.tool && target.isFromGrid && target.tool) {
-      const tempCoord = source.coord;
-      source.coord = target.coord;
-      target.coord = tempCoord;
-      target.tool = true;
-      source.tool = true;
-      this.set(source);
-      this.set(target);
-      return [source, target];
+      const tempCoord = source.coord
+      source.coord = target.coord
+      target.coord = tempCoord
+      target.tool = true
+      source.tool = true
+      console.log('GRID TOOL TO GRID TOOL')
+      console.log('SOURCE: ' + source.toString())
+      console.log('TARGET: ' + target.toString())
+      this.set(source)
+      this.set(target)
+      return [source, target]
     }
 
     // MOVE TOOLBOX TOOL TO GRID VOID
     if (source.isFromToolbox && source.tool && target.isFromGrid && target.isVoid) {
-      target.element = source.element;
-      target.tool = true;
-      this.set(target);
-      return [target];
+      target.element = source.element
+      target.tool = true
+      this.set(target)
+      return [target]
     }
-    return [];
+    return []
   }
 
   /**
@@ -189,11 +178,10 @@ export default class Grid extends Cluster {
    * @param direction direction string
    */
   public moveAll(direction: number): void {
-    console.debug(`Moving all in direction: ${direction}`);
-    this.unvoid.cells.forEach((cell) => {
-      // eslint-disable-next-line
-      cell.coord = cell.coord.fromAngle(direction);
-    });
+    console.debug(`Moving all in direction: ${direction}`)
+    this.unvoid.cells.forEach((cell): void => {
+      cell.coord = cell.coord.fromAngle(direction)
+    })
   }
 
   /**
@@ -201,25 +189,21 @@ export default class Grid extends Cluster {
    * @param direction direction string
    */
   public rotateAll(): void {
-    console.debug(`Rotating grid`);
-    this.unvoid.cells.forEach((cell) => {
-      // eslint-disable-next-line
-      cell.coord = new Coord(cell.coord.x, cell.coord.y);
-      // eslint-disable-next-line
-      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360;
-    });
+    console.debug(`Rotating grid`)
+    this.unvoid.cells.forEach((cell): void => {
+      cell.coord = new Coord(cell.coord.x, cell.coord.y)
+      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360
+    })
   }
 
   public reflectAll(): void {
-    console.debug(`Vertical reflecting grid`);
-    this.unvoid.cells.forEach((cell) => {
-      // eslint-disable-next-line
-      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x);
+    console.debug(`Vertical reflecting grid`)
+    this.unvoid.cells.forEach((cell): void => {
+      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x)
       if (cell.rotation % 180 === 0) {
-        // eslint-disable-next-line
-        cell.rotation = (cell.rotation + 180) % 360;
+        cell.rotation = (cell.rotation + 180) % 360
       }
-    });
+    })
   }
 
   /**
@@ -227,14 +211,14 @@ export default class Grid extends Cluster {
    * @param coord Coordinate
    * @returns a list of adjacent cells
    */
-  adjacentCells(coord: Coord): Cell[] {
-    const adjacents: Cell[] = [];
-    coord.adjacent.forEach((adjacent) => {
+  public adjacentCells(coord: Coord): Cell[] {
+    const adjacents: Cell[] = []
+    coord.adjacent.forEach((adjacent): void => {
       if (this.includes(adjacent)) {
-        adjacents.push(this.get(adjacent));
+        adjacents.push(this.get(adjacent))
       }
-    });
-    return adjacents;
+    })
+    return adjacents
   }
 
   /**
@@ -242,19 +226,19 @@ export default class Grid extends Cluster {
    * Used to find the exit route of particles
    * @returns
    */
-  get borderCells(): Cell[] {
-    const borders: Cell[] = [];
-    this.cells.forEach((cell: Cell) => {
+  public get borderCells(): Cell[] {
+    const borders: Cell[] = []
+    this.cells.forEach((cell: Cell): void => {
       if (
         cell.coord.x === 0 ||
         cell.coord.x === this.cols ||
         cell.coord.y === 0 ||
         cell.coord.y === this.rows
       ) {
-        borders.push(cell);
+        borders.push(cell)
       }
-    });
-    return borders;
+    })
+    return borders
   }
 
   /**
@@ -262,15 +246,16 @@ export default class Grid extends Cluster {
    * @param coord espaced coordinate
    * @returns escape cell
    */
-  lastCellBeforeEscape(coord: Coord): Cell {
-    console.log(`Particle escaping @: ${coord.toString()}`);
+  public lastCellBeforeEscape(coord: Coord): Cell {
+    console.log(`Particle escaping @: ${coord.toString()}`)
     if (this.includes(coord)) {
-      throw new Error(`Not an escaping particle coordinate: ${coord}`);
+      throw new Error(`Not an escaping particle coordinate: ${coord}`)
     }
-    const lastCoord = coord.adjacent.find((adjacent) => {
-      return this.includes(adjacent);
-    });
-    return this.get(lastCoord!);
+    const lastCoord = coord.adjacent.find((adjacent): boolean => {
+      return this.includes(adjacent)
+    })
+    /* eslint-disable-next-line */
+    return this.get(lastCoord!)
   }
 
   /**
@@ -278,35 +263,35 @@ export default class Grid extends Cluster {
    * @returns an ascii grid
    */
   public get ascii(): string {
-    let result = '';
+    let result = ''
     for (let y = 0; y < this.rows; y += 1) {
       for (let x = 0; x < this.cols; x += 1) {
-        const coord = Coord.importCoord({ y, x });
-        result += this.get(coord).ascii;
+        const coord = Coord.importCoord({ y, x })
+        result += this.get(coord).ascii
       }
-      result += '\n';
+      result += '\n'
     }
-    return result;
+    return result
   }
 
   /**
    * Sets the grid with the appropriate cells
    * @param jsonCells A list of cell interface
    */
-  public static importGrid(gridObj: GridInterface): Grid {
-    const grid = new Grid(gridObj.rows, gridObj.cols);
-    gridObj.cells.forEach((cellObj) => {
-      const cell = Cell.importCell(cellObj);
-      grid.set(cell);
-    });
-    return grid;
+  public static importGrid(iGrid: IGrid): Grid {
+    const grid = new Grid(iGrid.rows, iGrid.cols)
+    iGrid.cells.forEach((iCell): void => {
+      const cell = Cell.importCell(iCell)
+      grid.set(cell)
+    })
+    return grid
   }
 
   /**
-   * Create a dummy grid object
+   * Create a dummy grid interface
    * @returns dummy Grid
    */
-  public static dummyGridInterface(rows = 3, cols = 3): GridInterface {
+  public static dummyIGrid(rows = 3, cols = 3): IGrid {
     return {
       rows,
       cols,
@@ -319,16 +304,16 @@ export default class Grid extends Cluster {
           frozen: true
         }
       ]
-    };
+    }
   }
 
   /**
-   * Create a dummy grid object
+   * Create a dummy grid instance
    * @returns dummy Grid
    */
   public static dummyGrid(rows = 3, cols = 3): Grid {
-    const grid = Grid.importGrid(this.dummyGridInterface());
-    return grid;
+    const grid = Grid.importGrid(this.dummyIGrid(rows, cols))
+    return grid
   }
 
   /**
@@ -336,24 +321,24 @@ export default class Grid extends Cluster {
    * @returns A grid with nothing.
    */
   public static emptyGrid(rows = 3, cols = 3): Grid {
-    return Grid.importGrid({ rows, cols, cells: [] });
+    return Grid.importGrid({ rows, cols, cells: [] })
   }
 
   /**
    * Exports the grid to an interface of primitives
    * @returns a grid interface
    */
-  public exportGrid(): GridInterface {
-    const cells: CellInterface[] = [];
+  public exportGrid(): IGrid {
+    const cells: ICell[] = []
     this.cells
-      .filter((cell) => !cell.isVoid)
-      .forEach((cell) => {
-        cells.push(cell.exportCell());
-      });
+      .filter((cell): boolean => !cell.isVoid)
+      .forEach((cell): void => {
+        cells.push(cell.exportCell())
+      })
     return {
       cols: this.cols,
       rows: this.rows,
       cells
-    };
+    }
   }
 }

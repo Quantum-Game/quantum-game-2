@@ -1,4 +1,4 @@
-import { CoordInterface } from './interfaces';
+import { ICoord } from './interfaces'
 
 /**
  * COORDINATE CLASS
@@ -6,48 +6,48 @@ import { CoordInterface } from './interfaces';
  * The grid goes from top-left to bottom right
  * Indices start at 0
  */
-export default class Coord {
-  x: number;
-  y: number;
+export default class Coord implements ICoord {
+  public x: number
+  public y: number
 
-  constructor(y: number, x: number) {
-    this.y = y;
-    this.x = x;
+  public constructor(y: number, x: number) {
+    this.y = y
+    this.x = x
   }
 
   /**
    * @returns coordinate at the top
    */
-  get up(): Coord {
-    return Coord.importCoord({ y: this.y - 1, x: this.x });
+  public get up(): Coord {
+    return Coord.importCoord({ y: this.y - 1, x: this.x })
   }
 
   /**
    * @returns coordinate at the bottom
    */
-  get down(): Coord {
-    return Coord.importCoord({ y: this.y + 1, x: this.x });
+  public get down(): Coord {
+    return Coord.importCoord({ y: this.y + 1, x: this.x })
   }
 
   /**
    * @returns coordinate at the left
    */
-  get left(): Coord {
-    return Coord.importCoord({ y: this.y, x: this.x - 1 });
+  public get left(): Coord {
+    return Coord.importCoord({ y: this.y, x: this.x - 1 })
   }
 
   /**
    * @returns coordinate at the right
    */
-  get right(): Coord {
-    return Coord.importCoord({ y: this.y, x: this.x + 1 });
+  public get right(): Coord {
+    return Coord.importCoord({ y: this.y, x: this.x + 1 })
   }
 
   /**
    * @returns list of adjacent cells
    */
-  get adjacent(): Coord[] {
-    return [this.up, this.right, this.down, this.left];
+  public get adjacent(): Coord[] {
+    return [this.up, this.right, this.down, this.left]
   }
 
   /**
@@ -55,16 +55,16 @@ export default class Coord {
    * beware, doesn't check out of bounds without grid/rows values
    * @returns boolean
    */
-  get outOfGrid(): boolean {
-    return this.x < 0 || this.y < 0;
+  public get outOfGrid(): boolean {
+    return this.x < 0 || this.y < 0
   }
 
   /**
    * Check if two coordinates are adjacent
    * @returns boolean if cells are adjacent
    */
-  isAdjacent(coord: Coord): boolean {
-    return coord.isIncludedIn(this.adjacent);
+  public isAdjacent(coord: Coord): boolean {
+    return coord.isIncludedIn(this.adjacent)
   }
 
   /**
@@ -72,18 +72,18 @@ export default class Coord {
    * @param angle angle direction
    * @returns coordinate in direction
    */
-  fromAngle(directionAngle: number): Coord {
+  public fromAngle(directionAngle: number): Coord {
     switch (directionAngle % 360) {
       case 0:
-        return this.right;
+        return this.right
       case 90:
-        return this.up;
+        return this.up
       case 180:
-        return this.left;
+        return this.left
       case 270:
-        return this.down;
+        return this.down
       default:
-        throw Error(`Angle provided is not a multiple of 90°...`);
+        throw Error(`Angle provided is not a multiple of 90°...`)
     }
   }
 
@@ -92,8 +92,8 @@ export default class Coord {
    * @param coord other coordinate to test for equality
    * @returns boolean if equal
    */
-  equal(coord: Coord): boolean {
-    return this.x === coord.x && this.y === coord.y;
+  public equal(coord: Coord): boolean {
+    return this.x === coord.x && this.y === coord.y
   }
 
   /**
@@ -101,12 +101,12 @@ export default class Coord {
    * @param coords list of coordinates
    * @returns boolean if coordinate is included in list
    */
-  isIncludedIn(coords: Coord[]): boolean {
+  public isIncludedIn(coords: Coord[]): boolean {
     return (
-      coords.filter((coord) => {
-        return this.equal(coord);
+      coords.filter((coord): boolean => {
+        return this.equal(coord)
       }).length > 0
-    );
+    )
   }
 
   /**
@@ -114,8 +114,8 @@ export default class Coord {
    * @param rows width of grid
    * @returns uid of cell in a grid
    */
-  uid(rows: number): number {
-    return this.y * rows + this.x;
+  public uid(rows: number): number {
+    return this.y * rows + this.x
   }
 
   /**
@@ -123,10 +123,10 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  pos(cellSize: number): CoordInterface {
-    const y = this.y * cellSize;
-    const x = this.x * cellSize;
-    return { y, x };
+  public pos(cellSize: number): ICoord {
+    const y = this.y * cellSize
+    const x = this.x * cellSize
+    return { y, x }
   }
 
   /**
@@ -134,45 +134,45 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  center(cellSize: number): CoordInterface {
-    const y = (this.y + 0.5) * cellSize;
-    const x = (this.x + 0.5) * cellSize;
-    return { y, x };
+  public center(cellSize: number): ICoord {
+    const y = (this.y + 0.5) * cellSize
+    const x = (this.x + 0.5) * cellSize
+    return { y, x }
   }
 
   /**
    * Output as an array of numbers
    * @returns number array of coordinate
    */
-  get toArray(): number[] {
-    return [this.y, this.x];
+  public get toArray(): number[] {
+    return [this.y, this.x]
   }
 
   /**
    * Outputs a string for debug
    * @returns string describing the coordinate
    */
-  toString(): string {
-    return `[Y:${this.y}, X:${this.x}]`;
+  public toCoordString(): string {
+    return `[Y:${this.y}, X:${this.x}]`
   }
 
   /**
    * Output to interface of primitives
    * @returns interface describing coordinate
    */
-  exportCoord(): CoordInterface {
+  public exportCoord(): ICoord {
     return {
       y: this.y,
       x: this.x
-    };
+    }
   }
 
   /**
    * Create a coordinate class instance from a coordinate interface
-   * @param obj Coordinate interface
+   * @param iCoord Coordinate interface
    */
-  static importCoord(json: CoordInterface): Coord {
-    return new Coord(json.y, json.x);
+  public static importCoord(iCoord: ICoord): Coord {
+    return new Coord(iCoord.y, iCoord.x)
   }
 
   /**
@@ -180,9 +180,9 @@ export default class Coord {
    * @param index unique id
    * @param cols width of grid
    */
-  static fromId(index: number, cols: number): Coord {
-    const x = index % cols;
-    const y = Math.floor(index / cols);
-    return Coord.importCoord({ y, x });
+  public static fromId(index: number, cols: number): Coord {
+    const x = index % cols
+    const y = Math.floor(index / cols)
+    return Coord.importCoord({ y, x })
   }
 }

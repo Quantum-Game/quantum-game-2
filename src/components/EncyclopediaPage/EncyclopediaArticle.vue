@@ -7,8 +7,8 @@
 
       <!-- GRIDS -->
       <div class="grids">
-        <div v-for="(gridObj, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
-          <encyclopedia-board :grid-obj="gridObj" :step="5" class="grid" />
+        <div v-for="(iGrid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
+          <encyclopedia-board :i-grid="iGrid" :step="5" class="grid" />
         </div>
       </div>
 
@@ -33,13 +33,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { GridInterface, EntryListInterface, EntryInterface } from '@/engine/interfaces';
-import { getEntry } from '@/assets/data/entries/index';
-import AppButton from '@/components/AppButton.vue';
-import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue';
-import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue';
-import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue';
+import { Vue, Component, Watch } from 'vue-property-decorator'
+import { IEntry } from '@/engine/interfaces'
+import { getEntry } from '@/assets/data/entries/index'
+import AppButton from '@/components/AppButton.vue'
+import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
+import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
 
 @Component({
   components: {
@@ -50,34 +50,35 @@ import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTr
   }
 })
 export default class EncyclopediaArticle extends Vue {
-  entry: EntryInterface = {
+  entry: IEntry = {
     title: '',
     elementName: 'Mirror',
     grids: [],
     sections: []
-  };
+  }
 
-  created() {
-    this.loadEntry();
+  created(): void {
+    this.loadEntry()
   }
 
   @Watch('$route')
-  loadEntry() {
+  loadEntry(): void {
     if (this.entryURL) {
-      this.entry = getEntry(this.entryURL);
+      this.entry = getEntry(this.entryURL)
     }
     if (!this.entry.title) {
-      this.$router.push({ name: '404' });
+      this.$router.push({ name: '404' })
     }
   }
 
   get entryURL(): string {
-    return this.$route.params.entry;
+    return this.$route.params.entry
   }
 
-  get theComponentsTransitionMapShouldBeDisplayed() {
-    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube'];
-    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0;
+  // FIXME: Code smell, move to element value
+  get theComponentsTransitionMapShouldBeDisplayed(): boolean {
+    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
+    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0
   }
 }
 </script>

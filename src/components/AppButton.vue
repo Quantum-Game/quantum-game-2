@@ -5,21 +5,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
 @Component
 export default class AppButton extends Vue {
-  @Prop() readonly hoverColor!: string;
-  @Prop({ default: 'basic' }) readonly type!: string;
-  @Prop({ default: true }) readonly inline!: boolean;
-  @Prop() readonly overlay!: boolean;
+  @Prop() readonly hoverColor!: string
+  @Prop({ default: 'basic' }) readonly type!: string
+  @Prop({ default: true }) readonly inline!: boolean
+  @Prop() readonly overlay!: boolean
 
-  get colorClass() {
-    return this.hoverColor;
-  }
-
-  get computeClass() {
-    return [this.type, this.inline && 'inline', this.overlay && 'overlay-btn'];
+  get computeClass(): string[] {
+    return [this.type, this.inline ? 'inline' : '', this.overlay ? 'overlay-btn' : '']
   }
 }
 </script>

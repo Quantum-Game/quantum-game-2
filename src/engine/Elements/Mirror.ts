@@ -1,22 +1,22 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * MIRROR CLASS
  */
 export default class Mirror extends Element {
-  name: Elem = Elem.Mirror;
-  group: Group = Group.Direction;
-  description: string = 'Metallic or dielectric mirror.';
-  ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\'];
-  angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315];
+  public name: Elem = Elem.Mirror
+  public group: Group = Group.Direction
+  public description = 'Metallic or dielectric mirror.'
+  public ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\']
+  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  constructor(rotation: number = 0) {
-    super(Elem.Mirror, Group.Direction);
+  public constructor() {
+    super(Elem.Mirror, Group.Direction)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.mirror(options.rotation);
+  public transition(options: ITransition): qt.Operator {
+    return qt.mirror(options.rotation)
   }
 }

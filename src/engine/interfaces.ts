@@ -2,196 +2,209 @@
  * PARTICLE INTERFACE
  * Particle interface in primitives
  */
-export interface ParticleInterface {
-  x: number;
-  y: number;
-  direction: number;
-  are: number;
-  aim: number;
-  bre: number;
-  bim: number;
+export interface IParticle {
+  x: number
+  y: number
+  direction: number
+  are: number
+  aim: number
+  bre: number
+  bim: number
+}
+
+// TODO: Should come as enum in a nicer format
+export interface IParticleCoord {
+  kind: string // for now only 'photon'
+  x: number
+  y: number
+  dir: number // 0: > 1: ^, 2: <. 3: v
+  pol: number // 0: H, 1: V
 }
 
 /**
  * DETECTION INTERFACE
  */
-export interface detectionInterface {
-  coord: CoordInterface;
-  probability: number;
+export interface IDetection {
+  coord: ICoord
+  probability: number
 }
 
 /**
  * LEVEL LIST INTERFACE
  * level dictionary interface
  */
-export interface LevelListInterface {
-  [index: string]: LevelInterface;
+export interface ILevelList {
+  [index: string]: ILevel
 }
 
 /**
  * LEVEL INTERFACE
  * level interface in primitives
  */
-export interface LevelInterface {
-  id: number;
-  name: string;
-  group: string;
-  description: string;
-  grid: GridInterface;
-  goals: GoalInterface[];
-  hints: HintInterface[];
-  tools: string[];
-}
-
-/**
- * CLASSICAL LEVEL INTERFACE
- * original level structure for importing V1 levels
- */
-export interface ClassicLevelInterface {
-  name: string;
-  group: string;
-  width: number;
-  height: number;
-  tiles: {
-    i: number;
-    j: number;
-    name: string;
-    rotation: number;
-    frozen: boolean;
-  }[];
+export interface ILevel {
+  id: number
+  name: string
+  group: string
+  description: string
+  grid: IGrid
+  goals: IGoal[]
+  hints: IHint[]
+  tools: string[]
 }
 
 /**
  * GOAL INTERFACE
  * Goal interface in primitives
  */
-export interface GoalInterface {
-  coord: CoordInterface;
-  threshold: number;
+export interface IGoal {
+  coord: ICoord
+  threshold: number
 }
 
 /**
  * GOAL INTERFACE
  * Goal interface in primitives
  */
-export interface AbsorptionInterface {
-  coord: CoordInterface;
-  probability: number;
+export interface IAbsorption {
+  coord: ICoord
+  probability: number
 }
 
 /**
  * HINT INTERFACE
  * Hint interface in primitives
  */
-export interface HintInterface {
-  coord: CoordInterface;
-  content: string;
-  color?: string;
-  rotation?: number;
-  active?: boolean;
+export interface IHint {
+  coord: ICoord
+  content: string
+  color?: string
+  rotation?: number
+  active?: boolean
 }
 
 /**
  * GRID INTERFACE
  * Grid interface in primitives
  */
-export interface GridInterface {
-  cols: number;
-  rows: number;
-  cells: CellInterface[];
+export interface IGrid {
+  cols: number
+  rows: number
+  cells: ICell[]
 }
 
 /**
  * CLUSTER INTERFACE
  * Cluster of cells in primitives
  */
-export interface ClusterInterface {
-  cells: CellInterface[];
+export interface ICluster {
+  cells: ICell[]
 }
 
 /**
  * CELL INTERFACE
  * A cell interface composed of primitives
  */
-export interface CellInterface {
-  coord: CoordInterface;
-  element: string;
-  frozen: boolean;
-  rotation?: number;
-  polarization?: number;
-  percentage?: number;
-  active?: boolean;
-  energized?: boolean;
+export interface ICell {
+  coord: ICoord
+  element: string
+  frozen: boolean
+  rotation?: number
+  polarization?: number
+  percentage?: number
+  active?: boolean
+  energized?: boolean
 }
 
 /**
  * ELEMENT TRANSITION INTERFACE
  * A transition interface composed of primitives to get operators
  */
-export interface TransitionInterface {
-  rotation: number;
-  polarization: number;
-  percentage: number;
+export interface ITransition {
+  rotation: number
+  polarization: number
+  percentage: number
 }
 
 /**
  * ELEMENT INTERFACE
  * Element interface composed of primitive types
  */
-export interface ElementInterface {
-  name: string;
-  group: string;
-  description: string;
-  ascii: string[];
-  params?: ElementParameterInterface[];
+export interface IElement {
+  name: string
+  group: string
+  description: string
+  ascii: string[]
+  params?: IElementParameter[]
 }
 
 /**
  * ELEMENT PARAMETER INTERFACE
  * Element parameter interface composed of primitive types
  */
-export interface ElementParameterInterface {
-  key: string;
-  value: number;
+export interface IElementParameter {
+  key: string
+  value: number
 }
 
 /**
  * COORDINATE INTERFACE
  * A coordinates interface of primitives
  */
-export interface CoordInterface {
-  x: number;
-  y: number;
+export interface ICoord {
+  x: number
+  y: number
+}
+
+export interface IMatrixElement {
+  i: number
+  j: number
+  re: number
+  im: number
 }
 
 /**
  * ENCYCLOPEDIA ENTRY LIST INTERFACE
  * Encyclopedia entry list in primitives
  */
-export interface EntryListInterface {
-  [index: string]: EntryInterface;
+export interface IEntryList {
+  [index: string]: IEntry
+}
+
+export interface IEntryNameList {
+  name: string
+  ready: boolean
 }
 
 /**
  * ENCYCLOPEDIA ENTRY INTERFACE
  * Encyclopedia entry interface in primitives
  */
-export interface EntryInterface {
-  title: string;
-  elementName: string;
-  short?: string;
-  grids?: GridInterface[];
-  sections: EntrySectionInterface[];
+export interface IEntry {
+  title: string
+  elementName: string
+  short?: string
+  grids?: IGrid[]
+  sections: IEntrySection[]
 }
 
 /**
  * ENCYCLOPEDIA ENTRY SECTION INTERFACE
  * Encyclopedia entry section interface
  */
-export interface EntrySectionInterface {
-  title: string;
-  content?: string;
-  pics?: string[];
+export interface IEntrySection {
+  title: string
+  content?: string
+  pics?: string[]
+}
+
+/**
+ * Photon indicator interface for glue code with qt Photons
+ */
+export interface IIndicator {
+  x: number
+  y: number
+  direction: DirEnum
+  polarization: PolEnum
 }
 
 /**
@@ -296,16 +309,6 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
   ],
   Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
   Phase: [Elem.Glass, Elem.VacuumJar]
-};
-
-/**
- * Photon indicator interface for glue code with qt Photons
- */
-export interface IndicatorInterface {
-  x: number;
-  y: number;
-  direction: DirEnum;
-  polarization: PolEnum;
 }
 
 /**

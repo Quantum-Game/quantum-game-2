@@ -54,10 +54,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import $userStore from '@/store/userStore';
-import AppLayout from '@/components/AppLayout.vue';
-import AppButton from '@/components/AppButton.vue';
+import { Vue, Component } from 'vue-property-decorator'
+import $userStore from '@/store/userStore'
+import AppLayout from '@/components/AppLayout.vue'
+import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
@@ -70,23 +70,27 @@ export default class Login extends Vue {
     email: '',
     password: '',
     rememberMe: true
-  };
+  }
 
+  /* eslint-disable-next-line @typescript-eslint/explicit-function-return-type */
   get error() {
-    return $userStore.getters.error;
+    return $userStore.getters.error
   }
 
-  signIn() {
-    $userStore.dispatch('SIGN_IN', this.user);
+  signIn(): void {
+    $userStore.dispatch('SIGN_IN', this.user)
   }
-  signInGithub() {
-    $userStore.dispatch('SIGN_IN_GITHUB');
+
+  signInGithub(): void {
+    $userStore.dispatch('SIGN_IN_GITHUB')
   }
-  signInFacebook() {
-    $userStore.dispatch('SIGN_IN_FACEBOOK');
+
+  signInFacebook(): void {
+    $userStore.dispatch('SIGN_IN_FACEBOOK')
   }
-  signInGoogle() {
-    $userStore.dispatch('SIGN_IN_GOOGLE');
+
+  signInGoogle(): void {
+    $userStore.dispatch('SIGN_IN_GOOGLE')
   }
 }
 </script>

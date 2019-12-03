@@ -1,13 +1,11 @@
-import { LevelInterface, ClassicLevelInterface, GoalInterface } from './interfaces';
-import Coord from './Coord';
-import Element from './Element';
-import Cell from './Cell';
-import Grid from './Grid';
-import Toolbox from './Toolbox';
-import Goal from './Goal';
-import Hint from './Hint';
-import GameState from './GameState';
-import { convertFromClassicNames } from './Helpers';
+import { ILevel, IGoal, IHint } from './interfaces'
+import Coord from './Coord'
+import Cell from './Cell'
+import Grid from './Grid'
+import Toolbox from './Toolbox'
+import Goal from './Goal'
+import Hint from './Hint'
+import GameState from './GameState'
 
 /**
  * LEVEL CLASS
@@ -16,17 +14,17 @@ import { convertFromClassicNames } from './Helpers';
  * Unfrozen elements are then processed into the players inventory
  */
 export default class Level {
-  id: number;
-  name: string;
-  group: string;
-  description: string;
-  grid: Grid;
-  goals: Goal[];
-  hints: Hint[];
-  toolbox: Toolbox;
-  gameState: GameState;
+  public id: number
+  public name: string
+  public group: string
+  public description: string
+  public grid: Grid
+  public goals: Goal[]
+  public hints: Hint[]
+  public toolbox: Toolbox
+  public gameState: GameState
 
-  constructor(
+  public constructor(
     id: number,
     name: string,
     group: string,
@@ -37,27 +35,27 @@ export default class Level {
     toolbox: Toolbox
   ) {
     // Basic infos
-    this.id = id;
-    this.group = group;
-    this.name = name;
-    this.description = description;
+    this.id = id
+    this.group = group
+    this.name = name
+    this.description = description
     // Basic grid definition
-    this.grid = grid;
-    this.goals = goals;
-    this.hints = hints;
+    this.grid = grid
+    this.goals = goals
+    this.hints = hints
 
     // Populate toolbox
     if (Object.keys(toolbox).length === 0) {
-      this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells);
+      this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells)
     } else {
-      this.toolbox = toolbox;
+      this.toolbox = toolbox
     }
 
     // Initiate game state
-    this.gameState = new GameState(this.goals, this.grid.mines.cells);
+    this.gameState = new GameState(this.goals, this.grid.mines.cells)
 
     // Remove toolbox cells from grid
-    this.grid.resetUnfrozen();
+    this.grid.resetUnfrozen()
   }
 
   /**
@@ -65,64 +63,69 @@ export default class Level {
    * @param element
    * @returns number of available elements in the toolbox
    */
-  isAvailable(cell: Cell) {
-    return this.toolbox.available(cell.element.name) > 0;
+  public isAvailable(cell: Cell): boolean {
+    return this.toolbox.available(cell.element.name) > 0
   }
 
   /**
    * String output of a level
    * @returns a string describing the level
    */
-  toString(): string {
-    let result = `LEVEL: ${this.name} [${this.grid.cols}x${this.grid.rows}]\n`;
-    result += `DESC: ${this.description}\n`;
-    result += `GROUP: ${this.group}\n`;
-    result += `${this.grid.toString()}\n`;
-    result += `GOALS: ${this.goals.map((i) => i.toString())}\n`;
-    result += `HINTS: ${this.hints.map((i) => i.toString())}\n`;
-    result += `TOOLBOX: ${this.toolbox.toString()}\n`;
-    return result;
+  public toString(): string {
+    let result = `LEVEL: ${this.name} [${this.grid.cols}x${this.grid.rows}]\n`
+    result += `DESC: ${this.description}\n`
+    result += `GROUP: ${this.group}\n`
+    result += `${this.grid.toString()}\n`
+    result += `GOALS: ${this.goals.map((i): string => i.toString())}\n`
+    result += `HINTS: ${this.hints.map((i): string => i.toString())}\n`
+    result += `TOOLBOX: ${this.toolbox.toString()}\n`
+    return result
   }
 
   /**
-   * Export a json level
+   * Export to an iLevel
    * @returns a level interface of the current level
    */
-  exportLevel(): LevelInterface {
+  public exportLevel(): ILevel {
     return {
       id: this.id,
       name: this.name,
       group: this.group,
       description: this.description,
       grid: this.grid.exportGrid(),
-      hints: this.hints.map((hint) => hint.exportHint()),
-      goals: this.goals.map((goal) => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell) => cell.element.name)
-    };
+      hints: this.hints.map((hint): IHint => hint.exportHint()),
+      goals: this.goals.map((goal): IGoal => goal.exportGoal()),
+      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
+    }
   }
 
   /**
    * Import a json level
-   * @param obj a level interface with primitives
+   * @param iLevel a level interface with primitives
    * @returns a Level instance
    */
-  static importLevel(obj: LevelInterface): Level {
-    const grid = Grid.importGrid(obj.grid);
-    const goals = obj.goals.map((goalI: GoalInterface) => {
-      const coord = Coord.importCoord(goalI.coord);
-      const cell = grid.get(coord);
-      return new Goal(cell, goalI.threshold);
-    });
-    const hints = Hint.importHint(obj.hints);
-    const toolbox = Toolbox.importToolbox(obj.tools);
-    return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox);
+  public static importLevel(iLevel: ILevel): Level {
+    const grid = Grid.importGrid(iLevel.grid)
+    const goals = Goal.importGoals(iLevel.goals)
+    const hints = Hint.importHint(iLevel.hints)
+    const toolbox = Toolbox.importToolbox(iLevel.tools)
+    return new Level(
+      iLevel.id,
+      iLevel.name,
+      iLevel.group,
+      iLevel.description,
+      grid,
+      goals,
+      hints,
+      toolbox
+    )
   }
 
   /**
-   * Import a json level
+   * Import a level interface
    * @returns a Level instance
    */
-  static createDummy(): Level {
+  public static createDummy(): Level {
     return Level.importLevel({
       id: 0,
       name: 'Dummy',
@@ -132,6 +135,6 @@ export default class Level {
       goals: [],
       hints: [],
       tools: []
-    });
+    })
   }
 }

@@ -4,26 +4,18 @@ module.exports = {
     node: true
   },
   extends: [
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue/recommended',
-    'plugin:prettier/recommended',
-    '@vue/airbnb',
-    '@vue/typescript',
-    'prettier',
+    'eslint:recommended',
     'prettier/@typescript-eslint',
-    'prettier/babel',
-    'prettier/unicorn',
-    'prettier/vue'
+    '@vue/standard',
+    '@vue/typescript',
+    '@vue/prettier'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'class-methods-use-this': 'off',
-    'no-tabs': 'error',
-    'import/no-extraneous-dependencies': [
-      'error',
-      { devDependencies: true, optionalDependencies: false, peerDependencies: false }
-    ],
-    'lines-between-class-members': [0, 'always', { exceptAfterSingleLine: true }]
+    '@typescript-eslint/interface-name-prefix': ['error', 'always']
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -37,4 +29,4 @@ module.exports = {
       }
     }
   }
-};
+}

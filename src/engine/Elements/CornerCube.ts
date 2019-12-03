@@ -1,22 +1,23 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * CORNER CUBE CLASS
  */
 export default class CornerCube extends Element {
-  name: Elem = Elem.CornerCube;
-  group: Group = Group.Direction;
-  description: string = 'Reflects any incoming photon.';
-  ascii: string[] = ['*'];
-  angles: number[] = [0];
+  public name: Elem = Elem.CornerCube
+  public group: Group = Group.Direction
+  public description = 'Reflects any incoming photon.'
+  public ascii: string[] = ['*']
+  public angles: number[] = [0]
 
-  constructor() {
-    super(Elem.CornerCube, Group.Direction);
+  public constructor() {
+    super(Elem.CornerCube, Group.Direction)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.cornerCube();
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.cornerCube()
   }
 }

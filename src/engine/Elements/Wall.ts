@@ -1,22 +1,22 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * WALL CLASS
  */
 export default class Wall extends Element {
-  name: Elem = Elem.Wall;
-  group: Group = Group.Absorption;
-  description: string = 'Another brick in the wall.';
-  ascii: string[] = ['▓'];
-  angles: number[] = [0];
+  public name: Elem = Elem.Wall
+  public group: Group = Group.Absorption
+  public description = 'Another brick in the wall.'
+  public ascii: string[] = ['▓']
+  public angles: number[] = [0]
 
-  constructor() {
-    super(Elem.Wall, Group.Absorption);
+  public constructor() {
+    super(Elem.Wall, Group.Absorption)
   }
-
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.attenuator(0);
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.attenuator(0)
   }
 }

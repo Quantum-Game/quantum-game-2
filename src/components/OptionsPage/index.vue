@@ -19,13 +19,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
-import { Mutation, Getter, namespace } from 'vuex-class';
-import { SET_GAME_SPEED_INTERVAL } from '@/store/mutation-types';
-import { AppLayout } from '@/components';
+import { Vue, Component } from 'vue-property-decorator'
+import { namespace } from 'vuex-class'
+import { SET_GAME_SPEED_INTERVAL } from '@/store/mutation-types'
+import { AppLayout } from '@/components'
 
 // used to target namespaced vuex module:
-const options = namespace('optionsModule');
+const options = namespace('optionsModule')
 
 @Component({
   components: {
@@ -35,8 +35,9 @@ const options = namespace('optionsModule');
 export default class OptionsPage extends Vue {
   @options.Mutation(SET_GAME_SPEED_INTERVAL) mutationSetGameSpeedInterval!: (
     newInterval: number
-  ) => void;
-  @options.Getter('gameSpeedInterval') gameSpeedInterval!: number;
+  ) => void
+
+  @options.Getter('gameSpeedInterval') gameSpeedInterval!: number
 
   options = {
     gameSpeed: {
@@ -46,15 +47,15 @@ export default class OptionsPage extends Vue {
       min: 100,
       max: 2000
     }
-  };
+  }
 
   /**
    * used to update gameSpeedInterval vuex option
    * @returns void
    */
   onChange(e: { target: HTMLInputElement }): void {
-    const newInterval: number = parseInt(e.target.value, 10);
-    this.mutationSetGameSpeedInterval(newInterval);
+    const newInterval: number = parseInt(e.target.value, 10)
+    this.mutationSetGameSpeedInterval(newInterval)
   }
 }
 </script>

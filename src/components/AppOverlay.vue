@@ -17,15 +17,13 @@
 </template>
 
 <script lang="ts">
-// TODO: Needs to be extended for instructions overlay
-// FIXME: Rethink overlay
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
-import VueConfetti from 'vue-confetti';
-import AppButton from '@/components/AppButton.vue';
-import { GameStateEnum } from '@/engine/interfaces';
+// FIXME: Needs to be extended for instructions overlay, rethink overlay
+import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
+import VueConfetti from 'vue-confetti'
+import AppButton from '@/components/AppButton.vue'
+import { GameStateEnum } from '@/engine/interfaces'
 
-Vue.use(VueConfetti);
+Vue.use(VueConfetti)
 
 @Component({
   components: {
@@ -33,35 +31,36 @@ Vue.use(VueConfetti);
   }
 })
 export default class AppOverlay extends Vue {
-  @Prop() readonly gameState!: GameStateEnum;
+  @Prop() readonly gameState!: GameStateEnum
   $confetti!: {
-    start: (params: any) => void;
-    stop: () => void;
-  };
-  explosion: boolean = false;
-  explosionTimeout: number = 0;
+    start: (params: {}) => void
+    stop: () => void
+  }
+
+  explosion = false
+  explosionTimeout = 0
 
   mineExploding(): void {
-    this.explosion = true;
+    this.explosion = true
     this.explosionTimeout = setTimeout(() => {
-      this.explosion = false;
-    }, 300);
+      this.explosion = false
+    }, 300)
   }
 
   get computeClass(): string[] {
-    return [this.gameState.toString(), 'wrapper'];
+    return [this.gameState.toString(), 'wrapper']
   }
 
   get victory(): boolean {
-    return this.gameState === GameStateEnum.Victory;
+    return this.gameState === GameStateEnum.Victory
   }
 
   get mineExploded(): boolean {
-    return this.gameState === GameStateEnum.MineExploded;
+    return this.gameState === GameStateEnum.MineExploded
   }
 
   @Watch('gameState')
-  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum) {
+  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
     if (newGameState === GameStateEnum.Victory) {
       this.$confetti.start({
         particlesPerFrame: 3,
@@ -85,11 +84,11 @@ export default class AppOverlay extends Vue {
           '#ff5d15', // orange 02
           '#ba00ff' // purple 02
         ]
-      });
+      })
     } else if (newGameState === GameStateEnum.MineExploded) {
-      this.mineExploding();
+      this.mineExploding()
     } else if (oldGameState === GameStateEnum.Victory) {
-      this.$confetti.stop();
+      this.$confetti.stop()
     }
   }
 }

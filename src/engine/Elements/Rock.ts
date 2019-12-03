@@ -1,23 +1,25 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * ROCK CLASS
  */
 export default class Rock extends Element {
-  name: Elem = Elem.Rock;
-  group: Group = Group.Absorption;
-  description: string =
-    "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive.";
-  ascii: string[] = ['♜'];
-  angles: number[] = [0];
+  public name: Elem = Elem.Rock
+  public group: Group = Group.Absorption
+  public description =
+    "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive."
 
-  constructor() {
-    super(Elem.Laser, Group.Source);
+  public ascii: string[] = ['♜']
+  public angles: number[] = [0]
+
+  public constructor() {
+    super(Elem.Laser, Group.Source)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.attenuator(0);
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.attenuator(0)
   }
 }

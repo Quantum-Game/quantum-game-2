@@ -1,26 +1,27 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * POLARIZER CLASS
  */
 export default class Polarizer extends Element {
-  name: Elem = Elem.Polarizer;
-  group: Group = Group.Polarization;
-  description: string =
-    'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.';
-  ascii: string[] = ['🡢', '🡥', '🡢', '🡥'];
-  angles: number[] = [0, 90, 180, 270];
+  public name: Elem = Elem.Polarizer
+  public group: Group = Group.Polarization
+  public description =
+    'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.'
 
-  polarization: number = 0;
+  public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
+  public angles: number[] = [0, 90, 180, 270]
 
-  constructor(polarization: number = 0) {
-    super(Elem.Polarizer, Group.Polarization);
-    this.polarization = polarization;
+  public polarization = 0
+
+  public constructor(polarization = 0) {
+    super(Elem.Polarizer, Group.Polarization)
+    this.polarization = polarization
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.polarizer(options.rotation, options.polarization);
+  public transition(options: ITransition): qt.Operator {
+    return qt.polarizer(options.rotation, options.polarization)
   }
 }

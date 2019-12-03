@@ -1,26 +1,28 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * VACUUM JAR CLASS
  */
 export default class VacuumJar extends Element {
-  name: Elem = Elem.VacuumJar;
-  group: Group = Group.Phase;
-  description: string =
-    'Even air retards light a bit. We set the thickness of vacuum so it advances the phase by λ/4. Useful for changing interference.';
-  ascii: string[] = ['↝'];
-  angles: number[] = [0];
+  public name: Elem = Elem.VacuumJar
+  public group: Group = Group.Phase
+  public description =
+    'Even air retards light a bit. We set the thickness of vacuum so it advances the phase by λ/4. Useful for changing interference.'
 
-  percentage: number = 0.25;
+  public ascii: string[] = ['↝']
+  public angles: number[] = [0]
 
-  constructor(percentage: number = 0.25) {
-    super(Elem.VacuumJar, Group.Phase);
-    this.percentage = percentage;
+  public percentage = 0.25
+
+  public constructor(percentage = 0.25) {
+    super(Elem.VacuumJar, Group.Phase)
+    this.percentage = percentage
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.vacuumJar();
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.vacuumJar()
   }
 }

@@ -1,27 +1,28 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * GLASS CLASS
  */
 export default class Glass extends Element {
-  name: Elem = Elem.Glass;
-  group: Group = Group.Phase;
-  description: string =
-    'Higher refractive index makes light slower. We set its thickness so it retards the phase by λ/4. Useful for changing interference.';
-  ascii: string[] = ['↜'];
-  angles: number[] = [0];
+  public name: Elem = Elem.Glass
+  public group: Group = Group.Phase
+  public description =
+    'Higher refractive index makes light slower. We set its thickness so it retards the phase by λ/4. Useful for changing interference.'
 
-  // TODO: See how the phase shift should be encoded
-  percentage: number = 0.25;
+  public ascii: string[] = ['↜']
+  public angles: number[] = [0]
 
-  constructor(percentage: number = 0.25) {
-    super(Elem.Glass, Group.Phase);
-    this.percentage = percentage;
+  public percentage = 0.25
+
+  public constructor(percentage = 0.25) {
+    super(Elem.Glass, Group.Phase)
+    this.percentage = percentage
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.glassSlab();
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.glassSlab()
   }
 }

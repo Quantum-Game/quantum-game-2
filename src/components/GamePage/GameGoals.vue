@@ -22,9 +22,9 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div class="mobile_progressBar">
-        <div class="mobile_progressBarFill" :style="{ width: gameState.totalGoal + '%' }"></div>
+        <div class="mobile_progressBarFill" :style="{ width: gameState.totalGoalPercentage + '%' }"></div>
       </div>
-      <div>Goal: {{ gameState.totalGoal }} %</div>
+      <div>Goal: {{ gameState.totalGoalPercentage }} %</div>
     </div>
 
     <!-- GOALS -->
@@ -67,15 +67,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Getter, Mutation } from 'vuex-class';
-import { Tween, update as updateTween } from 'es6-tween';
-import { GameStateEnum } from '@/engine/interfaces';
-import Cell from '@/engine/Cell';
-import Goal from '@/engine/Goal';
-import GameState from '@/engine/GameState';
-import AppCell from '@/components/Board/AppCell.vue';
-import Game from '@/components/GamePage/index.vue';
+import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Tween, update as updateTween } from 'es6-tween'
+import GameState from '@/engine/GameState'
+import AppCell from '@/components/Board/AppCell.vue'
 
 @Component({
   components: {
@@ -83,22 +78,24 @@ import Game from '@/components/GamePage/index.vue';
   }
 })
 export default class GameGoals extends Vue {
-  @Prop() readonly gameState!: GameState;
-  @Prop() readonly percentage!: number;
-  tweenedPercent: number = this.gameState.totalAbsorption;
-  width = 100;
+  @Prop() readonly gameState!: GameState
+  @Prop() readonly percentage!: number
+  tweenedPercent: number = this.gameState.totalAbsorptionPercentage
+  width = 100
 
   /**
    * Compute success or failure class from the gameState flags
    */
   get computeProbabilityClass(): string {
-    return this.gameState.probabilityFlag ? 'success' : 'defeat';
+    return this.gameState.probabilityFlag ? 'success' : 'defeat'
   }
+
   get computeGoalClass(): string[] {
-    return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons'];
+    return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons']
   }
+
   get computeSafeClass(): string[] {
-    return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons'];
+    return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons']
   }
 
   /**
@@ -109,7 +106,7 @@ export default class GameGoals extends Vue {
     return [
       { value: 100 - this.tweenedPercent, color: '#210235' },
       { value: this.tweenedPercent, color: '#5D00D5' }
-    ];
+    ]
   }
 
   /**
@@ -117,9 +114,9 @@ export default class GameGoals extends Vue {
    * @param time tween time
    */
   animateTween(time: number): void {
-    const id = requestAnimationFrame(this.animateTween);
-    const result = updateTween(time);
-    if (!result) cancelAnimationFrame(id);
+    const id = requestAnimationFrame(this.animateTween)
+    const result = updateTween(time)
+    if (!result) cancelAnimationFrame(id)
   }
 
   /**
@@ -130,10 +127,10 @@ export default class GameGoals extends Vue {
     new Tween({ value: oldVal })
       .to({ value: val }, 500)
       .on('update', ({ value }: { value: number }) => {
-        this.tweenedPercent = value;
+        this.tweenedPercent = value
       })
-      .start();
-    requestAnimationFrame(this.animateTween);
+      .start()
+    requestAnimationFrame(this.animateTween)
   }
 }
 </script>

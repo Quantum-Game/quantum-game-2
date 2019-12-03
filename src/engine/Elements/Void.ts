@@ -1,22 +1,23 @@
-import * as qt from 'quantum-tensors';
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces';
-import Element from '@/engine/Element';
+import * as qt from 'quantum-tensors'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
+import Element from '@/engine/Element'
 
 /**
  * VOID CLASS
  */
 export default class Void extends Element {
-  name: Elem = Elem.Void;
-  group: Group = Group.Basic;
-  description: string = 'The void...';
-  ascii: string[] = ['.'];
-  angles: number[] = [0];
+  public name: Elem = Elem.Void
+  public group: Group = Group.Basic
+  public description = 'The void...'
+  public ascii: string[] = ['.']
+  public angles: number[] = [0]
 
-  constructor() {
-    super(Elem.Void, Group.Basic);
+  public constructor() {
+    super(Elem.Void, Group.Basic)
   }
 
-  transition(options: TransitionInterface): qt.Operator {
-    return qt.attenuator(1);
+  /* eslint-disable-next-line */
+  public transition(options: ITransition): qt.Operator {
+    return qt.attenuator(1)
   }
 }

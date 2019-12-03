@@ -11,35 +11,35 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator';
-import { EntrySectionInterface } from '@/engine/interfaces';
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { IEntrySection } from '@/engine/interfaces'
 
 @Component
 export default class EncyclopediaArticleSection extends Vue {
-  @Prop() readonly section!: EntrySectionInterface;
-  @Prop() readonly shouldBeOpenOnInit!: boolean;
+  @Prop() readonly section!: IEntrySection
+  @Prop() readonly shouldBeOpenOnInit!: boolean
 
   $refs!: {
-    contentWrapper: HTMLElement;
-  };
+    contentWrapper: HTMLElement
+  }
 
-  isOpen: boolean = false;
+  isOpen = false
 
   // hack, as having a computed property that's using refs
   // as an initial data property causes errors - refs are
   // not existant then.
   mounted(): void {
-    this.isOpen = this.shouldBeOpenOnInit;
+    this.isOpen = this.shouldBeOpenOnInit
   }
 
-  handleTitleClick(e: { target: Element }): void {
-    this.isOpen = !this.isOpen;
+  handleTitleClick(): void {
+    this.isOpen = !this.isOpen
   }
 
   get style(): {} {
     return {
       maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
-    };
+    }
   }
 }
 </script>

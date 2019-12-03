@@ -50,13 +50,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Mixins, Watch } from 'vue-property-decorator';
-import { Mutation, State } from 'vuex-class';
-import { GameStateEnum } from '@/engine/interfaces';
-import Cell from '@/engine/Cell';
-import Level from '@/engine/Level';
-import Particle from '@/engine/Particle';
-import { getPosition } from '@/mixins';
+import { Component, Prop, Mixins, Watch } from 'vue-property-decorator'
+import { Mutation, State } from 'vuex-class'
+import { GameStateEnum } from '@/engine/interfaces'
+import Cell from '@/engine/Cell'
+import Position from '@/mixins/Position'
 import {
   LaserCell,
   NonLinearCrystalCell,
@@ -76,14 +74,14 @@ import {
   FaradayRotatorCell,
   GlassCell,
   VacuumJarCell
-} from '@/components/Board/Cell/index';
+} from '@/components/Board/Cell/index'
 
 const borderColors = {
   active: 'transparent',
   frozen: 'turquoise',
   rotable: 'white',
   energized: 'blue'
-};
+}
 
 @Component({
   components: {
@@ -107,31 +105,31 @@ const borderColors = {
     VacuumJarCell
   }
 })
-export default class AppCell extends Mixins(getPosition) {
-  @Prop() readonly cell!: Cell;
-  @Prop() readonly tileSize!: number;
-  @Prop({ default: true }) readonly available!: boolean;
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
-  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  @State simulationState!: string;
-  @State gameState!: GameStateEnum;
-  @State activeCell!: Cell;
-  @State cellSelected!: boolean;
-  @State hoveredCell!: Cell;
-  border = '';
-  isRotate = false;
+export default class AppCell extends Mixins(Position) {
+  @Prop() readonly cell!: Cell
+  @Prop() readonly tileSize!: number
+  @Prop({ default: true }) readonly available!: boolean
+  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
+  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  @State simulationState!: string
+  @State gameState!: GameStateEnum
+  @State activeCell!: Cell
+  @State cellSelected!: boolean
+  @State hoveredCell!: Cell
+  border = ''
+  isRotate = false
 
   $refs!: {
-    cellRef: HTMLElement;
-  };
+    cellRef: HTMLElement
+  }
 
   /**
    * Compute the cell class name
    * @returns Compute cell name string
    */
   get computeCellName(): string {
-    return `${this.cell.element.name}Cell`;
+    return `${this.cell.element.name}Cell`
   }
 
   /**
@@ -140,13 +138,16 @@ export default class AppCell extends Mixins(getPosition) {
    *  2. determines if the updateCell event should be emitted
    *  @returns void
    */
-
-  deviceTargetDown() {
-    return window.innerWidth <= 1024 ? this.handleCellTouch() : this.handleCellClick();
+  deviceTargetDown(): void {
+    if (window.innerWidth <= 1024) {
+      this.handleCellTouch()
+    } else {
+      this.handleCellClick()
+    }
   }
 
-  deviceTargetUp() {
-    return window.innerWidth >= 1024 && this.handleCellUp();
+  deviceTargetUp(): boolean | void {
+    return window.innerWidth >= 1024 && this.handleCellUp()
   }
 
   handleCellTouch(): void {
@@ -155,69 +156,67 @@ export default class AppCell extends Mixins(getPosition) {
       (!this.cellSelected && this.cell.isFromToolbox && !this.available) ||
       (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
     ) {
-      this.mutationResetActiveCell();
+      this.mutationResetActiveCell()
     } else {
       if (!this.cellSelected) {
         if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
-          this.border = 'white';
-          this.mutationSetActiveCell(this.cell);
-          return;
+          this.border = 'white'
+          this.mutationSetActiveCell(this.cell)
+          return
         }
-        this.border = '';
-        this.mutationResetActiveCell();
-        return;
+        this.border = ''
+        this.mutationResetActiveCell()
+        return
       }
       if (this.isActiveCell && this.cell.isFromGrid) {
-        this.cell.rotate();
+        this.cell.rotate()
       }
-      this.$emit('updateCell', this.cell);
-      this.mutationResetActiveCell();
+      this.$emit('updateCell', this.cell)
+      this.mutationResetActiveCell()
     }
   }
 
-  mouseMove(e: any): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
-    this.isRotate = true;
-    const { cellRef } = this.$refs;
-    hoverCell.innerHTML = cellRef.innerHTML;
-    cellRef.style.opacity = '0';
-    hoverCell.style.visibility = 'visible';
-    document.body.style.cursor = 'grabbing';
-    hoverCell.style.height = '64px'; // change to tileSize, IDK why not work
-    hoverCell.style.width = '64px'; // change to tileSize, IDK why not work
-    hoverCell.style.transformOrigin = '32px 32px'; // change to tileSize/2
+  mouseMove(e: { pageX: number; pageY: number }): void {
+    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
+    this.isRotate = true
+    const { cellRef } = this.$refs
+    hoverCell.innerHTML = cellRef.innerHTML
+    cellRef.style.opacity = '0'
+    hoverCell.style.visibility = 'visible'
+    document.body.style.cursor = 'grabbing'
+    hoverCell.style.height = '64px' // change to tileSize, IDK why not work
+    hoverCell.style.width = '64px' // change to tileSize, IDK why not work
+    hoverCell.style.transformOrigin = '32px 32px' // change to tileSize/2
     hoverCell.style.transform = `
         translate(${e.pageX - 64 / 2}px, ${e.pageY - 64 / 2}px)
-        rotate(-${this.cell.rotation}deg)`; // change to tileSize/2
+        rotate(-${this.cell.rotation}deg)` // change to tileSize/2
   }
 
   dragStart(): void {
-    const gameLayout = document.querySelector('.game-layout') as HTMLElement;
-    this.border = 'white';
-    this.mutationSetActiveCell(this.cell);
-    window.addEventListener('mousemove', this.mouseMove);
-    window.addEventListener('mouseup', this.dragEnd);
+    this.border = 'white'
+    this.mutationSetActiveCell(this.cell)
+    window.addEventListener('mousemove', this.mouseMove)
+    window.addEventListener('mouseup', this.dragEnd)
   }
 
-  dragEnd(e: any): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement;
-    const grid = document.querySelector('.board_scaler') as HTMLElement;
-    const { cellRef } = this.$refs;
+  dragEnd(): void {
+    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
+    const { cellRef } = this.$refs
 
-    cellRef.style.opacity = '1';
-    hoverCell.style.visibility = 'hidden';
-    document.body.style.cursor = 'default';
-    window.removeEventListener('mousemove', this.mouseMove);
-    this.border = '';
+    cellRef.style.opacity = '1'
+    hoverCell.style.visibility = 'hidden'
+    document.body.style.cursor = 'default'
+    window.removeEventListener('mousemove', this.mouseMove)
+    this.border = ''
 
-    this.mutationResetActiveCell();
-    window.removeEventListener('mouseup', this.dragEnd);
+    this.mutationResetActiveCell()
+    window.removeEventListener('mouseup', this.dragEnd)
   }
 
   handleCellClick(): void {
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
-      this.$emit('play', true);
+      this.$emit('play', true)
     } else if (
       // TOOLBOX LOGIC
       this.cell.frozen ||
@@ -226,40 +225,40 @@ export default class AppCell extends Mixins(getPosition) {
       // if there is a cell selected in the toolbox and you click it once more:
       (this.cellSelected && this.isActiveCell && this.cell.isFromToolbox)
     ) {
-      this.mutationResetActiveCell();
+      this.mutationResetActiveCell()
     } else {
       // ROTATE CELL
       if (this.isActiveCell && this.cell.isFromGrid && this.isRotate) {
-        this.cell.rotate();
-        this.isRotate = false;
+        this.cell.rotate()
+        this.isRotate = false
       }
 
       if (!this.cellSelected) {
         // FIRST CLICK
         // If from toolbox needs to have available elements
         if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
-          this.dragStart();
-          return;
+          this.dragStart()
+          return
         }
 
-        this.border = '';
+        this.border = ''
       }
     }
   }
 
   handleCellUp(): void {
     if (this.isActiveCell && this.cell.isFromGrid) {
-      this.cell.rotate();
+      this.cell.rotate()
     }
-    this.$emit('updateCell', this.cell);
-    this.mutationResetActiveCell();
+    this.$emit('updateCell', this.cell)
+    this.mutationResetActiveCell()
   }
 
   /**
    * Is current cell the active cell
    */
   get isActiveCell(): boolean {
-    return this.activeCell === this.cell;
+    return this.activeCell === this.cell
   }
 
   /**
@@ -267,9 +266,9 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get displayPulsation(): boolean {
     if (this.cell.isLaser && this.gameState === GameStateEnum.Victory) {
-      return true;
+      return true
     }
-    return false;
+    return false
   }
 
   /**
@@ -278,16 +277,16 @@ export default class AppCell extends Mixins(getPosition) {
    */
   get computeBorder(): string {
     if (this.border !== '') {
-      return this.border;
+      return this.border
     }
     if (this.cell.energized) {
-      return '#ff0055';
+      return '#ff0055'
     }
-    return '';
+    return ''
   }
 
   indicateTool(): void {
-    this.border = borderColors.rotable;
+    this.border = borderColors.rotable
   }
 
   /**
@@ -302,46 +301,46 @@ export default class AppCell extends Mixins(getPosition) {
         : '',
       this.cell.isFromToolbox && !this.available ? 'transparent' : '',
       this.cell.isLaser ? 'laser' : ''
-    ];
+    ]
   }
 
   /**
    * styles used for wrapper positioning
-   * using the getPosition mixin;
+   * using the Position mixin;
    * @returns a style object
    */
-  get computeCellStyle(): any {
-    const { rotation } = this.cell;
-    let styleObj = {};
+  get computeCellStyle(): {} {
+    const { rotation } = this.cell
+    let styleObj = {}
     styleObj = {
       'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
       transform: `
         rotate(-${rotation}deg)
         translate(${this.positionX}px, ${this.positionY}px)`
-    };
-    return styleObj;
+    }
+    return styleObj
   }
 
   /**
    * Undoes the parent element rotation
    */
-  get computeRectStyle(): any {
-    let styleObj = {};
-    const halfSize = this.tileSize / 2;
+  get computeRectStyle(): {} {
+    let styleObj = {}
+    const halfSize = this.tileSize / 2
     styleObj = {
       'transform-origin': `${halfSize}px ${halfSize}px`,
       transform: `
         rotate(${this.cell.rotation}deg)`
-    };
-    return styleObj;
+    }
+    return styleObj
   }
 
   /**
    * highlight tile during a move
    * @returns highlight class
    */
-  get computeRectClass() {
-    return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect'];
+  get computeRectClass(): string[] {
+    return [this.shouldTileChangeColor ? 'movable-space' : '', 'inner-rect']
   }
 
   /**
@@ -349,8 +348,8 @@ export default class AppCell extends Mixins(getPosition) {
    * indeed be highlighted
    * @returns boolean
    */
-  get shouldTileChangeColor() {
-    return this.cellSelected && this.cell.isVoid;
+  get shouldTileChangeColor(): boolean {
+    return this.cellSelected && this.cell.isVoid
   }
 
   /**
@@ -362,7 +361,7 @@ export default class AppCell extends Mixins(getPosition) {
   @Watch('activeCell')
   stopIndicatingMovability(newActiveCell: Cell, oldActiveCell: Cell): void {
     if (newActiveCell !== oldActiveCell && this.cell !== newActiveCell) {
-      this.border = '';
+      this.border = ''
     }
   }
 }

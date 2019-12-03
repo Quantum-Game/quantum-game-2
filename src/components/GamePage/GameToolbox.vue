@@ -27,59 +27,58 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator';
-import { State, Mutation } from 'vuex-class';
-import Toolbox from '@/engine/Toolbox';
-import { REMOVE_FROM_CURRENT_TOOLS } from '@/store/mutation-types';
-import AppCell from '@/components/Board/AppCell.vue';
-import { Coord, Cell } from '@/engine/classes';
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Mutation } from 'vuex-class'
+import Toolbox from '@/engine/Toolbox'
+import AppCell from '@/components/Board/AppCell.vue'
+import Cell from '@/engine/Cell'
 @Component({
   components: {
     AppCell
   }
 })
 export default class GameToolbox extends Vue {
-  @Prop() readonly toolbox!: Toolbox;
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void;
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void;
-  cell = {};
-  viewBox: string = '-8 0 80 80';
-  counterX: string = '40%';
+  @Prop() readonly toolbox!: Toolbox
+  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
+  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  cell = {}
+  viewBox = '-8 0 80 80'
+  counterX = '40%'
 
-  mounted() {
-    window.addEventListener('resize', this.calculateViewBox);
-    this.calculateViewBox();
+  mounted(): void {
+    window.addEventListener('resize', this.calculateViewBox)
+    this.calculateViewBox()
   }
 
   handleMouseEnter(cell: Cell): void {
-    this.mutationSetHoveredCell(cell);
+    this.mutationSetHoveredCell(cell)
   }
 
   handleCellDrop(cell: Cell): void {
-    this.mutationSetHoveredCell(cell);
-    this.$emit('updateCell', cell);
+    this.mutationSetHoveredCell(cell)
+    this.$emit('updateCell', cell)
   }
 
   computeClass(cell: Cell): string {
-    return this.isAvailable(cell) ? 'active' : 'inactive';
+    return this.isAvailable(cell) ? 'active' : 'inactive'
   }
 
   isAvailable(cell: Cell): boolean {
-    return this.toolbox.getCount(cell.element.name) > 0;
+    return this.toolbox.getCount(cell.element.name) > 0
   }
 
   // events drilling up...
   updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell);
+    this.$emit('updateCell', cell)
   }
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
-      this.viewBox = '';
-      this.counterX = '50%';
+      this.viewBox = ''
+      this.counterX = '50%'
     } else {
-      this.viewBox = '-8 0 80 80';
-      this.counterX = '40%';
+      this.viewBox = '-8 0 80 80'
+      this.counterX = '40%'
     }
   }
 }

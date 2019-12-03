@@ -1,12 +1,12 @@
-import { LevelInterface } from '@/engine/interfaces';
-import introLevels from './adventure/introLevels.json';
-import reflectionLevels from './adventure/reflectionLevels.json';
-import phaseLevels from './adventure/phaseLevels.json';
-import interferenceLevels from './adventure/interferenceLevels.json';
-import polarizationLevels from './adventure/polarizationLevels.json';
-import finalLevels from './adventure/finalLevels.json';
-import classicLevels from './classic/index';
-import sandbox from './sandboxLevel.json';
+import { ILevel } from '@/engine/interfaces'
+import introLevels from './adventure/introLevels.json'
+import reflectionLevels from './adventure/reflectionLevels.json'
+import phaseLevels from './adventure/phaseLevels.json'
+import interferenceLevels from './adventure/interferenceLevels.json'
+import polarizationLevels from './adventure/polarizationLevels.json'
+import finalLevels from './adventure/finalLevels.json'
+import classicLevels from './classic/index'
+import sandbox from './sandboxLevel.json'
 
 export {
   sandbox,
@@ -17,17 +17,17 @@ export {
   polarizationLevels,
   finalLevels,
   classicLevels
-};
+}
 
-const introGroup: LevelInterface[] = introLevels;
-const reflectionGroup: LevelInterface[] = reflectionLevels;
-const phaseGroup: LevelInterface[] = phaseLevels;
-const interferenceGroup: LevelInterface[] = interferenceLevels;
-const polarizationGroup: LevelInterface[] = polarizationLevels;
-const finalGroup: LevelInterface[] = finalLevels;
-const classicGroup: LevelInterface[] = classicLevels;
+const introGroup: ILevel[] = introLevels
+const reflectionGroup: ILevel[] = reflectionLevels
+const phaseGroup: ILevel[] = phaseLevels
+const interferenceGroup: ILevel[] = interferenceLevels
+const polarizationGroup: ILevel[] = polarizationLevels
+const finalGroup: ILevel[] = finalLevels
+const classicGroup: ILevel[] = classicLevels
 
-const levels: LevelInterface[] = [
+const levels: ILevel[] = [
   sandbox,
   ...classicGroup,
   ...introGroup,
@@ -36,6 +36,6 @@ const levels: LevelInterface[] = [
   ...interferenceGroup,
   ...polarizationGroup,
   ...finalGroup
-];
+]
 
-export default levels;
+export default levels

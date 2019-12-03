@@ -1,44 +1,44 @@
-import { GameStateEnum } from '@/engine/interfaces';
-import Cell from '@/engine/Cell';
-import Particle from '@/engine/Particle';
+import { GameStateEnum } from '@/engine/interfaces'
+import Cell from '@/engine/Cell'
+import Particle from '@/engine/Particle'
 
-export interface RootState {
-  activeCell: Cell;
-  hoveredCell: Cell;
-  hoveredParticles: [Particle];
-  cellSelected: boolean;
-  gameState: GameStateEnum;
-  simulationState: boolean;
-  currentLevelID: number;
+export interface IRootState {
+  activeCell: Cell
+  hoveredCell: Cell
+  hoveredParticles: [Particle]
+  cellSelected: boolean
+  gameState: GameStateEnum
+  simulationState: boolean
+  currentLevelID: number
 }
 
-export interface UserState {
+export interface IUserState {
   user: {
-    loggedIn: boolean;
-    rememberMe: boolean;
+    loggedIn: boolean
+    rememberMe: boolean
     data: {
-      displayName: string;
-      email: string;
-    };
-  };
-  progressArr: ProgressObj[];
-  savedLevelsList: SavedLevel[];
-  publicLevels: PublicLevel[];
-  error: null;
+      displayName: string
+      email: string
+    }
+  }
+  progressArr: IProgressObj[]
+  savedLevelsList: ISavedLevel[]
+  publicLevels: IPublicLevel[]
+  error: null
 }
 
-interface ProgressObj {
-  id: number;
-  status: 'string';
-  score: number;
+interface IProgressObj {
+  id: number
+  status: 'string'
+  score: number
 }
 
-interface SavedLevel {
-  id: 'string';
-  link: 'string';
-  public: boolean;
+interface ISavedLevel {
+  id: 'string'
+  link: 'string'
+  public: boolean
 }
 
-interface PublicLevel {
-  link: 'string';
+interface IPublicLevel {
+  link: 'string'
 }

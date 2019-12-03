@@ -3,13 +3,7 @@
     <div class="svg-container">
       <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
         <!-- DOTS -->
-        <g class="dots">
-          <g v-for="(row, y) in grid.rows + 1" :key="y">
-            <g v-for="(column, x) in grid.cols + 1" :key="x">
-              <circle :cx="x * tileSize" :cy="y * tileSize" r="1" fill="#edeaf4" />
-            </g>
-          </g>
-        </g>
+        <board-dots :rows="grid.rows" :cols="grid.cols" />
 
         <!-- LASERS -->
         <board-lasers :path-particles="allParticles" />
@@ -61,59 +55,55 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator';
-import { Grid, Cell } from '@/engine/classes';
-import Particle from '@/engine/Particle';
-import {
-  ParticleInterface,
-  GridInterface,
-  PolEnum,
-  IndicatorInterface,
-  DirEnum
-} from '@/engine/interfaces';
-import AppPhoton from '@/components/AppPhoton.vue';
-import BoardDots from '@/components/Board/BoardDots.vue';
-import BoardLasers from '@/components/Board/BoardLasers.vue';
-import AppCell from '@/components/Board/AppCell.vue';
-import GameKet from '@/components/GamePage/GameKet.vue';
-import QuantumFrame from '@/engine/QuantumFrame';
-import QuantumSimulation from '@/engine/QuantumSimulation';
+import { Vue, Prop, Component } from 'vue-property-decorator'
+import Cell from '@/engine/Cell'
+import Grid from '@/engine/Grid'
+import Particle from '@/engine/Particle'
+import { IParticle, IGrid, PolEnum, IIndicator } from '@/engine/interfaces'
+import AppPhoton from '@/components/AppPhoton.vue'
+import BoardDots from '@/components/Board/BoardDots.vue'
+import BoardLasers from '@/components/Board/BoardLasers.vue'
+import AppCell from '@/components/Board/AppCell.vue'
+import GameKet from '@/components/GamePage/GameKet.vue'
+import QuantumFrame from '@/engine/QuantumFrame'
+import QuantumSimulation from '@/engine/QuantumSimulation'
 
 @Component({
   components: {
     AppPhoton,
     AppCell,
     BoardLasers,
+    BoardDots,
     GameKet
   }
 })
 export default class EncyclopediaBoard extends Vue {
-  @Prop({ default: () => Grid.dummyGridInterface() }) gridObj!: GridInterface;
-  @Prop({ default: () => 10 }) readonly maxSteps!: number;
-  @Prop({ default: () => 2 }) readonly defaultStep!: number;
-  @Prop({ default: () => [] }) readonly indicators!: IndicatorInterface[];
-  @Prop({ default: false }) readonly exactSteps!: boolean;
-  @Prop({ default: 64 }) readonly tileSize!: number;
+  @Prop({ default: () => Grid.dummyIGrid() }) iGrid!: IGrid
+  @Prop({ default: () => 10 }) readonly maxSteps!: number
+  @Prop({ default: () => 2 }) readonly defaultStep!: number
+  @Prop({ default: () => [] }) readonly indicators!: IIndicator[]
+  @Prop({ default: false }) readonly exactSteps!: boolean
+  @Prop({ default: 64 }) readonly tileSize!: number
 
-  grid = Grid.importGrid(this.gridObj);
-  simulation: QuantumSimulation = new QuantumSimulation(this.grid);
-  selectedFrameId = this.defaultStep;
+  grid = Grid.importGrid(this.iGrid)
+  simulation: QuantumSimulation = new QuantumSimulation(this.grid)
+  selectedFrameId = this.defaultStep
 
   $refs!: {
-    grid: HTMLElement;
-  };
+    grid: HTMLElement
+  }
 
   created(): void {
-    this.reset();
+    this.reset()
   }
 
   /**
    * Rotate element (e.g. to be used on click).
    */
-  rotate(cell: Cell) {
-    cell.rotate();
-    this.reset();
-    this.$emit('updateRotation', cell);
+  rotate(cell: Cell): void {
+    cell.rotate()
+    this.reset()
+    this.$emit('updateRotation', cell)
   }
 
   /**
@@ -121,60 +111,59 @@ export default class EncyclopediaBoard extends Vue {
    * Set steps and selected frame
    */
   reset(): void {
-    this.simulation = new QuantumSimulation(this.grid);
+    this.simulation = new QuantumSimulation(this.grid)
     if (this.indicators.length === 0) {
-      this.simulation.initializeFromLaser(PolEnum.H);
+      this.simulation.initializeFromLaser(PolEnum.H)
     } else if (this.indicators.length === 1) {
-      this.simulation.initializeFromIndicator(this.indicators[0]);
+      this.simulation.initializeFromIndicator(this.indicators[0])
     } else {
-      throw new Error('EncyclopediaBoard not yet prepared for more photons.');
+      throw new Error('EncyclopediaBoard not yet prepared for more photons.')
     }
     if (this.exactSteps) {
-      this.simulation.computeFrames(this.maxSteps, -1);
+      this.simulation.computeFrames(this.maxSteps, -1)
     } else {
-      this.simulation.computeFrames(this.maxSteps);
+      this.simulation.computeFrames(this.maxSteps)
     }
-    this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1);
+    this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1)
   }
 
   get frames(): QuantumFrame[] {
-    return this.simulation.frames;
+    return this.simulation.frames
   }
 
   get selectedFrame(): QuantumFrame {
-    return this.frames[this.selectedFrameId];
+    return this.frames[this.selectedFrameId]
   }
 
   get frameNumber(): number {
-    return this.frames.length;
+    return this.frames.length
   }
 
   get allParticles(): Particle[] {
-    return this.simulation.allParticles;
+    return this.simulation.allParticles
   }
 
   get nonVoidCells(): Cell[] {
-    return this.grid.unvoid.cells;
+    return this.grid.unvoid.cells
   }
 
   get totalWidth(): number {
-    return this.grid.cols * this.tileSize;
+    return this.grid.cols * this.tileSize
   }
+
   get totalHeight(): number {
-    return this.grid.rows * this.tileSize;
+    return this.grid.rows * this.tileSize
   }
 
   centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize;
+    return (val + 0.5) * this.tileSize
   }
 
-  computeParticleStyle(particle: ParticleInterface): {} {
-    const originX = this.centerCoord(particle.x);
-    const originY = this.centerCoord(particle.y);
+  computeParticleStyle(particle: IParticle): {} {
     return {
       transform: `
         translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`
-    };
+    }
   }
 }
 </script>
