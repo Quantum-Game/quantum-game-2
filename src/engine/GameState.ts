@@ -23,7 +23,7 @@ export default class GameState {
    * @param goals Goal[]
    * @returns percentage
    */
-  public get totalGoal(): number {
+  public get totalGoalPercentage(): number {
     let sum = 0
     this.goals.forEach((goal): void => {
       sum += goal.threshold
@@ -34,7 +34,7 @@ export default class GameState {
   /**
    * Absorptions that happened on goal cells
    */
-  public get totalAbsorption(): number {
+  public get totalAbsorptionPercentage(): number {
     let sum = 0
     this.absorptions.forEach((absorption): void => {
       this.goals.forEach((goal): void => {
@@ -50,7 +50,7 @@ export default class GameState {
    * Is the absorption above the required goal
    */
   public get probabilityFlag(): boolean {
-    return this.totalAbsorption >= this.totalGoal
+    return this.totalAbsorptionPercentage >= this.totalGoalPercentage
   }
 
   /**
@@ -138,7 +138,7 @@ export default class GameState {
   public toString(): string {
     let result = `--- GameState: ${this.gameState} ---\n`
     result += `- PROB FLAG: ${this.probabilityFlag ? 'OK' : 'KO'}\n`
-    result += `Probability ${this.totalAbsorption}% / ${this.totalGoal}%\n`
+    result += `Probability ${this.totalAbsorptionPercentage}% / ${this.totalGoalPercentage}%\n`
     result += `- GOAL FLAG: ${this.goalFlag ? 'OK' : 'KO'}\n`
     result += `Goals hit(${this.goalsHit.length}) + unhit(${this.goalsUnhit}) = ${this.goals.length}\n`
     result += `- SAFE FLAG: ${this.safeFlag ? 'OK' : 'KO'}\n`

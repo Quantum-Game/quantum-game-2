@@ -27,7 +27,7 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals :game-state="level.gameState" :percentage="level.gameState.totalAbsorption" />
+        <game-goals :game-state="level.gameState" :progress-percentage="level.gameState.totalAbsorptionPercentage" />
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"

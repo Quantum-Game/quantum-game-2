@@ -22,9 +22,9 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div class="mobile_progressBar">
-        <div class="mobile_progressBarFill" :style="{ width: gameState.totalGoal + '%' }"></div>
+        <div class="mobile_progressBarFill" :style="{ width: gameState.totalGoalPercentage + '%' }"></div>
       </div>
-      <div>Goal: {{ gameState.totalGoal }} %</div>
+      <div>Goal: {{ gameState.totalGoalPercentage }} %</div>
     </div>
 
     <!-- GOALS -->
@@ -80,7 +80,7 @@ import AppCell from '@/components/Board/AppCell.vue'
 export default class GameGoals extends Vue {
   @Prop() readonly gameState!: GameState
   @Prop() readonly percentage!: number
-  tweenedPercent: number = this.gameState.totalAbsorption
+  tweenedPercent: number = this.gameState.totalAbsorptionPercentage
   width = 100
 
   /**
