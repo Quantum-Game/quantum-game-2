@@ -187,7 +187,7 @@ export function startingDirection(rotation: number): DirEnum {
  * @param value number from 0 to 1
  * @returns percentage string
  */
-export function toPercent(value: number): string {
+export function toPercentString(value: number): string {
   return `${(value * 100).toFixed(2)}%`
 }
 

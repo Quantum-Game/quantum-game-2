@@ -14,9 +14,9 @@ export default class BeamSplitter extends Element {
   public ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
   public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  public percentage = 50
+  public percentage = 0.5
 
-  public constructor(percentage = 50) {
+  public constructor(percentage = 0.5) {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
   }

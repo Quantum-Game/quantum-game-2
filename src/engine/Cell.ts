@@ -1,5 +1,6 @@
 import * as qt from 'quantum-tensors'
 import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
+import { startingPolarization, startingDirection, toPercentString } from './helpers'
 import Coord from './Coord'
 import Element from './Element'
 import {
@@ -25,7 +26,6 @@ import {
   Void,
   PolarizingBeamSplitter
 } from '@/engine/Elements/index'
-import { startingPolarization, startingDirection } from './Helpers'
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate
@@ -170,7 +170,7 @@ export default class Cell extends Coord {
       this.active ? 'active' : 'inactive'
     } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
       this.rotation
-    }° with polarization: ${this.polarization}° and percentage: ${this.percentage}%`
+    }° with polarization: ${this.polarization}° and percentage: ${toPercentString(this.percentage)}`
   }
 
   /**

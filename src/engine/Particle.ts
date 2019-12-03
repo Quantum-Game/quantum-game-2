@@ -2,7 +2,7 @@ import { Complex } from 'quantum-tensors'
 import { IParticle, ICoord } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
-import { toPercent } from './Helpers'
+import { toPercentString } from './helpers'
 
 /**
  * PARTICLE CLASS
@@ -135,7 +135,7 @@ export default class Particle extends Coord {
    * @returns a string describing the particle
    */
   public toString(): string {
-    return `Particle @ ${this.coord.toString()} moving ${this.direction}° with ${toPercent(
+    return `Particle @ ${this.coord.toString()} moving ${this.direction}° with ${toPercentString(
       this.probability
     )} intensity and polarization | A:${this.a.re} + ${this.a.im}i & B:${this.b.re} + ${
       this.b.im
