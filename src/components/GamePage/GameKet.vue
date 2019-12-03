@@ -16,7 +16,7 @@
         <span v-if="selectedStyle === 'cartesian'" class="ket-complex">
           {{ renderComplexCartesian(ketComponent.amplitude) }}
         </span>
-        <svg v-if="selectedStyle === 'color-disk'" height="16" width="16" class="ket-disk">
+        <svg v-if="selectedStyle === 'color'" height="16" width="16" class="ket-disk">
           <circle
             cx="8"
             cy="8"
@@ -39,8 +39,20 @@
           ⟩
         </span>
       </span>
+      <div v-if="absorptions.length > 0" class="absorptions">
+        Absorptions:
+        <span
+          v-for="(absorption, index) in absorptions"
+          :key="`absorption-${index}`"
+          class="absorption"
+        >
+          {{ toPercent(absorption.probability) }}% in
+          {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
+          {{ absorption.coord.y }})
+        </span>
+      </div>
       <div v-if="showLegend && ketComponents.length > 0" class="legend">
-        <span v-if="selectedStyle === 'color-disk'">
+        <span v-if="selectedStyle === 'color'">
           <span class="legend-coord-xy"> x,y coordinates</span>
           <span class="legend-dir">direction</span>
           <span class="legend-pol">polarization</span>
@@ -50,18 +62,6 @@
           <span class="legend-coord-xy"> x,y coordinates</span>
           <span class="legend-dir">direction</span>
           <span class="legend-pol">polarization</span>
-        </span>
-      </div>
-      <div v-if="absorptions.length > 0" class="controls">
-        ABSORPTIONS:
-        <span
-          v-for="(absorption, index) in absorptions"
-          :key="`absorption-${index}`"
-          class="absorption"
-        >
-          {{ toPercent(absorption.probability) }}% in
-          {{ elementName(absorption.coord.x, absorption.coord.y) }} at ({{ absorption.coord.x }},
-          {{ absorption.coord.y }})
         </span>
       </div>
     </div>
@@ -97,7 +97,7 @@ export default class GameKet extends Vue {
   @Prop({ default: true }) readonly showLegend!: boolean
 
   ketHidden = true
-  styles = ['polar', 'cartesian', 'color-disk']
+  styles = ['polar', 'cartesian', 'color']
   selectedStyle = 'polar'
 
   toggleKets(): void {
@@ -168,51 +168,56 @@ export default class GameKet extends Vue {
     display: none;
   }
   & .quantum-state-viewer {
-    padding: 10px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     & .controls {
       font-size: 0.8rem;
       color: white;
-      padding: 6px;
+      padding: 10px;
+    }
+    & .absorptions {
+      font-size: 0.8rem;
+      color: white;
+      padding: 10;
+      margin: 10px;
     }
     & .legend {
-      padding-bottom: 6px;
+      padding-top: 10px;
+      padding-bottom: 15px;
       width: 100%;
+      font-size: 0.6rem;
       & .legend-complex {
-        color: #0080ff;
-        margin: 5px;
-        font-size: 0.8rem;
-      }
-      & .legend-coord-xy {
         color: #fff;
         margin: 5px;
-        font-size: 0.8rem;
+      }
+      & .legend-coord-xy {
+        color: #0080ff;
+        margin: 5px;
+
       }
       & .legend-dir {
         color: #ff0055;
         margin: 5px;
-        font-size: 0.8rem;
       }
       & .legend-pol {
         color: #9d40ff;
         margin: 5px;
-        font-size: 0.8rem;
       }
     }
     & .ket-component {
       padding: 1px 1px 1px 1px;
-      background-color: #17013a;
+      background-color: rgba(0, 0, 0, 0.5);
       margin: 5px;
       line-height: 1.4rem;
+      font-size: 0.8rem;
       flex-wrap: nowrap;
       flex-direction: row;
       display: flex;
       align-items: center;
       & .ket-complex {
         background-color: #2e006a;
-        color: #0080ff;
+        color: #fff;
         padding: 2px;
         margin: 5px;
       }
@@ -220,7 +225,7 @@ export default class GameKet extends Vue {
         margin-left: 5px;
       }
       & .ket-coord {
-        color: white;
+        color: #0080ff;
         padding: 1px;
         margin: 5px;
         & .ket-dir {
@@ -236,19 +241,20 @@ export default class GameKet extends Vue {
     text-align: center;
     display: flex;
     justify-content: center;
+    max-width: 100%;
     & button {
-      font-size: 0.8rem;
+      font-size: 0.5rem;
       font-family: 'Montserrat', Helvetica, Arial, sans-serif;
       text-transform: uppercase;
-      background-color: #5c00d3;
-      border: none;
+      background-color: transparent;
+      border-color: white;
       color: white;
       padding: 5px 10px;
       margin: 5px;
       cursor: pointer;
       &:hover {
-        background-color: #4302bf;
-        color: white;
+        background-color: white;
+        color: #5c00d3;
       }
       &.selected {
         background-color: white;

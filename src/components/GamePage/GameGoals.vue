@@ -6,7 +6,7 @@
       background="#210235"
       foreground="inherit"
       unit="px"
-      :size="148"
+      :size="112"
       :thickness="5"
       :total="100"
       :sections="sections"
@@ -14,7 +14,7 @@
     >
       <!-- INNER DONUT -->
       <div :class="computeProbabilityClass">
-        <div class="inner-circle">{{ tweenedPercent.toFixed(2) }}%</div>
+        <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div>
         <div>PROBABILITY</div>
       </div>
     </vc-donut>
@@ -34,10 +34,10 @@
         :key="'detectorh' + index"
         class="hit"
       >
-        <img src="@/assets/graphics/icons/detectorFull.svg" width="30" />
+        <img src="@/assets/graphics/icons/detectorFull.svg" width="28" />
       </span>
       <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
-        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="30" />
+        <img src="@/assets/graphics/icons/detectorEmpty.svg" width="28" />
       </span>
       <div>
         <span>
@@ -137,6 +137,7 @@ export default class GameGoals extends Vue {
 
 <style lang="scss" scoped>
 .goals-wrapper {
+  border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 20px;
   width: 100%;
@@ -171,18 +172,19 @@ export default class GameGoals extends Vue {
     }
   }
   & .chart {
+    margin-top: 10px;
     margin-bottom: 1rem;
     position: relative;
 
     & div.inner-circle {
-      font-size: 2rem;
+      font-size: 1.2rem;
     }
 
     &::after {
       content: '';
       position: absolute;
-      width: 155px;
-      height: 155px;
+      width: 120px;
+      height: 120px;
       border: 1px solid rgba(255, 255, 255, 0.8);
       border-radius: 50%;
     }
