@@ -127,10 +127,13 @@ export default class Grid extends Cluster {
    * @param sourceCell source cell
    * @param targetCell target cell
    * @returns boolean move was successfull
+   * FIXME: Error when moving from grid to grid
    */
   public move(sourceCell: Cell, targetCell: Cell): Cell[] {
     const source = sourceCell
     const target = targetCell
+
+    // MOVE GRID TOOL TO VOID
     if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
       const tempCoord = source.coord
       source.coord = target.coord

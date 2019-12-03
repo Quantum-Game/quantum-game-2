@@ -409,10 +409,15 @@ export default class Game extends Vue {
   updateCell(cell: Cell): void {
     const sourceCell = this.activeCell
     const targetCell = cell
-    // handle moving from from / to toolbox
-    if (this.activeCell.isFromToolbox && cell.isFromGrid && cell.isVoid) {
+    if (
+      // handle moving from toolbox to grid
+      this.activeCell.isFromToolbox &&
+      cell.isFromGrid
+      && cell.isVoid
+    ) {
       this.removeFromCurrentTools(this.activeCell)
     } else if (
+      // handle moving from grid to toolbox
       this.activeCell.isFromGrid &&
       cell.isFromToolbox &&
       !this.activeCell.isVoid &&
@@ -420,11 +425,10 @@ export default class Game extends Vue {
     ) {
       this.addToCurrentTools(cell)
       this.level.grid.set(this.activeCell.reset())
+    } else {
+      // FIXME: unify moving logic
+      this.level.grid.move(sourceCell, targetCell)
     }
-    const mutatedCells: Cell[] = this.level.grid.move(sourceCell, targetCell)
-    mutatedCells.forEach((mutatedCell: Cell) => {
-      this.level.grid.set(mutatedCell)
-    })
     this.saveLevelToStore()
     this.updateSimulation()
   }
