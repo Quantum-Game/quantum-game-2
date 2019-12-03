@@ -1,11 +1,11 @@
 import { Vue, Component } from 'vue-property-decorator'
 import { Cell } from '@/engine/classes'
-import { HintInterface } from '@/engine/interfaces'
+import { IHint } from '@/engine/interfaces'
 
 @Component
 export default class Position extends Vue {
   public cell!: Cell
-  public hint!: HintInterface
+  public hint!: IHint
   public tileSize!: number
   public coord = {
     x: 0,

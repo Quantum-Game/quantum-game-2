@@ -1,4 +1,4 @@
-import { LevelInterface } from '@/engine/interfaces'
+import { ILevel } from '@/engine/interfaces'
 import level1 from './level1.json'
 import level2 from './level2.json'
 import level3 from './level3.json'
@@ -34,7 +34,7 @@ import level32 from './level32.json'
 import level33 from './level33.json'
 import level34 from './level34.json'
 
-const classicLevels: LevelInterface[] = [
+const classicLevels: ILevel[] = [
   level1,
   level2,
   level3,

@@ -1,4 +1,4 @@
-import { GoalInterface } from './interfaces'
+import { IGoal } from './interfaces'
 import Cell from './Cell'
 
 /**
@@ -35,7 +35,7 @@ export default class Goal extends Cell {
    * Export goal to primitives
    * @returns a goal interface
    */
-  public exportGoal(): GoalInterface {
+  public exportGoal(): IGoal {
     return {
       coord: this.cell.coord.exportCoord(),
       threshold: this.threshold

@@ -1,4 +1,4 @@
-import { LevelInterface } from '@/engine/interfaces'
+import { ILevel } from '@/engine/interfaces'
 import introLevels from './adventure/introLevels.json'
 import reflectionLevels from './adventure/reflectionLevels.json'
 import phaseLevels from './adventure/phaseLevels.json'
@@ -19,15 +19,15 @@ export {
   classicLevels
 }
 
-const introGroup: LevelInterface[] = introLevels
-const reflectionGroup: LevelInterface[] = reflectionLevels
-const phaseGroup: LevelInterface[] = phaseLevels
-const interferenceGroup: LevelInterface[] = interferenceLevels
-const polarizationGroup: LevelInterface[] = polarizationLevels
-const finalGroup: LevelInterface[] = finalLevels
-const classicGroup: LevelInterface[] = classicLevels
+const introGroup: ILevel[] = introLevels
+const reflectionGroup: ILevel[] = reflectionLevels
+const phaseGroup: ILevel[] = phaseLevels
+const interferenceGroup: ILevel[] = interferenceLevels
+const polarizationGroup: ILevel[] = polarizationLevels
+const finalGroup: ILevel[] = finalLevels
+const classicGroup: ILevel[] = classicLevels
 
-const levels: LevelInterface[] = [
+const levels: ILevel[] = [
   sandbox,
   ...classicGroup,
   ...introGroup,

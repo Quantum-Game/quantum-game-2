@@ -37,11 +37,11 @@ export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
 
 // FIXME: Code smell move to interfaces
-interface CellListInterface {
+interface ICellList {
   [index: string]: Record<string, any> // eslint-disable-line
 }
 
-const CellList: CellListInterface = {
+const CellList: ICellList = {
   LaserCell,
   MirrorCell,
   BeamSplitterCell,

@@ -3,17 +3,12 @@ import * as qt from 'quantum-tensors'
 
 import Coord from './Coord'
 import Particle from './Particle'
-import {
-  AbsorptionInterface,
-  ParticleInterface,
-  ParticleCoordInterface,
-  DetectionInterface
-} from './interfaces'
+import { IAbsorption, IParticle, IParticleCoord, IDetection } from './interfaces'
 
 // TODO: Create primitive interface and associated class and move to interfaces.ts
-export interface KetComponentInterface {
+export interface IKetComponent {
   amplitude: qt.Complex
-  particleCoords: ParticleCoordInterface[]
+  particleCoords: IParticleCoord[]
 }
 
 /**
@@ -25,7 +20,7 @@ export interface KetComponentInterface {
  */
 export default class QuantumFrame {
   public readonly photons: qt.Photons
-  public absorptions: AbsorptionInterface[]
+  public absorptions: IAbsorption[]
   // TODO: later we may need to clean such low values within the engine
   public probThreshold = 1e-6
   // things below right now mostly for debugging puroses
@@ -51,13 +46,13 @@ export default class QuantumFrame {
     return this.photons.ketString()
   }
 
-  public get ketComponents(): KetComponentInterface[] {
+  public get ketComponents(): IKetComponent[] {
     const ns = _.range(this.photons.nPhotons)
     return this.photons.vector.entries
       .map(
-        (entry: qt.VectorEntry): KetComponentInterface => {
+        (entry: qt.VectorEntry): IKetComponent => {
           const particleCoords = ns.map(
-            (i: number): ParticleCoordInterface => {
+            (i: number): IParticleCoord => {
               const [x, y, dir, pol] = entry.coord.slice(4 * i, 4 * i + 4)
               return { kind: 'photon', x, y, dir, pol }
             }
@@ -69,8 +64,7 @@ export default class QuantumFrame {
         }
       )
       .filter(
-        (ketComponent: KetComponentInterface): boolean =>
-          ketComponent.amplitude.r ** 2 > this.probThreshold
+        (ketComponent: IKetComponent): boolean => ketComponent.amplitude.r ** 2 > this.probThreshold
       )
   }
 
@@ -90,7 +84,7 @@ export default class QuantumFrame {
     // TODO: Rework array into interface
     this.absorptions = operatorList
       .map(
-        ([x, y, op]): DetectionInterface => {
+        ([x, y, op]): IDetection => {
           return {
             coord: { x, y },
             probability: this.photons.measureAbsorptionAtOperator(x, y, op)
@@ -122,7 +116,7 @@ export default class QuantumFrame {
     return this.photons
       .aggregatePolarization()
       .map(
-        (q: ParticleInterface): Particle => {
+        (q: IParticle): Particle => {
           const coord = Coord.importCoord(q)
           return new Particle(coord, q.direction, q.are, q.aim, q.bre, q.bim)
         }

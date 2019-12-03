@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors'
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -18,7 +18,7 @@ export default class PolarizingBeamSplitter extends Element {
   }
 
   // FIXME: Change orientation in quantum-tensors
-  public transition(options: TransitionInterface): qt.Operator {
+  public transition(options: ITransition): qt.Operator {
     if (options.rotation === 0) {
       return qt.polarizingBeamsplitter(135)
     }

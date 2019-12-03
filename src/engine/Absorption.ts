@@ -1,4 +1,4 @@
-import { AbsorptionInterface } from '@/engine/interfaces'
+import { IAbsorption } from '@/engine/interfaces'
 import Cell from './Cell'
 
 /**
@@ -32,9 +32,9 @@ export default class Absorption extends Cell {
 
   /**
    * Export absorption as javascript primitives
-   * @returns AbsorptionInterface
+   * @returns IAbsorption
    */
-  public exportAbsorption(): AbsorptionInterface {
+  public exportAbsorption(): IAbsorption {
     return {
       coord: this.cell.coord.exportCoord(),
       probability: this.probability

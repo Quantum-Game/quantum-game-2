@@ -12,11 +12,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { EntrySectionInterface } from '@/engine/interfaces'
+import { IEntrySection } from '@/engine/interfaces'
 
 @Component
 export default class EncyclopediaArticleSection extends Vue {
-  @Prop() readonly section!: EntrySectionInterface
+  @Prop() readonly section!: IEntrySection
   @Prop() readonly shouldBeOpenOnInit!: boolean
 
   $refs!: {

@@ -1,4 +1,4 @@
-import { CoordInterface } from './interfaces'
+import { ICoord } from './interfaces'
 
 /**
  * COORDINATE CLASS
@@ -123,7 +123,7 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  public pos(cellSize: number): CoordInterface {
+  public pos(cellSize: number): ICoord {
     const y = this.y * cellSize
     const x = this.x * cellSize
     return { y, x }
@@ -134,7 +134,7 @@ export default class Coord {
    * @param cellSize Size in pixel of a cell
    * @returns top-left coordinate of a cell
    */
-  public center(cellSize: number): CoordInterface {
+  public center(cellSize: number): ICoord {
     const y = (this.y + 0.5) * cellSize
     const x = (this.x + 0.5) * cellSize
     return { y, x }
@@ -160,7 +160,7 @@ export default class Coord {
    * Output to interface of primitives
    * @returns interface describing coordinate
    */
-  public exportCoord(): CoordInterface {
+  public exportCoord(): ICoord {
     return {
       y: this.y,
       x: this.x
@@ -171,7 +171,7 @@ export default class Coord {
    * Create a coordinate class instance from a coordinate interface
    * @param obj Coordinate interface
    */
-  public static importCoord(json: CoordInterface): Coord {
+  public static importCoord(json: ICoord): Coord {
     return new Coord(json.y, json.x)
   }
 

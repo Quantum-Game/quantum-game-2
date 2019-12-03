@@ -1,4 +1,4 @@
-import { Elem, CellInterface } from '@/engine/interfaces'
+import { Elem, ICell } from '@/engine/interfaces'
 import Coord from './Coord'
 import Element from './Element'
 import Cell from './Cell'
@@ -60,7 +60,7 @@ export default class Cluster {
    * @param jsonCells : cells
    * @returns Cluster
    */
-  public static importCluster(jsonCells: CellInterface[]): Cluster {
+  public static importCluster(jsonCells: ICell[]): Cluster {
     const cells = jsonCells.map(
       (jsonCell): Cell => {
         return Cell.importCell(jsonCell)
@@ -72,13 +72,13 @@ export default class Cluster {
   /**
    * Export list of cells in primitives
    */
-  public exportCluster(): CellInterface[] {
+  public exportCluster(): ICell[] {
     return this.cells
       .filter((cell): boolean => {
         return cell.element.name !== Elem.Void
       })
       .map(
-        (cell): CellInterface => {
+        (cell): ICell => {
           return cell.exportCell()
         }
       )

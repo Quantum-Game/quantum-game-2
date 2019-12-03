@@ -9,11 +9,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { EntryListInterface } from '@/engine/interfaces'
+import { IEntryList } from '@/engine/interfaces'
 
 @Component
 export default class EncyclopediaLinkList extends Vue {
-  @Prop() readonly entryList!: EntryListInterface[]
+  @Prop() readonly entryList!: IEntryList[]
   entriesExpanded = false
 
   toggleEntries(): void {

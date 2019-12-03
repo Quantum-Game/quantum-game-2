@@ -1,7 +1,7 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
 import * as qt from 'quantum-tensors'
-import { CellInterface, GridInterface, Elem } from './interfaces'
+import { ICell, IGrid, Elem } from './interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import Cluster from './Cluster'
@@ -269,7 +269,7 @@ export default class Grid extends Cluster {
    * Sets the grid with the appropriate cells
    * @param jsonCells A list of cell interface
    */
-  public static importGrid(gridObj: GridInterface): Grid {
+  public static importGrid(gridObj: IGrid): Grid {
     const grid = new Grid(gridObj.rows, gridObj.cols)
     gridObj.cells.forEach((cellObj): void => {
       const cell = Cell.importCell(cellObj)
@@ -282,7 +282,7 @@ export default class Grid extends Cluster {
    * Create a dummy grid object
    * @returns dummy Grid
    */
-  public static dummyGridInterface(rows = 3, cols = 3): GridInterface {
+  public static dummyIGrid(rows = 3, cols = 3): IGrid {
     return {
       rows,
       cols,
@@ -303,7 +303,7 @@ export default class Grid extends Cluster {
    * @returns dummy Grid
    */
   public static dummyGrid(rows = 3, cols = 3): Grid {
-    const grid = Grid.importGrid(this.dummyGridInterface(rows, cols))
+    const grid = Grid.importGrid(this.dummyIGrid(rows, cols))
     return grid
   }
 
@@ -319,8 +319,8 @@ export default class Grid extends Cluster {
    * Exports the grid to an interface of primitives
    * @returns a grid interface
    */
-  public exportGrid(): GridInterface {
-    const cells: CellInterface[] = []
+  public exportGrid(): IGrid {
+    const cells: ICell[] = []
     this.cells
       .filter((cell): boolean => !cell.isVoid)
       .forEach((cell): void => {

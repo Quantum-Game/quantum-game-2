@@ -2,7 +2,7 @@
  * PARTICLE INTERFACE
  * Particle interface in primitives
  */
-export interface ParticleInterface {
+export interface IParticle {
   x: number
   y: number
   direction: number
@@ -13,7 +13,7 @@ export interface ParticleInterface {
 }
 
 // TODO: Should come as enum in a nicer format
-export interface ParticleCoordInterface {
+export interface IParticleCoord {
   kind: string // for now only 'photon'
   x: number
   y: number
@@ -24,8 +24,8 @@ export interface ParticleCoordInterface {
 /**
  * DETECTION INTERFACE
  */
-export interface DetectionInterface {
-  coord: CoordInterface
+export interface IDetection {
+  coord: ICoord
   probability: number
 }
 
@@ -33,49 +33,31 @@ export interface DetectionInterface {
  * LEVEL LIST INTERFACE
  * level dictionary interface
  */
-export interface LevelListInterface {
-  [index: string]: LevelInterface
+export interface ILevelList {
+  [index: string]: ILevel
 }
 
 /**
  * LEVEL INTERFACE
  * level interface in primitives
  */
-export interface LevelInterface {
+export interface ILevel {
   id: number
   name: string
   group: string
   description: string
-  grid: GridInterface
-  goals: GoalInterface[]
-  hints: HintInterface[]
+  grid: IGrid
+  goals: IGoal[]
+  hints: IHint[]
   tools: string[]
-}
-
-/**
- * CLASSICAL LEVEL INTERFACE
- * original level structure for importing V1 levels
- */
-export interface ClassicLevelInterface {
-  name: string
-  group: string
-  width: number
-  height: number
-  tiles: {
-    i: number
-    j: number
-    name: string
-    rotation: number
-    frozen: boolean
-  }[]
 }
 
 /**
  * GOAL INTERFACE
  * Goal interface in primitives
  */
-export interface GoalInterface {
-  coord: CoordInterface
+export interface IGoal {
+  coord: ICoord
   threshold: number
 }
 
@@ -83,8 +65,8 @@ export interface GoalInterface {
  * GOAL INTERFACE
  * Goal interface in primitives
  */
-export interface AbsorptionInterface {
-  coord: CoordInterface
+export interface IAbsorption {
+  coord: ICoord
   probability: number
 }
 
@@ -92,8 +74,8 @@ export interface AbsorptionInterface {
  * HINT INTERFACE
  * Hint interface in primitives
  */
-export interface HintInterface {
-  coord: CoordInterface
+export interface IHint {
+  coord: ICoord
   content: string
   color?: string
   rotation?: number
@@ -104,26 +86,26 @@ export interface HintInterface {
  * GRID INTERFACE
  * Grid interface in primitives
  */
-export interface GridInterface {
+export interface IGrid {
   cols: number
   rows: number
-  cells: CellInterface[]
+  cells: ICell[]
 }
 
 /**
  * CLUSTER INTERFACE
  * Cluster of cells in primitives
  */
-export interface ClusterInterface {
-  cells: CellInterface[]
+export interface ICluster {
+  cells: ICell[]
 }
 
 /**
  * CELL INTERFACE
  * A cell interface composed of primitives
  */
-export interface CellInterface {
-  coord: CoordInterface
+export interface ICell {
+  coord: ICoord
   element: string
   frozen: boolean
   rotation?: number
@@ -137,7 +119,7 @@ export interface CellInterface {
  * ELEMENT TRANSITION INTERFACE
  * A transition interface composed of primitives to get operators
  */
-export interface TransitionInterface {
+export interface ITransition {
   rotation: number
   polarization: number
   percentage: number
@@ -147,19 +129,19 @@ export interface TransitionInterface {
  * ELEMENT INTERFACE
  * Element interface composed of primitive types
  */
-export interface ElementInterface {
+export interface IElement {
   name: string
   group: string
   description: string
   ascii: string[]
-  params?: ElementParameterInterface[]
+  params?: IElementParameter[]
 }
 
 /**
  * ELEMENT PARAMETER INTERFACE
  * Element parameter interface composed of primitive types
  */
-export interface ElementParameterInterface {
+export interface IElementParameter {
   key: string
   value: number
 }
@@ -168,12 +150,12 @@ export interface ElementParameterInterface {
  * COORDINATE INTERFACE
  * A coordinates interface of primitives
  */
-export interface CoordInterface {
+export interface ICoord {
   x: number
   y: number
 }
 
-export interface MatrixElementInterface {
+export interface IMatrixElement {
   i: number
   j: number
   re: number
@@ -184,11 +166,11 @@ export interface MatrixElementInterface {
  * ENCYCLOPEDIA ENTRY LIST INTERFACE
  * Encyclopedia entry list in primitives
  */
-export interface EntryListInterface {
-  [index: string]: EntryInterface
+export interface IEntryList {
+  [index: string]: IEntry
 }
 
-export interface EntryNameListInterface {
+export interface IEntryNameList {
   name: string
   ready: boolean
 }
@@ -197,22 +179,32 @@ export interface EntryNameListInterface {
  * ENCYCLOPEDIA ENTRY INTERFACE
  * Encyclopedia entry interface in primitives
  */
-export interface EntryInterface {
+export interface IEntry {
   title: string
   elementName: string
   short?: string
-  grids?: GridInterface[]
-  sections: EntrySectionInterface[]
+  grids?: IGrid[]
+  sections: IEntrySection[]
 }
 
 /**
  * ENCYCLOPEDIA ENTRY SECTION INTERFACE
  * Encyclopedia entry section interface
  */
-export interface EntrySectionInterface {
+export interface IEntrySection {
   title: string
   content?: string
   pics?: string[]
+}
+
+/**
+ * Photon indicator interface for glue code with qt Photons
+ */
+export interface IIndicator {
+  x: number
+  y: number
+  direction: DirEnum
+  polarization: PolEnum
 }
 
 /**
@@ -317,16 +309,6 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
   ],
   Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
   Phase: [Elem.Glass, Elem.VacuumJar]
-}
-
-/**
- * Photon indicator interface for glue code with qt Photons
- */
-export interface IndicatorInterface {
-  x: number
-  y: number
-  direction: DirEnum
-  polarization: PolEnum
 }
 
 /**

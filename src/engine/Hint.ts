@@ -1,4 +1,4 @@
-import { HintInterface } from './interfaces'
+import { IHint } from './interfaces'
 import Coord from './Coord'
 
 /**
@@ -32,7 +32,7 @@ export default class Hint {
    * Export hint in primitives
    * @returns hint interface
    */
-  public exportHint(): HintInterface {
+  public exportHint(): IHint {
     return {
       coord: this.coord.exportCoord(),
       content: this.content,
@@ -47,7 +47,7 @@ export default class Hint {
    * @param jsonHints list of hints
    * @returns Hint instances
    */
-  public static importHint(jsonHints: HintInterface[]): Hint[] {
+  public static importHint(jsonHints: IHint[]): Hint[] {
     return jsonHints.map(
       (hint): Hint => {
         const coord = Coord.importCoord(hint.coord)

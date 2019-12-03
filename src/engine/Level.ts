@@ -1,4 +1,4 @@
-import { LevelInterface, GoalInterface, HintInterface } from './interfaces'
+import { ILevel, IGoal, IHint } from './interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import Grid from './Grid'
@@ -86,15 +86,15 @@ export default class Level {
    * Export a json level
    * @returns a level interface of the current level
    */
-  public exportLevel(): LevelInterface {
+  public exportLevel(): ILevel {
     return {
       id: this.id,
       name: this.name,
       group: this.group,
       description: this.description,
       grid: this.grid.exportGrid(),
-      hints: this.hints.map((hint): HintInterface => hint.exportHint()),
-      goals: this.goals.map((goal): GoalInterface => goal.exportGoal()),
+      hints: this.hints.map((hint): IHint => hint.exportHint()),
+      goals: this.goals.map((goal): IGoal => goal.exportGoal()),
       tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
     }
   }
@@ -104,10 +104,10 @@ export default class Level {
    * @param obj a level interface with primitives
    * @returns a Level instance
    */
-  public static importLevel(obj: LevelInterface): Level {
+  public static importLevel(obj: ILevel): Level {
     const grid = Grid.importGrid(obj.grid)
     const goals = obj.goals.map(
-      (goalI: GoalInterface): Goal => {
+      (goalI: IGoal): Goal => {
         const coord = Coord.importCoord(goalI.coord)
         const cell = grid.get(coord)
         return new Goal(cell, goalI.threshold)

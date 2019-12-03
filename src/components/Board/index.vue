@@ -105,7 +105,7 @@ import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
-import { HintInterface } from '@/engine/interfaces'
+import { IHint } from '@/engine/interfaces'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -125,7 +125,7 @@ import Absorption from '../../engine/Absorption'
 export default class Board extends Vue {
   @Prop() readonly grid!: Grid
   @Prop() readonly fate!: Cell
-  @Prop({ default: [] }) readonly hints!: HintInterface[]
+  @Prop({ default: [] }) readonly hints!: IHint[]
   @Prop({ default: [] }) readonly particles!: Particle[]
   @Prop({ default: [] }) readonly pathParticles!: Particle[]
   @Prop({ default: [] }) readonly absorptions!: Absorption[]

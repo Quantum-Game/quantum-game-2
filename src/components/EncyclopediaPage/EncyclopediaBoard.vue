@@ -59,7 +59,7 @@ import { Vue, Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
-import { ParticleInterface, GridInterface, PolEnum, IndicatorInterface } from '@/engine/interfaces'
+import { IParticle, IGrid, PolEnum, IIndicator } from '@/engine/interfaces'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
@@ -78,10 +78,10 @@ import QuantumSimulation from '@/engine/QuantumSimulation'
   }
 })
 export default class EncyclopediaBoard extends Vue {
-  @Prop({ default: () => Grid.dummyGridInterface() }) gridObj!: GridInterface
+  @Prop({ default: () => Grid.dummyIGrid() }) gridObj!: IGrid
   @Prop({ default: () => 10 }) readonly maxSteps!: number
   @Prop({ default: () => 2 }) readonly defaultStep!: number
-  @Prop({ default: () => [] }) readonly indicators!: IndicatorInterface[]
+  @Prop({ default: () => [] }) readonly indicators!: IIndicator[]
   @Prop({ default: false }) readonly exactSteps!: boolean
   @Prop({ default: 64 }) readonly tileSize!: number
 
@@ -159,7 +159,7 @@ export default class EncyclopediaBoard extends Vue {
     return (val + 0.5) * this.tileSize
   }
 
-  computeParticleStyle(particle: ParticleInterface): {} {
+  computeParticleStyle(particle: IParticle): {} {
     return {
       transform: `
         translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`

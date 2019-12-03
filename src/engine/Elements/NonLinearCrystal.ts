@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors'
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -17,7 +17,7 @@ export default class NonLinearCrystal extends Element {
   }
 
   /* eslint-disable-next-line */
-  public transition(options: TransitionInterface): qt.Operator {
+  public transition(options: ITransition): qt.Operator {
     return qt.attenuator(1)
   }
 }

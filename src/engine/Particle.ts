@@ -1,5 +1,5 @@
 import { Complex } from 'quantum-tensors'
-import { ParticleInterface, CoordInterface } from '@/engine/interfaces'
+import { IParticle, ICoord } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import { toPercent } from './Helpers'
@@ -146,7 +146,7 @@ export default class Particle extends Coord {
    * Get relative movement for the particle
    * @returns Coord using relative position
    */
-  public get relativeTarget(): CoordInterface {
+  public get relativeTarget(): ICoord {
     switch (this.direction) {
       case 0:
         return { x: 1, y: 0 }
@@ -204,7 +204,7 @@ export default class Particle extends Coord {
    * Export particle interface in primitives
    * @returns particle interface
    */
-  public exportParticle(): ParticleInterface {
+  public exportParticle(): IParticle {
     return {
       x: this.coord.x,
       y: this.coord.y,
@@ -220,7 +220,7 @@ export default class Particle extends Coord {
    * Create a particle from a particle interface
    * @param obj particle interface
    */
-  public static importParticle(obj: ParticleInterface): Particle {
+  public static importParticle(obj: IParticle): Particle {
     const coord = new Coord(obj.y, obj.x)
     return new Particle(coord, obj.direction, obj.are, obj.aim, obj.bre, obj.bim)
   }

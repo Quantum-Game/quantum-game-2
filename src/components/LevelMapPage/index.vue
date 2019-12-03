@@ -18,7 +18,7 @@
 <script lang="ts">
 import _ from 'lodash'
 import { Vue, Component } from 'vue-property-decorator'
-import { LevelInterface } from '@/engine/interfaces'
+import { ILevel } from '@/engine/interfaces'
 import AppLayout from '@/components/AppLayout.vue'
 import levels from '@/assets/data/levels/index'
 
@@ -29,7 +29,7 @@ import levels from '@/assets/data/levels/index'
 })
 export default class LevelMapPage extends Vue {
   get groups(): {} {
-    return _.groupBy(levels, (level: LevelInterface) => {
+    return _.groupBy(levels, (level: ILevel) => {
       return level.group
     })
   }

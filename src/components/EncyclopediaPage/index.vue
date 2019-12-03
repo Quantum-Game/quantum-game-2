@@ -15,7 +15,8 @@ import AppLayout from '@/components/AppLayout.vue'
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
 
-interface EntryListInterface {
+// FIXME: Code smell move to interfaces
+interface IEntryList {
   name: string
   ready: boolean
 }
@@ -28,8 +29,8 @@ interface EntryListInterface {
   }
 })
 export default class Info extends Vue {
-  entryList: EntryListInterface[] = []
-  keyConceptsList: EntryListInterface[] = []
+  entryList: IEntryList[] = []
+  keyConceptsList: IEntryList[] = []
   readyEntries: string[] = [
     'beam-splitter',
     'detector-four',

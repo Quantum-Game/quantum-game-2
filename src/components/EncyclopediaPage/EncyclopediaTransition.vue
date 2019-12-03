@@ -37,7 +37,7 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { IndicatorInterface, DirEnum, PolEnum, MatrixElementInterface } from '@/engine/interfaces'
+import { IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
@@ -58,7 +58,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   rotation: number = this.defaultRotation
   dirPolOrder = true
   grid: Grid = Grid.emptyGrid(3, 3)
-  indicators: IndicatorInterface[] = [
+  indicators: IIndicator[] = [
     {
       x: 0,
       y: 1,
@@ -162,7 +162,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   // TODO: find it in qt
-  get matrixElements(): MatrixElementInterface[] {
+  get matrixElements(): IMatrixElement[] {
     if (this.dirPolOrder) {
       return this.operator.entries.map((entry: OperatorEntry) => {
         return {

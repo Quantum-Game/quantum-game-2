@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors'
-import { Elem, Group, TransitionInterface } from '@/engine/interfaces'
+import { Elem, Group, ITransition } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -16,7 +16,7 @@ export default class Mirror extends Element {
     super(Elem.Mirror, Group.Direction)
   }
 
-  public transition(options: TransitionInterface): qt.Operator {
+  public transition(options: ITransition): qt.Operator {
     return qt.mirror(options.rotation)
   }
 }

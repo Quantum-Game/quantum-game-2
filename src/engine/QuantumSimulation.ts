@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Photons } from 'quantum-tensors'
 import { weightedRandomInt } from '@/engine/Helpers'
-import { AbsorptionInterface, IndicatorInterface, PolEnum } from '@/engine/interfaces'
+import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
 import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
@@ -52,9 +52,9 @@ export default class QuantumSimulation {
 
   /**
    * Initialize simulation from indicator
-   * @param indicator IndicatorInterface
+   * @param indicator IIndicator
    */
-  public initializeFromIndicator(indicator: IndicatorInterface): void {
+  public initializeFromIndicator(indicator: IIndicator): void {
     this.frames = []
     const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
     frame.photons.addPhotonIndicator(
@@ -138,13 +138,13 @@ export default class QuantumSimulation {
    * @returns E.g.
    * [{x: 2, y: 1, probability: 0.25}, {x: 3, y: 5, probability: 0.25}, {x: -1, y: -1, probability: 0.25}]
    */
-  public get totalAbsorptionInterfacePerTile(): AbsorptionInterface[] {
+  public get totalIAbsorptionPerTile(): IAbsorption[] {
     return _(this.frames)
-      .flatMap((frame): AbsorptionInterface[] => frame.absorptions)
-      .groupBy((absorption): string => `(${absorption.coord.x}.${absorption.coord.y})`)
+      .flatMap((frame): IAbsorption[] => frame.absorptions)
+      .groupBy((absorption: IAbsorption): string => `(${absorption.coord.x}.${absorption.coord.y})`)
       .values()
       .map(
-        (absorptions): AbsorptionInterface => ({
+        (absorptions): IAbsorption => ({
           coord: absorptions[0].coord,
           probability: _.sumBy(absorptions, 'probability')
         })
@@ -153,14 +153,14 @@ export default class QuantumSimulation {
   }
 
   /**
-   * Convert AbsorptionInterface to Absorption class instances
+   * Convert IAbsorption to Absorption class instances
    * Filter the escaping particle absorption events
-   * @param AbsorptionInterface[]
+   * @param IAbsorption[]
    * @returns absorption instance list (cell, probability)
    */
   public get absorptions(): Absorption[] {
     const absorptions: Absorption[] = []
-    this.totalAbsorptionInterfacePerTile.forEach((absorptionI: AbsorptionInterface): void => {
+    this.totalIAbsorptionPerTile.forEach((absorptionI: IAbsorption): void => {
       const coord = Coord.importCoord(absorptionI.coord)
       if (!coord.outOfGrid) {
         const cell = this.grid.get(coord)

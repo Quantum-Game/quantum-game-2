@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors'
-import { Elem, Group, TransitionInterface } from './interfaces'
+import { Elem, Group, ITransition } from './interfaces'
 
 /**
  * ELEMENT CLASS
@@ -52,7 +52,7 @@ export default class Element {
    * Will be overriden by child transition
    */
   /* eslint-disable-next-line */
-  public transition(options: TransitionInterface): qt.Operator {
+  public transition(options: ITransition): qt.Operator {
     return qt.attenuator(0)
   }
 }

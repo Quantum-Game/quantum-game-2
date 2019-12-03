@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { EntryInterface } from '@/engine/interfaces'
+import { IEntry } from '@/engine/interfaces'
 import { getEntry } from '@/assets/data/entries/index'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
@@ -50,7 +50,7 @@ import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTr
   }
 })
 export default class EncyclopediaArticle extends Vue {
-  entry: EntryInterface = {
+  entry: IEntry = {
     title: '',
     elementName: 'Mirror',
     grids: [],

@@ -2,16 +2,16 @@ import { Module } from 'vuex'
 import { SET_GAME_SPEED_INTERVAL, RESET_OPTIONS, SET_OPTIONS } from './mutation-types'
 import { RootState } from '@/types'
 
-const defaultOptionsObj: OptionsModuleInterface = {
-  gameSpeedInterval: 200
-}
-
-export interface OptionsModuleInterface {
+export interface IOptionsModule {
   gameSpeedInterval: number
   [index: string]: number | string
 }
 
-const optionsModule: Module<OptionsModuleInterface, RootState> = {
+const defaultOptionsObj: IOptionsModule = {
+  gameSpeedInterval: 200
+}
+
+const optionsModule: Module<IOptionsModule, RootState> = {
   namespaced: true,
   state: {
     gameSpeedInterval: 1000

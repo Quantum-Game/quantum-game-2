@@ -81,7 +81,7 @@ import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
-import { HintInterface, GameStateEnum } from '@/engine/interfaces'
+import { IHint, GameStateEnum } from '@/engine/interfaces'
 import levels from '@/assets/data/levels'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
@@ -452,7 +452,7 @@ export default class Game extends Vue {
     return `/level/${this.levelId + 1}`
   }
 
-  get hints(): HintInterface[] {
+  get hints(): IHint[] {
     return this.level.hints.map((hint) => hint.exportHint())
   }
 }

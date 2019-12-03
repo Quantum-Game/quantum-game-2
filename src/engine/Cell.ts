@@ -1,11 +1,5 @@
 import * as qt from 'quantum-tensors'
-import {
-  CoordInterface,
-  CellInterface,
-  Elem,
-  TransitionInterface,
-  IndicatorInterface
-} from './interfaces'
+import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
 import Coord from './Coord'
 import Element from './Element'
 import {
@@ -113,7 +107,7 @@ export default class Cell {
    * Create a photon indicator for quantum simulation
    * @returns Indicator for qt.photons
    */
-  public get indicator(): IndicatorInterface {
+  public get indicator(): IIndicator {
     if (this.isLaser) {
       return {
         x: this.coord.x,
@@ -180,9 +174,9 @@ export default class Cell {
 
   /**
    * Export a cell interface
-   * @returns CellInterface
+   * @returns ICell
    */
-  public exportCell(): CellInterface {
+  public exportCell(): ICell {
     return {
       coord: this.coord.exportCoord(),
       element: this.element.name,
@@ -196,11 +190,11 @@ export default class Cell {
   }
 
   /**
-   * Create a cell from a CellInterface
+   * Create a cell from a ICell
    * TODO: Polarization should be passed to cell
-   * @param obj CellInterface
+   * @param obj ICell
    */
-  public static importCell(obj: CellInterface): Cell {
+  public static importCell(obj: ICell): Cell {
     const coord = Coord.importCoord(obj.coord)
     const element = Cell.fromName(obj.element)
     const cell = new Cell(
@@ -221,7 +215,7 @@ export default class Cell {
    * @param coord Coord
    * @returns a blank cell
    */
-  public static createDummy(coordI: CoordInterface = { x: 0, y: 0 }): Cell {
+  public static createDummy(coordI: ICoord = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI)
     const element = Cell.fromName(Elem.Void)
     return new Cell(coord, element)
@@ -246,7 +240,7 @@ export default class Cell {
    */
   public get operator(): [number, number, qt.Operator] {
     const { x, y } = this.coord
-    const options: TransitionInterface = {
+    const options: ITransition = {
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage

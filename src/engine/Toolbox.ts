@@ -5,7 +5,7 @@ import Cell from '@/engine/Cell'
  * TOOL INTERFACE
  * Contains number of available elements to the player
  */
-export interface ToolInterface {
+export interface ITool {
   [symbol: string]: number
 }
 
@@ -15,8 +15,8 @@ export interface ToolInterface {
  */
 export default class Toolbox {
   public tools: Cell[] = []
-  public toolbox: ToolInterface = {}
-  private originalToolbox: ToolInterface = {}
+  public toolbox: ITool = {}
+  private originalToolbox: ITool = {}
 
   public constructor(tools: Cell[]) {
     const elements = tools.map((cell): string => cell.element.name)
@@ -123,7 +123,7 @@ export default class Toolbox {
     return resultStr
   }
 
-  public exportToolbox(): ToolInterface {
+  public exportToolbox(): ITool {
     return this.toolbox
   }
 
