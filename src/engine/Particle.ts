@@ -2,7 +2,7 @@ import { Complex } from 'quantum-tensors'
 import { IParticle, ICoord } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
-import { toPercentString } from './helpers'
+import { toPercentString } from './Helpers'
 
 /**
  * PARTICLE CLASS

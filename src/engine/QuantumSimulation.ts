@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Photons } from 'quantum-tensors'
-import { weightedRandomInt } from '@/engine/helpers'
+import { weightedRandomInt } from '@/engine/Helpers'
 import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
 import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
