@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
-import { RootState } from '@/types'
+import { IRootState } from '@/types'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import {
@@ -19,7 +19,7 @@ const initialCell = Cell.createDummy()
 const initialParticle = Particle.createDummy()
 Vue.use(Vuex)
 
-const store: StoreOptions<RootState> = {
+const store: StoreOptions<IRootState> = {
   state: {
     activeCell: initialCell,
     cellSelected: false,
@@ -65,4 +65,4 @@ const store: StoreOptions<RootState> = {
   }
 }
 
-export default new Vuex.Store<RootState>(store)
+export default new Vuex.Store<IRootState>(store)

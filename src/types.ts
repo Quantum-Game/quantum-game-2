@@ -2,7 +2,7 @@ import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 
-export interface RootState {
+export interface IRootState {
   activeCell: Cell
   hoveredCell: Cell
   hoveredParticles: [Particle]
@@ -12,7 +12,7 @@ export interface RootState {
   currentLevelID: number
 }
 
-export interface UserState {
+export interface IUserState {
   user: {
     loggedIn: boolean
     rememberMe: boolean
@@ -21,24 +21,24 @@ export interface UserState {
       email: string
     }
   }
-  progressArr: ProgressObj[]
-  savedLevelsList: SavedLevel[]
-  publicLevels: PublicLevel[]
+  progressArr: IProgressObj[]
+  savedLevelsList: ISavedLevel[]
+  publicLevels: IPublicLevel[]
   error: null
 }
 
-interface ProgressObj {
+interface IProgressObj {
   id: number
   status: 'string'
   score: number
 }
 
-interface SavedLevel {
+interface ISavedLevel {
   id: 'string'
   link: 'string'
   public: boolean
 }
 
-interface PublicLevel {
+interface IPublicLevel {
   link: 'string'
 }

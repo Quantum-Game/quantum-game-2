@@ -34,7 +34,7 @@ import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
 
-interface AccountLevel {
+interface IAccountLevel {
   id: number
   status: ''
   score: number
@@ -75,7 +75,7 @@ export default class MyAccount extends Vue {
     $userStore.dispatch('SAVE_PROGRESS')
   }
 
-  editLevel(lvl: AccountLevel): void {
+  editLevel(lvl: IAccountLevel): void {
     this.level = lvl
   }
 }
