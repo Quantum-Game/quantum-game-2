@@ -27,7 +27,10 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals :game-state="level.gameState" :progress-percentage="level.gameState.totalAbsorptionPercentage" />
+        <game-goals
+          :game-state="level.gameState"
+          :progress-percentage="level.gameState.totalAbsorptionPercentage"
+        />
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -412,8 +415,8 @@ export default class Game extends Vue {
     if (
       // handle moving from toolbox to grid
       this.activeCell.isFromToolbox &&
-      cell.isFromGrid
-      && cell.isVoid
+      cell.isFromGrid &&
+      cell.isVoid
     ) {
       this.removeFromCurrentTools(this.activeCell)
     } else if (
@@ -425,10 +428,13 @@ export default class Game extends Vue {
     ) {
       this.addToCurrentTools(cell)
       this.level.grid.set(this.activeCell.reset())
-    } else {
-      // FIXME: unify moving logic
-      this.level.grid.move(sourceCell, targetCell)
     }
+    // FIXME: unify moving logic
+    this.level.grid.move(sourceCell, targetCell)
+    // const mutatedCells = this.level.grid.move(sourceCell, targetCell)
+    // mutatedCells.forEach((mutatedCell: Cell) => {
+    //   this.level.grid.set(mutatedCell)
+    // })
     this.saveLevelToStore()
     this.updateSimulation()
   }

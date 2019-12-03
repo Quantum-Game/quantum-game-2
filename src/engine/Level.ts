@@ -106,13 +106,7 @@ export default class Level {
    */
   public static importLevel(iLevel: ILevel): Level {
     const grid = Grid.importGrid(iLevel.grid)
-    const goals = iLevel.goals.map(
-      (goalI: IGoal): Goal => {
-        const coord = Coord.importCoord(goalI.coord)
-        const cell = grid.get(coord)
-        return new Goal(cell, goalI.threshold)
-      }
-    )
+    const goals = Goal.importGoals(iLevel.goals)
     const hints = Hint.importHint(iLevel.hints)
     const toolbox = Toolbox.importToolbox(iLevel.tools)
     return new Level(

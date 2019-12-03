@@ -43,6 +43,17 @@ export default class Goal extends Coord {
   }
 
   /**
+   * Export goal to primitives
+   * @returns a goal interface
+   */
+  public static importGoals(iGoals: IGoal[]): Goal[] {
+    return iGoals.map((iGoal) => {
+      const coord = Coord.importCoord(iGoal.coord)
+      return new Goal(coord, iGoal.threshold)
+    })
+  }
+
+  /**
    * Output formatted list of goals
    * @param goals list of goals
    * @returns formatted string describing goals

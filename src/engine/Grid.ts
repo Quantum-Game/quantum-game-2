@@ -140,6 +140,9 @@ export default class Grid extends Cluster {
       target.coord = tempCoord
       target.tool = false
       source.tool = true
+      console.log('GRID TOOL TO GRID VOID')
+      console.log('SOURCE: ' + source.toString())
+      console.log('TARGET: ' + target.toString())
       this.set(source)
       this.set(target)
       return [source, target]
@@ -152,6 +155,9 @@ export default class Grid extends Cluster {
       target.coord = tempCoord
       target.tool = true
       source.tool = true
+      console.log('GRID TOOL TO GRID TOOL')
+      console.log('SOURCE: ' + source.toString())
+      console.log('TARGET: ' + target.toString())
       this.set(source)
       this.set(target)
       return [source, target]

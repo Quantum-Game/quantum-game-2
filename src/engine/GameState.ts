@@ -38,7 +38,7 @@ export default class GameState {
     let sum = 0
     this.absorptions.forEach((absorption): void => {
       this.goals.forEach((goal): void => {
-        if (goal.coord.equal(absorption.coord)) {
+        if (absorption.cell.coord.equal(goal.coord)) {
           sum += absorption.probability
         }
       })
