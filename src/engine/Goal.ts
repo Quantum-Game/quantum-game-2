@@ -1,17 +1,17 @@
 import { IGoal } from './interfaces'
-import Cell from './Cell'
+import Coord from './Coord'
 
 /**
  * GOAL CLASS
  * The goals to be achieved by the player
  */
-export default class Goal extends Cell {
-  public cell: Cell
+export default class Goal extends Coord {
+  public coord: Coord
   public threshold: number
 
-  public constructor(cell: Cell, threshold: number) {
-    super(cell.coord, cell.element)
-    this.cell = cell
+  public constructor(coord: Coord, threshold: number) {
+    super(coord.x, coord.y)
+    this.coord = coord
     this.threshold = threshold
   }
 
@@ -28,7 +28,7 @@ export default class Goal extends Cell {
    * @returns string
    */
   public toString(): string {
-    return `{#Goal ${this.threshold}% @ ${this.cell.toString()}`
+    return `{#Goal ${this.threshold}% @ ${this.coord.toString()}`
   }
 
   /**
@@ -37,7 +37,7 @@ export default class Goal extends Cell {
    */
   public exportGoal(): IGoal {
     return {
-      coord: this.cell.coord.exportCoord(),
+      coord: this.coord.exportCoord(),
       threshold: this.threshold
     }
   }

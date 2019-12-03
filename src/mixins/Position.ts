@@ -3,6 +3,7 @@ import { Cell } from '@/engine/classes'
 import { IHint } from '@/engine/interfaces'
 
 @Component
+// FIXME: Should extend coord and not cell or hint
 export default class Position extends Vue {
   public cell!: Cell
   public hint!: IHint
@@ -12,10 +13,16 @@ export default class Position extends Vue {
     y: 0
   }
 
+  /**
+   * Will extend elements created function
+   */
   private created(): void {
     this.setCoordOrigin()
   }
 
+  /**
+   * Will extend elements updated function
+   */
   private updated(): void {
     this.setCoordOrigin()
   }

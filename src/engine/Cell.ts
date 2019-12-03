@@ -30,7 +30,7 @@ import { startingPolarization, startingDirection } from './Helpers'
  * CELL CLASS
  * A cell is a rotated element at a coordinate
  */
-export default class Cell {
+export default class Cell extends Coord {
   public coord: Coord
   public element: Element
   public rotation: number
@@ -52,6 +52,7 @@ export default class Cell {
     energized = false,
     tool = false
   ) {
+    super(coord.y, coord.x)
     this.coord = coord
     this.element = element
     this.rotation = rotation
@@ -100,7 +101,7 @@ export default class Cell {
    * Determine if the cell comes from a grid or a toolbox
    */
   public get isFromToolbox(): boolean {
-    return this.coord.x === -1 && this.coord.y === -1
+    return this.x === -1 && this.y === -1
   }
 
   /**
@@ -110,8 +111,8 @@ export default class Cell {
   public get indicator(): IIndicator {
     if (this.isLaser) {
       return {
-        x: this.coord.x,
-        y: this.coord.y,
+        x: this.x,
+        y: this.y,
         direction: startingDirection(this.rotation),
         polarization: startingPolarization(this.polarization)
       }
@@ -165,7 +166,7 @@ export default class Cell {
   public toString(): string {
     return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} ${
       this.tool ? 'Tool' : 'Nothing'
-    } Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
+    } Cell @ ${this.toCoordString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
       this.active ? 'active' : 'inactive'
     } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
       this.rotation
@@ -178,7 +179,7 @@ export default class Cell {
    */
   public exportCell(): ICell {
     return {
-      coord: this.coord.exportCoord(),
+      coord: this.exportCoord(),
       element: this.element.name,
       rotation: this.rotation,
       polarization: this.polarization,
@@ -239,14 +240,13 @@ export default class Cell {
    * @param name
    */
   public get operator(): [number, number, qt.Operator] {
-    const { x, y } = this.coord
     const options: ITransition = {
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage
     }
     const transition = this.element.transition(options)
-    return [x, y, transition]
+    return [this.x, this.y, transition]
   }
 
   /**

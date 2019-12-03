@@ -38,7 +38,7 @@ export default class GameState {
     let sum = 0
     this.absorptions.forEach((absorption): void => {
       this.goals.forEach((goal): void => {
-        if (goal.cell.coord.equal(absorption.coord)) {
+        if (goal.coord.equal(absorption.coord)) {
           sum += absorption.probability
         }
       })
@@ -98,7 +98,7 @@ export default class GameState {
     const goalsHit: Goal[] = []
     this.absorptions.forEach((absorption): void => {
       this.goals.forEach((goal): void => {
-        if (absorption.cell.coord.equal(goal.cell.coord)) {
+        if (absorption.cell.coord.equal(goal.coord)) {
           goalsHit.push(goal)
         }
       })

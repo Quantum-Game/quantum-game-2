@@ -152,7 +152,7 @@ export default class Coord {
    * Outputs a string for debug
    * @returns string describing the coordinate
    */
-  public toString(): string {
+  public toCoordString(): string {
     return `[Y:${this.y}, X:${this.x}]`
   }
 

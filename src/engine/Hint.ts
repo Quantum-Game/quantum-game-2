@@ -5,7 +5,7 @@ import Coord from './Coord'
  * HINT CLASS
  * Hint will be active when simulation or gameplay events fire.
  */
-export default class Hint {
+export default class Hint extends Coord {
   public coord: Coord
   public content: string
   public color?: string
@@ -13,6 +13,7 @@ export default class Hint {
   public active?: boolean
 
   public constructor(coord: Coord, content: string, color = 'purple', rotation = 0, active = true) {
+    super(coord.y, coord.x)
     this.coord = coord
     this.content = content
     this.color = color
