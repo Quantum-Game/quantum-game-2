@@ -17,19 +17,9 @@
       }
     ]
   },
-  "hints": [
-    {
-      "coord": {
-        "y": 1,
-        "x": 6
-      },
-      "content": "SANDBOX LEVEL",
-      "color": "purple"
-    }
-  ],
+  "hints": [],
   "goals": [],
   "tools": [
-    "Laser",
     "Mirror",
     "Mirror",
     "Mirror",
