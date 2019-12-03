@@ -1,6 +1,6 @@
 import * as qt from 'quantum-tensors'
 import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
-import { startingPolarization, startingDirection, toPercentString } from './helpers'
+import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'
 import {

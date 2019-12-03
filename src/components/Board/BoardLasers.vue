@@ -39,7 +39,7 @@ export default class Board extends Vue {
    * @returns laser path width
    */
   computeSize(particle: Particle): number {
-    return particle.probability * 1.5;
+    return particle.probability * 1.5
   }
 }
 </script>

@@ -194,7 +194,6 @@ export default class GameKet extends Vue {
       & .legend-coord-xy {
         color: #0080ff;
         margin: 5px;
-
       }
       & .legend-dir {
         color: #ff0055;
