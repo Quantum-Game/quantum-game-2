@@ -218,11 +218,19 @@ export default class Particle extends Coord {
 
   /**
    * Create a particle from a particle interface
-   * @param obj particle interface
+   * @param iParticle particle interface
+   * @returns particle instance
    */
-  public static importParticle(obj: IParticle): Particle {
-    const coord = new Coord(obj.y, obj.x)
-    return new Particle(coord, obj.direction, obj.are, obj.aim, obj.bre, obj.bim)
+  public static importParticle(iParticle: IParticle): Particle {
+    const coord = new Coord(iParticle.y, iParticle.x)
+    return new Particle(
+      coord,
+      iParticle.direction,
+      iParticle.are,
+      iParticle.aim,
+      iParticle.bre,
+      iParticle.bim
+    )
   }
 
   /**

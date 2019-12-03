@@ -269,17 +269,17 @@ export default class Grid extends Cluster {
    * Sets the grid with the appropriate cells
    * @param jsonCells A list of cell interface
    */
-  public static importGrid(gridObj: IGrid): Grid {
-    const grid = new Grid(gridObj.rows, gridObj.cols)
-    gridObj.cells.forEach((cellObj): void => {
-      const cell = Cell.importCell(cellObj)
+  public static importGrid(iGrid: IGrid): Grid {
+    const grid = new Grid(iGrid.rows, iGrid.cols)
+    iGrid.cells.forEach((iCell): void => {
+      const cell = Cell.importCell(iCell)
       grid.set(cell)
     })
     return grid
   }
 
   /**
-   * Create a dummy grid object
+   * Create a dummy grid interface
    * @returns dummy Grid
    */
   public static dummyIGrid(rows = 3, cols = 3): IGrid {
@@ -299,7 +299,7 @@ export default class Grid extends Cluster {
   }
 
   /**
-   * Create a dummy grid object
+   * Create a dummy grid instance
    * @returns dummy Grid
    */
   public static dummyGrid(rows = 3, cols = 3): Grid {

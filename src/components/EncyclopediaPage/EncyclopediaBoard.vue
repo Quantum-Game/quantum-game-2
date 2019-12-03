@@ -78,14 +78,14 @@ import QuantumSimulation from '@/engine/QuantumSimulation'
   }
 })
 export default class EncyclopediaBoard extends Vue {
-  @Prop({ default: () => Grid.dummyIGrid() }) gridObj!: IGrid
+  @Prop({ default: () => Grid.dummyIGrid() }) iGrid!: IGrid
   @Prop({ default: () => 10 }) readonly maxSteps!: number
   @Prop({ default: () => 2 }) readonly defaultStep!: number
   @Prop({ default: () => [] }) readonly indicators!: IIndicator[]
   @Prop({ default: false }) readonly exactSteps!: boolean
   @Prop({ default: 64 }) readonly tileSize!: number
 
-  grid = Grid.importGrid(this.gridObj)
+  grid = Grid.importGrid(this.iGrid)
   simulation: QuantumSimulation = new QuantumSimulation(this.grid)
   selectedFrameId = this.defaultStep
 

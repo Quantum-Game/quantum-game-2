@@ -193,20 +193,20 @@ export default class Cell extends Coord {
   /**
    * Create a cell from a ICell
    * TODO: Polarization should be passed to cell
-   * @param obj ICell
+   * @param iCell ICell
    */
-  public static importCell(obj: ICell): Cell {
-    const coord = Coord.importCoord(obj.coord)
-    const element = Cell.fromName(obj.element)
+  public static importCell(iCell: ICell): Cell {
+    const coord = Coord.importCoord(iCell.coord)
+    const element = Cell.fromName(iCell.element)
     const cell = new Cell(
       coord,
       element,
-      obj.rotation,
-      obj.polarization,
-      obj.percentage,
-      obj.frozen,
-      obj.active,
-      obj.energized
+      iCell.rotation,
+      iCell.polarization,
+      iCell.percentage,
+      iCell.frozen,
+      iCell.active,
+      iCell.energized
     )
     return cell
   }

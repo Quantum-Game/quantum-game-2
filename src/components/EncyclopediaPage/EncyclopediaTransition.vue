@@ -16,7 +16,7 @@
         <encyclopedia-board
           :key="JSON.stringify(indicators)"
           class="board"
-          :grid-obj="grid.exportGrid()"
+          :i-grid="grid.exportGrid()"
           :indicators="indicators"
           :max-steps="2"
           :default-step="2"

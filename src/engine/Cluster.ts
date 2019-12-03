@@ -60,10 +60,10 @@ export default class Cluster {
    * @param jsonCells : cells
    * @returns Cluster
    */
-  public static importCluster(jsonCells: ICell[]): Cluster {
-    const cells = jsonCells.map(
-      (jsonCell): Cell => {
-        return Cell.importCell(jsonCell)
+  public static importCluster(iCells: ICell[]): Cluster {
+    const cells = iCells.map(
+      (iCell): Cell => {
+        return Cell.importCell(iCell)
       }
     )
     return new Cluster(cells)

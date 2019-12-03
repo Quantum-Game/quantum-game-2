@@ -6,7 +6,7 @@ import { ICoord } from './interfaces'
  * The grid goes from top-left to bottom right
  * Indices start at 0
  */
-export default class Coord {
+export default class Coord implements ICoord {
   public x: number
   public y: number
 
@@ -169,10 +169,10 @@ export default class Coord {
 
   /**
    * Create a coordinate class instance from a coordinate interface
-   * @param obj Coordinate interface
+   * @param iCoord Coordinate interface
    */
-  public static importCoord(json: ICoord): Coord {
-    return new Coord(json.y, json.x)
+  public static importCoord(iCoord: ICoord): Coord {
+    return new Coord(iCoord.y, iCoord.x)
   }
 
   /**

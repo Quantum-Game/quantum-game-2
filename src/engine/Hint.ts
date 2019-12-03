@@ -48,11 +48,11 @@ export default class Hint extends Coord {
    * @param jsonHints list of hints
    * @returns Hint instances
    */
-  public static importHint(jsonHints: IHint[]): Hint[] {
-    return jsonHints.map(
-      (hint): Hint => {
-        const coord = Coord.importCoord(hint.coord)
-        return new Hint(coord, hint.content, hint.color, hint.rotation, hint.active)
+  public static importHint(iHints: IHint[]): Hint[] {
+    return iHints.map(
+      (iHint): Hint => {
+        const coord = Coord.importCoord(iHint.coord)
+        return new Hint(coord, iHint.content, iHint.color, iHint.rotation, iHint.active)
       }
     )
   }

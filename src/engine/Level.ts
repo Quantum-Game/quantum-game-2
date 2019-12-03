@@ -83,7 +83,7 @@ export default class Level {
   }
 
   /**
-   * Export a json level
+   * Export to an iLevel
    * @returns a level interface of the current level
    */
   public exportLevel(): ILevel {
@@ -101,25 +101,34 @@ export default class Level {
 
   /**
    * Import a json level
-   * @param obj a level interface with primitives
+   * @param iLevel a level interface with primitives
    * @returns a Level instance
    */
-  public static importLevel(obj: ILevel): Level {
-    const grid = Grid.importGrid(obj.grid)
-    const goals = obj.goals.map(
+  public static importLevel(iLevel: ILevel): Level {
+    const grid = Grid.importGrid(iLevel.grid)
+    const goals = iLevel.goals.map(
       (goalI: IGoal): Goal => {
         const coord = Coord.importCoord(goalI.coord)
         const cell = grid.get(coord)
         return new Goal(cell, goalI.threshold)
       }
     )
-    const hints = Hint.importHint(obj.hints)
-    const toolbox = Toolbox.importToolbox(obj.tools)
-    return new Level(obj.id, obj.name, obj.group, obj.description, grid, goals, hints, toolbox)
+    const hints = Hint.importHint(iLevel.hints)
+    const toolbox = Toolbox.importToolbox(iLevel.tools)
+    return new Level(
+      iLevel.id,
+      iLevel.name,
+      iLevel.group,
+      iLevel.description,
+      grid,
+      goals,
+      hints,
+      toolbox
+    )
   }
 
   /**
-   * Import a json level
+   * Import a level interface
    * @returns a Level instance
    */
   public static createDummy(): Level {
