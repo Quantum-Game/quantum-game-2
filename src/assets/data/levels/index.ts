@@ -1,11 +1,11 @@
 import { ILevel } from '@/engine/interfaces'
-import introLevels from './adventure/introLevels.json'
-import reflectionLevels from './adventure/reflectionLevels.json'
-import phaseLevels from './adventure/phaseLevels.json'
-import interferenceLevels from './adventure/interferenceLevels.json'
-import polarizationLevels from './adventure/polarizationLevels.json'
-import finalLevels from './adventure/finalLevels.json'
-import classicLevels from './classic/index'
+import introLevels from './introLevels.json'
+import reflectionLevels from './reflectionLevels.json'
+import phaseLevels from './phaseLevels.json'
+import interferenceLevels from './interferenceLevels.json'
+import polarizationLevels from './polarizationLevels.json'
+import finalLevels from './finalLevels.json'
+import classicLevels from './classicLevels.json'
 import sandbox from './sandboxLevel.json'
 
 export {

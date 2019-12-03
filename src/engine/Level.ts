@@ -1,5 +1,4 @@
 import { ILevel, IGoal, IHint } from './interfaces'
-import Coord from './Coord'
 import Cell from './Cell'
 import Grid from './Grid'
 import Toolbox from './Toolbox'
