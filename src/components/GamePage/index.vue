@@ -61,6 +61,7 @@
           @fast-forward="fastForward"
           @reload="reload"
           @downloadLevel="downloadLevel"
+          @loadedLevel="loadLevel($event)"
         />
       </section>
 
@@ -79,12 +80,13 @@
 import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
+import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
 import { Cell, Grid, Level, Particle } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
-import { IHint, GameStateEnum } from '@/engine/interfaces'
+import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
@@ -97,7 +99,6 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
-import Absorption from '../../engine/Absorption'
 
 @Component({
   components: {
@@ -149,14 +150,21 @@ export default class Game extends Vue {
   }
 
   /**
-   * Load level and process simulation
+   * Watch the current route and update level accordingly
    */
   @Watch('$route')
-  loadLevel(): void {
-    this.error = ''
+  changeLevel(): void {
     this.mutationSetCurrentLevelID(this.levelId)
-    const levelI = levels[this.levelId]
-    this.level = Level.importLevel(levelI)
+    this.loadLevel(levels[this.levelId])
+  }
+
+  /**
+   * Decoupling the level loading and the route changing
+   * Default to the route level
+   */
+  loadLevel(iLevel: ILevel = levels[this.levelId]): void {
+    this.error = ''
+    this.level = Level.importLevel(iLevel)
     // Set hovered cell as first element of toolbox
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0])
