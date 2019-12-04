@@ -128,10 +128,23 @@
           "frozen": true,
           "active": false,
           "energized": false
+        },
+        {
+          "coord": {
+            "y": 7,
+            "x": 6
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
         }
       ]
     },
-    "hints": [],
+    "hints": [
+
+    ],
     "goals": [
       {
         "coord": { "y": 4, "x": 1 },

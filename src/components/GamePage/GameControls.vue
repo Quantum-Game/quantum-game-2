@@ -12,14 +12,18 @@
     <!-- <span class="frameInfo">
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
-    </span> -->
+    </span>-->
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
-      <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
+
+      <label for="fileUpload" :style="computeUploadStyle" class="upload"> </label>
+      <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
+
       <button type="button" :style="computeSaveStyle" @click="handleSave()" />
+      <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
+      <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
       <!-- <button type="button" :style="computeMapStyle" @click="handleMap()" /> -->
       <!-- <button type="button" :style="computeAccountStyle" @click="handleAccount()" /> -->
     </span>
@@ -40,6 +44,20 @@ export default class GameControls extends Vue {
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
   soundFlag = true
+
+  loadJsonLevelFromFile(event: Event): void {
+    const reader = new FileReader()
+    const target = event.target as HTMLInputElement
+    const file: File = (target.files as FileList)[0]
+
+    reader.onload = (): void => {
+      // eslint-disable-next-line
+      const result: string = reader.result!.toString()
+      const iLevel = JSON.parse(result)
+      this.$emit('loadedLevel', iLevel)
+    }
+    reader.readAsText(file)
+  }
 
   toggleSound(): void {
     this.soundFlag = !this.soundFlag
@@ -125,6 +143,13 @@ export default class GameControls extends Vue {
     }
   }
 
+  get computeUploadStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/upload.svg`)})`, //eslint-disable-line
+      opacity: this.playFlag ? 1 : 0.3
+    }
+  }
+
   get computeSaveStyle(): {} {
     if (this.isLoggedIn) {
       return {
@@ -205,6 +230,7 @@ export default class GameControls extends Vue {
 
 <style lang="scss" scoped>
 button {
+  cursor: pointer;
   height: 20px;
   width: 20px;
   margin: 0.2rem 0.4rem;
@@ -225,6 +251,18 @@ button {
 .gameState {
   font-size: 0.75rem;
   padding-left: 10px;
+}
+
+input[type='file'] {
+  display: none;
+}
+.upload {
+  height: 20px;
+  width: 20px;
+  margin: 0.2rem 0.4rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 .controls {
   width: 100%;

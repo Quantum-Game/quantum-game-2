@@ -1,7 +1,7 @@
 [
   {
-    "id": 1,
-    "name": "Plant hero",
+    "id": 101,
+    "name": "Rockstar",
     "group": "Intro",
     "description": "",
     "grid": {
@@ -21,16 +21,6 @@
         {
           "coord": {
             "y": 3,
-            "x": 6
-          },
-          "element": "Detector",
-          "rotation": 0,
-          "frozen": false,
-          "active": true
-        },
-        {
-          "coord": {
-            "y": 3,
             "x": 10
           },
           "element": "Mine",
@@ -45,26 +35,39 @@
           "y": 2,
           "x": 6
         },
-        "content": "DRAG A PLANT HERE",
+        "content": "DRAG A ROCK HERE",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 2,
+          "x": 10
+        },
+        "content": "AVOID EXPLOSION",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 2,
+          "x": 2
+        },
+        "content": "CLICK LASER TO START",
         "color": "purple",
         "rotation": 0,
         "active": true
       }
     ],
-    "goals": [
-      {
-        "coord": {
-          "y": 3,
-          "x": 6
-        },
-        "threshold": 1
-      }
-    ],
-    "tools": ["Detector", "Rock"]
+    "goals": [],
+    "tools": ["Rock"]
   },
+
   {
-    "id": 2,
-    "name": "Meet the rock",
+    "id": 102,
+    "name": "SUNLIGHT",
     "group": "Intro",
     "description": "",
     "grid": {
@@ -73,44 +76,52 @@
       "cells": [
         {
           "coord": {
-            "y": 2,
-            "x": 3
+            "y": 1,
+            "x": 1
           },
           "element": "Laser",
           "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
           "frozen": true,
           "active": true,
           "energized": false
         },
         {
           "coord": {
-            "y": 2,
-            "x": 6
-          },
-          "element": "Rock",
-          "rotation": 0,
-          "frozen": true,
-          "active": false,
-          "energized": true
-        },
-        {
-          "coord": {
-            "y": 2,
-            "x": 9
-          },
-          "element": "Detector",
-          "rotation": 270,
-          "frozen": true,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": {
-            "y": 5,
-            "x": 5
+            "y": 1,
+            "x": 8
           },
           "element": "Mirror",
           "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 1,
+            "x": 6
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 1,
+            "x": 4
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -118,10 +129,142 @@
         {
           "coord": {
             "y": 5,
-            "x": 9
+            "x": 4
+          },
+          "element": "Detector",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 7,
+            "x": 2
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 6
+          },
+          "element": "DetectorFour",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 6
           },
           "element": "Mirror",
-          "rotation": 45,
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 8
+          },
+          "element": "Detector",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 4
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 6
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 8
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 7,
+            "x": 4
+          },
+          "element": "CornerCube",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 7,
+            "x": 6
+          },
+          "element": "CornerCube",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 7,
+            "x": 8
+          },
+          "element": "CornerCube",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -131,11 +274,11 @@
     "hints": [
       {
         "coord": {
-          "y": 1,
-          "x": 6
+          "y": 6,
+          "x": 2
         },
-        "content": "GET THE LASER OFF MY FACE!",
-        "color": "red",
+        "content": "Plants love light!",
+        "color": "purple",
         "rotation": 0,
         "active": true
       }
@@ -143,13 +286,26 @@
     "goals": [
       {
         "coord": {
-          "y": 2,
-          "x": 9
+          "y": 4,
+          "x": 6
         },
-        "threshold": 1
+        "threshold": 0.5
+      },
+      {
+        "coord": {
+          "y": 5,
+          "x": 4
+        },
+        "threshold": 0.25
+      },
+      {
+        "coord": {
+          "y": 5,
+          "x": 8
+        },
+        "threshold": 0.25
       }
     ],
-    "tools": ["Mirror"]
+    "tools": []
   }
-  
 ]
