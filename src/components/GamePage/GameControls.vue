@@ -18,8 +18,7 @@
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
 
-      <label for="fileUpload" :style="computeUploadStyle" class="upload">
-      </label>
+      <label for="fileUpload" :style="computeUploadStyle" class="upload"> </label>
       <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
 
       <button type="button" :style="computeSaveStyle" @click="handleSave()" />
@@ -46,12 +45,13 @@ export default class GameControls extends Vue {
   @State('simulationState') simulationState!: boolean
   soundFlag = true
 
-  loadJsonLevelFromFile(event: Event) {
+  loadJsonLevelFromFile(event: Event): void {
     const reader = new FileReader()
-    const target = event.target as HTMLInputElement;
-    const file: File = (target.files as FileList)[0];
+    const target = event.target as HTMLInputElement
+    const file: File = (target.files as FileList)[0]
 
-    reader.onload = (e) => {
+    reader.onload = (): void => {
+      // eslint-disable-next-line
       const result: string = reader.result!.toString()
       const iLevel = JSON.parse(result)
       this.$emit('loadedLevel', iLevel)
@@ -253,8 +253,8 @@ button {
   padding-left: 10px;
 }
 
-input[type="file"] {
-    display: none;
+input[type='file'] {
+  display: none;
 }
 .upload {
   height: 20px;
