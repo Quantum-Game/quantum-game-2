@@ -45,7 +45,7 @@
         :key="'frame' + index"
         @mouseover="selectedFrameId = index"
       >
-        <button :class="{ selected: selectedFrameId === index }">{{ index }}</button>
+        <button :class="{ selected: selectedFrameId === index }"></button>
       </span>
     </div>
     <div class="ket">
@@ -188,19 +188,12 @@ export default class EncyclopediaBoard extends Vue {
   justify-content: center;
 
   button {
-    font-size: 0.8rem;
-    font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    background-color: #5c00d3;
-    border: none;
-    color: white;
-    padding: 5px 10px;
+    background-color: transparent;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    padding: 5px 5px;
     margin: 5px;
     cursor: pointer;
-
-    &:not(:last-child) {
-      border-right: none;
-    }
   }
 
   &:after {
@@ -211,12 +204,10 @@ export default class EncyclopediaBoard extends Vue {
 
   button:hover {
     background-color: white;
-    color: #5c00d3;
   }
 
   .selected {
     background-color: white;
-    color: #5c00d3;
   }
 }
 </style>
