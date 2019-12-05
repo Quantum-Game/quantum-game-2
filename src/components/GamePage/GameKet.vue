@@ -3,6 +3,11 @@
     <span class="hidebutton" @click="toggleKets"
       >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
     >
+    <div class="btn-group">
+      <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
+        <button :class="{ selected: style === selectedStyle }">{{ style }}</button>
+      </span>
+    </div>
     <!-- VIEWER -->
     <div class="quantum-state-viewer">
       <span
@@ -64,11 +69,6 @@
           <span class="legend-pol">polarization</span>
         </span>
       </div>
-    </div>
-    <div class="btn-group">
-      <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
-        <button :class="{ selected: style === selectedStyle }">{{ style }}</button>
-      </span>
     </div>
   </div>
 </template>
@@ -246,18 +246,20 @@ export default class GameKet extends Vue {
       font-family: 'Montserrat', Helvetica, Arial, sans-serif;
       text-transform: uppercase;
       background-color: transparent;
-      border-color: white;
+      border: none;
       color: white;
       padding: 5px 10px;
       margin: 5px;
       cursor: pointer;
       &:hover {
-        background-color: white;
-        color: #5c00d3;
+        text-decoration: underline;
+        background-color: transparent;
+        color: white;
       }
       &.selected {
-        background-color: white;
-        color: #5c00d3;
+        text-decoration: underline;
+        background-color: transparent;
+        color: white;
       }
     }
   }
