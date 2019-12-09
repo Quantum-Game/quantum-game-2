@@ -5,12 +5,11 @@
       <encyclopedia-matrix
         :labels-in="basis"
         :labels-out="basis"
+        :dimension-names="dimensionNames"
         :matrix-elements="matrixElements"
-        :height="320"
-        :width="320"
         :size="30"
-        :margin="70"
         @columnMouseover="updateIndicators($event)"
+        @swapDimensions="dirPolOrder = !dirPolOrder"
       />
       <div class="eboard">
         <encyclopedia-board
@@ -23,13 +22,6 @@
           :exact-steps="true"
           @updateRotation="updateRotation"
         />
-      </div>
-      <div>
-        <span>Select dimension order:</span>
-        <select v-model="dirPolOrder">
-          <option :value="true">dir pol</option>
-          <option :value="false">pol dir</option>
-        </select>
       </div>
     </div>
   </div>
@@ -152,6 +144,13 @@ export default class EncyclopediaMatrixBoard extends Vue {
       return ['⇢H', '⇢V', '⇡H', '⇡V', '⇠H', '⇠V', '⇣H', '⇣V']
     }
     return ['H⇢', 'H⇡', 'H⇠', 'H⇣', 'V⇢', 'V⇡', 'V⇠', 'V⇣']
+  }
+
+  /**
+   * Get the basis direction and polarization strings
+   */
+  get dimensionNames(): string[] {
+    return this.dirPolOrder ? ['direction', 'polarization'] : ['polarization', 'direction']
   }
 
   /**

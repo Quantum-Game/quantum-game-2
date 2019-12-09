@@ -1,6 +1,9 @@
 <template>
-  <svg class="operator-viewer" :width="width" :height="height">
-    <g class="labels-in" :transform="`translate(${2 * size}, ${0})`">
+  <svg class="operator-viewer" :width="columnSize + 3.5 * size" :height="rowSize + 6.5 * size">
+    <g class="labels-in" :transform="`translate(${3 * size}, ${1 * size})`">
+      <text class="label" :x="rowSize / 2" :y="scale(-0.25)">
+        Input
+      </text>
       <rect
         v-for="(label, i) in labelsIn"
         :key="`menu-tile-out-1-${i}`"
@@ -38,7 +41,10 @@
         {{ label[1] }}
       </text>
     </g>
-    <g class="labels-out" :transform="`translate(${0}, ${2 * size})`">
+    <g class="labels-out" :transform="`translate(${1 * size}, ${3 * size})`">
+      <text class="label" :transform="`translate(${scale(-0.25)},${columnSize / 2}) rotate(270)`">
+        Output
+      </text>
       <rect
         v-for="(label, j) in labelsIn"
         :key="`menu-tile-in-1-${j}`"
@@ -75,9 +81,25 @@
       >
         {{ label[1] }}
       </text>
+      <g class="dimension-labels" @click="swapDimensions()">
+        <text
+          v-for="(dimensionName, j) in dimensionNames"
+          :key="`label-${dimensionName}`"
+          :transform="`translate(${scale(j + 0.5)},${columnSize + scale(0.25)}) rotate(270)`"
+          class="dimension-label"
+        >
+          {{ dimensionName }}
+        </text>
+        <text
+          :transform="`translate(${scale(1)},${columnSize + scale(1.25)})`"
+          class="dimension-swap"
+        >
+          ⇄
+        </text>
+      </g>
     </g>
 
-    <g :transform="`translate(${2 * size}, ${2 * size})`">
+    <g :transform="`translate(${3 * size}, ${3 * size})`">
       <rect
         v-for="d in allTileLocations"
         :key="`entry-tile-${d.i}-${d.j}`"
@@ -112,20 +134,16 @@
 </template>
 
 <script lang="ts">
-// TODO: Allow to hover an empty column to see results
-// FIXME: Changing will reset the chosen cartesian/polar/color-disk (option menu?)
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { colorComplex } from '@/engine/Helpers'
 import { IMatrixElement } from '../../engine/interfaces'
 
 @Component
 export default class EncyclopediaOperatorViewer extends Vue {
-  @Prop({ default: () => 800 }) private width!: number
-  @Prop({ default: () => 600 }) private height!: number
   @Prop({ default: () => 40 }) private size!: number
-  @Prop({ default: () => 40 }) private margin!: number
   @Prop({ default: () => [] }) private labelsIn!: string[]
   @Prop({ default: () => [] }) private labelsOut!: string[]
+  @Prop({ default: () => [] }) private dimensionNames!: string[]
   @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
   // TODO: reduce width and height
 
@@ -161,6 +179,14 @@ export default class EncyclopediaOperatorViewer extends Vue {
     this.selectedColumn = tile.i
     this.$emit('columnMouseover', tile.i)
   }
+
+  /**
+   * @todo Make all dimension changes within this component.
+   * (After using Operator rather than passed parameteres.)
+   */
+  swapDimensions(): void {
+    this.$emit('swapDimensions')
+  }
 }
 </script>
 
@@ -175,7 +201,33 @@ export default class EncyclopediaOperatorViewer extends Vue {
   dominant-baseline: central;
   text-anchor: middle;
   fill: white;
+  cursor: default;
+}
+
+.dimension-label {
+  font-size: 12px;
+  text-anchor: end;
+  dominant-baseline: central;
+  fill: white;
   cursor: pointer;
+  text-transform: uppercase;
+}
+
+.dimension-swap {
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: white;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.label {
+  font-size: 12px;
+  text-anchor: middle;
+  fill: white;
+  cursor: default;
+  text-transform: uppercase;
 }
 
 .selected-column {
