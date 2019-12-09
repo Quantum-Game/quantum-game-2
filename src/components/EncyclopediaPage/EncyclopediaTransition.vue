@@ -6,10 +6,10 @@
         :labels-in="basis"
         :labels-out="basis"
         :matrix-elements="matrixElements"
-        :height="300"
-        :width="300"
+        :height="320"
+        :width="320"
         :size="30"
-        :margin="20"
+        :margin="70"
         @columnMouseover="updateIndicators($event)"
       />
       <div class="eboard">
@@ -149,9 +149,9 @@ export default class EncyclopediaMatrixBoard extends Vue {
    */
   get basis(): string[] {
     if (this.dirPolOrder) {
-      return ['⇢↔', '⇢↕', '⇡↔', '⇡↕', '⇠↔', '⇠↕', '⇣↔', '⇣↕']
+      return ['⇢H', '⇢V', '⇡H', '⇡V', '⇠H', '⇠V', '⇣H', '⇣V']
     }
-    return ['↔⇢', '↔⇡', '↔⇠', '↔⇣', '↕⇢', '↕⇡', '↕⇠', '↕⇣']
+    return ['H⇢', 'H⇡', 'H⇠', 'H⇣', 'V⇢', 'V⇡', 'V⇠', 'V⇣']
   }
 
   /**
