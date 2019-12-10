@@ -347,7 +347,7 @@ export default class Game extends Vue {
    * @returns level in JSON format
    */
   downloadLevel(): void {
-    const json = JSON.stringify(this.level.exportLevel(), null, 2)
+    const json = JSON.stringify(this.level.exportLevelForDownload(), null, 2)
     const blob = new Blob([json], { type: 'octet/stream' })
     const link = document.createElement('a')
     link.href = window.URL.createObjectURL(blob)

@@ -140,9 +140,9 @@ export default class Grid extends Cluster {
       target.coord = tempCoord
       target.tool = false
       source.tool = true
-      console.log('GRID TOOL TO GRID VOID')
-      console.log('SOURCE: ' + source.toString())
-      console.log('TARGET: ' + target.toString())
+      // console.log('GRID TOOL TO GRID VOID')
+      // console.log('SOURCE: ' + source.toString())
+      // console.log('TARGET: ' + target.toString())
       this.set(source)
       this.set(target)
       return [source, target]
@@ -155,9 +155,9 @@ export default class Grid extends Cluster {
       target.coord = tempCoord
       target.tool = true
       source.tool = true
-      console.log('GRID TOOL TO GRID TOOL')
-      console.log('SOURCE: ' + source.toString())
-      console.log('TARGET: ' + target.toString())
+      // console.log('GRID TOOL TO GRID TOOL')
+      // console.log('SOURCE: ' + source.toString())
+      // console.log('TARGET: ' + target.toString())
       this.set(source)
       this.set(target)
       return [source, target]
@@ -335,6 +335,27 @@ export default class Grid extends Cluster {
       .forEach((cell): void => {
         cells.push(cell.exportCell())
       })
+    return {
+      cols: this.cols,
+      rows: this.rows,
+      cells
+    }
+  }
+
+  /**
+   * Exports the grid to an interface of primitives
+   * @returns a grid interface
+   */
+  public exportGridForDownload(): IGrid {
+    const cells: ICell[] = this.cells
+      .filter((cell): boolean => !cell.isVoid)
+      .map(
+        (cell): ICell => {
+          const iCell = cell.exportCell()
+          iCell.frozen = true
+          return iCell
+        }
+      )
     return {
       cols: this.cols,
       rows: this.rows,

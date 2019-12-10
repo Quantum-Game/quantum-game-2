@@ -10090,7 +10090,7 @@ qs@~6.5.2:
 
 quantum-tensors@stared/quantum-tensors:
   version "0.2.2"
-  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/6a2a7d0d66905471b07cc482bf86bc78663e28df"
+  resolved "https://codeload.github.com/stared/quantum-tensors/tar.gz/6d6dc684e035819924316787dd9acad1f122b6f1"
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"

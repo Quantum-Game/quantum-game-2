@@ -99,6 +99,28 @@ export default class Level {
   }
 
   /**
+   * Export to an iLevel
+   * Create the goals from the detector cells with low probability
+   * Mark all cells as frozen
+   * @returns a level interface of the current level
+   */
+  public exportLevelForDownload(): ILevel {
+    const goals = this.grid.detectors.cells.map((detector: Cell) => {
+      return new Goal(detector.coord, 0.001)
+    })
+    return {
+      id: 101,
+      name: 'Custom Level',
+      group: 'Custom',
+      description: '',
+      grid: this.grid.exportGridForDownload(),
+      hints: this.hints.map((hint): IHint => hint.exportHint()),
+      goals: goals.map((goal): IGoal => goal.exportGoal()),
+      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
+    }
+  }
+
+  /**
    * Import a json level
    * @param iLevel a level interface with primitives
    * @returns a Level instance
