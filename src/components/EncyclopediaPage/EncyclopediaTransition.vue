@@ -3,8 +3,8 @@
     <div>
       <h2>{{ elementName }} at {{ rotation }}°</h2>
       <encyclopedia-matrix
-        :labels-in="basis"
-        :labels-out="basis"
+        :coord-names-in="coordNames"
+        :coord-names-out="coordNames"
         :dimension-names="dimensionNames"
         :matrix-elements="matrixElements"
         :size="30"
@@ -139,11 +139,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
   /**
    * Get the basis direction and polarization strings
    */
-  get basis(): string[] {
-    if (this.dirPolOrder) {
-      return ['⇢H', '⇢V', '⇡H', '⇡V', '⇠H', '⇠V', '⇣H', '⇣V']
-    }
-    return ['H⇢', 'H⇡', 'H⇠', 'H⇣', 'V⇢', 'V⇡', 'V⇠', 'V⇣']
+  get coordNames(): string[][] {
+    const coordsDir = ['⇢', '⇡', '⇠', '⇣']
+    const coordsPol = ['H', 'V']
+    return this.dirPolOrder ? [coordsDir, coordsPol] : [coordsPol, coordsDir]
   }
 
   /**
