@@ -4,23 +4,14 @@
       <text class="label" :x="rowSize / 2" :y="scale(-0.25)">
         Input
       </text>
-      <rect
-        v-for="(label, i) in labelsIn"
-        :key="`menu-tile-out-1-${i}`"
-        class="menu-tile"
-        :x="scale(i)"
-        :y="scale(0)"
-        :width="size"
-        :height="size"
-      />
       <text
-        v-for="(label, i) in labelsIn"
-        :key="`label-in-1-${label}`"
+        v-for="(coord, i) in coordNamesIn[0]"
+        :key="`label-in-1-${coord}`"
         class="label-in"
-        :x="scale(i + 0.5)"
+        :x="scale(coordNamesIn[1].length * (i + 0.5))"
         :y="scale(0.5)"
       >
-        {{ label[0] }}
+        {{ coord }}
       </text>
       <rect
         v-for="(label, i) in labelsIn"
@@ -40,31 +31,31 @@
       >
         {{ label[1] }}
       </text>
+      <rect
+        v-for="(coord, i) in coordNamesIn[0]"
+        :key="`menu-tile-out-1-${i}`"
+        class="menu-tile-head"
+        :x="scale(coordNamesIn[1].length * i)"
+        :y="scale(0)"
+        :width="coordNamesIn[1].length * size"
+        :height="2 * size"
+      />
     </g>
     <g class="labels-out" :transform="`translate(${1 * size}, ${3 * size})`">
       <text class="label" :transform="`translate(${scale(-0.25)},${columnSize / 2}) rotate(270)`">
         Output
       </text>
-      <rect
-        v-for="(label, j) in labelsIn"
-        :key="`menu-tile-in-1-${j}`"
-        class="menu-tile"
-        :x="scale(0)"
-        :y="scale(j)"
-        :width="size"
-        :height="size"
-      />
       <text
-        v-for="(label, j) in labelsIn"
-        :key="`label-out-1-${label}`"
+        v-for="(coord, j) in coordNamesOut[0]"
+        :key="`label-out-1-${coord}`"
         class="label-out"
         :x="scale(0.5)"
-        :y="scale(j + 0.5)"
+        :y="scale(coordNamesOut[1].length * (j + 0.5))"
       >
-        {{ label[0] }}
+        {{ coord }}
       </text>
       <rect
-        v-for="(label, j) in labelsIn"
+        v-for="(label, j) in labelsOut"
         :key="`menu-tile-in-2-${j}`"
         class="menu-tile"
         :x="scale(1)"
@@ -73,7 +64,7 @@
         :height="size"
       />
       <text
-        v-for="(label, j) in labelsIn"
+        v-for="(label, j) in labelsOut"
         :key="`label-out-2-${label}`"
         class="label-out"
         :x="scale(1.5)"
@@ -81,6 +72,15 @@
       >
         {{ label[1] }}
       </text>
+      <rect
+        v-for="(coord, j) in coordNamesOut[0]"
+        :key="`menu-tile-in-1-${j}`"
+        class="menu-tile-head"
+        :x="scale(0)"
+        :y="scale(coordNamesOut[1].length * j)"
+        :width="2 * size"
+        :height="coordNamesOut[1].length * size"
+      />
       <g class="dimension-labels" @click="swapDimensions()">
         <text
           v-for="(dimensionName, j) in dimensionNames"
@@ -189,6 +189,9 @@ export default class EncyclopediaOperatorViewer extends Vue {
     return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2)
   }
 
+  /**
+   * @todo Show directly on the legend.
+   */
   tileMouseOver(tile: IMatrixElement): void {
     this.selectedColumn = tile.i
     this.$emit('columnMouseover', tile.i)
@@ -257,7 +260,8 @@ export default class EncyclopediaOperatorViewer extends Vue {
   stroke-width: 0.5px;
 }
 
-.entry-boarder {
+.entry-boarder,
+.menu-tile-head {
   fill: none;
   stroke: #5c00d3;
   stroke-width: 1.5px;
