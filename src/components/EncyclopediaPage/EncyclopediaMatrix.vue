@@ -141,15 +141,29 @@ import { IMatrixElement } from '../../engine/interfaces'
 @Component
 export default class EncyclopediaOperatorViewer extends Vue {
   @Prop({ default: () => 40 }) private size!: number
-  @Prop({ default: () => [] }) private labelsIn!: string[]
-  @Prop({ default: () => [] }) private labelsOut!: string[]
+  @Prop({ default: () => [] }) private coordNamesIn!: string[][]
+  @Prop({ default: () => [] }) private coordNamesOut!: string[][]
   @Prop({ default: () => [] }) private dimensionNames!: string[]
   @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
-  // TODO: reduce width and height
 
   selectedColumn = -1
 
-  // lablesIn string[][] ?
+  /**
+   * @todo Flattening should be in QT.Dimension.
+   * Here I do only for 2 dims.
+   */
+  get labelsIn(): string[] {
+    const [names1, names2] = this.coordNamesIn
+    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`))
+  }
+
+  /**
+   * @see {@link labelsIn}
+   */
+  get labelsOut(): string[] {
+    const [names1, names2] = this.coordNamesOut
+    return names1.flatMap((coord1) => names2.map((coord2) => `${coord1}${coord2}`))
+  }
 
   get columnSize(): number {
     return this.size * this.labelsIn.length
