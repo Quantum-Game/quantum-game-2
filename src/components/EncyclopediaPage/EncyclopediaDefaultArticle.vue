@@ -11,20 +11,20 @@
           <text :x="6.5 * 64" :y="40" class="title" dominant-baseline="middle" text-anchor="middle">
             Basics
           </text>
-          <router-link :to="`/info/laser`">
-            <laser-cell :style="moveTo(2, 1)" />
+          <router-link :to="`/info/laser`" :style="moveTo(2, 1)">
+            <laser-cell />
           </router-link>
-          <router-link :to="`/info/detector`">
-            <detector-cell :style="moveTo(4, 1)" />
+          <router-link :to="`/info/detector`" :style="moveTo(4, 1)">
+            <detector-cell />
           </router-link>
-          <router-link :to="`/info/detector`">
-            <detector-four-cell :style="moveTo(6, 1)" />
+          <router-link :to="`/info/detector`" :style="moveTo(6, 1)">
+            <detector-four-cell />
           </router-link>
-          <router-link :to="`/info/rock`">
-            <rock-cell :style="moveTo(8, 1)" />
+          <router-link :to="`/info/rock`" :style="moveTo(8, 1)">
+            <rock-cell />
           </router-link>
-          <router-link :to="`/info/mine`">
-            <mine-cell :style="moveTo(10, 1)" />
+          <router-link :to="`/info/mine`" :style="moveTo(10, 1)">
+            <mine-cell />
           </router-link>
 
           <text
@@ -36,17 +36,17 @@
           >
             Reflection
           </text>
-          <router-link :to="`/info/mirror`">
-            <mirror-cell :style="moveTo(3, 3)" />
+          <router-link :to="`/info/mirror`" :style="moveTo(3, 3)">
+            <mirror-cell />
           </router-link>
-          <router-link :to="`/info/mirror`">
-            <corner-cube-cell :style="moveTo(5, 3)" />
+          <router-link :to="`/info/mirror`" :style="moveTo(5, 3)">
+            <corner-cube-cell />
           </router-link>
-          <router-link :to="`/info/beam-splitter`">
-            <beam-splitter-cell :style="moveTo(7, 3)" />
+          <router-link :to="`/info/beam-splitter`" :style="moveTo(7, 3)">
+            <beam-splitter-cell />
           </router-link>
-          <router-link :to="`/info/polarizing-beam-splitter`">
-            <polarizing-beam-splitter-cell :style="moveTo(9, 3)" />
+          <router-link :to="`/info/polarizing-beam-splitter`" :style="moveTo(9, 3)">
+            <polarizing-beam-splitter-cell />
           </router-link>
 
           <text
@@ -58,17 +58,17 @@
           >
             Polarization
           </text>
-          <router-link :to="`/info/sugar-solution`">
-            <sugar-solution-cell :style="moveTo(3, 5)" />
+          <router-link :to="`/info/sugar-solution`" :style="moveTo(3, 5)">
+            <sugar-solution-cell />
           </router-link>
-          <router-link :to="`/info/faraday-rotator`">
-            <faraday-rotator-cell :style="moveTo(5, 5)" />
+          <router-link :to="`/info/faraday-rotator`" :style="moveTo(5, 5)">
+            <faraday-rotator-cell />
           </router-link>
-          <router-link :to="`/info/polarizer`">
-            <polarizer-cell :style="moveTo(7, 5)" />
+          <router-link :to="`/info/polarizer`" :style="moveTo(7, 5)">
+            <polarizer-cell />
           </router-link>
-          <router-link :to="`/info/quarter-wave-plate`">
-            <quarter-wave-plate-cell :style="moveTo(9, 5)" />
+          <router-link :to="`/info/quarter-wave-plate`" :style="moveTo(9, 5)">
+            <quarter-wave-plate-cell />
           </router-link>
 
           <text
@@ -80,14 +80,14 @@
           >
             Phase
           </text>
-          <router-link :to="`/info/glass`">
-            <glass-cell :style="moveTo(4, 7)" />
+          <router-link :to="`/info/glass`" :style="moveTo(4, 7)">
+            <glass-cell />
           </router-link>
-          <router-link :to="`/info/vacuum-jar`">
-            <vacuum-jar-cell :style="moveTo(6, 7)" />
+          <router-link :to="`/info/vacuum-jar`" :style="moveTo(6, 7)">
+            <vacuum-jar-cell />
           </router-link>
-          <router-link :to="`/info/absorber`">
-            <absorber-cell :style="moveTo(8, 7)" />
+          <router-link :to="`/info/absorber`" :style="moveTo(8, 7)">
+            <absorber-cell />
           </router-link>
         </svg>
       </div>
