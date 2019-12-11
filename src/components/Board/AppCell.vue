@@ -33,7 +33,7 @@
           to="0"
           dur="1.5s"
           begin="0s"
-          repeatCount="3"
+          repeatCount="indefinite"
         />
         <animate
           attributeName="r"
@@ -41,7 +41,7 @@
           to="64"
           dur="1.5s"
           begin="0s"
-          repeatCount="3"
+          repeatCount="indefinite"
         />
       </circle>
     </g>
