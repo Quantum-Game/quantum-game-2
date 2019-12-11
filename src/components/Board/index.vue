@@ -23,22 +23,8 @@
           stroke="purple"
           stroke-width="2"
         >
-          <animate
-            attributeName="opacity"
-            from="1"
-            to="0"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="r"
-            from="32"
-            to="64"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
+          <animate attributeName="opacity" from="1" to="0" dur="1.5s" begin="0s" repeatCount="1" />
+          <animate attributeName="r" from="32" to="64" dur="1.5s" begin="0s" repeatCount="1" />
         </circle>
       </g>
 

@@ -47,9 +47,10 @@ export default class PolarizerCell extends Piece {
    * Compute inner grid rotation from cell polarization
    */
   get computePolarization(): {} {
+    const polarization = this.cell ? this.cell.polarization : 0
     return {
       'transform-origin': `32px 32px`,
-      transform: `rotate(${(this.cell.polarization + 90) % 180}deg)`
+      transform: `rotate(${(polarization + 90) % 180}deg)`
     }
   }
 }
