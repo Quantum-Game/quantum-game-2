@@ -25,7 +25,7 @@
 
     <!-- PULSATING CIRCLE -->
     <!-- eslint-disable -->
-    <g v-if="displayPulsation">
+    <!-- <g v-if="displayPulsation">
       <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
         <animate
           attributeName="opacity"
@@ -44,7 +44,7 @@
           repeatCount="indefinite"
         />
       </circle>
-    </g>
+    </g> -->
     <!-- eslint-enable -->
   </g>
 </template>
@@ -262,6 +262,7 @@ export default class AppCell extends Mixins(Position) {
   }
 
   /**
+   * FIX - it should work only in the first level
    * Display pulsating ring around laser
    */
   get displayPulsation(): boolean {
