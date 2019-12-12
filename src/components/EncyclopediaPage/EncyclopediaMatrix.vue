@@ -51,6 +51,7 @@
         v-for="(coord, j) in coordNamesOut[0]"
         :key="`label-out-1-${coord}`"
         class="label-out"
+        :class="{ 'label-selected': selectedOutputLabels.ones.indexOf(coord) >= 0 }"
         :x="scale(0.5)"
         :y="scale(coordNamesOut[1].length * (j + 0.5))"
       >
@@ -69,6 +70,7 @@
         v-for="(label, j) in labelsOut"
         :key="`label-out-2-${label}`"
         class="label-out"
+        :class="{ 'label-selected': selectedOutputLabels.indices.indexOf(j) >= 0 }"
         :x="scale(1.5)"
         :y="scale(j + 0.5)"
       >
@@ -225,6 +227,13 @@ export default class EncyclopediaOperatorViewer extends Vue {
     }
   }
 
+  get selectedOutputLabels(): { ones: string[]; indices: number[] } {
+    const js = this.matrixElements.filter((d) => d.i === this.selectedEntry.i)
+    const indices = js.map((d) => d.j)
+    const ones = indices.map((j) => this.labelsOut[j][0])
+    return { ones, indices }
+  }
+
   /**
    * @todo Flattening should be in QT.Dimension.
    * Here I do only for 2 dims.
@@ -301,7 +310,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
 }
 
 .label-in.label-selected,
-.label-out.label-in.label-selected {
+.label-out.label-selected {
   fill: white;
 }
 
