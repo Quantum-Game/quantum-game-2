@@ -289,6 +289,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
    * (After using Operator rather than passed parameteres.)
    */
   swapDimensions(): void {
+    this.selectedColumn = -1 // later we reassign
     this.$emit('swapDimensions')
   }
 }
