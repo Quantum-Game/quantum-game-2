@@ -8,6 +8,7 @@
         v-for="(coord, i) in coordNamesIn[0]"
         :key="`label-in-1-${coord}`"
         class="label-in"
+        :class="{ 'label-selected': coord === selectedInLabelOne }"
         :x="scale(coordNamesIn[1].length * (i + 0.5))"
         :y="scale(0.5)"
       >
@@ -26,6 +27,7 @@
         v-for="(label, i) in labelsIn"
         :key="`label-in-2-${label}`"
         class="label-in"
+        :class="{ 'label-selected': i === selectedEntry.i }"
         :x="scale(i + 0.5)"
         :y="scale(1.5)"
       >
@@ -215,6 +217,14 @@ export default class EncyclopediaOperatorViewer extends Vue {
     return phi / (2 * Math.PI)
   }
 
+  get selectedInLabelOne(): string {
+    if (this.selectedEntry.i < 0) {
+      return ''
+    } else {
+      return this.labelsIn[this.selectedEntry.i][0]
+    }
+  }
+
   /**
    * @todo Flattening should be in QT.Dimension.
    * Here I do only for 2 dims.
@@ -285,8 +295,14 @@ export default class EncyclopediaOperatorViewer extends Vue {
   font-size: 16px;
   dominant-baseline: central;
   text-anchor: middle;
-  fill: white;
+  fill: #5c00d3;
   cursor: default;
+  font-weight: 900;
+}
+
+.label-in.label-selected,
+.label-out.label-in.label-selected {
+  fill: white;
 }
 
 .dimension-label {
