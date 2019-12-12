@@ -2,7 +2,7 @@
   <div ref="multiverseWrapper" class="multiverse">
     <svg :style="computeSvgStyle">
       <!-- ARROWHEAD -->
-      <defs>
+      <!-- <defs>
         <marker
           id="arrowhead-past"
           viewBox="0 0 10 10"
@@ -39,22 +39,22 @@
         >
           <path d="M 0 0 L 10 5 L 0 10 z" stroke="none" fill="purple" />
         </marker>
-      </defs>
+      </defs> -->
 
       <!-- NODE -->
       <g :style="computeNodeStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <circle :cx="node.x" :cy="node.y" r="6" @mouseover="handleMouseOver(node.fIndex)" />
-          <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
+          <circle :cx="node.x" :cy="node.y" r="5" @mouseover="handleMouseOver(node.fIndex)" />
+          <!-- <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
             {{ node.label }}
-          </text>
+          </text> -->
           <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
         <!-- EDGE -->
         <g v-for="(edge, i) in edges" :key="'edge' + i" :class="computeEdgeClass(edge)">
           <path
             :d="computeEdgePath(edge.points)"
-            :stroke-width="edge.width"
+            :stroke-width="1"
             :marker-end="computeArrowHead(edge)"
           />
         </g>
@@ -168,9 +168,9 @@ export default class GameGraph extends Vue {
   computeEdgePath(points: { x: number; y: number }[]): string {
     let path = ''
     if (points.length > 2) {
-      path += `M ${points[0].x} ${points[0].y}`
+      path += `M ${points[0].x} ${points[0].y-3}`
       // path += `L ${points[1].x} ${points[1].y}`;
-      path += `L ${points[2].x} ${points[2].y}`
+      path += `L ${points[2].x} ${points[2].y+3}`
     }
     return path
   }
@@ -193,11 +193,11 @@ export default class GameGraph extends Vue {
 </script>
 
 <style lang="scss" scoped>
-$past: gray;
+$past: #ff0055;
 $present: #ff0055;
-$future: purple;
+$future: #5c00d3;
 $root: #ff0055;
-$leaf: magenta;
+$leaf: #5c00d3;
 .multiverse {
   border-top: 1px solid white;
   width: 100%;
@@ -220,9 +220,10 @@ $leaf: magenta;
     font-size: 10px;
     .bar {
       display: none;
+      stroke-dasharray: 2 4;
     }
     &.past {
-      fill: $past;
+      fill: transparent;
       stroke: $past;
     }
     &.present {
@@ -234,7 +235,7 @@ $leaf: magenta;
       }
     }
     &.future {
-      fill: $future;
+      fill: transparent;
       stroke: $future;
     }
     &.leaf {

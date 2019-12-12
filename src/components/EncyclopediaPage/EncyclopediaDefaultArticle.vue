@@ -180,9 +180,10 @@ h1 {
 
 .title {
   font-family: 'Montserrat', Helvetica, Arial, sans-serif;
-  font-size: 22px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
   fill: white;
-  stroke: white;
+  stroke: none;
 }
 
 img {
