@@ -117,7 +117,7 @@
         class="tile-value"
         :cx="scale(d.i + 0.5)"
         :cy="scale(d.j + 0.5)"
-        :r="r(d.re, d.im)"
+        :r="rScale(d.re, d.im)"
         :style="{ fill: generateColor(d.re, d.im) }"
         @mouseover="tileMouseOver(d)"
       />
@@ -130,10 +130,48 @@
         :height="columnSize"
       />
     </g>
+    <g class="legend" :transform="`translate(${scale(6)}, ${columnSize + scale(4)})`">
+      <g>
+        <text class="label" :x="0" :y="0">
+          Amplitude
+        </text>
+        <circle class="radius-reference" :cx="scale(0)" :cy="scale(1)" :r="rScale(1)" />
+        <circle
+          class="radius-value"
+          :cx="scale(0)"
+          :cy="scale(1)"
+          :r="selectedNonzero ? rScale(selectedEntry.re, selectedEntry.im) : rScale(1)"
+        />
+        <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+          {{ Math.sqrt(selectedEntry.re ** 2 + selectedEntry.im ** 2 || 0).toFixed(3) }}
+        </text>
+      </g>
+      <g :transform="`translate(${scale(3)}, 0)`">
+        <text class="label" :x="0" :y="0">
+          Phase
+        </text>
+        <g :transform="`translate(0, ${scale(1)})`">
+          <path
+            v-for="(a, i) in arcs"
+            :key="`arc-${i}`"
+            class="phase-arc"
+            :style="{
+              fill: generateColor(a.re, a.im),
+              opacity: !selectedNonzero || selectedEntryPhaseId === i ? 1 : 0.25
+            }"
+            :d="`M 0 0 L ${a.x0} ${a.y0} A ${rScale(1)} ${rScale(1)} 0 0 1 ${a.x1} ${a.y1} Z`"
+          />
+        </g>
+        <text v-if="selectedNonzero" class="label" :x="rScale(0)" :y="scale(2)">
+          {{ selectedPhaseTau.toFixed(2) }} 𝛕
+        </text>
+      </g>
+    </g>
   </svg>
 </template>
 
 <script lang="ts">
+import { range } from 'lodash'
 import { Component, Prop, Vue } from 'vue-property-decorator'
 import { colorComplex } from '@/engine/Helpers'
 import { IMatrixElement } from '../../engine/interfaces'
@@ -147,6 +185,35 @@ export default class EncyclopediaOperatorViewer extends Vue {
   @Prop({ default: () => [] }) private matrixElements!: IMatrixElement[]
 
   selectedColumn = -1
+  selectedEntry: IMatrixElement = { i: -1, j: -1, re: 0, im: 0 }
+
+  arcs = range(8).map((i) => {
+    const r = this.rScale(1)
+    const alpha = (2 * Math.PI * i) / 8
+    const beta = Math.PI / 8
+    return {
+      x0: r * Math.cos(alpha - beta),
+      y0: r * Math.sin(alpha - beta),
+      x1: r * Math.cos(alpha + beta),
+      y1: r * Math.sin(alpha + beta),
+      re: Math.cos(alpha),
+      im: Math.sin(alpha)
+    }
+  })
+
+  get selectedNonzero(): boolean {
+    return this.selectedEntry.re !== 0 || this.selectedEntry.im !== 0
+  }
+
+  get selectedEntryPhaseId(): number {
+    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re)
+    return (Math.round((8 * phi) / (2 * Math.PI)) + 8) % 8
+  }
+
+  get selectedPhaseTau(): number {
+    const phi = Math.atan2(this.selectedEntry.im, this.selectedEntry.re)
+    return phi / (2 * Math.PI)
+  }
 
   /**
    * @todo Flattening should be in QT.Dimension.
@@ -174,7 +241,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
   }
 
   get allTileLocations(): { i: number; j: number }[] {
-    return this.labelsOut.flatMap((_, j) => this.labelsIn.map((_, i) => ({ i, j })))
+    return this.labelsOut.flatMap((_, j) => this.labelsIn.map((_, i) => ({ i, j, re: 0, im: 0 })))
   }
 
   scale(i: number): number {
@@ -185,7 +252,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
     return colorComplex(re, im)
   }
 
-  r(re: number, im: number): number {
+  rScale(re: number, im = 0): number {
     return 0.5 * this.size * Math.sqrt(re ** 2 + im ** 2)
   }
 
@@ -194,6 +261,7 @@ export default class EncyclopediaOperatorViewer extends Vue {
    */
   tileMouseOver(tile: IMatrixElement): void {
     this.selectedColumn = tile.i
+    this.selectedEntry = tile
     this.$emit('columnMouseover', tile.i)
   }
 
@@ -269,5 +337,24 @@ export default class EncyclopediaOperatorViewer extends Vue {
 
 .tile-value {
   cursor: pointer;
+}
+
+.tile-value:hover {
+  stroke: white;
+  stroke-width: 1px;
+}
+
+.radius-reference {
+  fill: white;
+  opacity: 0.25;
+}
+
+.radius-value {
+  fill: white;
+}
+
+.phase-arc {
+  stroke: #5c00d3;
+  stroke-width: 0.5px;
 }
 </style>
