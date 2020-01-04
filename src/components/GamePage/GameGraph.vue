@@ -168,9 +168,9 @@ export default class GameGraph extends Vue {
   computeEdgePath(points: { x: number; y: number }[]): string {
     let path = ''
     if (points.length > 2) {
-      path += `M ${points[0].x} ${points[0].y-3}`
-      // path += `L ${points[1].x} ${points[1].y}`;
-      path += `L ${points[2].x} ${points[2].y+3}`
+      path += `M ${points[0].x} ${points[0].y - 3}`
+      // path += `L ${points[1].x} ${points[1].y}`
+      path += `L ${points[2].x} ${points[2].y + 3}`
     }
     return path
   }
