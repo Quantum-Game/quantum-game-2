@@ -2,6 +2,9 @@
 
 A puzzle game with photons, superposition and quantum measurement, right in your browser. With true quantum mechanics underneath!
 
+[![Centre for Quantum Technologies - National University of Singapore](https://img.shields.io/badge/Supported%20By-CQT,%20National%20University%20of%20Singapore-brightgreen.svg)](https://www.quantumlah.org/)
+[![Unitary Fund](https://img.shields.io/badge/Supported%20By-Unitary%20Fund-brightgreen.svg)](http://unitary.fund)
+
 **IN DEVELOPMENT - WE PLAN THE FIRST PUBLIC RELEASE FOR THIS WINTER BREAK**
 
 You can see the alpha version here: [alpha.quantumgame.io](https://alpha.quantumgame.io/).
