@@ -24,7 +24,6 @@
     />
 
     <!-- PULSATING CIRCLE -->
-    <!-- eslint-disable -->
     <!-- <g v-if="displayPulsation">
       <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
         <animate
