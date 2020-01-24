@@ -14,7 +14,7 @@
       <board-lasers :pathParticles="pathParticles" />
 
       <!-- FATE -->
-      <g class="fate">
+      <g v-if="displayFate" class="fate">
         <circle
           :cx="(fate.coord.x + 0.5) * tileSize"
           :cy="(fate.coord.y + 0.5) * tileSize"
@@ -214,10 +214,19 @@ export default class Board extends Vue {
   }
 
   /**
+   * Display fate if it isn't at default position
+   */
+  get displayFate(): boolean {
+    if (this.fate.coord.x === -1 && this.fate.coord.x === -1) {
+      return false
+    }
+    return true
+  }
+
+  /**
    * Compute fate cell position
    */
   computeFateStyle(): {} {
-    console.log(`FATE: ${this.fate.toString()}`)
     return {
       transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
         this.tileSize}px`
