@@ -1,13 +1,13 @@
 {
-  "name": "quantum",
-  "version": "0.1.0",
+  "name": "quantum-game",
+  "version": "2.1.26",
   "private": true,
   "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint --fix",
-    "deploy": "yarn build && firebase deploy",
+    "deploy": "yarn build && npm version patch && firebase deploy",
     "update-entries": "node src/utils/updateEntries"
   },
   "dependencies": {
