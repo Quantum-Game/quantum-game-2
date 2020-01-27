@@ -4,7 +4,7 @@
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
     <router-link to="/level/1">
-      <app-button type="big">PLAY</app-button>
+      <app-button type="big">PLAY (alpha: {{ version }})</app-button>
     </router-link>
     <br />
     <div class="hello">
@@ -17,8 +17,9 @@
         Visit us on
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
-        <a href="https://github.com/stared/quantum-game-2" target="_blank">Github</a> and
-        <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
+        <a href="https://github.com/stared/quantum-game-2" target="_blank">Github</a>
+        (this release: <a :href="commitPath" target="_blank">{{ commitHash }}</a
+        >) and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
       </h1>
       <p>
         Quantum Game is currently being developed by dr
@@ -50,12 +51,21 @@
 import { Vue, Component } from 'vue-property-decorator'
 import AppButton from '@/components/AppButton.vue'
 
+console.log('env', process.env)
+
 @Component({
   components: {
     AppButton
   }
 })
-export default class HomePage extends Vue {}
+export default class HomePage extends Vue {
+  version: string = process.env.VUE_APP_VERSION
+  commitHash: string = process.env.VUE_APP_GIT_HASH
+
+  get commitPath(): string {
+    return `https://github.com/Quantum-Game/quantum-game-2/commit/${this.commitHash}`
+  }
+}
 </script>
 
 <style lang="scss" scoped>
