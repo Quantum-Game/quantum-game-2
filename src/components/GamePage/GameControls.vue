@@ -35,6 +35,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import $userStore from '@/store/userStore'
+import Soundtract from '@/mixins/soundtrack'
 
 @Component
 export default class GameControls extends Vue {
@@ -43,7 +44,9 @@ export default class GameControls extends Vue {
   @Prop() readonly totalFrames!: number
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
-  soundFlag = true
+  soundFlag = false
+  soundtract?: Soundtract
+  volume = 10
 
   loadJsonLevelFromFile(event: Event): void {
     const reader = new FileReader()
@@ -61,6 +64,11 @@ export default class GameControls extends Vue {
 
   toggleSound(): void {
     this.soundFlag = !this.soundFlag
+    if (this.soundtract === undefined) {
+      this.soundtract = new Soundtract()
+      this.soundtract.setAndPlay(this.volume)
+    }
+    this.soundtract.setAllGenerative(this.soundFlag)
   }
 
   get playFlag(): boolean {

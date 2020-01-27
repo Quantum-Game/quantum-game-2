@@ -33,6 +33,7 @@
     "npm": "^6.13.4",
     "quantum-tensors": "^0.2.6",
     "register-service-worker": "^1.6.2",
+    "tone": "^13.8.25",
     "vue": "^2.6.10",
     "vue-confetti": "^2.0.5",
     "vue-css-donut-chart": "^1.1.6",
