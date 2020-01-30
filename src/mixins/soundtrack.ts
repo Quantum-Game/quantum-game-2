@@ -45,6 +45,7 @@ export default class Soundtrack {
   initializedFlag: boolean
   current_transport_position: ITransportPosition
   previous_transport_position: ITransportPosition
+  // effectSamplers: any[]
 
   constructor() {
     this.latency_hint = 'interactive'
@@ -396,105 +397,85 @@ export default class Soundtrack {
     )
   }
 
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  midiToName(_holder, _midi: number): string {
-    if (isNaN(_midi)) {
-      console.log('[Soundtrack, midiToName] _midi is NaN: ' + _midi + ' changed to 0')
-      _midi = 0
-    }
-    _midi = Math.floor(_midi)
-    if (_midi < 0) {
-      console.log('[Soundtrack, midiToName] _midi < 0: ' + _midi + ' changed to 0')
-      _midi = 0
-    }
-    if (_midi >= _holder.MIDI_NUM_NAMES) {
-      console.log(
-        `[Soundtrack, midiToName] _midi >= _holder.MIDI_NUM_NAMES:
-          ${_midi}
-          changed to _holder.MIDI_NUM_NAMES - 1
-          (
-          ${_holder.MIDI_NUM_NAMES - 1}
-          )`
-      )
-      _midi = _holder.MIDI_NUM_NAMES - 1
-    }
-    return _holder.MIDI_NUM_NAMES[_midi]
+  /**
+   * Useless ?
+   * @midi number
+   */
+  midiToName(midi: number): string {
+    return this.MIDI_NUM_NAMES[midi]
   }
 
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  nameToMidi(_holder, _name: string): number {
-    if (_name === null) {
-      console.log('[Soundtrack, nameToMidi] _name === null')
-      return -1
+  /**
+   * Find id from name
+   * FIXME: Could use a better data structure
+   * @param name
+   */
+  nameToMidi(name: string): number {
+    name = name.toUpperCase()
+    for (var i = 0; i < this.MIDI_NUM_NAMES.length; i++) {
+      if (name === this.MIDI_NUM_NAMES[i]) {
+        return i
+      }
     }
-    if (_name === undefined) {
-      console.log('[Soundtrack, nameToMidi] _name === undefined')
-      return -1
-    }
-    if (_name.length < 2) {
-      console.log('[Soundtrack, nameToMidi] _name.length < 2: ' + _name.length)
-      return -1
-    }
-    if (_name.length > 4) {
-      console.log('[Soundtrack, nameToMidi] _name.length > 4: ' + _name.length)
-      return -1
-    }
-    _name = _name.toUpperCase()
-    for (var i = 0; i < _holder.MIDI_NUM_NAMES.length; i++) {
-      if (_name === _holder.MIDI_NUM_NAMES[i]) return i
-    }
-    console.log('[Soundtrack, nameToMidi] unhandled _name: ' + _name)
+    console.log(`[Soundtrack, nameToMidi] unhandled _name: ' + ${name}`)
     return -1
   }
 
-  mtof(_midiNote: number): number {
-    return 440 * Math.pow(2, (_midiNote - 69) / 12)
+  /**
+   * Returns a midi note frequency
+   * @param midiNote
+   */
+  mtof(midiNote: number): number {
+    return 440 * Math.pow(2, (midiNote - 69) / 12)
   }
 
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  isNoteTuned(_holder, _n: number): boolean {
-    if (isNaN(_n)) return false
-    _n = Math.abs(Math.floor(_n))
-    _n = _n % 12
-    for (var i = 0; i < _holder.scales[_holder.currentScale].length; i++) {
-      var temp = _holder.scales[_holder.currentScale][i] + _holder.transpose
-      while (temp < 0) temp += 12
+  /**
+   * Is a note tuned?
+   * FIXME: What is holder?
+   * @param holder
+   * @param note
+   */
+  isNoteTuned(holder: any, note: number): boolean {
+    note = Math.abs(Math.floor(note))
+    note = note % 12
+    for (var i = 0; i < holder.scales[holder.currentScale].length; i++) {
+      var temp = holder.scales[holder.currentScale][i] + holder.transpose
+      while (temp < 0) {
+        temp += 12
+      }
       temp = temp % 12
-      if (temp === _n) return true
+      if (temp === note) {
+        return true
+      }
     }
     return false
   }
 
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  randomChord(_holder, _numberOfNotes, _min = 0, _max = 0) {
-    var result = []
-    if (isNaN(_numberOfNotes)) {
+  /**
+   * Seems to generate random chords
+   * @param holder
+   * @param nbNotes
+   * @param min
+   * @param max
+   */
+  randomChord(holder: any, nbNotes: number, min = 0, max = 0): number[] {
+    var result: number[] = []
+    nbNotes = Math.abs(Math.floor(nbNotes))
+    if (nbNotes < 1) {
       return result
     }
-    _numberOfNotes = Math.abs(Math.floor(_numberOfNotes))
-    if (_numberOfNotes < 1) {
-      return result
-    }
-    result[0] = _holder.randomNote(_holder, _min, _max)
-    for (var i = 1; i < _numberOfNotes; i++) {
-      result[i] = _holder.randomNote(_holder, _min, _max)
-      var temp_repeat = true
-      var temp_maxIterations = 100
-      var temp_iter = 0
+    result[0] = holder.randomNote(holder, min, max)
+    for (let i = 1; i < nbNotes; i++) {
+      result[i] = holder.randomNote(holder, min, max)
+      let temp_repeat = true
+      let temp_maxIterations = 100
+      let temp_iter = 0
       while (temp_repeat && temp_iter < temp_maxIterations) {
-        var temp_b = true
-        for (var j = 0; j < i; j++) {
-          // FIXME: potential typo
-          if (result[j === result[i]]) {
-            result[i] = _holder.randomNote(_holder, _min, _max)
+        let temp_b = true
+        for (let j = 0; j < i; j++) {
+          //FIXME: if (result[j === result[i]]) {
+          if (result[j] === result[i]) {
+            result[i] = holder.randomNote(holder, min, max)
             temp_b = false
             break
           }
@@ -506,44 +487,64 @@ export default class Soundtrack {
     return result
   }
 
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  randomNote(_holder, _min = 0, _max = 0): number {
-    if (isNaN(_min)) _min = 0
-    if (isNaN(_max)) _max = 0
-    _min = Math.abs(Math.floor(_min))
-    _max = Math.abs(Math.floor(_max))
-    if (_min == _max) return _min
-    if (_min > _max) {
-      var temp = _min
-      _min = _max
-      _max = temp
+  /**
+   * Seems to generate a random note
+   * @param holder
+   * @param min
+   * @param max
+   */
+  randomNote(holder: any, min = 0, max = 0): number {
+    min = Math.abs(Math.floor(min))
+    max = Math.abs(Math.floor(max))
+    if (min === max) {
+      return min
     }
-    var temp_range = _max - _min + 1
-    var result = Math.floor(Math.random() * temp_range) + _min
-    if (_holder.isNoteTuned(_holder, result) && result <= _max && result >= _min) return result
-    var dir = 1
-    if (Math.random() < 0.5) dir = -1
-    if (result > _max) dir = -1
-    if (result < _min) dir = 1
-    var rep = 0
-    var max_rep = 300
+    if (min > max) {
+      let temp = min
+      min = max
+      max = temp
+    }
+    let temp_range = max - min + 1
+    let result = Math.floor(Math.random() * temp_range) + min
+    if (holder.isNoteTuned(holder, result) && result <= max && result >= min) {
+      return result
+    }
+    let dir = 1
+    if (Math.random() < 0.5) {
+      dir = -1
+    }
+    if (result > max) {
+      dir = -1
+    }
+    if (result < min) {
+      dir = 1
+    }
+    let rep = 0
+    let max_rep = 300
     while (rep < max_rep) {
       result += dir
-      if (result < 0) result = 127
-      if (result > 127) result = 0
-      if (_holder.isNoteTuned(_holder, result) && result >= _min && result <= _max) return result
+      if (result < 0) {
+        result = 127
+      }
+      if (result > 127) {
+        result = 0
+      }
+      if (holder.isNoteTuned(holder, result) && result >= min && result <= max) {
+        return result
+      }
       rep += 1
     }
     return result
   }
 
+  /**
+   * Initialize
+   */
   init(): void {
     var temp_holder = this
     if (this.initializedFlag) {
       console.log(
-        '[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized'
+        `[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized`
       )
     } else {
       Tone.context.latencyHint = this.latency_hint
@@ -646,6 +647,7 @@ export default class Soundtrack {
       //this.synth4.connect(this.chorus);
       this.synth4.connect(this.feedbackDelay)
       this.synth4.connect(this.pingPongDelay)
+
       for (let i = 0; i < this.samples.length; i++) {
         this.effectSamplers[i] = new Tone.Sampler({ C4: this.samples[i] })
         this.effectSamplers[i].disconnect()
@@ -655,7 +657,7 @@ export default class Soundtrack {
         this.effectSamplers[i].volume.value = 0.3
         //this.effectSamplers[i].connect(this.limiter);
       }
-      Tone.Transport.scheduleRepeat(function(_time) {
+      Tone.Transport.scheduleRepeat((time: number) => {
         /*
           Really ugly part. Bacause callbacks triggered from the scheduler are
           not connected to the curent object itself (but to the global namespace)
@@ -859,172 +861,126 @@ export default class Soundtrack {
     }
   }
 
-  /*
-    Thanks to the temp_holder param this method may be used from callbacks.
-  */
-  generativePartVolume(_a, _b: number): void {
-    // _holder, _volume
-    var temp_holder, temp_volume
-    if (arguments.length === 1) {
-      temp_holder = this
-      temp_volume = _a
-    } else {
-      if (arguments.length === 2) {
-        temp_holder = _a
-        temp_volume = _b
-      } else {
-        console.log(
-          '[Soundtrack, generativePartVolume] incorrect number of arguments: ' + arguments.length
-        )
-      }
-    }
-    temp_holder._generativePartVolume(temp_holder, temp_volume)
+  /**
+   * Generative part volume
+   * @param holder
+   * @param volume
+   */
+  generativePartVolume(volume: number): void {
+    this.synth1.volume.value = this.synth1_base_volume_factor + volume
+    this.synth2.volume.value = this.synth2_base_volume_factor + volume
+    this.synth3.volume.value = this.synth3_base_volume_factor + volume
+    this.synth4.volume.value = this.synth4_base_volume_factor + volume
   }
+
+  // /*
+  //   Thanks to the temp_holder param this method may be used from callbacks.
+  // */
+  // effectVolume(_a, _b: number, _c: number): void {
+  //   // _holder, _effectNumber, _volume
+  //   var temp_holder, temp_effectNumber, temp_volume
+  //   if (arguments.length === 2) {
+  //     temp_holder = this
+  //     temp_effectNumber = _a
+  //     temp_volume = _b
+  //   } else {
+  //     if (arguments.length === 3) {
+  //       temp_holder = _a
+  //       temp_effectNumber = _b
+  //       temp_volume = _c
+  //     } else {
+  //       console.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
+  //     }
+  //   }
+  //   temp_holder._effectVolume(temp_holder, temp_effectNumber, temp_volume)
+  // }
 
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  _generativePartVolume(_holder, _volume: number): void {
-    if (isNaN(_volume)) {
-      console.log('[Soundtrack, _generativePartVolume] _normPitch is NaN; ' + _volume)
-      return
+  effectVolume(effectNumber: number, volume: number): void {
+    if (volume < 0.0) {
+      console.log('[Soundtrack, _effectVolume] volume < 0.0: ' + volume + ' changed to 0.0')
+      volume = 0.0
     }
-    _holder.synth1.volume.value = _holder.synth1_base_volume_factor + _volume
-    _holder.synth2.volume.value = _holder.synth2_base_volume_factor + _volume
-    _holder.synth3.volume.value = _holder.synth3_base_volume_factor + _volume
-    _holder.synth4.volume.value = _holder.synth4_base_volume_factor + _volume
-  }
-
-  /*
-    Thanks to the temp_holder param this method may be used from callbacks.
-  */
-  effectVolume(_a, _b: number, _c: number): void {
-    // _holder, _effectNumber, _volume
-    var temp_holder, temp_effectNumber, temp_volume
-    if (arguments.length === 2) {
-      temp_holder = this
-      temp_effectNumber = _a
-      temp_volume = _b
-    } else {
-      if (arguments.length === 3) {
-        temp_holder = _a
-        temp_effectNumber = _b
-        temp_volume = _c
-      } else {
-        console.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
-      }
+    if (volume > 1.0) {
+      console.log('[Soundtrack, _effectVolume] volume > 1.0: ' + volume + ' changed to 1.0')
+      volume = 1.0
     }
-    temp_holder._effectVolume(temp_holder, temp_effectNumber, temp_volume)
-  }
-
-  /*
-    Thanks to the _holder param this method may be used from callbacks.
-  */
-  _effectVolume(_holder, _effectNumber: number, _volume: number): void {
-    if (isNaN(_effectNumber)) {
-      console.log('[Soundtrack, _effectVolume] _effectNumber is NaN; ' + _effectNumber)
-      return
+    effectNumber = Math.floor(effectNumber)
+    if (effectNumber < 0) {
+      console.log('[Soundtrack, _effectVolume] effectNumber < 0: ' + effectNumber + ' changed to 0')
+      effectNumber = 0
     }
-    if (isNaN(_volume)) {
-      console.log('[Soundtrack, _effectVolume] _normPitch is NaN; ' + _volume)
-      return
-    }
-    if (_volume < 0.0) {
-      console.log('[Soundtrack, _effectVolume] _volume < 0.0: ' + _volume + ' changed to 0.0')
-      _volume = 0.0
-    }
-    if (_volume > 1.0) {
-      console.log('[Soundtrack, _effectVolume] _volume > 1.0: ' + _volume + ' changed to 1.0')
-      _volume = 1.0
-    }
-    _effectNumber = Math.floor(_effectNumber)
-    if (_effectNumber < 0) {
+    if (effectNumber >= this.samples.length) {
       console.log(
-        '[Soundtrack, _effectVolume] _effectNumber < 0: ' + _effectNumber + ' changed to 0'
+        `[Soundtrack, _effectVolume] effectNumber >= this.samples.length: ' +
+          ${effectNumber} changed to this.samples.length - 1 (
+          ${this.samples.length - 1})`
       )
-      _effectNumber = 0
+      effectNumber = this.samples.length - 1
     }
-    if (_effectNumber >= _holder.samples.length) {
-      console.log(
-        `[Soundtrack, _effectVolume] _effectNumber >= this.samples.length: ' +
-          ${_effectNumber} changed to this.samples.length - 1 (
-          ${_holder.samples.length - 1})`
-      )
-      _effectNumber = _holder.samples.length - 1
-    }
-    _holder.effectSamplers[_effectNumber].volume.value = _volume
+    this.effectSamplers[effectNumber].volume.value = volume
   }
 
-  /*
-    Thanks to the temp_holder param this method may be used from callbacks.
-  */
-  triggerEffect(_a, _b: number, _c: number): void {
-    // _holder, _effectNumber, _pitch
-    var temp_holder, temp_effectNumber, temp_pitch
-    if (arguments.length === 2) {
-      temp_holder = this
-      temp_effectNumber = _a
-      temp_pitch = _b
-    } else {
-      if (arguments.length === 3) {
-        temp_holder = _a
-        temp_effectNumber = _b
-        temp_pitch = _c
-      } else {
-        console.log(
-          '[Soundtrack, triggerEffect] incorrect number of arguments: ' + arguments.length
-        )
-      }
-    }
-    temp_holder._triggerEffect(temp_holder, temp_effectNumber, temp_pitch)
-  }
+  // /*
+  //   Thanks to the temp_holder param this method may be used from callbacks.
+  // */
+  // triggerEffect(_a, _b: number, _c: number): void {
+  //   // _holder, _effectNumber, _pitch
+  //   var temp_holder, temp_effectNumber, temp_pitch
+  //   if (arguments.length === 2) {
+  //     temp_holder = this
+  //     temp_effectNumber = _a
+  //     temp_pitch = _b
+  //   } else {
+  //     if (arguments.length === 3) {
+  //       temp_holder = _a
+  //       temp_effectNumber = _b
+  //       temp_pitch = _c
+  //     } else {
+  //       console.log(
+  //         '[Soundtrack, triggerEffect] incorrect number of arguments: ' + arguments.length
+  //       )
+  //     }
+  //   }
+  //   temp_holder._triggerEffect(temp_holder, temp_effectNumber, temp_pitch)
+  // }
 
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  _triggerEffect(_holder, _effectNumber: number, _normPitch: number) {
-    if (isNaN(_effectNumber)) {
-      console.log('[Soundtrack, _triggerEffect] _effectNumber is NaN; ' + _effectNumber)
-      return
+  triggerEffect(effectNumber: number, normPitch: number) {
+    if (normPitch < 0.0) {
+      console.log('[Soundtrack, _triggerEffect] normPitch < 0.0: ' + normPitch + ' changed to 0.0')
+      normPitch = 0.0
     }
-    if (isNaN(_normPitch)) {
-      console.log('[Soundtrack, _triggerEffect] _normPitch is NaN; ' + _normPitch)
-      return
+    if (normPitch > 1.0) {
+      console.log('[Soundtrack, _triggerEffect] normPitch > 1.0: ' + normPitch + ' changed to 1.0')
+      normPitch = 1.0
     }
-    if (_normPitch < 0.0) {
+    effectNumber = Math.floor(effectNumber)
+    if (effectNumber < 0) {
       console.log(
-        '[Soundtrack, _triggerEffect] _normPitch < 0.0: ' + _normPitch + ' changed to 0.0'
+        '[Soundtrack, _triggerEffect] effectNumber < 0: ' + effectNumber + ' changed to 0'
       )
-      _normPitch = 0.0
+      effectNumber = 0
     }
-    if (_normPitch > 1.0) {
+    if (effectNumber >= this.samples.length) {
       console.log(
-        '[Soundtrack, _triggerEffect] _normPitch > 1.0: ' + _normPitch + ' changed to 1.0'
-      )
-      _normPitch = 1.0
-    }
-    _effectNumber = Math.floor(_effectNumber)
-    if (_effectNumber < 0) {
-      console.log(
-        '[Soundtrack, _triggerEffect] _effectNumber < 0: ' + _effectNumber + ' changed to 0'
-      )
-      _effectNumber = 0
-    }
-    if (_effectNumber >= _holder.samples.length) {
-      console.log(
-        `[Soundtrack, _triggerEffect] _effectNumber >= this.samples.length:
-          ${_effectNumber}
+        `[Soundtrack, _triggerEffect] effectNumber >= this.samples.length:
+          ${effectNumber}
           changed to this.samples.length - 1
           (
-          ${_holder.samples.length - 1}
+          ${this.samples.length - 1}
           )`
       )
-      _effectNumber = _holder.samples.length - 1
+      effectNumber = this.samples.length - 1
     }
-    var temp_midi = _holder.nameToMidi(_holder, 'C4') + Math.floor(_normPitch * 25.0) - 12
-    var temp_noteName = _holder.midiToName(_holder, temp_midi)
-    if (_holder.effectSamplers[_effectNumber].loaded) {
-      _holder.effectSamplers[_effectNumber].triggerAttack(temp_noteName)
+    var temp_midi = this.nameToMidi('C4') + Math.floor(normPitch * 25.0) - 12
+    var temp_noteName = this.midiToName(temp_midi)
+    if (this.effectSamplers[effectNumber].loaded) {
+      this.effectSamplers[effectNumber].triggerAttack(temp_noteName)
       //console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + temp_midi + " " + temp_noteName);
     } else {
       console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
