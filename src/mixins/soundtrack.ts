@@ -291,7 +291,7 @@ export default class Soundtrack {
 
   /**
    * Get generative track status string
-   * Thanks to the temp_holder param this method may be used from callbacks.
+   * Thanks to the this param this method may be used from callbacks.
    * @param trackNumber
    */
   getGenerativeTrackStatusAsString(trackNumber: number): string {
@@ -300,7 +300,7 @@ export default class Soundtrack {
 
   /**
    * Get generative track status string
-   * Thanks to the temp_holder param this method may be used from callbacks.
+   * Thanks to the this param this method may be used from callbacks.
    * @param trackNumber
    */
   getGenerativeTrackStatus(trackNumber: number): boolean {
@@ -422,15 +422,14 @@ export default class Soundtrack {
 
   /**
    * Is a note tuned?
-   * FIXME: What is holder?
-   * @param holder
+   * FIXME: What is this?
    * @param note
    */
-  isNoteTuned(holder: any, note: number): boolean {
+  isNoteTuned(note: number): boolean {
     note = Math.abs(Math.floor(note))
     note = note % 12
-    for (let i = 0; i < holder.scales[holder.currentScale].length; i++) {
-      let temp = holder.scales[holder.currentScale][i] + holder.transpose
+    for (let i = 0; i < this.scales[this.currentScale].length; i++) {
+      let temp = this.scales[this.currentScale][i] + this.transpose
       while (temp < 0) {
         temp += 12
       }
@@ -444,20 +443,19 @@ export default class Soundtrack {
 
   /**
    * Seems to generate random chords
-   * @param holder
    * @param nbNotes
    * @param min
    * @param max
    */
-  randomChord(holder: any, nbNotes: number, min = 0, max = 0): number[] {
+  randomChord(nbNotes: number, min = 0, max = 0): number[] {
     const result: number[] = []
     nbNotes = Math.abs(Math.floor(nbNotes))
     if (nbNotes < 1) {
       return result
     }
-    result[0] = holder.randomNote(holder, min, max)
+    result[0] = this.randomNote(min, max)
     for (let i = 1; i < nbNotes; i++) {
-      result[i] = holder.randomNote(holder, min, max)
+      result[i] = this.randomNote(min, max)
       let temp_repeat = true
       const temp_maxIterations = 100
       let temp_iter = 0
@@ -465,7 +463,7 @@ export default class Soundtrack {
         let temp_b = true
         for (let j = 0; j < i; j++) {
           if (result[j] === result[i]) {
-            result[i] = holder.randomNote(holder, min, max)
+            result[i] = this.randomNote(min, max)
             temp_b = false
             break
           }
@@ -479,11 +477,10 @@ export default class Soundtrack {
 
   /**
    * Seems to generate a random note
-   * @param holder
    * @param min
    * @param max
    */
-  randomNote(holder: any, min = 0, max = 0): number {
+  randomNote(min = 0, max = 0): number {
     min = Math.abs(Math.floor(min))
     max = Math.abs(Math.floor(max))
     if (min === max) {
@@ -496,7 +493,7 @@ export default class Soundtrack {
     }
     const temp_range = max - min + 1
     let result = Math.floor(Math.random() * temp_range) + min
-    if (holder.isNoteTuned(holder, result) && result <= max && result >= min) {
+    if (this.isNoteTuned(result) && result <= max && result >= min) {
       return result
     }
     let dir = 1
@@ -519,7 +516,7 @@ export default class Soundtrack {
       if (result > 127) {
         result = 0
       }
-      if (holder.isNoteTuned(holder, result) && result >= min && result <= max) {
+      if (this.isNoteTuned(result) && result >= min && result <= max) {
         return result
       }
       rep += 1
@@ -531,7 +528,6 @@ export default class Soundtrack {
    * Initialize
    */
   init(): void {
-    var temp_holder = this // THIS NEED TO GO
     if (this.initializedFlag) {
       console.log(
         `[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized`
@@ -647,63 +643,60 @@ export default class Soundtrack {
         this.effectSamplers[i].volume.value = 0.3
         // this.effectSamplers[i].connect(this.limiter);
       }
-      Tone.Transport.scheduleRepeat((time: number) => {
+      Tone.Transport.scheduleRepeat((_time: number) => {
         /*
           Really ugly part. Bacause callbacks triggered from the scheduler are
           not connected to the curent object itself (but to the global namespace)
           we have to use the object's name explicitly...
         */
-        temp_holder.copyTransportPosition(
-          temp_holder.current_transport_position,
-          temp_holder.previous_transport_position
+        this.copyTransportPosition(
+          this.current_transport_position,
+          this.previous_transport_position
         )
-        temp_holder.parseTransportPosition(
-          temp_holder.current_transport_position,
-          Tone.Transport.position
-        )
+        this.parseTransportPosition(this.current_transport_position, Tone.Transport.position)
         // ****************************** scale ****************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.current_transport_position.bars % 2 === 0 &&
+          this.current_transport_position.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          const temp_scale = Math.floor(Math.random() * temp_holder.scales.length)
-          temp_holder.currentScale = temp_scale
+          const temp_scale = Math.floor(Math.random() * this.scales.length)
+          this.currentScale = temp_scale
           console.log('scale = ' + temp_scale)
         }
         // **************************** transpose **************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.current_transport_position.bars % 2 === 0 &&
+          this.current_transport_position.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          const temp_transpose = Math.floor(Math.random() * temp_holder.transpositions.length)
-          temp_holder.transpose = temp_holder.transpositions[temp_transpose]
+          const temp_transpose = Math.floor(Math.random() * this.transpositions.length)
+          this.transpose = this.transpositions[temp_transpose]
           console.log('transpose = ' + temp_transpose)
         }
         // ***************************** synth 1 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.useSynth1Flag
+          this.useSynth1Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 0 &&
-            (Math.random() > 0.6 || temp_holder.synth1_ghostNoteTriggeredFlag)
+            this.current_transport_position.bars % 2 === 0 &&
+            (Math.random() > 0.6 || this.synth1_ghostNoteTriggeredFlag)
           ) {
-            temp_holder.synth1_ghostNoteTriggeredFlag = false
-            const temp_chord = temp_holder.randomChord(temp_holder, 4, 40, 60)
+            this.synth1_ghostNoteTriggeredFlag = false
+            const temp_chord = this.randomChord(4, 40, 60)
             for (let i = 0; i < temp_chord.length; i++) {
               let temp_b = true
               for (let j = 0; j < i; j++) {
@@ -713,26 +706,26 @@ export default class Soundtrack {
                 }
               }
               if (temp_b) {
-                temp_holder.synth1.triggerAttackRelease(temp_holder.mtof(temp_chord[i]), '1n')
+                this.synth1.triggerAttackRelease(this.mtof(temp_chord[i]), '1n')
               }
             }
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.current_transport_position.bars % 2 !== 0 &&
-          temp_holder.current_transport_position.beats === 0 &&
-          temp_holder.current_transport_position.quarters === 3 &&
+          this.current_transport_position.bars % 2 !== 0 &&
+          this.current_transport_position.beats === 0 &&
+          this.current_transport_position.quarters === 3 &&
           Math.random() > 0.7 &&
-          temp_holder.useSynth1Flag
+          this.useSynth1Flag
         ) {
-          temp_holder.synth1_ghostNoteTriggeredFlag = true
-          // console.log(temp_holder.current_transport_position.bits + ' ' + temp_holder.current_transport_position.quarters);
-          const temp_chord_bis = temp_holder.randomChord(temp_holder, 3, 40, 60)
+          this.synth1_ghostNoteTriggeredFlag = true
+          // console.log(this.current_transport_position.bits + ' ' + this.current_transport_position.quarters);
+          const temp_chord_bis = this.randomChord(3, 40, 60)
           for (let i = 0; i < temp_chord_bis.length; i++) {
             let temp_b_bis = true
             for (let j = 0; j < i; j++) {
@@ -742,106 +735,95 @@ export default class Soundtrack {
               }
             }
             if (temp_b_bis) {
-              temp_holder.synth1.triggerAttackRelease(temp_holder.mtof(temp_chord_bis[i]), '4n')
+              this.synth1.triggerAttackRelease(this.mtof(temp_chord_bis[i]), '4n')
             }
           }
         }
         // ***************************** synth 2 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.useSynth2Flag
+          this.useSynth2Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 1 &&
-            (Math.random() > 0.7 || temp_holder.synth2_ghostNoteTriggeredFlag)
+            this.current_transport_position.bars % 2 === 1 &&
+            (Math.random() > 0.7 || this.synth2_ghostNoteTriggeredFlag)
           ) {
-            temp_holder.synth2_ghostNoteTriggeredFlag = false
-            temp_holder.synth2.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 56, 90)),
-              '16n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth2_ghostNoteTriggeredFlag = false
+            this.synth2.triggerAttackRelease(this.mtof(this.randomNote(56, 90)), '16n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.current_transport_position.bars % 2 !== 1 &&
-          temp_holder.current_transport_position.beats === 0 &&
-          temp_holder.current_transport_position.quarters === 3 &&
+          this.current_transport_position.bars % 2 !== 1 &&
+          this.current_transport_position.beats === 0 &&
+          this.current_transport_position.quarters === 3 &&
           Math.random() > 0.7 &&
-          temp_holder.useSynth2Flag
+          this.useSynth2Flag
         ) {
-          temp_holder.synth2_ghostNoteTriggeredFlag = true
-          temp_holder.synth2.triggerAttackRelease(
-            temp_holder.mtof(temp_holder.randomNote(temp_holder, 56, 90)),
-            '16n'
-          )
+          this.synth2_ghostNoteTriggeredFlag = true
+          this.synth2.triggerAttackRelease(this.mtof(this.randomNote(56, 90)), '16n')
         }
         // ***************************** synth 3 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.useSynth3Flag
+          this.useSynth3Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 0 &&
-            (Math.random() > 0.5 || temp_holder.synth3_ghostNoteTriggeredFlag)
+            this.current_transport_position.bars % 2 === 0 &&
+            (Math.random() > 0.5 || this.synth3_ghostNoteTriggeredFlag)
           ) {
-            temp_holder.synth3_ghostNoteTriggeredFlag = false
-            temp_holder.synth3.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 30, 48)),
-              '1n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth3_ghostNoteTriggeredFlag = false
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(30, 48)), '1n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.useSynth3Flag
+          this.useSynth3Flag
         ) {
           if (
-            temp_holder.current_transport_position.quarters === 2 &&
-            (Math.random() > 0.5 || temp_holder.synth3_ghostNoteTriggeredFlag)
+            this.current_transport_position.quarters === 2 &&
+            (Math.random() > 0.5 || this.synth3_ghostNoteTriggeredFlag)
           ) {
-            temp_holder.synth3_ghostNoteTriggeredFlag = false
-            temp_holder.synth3.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 30, 48)),
-              '2n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth3_ghostNoteTriggeredFlag = false
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(30, 48)), '2n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         // ***************************** synth 4 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.current_transport_position,
+            this.previous_transport_position
           ) &&
-          temp_holder.useSynth4Flag
+          this.useSynth4Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 4 === 0 &&
-            (Math.random() > 0.0 || temp_holder.synth4_ghostNoteTriggeredFlag)
+            this.current_transport_position.bars % 4 === 0 &&
+            (Math.random() > 0.0 || this.synth4_ghostNoteTriggeredFlag)
           ) {
             console.log(Math.random())
-            temp_holder.synth4_ghostNoteTriggeredFlag = false
-            temp_holder.synth4.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 26, 46)),
-              '1m'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth4_ghostNoteTriggeredFlag = false
+            this.synth4.triggerAttackRelease(this.mtof(this.randomNote(26, 46)), '1m')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
       }, '16n')
@@ -853,7 +835,6 @@ export default class Soundtrack {
 
   /**
    * Generative part volume
-   * @param holder
    * @param volume
    */
   generativePartVolume(volume: number): void {
@@ -864,29 +845,29 @@ export default class Soundtrack {
   }
 
   // /*
-  //   Thanks to the temp_holder param this method may be used from callbacks.
+  //   Thanks to the this param this method may be used from callbacks.
   // */
   // effectVolume(_a, _b: number, _c: number): void {
-  //   // _holder, _effectNumber, _volume
-  //   var temp_holder, temp_effectNumber, temp_volume
+  //   // _this, _effectNumber, _volume
+  //   var this, temp_effectNumber, temp_volume
   //   if (arguments.length === 2) {
-  //     temp_holder = this
+  //     this = this
   //     temp_effectNumber = _a
   //     temp_volume = _b
   //   } else {
   //     if (arguments.length === 3) {
-  //       temp_holder = _a
+  //       this = _a
   //       temp_effectNumber = _b
   //       temp_volume = _c
   //     } else {
   //       console.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
   //     }
   //   }
-  //   temp_holder._effectVolume(temp_holder, temp_effectNumber, temp_volume)
+  //   this._effectVolume(temp_effectNumber, temp_volume)
   // }
 
   /*
-    Thanks to the _holder param this method may be used from callbacks.
+    Thanks to the _this param this method may be used from callbacks.
   */
   effectVolume(effectNumber: number, volume: number): void {
     if (volume < 0.0) {
@@ -914,18 +895,18 @@ export default class Soundtrack {
   }
 
   // /*
-  //   Thanks to the temp_holder param this method may be used from callbacks.
+  //   Thanks to the this param this method may be used from callbacks.
   // */
   // triggerEffect(_a, _b: number, _c: number): void {
-  //   // _holder, _effectNumber, _pitch
-  //   var temp_holder, temp_effectNumber, temp_pitch
+  //   // _this, _effectNumber, _pitch
+  //   var this, temp_effectNumber, temp_pitch
   //   if (arguments.length === 2) {
-  //     temp_holder = this
+  //     this = this
   //     temp_effectNumber = _a
   //     temp_pitch = _b
   //   } else {
   //     if (arguments.length === 3) {
-  //       temp_holder = _a
+  //       this = _a
   //       temp_effectNumber = _b
   //       temp_pitch = _c
   //     } else {
@@ -934,11 +915,11 @@ export default class Soundtrack {
   //       )
   //     }
   //   }
-  //   temp_holder._triggerEffect(temp_holder, temp_effectNumber, temp_pitch)
+  //   this._triggerEffect(temp_effectNumber, temp_pitch)
   // }
 
   /*
-    Thanks to the _holder param this method may be used from callbacks.
+    Thanks to the _this param this method may be used from callbacks.
   */
   triggerEffect(effectNumber: number, normPitch: number): void {
     if (normPitch < 0.0) {
@@ -971,7 +952,7 @@ export default class Soundtrack {
     const temp_noteName = this.midiToName(temp_midi)
     if (this.effectSamplers[effectNumber].loaded) {
       this.effectSamplers[effectNumber].triggerAttack(temp_noteName)
-      // console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + temp_midi + " " + temp_noteName);
+      // console.log("[Soundtrack, _triggerEffect] start " + _this + " " + temp_midi + " " + temp_noteName);
     } else {
       console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
     }
