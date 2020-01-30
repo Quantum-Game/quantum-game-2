@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import * as Tone from 'tone'
 
 interface ITransportPosition {
@@ -251,6 +253,7 @@ export default class Soundtrack {
       quarters: 0,
       ticks: 0 // not sure if this is expressed in ticks
     }
+    this.effectSamplers = []
   }
 
   /**
@@ -658,7 +661,7 @@ export default class Soundtrack {
         this.effectSamplers[i].volume.value = 0.3
         // this.effectSamplers[i].connect(this.limiter);
       }
-      Tone.Transport.scheduleRepeat((_time: number) => {
+      Tone.Transport.scheduleRepeat(() => {
         /*
           Really ugly part. Bacause callbacks triggered from the scheduler are
           not connected to the curent object itself (but to the global namespace)
