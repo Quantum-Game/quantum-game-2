@@ -1,7 +1,3 @@
-/* eslint-disable */
-
-// not yet working TS
-
 import * as Tone from 'tone'
 
 interface ITransportPosition {
@@ -12,7 +8,7 @@ interface ITransportPosition {
 }
 
 export default class Soundtrack {
-  latency_hint: string
+  latencyHint: string
   MIDI_NUM_NAMES: string[]
   samples: string[]
   scales: number[][]
@@ -26,29 +22,29 @@ export default class Soundtrack {
   hip1: any
   synth1: any
   synth2: any
-  synth2_freeverb: any
+  synth2Freeverb: any
   synth3: any
   synth4: any
   effectSamplers = []
-  synth1_base_volume_factor: number
-  synth2_base_volume_factor: number
-  synth3_base_volume_factor: number
-  synth4_base_volume_factor: number
-  synth1_ghostNoteTriggeredFlag: boolean
-  synth2_ghostNoteTriggeredFlag: boolean
-  synth3_ghostNoteTriggeredFlag: boolean
-  synth4_ghostNoteTriggeredFlag: boolean
+  synth1BaseVolumeFactor: number
+  synth2BaseVolumeFactor: number
+  synth3BaseVolumeFactor: number
+  synth4BaseVolumeFactor: number
+  synth1GhostNoteTriggeredFlag: boolean
+  synth2GhostNoteTriggeredFlag: boolean
+  synth3GhostNoteTriggeredFlag: boolean
+  synth4GhostNoteTriggeredFlag: boolean
   useSynth1Flag: boolean
   useSynth2Flag: boolean
   useSynth3Flag: boolean
   useSynth4Flag: boolean
   initializedFlag: boolean
-  current_transport_position: ITransportPosition
-  previous_transport_position: ITransportPosition
+  currentTransportPosition: ITransportPosition
+  previousTransportPosition: ITransportPosition
   // effectSamplers: any[]
 
   constructor() {
-    this.latency_hint = 'interactive'
+    this.latencyHint = 'interactive'
     this.MIDI_NUM_NAMES = [
       'C_1',
       'C#_1',
@@ -220,36 +216,36 @@ export default class Soundtrack {
     this.currentScale = 1
     this.transpositions = [-12, -10, -8, -6]
     this.transpose = this.transpositions[0]
-    this.limiter
-    this.feedbackDelay
-    this.pingPongDelay
-    this.chorus
-    this.hip1
-    this.synth1 // "thinking" synth
-    this.synth2, this.synth2_freeverb
-    this.synth3
-    this.synth4
+    // this.limiter
+    // this.feedbackDelay
+    // this.pingPongDelay
+    // this.chorus
+    // this.hip1
+    // this.synth1 // "thinking" synth
+    // this.synth2, this.synth2Freeverb
+    // this.synth3
+    // this.synth4
     this.effectSamplers = []
-    this.synth1_base_volume_factor = 0
-    this.synth2_base_volume_factor = -19
-    this.synth3_base_volume_factor = -1
-    this.synth4_base_volume_factor = -3
-    this.synth1_ghostNoteTriggeredFlag = false
-    this.synth2_ghostNoteTriggeredFlag = false
-    this.synth3_ghostNoteTriggeredFlag = false
-    this.synth4_ghostNoteTriggeredFlag = false
+    this.synth1BaseVolumeFactor = 0
+    this.synth2BaseVolumeFactor = -19
+    this.synth3BaseVolumeFactor = -1
+    this.synth4BaseVolumeFactor = -3
+    this.synth1GhostNoteTriggeredFlag = false
+    this.synth2GhostNoteTriggeredFlag = false
+    this.synth3GhostNoteTriggeredFlag = false
+    this.synth4GhostNoteTriggeredFlag = false
     this.useSynth1Flag = true
     this.useSynth2Flag = true
     this.useSynth3Flag = true
     this.useSynth4Flag = true
     this.initializedFlag = false
-    this.current_transport_position = {
+    this.currentTransportPosition = {
       bars: 0,
       beats: 0,
       quarters: 0,
       ticks: 0 // not sure if this is expressed in ticks
     }
-    this.previous_transport_position = {
+    this.previousTransportPosition = {
       bars: 0,
       beats: 0,
       quarters: 0,
@@ -257,7 +253,11 @@ export default class Soundtrack {
     }
   }
 
-  setAndPlay(volume = 10) {
+  /**
+   * Launch generative music at specific volume
+   * @param volume
+   */
+  setAndPlay(volume = 10): void {
     this.init()
     this.generativePartVolume(volume)
     this.setAllGenerative(true)
@@ -376,19 +376,19 @@ export default class Soundtrack {
    * @param rawTransportData
    */
   parseTransportPosition(dst: ITransportPosition, rawTransportData: string): void {
-    let segments_a = rawTransportData.split(':')
-    dst.bars = parseInt(segments_a[0])
-    dst.beats = parseInt(segments_a[1])
-    let segments_b = segments_a[2].split('.')
-    dst.quarters = parseInt(segments_b[0])
-    dst.ticks = parseInt(segments_b[1])
+    const segmentsA = rawTransportData.split(':')
+    dst.bars = parseInt(segmentsA[0])
+    dst.beats = parseInt(segmentsA[1])
+    const segmentsB = segmentsA[2].split('.')
+    dst.quarters = parseInt(segmentsB[0])
+    dst.ticks = parseInt(segmentsB[1])
   }
 
   /**
    * Get system milliseconds
    */
   systemMillis(): number {
-    var d = new Date()
+    const d = new Date()
     return (
       d.getMilliseconds() +
       d.getSeconds() * 1000.0 +
@@ -412,7 +412,7 @@ export default class Soundtrack {
    */
   nameToMidi(name: string): number {
     name = name.toUpperCase()
-    for (var i = 0; i < this.MIDI_NUM_NAMES.length; i++) {
+    for (let i = 0; i < this.MIDI_NUM_NAMES.length; i++) {
       if (name === this.MIDI_NUM_NAMES[i]) {
         return i
       }
@@ -438,8 +438,8 @@ export default class Soundtrack {
   isNoteTuned(holder: any, note: number): boolean {
     note = Math.abs(Math.floor(note))
     note = note % 12
-    for (var i = 0; i < holder.scales[holder.currentScale].length; i++) {
-      var temp = holder.scales[holder.currentScale][i] + holder.transpose
+    for (let i = 0; i < holder.scales[holder.currentScale].length; i++) {
+      let temp = holder.scales[holder.currentScale][i] + holder.transpose
       while (temp < 0) {
         temp += 12
       }
@@ -459,7 +459,7 @@ export default class Soundtrack {
    * @param max
    */
   randomChord(holder: any, nbNotes: number, min = 0, max = 0): number[] {
-    var result: number[] = []
+    const result: number[] = []
     nbNotes = Math.abs(Math.floor(nbNotes))
     if (nbNotes < 1) {
       return result
@@ -467,21 +467,23 @@ export default class Soundtrack {
     result[0] = holder.randomNote(holder, min, max)
     for (let i = 1; i < nbNotes; i++) {
       result[i] = holder.randomNote(holder, min, max)
-      let temp_repeat = true
-      let temp_maxIterations = 100
-      let temp_iter = 0
-      while (temp_repeat && temp_iter < temp_maxIterations) {
-        let temp_b = true
+      let tempRepeat = true
+      const tempMaxIterations = 100
+      let tempIter = 0
+      while (tempRepeat && tempIter < tempMaxIterations) {
+        let tempB = true
         for (let j = 0; j < i; j++) {
-          //FIXME: if (result[j === result[i]]) {
+          // FIXME: if (result[j === result[i]]) {
           if (result[j] === result[i]) {
             result[i] = holder.randomNote(holder, min, max)
-            temp_b = false
+            tempB = false
             break
           }
-          if (temp_b) temp_repeat = false
+          if (tempB) {
+            tempRepeat = false
+          }
         }
-        temp_iter += 1
+        tempIter += 1
       }
     }
     return result
@@ -500,12 +502,12 @@ export default class Soundtrack {
       return min
     }
     if (min > max) {
-      let temp = min
+      const temp = min
       min = max
       max = temp
     }
-    let temp_range = max - min + 1
-    let result = Math.floor(Math.random() * temp_range) + min
+    const tempRange = max - min + 1
+    let result = Math.floor(Math.random() * tempRange) + min
     if (holder.isNoteTuned(holder, result) && result <= max && result >= min) {
       return result
     }
@@ -520,8 +522,8 @@ export default class Soundtrack {
       dir = 1
     }
     let rep = 0
-    let max_rep = 300
-    while (rep < max_rep) {
+    const maxRep = 300
+    while (rep < maxRep) {
       result += dir
       if (result < 0) {
         result = 127
@@ -541,13 +543,12 @@ export default class Soundtrack {
    * Initialize
    */
   init(): void {
-    var temp_holder = this
     if (this.initializedFlag) {
       console.log(
         `[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized`
       )
     } else {
-      Tone.context.latencyHint = this.latency_hint
+      Tone.context.latencyHint = this.latencyHint
       this.limiter = new Tone.Limiter({ threshold: -2 })
       this.limiter.disconnect()
       this.limiter.toMaster()
@@ -569,23 +570,23 @@ export default class Soundtrack {
       this.synth1.disconnect()
       this.synth1.connect(this.feedbackDelay)
       this.synth1.connect(this.pingPongDelay)
-      this.synth1.volume.value = this.synth1_base_volume_factor
-      this.synth2_freeverb = new Tone.Freeverb({
+      this.synth1.volume.value = this.synth1BaseVolumeFactor
+      this.synth2Freeverb = new Tone.Freeverb({
         roomSize: 0.97,
         dampening: 500,
         wet: 1.0,
         dry: 0.0
       })
-      this.synth2_freeverb.disconnect()
+      this.synth2Freeverb.disconnect()
       this.synth2 = new Tone.PolySynth(1, Tone.Synth, {
         oscillator: { type: 'sine' },
         envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.3 }
       })
       this.synth2.disconnect()
       this.synth2.connect(this.chorus)
-      this.synth2.connect(this.synth2_freeverb)
-      this.synth2_freeverb.connect(this.hip1)
-      this.synth2.volume.value = this.synth2_base_volume_factor
+      this.synth2.connect(this.synth2Freeverb)
+      this.synth2Freeverb.connect(this.hip1)
+      this.synth2.volume.value = this.synth2BaseVolumeFactor
       this.synth3 = new Tone.AMSynth({
         harmonicity: 0.5,
         oscillator: {
@@ -612,7 +613,7 @@ export default class Soundtrack {
           release: 0.4
         }
       })
-      this.synth3.volume.value = this.synth3_base_volume_factor
+      this.synth3.volume.value = this.synth3BaseVolumeFactor
       this.synth3.disconnect()
       this.synth3.connect(this.limiter)
       this.synth4 = new Tone.AMSynth({
@@ -641,217 +642,196 @@ export default class Soundtrack {
           release: 1.4
         }
       })
-      this.synth4.volume.value = this.synth4_base_volume_factor
+      this.synth4.volume.value = this.synth4BaseVolumeFactor
       this.synth4.disconnect()
-      //this.synth4.connect(this.synth2_freeverb);
-      //this.synth4.connect(this.chorus);
+      // this.synth4.connect(this.synth2Freeverb);
+      // this.synth4.connect(this.chorus);
       this.synth4.connect(this.feedbackDelay)
       this.synth4.connect(this.pingPongDelay)
 
       for (let i = 0; i < this.samples.length; i++) {
         this.effectSamplers[i] = new Tone.Sampler({ C4: this.samples[i] })
         this.effectSamplers[i].disconnect()
-        //this.effectSamplers[i].connect(this.feedbackDelay);
-        //this.effectSamplers[i].connect(this.pingPongDelay);
+        // this.effectSamplers[i].connect(this.feedbackDelay);
+        // this.effectSamplers[i].connect(this.pingPongDelay);
         this.effectSamplers[i].connect(this.chorus)
         this.effectSamplers[i].volume.value = 0.3
-        //this.effectSamplers[i].connect(this.limiter);
+        // this.effectSamplers[i].connect(this.limiter);
       }
-      Tone.Transport.scheduleRepeat((time: number) => {
+      Tone.Transport.scheduleRepeat((_time: number) => {
         /*
           Really ugly part. Bacause callbacks triggered from the scheduler are
           not connected to the curent object itself (but to the global namespace)
           we have to use the object's name explicitly...
         */
-        temp_holder.copyTransportPosition(
-          temp_holder.current_transport_position,
-          temp_holder.previous_transport_position
-        )
-        temp_holder.parseTransportPosition(
-          temp_holder.current_transport_position,
-          Tone.Transport.position
-        )
+        this.copyTransportPosition(this.currentTransportPosition, this.previousTransportPosition)
+        this.parseTransportPosition(this.currentTransportPosition, Tone.Transport.position)
         // ****************************** scale ****************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.current_transport_position.bars % 2 === 0 &&
+          this.currentTransportPosition.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          var temp_scale = Math.floor(Math.random() * temp_holder.scales.length)
-          temp_holder.currentScale = temp_scale
-          console.log('scale = ' + temp_scale)
+          const tempScale = Math.floor(Math.random() * this.scales.length)
+          this.currentScale = tempScale
+          console.log('scale = ' + tempScale)
         }
         // **************************** transpose **************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.current_transport_position.bars % 2 === 0 &&
+          this.currentTransportPosition.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          var temp_transpose = Math.floor(Math.random() * temp_holder.transpositions.length)
-          temp_holder.transpose = temp_holder.transpositions[temp_transpose]
-          console.log('transpose = ' + temp_transpose)
+          const tempTranspose = Math.floor(Math.random() * this.transpositions.length)
+          this.transpose = this.transpositions[tempTranspose]
+          console.log('transpose = ' + tempTranspose)
         }
         // ***************************** synth 1 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.useSynth1Flag
+          this.useSynth1Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 0 &&
-            (Math.random() > 0.6 || temp_holder.synth1_ghostNoteTriggeredFlag)
+            this.currentTransportPosition.bars % 2 === 0 &&
+            (Math.random() > 0.6 || this.synth1GhostNoteTriggeredFlag)
           ) {
-            temp_holder.synth1_ghostNoteTriggeredFlag = false
-            var temp_chord = temp_holder.randomChord(temp_holder, 4, 40, 60)
-            for (let i = 0; i < temp_chord.length; i++) {
-              var temp_b = true
+            this.synth1GhostNoteTriggeredFlag = false
+            const tempChord = this.randomChord(this, 4, 40, 60)
+            for (let i = 0; i < tempChord.length; i++) {
+              let tempB = true
               for (let j = 0; j < i; j++) {
-                if (temp_chord[j] == temp_chord[i]) {
-                  temp_b = false
+                if (tempChord[j] === tempChord[i]) {
+                  tempB = false
                   break
                 }
               }
-              if (temp_b) {
-                temp_holder.synth1.triggerAttackRelease(temp_holder.mtof(temp_chord[i]), '1n')
+              if (tempB) {
+                this.synth1.triggerAttackRelease(this.mtof(tempChord[i]), '1n')
               }
             }
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.current_transport_position.bars % 2 !== 0 &&
-          temp_holder.current_transport_position.beats === 0 &&
-          temp_holder.current_transport_position.quarters === 3 &&
+          this.currentTransportPosition.bars % 2 !== 0 &&
+          this.currentTransportPosition.beats === 0 &&
+          this.currentTransportPosition.quarters === 3 &&
           Math.random() > 0.7 &&
-          temp_holder.useSynth1Flag
+          this.useSynth1Flag
         ) {
-          temp_holder.synth1_ghostNoteTriggeredFlag = true
-          //console.log(temp_holder.current_transport_position.bits + ' ' + temp_holder.current_transport_position.quarters);
-          var temp_chord_bis = temp_holder.randomChord(temp_holder, 3, 40, 60)
-          for (let i = 0; i < temp_chord_bis.length; i++) {
-            var temp_b_bis = true
+          this.synth1GhostNoteTriggeredFlag = true
+          // console.log(this.currentTransportPosition.bits + ' ' + this.currentTransportPosition.quarters);
+          const tempChordBis = this.randomChord(this, 3, 40, 60)
+          for (let i = 0; i < tempChordBis.length; i++) {
+            let tempBBis = true
             for (let j = 0; j < i; j++) {
-              if (temp_chord_bis[j] == temp_chord_bis[i]) {
-                temp_b_bis = false
+              if (tempChordBis[j] === tempChordBis[i]) {
+                tempBBis = false
                 break
               }
             }
-            if (temp_b_bis) {
-              temp_holder.synth1.triggerAttackRelease(temp_holder.mtof(temp_chord_bis[i]), '4n')
+            if (tempBBis) {
+              this.synth1.triggerAttackRelease(this.mtof(tempChordBis[i]), '4n')
             }
           }
         }
         // ***************************** synth 2 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.useSynth2Flag
+          this.useSynth2Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 1 &&
-            (Math.random() > 0.7 || temp_holder.synth2_ghostNoteTriggeredFlag)
+            this.currentTransportPosition.bars % 2 === 1 &&
+            (Math.random() > 0.7 || this.synth2GhostNoteTriggeredFlag)
           ) {
-            temp_holder.synth2_ghostNoteTriggeredFlag = false
-            temp_holder.synth2.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 56, 90)),
-              '16n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth2GhostNoteTriggeredFlag = false
+            this.synth2.triggerAttackRelease(this.mtof(this.randomNote(this, 56, 90)), '16n') // this.mtof(this.randomNote(this, 60, 96))
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.current_transport_position.bars % 2 !== 1 &&
-          temp_holder.current_transport_position.beats === 0 &&
-          temp_holder.current_transport_position.quarters === 3 &&
+          this.currentTransportPosition.bars % 2 !== 1 &&
+          this.currentTransportPosition.beats === 0 &&
+          this.currentTransportPosition.quarters === 3 &&
           Math.random() > 0.7 &&
-          temp_holder.useSynth2Flag
+          this.useSynth2Flag
         ) {
-          temp_holder.synth2_ghostNoteTriggeredFlag = true
-          temp_holder.synth2.triggerAttackRelease(
-            temp_holder.mtof(temp_holder.randomNote(temp_holder, 56, 90)),
-            '16n'
-          )
+          this.synth2GhostNoteTriggeredFlag = true
+          this.synth2.triggerAttackRelease(this.mtof(this.randomNote(this, 56, 90)), '16n')
         }
         // ***************************** synth 3 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.useSynth3Flag
+          this.useSynth3Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 2 === 0 &&
-            (Math.random() > 0.5 || temp_holder.synth3_ghostNoteTriggeredFlag)
+            this.currentTransportPosition.bars % 2 === 0 &&
+            (Math.random() > 0.5 || this.synth3GhostNoteTriggeredFlag)
           ) {
-            temp_holder.synth3_ghostNoteTriggeredFlag = false
-            temp_holder.synth3.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 30, 48)),
-              '1n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth3GhostNoteTriggeredFlag = false
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(this, 30, 48)), '1n') // this.mtof(this.randomNote(this, 60, 96))
           }
         }
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'quarters',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.useSynth3Flag
+          this.useSynth3Flag
         ) {
           if (
-            temp_holder.current_transport_position.quarters === 2 &&
-            (Math.random() > 0.5 || temp_holder.synth3_ghostNoteTriggeredFlag)
+            this.currentTransportPosition.quarters === 2 &&
+            (Math.random() > 0.5 || this.synth3GhostNoteTriggeredFlag)
           ) {
-            temp_holder.synth3_ghostNoteTriggeredFlag = false
-            temp_holder.synth3.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 30, 48)),
-              '2n'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth3GhostNoteTriggeredFlag = false
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(this, 30, 48)), '2n') // this.mtof(this.randomNote(this, 60, 96))
           }
         }
         // ***************************** synth 4 ***************************** \\
         if (
-          !temp_holder.transportPositionSegmentEquals(
+          !this.transportPositionSegmentEquals(
             'bars',
-            temp_holder.current_transport_position,
-            temp_holder.previous_transport_position
+            this.currentTransportPosition,
+            this.previousTransportPosition
           ) &&
-          temp_holder.useSynth4Flag
+          this.useSynth4Flag
         ) {
           if (
-            temp_holder.current_transport_position.bars % 4 === 0 &&
-            (Math.random() > 0.0 || temp_holder.synth4_ghostNoteTriggeredFlag)
+            this.currentTransportPosition.bars % 4 === 0 &&
+            (Math.random() > 0.0 || this.synth4GhostNoteTriggeredFlag)
           ) {
             console.log(Math.random())
-            temp_holder.synth4_ghostNoteTriggeredFlag = false
-            temp_holder.synth4.triggerAttackRelease(
-              temp_holder.mtof(temp_holder.randomNote(temp_holder, 26, 46)),
-              '1m'
-            ) // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth4GhostNoteTriggeredFlag = false
+            this.synth4.triggerAttackRelease(this.mtof(this.randomNote(this, 26, 46)), '1m') // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
           }
         }
       }, '16n')
@@ -867,10 +847,10 @@ export default class Soundtrack {
    * @param volume
    */
   generativePartVolume(volume: number): void {
-    this.synth1.volume.value = this.synth1_base_volume_factor + volume
-    this.synth2.volume.value = this.synth2_base_volume_factor + volume
-    this.synth3.volume.value = this.synth3_base_volume_factor + volume
-    this.synth4.volume.value = this.synth4_base_volume_factor + volume
+    this.synth1.volume.value = this.synth1BaseVolumeFactor + volume
+    this.synth2.volume.value = this.synth2BaseVolumeFactor + volume
+    this.synth3.volume.value = this.synth3BaseVolumeFactor + volume
+    this.synth4.volume.value = this.synth4BaseVolumeFactor + volume
   }
 
   // /*
@@ -950,7 +930,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  triggerEffect(effectNumber: number, normPitch: number) {
+  triggerEffect(effectNumber: number, normPitch: number): void {
     if (normPitch < 0.0) {
       console.log('[Soundtrack, _triggerEffect] normPitch < 0.0: ' + normPitch + ' changed to 0.0')
       normPitch = 0.0
@@ -977,11 +957,11 @@ export default class Soundtrack {
       )
       effectNumber = this.samples.length - 1
     }
-    var temp_midi = this.nameToMidi('C4') + Math.floor(normPitch * 25.0) - 12
-    var temp_noteName = this.midiToName(temp_midi)
+    const tempMidi = this.nameToMidi('C4') + Math.floor(normPitch * 25.0) - 12
+    const tempNoteName = this.midiToName(tempMidi)
     if (this.effectSamplers[effectNumber].loaded) {
-      this.effectSamplers[effectNumber].triggerAttack(temp_noteName)
-      //console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + temp_midi + " " + temp_noteName);
+      this.effectSamplers[effectNumber].triggerAttack(tempNoteName)
+      // console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + tempMidi + " " + tempNoteName);
     } else {
       console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
     }
