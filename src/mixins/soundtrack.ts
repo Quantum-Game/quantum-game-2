@@ -27,7 +27,7 @@ export default class Soundtrack {
   synth2Freeverb: any
   synth3: any
   synth4: any
-  effectSamplers = []
+  effectSamplers: any[]
   synth1BaseVolumeFactor: number
   synth2BaseVolumeFactor: number
   synth3BaseVolumeFactor: number
@@ -43,7 +43,6 @@ export default class Soundtrack {
   initializedFlag: boolean
   currentTransportPosition: ITransportPosition
   previousTransportPosition: ITransportPosition
-  // effectSamplers: any[]
 
   constructor() {
     this.latencyHint = 'interactive'
@@ -303,7 +302,7 @@ export default class Soundtrack {
 
   /**
    * Get generative track status string
-   * Thanks to the temp_holder param this method may be used from callbacks.
+   * Thanks to the this param this method may be used from callbacks.
    * @param trackNumber
    */
   getGenerativeTrackStatusAsString(trackNumber: number): string {
@@ -312,7 +311,7 @@ export default class Soundtrack {
 
   /**
    * Get generative track status string
-   * Thanks to the temp_holder param this method may be used from callbacks.
+   * Thanks to the this param this method may be used from callbacks.
    * @param trackNumber
    */
   getGenerativeTrackStatus(trackNumber: number): boolean {
@@ -434,15 +433,14 @@ export default class Soundtrack {
 
   /**
    * Is a note tuned?
-   * FIXME: What is holder?
-   * @param holder
+   * FIXME: What is this?
    * @param note
    */
-  isNoteTuned(holder: any, note: number): boolean {
+  isNoteTuned(note: number): boolean {
     note = Math.abs(Math.floor(note))
     note = note % 12
-    for (let i = 0; i < holder.scales[holder.currentScale].length; i++) {
-      let temp = holder.scales[holder.currentScale][i] + holder.transpose
+    for (let i = 0; i < this.scales[this.currentScale].length; i++) {
+      let temp = this.scales[this.currentScale][i] + this.transpose
       while (temp < 0) {
         temp += 12
       }
@@ -456,20 +454,19 @@ export default class Soundtrack {
 
   /**
    * Seems to generate random chords
-   * @param holder
    * @param nbNotes
    * @param min
    * @param max
    */
-  randomChord(holder: any, nbNotes: number, min = 0, max = 0): number[] {
+  randomChord(nbNotes: number, min = 0, max = 0): number[] {
     const result: number[] = []
     nbNotes = Math.abs(Math.floor(nbNotes))
     if (nbNotes < 1) {
       return result
     }
-    result[0] = holder.randomNote(holder, min, max)
+    result[0] = this.randomNote(min, max)
     for (let i = 1; i < nbNotes; i++) {
-      result[i] = holder.randomNote(holder, min, max)
+      result[i] = this.randomNote(min, max)
       let tempRepeat = true
       const tempMaxIterations = 100
       let tempIter = 0
@@ -478,7 +475,7 @@ export default class Soundtrack {
         for (let j = 0; j < i; j++) {
           // FIXME: if (result[j === result[i]]) {
           if (result[j] === result[i]) {
-            result[i] = holder.randomNote(holder, min, max)
+            result[i] = this.randomNote(min, max)
             tempB = false
             break
           }
@@ -494,11 +491,10 @@ export default class Soundtrack {
 
   /**
    * Seems to generate a random note
-   * @param holder
    * @param min
    * @param max
    */
-  randomNote(holder: any, min = 0, max = 0): number {
+  randomNote(min = 0, max = 0): number {
     min = Math.abs(Math.floor(min))
     max = Math.abs(Math.floor(max))
     if (min === max) {
@@ -511,7 +507,7 @@ export default class Soundtrack {
     }
     const tempRange = max - min + 1
     let result = Math.floor(Math.random() * tempRange) + min
-    if (holder.isNoteTuned(holder, result) && result <= max && result >= min) {
+    if (this.isNoteTuned(result) && result <= max && result >= min) {
       return result
     }
     let dir = 1
@@ -534,7 +530,7 @@ export default class Soundtrack {
       if (result > 127) {
         result = 0
       }
-      if (holder.isNoteTuned(holder, result) && result >= min && result <= max) {
+      if (this.isNoteTuned(result) && result >= min && result <= max) {
         return result
       }
       rep += 1
@@ -711,7 +707,7 @@ export default class Soundtrack {
             (Math.random() > 0.6 || this.synth1GhostNoteTriggeredFlag)
           ) {
             this.synth1GhostNoteTriggeredFlag = false
-            const tempChord = this.randomChord(this, 4, 40, 60)
+            const tempChord = this.randomChord(4, 40, 60)
             for (let i = 0; i < tempChord.length; i++) {
               let tempB = true
               for (let j = 0; j < i; j++) {
@@ -740,7 +736,7 @@ export default class Soundtrack {
         ) {
           this.synth1GhostNoteTriggeredFlag = true
           // console.log(this.currentTransportPosition.bits + ' ' + this.currentTransportPosition.quarters);
-          const tempChordBis = this.randomChord(this, 3, 40, 60)
+          const tempChordBis = this.randomChord(3, 40, 60)
           for (let i = 0; i < tempChordBis.length; i++) {
             let tempBBis = true
             for (let j = 0; j < i; j++) {
@@ -768,7 +764,8 @@ export default class Soundtrack {
             (Math.random() > 0.7 || this.synth2GhostNoteTriggeredFlag)
           ) {
             this.synth2GhostNoteTriggeredFlag = false
-            this.synth2.triggerAttackRelease(this.mtof(this.randomNote(this, 56, 90)), '16n') // this.mtof(this.randomNote(this, 60, 96))
+            this.synth2.triggerAttackRelease(this.mtof(this.randomNote(56, 90)), '16n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         if (
@@ -784,7 +781,7 @@ export default class Soundtrack {
           this.useSynth2Flag
         ) {
           this.synth2GhostNoteTriggeredFlag = true
-          this.synth2.triggerAttackRelease(this.mtof(this.randomNote(this, 56, 90)), '16n')
+          this.synth2.triggerAttackRelease(this.mtof(this.randomNote(56, 90)), '16n')
         }
         // ***************************** synth 3 ***************************** \\
         if (
@@ -800,7 +797,8 @@ export default class Soundtrack {
             (Math.random() > 0.5 || this.synth3GhostNoteTriggeredFlag)
           ) {
             this.synth3GhostNoteTriggeredFlag = false
-            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(this, 30, 48)), '1n') // this.mtof(this.randomNote(this, 60, 96))
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(30, 48)), '1n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         if (
@@ -816,7 +814,8 @@ export default class Soundtrack {
             (Math.random() > 0.5 || this.synth3GhostNoteTriggeredFlag)
           ) {
             this.synth3GhostNoteTriggeredFlag = false
-            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(this, 30, 48)), '2n') // this.mtof(this.randomNote(this, 60, 96))
+            this.synth3.triggerAttackRelease(this.mtof(this.randomNote(30, 48)), '2n')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
         // ***************************** synth 4 ***************************** \\
@@ -834,7 +833,8 @@ export default class Soundtrack {
           ) {
             console.log(Math.random())
             this.synth4GhostNoteTriggeredFlag = false
-            this.synth4.triggerAttackRelease(this.mtof(this.randomNote(this, 26, 46)), '1m') // temp_holder.mtof(temp_holder.randomNote(temp_holder, 60, 96))
+            this.synth4.triggerAttackRelease(this.mtof(this.randomNote(26, 46)), '1m')
+            // this.mtof(this.randomNote(60, 96))
           }
         }
       }, '16n')
@@ -846,7 +846,6 @@ export default class Soundtrack {
 
   /**
    * Generative part volume
-   * @param holder
    * @param volume
    */
   generativePartVolume(volume: number): void {
@@ -857,29 +856,29 @@ export default class Soundtrack {
   }
 
   // /*
-  //   Thanks to the temp_holder param this method may be used from callbacks.
+  //   Thanks to the this param this method may be used from callbacks.
   // */
   // effectVolume(_a, _b: number, _c: number): void {
-  //   // _holder, _effectNumber, _volume
-  //   var temp_holder, temp_effectNumber, temp_volume
+  //   // _this, _effectNumber, _volume
+  //   var this, temp_effectNumber, temp_volume
   //   if (arguments.length === 2) {
-  //     temp_holder = this
+  //     this = this
   //     temp_effectNumber = _a
   //     temp_volume = _b
   //   } else {
   //     if (arguments.length === 3) {
-  //       temp_holder = _a
+  //       this = _a
   //       temp_effectNumber = _b
   //       temp_volume = _c
   //     } else {
   //       console.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
   //     }
   //   }
-  //   temp_holder._effectVolume(temp_holder, temp_effectNumber, temp_volume)
+  //   this._effectVolume(temp_effectNumber, temp_volume)
   // }
 
   /*
-    Thanks to the _holder param this method may be used from callbacks.
+    Thanks to the _this param this method may be used from callbacks.
   */
   effectVolume(effectNumber: number, volume: number): void {
     if (volume < 0.0) {
@@ -907,18 +906,18 @@ export default class Soundtrack {
   }
 
   // /*
-  //   Thanks to the temp_holder param this method may be used from callbacks.
+  //   Thanks to the this param this method may be used from callbacks.
   // */
   // triggerEffect(_a, _b: number, _c: number): void {
-  //   // _holder, _effectNumber, _pitch
-  //   var temp_holder, temp_effectNumber, temp_pitch
+  //   // _this, _effectNumber, _pitch
+  //   var this, temp_effectNumber, temp_pitch
   //   if (arguments.length === 2) {
-  //     temp_holder = this
+  //     this = this
   //     temp_effectNumber = _a
   //     temp_pitch = _b
   //   } else {
   //     if (arguments.length === 3) {
-  //       temp_holder = _a
+  //       this = _a
   //       temp_effectNumber = _b
   //       temp_pitch = _c
   //     } else {
@@ -927,11 +926,11 @@ export default class Soundtrack {
   //       )
   //     }
   //   }
-  //   temp_holder._triggerEffect(temp_holder, temp_effectNumber, temp_pitch)
+  //   this._triggerEffect(temp_effectNumber, temp_pitch)
   // }
 
   /*
-    Thanks to the _holder param this method may be used from callbacks.
+    Thanks to the _this param this method may be used from callbacks.
   */
   triggerEffect(effectNumber: number, normPitch: number): void {
     if (normPitch < 0.0) {
@@ -964,7 +963,7 @@ export default class Soundtrack {
     const tempNoteName = this.midiToName(tempMidi)
     if (this.effectSamplers[effectNumber].loaded) {
       this.effectSamplers[effectNumber].triggerAttack(tempNoteName)
-      // console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + tempMidi + " " + tempNoteName);
+      // console.log("[Soundtrack, _triggerEffect] start " + _this + " " + temp_midi + " " + temp_noteName);
     } else {
       console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
     }
