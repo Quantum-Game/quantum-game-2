@@ -4,9 +4,12 @@
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
     <router-link to="/level/1">
-      <app-button type="big">PLAY (alpha: {{ version }})</app-button>
+      <app-button type="big">PLAY</app-button>
     </router-link>
-    <br />
+    <p>
+      Version {{ version }} (alpha), based on a
+      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit
+    </p>
     <div class="hello">
       <h1>
         A puzzle game with photons, superposition and quantum measurement, right in your browser.
@@ -17,12 +20,11 @@
         Visit us on
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
-        <a href="https://github.com/stared/quantum-game-2" target="_blank">Github</a>
-        (this release: <a :href="commitPath" target="_blank">{{ commitHash }}</a
-        >) and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
+        <a href="https://github.com/Quantum-Game" target="_blank">GitHub</a>
+        and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
       </h1>
       <p>
-        Quantum Game is currently being developed by dr
+        Quantum Game is currently being developed by
         <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a>,
         <a href="https://fr.linkedin.com/in/philippe-cochin-b4978231" target="_blank"
           >Philippe Cochin</a
@@ -39,7 +41,7 @@
       </p>
       <img src="@/assets/graphics/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
       <p>
-        You can play the old version
+        You can play the old version (2014-2016)
         <a href="http://play.quantumgame.io/" target="_blank">here</a>.
       </p>
       <div class="image">
@@ -63,6 +65,11 @@ console.log('env', process.env)
 export default class HomePage extends Vue {
   version: string = process.env.VUE_APP_VERSION
   commitHash: string = process.env.VUE_APP_GIT_HASH
+
+  get commitDate(): string {
+    const date = new Date(process.env.VUE_APP_GIT_DATE * 1000)
+    return date.toUTCString()
+  }
 
   get commitPath(): string {
     return `https://github.com/Quantum-Game/quantum-game-2/commit/${this.commitHash}`
