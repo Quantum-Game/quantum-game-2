@@ -1,6 +1,6 @@
-/* eslint-disable */
-
-// not yet working TS
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable camelcase */
 
 import * as Tone from 'tone'
 
@@ -29,7 +29,7 @@ export default class Soundtrack {
   synth2_freeverb: any
   synth3: any
   synth4: any
-  effectSamplers = []
+  effectSamplers: any[] // Tone.Sampler[]
   synth1_base_volume_factor: number
   synth2_base_volume_factor: number
   synth3_base_volume_factor: number
@@ -45,7 +45,6 @@ export default class Soundtrack {
   initializedFlag: boolean
   current_transport_position: ITransportPosition
   previous_transport_position: ITransportPosition
-  // effectSamplers: any[]
 
   constructor() {
     this.latency_hint = 'interactive'
@@ -220,15 +219,6 @@ export default class Soundtrack {
     this.currentScale = 1
     this.transpositions = [-12, -10, -8, -6]
     this.transpose = this.transpositions[0]
-    this.limiter
-    this.feedbackDelay
-    this.pingPongDelay
-    this.chorus
-    this.hip1
-    this.synth1 // "thinking" synth
-    this.synth2, this.synth2_freeverb
-    this.synth3
-    this.synth4
     this.effectSamplers = []
     this.synth1_base_volume_factor = 0
     this.synth2_base_volume_factor = -19
@@ -255,9 +245,10 @@ export default class Soundtrack {
       quarters: 0,
       ticks: 0 // not sure if this is expressed in ticks
     }
+    this.effectSamplers = []
   }
 
-  setAndPlay(volume = 10) {
+  setAndPlay(volume = 10): void {
     this.init()
     this.generativePartVolume(volume)
     this.setAllGenerative(true)
@@ -376,10 +367,10 @@ export default class Soundtrack {
    * @param rawTransportData
    */
   parseTransportPosition(dst: ITransportPosition, rawTransportData: string): void {
-    let segments_a = rawTransportData.split(':')
+    const segments_a = rawTransportData.split(':')
     dst.bars = parseInt(segments_a[0])
     dst.beats = parseInt(segments_a[1])
-    let segments_b = segments_a[2].split('.')
+    const segments_b = segments_a[2].split('.')
     dst.quarters = parseInt(segments_b[0])
     dst.ticks = parseInt(segments_b[1])
   }
@@ -388,7 +379,7 @@ export default class Soundtrack {
    * Get system milliseconds
    */
   systemMillis(): number {
-    var d = new Date()
+    const d = new Date()
     return (
       d.getMilliseconds() +
       d.getSeconds() * 1000.0 +
@@ -412,7 +403,7 @@ export default class Soundtrack {
    */
   nameToMidi(name: string): number {
     name = name.toUpperCase()
-    for (var i = 0; i < this.MIDI_NUM_NAMES.length; i++) {
+    for (let i = 0; i < this.MIDI_NUM_NAMES.length; i++) {
       if (name === this.MIDI_NUM_NAMES[i]) {
         return i
       }
@@ -438,8 +429,8 @@ export default class Soundtrack {
   isNoteTuned(holder: any, note: number): boolean {
     note = Math.abs(Math.floor(note))
     note = note % 12
-    for (var i = 0; i < holder.scales[holder.currentScale].length; i++) {
-      var temp = holder.scales[holder.currentScale][i] + holder.transpose
+    for (let i = 0; i < holder.scales[holder.currentScale].length; i++) {
+      let temp = holder.scales[holder.currentScale][i] + holder.transpose
       while (temp < 0) {
         temp += 12
       }
@@ -459,7 +450,7 @@ export default class Soundtrack {
    * @param max
    */
   randomChord(holder: any, nbNotes: number, min = 0, max = 0): number[] {
-    var result: number[] = []
+    const result: number[] = []
     nbNotes = Math.abs(Math.floor(nbNotes))
     if (nbNotes < 1) {
       return result
@@ -468,12 +459,11 @@ export default class Soundtrack {
     for (let i = 1; i < nbNotes; i++) {
       result[i] = holder.randomNote(holder, min, max)
       let temp_repeat = true
-      let temp_maxIterations = 100
+      const temp_maxIterations = 100
       let temp_iter = 0
       while (temp_repeat && temp_iter < temp_maxIterations) {
         let temp_b = true
         for (let j = 0; j < i; j++) {
-          //FIXME: if (result[j === result[i]]) {
           if (result[j] === result[i]) {
             result[i] = holder.randomNote(holder, min, max)
             temp_b = false
@@ -500,11 +490,11 @@ export default class Soundtrack {
       return min
     }
     if (min > max) {
-      let temp = min
+      const temp = min
       min = max
       max = temp
     }
-    let temp_range = max - min + 1
+    const temp_range = max - min + 1
     let result = Math.floor(Math.random() * temp_range) + min
     if (holder.isNoteTuned(holder, result) && result <= max && result >= min) {
       return result
@@ -520,7 +510,7 @@ export default class Soundtrack {
       dir = 1
     }
     let rep = 0
-    let max_rep = 300
+    const max_rep = 300
     while (rep < max_rep) {
       result += dir
       if (result < 0) {
@@ -541,7 +531,7 @@ export default class Soundtrack {
    * Initialize
    */
   init(): void {
-    var temp_holder = this
+    var temp_holder = this // THIS NEED TO GO
     if (this.initializedFlag) {
       console.log(
         `[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized`
@@ -643,19 +633,19 @@ export default class Soundtrack {
       })
       this.synth4.volume.value = this.synth4_base_volume_factor
       this.synth4.disconnect()
-      //this.synth4.connect(this.synth2_freeverb);
-      //this.synth4.connect(this.chorus);
+      // this.synth4.connect(this.synth2_freeverb);
+      // this.synth4.connect(this.chorus);
       this.synth4.connect(this.feedbackDelay)
       this.synth4.connect(this.pingPongDelay)
 
       for (let i = 0; i < this.samples.length; i++) {
         this.effectSamplers[i] = new Tone.Sampler({ C4: this.samples[i] })
         this.effectSamplers[i].disconnect()
-        //this.effectSamplers[i].connect(this.feedbackDelay);
-        //this.effectSamplers[i].connect(this.pingPongDelay);
+        // this.effectSamplers[i].connect(this.feedbackDelay);
+        // this.effectSamplers[i].connect(this.pingPongDelay);
         this.effectSamplers[i].connect(this.chorus)
         this.effectSamplers[i].volume.value = 0.3
-        //this.effectSamplers[i].connect(this.limiter);
+        // this.effectSamplers[i].connect(this.limiter);
       }
       Tone.Transport.scheduleRepeat((time: number) => {
         /*
@@ -681,7 +671,7 @@ export default class Soundtrack {
           temp_holder.current_transport_position.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          var temp_scale = Math.floor(Math.random() * temp_holder.scales.length)
+          const temp_scale = Math.floor(Math.random() * temp_holder.scales.length)
           temp_holder.currentScale = temp_scale
           console.log('scale = ' + temp_scale)
         }
@@ -695,7 +685,7 @@ export default class Soundtrack {
           temp_holder.current_transport_position.bars % 2 === 0 &&
           Math.random() > 0.8
         ) {
-          var temp_transpose = Math.floor(Math.random() * temp_holder.transpositions.length)
+          const temp_transpose = Math.floor(Math.random() * temp_holder.transpositions.length)
           temp_holder.transpose = temp_holder.transpositions[temp_transpose]
           console.log('transpose = ' + temp_transpose)
         }
@@ -713,11 +703,11 @@ export default class Soundtrack {
             (Math.random() > 0.6 || temp_holder.synth1_ghostNoteTriggeredFlag)
           ) {
             temp_holder.synth1_ghostNoteTriggeredFlag = false
-            var temp_chord = temp_holder.randomChord(temp_holder, 4, 40, 60)
+            const temp_chord = temp_holder.randomChord(temp_holder, 4, 40, 60)
             for (let i = 0; i < temp_chord.length; i++) {
-              var temp_b = true
+              let temp_b = true
               for (let j = 0; j < i; j++) {
-                if (temp_chord[j] == temp_chord[i]) {
+                if (temp_chord[j] === temp_chord[i]) {
                   temp_b = false
                   break
                 }
@@ -741,12 +731,12 @@ export default class Soundtrack {
           temp_holder.useSynth1Flag
         ) {
           temp_holder.synth1_ghostNoteTriggeredFlag = true
-          //console.log(temp_holder.current_transport_position.bits + ' ' + temp_holder.current_transport_position.quarters);
-          var temp_chord_bis = temp_holder.randomChord(temp_holder, 3, 40, 60)
+          // console.log(temp_holder.current_transport_position.bits + ' ' + temp_holder.current_transport_position.quarters);
+          const temp_chord_bis = temp_holder.randomChord(temp_holder, 3, 40, 60)
           for (let i = 0; i < temp_chord_bis.length; i++) {
-            var temp_b_bis = true
+            let temp_b_bis = true
             for (let j = 0; j < i; j++) {
-              if (temp_chord_bis[j] == temp_chord_bis[i]) {
+              if (temp_chord_bis[j] === temp_chord_bis[i]) {
                 temp_b_bis = false
                 break
               }
@@ -950,7 +940,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  triggerEffect(effectNumber: number, normPitch: number) {
+  triggerEffect(effectNumber: number, normPitch: number): void {
     if (normPitch < 0.0) {
       console.log('[Soundtrack, _triggerEffect] normPitch < 0.0: ' + normPitch + ' changed to 0.0')
       normPitch = 0.0
@@ -977,11 +967,11 @@ export default class Soundtrack {
       )
       effectNumber = this.samples.length - 1
     }
-    var temp_midi = this.nameToMidi('C4') + Math.floor(normPitch * 25.0) - 12
-    var temp_noteName = this.midiToName(temp_midi)
+    const temp_midi = this.nameToMidi('C4') + Math.floor(normPitch * 25.0) - 12
+    const temp_noteName = this.midiToName(temp_midi)
     if (this.effectSamplers[effectNumber].loaded) {
       this.effectSamplers[effectNumber].triggerAttack(temp_noteName)
-      //console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + temp_midi + " " + temp_noteName);
+      // console.log("[Soundtrack, _triggerEffect] start " + _holder + " " + temp_midi + " " + temp_noteName);
     } else {
       console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
     }
