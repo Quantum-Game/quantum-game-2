@@ -269,7 +269,7 @@ export default class Soundtrack {
     this.setGenerativeTrackStatus(3, bool)
   }
 
-  setGenerativeTrackStatus(_a: number, _b: boolean, _c) {
+  setGenerativeTrackStatus(_a: number, _b: boolean, _c): void {
     var temp_holder, temp_trackNumber, temp_status
     if (arguments.length === 2) {
       temp_holder = this
@@ -338,7 +338,7 @@ export default class Soundtrack {
   /*
     Thanks to the temp_holder param this method may be used from callbacks.
   */
-  getGenerativeTrackStatus(_a, _b) {
+  getGenerativeTrackStatus(_a, _b: number) {
     var temp_holder, temp_trackNumber
     if (arguments.length === 1) {
       temp_holder = this
@@ -406,7 +406,7 @@ export default class Soundtrack {
     _dst.ticks = _src.ticks
   }
 
-  parseTransportPosition(_dst: ITransportPosition, _rawTransportData) {
+  parseTransportPosition(_dst: ITransportPosition, _rawTransportData: string): void {
     var temp_segments_a = _rawTransportData.split(':')
     _dst.bars = parseInt(temp_segments_a[0])
     _dst.beats = parseInt(temp_segments_a[1])
@@ -415,7 +415,7 @@ export default class Soundtrack {
     _dst.ticks = parseInt(temp_segments_b[1])
   }
 
-  systemMillis() {
+  systemMillis(): number {
     var d = new Date()
     return (
       d.getMilliseconds() +
@@ -428,7 +428,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  midiToName(_holder, _midi) {
+  midiToName(_holder, _midi: number): string {
     if (isNaN(_midi)) {
       console.log('[Soundtrack, midiToName] _midi is NaN: ' + _midi + ' changed to 0')
       _midi = 0
@@ -440,13 +440,12 @@ export default class Soundtrack {
     }
     if (_midi >= _holder.MIDI_NUM_NAMES) {
       console.log(
-        '[Soundtrack, midiToName] _midi >= _holder.MIDI_NUM_NAMES: ' +
-          _midi +
-          ' changed to _holder.MIDI_NUM_NAMES - 1' +
-          ' (' +
-          _holder.MIDI_NUM_NAMES -
-          1 +
-          ')'
+        `[Soundtrack, midiToName] _midi >= _holder.MIDI_NUM_NAMES:
+          ${_midi}
+          changed to _holder.MIDI_NUM_NAMES - 1
+          (
+          ${_holder.MIDI_NUM_NAMES - 1}
+          )`
       )
       _midi = _holder.MIDI_NUM_NAMES - 1
     }
@@ -539,7 +538,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  randomNote(_holder, _min = 0, _max = 0) {
+  randomNote(_holder, _min = 0, _max = 0): number {
     if (isNaN(_min)) _min = 0
     if (isNaN(_max)) _max = 0
     _min = Math.abs(Math.floor(_min))
@@ -569,7 +568,7 @@ export default class Soundtrack {
     return result
   }
 
-  init() {
+  init(): void {
     var temp_holder = this
     if (this.initializedFlag) {
       console.log(
@@ -676,7 +675,7 @@ export default class Soundtrack {
       //this.synth4.connect(this.chorus);
       this.synth4.connect(this.feedbackDelay)
       this.synth4.connect(this.pingPongDelay)
-      for (var i = 0; i < this.samples.length; i++) {
+      for (let i = 0; i < this.samples.length; i++) {
         this.effectSamplers[i] = new Tone.Sampler({ C4: this.samples[i] })
         this.effectSamplers[i].disconnect()
         //this.effectSamplers[i].connect(this.feedbackDelay);
@@ -892,7 +891,7 @@ export default class Soundtrack {
   /*
     Thanks to the temp_holder param this method may be used from callbacks.
   */
-  generativePartVolume(_a, _b) {
+  generativePartVolume(_a, _b: number): void {
     // _holder, _volume
     var temp_holder, temp_volume
     if (arguments.length === 1) {
@@ -914,7 +913,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  _generativePartVolume(_holder, _volume) {
+  _generativePartVolume(_holder, _volume: number): void {
     if (isNaN(_volume)) {
       console.log('[Soundtrack, _generativePartVolume] _normPitch is NaN; ' + _volume)
       return
@@ -928,7 +927,7 @@ export default class Soundtrack {
   /*
     Thanks to the temp_holder param this method may be used from callbacks.
   */
-  effectVolume(_a, _b, _c) {
+  effectVolume(_a, _b: number, _c: number): void {
     // _holder, _effectNumber, _volume
     var temp_holder, temp_effectNumber, temp_volume
     if (arguments.length === 2) {
@@ -950,7 +949,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  _effectVolume(_holder, _effectNumber, _volume) {
+  _effectVolume(_holder, _effectNumber: number, _volume: number): void {
     if (isNaN(_effectNumber)) {
       console.log('[Soundtrack, _effectVolume] _effectNumber is NaN; ' + _effectNumber)
       return
@@ -976,13 +975,9 @@ export default class Soundtrack {
     }
     if (_effectNumber >= _holder.samples.length) {
       console.log(
-        '[Soundtrack, _effectVolume] _effectNumber >= this.samples.length: ' +
-          _effectNumber +
-          ' changed to this.samples.length - 1' +
-          ' (' +
-          _holder.samples.length -
-          1 +
-          ')'
+        `[Soundtrack, _effectVolume] _effectNumber >= this.samples.length: ' +
+          ${_effectNumber} changed to this.samples.length - 1 (
+          ${_holder.samples.length - 1})`
       )
       _effectNumber = _holder.samples.length - 1
     }
@@ -992,7 +987,7 @@ export default class Soundtrack {
   /*
     Thanks to the temp_holder param this method may be used from callbacks.
   */
-  triggerEffect(_a, _b, _c) {
+  triggerEffect(_a, _b: number, _c: number): void {
     // _holder, _effectNumber, _pitch
     var temp_holder, temp_effectNumber, temp_pitch
     if (arguments.length === 2) {
@@ -1016,7 +1011,7 @@ export default class Soundtrack {
   /*
     Thanks to the _holder param this method may be used from callbacks.
   */
-  _triggerEffect(_holder, _effectNumber, _normPitch) {
+  _triggerEffect(_holder, _effectNumber: number, _normPitch: number) {
     if (isNaN(_effectNumber)) {
       console.log('[Soundtrack, _triggerEffect] _effectNumber is NaN; ' + _effectNumber)
       return
@@ -1046,13 +1041,12 @@ export default class Soundtrack {
     }
     if (_effectNumber >= _holder.samples.length) {
       console.log(
-        '[Soundtrack, _triggerEffect] _effectNumber >= this.samples.length: ' +
-          _effectNumber +
-          ' changed to this.samples.length - 1' +
-          ' (' +
-          _holder.samples.length -
-          1 +
-          ')'
+        `[Soundtrack, _triggerEffect] _effectNumber >= this.samples.length:
+          ${_effectNumber}
+          changed to this.samples.length - 1
+          (
+          ${_holder.samples.length - 1}
+          )`
       )
       _effectNumber = _holder.samples.length - 1
     }
