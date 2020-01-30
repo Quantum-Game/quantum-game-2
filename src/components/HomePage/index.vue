@@ -29,6 +29,8 @@
         >, <a href="https://maperseguirvirtute.wordpress.com/" target="_blank">Chiara Decaroli</a>,
         <a href="http://jankiewiczstudio.com/" target="_blank">Klem Jankiewicz</a>,
         <a href="https://www.linkedin.com/in/strebeyko/" target="_blank">Kuba Strebeyko</a>.
+        Generative soundtrack by
+        <a href="https://www.paweljanicki.jp/" target="_blank">Pawel Janicki</a>.
       </p>
       <p>
         This version of the game was funded by the
