@@ -43,8 +43,10 @@ export default class Soundtrack {
   initializedFlag: boolean
   currentTransportPosition: ITransportPosition
   previousTransportPosition: ITransportPosition
+  log: any
 
-  constructor() {
+  constructor(logging = false) {
+    this.log = logging ? this.log : (): void => {}
     this.latencyHint = 'interactive'
     this.MIDI_NUM_NAMES = [
       'C_1',
@@ -285,7 +287,7 @@ export default class Soundtrack {
         this.useSynth4Flag = status
         break
       default:
-        console.log(`Soundtrack, setGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
+        this.log(`Soundtrack, setGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
     }
   }
 
@@ -328,7 +330,7 @@ export default class Soundtrack {
       case 3:
         return this.useSynth4Flag
       default:
-        console.log(`Soundtrack, getGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
+        this.log(`Soundtrack, getGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
     }
     return false
   }
@@ -355,7 +357,7 @@ export default class Soundtrack {
       case 'ticks':
         return a.ticks === b.ticks // if this value is represented by ticks...
       default:
-        console.log(`[transportEquals] unhandled part = ${part}`)
+        this.log(`[transportEquals] unhandled part = ${part}`)
     }
     return false
   }
@@ -419,7 +421,7 @@ export default class Soundtrack {
         return i
       }
     }
-    console.log(`[Soundtrack, nameToMidi] unhandled _name: ' + ${name}`)
+    this.log(`[Soundtrack, nameToMidi] unhandled _name: ' + ${name}`)
     return -1
   }
 
@@ -543,7 +545,7 @@ export default class Soundtrack {
    */
   init(): void {
     if (this.initializedFlag) {
-      console.log(
+      this.log(
         `[Soundtrack, init] warning: attempt to reinitialize a Soundtrack object that has already been initialized`
       )
     } else {
@@ -677,7 +679,7 @@ export default class Soundtrack {
         ) {
           const tempScale = Math.floor(Math.random() * this.scales.length)
           this.currentScale = tempScale
-          console.log('scale = ' + tempScale)
+          this.log('scale = ' + tempScale)
         }
         // **************************** transpose **************************** \\
         if (
@@ -691,7 +693,7 @@ export default class Soundtrack {
         ) {
           const tempTranspose = Math.floor(Math.random() * this.transpositions.length)
           this.transpose = this.transpositions[tempTranspose]
-          console.log('transpose = ' + tempTranspose)
+          this.log('transpose = ' + tempTranspose)
         }
         // ***************************** synth 1 ***************************** \\
         if (
@@ -735,7 +737,7 @@ export default class Soundtrack {
           this.useSynth1Flag
         ) {
           this.synth1GhostNoteTriggeredFlag = true
-          // console.log(this.currentTransportPosition.bits + ' ' + this.currentTransportPosition.quarters);
+          // this.log(this.currentTransportPosition.bits + ' ' + this.currentTransportPosition.quarters);
           const tempChordBis = this.randomChord(3, 40, 60)
           for (let i = 0; i < tempChordBis.length; i++) {
             let tempBBis = true
@@ -831,7 +833,7 @@ export default class Soundtrack {
             this.currentTransportPosition.bars % 4 === 0 &&
             (Math.random() > 0.0 || this.synth4GhostNoteTriggeredFlag)
           ) {
-            console.log(Math.random())
+            this.log(Math.random())
             this.synth4GhostNoteTriggeredFlag = false
             this.synth4.triggerAttackRelease(this.mtof(this.randomNote(26, 46)), '1m')
             // this.mtof(this.randomNote(60, 96))
@@ -840,7 +842,7 @@ export default class Soundtrack {
       }, '16n')
       Tone.Transport.start()
       this.initializedFlag = true
-      console.log('[Soundtrack, init] soundtrack initialized')
+      this.log('[Soundtrack, init] soundtrack initialized')
     }
   }
 
@@ -871,7 +873,7 @@ export default class Soundtrack {
   //       temp_effectNumber = _b
   //       temp_volume = _c
   //     } else {
-  //       console.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
+  //       this.log('[Soundtrack, effectVolume] incorrect number of arguments: ' + arguments.length)
   //     }
   //   }
   //   this._effectVolume(temp_effectNumber, temp_volume)
@@ -882,20 +884,20 @@ export default class Soundtrack {
   */
   effectVolume(effectNumber: number, volume: number): void {
     if (volume < 0.0) {
-      console.log('[Soundtrack, _effectVolume] volume < 0.0: ' + volume + ' changed to 0.0')
+      this.log('[Soundtrack, _effectVolume] volume < 0.0: ' + volume + ' changed to 0.0')
       volume = 0.0
     }
     if (volume > 1.0) {
-      console.log('[Soundtrack, _effectVolume] volume > 1.0: ' + volume + ' changed to 1.0')
+      this.log('[Soundtrack, _effectVolume] volume > 1.0: ' + volume + ' changed to 1.0')
       volume = 1.0
     }
     effectNumber = Math.floor(effectNumber)
     if (effectNumber < 0) {
-      console.log('[Soundtrack, _effectVolume] effectNumber < 0: ' + effectNumber + ' changed to 0')
+      this.log('[Soundtrack, _effectVolume] effectNumber < 0: ' + effectNumber + ' changed to 0')
       effectNumber = 0
     }
     if (effectNumber >= this.samples.length) {
-      console.log(
+      this.log(
         `[Soundtrack, _effectVolume] effectNumber >= this.samples.length: ' +
           ${effectNumber} changed to this.samples.length - 1 (
           ${this.samples.length - 1})`
@@ -921,7 +923,7 @@ export default class Soundtrack {
   //       temp_effectNumber = _b
   //       temp_pitch = _c
   //     } else {
-  //       console.log(
+  //       this.log(
   //         '[Soundtrack, triggerEffect] incorrect number of arguments: ' + arguments.length
   //       )
   //     }
@@ -934,22 +936,20 @@ export default class Soundtrack {
   */
   triggerEffect(effectNumber: number, normPitch: number): void {
     if (normPitch < 0.0) {
-      console.log('[Soundtrack, _triggerEffect] normPitch < 0.0: ' + normPitch + ' changed to 0.0')
+      this.log('[Soundtrack, _triggerEffect] normPitch < 0.0: ' + normPitch + ' changed to 0.0')
       normPitch = 0.0
     }
     if (normPitch > 1.0) {
-      console.log('[Soundtrack, _triggerEffect] normPitch > 1.0: ' + normPitch + ' changed to 1.0')
+      this.log('[Soundtrack, _triggerEffect] normPitch > 1.0: ' + normPitch + ' changed to 1.0')
       normPitch = 1.0
     }
     effectNumber = Math.floor(effectNumber)
     if (effectNumber < 0) {
-      console.log(
-        '[Soundtrack, _triggerEffect] effectNumber < 0: ' + effectNumber + ' changed to 0'
-      )
+      this.log('[Soundtrack, _triggerEffect] effectNumber < 0: ' + effectNumber + ' changed to 0')
       effectNumber = 0
     }
     if (effectNumber >= this.samples.length) {
-      console.log(
+      this.log(
         `[Soundtrack, _triggerEffect] effectNumber >= this.samples.length:
           ${effectNumber}
           changed to this.samples.length - 1
@@ -963,9 +963,9 @@ export default class Soundtrack {
     const tempNoteName = this.midiToName(tempMidi)
     if (this.effectSamplers[effectNumber].loaded) {
       this.effectSamplers[effectNumber].triggerAttack(tempNoteName)
-      // console.log("[Soundtrack, _triggerEffect] start " + _this + " " + temp_midi + " " + temp_noteName);
+      // this.log("[Soundtrack, _triggerEffect] start " + _this + " " + temp_midi + " " + temp_noteName);
     } else {
-      console.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
+      this.log('[Soundtrack, _triggerEffect] samples not loaded (yet?)')
     }
   }
 }
