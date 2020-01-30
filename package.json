@@ -6,8 +6,9 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint --fix",
-    "deploy": "yarn build && npm version patch && firebase deploy",
+    "lint": "vue-cli-service lint",
+    "lint-fix": "vue-cli-service lint --fix",
+    "deploy": "yarn lint && yarn build && npm version patch && firebase deploy",
     "update-entries": "node src/utils/updateEntries"
   },
   "dependencies": {

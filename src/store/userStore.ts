@@ -1,4 +1,7 @@
-/* eslint-disable */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
 import { IUserState } from '@/types'
@@ -237,7 +240,7 @@ const userStore: StoreOptions<IUserState> = {
             currentLevelID: level.currentLevelID,
             gameState: level.gameState
           },
-          //created for firestore update test
+          // created for firestore update test
           lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
         }
         const levelSaved = router.currentRoute.params.levelsaved
@@ -361,6 +364,7 @@ const userStore: StoreOptions<IUserState> = {
         console.log('You are not logged!')
       }
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     REMOVE_LEVEL({ commit, dispatch }, levelID) {
       const dbRef = db.collection('levels')
 
