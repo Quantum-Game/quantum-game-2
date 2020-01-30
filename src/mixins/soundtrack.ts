@@ -262,159 +262,130 @@ export default class Soundtrack {
     this.setAllGenerative(true)
   }
 
-  setAllGenerative(bool) {
-    this.setGenerativeTrackStatus(0, bool)
-    this.setGenerativeTrackStatus(1, bool)
-    this.setGenerativeTrackStatus(2, bool)
-    this.setGenerativeTrackStatus(3, bool)
-  }
-
-  setGenerativeTrackStatus(_a: number, _b: boolean, _c): void {
-    var temp_holder, temp_trackNumber, temp_status
-    if (arguments.length === 2) {
-      temp_holder = this
-      temp_trackNumber = _a
-      temp_status = _b
-    } else {
-      if (arguments.length === 3) {
-        temp_holder = _a
-        temp_trackNumber = _b
-        temp_status = _c
-      } else {
-        console.log(
-          '[Soundtrack, setGenerativeTrackStatus] incorrect number of arguments: ' +
-            arguments.length
-        )
-        return
-      }
-    }
-    if (temp_status > 0) temp_status = true
-    else temp_status = false
-    switch (temp_trackNumber) {
+  /**
+   * Set generative track on/off
+   * @param trackNumber
+   * @param status on/off
+   */
+  setGenerativeTrackStatus(trackNumber: number, status: boolean): void {
+    switch (trackNumber) {
       case 0:
-        temp_holder.useSynth1Flag = temp_status
+        this.useSynth1Flag = status
         break
       case 1:
-        temp_holder.useSynth2Flag = temp_status
+        this.useSynth2Flag = status
         break
       case 2:
-        temp_holder.useSynth3Flag = temp_status
+        this.useSynth3Flag = status
         break
       case 3:
-        temp_holder.useSynth4Flag = temp_status
+        this.useSynth4Flag = status
         break
       default:
-        console.log(
-          'Soundtrack, setGenerativeTrackStatus, unhandled temp_trackNumber: ' + temp_trackNumber
-        )
+        console.log(`Soundtrack, setGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
     }
   }
 
-  /*
-    Thanks to the temp_holder param this method may be used from callbacks.
-  */
-  getGenerativeTrackStatusAsString(_a: number, _b: number): string {
-    var temp_holder, temp_trackNumber
-    if (arguments.length === 1) {
-      temp_holder = this
-      temp_trackNumber = _a
-    } else {
-      if (arguments.length === 2) {
-        temp_holder = _a
-        temp_trackNumber = _b
-      } else {
-        console.log(
-          '[Soundtrack, getGenerativeTrackStatusAsString] incorrect number of arguments: ' +
-            arguments.length
-        )
-        return 'error'
-      }
-    }
-    if (isNaN(temp_trackNumber)) return 'error'
-    if (temp_holder.getGenerativeTrackStatus(temp_holder, temp_trackNumber)) return 'on'
-    return 'off'
+  /**
+   * Set all generative tracks on/off
+   * @param status
+   */
+  setAllGenerative(status: boolean): void {
+    this.setGenerativeTrackStatus(0, status)
+    this.setGenerativeTrackStatus(1, status)
+    this.setGenerativeTrackStatus(2, status)
+    this.setGenerativeTrackStatus(3, status)
   }
 
-  /*
-    Thanks to the temp_holder param this method may be used from callbacks.
-  */
-  getGenerativeTrackStatus(_a, _b: number) {
-    var temp_holder, temp_trackNumber
-    if (arguments.length === 1) {
-      temp_holder = this
-      temp_trackNumber = _a
-    } else {
-      if (arguments.length === 2) {
-        temp_holder = _a
-        temp_trackNumber = _b
-      } else {
-        console.log(
-          '[Soundtrack, getGenerativeTrackStatus] incorrect number of arguments: ' +
-            arguments.length
-        )
-        return 'error'
-      }
+  /**
+   * Get generative track status string
+   * Thanks to the temp_holder param this method may be used from callbacks.
+   * @param trackNumber
+   */
+  getGenerativeTrackStatusAsString(trackNumber: number): string {
+    return this.getGenerativeTrackStatus(trackNumber) ? 'yes' : 'no'
+  }
+
+  /**
+   * Get generative track status string
+   * Thanks to the temp_holder param this method may be used from callbacks.
+   * @param trackNumber
+   */
+  getGenerativeTrackStatus(trackNumber: number): boolean {
+    if (!this.initializedFlag) {
+      return false
     }
-    if (isNaN(temp_trackNumber)) return 'error'
-    if (!temp_holder.initializedFlag) return false
-    switch (temp_trackNumber) {
+    switch (trackNumber) {
       case 0:
-        return temp_holder.useSynth1Flag
+        return this.useSynth1Flag
       case 1:
-        return temp_holder.useSynth2Flag
+        return this.useSynth2Flag
       case 2:
-        return temp_holder.useSynth3Flag
+        return this.useSynth3Flag
       case 3:
-        return temp_holder.useSynth4Flag
+        return this.useSynth4Flag
       default:
-        console.log(
-          'Soundtrack, getGenerativeTrackStatus, unhandled temp_trackNumber: ' + temp_trackNumber
-        )
+        console.log(`Soundtrack, getGenerativeTrackStatus, unhandled trackNumber: ${trackNumber}`)
     }
     return false
   }
 
+  /**
+   * Compare parts of transportPosition
+   * @param part
+   * @param a
+   * @param b
+   */
   transportPositionSegmentEquals(
-    _part: string,
-    _a: ITransportPosition,
-    _b: ITransportPosition
+    part: string,
+    a: ITransportPosition,
+    b: ITransportPosition
   ): boolean {
-    _part = _part.toLowerCase()
-    switch (_part) {
+    part = part.toLowerCase()
+    switch (part) {
       case 'bars':
-        if (_a.bars === _b.bars) return true
-        else return false
+        return a.bars === b.bars
       case 'beats':
-        if (_a.beats === _b.beats) return true
-        else return false
+        return a.beats === b.beats
       case 'quarters':
-        if (_a.quarters === _b.quarters) return true
-        else return false
+        return a.quarters === b.quarters
       case 'ticks':
-        if (_a.ticks === _b.ticks) return true
-        else return false // if this value is represented by ticks...
+        return a.ticks === b.ticks // if this value is represented by ticks...
       default:
-        console.log('[transportEquals] unhandled _part = ' + _part)
+        console.log(`[transportEquals] unhandled part = ${part}`)
     }
     return false
   }
 
-  copyTransportPosition(_src: ITransportPosition, _dst: ITransportPosition): void {
-    _dst.bars = _src.bars
-    _dst.beats = _src.beats
-    _dst.quarters = _src.quarters
-    _dst.ticks = _src.ticks
+  /**
+   * Copy a transportPosition values to another
+   * @param src source transportPosition
+   * @param dst destination transportPosition
+   */
+  copyTransportPosition(src: ITransportPosition, dst: ITransportPosition): void {
+    dst.bars = src.bars
+    dst.beats = src.beats
+    dst.quarters = src.quarters
+    dst.ticks = src.ticks
   }
 
-  parseTransportPosition(_dst: ITransportPosition, _rawTransportData: string): void {
-    var temp_segments_a = _rawTransportData.split(':')
-    _dst.bars = parseInt(temp_segments_a[0])
-    _dst.beats = parseInt(temp_segments_a[1])
-    var temp_segments_b = temp_segments_a[2].split('.')
-    _dst.quarters = parseInt(temp_segments_b[0])
-    _dst.ticks = parseInt(temp_segments_b[1])
+  /**
+   * Parse transport string to transportPosition
+   * @param dst
+   * @param rawTransportData
+   */
+  parseTransportPosition(dst: ITransportPosition, rawTransportData: string): void {
+    let segments_a = rawTransportData.split(':')
+    dst.bars = parseInt(segments_a[0])
+    dst.beats = parseInt(segments_a[1])
+    let segments_b = segments_a[2].split('.')
+    dst.quarters = parseInt(segments_b[0])
+    dst.ticks = parseInt(segments_b[1])
   }
 
+  /**
+   * Get system milliseconds
+   */
   systemMillis(): number {
     var d = new Date()
     return (
