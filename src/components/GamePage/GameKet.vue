@@ -1,8 +1,5 @@
 <template>
   <div ref="wrapper" class="simulation-frame-kets" :class="{ ketHidden: ketHidden }">
-    <span class="hidebutton" @click="toggleKets"
-      >{{ ketHidden ? 'EXPAND' : 'COLLAPSE' }} SIMULATION INFO</span
-    >
     <div class="btn-group">
       <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
         <button :class="{ selected: style === selectedStyle }">{{ style }}</button>
@@ -96,13 +93,8 @@ export default class GameKet extends Vue {
   @Prop() readonly grid!: Grid
   @Prop({ default: true }) readonly showLegend!: boolean
 
-  ketHidden = true
   styles = ['polar', 'cartesian', 'color']
   selectedStyle = 'polar'
-
-  toggleKets(): void {
-    this.ketHidden = !this.ketHidden
-  }
 
   toPercent(x: number, precision = 1): string {
     return (100 * x).toFixed(precision)
@@ -163,10 +155,6 @@ export default class GameKet extends Vue {
   transition: height 0.5s;
   overflow: hidden;
   align-content: space-between;
-  @media screen and (max-width: 1000px) {
-    padding: 0;
-    display: none;
-  }
   & .quantum-state-viewer {
     display: flex;
     flex-wrap: wrap;
@@ -283,12 +271,6 @@ h3 {
   font-weight: bold;
   @media screen and (max-width: 1000px) {
     display: block;
-  }
-}
-
-.ketHidden {
-  @media screen and (max-width: 1000px) {
-    height: 20px;
   }
 }
 </style>
