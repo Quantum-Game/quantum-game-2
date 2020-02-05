@@ -23,11 +23,15 @@
     <div class="goalPercentage">
       <div class="mobile_progressBar">
         <div
+        class="mobile_progressBarFillGoal"
+        :style="{ width: gameState.totalGoalPercentage + '%' }"
+        ></div>
+        <div
           class="mobile_progressBarFill"
           :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div>Goal: {{ tweenedPercent.toFixed(1) }} %</div>
+      <div class="goal-text">Goal: {{ gameState.totalGoalPercentage }} %</div>
     </div>
 
     <!-- GOALS -->
@@ -149,7 +153,7 @@ export default class GameGoals extends Vue {
   @media screen and (max-width: 1000px) {
     flex-direction: row;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: top;
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -211,9 +215,10 @@ export default class GameGoals extends Vue {
   }
 }
 .goalPercentage {
-  font-size: 0.8rem;
+  margin-top: 10px;
   margin-bottom: 2rem;
   position: relative;
+  min-width: 80px;
   @media screen and (max-width: 1000px) {
     margin-bottom: 0;
     div:last-child {
@@ -224,13 +229,12 @@ export default class GameGoals extends Vue {
     }
     .mobile_progressBar {
       position: absolute;
-      width: 120%;
+      width: 110%;
       height: 18px;
-      background-color: rgba(255, 255, 255, 0.1);
       top: 0;
       left: -5%;
       z-index: 1;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.7);
     }
     .mobile_progressBarFill {
       position: absolute;
@@ -241,6 +245,21 @@ export default class GameGoals extends Vue {
       left: 0;
       transition: width 1s ease-in-out;
       z-index: 1;
+      margin-top: 2px;
+    }
+    .mobile_progressBarFillGoal {
+      position: absolute;
+      width: 0%;
+      height: 18px;
+      border-right: 1px solid rgba(255, 255, 255, 0.7);
+      top: 0;
+      left: 0;
+      transition: width 1s ease-in-out;
+      z-index: 1;
+    }
+    .goal-text {
+      font-size: 0.6rem;
+      padding: 5px;
     }
   }
 }
