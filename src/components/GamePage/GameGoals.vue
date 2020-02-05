@@ -24,10 +24,10 @@
       <div class="mobile_progressBar">
         <div
           class="mobile_progressBarFill"
-          :style="{ width: gameState.totalGoalPercentage + '%' }"
+          :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div>Goal: {{ gameState.totalGoalPercentage }} %</div>
+      <div>Goal: {{ tweenedPercent.toFixed(1) }} %</div>
     </div>
 
     <!-- GOALS -->
@@ -217,7 +217,6 @@ export default class GameGoals extends Vue {
   @media screen and (max-width: 1000px) {
     margin-bottom: 0;
     div:last-child {
-      text-shadow: 1px 1px 1px black;
       z-index: 2;
       position: relative;
       top: 0;
@@ -225,20 +224,19 @@ export default class GameGoals extends Vue {
     }
     .mobile_progressBar {
       position: absolute;
-      width: 110%;
-      height: 14px;
-      border: 1px solid limegreen;
-      border-radius: 4px;
+      width: 120%;
+      height: 18px;
+      background-color: rgba(255, 255, 255, 0.1);
       top: 0;
       left: -5%;
       z-index: 1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
     }
     .mobile_progressBarFill {
       position: absolute;
       width: 0%;
       height: 14px;
-      background-color: limegreen;
-      border-radius: 4px;
+      background-color: #5c00d3;
       top: 0;
       left: 0;
       transition: width 1s ease-in-out;
