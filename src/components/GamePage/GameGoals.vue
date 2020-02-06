@@ -23,11 +23,15 @@
     <div class="goalPercentage">
       <div class="mobile_progressBar">
         <div
+        class="mobile_progressBarFillGoal"
+        :style="{ width: gameState.totalGoalPercentage + '%' }"
+        ></div>
+        <div
           class="mobile_progressBarFill"
-          :style="{ width: gameState.totalGoalPercentage + '%' }"
+          :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div>Goal: {{ gameState.totalGoalPercentage }} %</div>
+      <div class="goal-text">Goal: {{ gameState.totalGoalPercentage }} %</div>
     </div>
 
     <!-- GOALS -->
@@ -149,7 +153,7 @@ export default class GameGoals extends Vue {
   @media screen and (max-width: 1000px) {
     flex-direction: row;
     justify-content: space-evenly;
-    align-items: center;
+    align-items: top;
     margin-top: 0;
     padding-top: 0;
     padding-bottom: 0;
@@ -211,13 +215,13 @@ export default class GameGoals extends Vue {
   }
 }
 .goalPercentage {
-  font-size: 0.8rem;
+  margin-top: 10px;
   margin-bottom: 2rem;
   position: relative;
+  min-width: 80px;
   @media screen and (max-width: 1000px) {
     margin-bottom: 0;
     div:last-child {
-      text-shadow: 1px 1px 1px black;
       z-index: 2;
       position: relative;
       top: 0;
@@ -226,23 +230,36 @@ export default class GameGoals extends Vue {
     .mobile_progressBar {
       position: absolute;
       width: 110%;
-      height: 14px;
-      border: 1px solid limegreen;
-      border-radius: 4px;
+      height: 18px;
       top: 0;
       left: -5%;
       z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.7);
     }
     .mobile_progressBarFill {
       position: absolute;
       width: 0%;
       height: 14px;
-      background-color: limegreen;
-      border-radius: 4px;
+      background-color: #5c00d3;
       top: 0;
       left: 0;
       transition: width 1s ease-in-out;
       z-index: 1;
+      margin-top: 2px;
+    }
+    .mobile_progressBarFillGoal {
+      position: absolute;
+      width: 0%;
+      height: 18px;
+      border-right: 1px solid rgba(255, 255, 255, 0.7);
+      top: 0;
+      left: 0;
+      transition: width 1s ease-in-out;
+      z-index: 1;
+    }
+    .goal-text {
+      font-size: 0.6rem;
+      padding: 5px;
     }
   }
 }
