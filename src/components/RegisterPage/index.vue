@@ -54,7 +54,6 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Vue, Component } from 'vue-property-decorator'
 import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
@@ -73,7 +72,8 @@ export default class Register extends Vue {
     name: ''
   }
 
-  get error() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get error(): any {
     return $userStore.getters.error
   }
 

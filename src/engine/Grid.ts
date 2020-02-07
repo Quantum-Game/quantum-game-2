@@ -254,8 +254,11 @@ export default class Grid extends Cluster {
     const lastCoord = coord.adjacent.find((adjacent): boolean => {
       return this.includes(adjacent)
     })
-    /* eslint-disable-next-line */
-    return this.get(lastCoord!)
+    if (lastCoord !== undefined) {
+      return this.get(lastCoord)
+    } else {
+      throw new Error(`Couldn't compute the escaping particle last coordinate.`)
+    }
   }
 
   /**

@@ -38,7 +38,8 @@ export { NonLinearCrystalCell }
 
 // FIXME: Code smell move to interfaces
 interface ICellList {
-  [index: string]: Record<string, any> // eslint-disable-line
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [index: string]: Record<string, any>
 }
 
 const CellList: ICellList = {

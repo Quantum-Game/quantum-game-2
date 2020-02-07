@@ -29,7 +29,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -61,7 +60,8 @@ export default class MyAccount extends Vue {
     return $userStore.getters.userName
   }
 
-  get progressArr() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get progressArr(): any {
     return $userStore.getters.progressArr
   }
 

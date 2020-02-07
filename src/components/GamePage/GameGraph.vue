@@ -146,8 +146,7 @@ export default class GameGraph extends Vue {
   /**
    * Getters
    */
-  // eslint-disable-next-line
-  get graph(): any {
+  get graph(): MultiverseGraph['graph'] {
     return this.multiverse.graph
   }
 
