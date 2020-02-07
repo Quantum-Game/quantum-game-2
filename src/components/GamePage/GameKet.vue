@@ -1,5 +1,5 @@
 <template>
-  <div ref="wrapper" class="simulation-frame-kets" :class="{ ketHidden: ketHidden }">
+  <div ref="wrapper" class="simulation-frame-kets" :class="{ ketHidden: showLegend }">
     <div class="btn-group">
       <span v-for="(style, index) in styles" :key="`style-${index}`" @click="selectedStyle = style">
         <button :class="{ selected: style === selectedStyle }">{{ style }}</button>

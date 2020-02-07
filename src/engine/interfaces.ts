@@ -210,7 +210,7 @@ export interface IIndicator {
 /**
  * List of element names
  */
-export const enum Elem {
+export enum Elem {
   // Basic
   Void = 'Void',
   Wall = 'Wall',

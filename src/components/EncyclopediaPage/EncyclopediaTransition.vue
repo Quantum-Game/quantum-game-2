@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
+import { Elem, IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
@@ -68,7 +68,11 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   get cell(): Cell {
-    return new Cell(new Coord(1, 1), Cell.fromName(this.elementName), this.rotation)
+    const coord = new Coord(1, 1)
+    if (this.elementName in Elem) {
+      return new Cell(coord, Cell.fromName(this.elementName), this.rotation)
+    }
+    return new Cell(coord, Cell.fromName(Elem.Rock))
   }
 
   /**
