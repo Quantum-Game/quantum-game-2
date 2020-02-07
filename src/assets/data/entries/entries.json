@@ -39,7 +39,7 @@
     ]
   },
   "aom": {
-    "title": "Acusto-Optic Modulator",
+    "title": "Acousto-Optic Modulator",
     "elementName": "Aom",
     "short": "Using sound, it shifts the frequency of light by a certain amount.",
     "grids": [
