@@ -38,7 +38,6 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -54,11 +53,13 @@ export default class SavedLevels extends Vue {
     return $userStore.getters.userName
   }
 
-  get savedLevels() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get savedLevels(): any {
     return $userStore.getters.savedLevelsList
   }
 
-  get publicLevels() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  get publicLevels(): any {
     return $userStore.getters.publicLevels
   }
 

@@ -12,12 +12,11 @@ Vue.use(Donut)
 Vue.use(VueConfetti)
 
 Vue.config.productionTip = false
-/* eslint-disable */
 new Vue({
   router,
   store,
+  // eslint-disable-next-line
   render: (h: any) => {
     return h(App)
   }
 }).$mount('#app')
-/* eslint-enable */
