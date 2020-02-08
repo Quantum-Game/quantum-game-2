@@ -2,7 +2,7 @@
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
     <g>
       <!-- BARS -->
-      <g :style="computePolarization">
+      <g :style="computePolarization" class="st2">
         <rect x="8.5" y="-7" class="st2" width="3" height="69" />
         <rect x="14.5" y="-7" class="st2" width="3" height="69" />
         <rect x="20.5" y="-7" class="st2" width="3" height="69" />
@@ -13,9 +13,18 @@
         <rect x="50.5" y="-7" class="st2" width="3" height="69" />
       </g>
       <!-- OVAL TRIMMING PATH -->
-      <clipPath id="clip">
+      <!-- TODO: Error with the placement of the polarizer -->
+      <!-- <clipPath id="polarizerClip">
         <circle cx="32" cy="32" r="28" />
-      </clipPath>
+      </clipPath> -->
+      <g v-if="border" id="Qoutline">
+        <path
+          class="st2"
+          :style="{ fill: border }"
+          d="M57.6,5L59,6.4V59H6.4L5,57.6V5H57.6 M58,4h-0.4H5H4v1v52.6V58l0.3,0.3l1.4,1.4L6,60h0.4H59h1v-1V6.4V6
+        l-0.3-0.3l-1.4-1.4L58,4L58,4z"
+        />
+      </g>
     </g>
 
     <g class="circular">
@@ -47,7 +56,15 @@ export default class PolarizerCell extends Piece {
    * Compute inner grid rotation from cell polarization
    */
   get computePolarization(): {} {
-    const polarization = this.cell ? this.cell.polarization : 0
+    const polarization = this.cell ? this.cell.rotation + this.cell.polarization : 0
+    return {
+      'transform-origin': `32px 32px`,
+      transform: `rotate(${(polarization + 90) % 180}deg)`
+    }
+  }
+
+  get computeClipping(): {} {
+    const polarization = this.cell ? this.cell.rotation + this.cell.polarization : 0
     return {
       'transform-origin': `32px 32px`,
       transform: `rotate(${(polarization + 90) % 180}deg)`
@@ -68,7 +85,7 @@ export default class PolarizerCell extends Piece {
   fill: #4e3b6b;
 }
 .st2 {
-  clip-path: url(#clip);
+  clip-path: url(#polarizerClip);
   fill: #5a4278;
 }
 </style>

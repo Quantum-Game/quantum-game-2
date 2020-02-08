@@ -9,6 +9,18 @@
     <router-link :to="hyphenedEntryURL" class="link">
       LEARN MORE
     </router-link>
+    <p v-if="canUpdatePolarization">
+      <select v-model="activeCell.polarization">
+        <option
+          v-for="option in polarizationOptions"
+          :key="'option' + option.id"
+          :value="option.value"
+        >
+          {{ option.value }}
+        </option>
+      </select>
+      <span>Selected: {{ activeCell.polarization }}</span>
+    </p>
   </div>
 </template>
 
@@ -18,12 +30,54 @@ import { State } from 'vuex-class'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import { camelCaseToDash } from '@/engine/Helpers'
+import { Elem } from '@/engine/interfaces'
 
 @Component
 export default class GameActiveCell extends Vue {
   @State activeCell!: Cell
   @State hoveredCell!: Cell
   @State hoveredParticles!: Particle[]
+
+  /**
+   * Check if advanced options should be displayed
+   */
+  get canUpdatePolarization(): boolean {
+    if (this.activeCell.tool) {
+      switch (this.activeCell.element.name) {
+        case Elem.Polarizer:
+          return true
+        case Elem.QuarterWavePlate:
+          return true
+        default:
+          return false
+      }
+    }
+    return false
+  }
+
+  /**
+   * Polarization options for different elements
+   */
+  get polarizationOptions(): {} {
+    switch (this.activeCell.element.name) {
+      case Elem.Polarizer:
+        return [
+          { id: 0, value: '0°' },
+          { id: 45, value: '45°' },
+          { id: 90, value: '90°' },
+          { id: 135, value: '135°' }
+        ]
+      case Elem.QuarterWavePlate:
+        return [
+          { id: 0, value: '0°' },
+          { id: 45, value: '45°' },
+          { id: 90, value: '90°' },
+          { id: 135, value: '135°' }
+        ]
+      default:
+        throw new Error(`Element ${this.activeCell.element.name} not implemented yet.`)
+    }
+  }
 
   /*
     used at least twice, getter for convenience

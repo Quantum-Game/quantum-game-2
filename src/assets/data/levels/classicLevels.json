@@ -2335,7 +2335,7 @@
         {
           "coord": { "y": 4, "x": 6 },
           "element": "Polarizer",
-          "rotation": 90,
+          "rotation": 180,
           "polarization": 0,
           "frozen": true,
           "active": false,
