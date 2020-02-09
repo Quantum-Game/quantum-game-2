@@ -59,6 +59,7 @@
           @play="play"
           @step-forward="stepForward"
           @fast-forward="fastForward"
+          @new-fate="computeNewFate"
           @reload="reload"
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
@@ -275,6 +276,15 @@ export default class Game extends Vue {
    */
   get particles(): Particle[] {
     return this.activeFrame.particles
+  }
+
+  /**
+   * Compute another fate for the simulation
+   */
+  computeNewFate(): void {
+    const newFate = this.simulation.fate
+    this.mutationSetFateCells([newFate])
+    this.setEnergizedCells()
   }
 
   /**
