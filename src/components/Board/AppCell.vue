@@ -111,11 +111,14 @@ export default class AppCell extends Mixins(Position) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
+  @Mutation('RESET_FATE_CELLS') mutationResetFateCells!: (cells: Cell[]) => void
   @State simulationState!: string
   @State gameState!: GameStateEnum
   @State activeCell!: Cell
   @State cellSelected!: boolean
   @State hoveredCell!: Cell
+  @State fateCell!: Cell
   border = ''
   isRotate = false
 
@@ -257,11 +260,15 @@ export default class AppCell extends Mixins(Position) {
    * Is current cell the active cell
    */
   get isActiveCell(): boolean {
-    return this.activeCell === this.cell
+    return this.activeCell.equal(this.cell)
+  }
+
+  get isFateCell(): boolean {
+    return this.fateCell.equal(this.cell)
   }
 
   /**
-   * FIX - it should work only in the first level
+   * FIXME: it should work only in the first level
    * Display pulsating ring around laser
    */
   get displayPulsation(): boolean {
@@ -272,7 +279,7 @@ export default class AppCell extends Mixins(Position) {
   }
 
   /**
-   * changes border color indicating it can be moved
+   * Change the displayed SVG according to cell energized status and fate
    * @returns color
    */
   get computeBorder(): string {
