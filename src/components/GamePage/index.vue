@@ -59,6 +59,7 @@
           @play="play"
           @step-forward="stepForward"
           @fast-forward="fastForward"
+          @new-fate="computeNewFate"
           @reload="reload"
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
@@ -118,12 +119,14 @@ import AppOverlay from '@/components/AppOverlay.vue'
 export default class Game extends Vue {
   level = Level.createDummy()
   @State('currentLevelID') currentLevelID!: number
+  @State('fateCells') fateCells!: Cell[]
   @State('activeCell') activeCell!: Cell
   @State('gameState') gameState!: GameStateEnum
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
   frameIndex = 0
   simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
   multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
@@ -182,6 +185,7 @@ export default class Game extends Vue {
     this.simulation = new QuantumSimulation(this.level.grid)
     this.simulation.initializeFromLaser()
     this.simulation.computeFrames(40)
+    this.mutationSetFateCells([this.simulation.fate])
     // Post-process simulation to create particle graph
     this.multiverseGraph = new MultiverseGraph(this.simulation)
     // Set absorption events to compute gameState
@@ -195,17 +199,6 @@ export default class Game extends Vue {
   }
 
   /**
-   * Get fate from simulation random realization
-   * Display on the last frame of simulation, death then fate
-   */
-  get displayFate(): Cell {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.simulation.fate
-    }
-    return Cell.createDummy({ x: -1, y: -1 })
-  }
-
-  /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
   get displayGameState(): string {
@@ -216,12 +209,23 @@ export default class Game extends Vue {
   }
 
   /**
+   * Get fate from simulation random realization
+   * Display on the last frame of simulation, death then fate
+   */
+  get displayFate(): Cell {
+    if (this.frameIndex === this.simulation.frames.length - 1) {
+      return this.fateCells[0]
+    }
+    return Cell.createDummy({ x: -1, y: -1 })
+  }
+
+  /**
    * Set the energized cells from the simulation
    */
   setEnergizedCells(): void {
     this.level.grid.resetEnergized()
-    const coords = this.filteredAbsorptions.map((absorption) => {
-      return absorption.cell.coord
+    const coords = this.fateCells.map((fateCell) => {
+      return fateCell.coord
     })
     this.level.grid.setEnergized(coords)
   }
@@ -272,6 +276,15 @@ export default class Game extends Vue {
    */
   get particles(): Particle[] {
     return this.activeFrame.particles
+  }
+
+  /**
+   * Compute another fate for the simulation
+   */
+  computeNewFate(): void {
+    const newFate = this.simulation.fate
+    this.mutationSetFateCells([newFate])
+    this.setEnergizedCells()
   }
 
   /**

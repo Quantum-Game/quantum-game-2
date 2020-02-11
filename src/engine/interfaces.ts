@@ -1,4 +1,38 @@
 /**
+ * USER STATE INTERFACE
+ */
+export interface IUserState {
+  user: {
+    loggedIn: boolean
+    rememberMe: boolean
+    data: {
+      displayName: string
+      email: string
+    }
+  }
+  progressArr: IProgressObj[]
+  savedLevelsList: ISavedLevel[]
+  publicLevels: IPublicLevel[]
+  error: null
+}
+
+interface IProgressObj {
+  id: number
+  status: 'string'
+  score: number
+}
+
+interface ISavedLevel {
+  id: 'string'
+  link: 'string'
+  public: boolean
+}
+
+interface IPublicLevel {
+  link: 'string'
+}
+
+/**
  * PARTICLE INTERFACE
  * Particle interface in primitives
  */

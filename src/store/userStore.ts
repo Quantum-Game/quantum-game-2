@@ -4,7 +4,7 @@
 
 import Vue from 'vue'
 import Vuex, { StoreOptions } from 'vuex'
-import { IUserState } from '@/types'
+import { IUserState } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
 

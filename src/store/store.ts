@@ -6,6 +6,8 @@ import Particle from '@/engine/Particle'
 import {
   SET_GAME_STATE,
   SET_SIMULATION_STATE,
+  SET_FATE_CELLS,
+  RESET_FATE_CELLS,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   SET_CURRENT_LEVEL_ID,
@@ -22,6 +24,7 @@ Vue.use(Vuex)
 const store: StoreOptions<IRootState> = {
   state: {
     activeCell: initialCell,
+    fateCells: [],
     cellSelected: false,
     hoveredCell: initialCell,
     hoveredParticles: [initialParticle],
@@ -37,6 +40,14 @@ const store: StoreOptions<IRootState> = {
     // set active level
     [SET_SIMULATION_STATE](state, simulationState): void {
       state.simulationState = simulationState
+    },
+    // set fate cell
+    [SET_FATE_CELLS](state, cells): void {
+      state.fateCells = cells
+    },
+    // reset fate cell
+    [RESET_FATE_CELLS](state): void {
+      state.fateCells = []
     },
     // set active cell
     [SET_ACTIVE_CELL](state, cell): void {
