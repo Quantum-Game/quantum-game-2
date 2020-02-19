@@ -17,7 +17,6 @@ export default class PolarizingBeamSplitter extends Element {
     super(Elem.PolarizingBeamSplitter, Group.Direction)
   }
 
-  // FIXME: Change orientation in quantum-tensors
   public transition(options: ITransition): qt.Operator {
     return qt.Elements.polarizingBeamsplitter(options.rotation)
   }
