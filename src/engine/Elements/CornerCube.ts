@@ -18,6 +18,6 @@ export default class CornerCube extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.cornerCube()
+    return qt.Elements.cornerCube()
   }
 }

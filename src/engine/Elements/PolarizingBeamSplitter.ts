@@ -8,10 +8,10 @@ import Element from '@/engine/Element'
 export default class PolarizingBeamSplitter extends Element {
   public name: Elem = Elem.PolarizingBeamSplitter
   public group: Group = Group.Direction
-  public description = 'Reflects vertical polarization (↕), transmitts horizonal polarization (↔).'
+  public description = 'Reflects vertical polarization (↕), transmits horizonal polarization (↔).'
 
   public ascii: string[] = ['⬲', '⟴']
-  public angles: number[] = [0, 180]
+  public angles: number[] = [0, 90]
 
   public constructor() {
     super(Elem.PolarizingBeamSplitter, Group.Direction)
@@ -19,9 +19,6 @@ export default class PolarizingBeamSplitter extends Element {
 
   // FIXME: Change orientation in quantum-tensors
   public transition(options: ITransition): qt.Operator {
-    if (options.rotation === 0) {
-      return qt.polarizingBeamsplitter(135)
-    }
-    return qt.polarizingBeamsplitter(45)
+    return qt.Elements.polarizingBeamsplitter(options.rotation)
   }
 }

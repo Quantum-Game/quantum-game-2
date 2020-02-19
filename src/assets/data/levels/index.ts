@@ -7,10 +7,8 @@ import polarizationLevels from './polarizationLevels.json'
 import finalLevels from './finalLevels.json'
 import classicLevels from './classicLevels.json'
 import sandbox from './sandboxLevel.json'
-import debug from './debugLevel.json'
 
 export {
-  debug,
   sandbox,
   introLevels,
   reflectionLevels,
@@ -30,7 +28,6 @@ const finalGroup: ILevel[] = finalLevels
 const classicGroup: ILevel[] = classicLevels
 
 const levels: ILevel[] = [
-  debug,
   sandbox,
   ...classicGroup,
   ...introGroup,

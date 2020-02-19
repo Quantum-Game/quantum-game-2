@@ -23,6 +23,6 @@ export default class Glass extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.glassSlab()
+    return qt.Elements.glassSlab()
   }
 }

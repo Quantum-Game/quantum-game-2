@@ -24,6 +24,6 @@ export default class SugarSolution extends Element {
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
     // return qt.sugarSolution(options.percentage);
-    return qt.sugarSolution(0.125)
+    return qt.Elements.sugarSolution(0.125)
   }
 }

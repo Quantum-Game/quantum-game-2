@@ -19,6 +19,6 @@ export default class FaradayRotator extends Element {
   }
 
   public transition(options: ITransition): qt.Operator {
-    return qt.faradayRotator(options.rotation)
+    return qt.Elements.faradayRotator(options.rotation)
   }
 }

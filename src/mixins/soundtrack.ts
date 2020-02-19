@@ -46,6 +46,7 @@ export default class Soundtrack {
   log: any
 
   constructor(logging = false) {
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     this.log = logging ? this.log : (): void => {}
     this.latencyHint = 'interactive'
     this.MIDI_NUM_NAMES = [
