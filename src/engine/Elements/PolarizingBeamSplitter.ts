@@ -11,7 +11,7 @@ export default class PolarizingBeamSplitter extends Element {
   public description = 'Reflects vertical polarization (↕), transmits horizonal polarization (↔).'
 
   public ascii: string[] = ['⬲', '⟴']
-  public angles: number[] = [0, 90]
+  public angles: number[] = [0, 90, 180, 270]
 
   public constructor() {
     super(Elem.PolarizingBeamSplitter, Group.Direction)
