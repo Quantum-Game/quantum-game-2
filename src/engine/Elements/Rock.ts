@@ -20,6 +20,6 @@ export default class Rock extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.attenuator(0)
+    return qt.Elements.attenuator(0)
   }
 }

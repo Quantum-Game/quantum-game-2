@@ -18,6 +18,6 @@ export default class Void extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.attenuator(1)
+    return qt.Elements.attenuator(1)
   }
 }

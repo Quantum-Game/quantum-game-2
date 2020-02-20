@@ -22,6 +22,6 @@ export default class Polarizer extends Element {
   }
 
   public transition(options: ITransition): qt.Operator {
-    return qt.polarizer(options.rotation, options.polarization)
+    return qt.Elements.polarizer(options.rotation, options.polarization)
   }
 }

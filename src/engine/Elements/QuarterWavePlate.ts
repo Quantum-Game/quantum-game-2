@@ -23,8 +23,8 @@ export default class QuarterWavePlate extends Element {
 
   public transition(options: ITransition): qt.Operator {
     if (options.rotation === 90 || options.rotation === 270) {
-      return qt.quarterWavePlateNS(options.polarization)
+      return qt.Elements.quarterWavePlateNS(options.polarization)
     }
-    return qt.quarterWavePlateWE(options.polarization)
+    return qt.Elements.quarterWavePlateWE(options.polarization)
   }
 }

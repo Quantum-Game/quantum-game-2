@@ -17,7 +17,7 @@ COMING SOON!
           {
             "coord": { "y": 1, "x": 2 },
             "element": "PolarizingBeamSplitter",
-            "rotation": 135,
+            "rotation": 0,
             "frozen": false,
             "active": false
           }
