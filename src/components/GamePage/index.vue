@@ -71,7 +71,7 @@
         <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
         <game-active-cell />
         <game-photons :particles="activeFrame.particles" />
-        <game-ket :frame="activeFrame" :grid="level.grid" />
+        <ket-viewer :vector="activeFrame.photons.vector" />
       </section>
     </game-layout>
   </div>
@@ -89,12 +89,12 @@ import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
+import { KetViewer } from 'bra-ket-vue'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
 import GamePhotons from '@/components/GamePage/GamePhotons.vue'
-import GameKet from '@/components/GamePage/GameKet.vue'
 import GameLayout from '@/components/GamePage/GameLayout.vue'
 import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
@@ -105,7 +105,7 @@ import AppOverlay from '@/components/AppOverlay.vue'
   components: {
     GameLayout,
     GamePhotons,
-    GameKet,
+    KetViewer,
     GameGoals,
     GameActiveCell,
     GameToolbox,
