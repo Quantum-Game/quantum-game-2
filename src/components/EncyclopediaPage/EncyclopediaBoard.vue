@@ -49,7 +49,7 @@
       </span>
     </div>
     <div class="ket">
-      <game-ket :frame="selectedFrame" :grid="grid" :show-legend="false" />
+      <ket-viewer :vector="selectedFrame.photons.vector" :show-legend="false" />
     </div>
   </div>
 </template>
@@ -60,11 +60,11 @@ import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
 import { IParticle, IGrid, PolEnum, IIndicator } from '@/engine/interfaces'
+import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import AppCell from '@/components/Board/AppCell.vue'
-import GameKet from '@/components/GamePage/GameKet.vue'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 
@@ -74,7 +74,7 @@ import QuantumSimulation from '@/engine/QuantumSimulation'
     AppCell,
     BoardLasers,
     BoardDots,
-    GameKet
+    KetViewer
   }
 })
 export default class EncyclopediaBoard extends Vue {
