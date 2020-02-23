@@ -2,14 +2,11 @@
   <div class="container">
     <div>
       <h2>{{ elementName }} at {{ rotation }}°</h2>
-      <encyclopedia-matrix
-        :coord-names-in="coordNames"
-        :coord-names-out="coordNames"
-        :dimension-names="dimensionNames"
-        :matrix-elements="matrixElements"
+      <matrix-viewer
+        ref="matrixViewer"
+        :operator-raw="operator"
         :size="30"
         @columnMouseover="updateIndicators($event)"
-        @swapDimensions="dirPolOrder = !dirPolOrder"
       />
       <div class="eboard">
         <encyclopedia-board
@@ -29,16 +26,16 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { Elem, IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
+import { Elem, IIndicator, DirEnum, PolEnum } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
-import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
+import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { OperatorEntry, Operator } from 'quantum-tensors'
+import { Operator } from 'quantum-tensors'
 
 @Component({
   components: {
     EncyclopediaBoard,
-    EncyclopediaMatrix
+    MatrixViewer
   }
 })
 export default class EncyclopediaMatrixBoard extends Vue {
@@ -48,7 +45,6 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: '0' }) defaultRotation!: number
 
   rotation: number = this.defaultRotation
-  dirPolOrder = true
   grid: Grid = Grid.emptyGrid(3, 3)
   indicators: IIndicator[] = [
     {
@@ -61,6 +57,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   $refs!: {
     grid: HTMLElement
+    matrixViewer: Vue
   }
 
   created(): void {
@@ -86,10 +83,13 @@ export default class EncyclopediaMatrixBoard extends Vue {
    * Update indicators with colId
    * FIXME: Needs a serious refactor
    * suuuper dirty
+   * Directly generate a vector from Matrix-Viewer rather than
+   * use any DirEnum / PolEnum
    */
   updateIndicators(colId: number): void {
     this.grid.set(this.cell)
-    if (this.dirPolOrder) {
+    const dims = this.$refs.matrixViewer.$data.operator.dimensionsOut
+    if (dims[0].name === 'direction') {
       const direction = [
         DirEnum['>'],
         DirEnum['>'],
@@ -141,48 +141,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   /**
-   * Get the basis direction and polarization strings
-   */
-  get coordNames(): string[][] {
-    const coordsDir = ['⇢', '⇡', '⇠', '⇣']
-    const coordsPol = ['H', 'V']
-    return this.dirPolOrder ? [coordsDir, coordsPol] : [coordsPol, coordsDir]
-  }
-
-  /**
-   * Get the basis direction and polarization strings
-   */
-  get dimensionNames(): string[] {
-    return this.dirPolOrder ? ['direction', 'polarization'] : ['polarization', 'direction']
-  }
-
-  /**
    * Return the generated cell operator and select the entries
    */
   get operator(): Operator {
     return this.cell.operator[2]
-  }
-
-  // TODO: find it in qt
-  get matrixElements(): IMatrixElement[] {
-    if (this.dirPolOrder) {
-      return this.operator.entries.map((entry: OperatorEntry) => {
-        return {
-          i: 2 * entry.coordIn[0] + entry.coordIn[1],
-          j: 2 * entry.coordOut[0] + entry.coordOut[1],
-          re: entry.value.re,
-          im: entry.value.im
-        }
-      })
-    }
-    return this.operator.entries.map((entry: OperatorEntry) => {
-      return {
-        i: entry.coordIn[0] + 4 * entry.coordIn[1],
-        j: entry.coordOut[0] + 4 * entry.coordOut[1],
-        re: entry.value.re,
-        im: entry.value.im
-      }
-    })
   }
 }
 </script>
