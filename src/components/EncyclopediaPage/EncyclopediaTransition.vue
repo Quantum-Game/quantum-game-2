@@ -1,13 +1,16 @@
 <template>
   <div class="container">
-    <div>
-      <h2>{{ elementName }} at {{ rotation }}°</h2>
-      <matrix-viewer
-        ref="matrixViewer"
-        :operator-raw="operator"
-        :size="30"
-        @columnMouseover="updateIndicators($event)"
-      />
+    <h2>{{ elementName }} at {{ rotation }}°</h2>
+    <div class="grids">
+      <div class="matrix">
+        <matrix-viewer
+          ref="matrixViewer"
+          class="matrix-viewer"
+          :operator-raw="operator"
+          :size="30"
+          @columnMouseover="updateIndicators($event)"
+        />
+      </div>
       <div class="eboard">
         <encyclopedia-board
           :key="JSON.stringify(indicators)"
@@ -150,14 +153,13 @@ export default class EncyclopediaMatrixBoard extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 500px;
-  .eboard {
-    display: inline-block;
-  }
-  .operatorText {
-    padding: 10px;
-    font-size: 10px;
+.grids {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  border-bottom: 1px solid #8e819d;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
   }
 }
 </style>
