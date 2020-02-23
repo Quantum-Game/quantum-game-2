@@ -5,6 +5,7 @@
       <div class="matrix">
         <matrix-viewer
           ref="matrixViewer"
+          :key="`${operator.toString()}`"
           class="matrix-viewer"
           :operator-raw="operator"
           :size="30"
