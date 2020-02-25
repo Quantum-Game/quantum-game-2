@@ -22,6 +22,6 @@ export default class BeamSplitter extends Element {
   }
 
   public transition(options: ITransition): qt.Operator {
-    return qt.beamSplitter(options.rotation)
+    return qt.Elements.beamSplitter(options.rotation)
   }
 }

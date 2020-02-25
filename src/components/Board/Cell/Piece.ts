@@ -7,6 +7,9 @@ export default class Piece extends Vue {
   @Prop({ default: '' }) public readonly border!: string
   @Prop({ default: 64 }) public readonly tileSize!: number
 
+  /**
+   * Getters for cell instance properties
+   */
   public get energized(): boolean {
     return this.cell.energized
   }
@@ -17,5 +20,9 @@ export default class Piece extends Vue {
 
   public get polarization(): number {
     return this.cell.polarization
+  }
+
+  public get percentage(): number {
+    return this.cell.percentage
   }
 }

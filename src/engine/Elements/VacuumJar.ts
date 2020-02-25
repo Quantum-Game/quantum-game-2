@@ -23,6 +23,6 @@ export default class VacuumJar extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.vacuumJar()
+    return qt.Elements.vacuumJar()
   }
 }

@@ -144,6 +144,14 @@ export default class Cell {
   }
 
   /**
+   * Are cells at the same coordinates
+   * @param cell
+   */
+  equal(cell: Cell): boolean {
+    return this.coord.equal(cell.coord)
+  }
+
+  /**
    * Rotate cell
    * Correcting the javascript modulo bug for negative values: https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
    * @param angle rotation angle in degrees

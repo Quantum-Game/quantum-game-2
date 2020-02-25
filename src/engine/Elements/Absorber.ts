@@ -21,7 +21,7 @@ export default class Absorber extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.attenuator(Math.SQRT1_2)
+    return qt.Elements.attenuator(Math.SQRT1_2)
     // return qt.attenuator(options.percentage);
   }
 }

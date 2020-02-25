@@ -15,6 +15,7 @@
     </span>-->
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
+      <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" />
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
 
@@ -82,6 +83,13 @@ export default class GameControls extends Vue {
 
   get stepBackFlag(): boolean {
     return this.frameIndex > 0
+  }
+
+  get computeFateStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
+      opacity: 1
+    }
   }
 
   get computeRewindStyle(): {} {
