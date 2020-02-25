@@ -233,6 +233,7 @@ export interface IEntrySection {
 
 /**
  * Photon indicator interface for glue code with qt Photons
+ * @deprecated
  */
 export interface IIndicator {
   x: number

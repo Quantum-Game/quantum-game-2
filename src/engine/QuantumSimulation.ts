@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { Photons } from 'quantum-tensors'
+import { Vector, Photons } from 'quantum-tensors'
 import { weightedRandomInt } from '@/engine/Helpers'
 import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
 import Coord from '@/engine/Coord'
@@ -63,6 +63,24 @@ export default class QuantumSimulation {
       indicator.direction,
       indicator.polarization
     )
+    this.frames.push(frame)
+  }
+
+  intializeFromXYState(posX: number, posY: number, vecDirPol: Vector): void {
+    this.frames = []
+    const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
+
+    const posInd = Vector.indicator(
+      [frame.photons.dimX, frame.photons.dimY],
+      [posX.toString(), posY.toString()]
+    )
+    frame.photons.nPhotons = 1
+    if (vecDirPol.dimensions[0].name === 'direction') {
+      frame.photons.vector = posInd.outer(vecDirPol)
+    } else {
+      frame.photons.vector = posInd.outer(vecDirPol.permute([1, 0]))
+    }
+
     this.frames.push(frame)
   }
 
