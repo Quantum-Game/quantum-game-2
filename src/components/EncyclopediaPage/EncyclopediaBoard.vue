@@ -67,6 +67,7 @@ import BoardLasers from '@/components/Board/BoardLasers.vue'
 import AppCell from '@/components/Board/AppCell.vue'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
+import { Vector } from 'quantum-tensors'
 
 @Component({
   components: {
@@ -81,6 +82,12 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => Grid.dummyIGrid() }) iGrid!: IGrid
   @Prop({ default: () => 10 }) readonly maxSteps!: number
   @Prop({ default: () => 2 }) readonly defaultStep!: number
+  @Prop({ default: () => [] }) readonly initialState!: {
+    posX: number
+    posY: number
+    vecDirPol: Vector
+  }[]
+
   @Prop({ default: () => [] }) readonly indicators!: IIndicator[]
   @Prop({ default: false }) readonly exactSteps!: boolean
   @Prop({ default: 64 }) readonly tileSize!: number
@@ -112,12 +119,18 @@ export default class EncyclopediaBoard extends Vue {
    */
   reset(): void {
     this.simulation = new QuantumSimulation(this.grid)
-    if (this.indicators.length === 0) {
-      this.simulation.initializeFromLaser(PolEnum.H)
-    } else if (this.indicators.length === 1) {
-      this.simulation.initializeFromIndicator(this.indicators[0])
+    if (this.initialState.length === 1) {
+      const d = this.initialState[0]
+      this.simulation.intializeFromXYState(d.posX, d.posY, d.vecDirPol)
     } else {
-      throw new Error('EncyclopediaBoard not yet prepared for more photons.')
+      // to be removed later
+      if (this.indicators.length === 0) {
+        this.simulation.initializeFromLaser(PolEnum.H)
+      } else if (this.indicators.length === 1) {
+        this.simulation.initializeFromIndicator(this.indicators[0])
+      } else {
+        throw new Error('EncyclopediaBoard not yet prepared for more photons.')
+      }
     }
     if (this.exactSteps) {
       this.simulation.computeFrames(this.maxSteps, -1)

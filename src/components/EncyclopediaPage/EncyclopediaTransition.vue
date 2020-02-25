@@ -4,7 +4,6 @@
     <div class="grids">
       <div class="matrix">
         <matrix-viewer
-          ref="matrixViewer"
           :key="`${operator.toString()}`"
           class="matrix-viewer"
           :operator-raw="operator"
@@ -14,10 +13,10 @@
       </div>
       <div class="eboard">
         <encyclopedia-board
-          :key="JSON.stringify(indicators)"
+          :key="`${initialState.vecDirPol.toKetString()}`"
           class="board"
           :i-grid="grid.exportGrid()"
-          :indicators="indicators"
+          :initial-state="[initialState]"
           :max-steps="2"
           :default-step="2"
           :exact-steps="true"
@@ -30,11 +29,17 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { Elem, IIndicator, DirEnum, PolEnum } from '@/engine/interfaces'
+import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { Operator } from 'quantum-tensors'
+import { Basis, Operator, Vector, Dimension } from 'quantum-tensors'
+
+interface IXYVec {
+  posX: number
+  posY: number
+  vecDirPol: Vector
+}
 
 @Component({
   components: {
@@ -50,18 +55,14 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   rotation: number = this.defaultRotation
   grid: Grid = Grid.emptyGrid(3, 3)
-  indicators: IIndicator[] = [
-    {
-      x: 0,
-      y: 1,
-      direction: DirEnum['>'],
-      polarization: PolEnum.H
-    }
-  ]
+  initialState: IXYVec = {
+    posX: 0,
+    posY: 1,
+    vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H'])
+  }
 
   $refs!: {
     grid: HTMLElement
-    matrixViewer: Vue
   }
 
   created(): void {
@@ -84,63 +85,30 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   /**
-   * Update indicators with colId
-   * FIXME: Needs a serious refactor
-   * suuuper dirty
-   * Directly generate a vector from Matrix-Viewer rather than
-   * use any DirEnum / PolEnum
    */
-  updateIndicators(colId: number): void {
+  updateIndicators(vector: Vector): void {
     this.grid.set(this.cell)
-    const dims = this.$refs.matrixViewer.$data.operator.dimensionsOut
-    if (dims[0].name === 'direction') {
-      const direction = [
-        DirEnum['>'],
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum['<'],
-        DirEnum.v,
-        DirEnum.v
-      ][colId]
-      const polarization = [
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V
-      ][colId]
-      const x = [0, 0, 1, 1, 2, 2, 1, 1][colId]
-      const y = [1, 1, 2, 2, 1, 1, 0, 0][colId]
-      this.indicators = [{ x, y, direction, polarization }]
+    const hv = Basis.polarization('HV')
+
+    // how to get direction?
+    const str = vector.toKetString()
+    let move: { x: number; y: number }
+    if (str.indexOf('>') > -1) {
+      move = { x: 1, y: 0 }
+    } else if (str.indexOf('^') > -1) {
+      move = { x: 0, y: -1 }
+    } else if (str.indexOf('<') > -1) {
+      move = { x: -1, y: 0 }
+    } else if (str.indexOf('v') > -1) {
+      move = { x: 0, y: 1 }
     } else {
-      const direction = [
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum.v,
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum.v
-      ][colId]
-      const polarization = [
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.V,
-        PolEnum.V,
-        PolEnum.V
-      ][colId]
-      const x = [0, 1, 2, 1, 0, 1, 2, 1][colId]
-      const y = [1, 2, 1, 0, 1, 2, 1, 0][colId]
-      this.indicators = [{ x, y, direction, polarization }]
+      throw new Error('No direction detected')
+    }
+
+    this.initialState = {
+      posX: 1 - move.x,
+      posY: 1 - move.y,
+      vecDirPol: hv.changeAllDimsOfVector(vector)
     }
   }
 
