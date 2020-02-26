@@ -36,7 +36,7 @@ export default new Router({
     {
       path: '/sandbox',
       name: 'sandbox',
-      component: () => import('@/components/GamePage/index.vue')
+      component: () => import('@/components/SandboxPage/index.vue')
     },
     {
       path: '/info',
