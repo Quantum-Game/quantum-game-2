@@ -1,22 +1,22 @@
 <template>
   <div class="container">
-    <div>
-      <h2>{{ elementName }} at {{ rotation }}°</h2>
-      <encyclopedia-matrix
-        :coord-names-in="coordNames"
-        :coord-names-out="coordNames"
-        :dimension-names="dimensionNames"
-        :matrix-elements="matrixElements"
-        :size="30"
-        @columnMouseover="updateIndicators($event)"
-        @swapDimensions="dirPolOrder = !dirPolOrder"
-      />
+    <h2>{{ elementName }} at {{ rotation }}°</h2>
+    <div class="grids">
+      <div class="matrix">
+        <matrix-viewer
+          :key="`${operator.toString()}`"
+          class="matrix-viewer"
+          :operator-raw="operator"
+          :size="30"
+          @columnMouseover="updateIndicators($event)"
+        />
+      </div>
       <div class="eboard">
         <encyclopedia-board
-          :key="JSON.stringify(indicators)"
+          :key="`${initialState.vecDirPol.toKetString()}`"
           class="board"
           :i-grid="grid.exportGrid()"
-          :indicators="indicators"
+          :initial-state="[initialState]"
           :max-steps="2"
           :default-step="2"
           :exact-steps="true"
@@ -29,16 +29,22 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { Elem, IIndicator, DirEnum, PolEnum, IMatrixElement } from '@/engine/interfaces'
+import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
-import EncyclopediaMatrix from '@/components/EncyclopediaPage/EncyclopediaMatrix.vue'
+import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { OperatorEntry, Operator } from 'quantum-tensors'
+import { Basis, Operator, Vector, Dimension } from 'quantum-tensors'
+
+interface IXYVec {
+  posX: number
+  posY: number
+  vecDirPol: Vector
+}
 
 @Component({
   components: {
     EncyclopediaBoard,
-    EncyclopediaMatrix
+    MatrixViewer
   }
 })
 export default class EncyclopediaMatrixBoard extends Vue {
@@ -48,16 +54,12 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: '0' }) defaultRotation!: number
 
   rotation: number = this.defaultRotation
-  dirPolOrder = true
   grid: Grid = Grid.emptyGrid(3, 3)
-  indicators: IIndicator[] = [
-    {
-      x: 0,
-      y: 1,
-      direction: DirEnum['>'],
-      polarization: PolEnum.H
-    }
-  ]
+  initialState: IXYVec = {
+    posX: 0,
+    posY: 1,
+    vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H'])
+  }
 
   $refs!: {
     grid: HTMLElement
@@ -83,77 +85,31 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   /**
-   * Update indicators with colId
-   * FIXME: Needs a serious refactor
-   * suuuper dirty
    */
-  updateIndicators(colId: number): void {
+  updateIndicators(vector: Vector): void {
     this.grid.set(this.cell)
-    if (this.dirPolOrder) {
-      const direction = [
-        DirEnum['>'],
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum['<'],
-        DirEnum.v,
-        DirEnum.v
-      ][colId]
-      const polarization = [
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.H,
-        PolEnum.V
-      ][colId]
-      const x = [0, 0, 1, 1, 2, 2, 1, 1][colId]
-      const y = [1, 1, 2, 2, 1, 1, 0, 0][colId]
-      this.indicators = [{ x, y, direction, polarization }]
+    const hv = Basis.polarization('HV')
+
+    // how to get direction?
+    const str = vector.toKetString()
+    let move: { x: number; y: number }
+    if (str.indexOf('>') > -1) {
+      move = { x: 1, y: 0 }
+    } else if (str.indexOf('^') > -1) {
+      move = { x: 0, y: -1 }
+    } else if (str.indexOf('<') > -1) {
+      move = { x: -1, y: 0 }
+    } else if (str.indexOf('v') > -1) {
+      move = { x: 0, y: 1 }
     } else {
-      const direction = [
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum.v,
-        DirEnum['>'],
-        DirEnum['^'],
-        DirEnum['<'],
-        DirEnum.v
-      ][colId]
-      const polarization = [
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.H,
-        PolEnum.V,
-        PolEnum.V,
-        PolEnum.V,
-        PolEnum.V
-      ][colId]
-      const x = [0, 1, 2, 1, 0, 1, 2, 1][colId]
-      const y = [1, 2, 1, 0, 1, 2, 1, 0][colId]
-      this.indicators = [{ x, y, direction, polarization }]
+      throw new Error('No direction detected')
     }
-  }
 
-  /**
-   * Get the basis direction and polarization strings
-   */
-  get coordNames(): string[][] {
-    const coordsDir = ['⇢', '⇡', '⇠', '⇣']
-    const coordsPol = ['H', 'V']
-    return this.dirPolOrder ? [coordsDir, coordsPol] : [coordsPol, coordsDir]
-  }
-
-  /**
-   * Get the basis direction and polarization strings
-   */
-  get dimensionNames(): string[] {
-    return this.dirPolOrder ? ['direction', 'polarization'] : ['polarization', 'direction']
+    this.initialState = {
+      posX: 1 - move.x,
+      posY: 1 - move.y,
+      vecDirPol: hv.changeAllDimsOfVector(vector)
+    }
   }
 
   /**
@@ -162,40 +118,17 @@ export default class EncyclopediaMatrixBoard extends Vue {
   get operator(): Operator {
     return this.cell.operator[2]
   }
-
-  // TODO: find it in qt
-  get matrixElements(): IMatrixElement[] {
-    if (this.dirPolOrder) {
-      return this.operator.entries.map((entry: OperatorEntry) => {
-        return {
-          i: 2 * entry.coordIn[0] + entry.coordIn[1],
-          j: 2 * entry.coordOut[0] + entry.coordOut[1],
-          re: entry.value.re,
-          im: entry.value.im
-        }
-      })
-    }
-    return this.operator.entries.map((entry: OperatorEntry) => {
-      return {
-        i: entry.coordIn[0] + 4 * entry.coordIn[1],
-        j: entry.coordOut[0] + 4 * entry.coordOut[1],
-        re: entry.value.re,
-        im: entry.value.im
-      }
-    })
-  }
 }
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 500px;
-  .eboard {
-    display: inline-block;
-  }
-  .operatorText {
-    padding: 10px;
-    font-size: 10px;
+.grids {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  border-bottom: 1px solid #8e819d;
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
   }
 }
 </style>
