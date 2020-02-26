@@ -2,13 +2,12 @@
   "name": "quantum-game",
   "version": "2.1.28",
   "private": true,
-  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint-fix": "vue-cli-service lint --fix",
     "deploy": "yarn lint && yarn build && npm version patch && yarn build && firebase deploy",
+    "lint-fix": "vue-cli-service lint --fix",
     "update-entries": "node src/utils/updateEntries"
   },
   "dependencies": {
@@ -48,11 +47,11 @@
     "@types/webpack-env": "^1.14.1",
     "@typescript-eslint/eslint-plugin": "",
     "@typescript-eslint/parser": "^2.9.0",
-    "@vue/cli-plugin-babel": "^4.1.1",
-    "@vue/cli-plugin-eslint": "^4.1.1",
-    "@vue/cli-plugin-pwa": "^4.1.1",
-    "@vue/cli-plugin-typescript": "^4.1.1",
-    "@vue/cli-service": "^4.1.1",
+    "@vue/cli-plugin-babel": "~4.2.2",
+    "@vue/cli-plugin-eslint": "~4.2.2",
+    "@vue/cli-plugin-pwa": "~4.2.2",
+    "@vue/cli-plugin-typescript": "~4.2.2",
+    "@vue/cli-service": "~4.2.2",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-standard": "^5.0.0",
     "@vue/eslint-config-typescript": "^5.0.1",
@@ -70,11 +69,12 @@
     "node-sass": "^4.9.0",
     "prettier": "1.19.1",
     "sass-loader": "^8.0.0",
-    "typescript": "^3.4.3",
+    "typescript": "~3.7.5",
     "vue-class-component": "^7.1.0",
     "vue-property-decorator": "^8.2.2",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.41.2",
     "webpack-env": "^0.8.0"
-  }
+  },
+  "license": "MIT"
 }
