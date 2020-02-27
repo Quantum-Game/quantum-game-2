@@ -7,8 +7,11 @@
     <game-layout>
       <!-- HEADER-MIDDLE -->
       <h1 slot="header-middle" class="title">
-        SANDBOX
+        {{ level.name }}
       </h1>
+      <h4 slot="header-middle" class="title">
+        {{ level.description }}
+      </h4>
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
@@ -45,7 +48,8 @@
           @loadedLevel="loadLevel($event)"
         />
         <cell-editor />
-        <level-editor />
+        <hr />
+        <level-editor :level="level" />
       </section>
 
       <!-- MAIN-RIGHT -->

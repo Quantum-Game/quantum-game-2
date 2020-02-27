@@ -109,10 +109,10 @@ export default class Level {
       return new Goal(detector.coord, 0.001)
     })
     return {
-      id: 101,
-      name: 'Custom Level',
-      group: 'Custom',
-      description: '',
+      id: this.id || 0,
+      name: this.name,
+      group: this.group,
+      description: this.description,
       grid: this.grid.exportGridForDownload(),
       hints: this.hints.map((hint): IHint => hint.exportHint()),
       goals: goals.map((goal): IGoal => goal.exportGoal()),

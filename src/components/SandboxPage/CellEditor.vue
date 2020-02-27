@@ -1,11 +1,11 @@
 <template>
   <div>
+    <h1>Cell editor</h1>
     <div>
       Selected cell: {{ selectedCell.element.name }} @ [x: {{ selectedCell.coord.x }}, y:
       {{ selectedCell.coord.y }}]
       <span class="small">(Double click on a cell to select it.)</span>
     </div>
-    <hr />
     <div id="form">
       <!-- COORDS ARE MANAGED BY DOUBLE CLICKED CELL -->
       <p>

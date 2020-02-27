@@ -1,46 +1,39 @@
 <template>
   <div>
     <h1>Level Editor</h1>
+    <div id="form">
+      <!-- ID SHOULD BE DYNAMIC -->
+      <!-- NAME -->
+      <p>
+        Name:
+        <input v-model="level.name" placeholder="Name" />
+      </p>
+      <!-- DESCRIPTION -->
+      <p>
+        Description:
+        <textarea v-model="level.description" placeholder="Description" />
+      </p>
+      <!-- SIZE -->
+      <p>
+        Size:
+        <input v-model="level.grid.cols" placeholder="Columns" />x
+        <input v-model="level.grid.rows" placeholder="Rows" />
+      </p>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { State } from 'vuex-class'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Elem } from '@/engine/interfaces'
-import Cell from '@/engine/Cell'
+import Level from '@/engine/Level'
 
 @Component({
   components: {}
 })
-export default class GameToolbox extends Vue {
-  @State('selectedCell') selectedCell!: Cell
+export default class LevelEditor extends Vue {
+  @Prop() readonly level!: Level
   Elem = Elem
-
-  onElementChange(event: { target: { value: string } }): void {
-    const name = event.target.value
-    this.selectedCell.element = Cell.fromName(name)
-  }
-
-  get isPolarizable(): boolean {
-    const polarizables = [Elem.QuarterWavePlate, Elem.Polarizer, Elem.Laser]
-    return polarizables.includes(this.selectedCell.element.name)
-  }
-
-  get isRotable(): boolean {
-    return this.selectedCell.element.angles.length > 1
-  }
-
-  get isActivable(): boolean {
-    return this.selectedCell.isLaser
-  }
-
-  get isPercentageVariable(): boolean {
-    const variables = [Elem.SugarSolution, Elem.Absorber]
-    return variables.includes(this.selectedCell.element.name)
-  }
-
-  // Add a watcher for selected cell change
 }
 </script>
 
