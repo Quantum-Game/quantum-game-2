@@ -14,6 +14,14 @@
         "frozen": true,
         "active": true,
         "energized": false
+      },
+      {
+        "coord": { "y": 3, "x": 11 },
+        "element": "Detector",
+        "rotation": 180,
+        "frozen": true,
+        "active": true,
+        "energized": false
       }
     ]
   },

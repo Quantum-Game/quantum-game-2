@@ -44,7 +44,8 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
         />
-        <sandbox-editor :cell="activeCell" />
+        <cell-editor />
+        <level-editor />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -81,7 +82,8 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
-import SandboxEditor from '@/components/SandboxPage/SandboxEditor.vue'
+import CellEditor from '@/components/SandboxPage/CellEditor.vue'
+import LevelEditor from '@/components/SandboxPage/LevelEditor.vue'
 
 @Component({
   components: {
@@ -96,7 +98,8 @@ import SandboxEditor from '@/components/SandboxPage/SandboxEditor.vue'
     GameBoard,
     AppButton,
     AppOverlay,
-    SandboxEditor
+    CellEditor,
+    LevelEditor
   }
 })
 export default class Game extends Vue {
@@ -144,6 +147,12 @@ export default class Game extends Vue {
   changeLevel(): void {
     this.mutationSetCurrentLevelID(this.levelId)
     this.loadLevel(levels[this.levelId])
+  }
+
+  /** Reset simulation on selected cell change */
+  @Watch('selectedCell')
+  reloadSimulation(): void {
+    this.updateSimulation()
   }
 
   /**
