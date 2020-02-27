@@ -15,7 +15,7 @@ export default class Glass extends Element {
 
   public allowedRotations: number[] = [0]
   public allowedPolarizations: number[] = []
-  public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75, 1]
+  public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75]
 
   public constructor(percentage = 0.25) {
     super(Elem.Glass, Group.Phase)
@@ -25,5 +25,6 @@ export default class Glass extends Element {
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
     return qt.Elements.glassSlab()
+    // return qt.Elements.glassSlab(options.percentage)
   }
 }

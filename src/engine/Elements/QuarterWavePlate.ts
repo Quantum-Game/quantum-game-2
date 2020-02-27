@@ -4,6 +4,7 @@ import Element from '@/engine/Element'
 
 /**
  * QUARTER WAVE PLATE CLASS
+ * TODO: Rename QuarterWavePlate to phasePlate
  */
 export default class QuarterWavePlate extends Element {
   public name: Elem = Elem.QuarterWavePlate
@@ -14,8 +15,8 @@ export default class QuarterWavePlate extends Element {
   public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
 
   public allowedRotations: number[] = [0, 90, 180, 270]
-  public allowedPolarizations: number[] = [0, 45, 90, 135, 180]
-  public allowedPercentages: number[] = []
+  public allowedPolarizations: number[] = [0, 0.125, 0.25, 0.375, 0.5]
+  public allowedPercentages: number[] = [0.125, 0.25]
 
   public constructor(polarization = 0) {
     super(Elem.QuarterWavePlate, Group.Polarization)
@@ -23,9 +24,7 @@ export default class QuarterWavePlate extends Element {
   }
 
   public transition(options: ITransition): qt.Operator {
-    if (options.rotation === 90 || options.rotation === 270) {
-      return qt.Elements.quarterWavePlateNS(options.polarization)
-    }
-    return qt.Elements.quarterWavePlateWE(options.polarization)
+    // TODO: See polarizations conventions in qt
+    return qt.Elements.phasePlate(options.rotation, options.polarization, options.percentage)
   }
 }

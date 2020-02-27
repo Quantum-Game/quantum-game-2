@@ -14,7 +14,7 @@ export default class Polarizer extends Element {
   public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
 
   public allowedRotations: number[] = [0, 90, 180, 270]
-  public allowedPolarizations: number[] = [0, 45, 90, 135, 180]
+  public allowedPolarizations: number[] = [0, 0.125, 0.25, 0.375, 0.5]
   public allowedPercentages: number[] = []
 
   public constructor(polarization = 0) {

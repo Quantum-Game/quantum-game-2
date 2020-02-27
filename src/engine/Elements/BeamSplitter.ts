@@ -16,12 +16,15 @@ export default class BeamSplitter extends Element {
   public allowedRotations: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
   public allowedPolarizations: number[] = []
   public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75, 1]
-
+  // TODO: Implement different percentage of translation / reflection
+  // public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75, 1]
+  public rotation = 0
   public percentage = 0.5
 
-  public constructor(percentage = 0.5) {
+  public constructor(rotation = 0, percentage = 0.5) {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
+    this.rotation = rotation
   }
 
   public transition(options: ITransition): qt.Operator {

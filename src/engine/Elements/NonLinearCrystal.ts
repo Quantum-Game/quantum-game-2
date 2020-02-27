@@ -21,6 +21,7 @@ export default class NonLinearCrystal extends Element {
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
+    // TODO: implement BBO in quantum-tensors
     return qt.Elements.attenuator(1)
   }
 }

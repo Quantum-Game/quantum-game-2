@@ -11,52 +11,31 @@
       <table class="table">
         <!-- ELEMENT -->
         <tr>
-          <td class="right">
+          <td class="label">
             Element
           </td>
-          <td class="left">
-            <select v-model="selectedCell.element.name" @change="onElementChange($event)">
-              <option
-                v-for="element in Object.values(Elem)"
-                :key="element"
-                :value="element"
-                :selected="element === selectedCell.element.name ? true : false"
-              >
-                {{ element }}
-              </option>
-            </select>
-          </td>
-        </tr>
-
-        <!-- ACTIVE -->
-        <tr v-if="isActivable">
-          <td class="right">Active</td>
-          <td class="left">
-            <input id="checkbox" v-model="selectedCell.active" type="checkbox" />
-            <label for="checkbox">{{ selectedCell.active }}</label>
-          </td>
-        </tr>
-
-        <!-- FROZEN / TOOL -->
-        <tr>
-          <td class="right">Frozen</td>
-          <td class="left">
-            <input
-              id="checkbox"
-              v-model="selectedCell.frozen"
-              type="checkbox"
-              @change="onFrozenChange($event)"
-            />
-            <label for="checkbox">{{ selectedCell.frozen }}</label>
+          <td class="input">
+            <div class="select">
+              <select v-model="selectedCell.element.name" @change="onElementChange($event)">
+                <option
+                  v-for="element in Object.values(Elem)"
+                  :key="element"
+                  :value="element"
+                  :selected="element === selectedCell.element.name ? true : false"
+                >
+                  {{ element }}
+                </option>
+              </select>
+            </div>
           </td>
         </tr>
 
         <!-- ROTATION -->
         <tr v-if="isRotable">
-          <td class="right">
+          <td class="label">
             Rotation
           </td>
-          <td class="left">
+          <td class="input">
             <div class="slider">
               <vue-slider
                 v-model="selectedCell.rotation"
@@ -71,10 +50,10 @@
 
         <!-- POLARIZATION -->
         <tr v-if="isPolarizable">
-          <td class="right">
+          <td class="label">
             Polarization
           </td>
-          <td class="left">
+          <td class="input">
             <div class="slider">
               <vue-slider
                 v-model="selectedCell.polarization"
@@ -89,10 +68,10 @@
 
         <!-- PERCENTAGE -->
         <tr v-if="isPercentageVariable">
-          <td class="right">
+          <td class="label">
             Percentage
           </td>
-          <td class="left">
+          <td class="input">
             <div class="slider">
               <vue-slider
                 v-model="selectedCell.percentage"
@@ -102,6 +81,33 @@
                 :dot-size="20"
               />
             </div>
+          </td>
+        </tr>
+
+        <!-- ACTIVE -->
+        <tr v-if="isActivable">
+          <td class="label">Active</td>
+          <td class="input">
+            <toggle-button
+              v-model="selectedCell.active"
+              :labels="{ checked: 'Active', unchecked: 'Stopped' }"
+              :color="{ checked: 'green', unchecked: 'grey', disabled: '#CCCCCC' }"
+              :width="80"
+            />
+          </td>
+        </tr>
+
+        <!-- FROZEN / TOOL -->
+        <tr>
+          <td class="label">Frozen</td>
+          <td class="input">
+            <toggle-button
+              v-model="selectedCell.frozen"
+              :labels="{ checked: 'Frozen', unchecked: 'Tool' }"
+              :color="{ checked: 'green', unchecked: 'grey', disabled: '#CCCCCC' }"
+              :width="80"
+              @change="onFrozenChange($event)"
+            />
           </td>
         </tr>
       </table>
@@ -117,10 +123,12 @@ import Level from '@/engine/Level'
 import Cell from '@/engine/Cell'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/material.css'
+import { ToggleButton } from 'vue-js-toggle-button'
 
 @Component({
   components: {
-    VueSlider
+    VueSlider,
+    ToggleButton
   }
 })
 export default class CellEditor extends Vue {
@@ -135,8 +143,10 @@ export default class CellEditor extends Vue {
     this.selectedCell.element = Cell.fromName(name)
   }
 
-  onFrozenChange(event: { target: { checked: boolean } }): void {
-    const frozen = event.target.checked
+  onFrozenChange(event: { value: boolean }): void {
+    console.log(event)
+
+    const frozen = event.value
     if (frozen) {
       this.selectedCell.frozen = true
       this.selectedCell.tool = false
@@ -168,21 +178,21 @@ export default class CellEditor extends Vue {
 .small {
   font-size: 10px;
 }
-.slider {
-  margin: 10px 20px;
-}
 .table {
   width: 100%;
   td {
     padding: 10px;
+    &.label {
+      text-align: right;
+      width: 30%;
+    }
+    &.input {
+      text-align: left;
+      width: 70%;
+    }
   }
-  .left {
-    text-align: left;
-    width: 70%;
-  }
-  .right {
-    text-align: right;
-    width: 30%;
-  }
+}
+.slider {
+  margin: 10px 20px;
 }
 </style>

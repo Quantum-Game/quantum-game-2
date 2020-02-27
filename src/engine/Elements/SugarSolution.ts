@@ -15,16 +15,17 @@ export default class SugarSolution extends Element {
 
   public allowedRotations: number[] = [0]
   public allowedPolarizations: number[] = []
-  public allowedPercentages: number[] = [0.125, 0.25, 0.375, 0.5]
+  public allowedPercentages: number[] = [0, 0.125, 0.25, 0.375]
 
-  public constructor(percentage = 0.125) {
+  polarization = 0.125
+
+  public constructor(polarization = 0.125) {
     super(Elem.SugarSolution, Group.Polarization)
-    this.percentage = percentage
+    this.polarization = polarization
   }
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    // return qt.sugarSolution(options.percentage);
-    return qt.Elements.sugarSolution(0.125)
+    return qt.Elements.sugarSolution(options.polarization)
   }
 }

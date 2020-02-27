@@ -13,7 +13,9 @@ export default class Absorber extends Element {
 
   public allowedPolarizations: number[] = []
   public allowedRotations: number[] = [0]
-  public allowedPercentages: number[] = [0.25, 0.5, 0.75, 1]
+  public allowedPercentages: number[] = [0, 0.5, Math.SQRT1_2, 1]
+
+  public percentage = Math.SQRT1_2
 
   /**
    * Check for allowed value of percentage
@@ -21,12 +23,15 @@ export default class Absorber extends Element {
    */
   public constructor(percentage: number = Math.SQRT1_2) {
     super(Elem.Absorber, Group.Absorption)
-    this.percentage = percentage
+    if (this.allowedPercentages.includes(percentage)) {
+      this.percentage = percentage
+    } else {
+      throw new Error(`Percentage ${percentage} not in allowed range.`)
+    }
   }
 
   /* eslint-disable-next-line */
   public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(Math.SQRT1_2)
-    // return qt.attenuator(options.percentage);
+    return qt.Elements.attenuator(options.percentage)
   }
 }
