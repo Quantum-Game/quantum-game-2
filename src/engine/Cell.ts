@@ -174,8 +174,8 @@ export default class Cell {
    */
   public toString(): string {
     return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} ${
-      this.tool ? 'Tool' : 'Nothing'
-    } Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
+      this.tool ? 'Tool' : ''
+    } Cell @ ${this.coord.toCoordString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
       this.active ? 'active' : 'inactive'
     } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
       this.rotation

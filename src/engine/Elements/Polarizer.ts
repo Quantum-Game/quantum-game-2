@@ -12,9 +12,10 @@ export default class Polarizer extends Element {
     'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.'
 
   public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
-  public angles: number[] = [0, 90, 180, 270]
 
-  public polarization = 0
+  public allowedRotations: number[] = [0, 90, 180, 270]
+  public allowedPolarizations: number[] = [0, 45, 90, 135, 180]
+  public allowedPercentages: number[] = []
 
   public constructor(polarization = 0) {
     super(Elem.Polarizer, Group.Polarization)

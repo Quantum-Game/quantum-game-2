@@ -10,7 +10,10 @@ export default class Void extends Element {
   public group: Group = Group.Basic
   public description = 'The void...'
   public ascii: string[] = ['.']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.Void, Group.Basic)

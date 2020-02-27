@@ -10,7 +10,10 @@ export default class Mirror extends Element {
   public group: Group = Group.Direction
   public description = 'Metallic or dielectric mirror.'
   public ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\']
-  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
+
+  public allowedRotations: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
+  public allowedPolarizations: number[] = [0, 90]
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.Mirror, Group.Direction)

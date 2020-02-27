@@ -10,26 +10,33 @@ export default class Element {
   public group: Group
   public description: string
   public ascii: string[]
-  public angles: number[]
   public polarization: number
   public percentage: number
+
+  public allowedRotations: number[]
+  public allowedPolarizations: number[]
+  public allowedPercentages: number[]
 
   public constructor(
     name: Elem,
     group: Group,
     description = '',
     ascii: string[] = ['>', '^', '<', 'v'],
-    angles: number[] = [0, 90, 180, 270],
     polarization = 0,
-    percentage = 0
+    percentage = 0,
+    allowedRotations = [0],
+    allowedPolarizations = [],
+    allowedPercentages = []
   ) {
     this.name = name
     this.group = group
     this.description = description
     this.ascii = ascii
-    this.angles = angles
     this.polarization = polarization
     this.percentage = percentage
+    this.allowedRotations = allowedRotations
+    this.allowedPolarizations = allowedPolarizations
+    this.allowedPercentages = allowedPercentages
   }
 
   /**
@@ -37,7 +44,7 @@ export default class Element {
    * @returns amount to rotate the element
    */
   public get rotationAngle(): number {
-    return 360 / this.angles.length
+    return 360 / this.allowedRotations.length
   }
 
   /**

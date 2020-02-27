@@ -10,7 +10,10 @@ export default class Wall extends Element {
   public group: Group = Group.Absorption
   public description = 'Another brick in the wall.'
   public ascii: string[] = ['▓']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.Wall, Group.Absorption)

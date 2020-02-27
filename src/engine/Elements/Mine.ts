@@ -12,7 +12,10 @@ export default class Mine extends Element {
     'Once it absorbs a single photon, it sets off. Old french submarine captains can sometimes disarm them.'
 
   public ascii: string[] = ['!']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.Mine, Group.Absorption)

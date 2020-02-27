@@ -12,7 +12,10 @@ export default class DetectorFour extends Element {
     'Detects and amplifies electric signal from each single photon, from all directions. Typically, it is the goal to get the photon here.'
 
   public ascii: string[] = ['O']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.DetectorFour, Group.Absorption)

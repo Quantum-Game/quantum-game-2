@@ -47,7 +47,7 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
         />
-        <cell-editor />
+        <cell-editor :level="level" />
         <hr />
         <level-editor :level="level" />
       </section>

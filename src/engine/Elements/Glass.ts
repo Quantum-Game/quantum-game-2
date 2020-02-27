@@ -12,9 +12,10 @@ export default class Glass extends Element {
     'Higher refractive index makes light slower. We set its thickness so it retards the phase by λ/4. Useful for changing interference.'
 
   public ascii: string[] = ['↜']
-  public angles: number[] = [0]
 
-  public percentage = 0.25
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75, 1]
 
   public constructor(percentage = 0.25) {
     super(Elem.Glass, Group.Phase)

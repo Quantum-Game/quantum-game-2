@@ -11,6 +11,10 @@ export default class Gate extends Element {
   public description = 'A gate that can be opened if next to a fed plant.'
   public ascii: string[] = ['M']
 
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
+
   public constructor() {
     super(Elem.Gate, Group.Absorption)
   }

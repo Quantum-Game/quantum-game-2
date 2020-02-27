@@ -10,7 +10,8 @@
       <!-- COORDS ARE MANAGED BY DOUBLE CLICKED CELL -->
       <p>
         <!-- ELEMENT -->
-        <select v-model="selectedCell.element" @change="onElementChange($event)">
+        <span>Element: &nbsp;</span>
+        <select v-model="selectedCell.element.name" @change="onElementChange($event)">
           <option
             v-for="element in Object.values(Elem)"
             :key="element"
@@ -20,44 +21,41 @@
             {{ element }}
           </option>
         </select>
-        &nbsp;
-        <span>Element: {{ selectedCell.element.name }}</span>
       </p>
 
       <!-- ROTATION -->
       <p v-if="isRotable">
+        <span>Rotation:</span>
+        &nbsp;
         <select v-model="selectedCell.rotation">
           <option
-            v-for="angle in selectedCell.element.angles"
+            v-for="angle in selectedCell.element.allowedRotations"
             :key="'rotation' + angle"
             :value="angle"
           >
             {{ angle }}°
           </option>
         </select>
-        &nbsp;
-        <span>Rotation: {{ selectedCell.rotation }}</span>
       </p>
 
       <!-- POLARIZATION -->
       <p v-if="isPolarizable">
+        <span>Polarization: &nbsp;</span>
         <select v-model="selectedCell.polarization">
           <option
-            v-for="angle in [0, 45, 90, 135, 180, 225, 270, 315]"
+            v-for="angle in selectedCell.element.allowedPolarizations"
             :key="'polarization' + angle"
             :value="angle"
           >
             {{ angle }}°
           </option>
         </select>
-        &nbsp;
-        <span>Polarization: {{ selectedCell.polarization }}</span>
       </p>
 
       <!-- PERCENTAGE -->
       <p v-if="isPercentageVariable">
+        <span>Percentage: &nbsp;</span>
         <input v-model="selectedCell.percentage" placeholder="Percentage" />
-        Percentage is: {{ selectedCell.percentage }}%
       </p>
 
       <!-- ACTIVE -->
@@ -76,42 +74,41 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import { State } from 'vuex-class'
-import Cell from '@/engine/Cell'
 import { Elem } from '@/engine/interfaces'
+import Level from '@/engine/Level'
+import Cell from '@/engine/Cell'
 
 @Component({
   components: {}
 })
 export default class CellEditor extends Vue {
+  @Prop() readonly level!: Level
   @State('selectedCell') selectedCell!: Cell
   Elem = Elem
 
   onElementChange(event: { target: { value: string } }): void {
     const name = event.target.value
+    this.selectedCell.reset()
     this.selectedCell.element = Cell.fromName(name)
   }
 
-  get isPolarizable(): boolean {
-    const polarizables = [Elem.QuarterWavePlate, Elem.Polarizer, Elem.Laser]
-    return polarizables.includes(this.selectedCell.element.name)
+  get isRotable(): boolean {
+    return this.selectedCell.element.allowedRotations.length > 1
   }
 
-  get isRotable(): boolean {
-    return this.selectedCell.element.angles.length > 1
+  get isPolarizable(): boolean {
+    return this.selectedCell.element.allowedPolarizations.length > 0
+  }
+
+  get isPercentageVariable(): boolean {
+    return this.selectedCell.element.allowedPercentages.length > 0
   }
 
   get isActivable(): boolean {
     return this.selectedCell.isLaser
   }
-
-  get isPercentageVariable(): boolean {
-    const variables = [Elem.SugarSolution, Elem.Absorber]
-    return variables.includes(this.selectedCell.element.name)
-  }
-
-  // Add a watcher for selected cell change
 }
 </script>
 

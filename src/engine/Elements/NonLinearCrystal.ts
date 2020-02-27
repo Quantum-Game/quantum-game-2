@@ -10,7 +10,10 @@ export default class NonLinearCrystal extends Element {
   public group: Group = Group.Source
   public description = 'A BBO crystal.'
   public ascii: string[] = ['>', '^', '<', 'v']
-  public angles: number[] = [0, 90, 180, 270]
+
+  public allowedRotations: number[] = [0, 90, 180, 270]
+  public allowedPolarizations: number[] = [0, 90]
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.NonLinearCrystal, Group.Source)

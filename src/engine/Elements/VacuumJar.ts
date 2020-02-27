@@ -12,9 +12,10 @@ export default class VacuumJar extends Element {
     'Even air retards light a bit. We set the thickness of vacuum so it advances the phase by λ/4. Useful for changing interference.'
 
   public ascii: string[] = ['↝']
-  public angles: number[] = [0]
 
-  public percentage = 0.25
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75]
 
   public constructor(percentage = 0.25) {
     super(Elem.VacuumJar, Group.Phase)

@@ -12,9 +12,10 @@ export default class SugarSolution extends Element {
     'Table sugar is a chiral molecule – it does not look the same as its mirror reflection. We put it in an amount, so it rotates polarization by 45°.'
 
   public ascii: string[] = ['S']
-  public angles: number[] = [0]
 
-  public percentage = 0.125
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = [0.125, 0.25, 0.375, 0.5]
 
   public constructor(percentage = 0.125) {
     super(Elem.SugarSolution, Group.Polarization)

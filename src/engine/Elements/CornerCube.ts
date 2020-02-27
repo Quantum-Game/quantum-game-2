@@ -10,7 +10,10 @@ export default class CornerCube extends Element {
   public group: Group = Group.Direction
   public description = 'Reflects any incoming photon.'
   public ascii: string[] = ['*']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.CornerCube, Group.Direction)

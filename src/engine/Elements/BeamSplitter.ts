@@ -12,7 +12,10 @@ export default class BeamSplitter extends Element {
     'A thin slab of glass reflecting half the beam, and transmitting other half of it.'
 
   public ascii: string[] = ['→', '↗', '↑', '↖', '←', '↙', '↓', '↘']
-  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
+
+  public allowedRotations: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = [0, 0.25, 0.5, 0.75, 1]
 
   public percentage = 0.5
 

@@ -12,7 +12,10 @@ export default class Rock extends Element {
     "Dark and immersive as your sweetheart's depth of eyes. Absorbs light. And is sensitive."
 
   public ascii: string[] = ['♜']
-  public angles: number[] = [0]
+
+  public allowedRotations: number[] = [0]
+  public allowedPolarizations: number[] = []
+  public allowedPercentages: number[] = []
 
   public constructor() {
     super(Elem.Laser, Group.Source)
