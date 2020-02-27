@@ -1,0 +1,32 @@
+{
+  "id": 2,
+  "parent_id": 1,
+  "name": "Rockstar",
+  "group": "Intro",
+  "cols": 13,
+  "rows": 10,
+  "cells": [
+    {
+      "x": 2,
+      "y": 3,
+      "element": "Laser",
+      "polarization": 90,
+      "hint": [{
+        "content": "CLICK TO FIRE",
+        "color": "purple"
+      }]
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "element": "Detector",
+      "rotation": 180,
+      "goal": 0.5,
+      "hint": [{
+        "content": "GOAL",
+        "color": "red"
+      }]
+    }
+  ],
+  "tools": ["Mirror"]
+}

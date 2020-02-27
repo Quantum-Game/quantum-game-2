@@ -8,6 +8,7 @@ import {
   SET_SIMULATION_STATE,
   SET_FATE_CELLS,
   RESET_FATE_CELLS,
+  SET_SELECTED_CELL,
   SET_ACTIVE_CELL,
   RESET_ACTIVE_CELL,
   SET_CURRENT_LEVEL_ID,
@@ -24,6 +25,7 @@ Vue.use(Vuex)
 const store: StoreOptions<IRootState> = {
   state: {
     activeCell: initialCell,
+    selectedCell: initialCell,
     fateCells: [],
     cellSelected: false,
     hoveredCell: initialCell,
@@ -48,6 +50,10 @@ const store: StoreOptions<IRootState> = {
     // reset fate cell
     [RESET_FATE_CELLS](state): void {
       state.fateCells = []
+    },
+    // set active cell
+    [SET_SELECTED_CELL](state, cell): void {
+      state.selectedCell = cell
     },
     // set active cell
     [SET_ACTIVE_CELL](state, cell): void {

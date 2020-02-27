@@ -5,6 +5,7 @@
     :class="computeCellClass"
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
+    @dblclick="selectCell"
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
@@ -108,6 +109,7 @@ export default class AppCell extends Mixins(Position) {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
   @Prop({ default: true }) readonly available!: boolean
+  @Mutation('SET_SELECTED_CELL') mutationSetSelectedCell!: (cell: Cell) => void
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
@@ -132,6 +134,14 @@ export default class AppCell extends Mixins(Position) {
    */
   get computeCellName(): string {
     return `${this.cell.element.name}Cell`
+  }
+
+  /**
+   * Compute the cell class name
+   * @returns Compute cell name string
+   */
+  selectCell(): void {
+    this.mutationSetSelectedCell(this.cell)
   }
 
   /**

@@ -30,7 +30,10 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import { Elem } from '@/engine/interfaces'
-import { Coord, Grid, Cell } from '@/engine/classes'
+import Coord from '@/engine/Coord'
+import Cell from '@/engine/Cell'
+import Grid from '@/engine/Grid'
+
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import { Basis, Operator, Vector, Dimension } from 'quantum-tensors'

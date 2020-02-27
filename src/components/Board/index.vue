@@ -173,7 +173,8 @@ export default class Board extends Vue {
     const particles = this.particles.filter((particle) => {
       return particle.coord.equal(coord)
     })
-    if (cell !== this.hoveredCell && !cell.isVoid) {
+    // if (cell !== this.hoveredCell && !cell.isVoid) {
+    if (cell !== this.hoveredCell) {
       this.mutationSetHoveredCell(cell)
     }
     if (particles.length > 0) {

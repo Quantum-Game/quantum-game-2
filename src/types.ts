@@ -3,6 +3,7 @@ import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 
 export interface IRootState {
+  selectedCell: Cell
   activeCell: Cell
   fateCells: Cell[]
   hoveredCell: Cell
