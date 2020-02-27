@@ -49,7 +49,7 @@
         />
         <cell-editor :level="level" />
         <hr />
-        <level-editor :level="level" />
+        <!-- <level-editor :level="level" /> -->
       </section>
 
       <!-- MAIN-RIGHT -->

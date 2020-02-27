@@ -1,74 +1,110 @@
 <template>
   <div>
-    <h1>Cell editor</h1>
-    <div>
-      Selected cell: {{ selectedCell.element.name }} @ [x: {{ selectedCell.coord.x }}, y:
-      {{ selectedCell.coord.y }}]
+    <h1>
+      Cell editor @ [x: {{ selectedCell.coord.x }}, y: {{ selectedCell.coord.y }}]
+      <br />
       <span class="small">(Double click on a cell to select it.)</span>
-    </div>
+    </h1>
+
     <div id="form">
       <!-- COORDS ARE MANAGED BY DOUBLE CLICKED CELL -->
-      <p>
+      <table class="table">
         <!-- ELEMENT -->
-        <span>Element: &nbsp;</span>
-        <select v-model="selectedCell.element.name" @change="onElementChange($event)">
-          <option
-            v-for="element in Object.values(Elem)"
-            :key="element"
-            :value="element"
-            :selected="element === selectedCell.element.name ? true : false"
-          >
-            {{ element }}
-          </option>
-        </select>
-      </p>
+        <tr>
+          <td class="right">
+            Element
+          </td>
+          <td class="left">
+            <select v-model="selectedCell.element.name" @change="onElementChange($event)">
+              <option
+                v-for="element in Object.values(Elem)"
+                :key="element"
+                :value="element"
+                :selected="element === selectedCell.element.name ? true : false"
+              >
+                {{ element }}
+              </option>
+            </select>
+          </td>
+        </tr>
 
-      <!-- ROTATION -->
-      <p v-if="isRotable">
-        <span>Rotation:</span>
-        &nbsp;
-        <select v-model="selectedCell.rotation">
-          <option
-            v-for="angle in selectedCell.element.allowedRotations"
-            :key="'rotation' + angle"
-            :value="angle"
-          >
-            {{ angle }}°
-          </option>
-        </select>
-      </p>
+        <!-- ACTIVE -->
+        <tr v-if="isActivable">
+          <td class="right">Active</td>
+          <td class="left">
+            <input id="checkbox" v-model="selectedCell.active" type="checkbox" />
+            <label for="checkbox">{{ selectedCell.active }}</label>
+          </td>
+        </tr>
 
-      <!-- POLARIZATION -->
-      <p v-if="isPolarizable">
-        <span>Polarization: &nbsp;</span>
-        <select v-model="selectedCell.polarization">
-          <option
-            v-for="angle in selectedCell.element.allowedPolarizations"
-            :key="'polarization' + angle"
-            :value="angle"
-          >
-            {{ angle }}°
-          </option>
-        </select>
-      </p>
+        <!-- FROZEN / TOOL -->
+        <tr>
+          <td class="right">Frozen</td>
+          <td class="left">
+            <input
+              id="checkbox"
+              v-model="selectedCell.frozen"
+              type="checkbox"
+              @change="onFrozenChange($event)"
+            />
+            <label for="checkbox">{{ selectedCell.frozen }}</label>
+          </td>
+        </tr>
 
-      <!-- PERCENTAGE -->
-      <p v-if="isPercentageVariable">
-        <span>Percentage: &nbsp;</span>
-        <input v-model="selectedCell.percentage" placeholder="Percentage" />
-      </p>
+        <!-- ROTATION -->
+        <tr v-if="isRotable">
+          <td class="right">
+            Rotation
+          </td>
+          <td class="left">
+            <div class="slider">
+              <vue-slider
+                v-model="selectedCell.rotation"
+                :data="selectedCell.element.allowedRotations"
+                :marks="true"
+                :adsorb="true"
+                :dot-size="20"
+              />
+            </div>
+          </td>
+        </tr>
 
-      <!-- ACTIVE -->
-      <p v-if="isActivable">
-        <input id="checkbox" v-model="selectedCell.active" type="checkbox" />
-        <label for="checkbox">Active: {{ selectedCell.active }}</label>
-      </p>
+        <!-- POLARIZATION -->
+        <tr v-if="isPolarizable">
+          <td class="right">
+            Polarization
+          </td>
+          <td class="left">
+            <div class="slider">
+              <vue-slider
+                v-model="selectedCell.polarization"
+                :data="selectedCell.element.allowedPolarizations"
+                :marks="true"
+                :adsorb="true"
+                :dot-size="20"
+              />
+            </div>
+          </td>
+        </tr>
 
-      <!-- FROZEN -->
-      <p>
-        <input id="checkbox" v-model="selectedCell.frozen" type="checkbox" />
-        <label for="checkbox">Frozen: {{ selectedCell.frozen }}</label>
-      </p>
+        <!-- PERCENTAGE -->
+        <tr v-if="isPercentageVariable">
+          <td class="right">
+            Percentage
+          </td>
+          <td class="left">
+            <div class="slider">
+              <vue-slider
+                v-model="selectedCell.percentage"
+                :data="selectedCell.element.allowedPercentages"
+                :marks="true"
+                :adsorb="true"
+                :dot-size="20"
+              />
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -79,9 +115,13 @@ import { State } from 'vuex-class'
 import { Elem } from '@/engine/interfaces'
 import Level from '@/engine/Level'
 import Cell from '@/engine/Cell'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/material.css'
 
 @Component({
-  components: {}
+  components: {
+    VueSlider
+  }
 })
 export default class CellEditor extends Vue {
   @Prop() readonly level!: Level
@@ -91,7 +131,19 @@ export default class CellEditor extends Vue {
   onElementChange(event: { target: { value: string } }): void {
     const name = event.target.value
     this.selectedCell.reset()
+    this.selectedCell.tool = true
     this.selectedCell.element = Cell.fromName(name)
+  }
+
+  onFrozenChange(event: { target: { checked: boolean } }): void {
+    const frozen = event.target.checked
+    if (frozen) {
+      this.selectedCell.frozen = true
+      this.selectedCell.tool = false
+    } else {
+      this.selectedCell.frozen = false
+      this.selectedCell.tool = true
+    }
   }
 
   get isRotable(): boolean {
@@ -115,5 +167,22 @@ export default class CellEditor extends Vue {
 <style lang="scss" scoped>
 .small {
   font-size: 10px;
+}
+.slider {
+  margin: 10px 20px;
+}
+.table {
+  width: 100%;
+  td {
+    padding: 10px;
+  }
+  .left {
+    text-align: left;
+    width: 70%;
+  }
+  .right {
+    text-align: right;
+    width: 30%;
+  }
 }
 </style>

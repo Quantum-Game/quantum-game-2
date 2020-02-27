@@ -12,7 +12,7 @@ export default class Mirror extends Element {
   public ascii: string[] = ['-', '/', '|', '\\', '-', '/', '|', '\\']
 
   public allowedRotations: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
-  public allowedPolarizations: number[] = [0, 90]
+  public allowedPolarizations: number[] = []
   public allowedPercentages: number[] = []
 
   public constructor() {
