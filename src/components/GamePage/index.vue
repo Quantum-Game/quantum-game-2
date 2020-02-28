@@ -64,7 +64,7 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
         />
-        <cell-editor :level="level" @updateSimulation="updateSimulation" />
+        <!-- <cell-editor :level="level" @updateSimulation="updateSimulation" /> -->
       </section>
 
       <!-- MAIN-RIGHT -->
