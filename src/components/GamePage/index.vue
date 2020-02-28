@@ -64,6 +64,7 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
         />
+        <cell-editor :level="level" @updateSimulation="updateSimulation" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -100,6 +101,7 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
+import CellEditor from '@/components/SandboxPage/CellEditor.vue'
 
 @Component({
   components: {
@@ -113,7 +115,8 @@ import AppOverlay from '@/components/AppOverlay.vue'
     GameControls,
     GameBoard,
     AppButton,
-    AppOverlay
+    AppOverlay,
+    CellEditor
   }
 })
 export default class Game extends Vue {
@@ -121,6 +124,7 @@ export default class Game extends Vue {
   @State('currentLevelID') currentLevelID!: number
   @State('fateCells') fateCells!: Cell[]
   @State('activeCell') activeCell!: Cell
+  @State('selectedCell') selectedCell!: Cell
   @State('gameState') gameState!: GameStateEnum
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void

@@ -43,6 +43,7 @@
                 :marks="true"
                 :adsorb="true"
                 :dot-size="20"
+                @change="$emit('updateSimulation')"
               />
             </div>
           </td>
@@ -61,6 +62,7 @@
                 :marks="true"
                 :adsorb="true"
                 :dot-size="20"
+                @change="$emit('updateSimulation')"
               />
             </div>
           </td>
@@ -79,6 +81,7 @@
                 :marks="true"
                 :adsorb="true"
                 :dot-size="20"
+                @change="$emit('updateSimulation')"
               />
             </div>
           </td>
@@ -93,6 +96,7 @@
               :labels="{ checked: 'Active', unchecked: 'Stopped' }"
               :color="{ checked: 'green', unchecked: 'grey', disabled: '#CCCCCC' }"
               :width="80"
+              @change="$emit('updateSimulation')"
             />
           </td>
         </tr>
@@ -136,11 +140,16 @@ export default class CellEditor extends Vue {
   @State('selectedCell') selectedCell!: Cell
   Elem = Elem
 
+  updateSimulation(): void {
+    this.$emit('updateSimulation')
+  }
+
   onElementChange(event: { target: { value: string } }): void {
     const name = event.target.value
     this.selectedCell.reset()
     this.selectedCell.tool = true
     this.selectedCell.element = Cell.fromName(name)
+    this.updateSimulation()
   }
 
   onFrozenChange(event: { value: boolean }): void {
