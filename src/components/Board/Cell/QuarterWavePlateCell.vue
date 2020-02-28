@@ -50,7 +50,7 @@ export default class QuarterWavePlateCell extends Piece {
     const polarization = this.cell ? this.cell.polarization : 0
     return {
       'transform-origin': `32px 32px`,
-      transform: `rotate(${(polarization + 90) % 180}deg)`
+      transform: `rotate(${(polarization * 360 + 90) % 180}deg)`
     }
   }
 }

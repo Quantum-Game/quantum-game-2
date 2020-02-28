@@ -14,8 +14,8 @@ export default class SugarSolution extends Element {
   public ascii: string[] = ['S']
 
   public allowedRotations: number[] = [0]
-  public allowedPolarizations: number[] = []
-  public allowedPercentages: number[] = [0, 0.125, 0.25, 0.375]
+  public allowedPolarizations: number[] = [0, 0.125, 0.25, 0.375, 0.5]
+  public allowedPercentages: number[] = []
 
   polarization = 0.125
 
