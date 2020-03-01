@@ -1,5 +1,11 @@
 <template>
   <div class="game">
+    <!-- MODAL -->
+    <button type="button" class="btn" @click="showModal">
+      Open Modal!
+    </button>
+    <app-modal v-show="isModalVisible" @close="closeModal" />
+
     <!-- DRAG AND DROP CELL -->
     <div class="hoverCell"></div>
 
@@ -102,6 +108,7 @@ import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import CellEditor from '@/components/SandboxPage/CellEditor.vue'
+import AppModal from '@/components/AppModal.vue'
 
 @Component({
   components: {
@@ -116,7 +123,8 @@ import CellEditor from '@/components/SandboxPage/CellEditor.vue'
     GameBoard,
     AppButton,
     AppOverlay,
-    CellEditor
+    CellEditor,
+    AppModal
   }
 })
 export default class Game extends Vue {
@@ -137,6 +145,7 @@ export default class Game extends Vue {
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
+  isModalVisible = false
 
   // LIFECYCLE
   created(): void {
@@ -200,6 +209,14 @@ export default class Game extends Vue {
     this.mutationSetGameState(this.level.gameState.gameState)
     this.mutationSetSimulationState(false)
     console.debug(this.level.gameState.toString())
+  }
+
+  showModal(): void {
+    this.isModalVisible = true
+  }
+
+  closeModal(): void {
+    this.isModalVisible = false
   }
 
   /**
