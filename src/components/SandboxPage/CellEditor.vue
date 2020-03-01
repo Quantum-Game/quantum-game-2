@@ -3,7 +3,11 @@
     <h1>
       Cell editor @ [x: {{ selectedCell.coord.x }}, y: {{ selectedCell.coord.y }}]
       <br />
-      <span class="small">(Double click on a cell to select it.)</span>
+      <span class="small"
+        >(Double click on a cell to select it. Unfrozen elements will be moved to toolbox on
+        save.)</span
+      >
+      {{ selectedGoal.coord }} - {{ selectedGoal.threshold }}%
     </h1>
 
     <div id="form">
@@ -124,15 +128,17 @@
             Goal
           </td>
           <td class="input">
-            <!-- <input
-              v-model="selectedGoal.threshold"
-              placeholder="Goal %"
-              @change="onGoalChange($event)"
-            />&nbsp; % -->
             <div class="slider">
               <vue-slider
                 v-model="selectedGoal.threshold"
-                :adsorb="true"
+                :marks="{
+                  '0': '0%',
+                  '20': '20%',
+                  '40': '40%',
+                  '60': '60%',
+                  '80': '80%',
+                  '100': '100%'
+                }"
                 :dot-size="20"
                 @change="onGoalChange($event)"
               />
@@ -190,7 +196,7 @@ export default class CellEditor extends Vue {
         return hint
       }
     })
-    return new Hint(this.selectedCell.coord, 'Change me!')
+    return new Hint(this.selectedCell.coord, '')
   }
 
   get selectedGoal(): Goal {
@@ -243,9 +249,22 @@ export default class CellEditor extends Vue {
     }
   }
 
+  /**
+   * Update or create goal at selectedCell coord
+   */
   onGoalChange(value: number): void {
-    if (value !== 0) {
-      const goal = new Goal(this.selectedCell.coord, value)
+    let found = false
+    const normalized = value / 100
+    // update
+    this.level.goals.forEach((goal: Goal) => {
+      if (goal.coord.equal(this.selectedCell.coord)) {
+        goal.threshold = normalized
+        found = true
+      }
+    })
+    // create
+    if (!found) {
+      const goal = new Goal(this.selectedCell.coord, normalized)
       this.level.goals.push(goal)
     }
   }

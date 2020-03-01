@@ -49,9 +49,7 @@
         />
         <cell-editor :level="level" @updateSimulation="updateSimulation" />
         <hr />
-        <!-- <hint-editor :level="level" /> -->
-        <!-- <hr /> -->
-        <!-- <level-editor :level="level" /> -->
+        <level-editor :level="level" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -90,7 +88,6 @@ import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import CellEditor from '@/components/SandboxPage/CellEditor.vue'
 import LevelEditor from '@/components/SandboxPage/LevelEditor.vue'
-import HintEditor from '@/components/SandboxPage/HintEditor.vue'
 
 @Component({
   components: {
@@ -106,8 +103,7 @@ import HintEditor from '@/components/SandboxPage/HintEditor.vue'
     AppButton,
     AppOverlay,
     CellEditor,
-    LevelEditor,
-    HintEditor
+    LevelEditor
   }
 })
 export default class Game extends Vue {

@@ -45,6 +45,11 @@
           </td>
         </tr>
       </table>
+
+      <!-- DISPLAY JSON OUTPUT -->
+      <div class="jsonLevel">
+        {{ level.exportLevel() }}
+      </div>
     </div>
   </div>
 </template>
@@ -83,6 +88,9 @@ export default class LevelEditor extends Vue {
     textarea {
       width: 300px;
     }
+  }
+  .jsonLevel {
+    font-size: 10px;
   }
 }
 </style>
