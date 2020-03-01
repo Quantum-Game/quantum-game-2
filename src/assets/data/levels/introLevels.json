@@ -35,8 +35,8 @@
           "y": 2,
           "x": 6
         },
-        "content": "DRAG A ROCK HERE",
-        "color": "purple",
+        "message": "DRAG A ROCK HERE",
+        "type": "purple",
         "rotation": 0,
         "active": true
       },
@@ -45,8 +45,8 @@
           "y": 2,
           "x": 10
         },
-        "content": "AVOID EXPLOSION",
-        "color": "purple",
+        "message": "AVOID EXPLOSION",
+        "type": "purple",
         "rotation": 0,
         "active": true
       },
@@ -277,8 +277,8 @@
           "y": 6,
           "x": 2
         },
-        "content": "Plants love light!",
-        "color": "purple",
+        "message": "Plants love light!",
+        "type": "purple",
         "rotation": 0,
         "active": true
       }

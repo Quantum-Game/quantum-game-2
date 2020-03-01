@@ -59,8 +59,8 @@
           "y": 1,
           "x": 6
         },
-        "content": "GET THE LASER OFF MY FACE! ",
-        "color": "purple",
+        "message": "GET THE LASER OFF MY FACE! ",
+        "type": "purple",
         "rotation": 0,
         "active": true
       }

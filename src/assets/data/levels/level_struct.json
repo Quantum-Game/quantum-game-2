@@ -12,8 +12,8 @@
       "element": "Laser",
       "polarization": 90,
       "hint": [{
-        "content": "CLICK TO FIRE",
-        "color": "purple"
+        "message": "CLICK TO FIRE",
+        "type": "purple"
       }]
     },
     {
@@ -23,8 +23,8 @@
       "rotation": 180,
       "goal": 0.5,
       "hint": [{
-        "content": "GOAL",
-        "color": "red"
+        "message": "GOAL",
+        "type": "red"
       }]
     }
   ],

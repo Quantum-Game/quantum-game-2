@@ -25,7 +25,18 @@
       }
     ]
   },
-  "hints": [],
+  "hints": [
+      {
+        "coord": {
+          "y": 6,
+          "x": 2
+        },
+        "message": "Plants love light!",
+        "type": "purple",
+        "rotation": 0,
+        "active": true
+      }
+    ],
   "goals": [],
   "tools": [
     "Mirror",

@@ -7,16 +7,16 @@ import Coord from './Coord'
  */
 export default class Hint extends Coord {
   public coord: Coord
-  public content: string
-  public color?: string
+  public message: string
+  public type?: string
   public rotation?: number
   public active?: boolean
 
-  public constructor(coord: Coord, content: string, color = 'purple', rotation = 0, active = true) {
+  public constructor(coord: Coord, message: string, type = 'purple', rotation = 0, active = true) {
     super(coord.y, coord.x)
     this.coord = coord
-    this.content = content
-    this.color = color
+    this.message = message
+    this.type = type
     this.rotation = rotation
     this.active = active
   }
@@ -26,7 +26,7 @@ export default class Hint extends Coord {
    * @returns hint string
    */
   public toString(): string {
-    return `{#HINT ${this.content} @ ${this.coord.toString()}}`
+    return `{#HINT ${this.message} @ ${this.coord.toString()}}`
   }
 
   /**
@@ -36,8 +36,8 @@ export default class Hint extends Coord {
   public exportHint(): IHint {
     return {
       coord: this.coord.exportCoord(),
-      content: this.content,
-      color: this.color,
+      message: this.message,
+      type: this.type,
       rotation: this.rotation,
       active: this.active
     }
@@ -52,7 +52,7 @@ export default class Hint extends Coord {
     return iHints.map(
       (iHint): Hint => {
         const coord = Coord.importCoord(iHint.coord)
-        return new Hint(coord, iHint.content, iHint.color, iHint.rotation, iHint.active)
+        return new Hint(coord, iHint.message, iHint.type, iHint.rotation, iHint.active)
       }
     )
   }

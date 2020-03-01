@@ -10,7 +10,7 @@
     >
       <!-- TOOLTIP ITSELF -->
       <div ref="hint" class="hint" :class="hintClass" :style="{ maxWidth: maxWidth }" @click="hide">
-        <span>{{ hint.content }}</span>
+        <span>{{ hint.message }}</span>
       </div>
     </foreignObject>
   </transition>
@@ -58,7 +58,7 @@ export default class SpeechBubble extends Mixins(Position) {
   }
 
   get hintClass(): string {
-    return `hint--${this.hint.color}`
+    return `hint--${this.hint.type}`
   }
 
   // used to give a bit of margins to the foreginObject

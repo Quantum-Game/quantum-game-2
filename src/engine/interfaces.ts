@@ -110,8 +110,8 @@ export interface IAbsorption {
  */
 export interface IHint {
   coord: ICoord
-  content: string
-  color?: string
+  message: string
+  type?: string
   rotation?: number
   active?: boolean
 }
@@ -311,13 +311,14 @@ export const enum ElemLower {
 /**
  * List of group names
  */
-export const enum Group {
+export enum Group {
   Basic = 'Basic',
   Source = 'Source',
   Direction = 'Direction',
   Absorption = 'Absorption',
   Polarization = 'Polarization',
-  Phase = 'Phase'
+  Phase = 'Phase',
+  Sandbox = 'Sandbox'
 }
 
 /**

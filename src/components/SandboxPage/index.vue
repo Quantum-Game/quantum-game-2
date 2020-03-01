@@ -50,6 +50,8 @@
         <cell-editor :level="level" @updateSimulation="updateSimulation" />
         <hr />
         <level-editor :level="level" />
+        <hr />
+        <hint-editor :level="level" />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -88,6 +90,7 @@ import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import CellEditor from '@/components/SandboxPage/CellEditor.vue'
 import LevelEditor from '@/components/SandboxPage/LevelEditor.vue'
+import HintEditor from '@/components/SandboxPage/HintEditor.vue'
 
 @Component({
   components: {
@@ -103,7 +106,8 @@ import LevelEditor from '@/components/SandboxPage/LevelEditor.vue'
     AppButton,
     AppOverlay,
     CellEditor,
-    LevelEditor
+    LevelEditor,
+    HintEditor
   }
 })
 export default class Game extends Vue {
@@ -506,6 +510,7 @@ export default class Game extends Vue {
 // Title
 h1.title {
   display: flex;
+  text-transform: uppercase;
   flex-direction: row;
   justify-content: center;
   font-size: 1.5rem;
