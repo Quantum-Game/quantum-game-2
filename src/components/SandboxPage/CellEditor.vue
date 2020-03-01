@@ -115,6 +115,48 @@
           </td>
         </tr>
       </table>
+
+      <hr />
+      <!-- GOAL -->
+      <table class="table">
+        <tr>
+          <td class="label">
+            Goal
+          </td>
+          <td class="input">
+            <!-- <input
+              v-model="selectedGoal.threshold"
+              placeholder="Goal %"
+              @change="onGoalChange($event)"
+            />&nbsp; % -->
+            <div class="slider">
+              <vue-slider
+                v-model="selectedGoal.threshold"
+                :adsorb="true"
+                :dot-size="20"
+                @change="onGoalChange($event)"
+              />
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <hr />
+      <!-- HINT -->
+      <table class="table">
+        <tr>
+          <td class="label">
+            Hint
+          </td>
+          <td class="input">
+            <input
+              v-model="selectedHint.message"
+              placeholder="Message"
+              @change="onHintChange($event)"
+            />
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -125,6 +167,8 @@ import { State } from 'vuex-class'
 import { Elem } from '@/engine/interfaces'
 import Level from '@/engine/Level'
 import Cell from '@/engine/Cell'
+import Hint from '@/engine/Hint'
+import Goal from '@/engine/Goal'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/material.css'
 import { ToggleButton } from 'vue-js-toggle-button'
@@ -139,6 +183,40 @@ export default class CellEditor extends Vue {
   @Prop() readonly level!: Level
   @State('selectedCell') selectedCell!: Cell
   Elem = Elem
+
+  get selectedHint(): Hint {
+    this.level.hints.forEach((hint: Hint) => {
+      if (this.selectedCell.coord.equal(hint.coord)) {
+        return hint
+      }
+    })
+    return new Hint(this.selectedCell.coord, 'Change me!')
+  }
+
+  get selectedGoal(): Goal {
+    this.level.goals.forEach((goal: Goal) => {
+      if (this.selectedCell.coord.equal(goal.coord)) {
+        return goal
+      }
+    })
+    return new Goal(this.selectedCell.coord, 0)
+  }
+
+  get isRotable(): boolean {
+    return this.selectedCell.element.allowedRotations.length > 1
+  }
+
+  get isPolarizable(): boolean {
+    return this.selectedCell.element.allowedPolarizations.length > 0
+  }
+
+  get isPercentageVariable(): boolean {
+    return this.selectedCell.element.allowedPercentages.length > 0
+  }
+
+  get isActivable(): boolean {
+    return this.selectedCell.isLaser
+  }
 
   updateSimulation(): void {
     this.$emit('updateSimulation')
@@ -165,20 +243,18 @@ export default class CellEditor extends Vue {
     }
   }
 
-  get isRotable(): boolean {
-    return this.selectedCell.element.allowedRotations.length > 1
+  onGoalChange(value: number): void {
+    if (value !== 0) {
+      const goal = new Goal(this.selectedCell.coord, value)
+      this.level.goals.push(goal)
+    }
   }
 
-  get isPolarizable(): boolean {
-    return this.selectedCell.element.allowedPolarizations.length > 0
-  }
-
-  get isPercentageVariable(): boolean {
-    return this.selectedCell.element.allowedPercentages.length > 0
-  }
-
-  get isActivable(): boolean {
-    return this.selectedCell.isLaser
+  onHintChange(event: { target: { value: string } }): void {
+    if (event.target.value !== 'Change me!') {
+      const hint = new Hint(this.selectedCell.coord, event.target.value)
+      this.level.hints.push(hint)
+    }
   }
 }
 </script>

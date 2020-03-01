@@ -33,6 +33,14 @@ export default class Hint extends Coord {
    * Export hint in primitives
    * @returns hint interface
    */
+  public dummyHint(coord: Coord): IHint {
+    return new Hint(coord, 'Change me', 'purple')
+  }
+
+  /**
+   * Export hint in primitives
+   * @returns hint interface
+   */
   public exportHint(): IHint {
     return {
       coord: this.coord.exportCoord(),

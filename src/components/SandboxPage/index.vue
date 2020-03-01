@@ -49,9 +49,9 @@
         />
         <cell-editor :level="level" @updateSimulation="updateSimulation" />
         <hr />
-        <level-editor :level="level" />
-        <hr />
-        <hint-editor :level="level" />
+        <!-- <hint-editor :level="level" /> -->
+        <!-- <hr /> -->
+        <!-- <level-editor :level="level" /> -->
       </section>
 
       <!-- MAIN-RIGHT -->
