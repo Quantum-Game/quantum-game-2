@@ -7,6 +7,7 @@
       <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
       <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
       <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" />
+      <!-- <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" /> -->
     </span>
 
     <!-- FRAME INFO -->
@@ -14,9 +15,6 @@
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
     </span>
-
-    <!-- FATE -->
-    <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" />
   </div>
 </template>
 

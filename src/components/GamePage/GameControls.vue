@@ -1,18 +1,16 @@
 <template>
   <div class="controls">
     <!-- SIMULATION CONTROLS -->
-    <game-simulation-controls :frame-index="frameIndex" :total-frame="totalFrame" />
+    <game-simulation-controls :frame-index="frameIndex" :total-frames="totalFrames" />
 
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" />
+      <!-- <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" /> -->
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
-
       <label for="fileUpload" :style="computeUploadStyle" class="upload"> </label>
       <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
-
-      <button type="button" :style="computeSaveStyle" @click="handleSave()" />
+      <!-- <button type="button" :style="computeSaveStyle" @click="handleSave()" /> -->
       <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
       <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
       <!-- <button type="button" :style="computeMapStyle" @click="handleMap()" /> -->
