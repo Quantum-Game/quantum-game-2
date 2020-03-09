@@ -400,29 +400,11 @@ export default class Game extends Vue {
   handleArrowPress(e: { keyCode: number }): void {
     // console.log(e.keyCode);
     switch (e.keyCode) {
-      // case 81:
-      //   this.level.grid.moveAll(180);
-      //   break;
-      // case 68:
-      //   this.level.grid.moveAll(0);
-      //   break;
-      // case 90:
-      //   this.level.grid.moveAll(90);
-      //   break;
-      // case 83:
-      //   this.level.grid.moveAll(270);
-      //   break;
-      // case 65:
-      //   this.level.grid.rotateAll();
-      //   break;
-      // case 69:
-      //   this.level.grid.reflectAll();
-      //   break;
-      case 32:
-        this.play()
-        break
       case 37:
         this.stepBack()
+        break
+      case 38:
+        this.play()
         break
       case 39:
         this.stepForward()
@@ -549,31 +531,6 @@ h1.title {
   }
 }
 
-.grid {
-  width: 100%;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .row {
-    display: flex;
-    flex-direction: row;
-    & .tile {
-      width: 64px;
-      min-height: 64px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-      margin: none;
-      &:hover {
-        color: black;
-      }
-    }
-  }
-}
 .game {
   width: 100%;
   min-height: 100vh;

@@ -130,10 +130,7 @@ button {
 
 .simulationControls {
   width: 100%;
-  border-bottom: 1px solid white;
   display: flex;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: 1000px) {
