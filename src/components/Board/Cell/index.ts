@@ -16,6 +16,7 @@ import VacuumJarCell from './VacuumJarCell.vue'
 import QuarterWavePlateCell from './QuarterWavePlateCell.vue'
 import FaradayRotatorCell from './FaradayRotatorCell.vue'
 import NonLinearCrystalCell from './NonLinearCrystalCell.vue'
+import WallCell from './WallCell.vue'
 
 export { AbsorberCell }
 export { BeamSplitterCell }
@@ -35,6 +36,7 @@ export { VacuumJarCell }
 export { QuarterWavePlateCell }
 export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
+export { WallCell }
 
 // FIXME: Code smell move to interfaces
 interface ICellList {
@@ -60,7 +62,8 @@ const CellList: ICellList = {
   GlassCell,
   VacuumJarCell,
   FaradayRotatorCell,
-  NonLinearCrystalCell
+  NonLinearCrystalCell,
+  WallCell
 }
 
 export default CellList

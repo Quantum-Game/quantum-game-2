@@ -85,15 +85,9 @@ import {
   SugarSolutionCell,
   FaradayRotatorCell,
   GlassCell,
-  VacuumJarCell
+  VacuumJarCell,
+  WallCell
 } from '@/components/Board/Cell/index'
-
-const borderColors = {
-  active: 'transparent',
-  frozen: 'turquoise',
-  rotable: 'white',
-  energized: 'blue'
-}
 
 @Component({
   components: {
@@ -114,7 +108,8 @@ const borderColors = {
     SugarSolutionCell,
     FaradayRotatorCell,
     GlassCell,
-    VacuumJarCell
+    VacuumJarCell,
+    WallCell
   }
 })
 export default class AppCell extends Mixins(Position) {
@@ -317,10 +312,6 @@ export default class AppCell extends Mixins(Position) {
       return '#ff0055'
     }
     return ''
-  }
-
-  indicateTool(): void {
-    this.border = borderColors.rotable
   }
 
   /**
