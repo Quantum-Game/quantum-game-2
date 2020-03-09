@@ -99,106 +99,123 @@ export default class AppMenu extends Vue {
 </script>
 
 <style scoped lang="scss">
+// TODO:
+// 1) mitigate the unsetting of min-height (level responsiveness) with encyclopedia
+// 2) prevent the movement ?
+// 3) fix bars 1 & 3 positioning againt each other beyond the breakpoint
+
+$breakpoint-small: 576px; // Small devices (landscape phones, 576px and up
+$breakpoint-medium: 768px; // Medium devices (tablets, 768px and up)
+$breakpoint-large: 992px; // Large devices (desktops, 992px and up)
+$breakpoint-xlarge: 1200px; // Extra large devices (large desktops, 1200px and up)
+
 .q-menu-wrapper {
   min-height: 42px;
   @media screen and (max-width: 1000px) {
-    width: 6vw;
-    min-height: 0px;
+    // width: 6vw;       // this makes the icon fully dependant on screen width - we do not want this
+    // min-height: 0px;  // what is this?
+    // min-height: 72px;
+    min-height: unset;
   }
-}
-.menu-icon {
-  display: block;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  z-index: 4;
-  @media screen and (max-width: 1000px) {
-    position: static;
-    top: 2vw;
-    left: 5vw;
-  }
-  &.open {
-    position: fixed;
-  }
-  .bar1,
-  .bar2,
-  .bar3 {
-    width: 35px;
-    height: 3px;
-    background-color: rgb(255, 255, 255);
-    margin: 8px 0;
-    transition: 0.4s;
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    cursor: pointer;
+    z-index: 4;
     @media screen and (max-width: 1000px) {
-      width: 6vw;
-      height: 0.5vw;
-      margin: 1vw 0;
+      position: static;
+      // top: 2vw;
+      // left: 5vw;
     }
-  }
-
-  /* Rotate first bar */
-  &.open .bar1 {
-    transform: rotate(-45deg) translate(-7px, 3px);
-    @media screen and (max-width: 1000px) {
-      transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
+    &.open {
+      position: fixed;
     }
-  }
+    .bar1,
+    .bar2,
+    .bar3 {
+      width: 35px;
+      height: 3px;
+      background-color: rgb(255, 255, 255);
+      margin: 8px 0;
+      transition: 0.4s;
+      @media screen and (max-width: 1000px) {
+        width: 30px;
+        height: 2.7px;
+        margin: 6.5px 0;
+      }
+      // @media screen and (max-width: 1000px) {
+      //   width: 6vw;
+      //   height: 0.5vw;
+      //   margin: 1vw 0;
+      // }
+    }
 
-  /* Fade out the second bar */
-  &.open .bar2 {
-    opacity: 0;
-  }
-
-  /* Rotate last bar */
-  &.open .bar3 {
-    transform: rotate(45deg) translate(-1vw, -1vw);
-  }
-}
-.menu-overlay {
-  z-index: 3;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  left: 0;
-  top: 0;
-  background-color: rgba(33, 2, 53, 0.9);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  cursor: unset;
-  & menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 50%;
-    margin: 0;
-    font-size: 2rem;
-    padding-inline-start: 0;
-    a {
-      color: white;
-      text-decoration: none;
-      text-align: center;
-      &:hover {
-        color: white;
-        font-weight: bold;
-        // text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    /* Rotate first bar */
+    &.open .bar1 {
+      transform: translate(0, 11px) rotate(-45deg);
+      // transform: rotate(-45deg) translate(-7px, 3px);
+      @media screen and (max-width: 1000px) {
+        // transform: rotate(-45deg); // this is a terrible idea to use vieport relative units for animations
       }
     }
-    span {
-      text-decoration: line-through;
+
+    /* Fade out the second bar */
+    &.open .bar2 {
+      opacity: 0;
+    }
+
+    /* Rotate the last bar */
+    &.open .bar3 {
+      transform: translate(0, -10px) rotate(45deg);
     }
   }
-}
-
-// Animation:
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
+  .menu-overlay {
+    z-index: 3;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(33, 2, 53, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: unset;
+    & menu {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 50%;
+      margin: 0;
+      font-size: 2rem;
+      padding-inline-start: 0;
+      a {
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        &:hover {
+          color: white;
+          font-weight: bold;
+          // text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+        }
+      }
+      span {
+        text-decoration: line-through;
+      }
+    }
+  }
+  // Animation:
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.3s;
+  }
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
 }
 </style>
