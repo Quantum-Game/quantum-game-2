@@ -13,8 +13,10 @@
     <!-- FRAME INFO -->
     <span class="frameInfo">
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
-      <span class="gameState">({{ gameState }})</span>
     </span>
+
+    <!-- GAME STATE -->
+    <span class="gameState">({{ gameState }})</span>
   </div>
 </template>
 
@@ -40,13 +42,6 @@ export default class GameControls extends Vue {
 
   get stepBackFlag(): boolean {
     return this.frameIndex > 0
-  }
-
-  get computeFateStyle(): {} {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: 1
-    }
   }
 
   get computeRewindStyle(): {} {
@@ -89,6 +84,13 @@ export default class GameControls extends Vue {
       opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
     }
   }
+
+  get computeFateStyle(): {} {
+    return {
+      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
+      opacity: 1
+    }
+  }
 }
 </script>
 
@@ -126,7 +128,7 @@ button {
   padding-left: 10px;
 }
 
-.controls {
+.simulationControls {
   width: 100%;
   border-bottom: 1px solid white;
   display: flex;
@@ -156,11 +158,6 @@ button {
         height: 4.5vw;
       }
     }
-  }
-  & .view-mode {
-    display: flex;
-    align-items: center;
-    line-height: 20px;
   }
 }
 </style>

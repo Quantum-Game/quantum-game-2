@@ -13,12 +13,12 @@ export interface IKetComponent {
 
 /**
  * QUANTUM FRAME CLASS
- * QuantumFrame is essentially a wrapper on Photons from qunatum-tensors.
+ * Frame is essentially a wrapper on Photons from qunatum-tensors.
  * It hold quantum state at a given time, and nothing more.
  * All other things are accessible with getters.
  * @todo Make it immutable? Make photons private or expose?
  */
-export default class QuantumFrame {
+export default class Frame {
   public readonly photons: qt.Photons
   public absorptions: IAbsorption[]
   // TODO: later we may need to clean such low values within the engine
@@ -34,8 +34,8 @@ export default class QuantumFrame {
     this.probBefore = this.probability
   }
 
-  public static fromPhotons(photons: qt.Photons): QuantumFrame {
-    return new QuantumFrame(photons.sizeX, photons.sizeY, photons.copy())
+  public static fromPhotons(photons: qt.Photons): Frame {
+    return new Frame(photons.sizeX, photons.sizeY, photons.copy())
   }
 
   public get ket(): qt.Vector {

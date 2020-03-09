@@ -65,8 +65,8 @@ import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import AppCell from '@/components/Board/AppCell.vue'
-import QuantumFrame from '@/engine/QuantumFrame'
-import QuantumSimulation from '@/engine/QuantumSimulation'
+import Frame from '@/engine/Frame'
+import Simulation from '@/engine/Simulation'
 import { Vector } from 'quantum-tensors'
 
 @Component({
@@ -93,7 +93,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: 64 }) readonly tileSize!: number
 
   grid = Grid.importGrid(this.iGrid)
-  simulation: QuantumSimulation = new QuantumSimulation(this.grid)
+  simulation: Simulation = new Simulation(this.grid)
   selectedFrameId = this.defaultStep
 
   $refs!: {
@@ -118,7 +118,7 @@ export default class EncyclopediaBoard extends Vue {
    * Set steps and selected frame
    */
   reset(): void {
-    this.simulation = new QuantumSimulation(this.grid)
+    this.simulation = new Simulation(this.grid)
     if (this.initialState.length === 1) {
       const d = this.initialState[0]
       this.simulation.intializeFromXYState(d.posX, d.posY, d.vecDirPol)
@@ -140,11 +140,11 @@ export default class EncyclopediaBoard extends Vue {
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1)
   }
 
-  get frames(): QuantumFrame[] {
+  get frames(): Frame[] {
     return this.simulation.frames
   }
 
-  get selectedFrame(): QuantumFrame {
+  get selectedFrame(): Frame {
     return this.frames[this.selectedFrameId]
   }
 

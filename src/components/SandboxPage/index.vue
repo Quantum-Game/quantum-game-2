@@ -71,8 +71,8 @@ import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
 import { Cell, Grid, Level, Particle } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
-import QuantumFrame from '@/engine/QuantumFrame'
-import QuantumSimulation from '@/engine/QuantumSimulation'
+import Frame from '@/engine/Frame'
+import Simulation from '@/engine/Simulation'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
@@ -120,7 +120,7 @@ export default class Game extends Vue {
   @Mutation('SET_SELECTED_CELL') mutationSetSelectedCell!: (cell: Cell) => void
   @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
   frameIndex = 0
-  simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
+  simulation: Simulation = new Simulation(Grid.emptyGrid())
   multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
   error = ''
   playInterval = 0
@@ -180,7 +180,7 @@ export default class Game extends Vue {
    */
   updateSimulation(): void {
     // Compute simulation frames
-    this.simulation = new QuantumSimulation(this.level.grid)
+    this.simulation = new Simulation(this.level.grid)
     this.simulation.initializeFromLaser()
     this.simulation.computeFrames(40)
     this.mutationSetFateCells([this.simulation.fate])
@@ -265,7 +265,7 @@ export default class Game extends Vue {
   /**
    * Get the current simulation frame
    */
-  get activeFrame(): QuantumFrame {
+  get activeFrame(): Frame {
     return this.simulation.frames[this.frameIndex]
   }
 

@@ -108,7 +108,7 @@ export default class Particle extends Coord {
   /**
    * Temporary! I want to work with actual quantum states.
    * Also - quick, dirty, no-LaTeX and pure string
-   * Generating ket from Photons or QuantumFrame is preferred.
+   * Generating ket from Photons or Frame is preferred.
    */
   public toKetString(): string {
     const dirVis = new Map<number, string>()

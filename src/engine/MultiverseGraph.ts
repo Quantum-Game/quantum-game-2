@@ -1,7 +1,7 @@
 import * as dagre from 'dagre'
 import _ from 'lodash'
-import QuantumSimulation from '@/engine/QuantumSimulation'
-import QuantumFrame from '@/engine/QuantumFrame'
+import Simulation from '@/engine/Simulation'
+import Frame from '@/engine/Frame'
 import Particle from '@/engine/Particle'
 
 /**
@@ -10,9 +10,9 @@ import Particle from '@/engine/Particle'
  */
 export default class MultiverseGraph {
   public graph: any // eslint-disable-line
-  public qs: QuantumSimulation
+  public qs: Simulation
 
-  public constructor(qs: QuantumSimulation) {
+  public constructor(qs: Simulation) {
     this.qs = qs
     // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
     this.graph = new dagre.graphlib.Graph({ directed: true })
@@ -34,7 +34,7 @@ export default class MultiverseGraph {
    * @returns dag
    */
   public processFrames(): void {
-    this.qs.frames.forEach((frame: QuantumFrame, fIndex: number): void => {
+    this.qs.frames.forEach((frame: Frame, fIndex: number): void => {
       frame.particles.forEach((particle: Particle, pIndex: number): void => {
         const uid = MultiverseGraph.createUid(fIndex, pIndex)
         const detectionEvent = this.qs.isDetectionEvent(particle.coord)

@@ -7,15 +7,15 @@ import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
 import Absorption from '@/engine/Absorption'
-import QuantumFrame from '@/engine/QuantumFrame'
+import Frame from '@/engine/Frame'
 
 /**
  * QUANTUM SIMULATION CLASS
  * Contains the frames of the simulation
  */
-export default class QuantumSimulation {
+export default class Simulation {
   private grid: Grid
-  public frames: QuantumFrame[]
+  public frames: Frame[]
 
   public constructor(grid: Grid) {
     this.grid = grid
@@ -31,7 +31,7 @@ export default class QuantumSimulation {
     // Select initial laser
     const lasers = this.grid.emitters.active.cells
     if (lasers.length !== 1) {
-      throw new Error(`Cannot initialize QuantumSimulation. ${lasers.length} != 1 lasers.`)
+      throw new Error(`Cannot initialize Simulation. ${lasers.length} != 1 lasers.`)
     }
     // Override laser cell polarization if an optional argument is provided
     const laserIndicator = lasers[0].indicator
@@ -40,7 +40,7 @@ export default class QuantumSimulation {
     }
     // Create initial frame
     this.frames = []
-    const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows)
+    const initFrame = new Frame(this.grid.cols, this.grid.rows)
     initFrame.photons.addPhotonIndicator(
       laserIndicator.x,
       laserIndicator.y,
@@ -56,7 +56,7 @@ export default class QuantumSimulation {
    */
   public initializeFromIndicator(indicator: IIndicator): void {
     this.frames = []
-    const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
+    const frame = new Frame(this.grid.cols, this.grid.rows)
     frame.photons.addPhotonIndicator(
       indicator.x,
       indicator.y,
@@ -68,7 +68,7 @@ export default class QuantumSimulation {
 
   intializeFromXYState(posX: number, posY: number, vecDirPol: Vector): void {
     this.frames = []
-    const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
+    const frame = new Frame(this.grid.cols, this.grid.rows)
 
     const posInd = Vector.indicator(
       [frame.photons.dimX, frame.photons.dimY],
@@ -86,23 +86,23 @@ export default class QuantumSimulation {
 
   /**
    * Get last simulation frame
-   * @returns last QuantumFrame
+   * @returns last Frame
    */
-  public get lastFrame(): QuantumFrame {
+  public get lastFrame(): Frame {
     return this.frames[this.frames.length - 1]
   }
 
   /**
    * Compute the next simulation frame
-   * @returns QuantumFrame
+   * @returns Frame
    */
-  public nextFrame(): QuantumFrame {
+  public nextFrame(): Frame {
     if (this.frames.length === 0) {
       throw new Error(
         `Cannot do nextFrame when there are no frames. initializeFromLaser or something else.`
       )
     }
-    const frame = QuantumFrame.fromPhotons(this.lastFrame.photons)
+    const frame = Frame.fromPhotons(this.lastFrame.photons)
     frame.propagateAndInteract(this.grid.operatorList)
     return frame
   }
@@ -220,7 +220,7 @@ export default class QuantumSimulation {
    * Create a random realization. So - the state is normalized, until a successful measurement.
    * @remark So far for 1 particle.
    * @todo Make it work for more particles.
-   * @todo Maybe make it another object? Or use QuantumFrame?
+   * @todo Maybe make it another object? Or use Frame?
    */
   public sampleRandomRealization(): {
     statePerFrame: Photons[]

@@ -1,4 +1,4 @@
-export { default as QuantumFrame } from './QuantumFrame'
+export { default as Frame } from './Frame'
 export { default as Level } from './Level'
 export { default as Grid } from './Grid'
 export { default as Cluster } from './Cluster'
