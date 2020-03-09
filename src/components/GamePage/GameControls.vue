@@ -1,18 +1,8 @@
 <template>
   <div class="controls">
     <!-- SIMULATION CONTROLS -->
-    <span class="playback">
-      <!-- <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" /> -->
-      <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
-      <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
-      <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
-      <!-- <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" /> -->
-    </span>
-    <!-- FRAME INFO -->
-    <!-- <span class="frameInfo">
-      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
-      <span class="gameState">({{ gameState }})</span>
-    </span>-->
+    <game-simulation-controls :frame-index="frameIndex" :total-frame="totalFrame" />
+
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
       <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" />
@@ -35,10 +25,15 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
+import GameSimulationControls from '@/components/GamePage/GameSimulationControls.vue'
 import $userStore from '@/store/userStore'
 import Soundtract from '@/mixins/soundtrack'
 
-@Component
+@Component({
+  components: {
+    GameSimulationControls
+  }
+})
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number

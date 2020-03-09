@@ -69,7 +69,7 @@
     "jest": "^24.9.0",
     "last-commit-log": "^3.0.4",
     "markdown-it": "^10.0.0",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.13.1",
     "prettier": "1.19.1",
     "sass-loader": "^8.0.0",
     "typescript": "~3.7.5",
