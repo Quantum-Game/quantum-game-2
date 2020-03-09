@@ -7,6 +7,18 @@
     @mouseup="deviceTargetUp"
     @dblclick="selectCell"
   >
+    <!-- SELECTION INDICATOR -->
+    <g v-if="isSelectedCell" class="indicator" :style="computeRectStyle">
+      <line x1="0" y1="0" :x2="tileSize / 4" y2="0" />
+      <line x1="0" y1="0" x2="0" :y2="tileSize / 4" />
+      <line x1="64" y1="0" :x2="64 - tileSize / 4" y2="0" />
+      <line x1="64" y1="0" x2="64" :y2="tileSize / 4" />
+      <line x1="0" y1="64" :x2="tileSize / 4" y2="64" />
+      <line x1="0" y1="64" :x2="0" :y2="64 - tileSize / 4" />
+      <line x1="64" y1="64" :x2="64 - tileSize / 4" y2="64" />
+      <line x1="64" y1="64" :x2="64" :y2="64 - tileSize / 4" />
+    </g>
+
     <!-- BOUNDING RECTANGLE -->
     <rect
       :width="tileSize"
@@ -120,6 +132,7 @@ export default class AppCell extends Mixins(Position) {
   @State activeCell!: Cell
   @State cellSelected!: boolean
   @State hoveredCell!: Cell
+  @State selectedCell!: Cell
   @State fateCell!: Cell
   border = ''
   isRotate = false
@@ -273,6 +286,10 @@ export default class AppCell extends Mixins(Position) {
     return this.activeCell.equal(this.cell)
   }
 
+  get isSelectedCell(): boolean {
+    return this.selectedCell.equal(this.cell)
+  }
+
   get isFateCell(): boolean {
     return this.fateCell.equal(this.cell)
   }
@@ -408,5 +425,10 @@ rect {
   .transparent {
     opacity: 0.5;
   }
+}
+.indicator {
+  stroke-width: 1.5px;
+  stroke: white;
+  fill: none;
 }
 </style>
