@@ -1,5 +1,12 @@
 <template>
-  <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+  <svg
+    id="Layer_1"
+    :width="tileSize"
+    :height="tileSize"
+    viewBox="0 0 64 64"
+    style="enable-background:new 0 0 64 64;"
+    xml:space="preserve"
+  >
     <g>
       <!-- BARS -->
       <g :style="computePolarization">

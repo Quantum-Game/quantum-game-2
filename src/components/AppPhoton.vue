@@ -50,8 +50,9 @@ const d3 = {
 export default class AppPhoton extends Vue {
   @Prop() readonly particle!: Particle
   @Prop({ default: 0 }) readonly animate!: number
-  @Prop({ default: 64 }) readonly width!: number
-  @Prop({ default: 64 }) readonly height!: number
+  @Prop({ default: 64 }) readonly tileSize!: number
+  // @Prop({ default: 64 }) readonly width!: number
+  // @Prop({ default: 64 }) readonly height!: number
   @Prop({ default: 20 }) readonly margin!: number
   @Prop({ default: 20 }) readonly k!: number
   @Prop({ default: 0.3 }) readonly sigma!: number
@@ -63,6 +64,10 @@ export default class AppPhoton extends Vue {
   @Prop({ default: true }) readonly displayDirection!: boolean
   @Prop({ default: true }) readonly normalize!: boolean
   @Prop({ default: 1.3 }) readonly squeezeFactor!: number
+
+  // Compute photon from tileSize
+  width = this.tileSize
+  height = this.tileSize
 
   /**
    * Getters from particle

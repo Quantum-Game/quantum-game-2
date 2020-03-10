@@ -23,8 +23,8 @@ import Particle from '@/engine/Particle'
 @Component
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly pathParticles!: Particle[]
+  @Prop({ default: 64 }) readonly tileSize!: number
   @State simulationState!: boolean
-  tileSize = 64
 
   /**
    * Compute the laser path

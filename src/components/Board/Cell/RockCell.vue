@@ -1,5 +1,5 @@
 <template>
-  <svg>
+  <svg :width="tileSize" :height="tileSize" viewBox="0 0 64 64">
     <g class="st0">
       <g class="st1">
         <defs>

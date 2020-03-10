@@ -8,7 +8,7 @@
       :height="totalHeight"
     >
       <!-- DOTS -->
-      <board-dots :rows="grid.rows" :cols="grid.cols" />
+      <board-dots :rows="grid.rows" :cols="grid.cols" :tileSize="tileSize" />
 
       <!-- LASER PATH -->
       <board-lasers :pathParticles="pathParticles" />
@@ -19,7 +19,7 @@
           :cx="(fate.coord.x + 0.5) * tileSize"
           :cy="(fate.coord.y + 0.5) * tileSize"
           fill="purple"
-          r="30"
+          :r="tileSize / 2"
           stroke="purple"
           stroke-width="2"
         >
@@ -33,8 +33,8 @@
           />
           <animate
             attributeName="r"
-            from="32"
-            to="64"
+            :from="tileSize / 2"
+            :to="tileSize"
             dur="1.5s"
             begin="0s"
             repeatCount="indefinite"
@@ -54,6 +54,7 @@
         <app-photon
           name
           :particle="particle"
+          :tileSize="tileSize"
           :animate="2"
           :margin="2"
           :display-magnetic="false"
@@ -79,8 +80,8 @@
       <text
         v-for="(absorption, i) in absorptions"
         :key="'probability' + i"
-        :x="(absorption.cell.coord.x + 0.5) * 64"
-        :y="absorption.cell.coord.y * 64"
+        :x="(absorption.cell.coord.x + 0.5) * tileSize"
+        :y="absorption.cell.coord.y * tileSize"
         text-anchor="middle"
         class="probability"
       >
@@ -195,15 +196,16 @@ export default class Board extends Vue {
   }
 
   assessTileSize(): void {
-    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
-    this.$data.scalerStyle = {
-      transform: `scale(${currentWidth / 845})`
-    }
-    setTimeout(() => {
-      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
-      this.$data.boardHeight = currentHeight
-    }, 1)
-    this.tileSize = 64
+    // const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
+    // this.$data.scalerStyle = {
+    //   transform: `scale(${currentWidth / 845})`
+    // }
+    // setTimeout(() => {
+    //   const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
+    //   this.$data.boardHeight = currentHeight
+    // }, 1)
+    // this.tileSize = 64
+    this.tileSize = 100
   }
 
   get totalWidth(): number {

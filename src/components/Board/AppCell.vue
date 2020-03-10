@@ -11,12 +11,12 @@
     <g v-if="isSelectedCell" class="indicator" :style="computeRectStyle">
       <line x1="0" y1="0" :x2="tileSize / 4" y2="0" />
       <line x1="0" y1="0" x2="0" :y2="tileSize / 4" />
-      <line x1="64" y1="0" :x2="64 - tileSize / 4" y2="0" />
-      <line x1="64" y1="0" x2="64" :y2="tileSize / 4" />
-      <line x1="0" y1="64" :x2="tileSize / 4" y2="64" />
-      <line x1="0" y1="64" :x2="0" :y2="64 - tileSize / 4" />
-      <line x1="64" y1="64" :x2="64 - tileSize / 4" y2="64" />
-      <line x1="64" y1="64" :x2="64" :y2="64 - tileSize / 4" />
+      <line :x1="tileSize" y1="0" :x2="tileSize - tileSize / 4" y2="0" />
+      <line :x1="tileSize" y1="0" :x2="tileSize" :y2="tileSize / 4" />
+      <line x1="0" :y1="tileSize" :x2="tileSize / 4" :y2="tileSize" />
+      <line x1="0" :y1="tileSize" :x2="0" :y2="tileSize - tileSize / 4" />
+      <line :x1="tileSize" :y1="tileSize" :x2="tileSize - tileSize / 4" :y2="tileSize" />
+      <line :x1="tileSize" :y1="tileSize" :x2="tileSize" :y2="tileSize - tileSize / 4" />
     </g>
 
     <!-- BOUNDING RECTANGLE -->
@@ -32,32 +32,9 @@
       :is="computeCellName"
       :cell="cell"
       :class="computeCellName"
-      :cell-size="tileSize"
+      :tile-size="tileSize"
       :border="computeBorder"
     />
-
-    <!-- PULSATING CIRCLE -->
-    <!-- <g v-if="displayPulsation">
-      <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
-        <animate
-          attributeName="opacity"
-          from="1"
-          to="0"
-          dur="1.5s"
-          begin="0s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="r"
-          from="32"
-          to="64"
-          dur="1.5s"
-          begin="0s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </g> -->
-    <!-- eslint-enable -->
   </g>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <svg>
+  <svg :width="tileSize" :height="tileSize" viewBox="0 0 64 64">
     <g>
       <rect x="2" y="25" class="st0" width="60" height="14" />
       <path class="st1" d="M36.4,25h16c-9.5,7.8-18.3,11.9-24.2,14h-16C18,36.9,26.9,32.8,36.4,25z" />

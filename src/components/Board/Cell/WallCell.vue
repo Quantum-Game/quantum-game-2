@@ -1,6 +1,6 @@
 <template>
   <svg>
-    <rect width="62" height="62" rx="12" />
+    <rect :width="tileSize - 2" :height="tileSize - 2" rx="12" />
   </svg>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <svg>
+  <svg :width="tileSize" :height="tileSize" viewBox="0 0 64 64">
     <g v-if="border" id="Qactive_1_">
       <g class="st1">
         <g>

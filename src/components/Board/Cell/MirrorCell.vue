@@ -1,5 +1,5 @@
 <template>
-  <svg>
+  <svg :width="tileSize" :height="tileSize" viewBox="0 0 64 64">
     <g>
       <rect x="2" y="25" class="st0" width="60" height="14" />
       <polygon class="st1" points="29.1,39 16,25 3.1,25 16.2,39   " />
