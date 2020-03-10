@@ -74,7 +74,7 @@ export default class GameToolbox extends Vue {
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
-      this.viewBox = ''
+      this.viewBox = '-8 0 80 80'
       this.counterX = '50%'
     } else {
       this.viewBox = '-8 0 80 80'

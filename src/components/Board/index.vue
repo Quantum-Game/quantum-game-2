@@ -14,9 +14,7 @@
       <board-lasers :pathParticles="pathParticles" :tileSize="tileSize" />
 
       <!-- FATE -->
-      <g v-if="displayFate">
-        <board-fate :tile-size="tileSize" />
-      </g>
+      <board-fates :tile-size="tileSize" />
 
       <!-- PHOTONS -->
       <g
@@ -86,7 +84,7 @@ import { IHint } from '@/engine/interfaces'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
-import BoardFate from '@/components/Board/BoardFate.vue'
+import BoardFates from '@/components/Board/BoardFates.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import Absorption from '../../engine/Absorption'
@@ -96,7 +94,7 @@ import Absorption from '../../engine/Absorption'
     AppCell,
     AppPhoton,
     BoardLasers,
-    BoardFate,
+    BoardFates,
     BoardDots,
     SpeechBubble
   }
