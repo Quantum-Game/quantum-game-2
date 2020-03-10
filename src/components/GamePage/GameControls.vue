@@ -275,7 +275,11 @@ input[type='file'] {
   cursor: pointer;
 }
 .controls {
-  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  width: 500px;
+
+  // width: 100%;
   border-bottom: 1px solid white;
   display: flex;
   padding-top: 1rem;

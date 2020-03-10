@@ -1,9 +1,6 @@
 <template>
   <div class="game">
     <!-- MODAL -->
-    <!-- <button type="button" class="btn" @click="showModal">
-      Open Modal!
-    </button> -->
     <app-modal v-show="isModalVisible" @close="closeModal">
       <h1 slot="header">test</h1>
       <p slot="modal-body">body</p>
