@@ -14,32 +14,8 @@
       <board-lasers :pathParticles="pathParticles" :tileSize="tileSize" />
 
       <!-- FATE -->
-      <g v-if="displayFate" class="fate">
-        <circle
-          :cx="(fate.coord.x + 0.5) * tileSize"
-          :cy="(fate.coord.y + 0.5) * tileSize"
-          fill="purple"
-          :r="tileSize / 2"
-          stroke="purple"
-          stroke-width="2"
-        >
-          <animate
-            attributeName="opacity"
-            from="1"
-            to="0"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="r"
-            :from="tileSize / 2"
-            :to="tileSize"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-        </circle>
+      <g v-if="displayFate">
+        <board-fate :tile-size="tileSize" />
       </g>
 
       <!-- PHOTONS -->
@@ -110,6 +86,7 @@ import { IHint } from '@/engine/interfaces'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
+import BoardFate from '@/components/Board/BoardFate.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import Absorption from '../../engine/Absorption'
@@ -119,6 +96,7 @@ import Absorption from '../../engine/Absorption'
     AppCell,
     AppPhoton,
     BoardLasers,
+    BoardFate,
     BoardDots,
     SpeechBubble
   }
@@ -204,8 +182,8 @@ export default class Board extends Vue {
     //   const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
     //   this.$data.boardHeight = currentHeight
     // }, 1)
-    this.tileSize = 50
-    // this.tileSize = 100
+    // this.tileSize = 50
+    this.tileSize = 64
   }
 
   get totalWidth(): number {
