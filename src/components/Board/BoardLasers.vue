@@ -37,16 +37,16 @@ export default class Board extends Vue {
     pathStr += `M ${originX} ${originY} `
     switch (particle.direction) {
       case 0:
-        pathStr += ` H ${(particle.coord.x + 1) * this.tileSize}`
+        pathStr += ` H ${(particle.coord.x + 1.5) * this.tileSize}`
         break
       case 90:
-        pathStr += ` V ${(particle.coord.y - 1) * this.tileSize}`
+        pathStr += ` V ${(particle.coord.y - 1.5) * this.tileSize}`
         break
       case 180:
-        pathStr += ` H ${(particle.coord.x - 1) * this.tileSize}`
+        pathStr += ` H ${(particle.coord.x - 1.5) * this.tileSize}`
         break
       case 270:
-        pathStr += ` V ${(particle.coord.y + 1) * this.tileSize}`
+        pathStr += ` V ${(particle.coord.y + 1.5) * this.tileSize}`
         break
       default:
         throw new Error(`Laser has wrong direction: ${particle.direction}°`)
