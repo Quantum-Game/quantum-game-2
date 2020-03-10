@@ -162,37 +162,6 @@ export default class Particle extends Coord {
   }
 
   /**
-   * export a svg path of the particle
-   * @returns
-   */
-  public toSvg(): string {
-    let pathStr = ''
-    const originX = this.centerCoord(this.coord.x)
-    const originY = this.centerCoord(this.coord.y)
-    pathStr += `M ${originX} ${originY} `
-    switch (this.direction) {
-      case 0:
-        pathStr += ` H ${this.centerCoord(this.coord.x + 1)}`
-        break
-      case 90:
-        pathStr += ` V ${this.centerCoord(this.coord.y - 1)}`
-        break
-      case 180:
-        pathStr += ` H ${this.centerCoord(this.coord.x - 1)}`
-        break
-      case 270:
-        pathStr += ` V ${this.centerCoord(this.coord.y + 1)}`
-        break
-      default:
-        throw new Error(`Laser has wrong direction: ${this.direction}°`)
-    }
-    if (this.probability < 0.001) {
-      return ''
-    }
-    return pathStr
-  }
-
-  /**
    * Compute the cell center at a specific coordinate for grid dots
    * @returns x, y pixel coordinates
    */

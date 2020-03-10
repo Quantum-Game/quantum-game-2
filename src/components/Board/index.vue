@@ -11,7 +11,7 @@
       <board-dots :rows="grid.rows" :cols="grid.cols" :tileSize="tileSize" />
 
       <!-- LASER PATH -->
-      <board-lasers :pathParticles="pathParticles" />
+      <board-lasers :pathParticles="pathParticles" :tileSize="tileSize" />
 
       <!-- FATE -->
       <g v-if="displayFate" class="fate">
@@ -204,8 +204,8 @@ export default class Board extends Vue {
     //   const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
     //   this.$data.boardHeight = currentHeight
     // }, 1)
-    // this.tileSize = 64
-    this.tileSize = 100
+    this.tileSize = 50
+    // this.tileSize = 100
   }
 
   get totalWidth(): number {

@@ -31,7 +31,27 @@ export default class Board extends Vue {
    * @returns SVG path
    */
   computePath(particle: Particle): string {
-    return particle.toSvg()
+    let pathStr = ''
+    const originX = (particle.coord.x + 0.5) * this.tileSize
+    const originY = (particle.coord.y + 0.5) * this.tileSize
+    pathStr += `M ${originX} ${originY} `
+    switch (particle.direction) {
+      case 0:
+        pathStr += ` H ${(particle.coord.x + 1) * this.tileSize}`
+        break
+      case 90:
+        pathStr += ` V ${(particle.coord.y - 1) * this.tileSize}`
+        break
+      case 180:
+        pathStr += ` H ${(particle.coord.x - 1) * this.tileSize}`
+        break
+      case 270:
+        pathStr += ` V ${(particle.coord.y + 1) * this.tileSize}`
+        break
+      default:
+        throw new Error(`Laser has wrong direction: ${particle.direction}°`)
+    }
+    return pathStr
   }
 
   /**
@@ -39,7 +59,7 @@ export default class Board extends Vue {
    * @returns laser path width
    */
   computeSize(particle: Particle): number {
-    return particle.probability * 1.5
+    return 1 + particle.probability * 1.5
   }
 }
 </script>
