@@ -9,6 +9,7 @@
       @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
     >
       <g :class="computeClass(cell)">
+        <!-- ELEMENT SVG -->
         <app-cell
           :cell="cell"
           :available="isAvailable(cell)"
@@ -16,10 +17,14 @@
           @updateCell="updateCell"
           @mouseover.native="handleMouseEnter(cell)"
         />
-        <text class="counter" :x="counterX" y="80">
-          {{ toolbox.getCount(cell.element.name) }}
-          ({{ toolbox.getCountOriginal(cell.element.name) }})
-        </text>
+
+        <!-- AVAILABLE PILL -->
+        <g v-if="isAvailable(cell)">
+          <circle :cx="tileSize - 10" :cy="tileSize - 10" r="11" class="circle" />
+          <text class="counter" :x="tileSize - 10" :y="tileSize - 5">
+            {{ toolbox.getCount(cell.element.name) }}
+          </text>
+        </g>
       </g>
     </svg>
     <slot></slot>
@@ -41,9 +46,10 @@ export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  cell = {}
+  cell = Cell.createDummy({ x: -1, y: -1 })
   viewBox = '-8 0 80 80'
   counterX = '40%'
+  tileSize = 64
 
   mounted(): void {
     window.addEventListener('resize', this.calculateViewBox)
@@ -73,6 +79,7 @@ export default class GameToolbox extends Vue {
   }
 
   calculateViewBox(): void {
+    // FIXME: Origin of the viewBox console error
     if (window.innerWidth > 1000) {
       this.viewBox = '-8 0 80 80'
       this.counterX = '50%'
@@ -120,12 +127,18 @@ body {
       flex-basis: 20%;
       height: 15vw;
     }
+    .circle {
+      stroke: white;
+      stroke-width: 1.5;
+      fill: red;
+    }
     .counter {
       transform-origin: 50% 100%;
       fill: white;
       text-anchor: middle;
       margin: 0;
       font-size: 0.8rem;
+      font: bold;
     }
     .inactive {
       opacity: 0.5;

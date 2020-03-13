@@ -235,6 +235,7 @@ export default class Cell {
    * Create a void cell from a Coord
    * @param name string
    * @returns a toolbox cell
+   * #FIXME: Implement default rotation, polarization and percentage
    */
   public static createToolboxCell(name: string): Cell {
     const element = Cell.fromName(name)
