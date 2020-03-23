@@ -86,15 +86,15 @@
       >
         {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
-
-      <!-- SPEECH BUBBLES -->
-      <speech-bubble
-        v-for="(hint, index) in hints"
-        :key="`hint${index}`"
-        :hint="hint"
-        :tileSize="tileSize"
-      />
     </svg>
+    <!-- SPEECH BUBBLES -->
+    <speech-bubble
+      v-for="(hint, index) in hints"
+      :key="`hint${index}`"
+      :hint="hint"
+      :tile-size="updatedTileSize"
+      :wrapper-rect="boardClientRect"
+    />
   </div>
 </template>
 
@@ -136,6 +136,7 @@ export default class Board extends Vue {
   @State activeCell!: Cell
 
   tileSize = 64
+  updatedTileSize = 64 // this is the actual, dynamic tile size
   boardHeight = 0
   scalerStyle = {
     transform: `scale(1)`
@@ -146,9 +147,11 @@ export default class Board extends Vue {
     boardScaler: HTMLElement
   }
 
+  boardClientRect = {}
+
   mounted(): void {
-    window.addEventListener('resize', this.assessTileSize)
-    this.assessTileSize()
+    window.addEventListener('resize', this.assessSize)
+    this.assessSize()
   }
 
   /**
@@ -193,16 +196,18 @@ export default class Board extends Vue {
     }
   }
 
-  assessTileSize(): void {
+  assessSize(): void {
     const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
-    this.$data.scalerStyle = {
+    this.scalerStyle = {
       transform: `scale(${currentWidth / 845})`
     }
     setTimeout(() => {
       const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
-      this.$data.boardHeight = currentHeight
+      this.boardHeight = currentHeight
     }, 1)
-    this.tileSize = 64
+    // this.tileSize = 64 // apparently, the property is hard-coded, no need to change it
+    this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
+    this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
   }
 
   get totalWidth(): number {
@@ -246,8 +251,10 @@ export default class Board extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/styles/colors.scss';
+
 .probability {
-  fill: #ff0055;
+  fill: $fuscia;
   font-size: 0.8rem;
 }
 

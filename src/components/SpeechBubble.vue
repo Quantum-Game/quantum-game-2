@@ -1,35 +1,55 @@
 <template>
   <transition name="hint">
-    <!-- WRAPPER -->
-    <foreignObject
+    <div
       v-if="shown"
-      :x="offsetX"
-      :y="offsetY"
-      :height="wrapperHeight"
-      :width="wrapperWidth"
+      ref="tooltip"
+      class="hint"
+      :class="hintClass"
+      :style="absolutePositionStyle"
+      @click="shouldHide"
     >
-      <!-- TOOLTIP ITSELF -->
-      <div ref="hint" class="hint" :class="hintClass" :style="{ maxWidth: maxWidth }" @click="hide">
-        <span>{{ hint.content }}</span>
-      </div>
-    </foreignObject>
+      <span>{{ hint.content }}</span>
+    </div>
   </transition>
 </template>
 
 <script lang="ts">
-import { Mixins, Component, Prop } from 'vue-property-decorator'
+import { Mixins, Component, Prop, Watch } from 'vue-property-decorator'
 import Hint from '@/engine/Hint'
 import Position from '@/mixins/Position'
+interface IAbsolutePosition {
+  left: string
+  top: string
+}
 
 @Component
 export default class SpeechBubble extends Mixins(Position) {
-  @Prop() readonly hint!: Hint
+  @Prop({
+    default: {
+      color: 'purple'
+    }
+  })
+  readonly hint!: Hint
+
   @Prop({ default: 64 }) readonly tileSize!: number
+  // TO DO! do the type
+  @Prop() readonly wrapperRect!: {
+    width: number
+    height: number
+    y: number
+    x: number
+    top: number
+    bottom: number
+    left: number
+    right: number
+  }
+
+  @Prop({ default: null }) readonly overlay!: string | null
+
+  @Prop() readonly line!: string
+
   positionX!: number
   positionY!: number
-
-  // this is where the tooltips width is set:
-  maxWidth = '220px'
 
   contentRect = {
     width: 0,
@@ -39,56 +59,150 @@ export default class SpeechBubble extends Mixins(Position) {
   shown = true
 
   $refs!: {
-    hint: HTMLElement
+    tooltip: HTMLDivElement
   }
 
+  /**
+   * The life-cycle method is used by the component
+   * to assess its own bounding client rect
+   */
   mounted(): void {
-    this.assessDimensions()
+    this.assessOwnRect()
   }
 
-  /*   used to measure the HTML elements dimensions to
-      appropriatly wrap it and position
-  */
-  assessDimensions(): void {
-    this.contentRect = this.$refs.hint.getBoundingClientRect()
+  /**
+   * used to measure the HTML elements dimensions to
+   *  appropriately wrap it and position
+   */
+
+  @Watch('wrapperRect')
+  @Watch('hint', { deep: true })
+  @Watch('overlay')
+  assessOwnRect(): void {
+    this.contentRect = this.$refs.tooltip.getBoundingClientRect()
   }
 
-  hide(): void {
-    this.shown = false
+  /**
+   * Whether clicking onto the tooltip causes it to dissapear
+   * depends on the context; disabled for overlays
+   */
+  shouldHide(): void {
+    if (!this.overlay) {
+      this.shown = false
+    }
   }
 
+  /**
+   * Used for coloring
+   * @returns a color class name
+   */
   get hintClass(): string {
-    return `hint--${this.hint.color}`
+    return `hint--${this.hint.color} ${this.overlay === 'second' ? 'second' : ''}`
   }
 
-  // used to give a bit of margins to the foreginObject
-  get wrapperHeight(): number {
-    return this.contentRect.height + 15
+  /**
+   * Positioning calculations depend on whether the tooltip
+   * appears against the board (this.hint.coord determine its position)
+   * or against an overlay image (then the position is "fixed" - relative to
+   * image/wrapper proportions)
+   * @returns an object with with the 'top' and 'left' fields -
+   * the vertical and horizonatal offsets
+   */
+  get absolutePositionStyle(): IAbsolutePosition {
+    return this.overlay ? this.overlayPositionStyle : this.boardPositionStyle
   }
 
-  get wrapperWidth(): number {
-    return this.contentRect.width + 15
+  /**
+   * Top and left offsets calulations for then the tooltip appears on the board
+   * @returns an offsets object
+   */
+  get boardPositionStyle(): IAbsolutePosition {
+    const topOffset =
+      this.wrapperRect.top +
+      this.hint.coord.y * (this.tileSize - 1) +
+      this.tileSize / 2 -
+      this.contentRect.height
+
+    const leftOffset =
+      this.wrapperRect.left +
+      this.hint.coord.x * (this.tileSize - 1) +
+      this.tileSize / 2 -
+      this.contentRect.width / 2
+
+    return {
+      left: leftOffset + 'px',
+      top: topOffset + 'px'
+    }
   }
 
-  // used for internal positioning with regard to hint's size
-  get offsetX(): number {
-    return this.positionX - this.wrapperWidth / 2 + this.tileSize / 2
-  }
+  /**
+   * Top and left offsets calculation for when the tooltip
+   * complements the overlay image. The outcome depends on
+   * the overlay type and whether the tooltip is the "second"
+   * one in the dual-tooltip overlay.
+   * @returns an offsets object
+   */
+  get overlayPositionStyle(): IAbsolutePosition {
+    let leftOffset, topOffset
 
-  get offsetY(): number {
-    return this.positionY - this.wrapperHeight / 2 + this.tileSize / 3
+    switch (this.overlay) {
+      // single rock
+      case 'rock':
+        topOffset = this.wrapperRect.top - this.contentRect.height + this.wrapperRect.height * 0.25
+        leftOffset =
+          this.wrapperRect.left + this.wrapperRect.width * 0.5 - this.contentRect.width * 0.5
+        break
+
+      // the pile's first talking rock
+      case 'pile':
+      case 'pile2':
+        topOffset = this.wrapperRect.top - this.contentRect.height + this.wrapperRect.height / 6
+        leftOffset =
+          this.wrapperRect.left + this.wrapperRect.width * 0.35 - this.contentRect.width * 0.5
+        break
+
+      // second of the two talking rocks
+      case 'second':
+        topOffset =
+          this.wrapperRect.top - this.contentRect.height + (this.wrapperRect.height * 1) / 3
+
+        leftOffset =
+          this.wrapperRect.left + (this.wrapperRect.width * 7) / 10 - this.contentRect.width / 2
+        break
+
+      default:
+        topOffset = 0
+        leftOffset = 0
+        break
+    }
+
+    return {
+      top: `${topOffset}px`,
+      left: `${leftOffset}px`
+    }
   }
 }
 </script>
 
 <style lang="scss">
+@import '@/assets/styles/breakpoints.scss';
+@import '@/assets/styles/colors.scss';
+
 .hint {
-  padding: 12px;
-  //min-height: 64px;
-  min-width: 128px;
+  padding: 6px;
   z-index: 2;
+  max-width: 500px;
   position: absolute;
   color: #fff;
+  font-size: 8px;
+  @media screen and (min-width: $small) {
+    font-size: 12px;
+    padding: 8px;
+  }
+  @media screen and (min-width: $medium) {
+    font-size: 16px;
+    padding: 12px;
+  }
   &::after {
     content: ' ';
     position: absolute;
@@ -98,19 +212,28 @@ export default class SpeechBubble extends Mixins(Position) {
     border-width: 10px;
     border-style: solid;
   }
-}
-//FOR VERY IMPORTANT THINGS NOT TO BE MISSED
-.hint--red {
-  background-color: #ff0055;
-  &::after {
-    border-color: #ff0055 transparent transparent transparent;
+  &.second {
+    max-width: 10vw;
   }
-}
+  &.hint--fuscia {
+    background-color: $fuscia;
+    &::after {
+      border-color: $fuscia transparent transparent transparent;
+    }
+  }
 
-.hint--purple {
-  background-color: #5c00d3;
-  &::after {
-    border-color: #5c00d3 transparent transparent transparent;
+  &.hint--purple {
+    background-color: $purple;
+    &::after {
+      border-color: $purple transparent transparent transparent;
+    }
+  }
+
+  &.hint--orange {
+    background-color: $orange;
+    &::after {
+      border-color: $orange transparent transparent transparent;
+    }
   }
 }
 
