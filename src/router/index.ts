@@ -73,6 +73,10 @@ export default new Router({
       component: () => import('@/components/SavedLevelsPage/index.vue')
     },
     {
+      path: '/test/',
+      component: () => import('@/components/TestPage/index.vue'),
+    },
+    {
       path: '/options',
       name: 'options',
       component: () => import('@/components/OptionsPage/index.vue')
