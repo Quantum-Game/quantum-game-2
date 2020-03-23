@@ -106,8 +106,6 @@ export default class InterLevelOverlay extends Vue {
     min-height: 100px;
     width: 30vw;
     max-width: 500px;
-    // background-repeat: no-repeat;
-    // background-position: center;
   }
   & .slot {
     padding-bottom: 20vh;
