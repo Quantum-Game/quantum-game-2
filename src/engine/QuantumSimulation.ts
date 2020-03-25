@@ -41,7 +41,7 @@ export default class QuantumSimulation {
     // Create initial frame
     this.frames = []
     const initFrame = new QuantumFrame(this.grid.cols, this.grid.rows)
-    initFrame.photons.addPhotonIndicator(
+    initFrame.photons.addPhotonFromIndicator(
       laserIndicator.x,
       laserIndicator.y,
       laserIndicator.direction,
@@ -57,7 +57,7 @@ export default class QuantumSimulation {
   public initializeFromIndicator(indicator: IIndicator): void {
     this.frames = []
     const frame = new QuantumFrame(this.grid.cols, this.grid.rows)
-    frame.photons.addPhotonIndicator(
+    frame.photons.addPhotonFromIndicator(
       indicator.x,
       indicator.y,
       indicator.direction,
@@ -74,7 +74,6 @@ export default class QuantumSimulation {
       [frame.photons.dimX, frame.photons.dimY],
       [posX.toString(), posY.toString()]
     )
-    frame.photons.nPhotons = 1
     if (vecDirPol.dimensions[0].name === 'direction') {
       frame.photons.vector = posInd.outer(vecDirPol)
     } else {
