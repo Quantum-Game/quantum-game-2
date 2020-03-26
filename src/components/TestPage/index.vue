@@ -1,9 +1,9 @@
 <template>
   <div class="test-page">
-    <InterLevelOverlay :type="type" :hints="hints">
+    <rock-talk :type="type" :dialogue="dialogue">
       <h1 slot="title">OVERLAYS DEMO</h1>
       <app-button type="big">PLAY</app-button>
-    </InterLevelOverlay>
+    </rock-talk>
     <menu class="test-page__controls">
       <h2>Overlay Controls:</h2>
       <section>
@@ -19,8 +19,8 @@
 
       <section>
         hint 1:
-        <textarea v-model="hints[0].content" placeholder="First rock says..."></textarea> <br />
-        <select v-model="hints[0].color">
+        <textarea v-model="dialogue[0].content" placeholder="First rock says..."></textarea> <br />
+        <select v-model="dialogue[0].color">
           <option disabled value="">color</option>
           <option>purple</option>
           <option>fuscia</option>
@@ -31,13 +31,13 @@
       <section>
         hint 2:
         <textarea
-          v-model="hints[1].content"
+          v-model="dialogue[1].content"
           placeholder="The second rock says..."
           :disabled="isSecondDisabled"
         ></textarea
         ><br />
         <small>(active only for pile2 overlay type)</small><br />
-        <select v-model="hints[1].color">
+        <select v-model="dialogue[1].color">
           <option disabled value="">color</option>
           <option>purple</option>
           <option>fuscia</option>
@@ -50,18 +50,18 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import InterLevelOverlay from '@/components/InterLevelOverlay.vue'
+import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
 import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
-    InterLevelOverlay,
+    RockTalk,
     AppButton
   }
 })
 export default class TestPage extends Vue {
   type = 'rock'
-  hints = [
+  dialogue = [
     {
       coord: {
         x: 4,
