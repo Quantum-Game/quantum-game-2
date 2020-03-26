@@ -25,15 +25,30 @@ interface IAbsolutePosition {
 @Component
 export default class SpeechBubble extends Mixins(Position) {
   @Prop({
-    default: {
-      color: 'purple'
+    default: () => {
+      return {
+        color: 'purple'
+      }
     }
   })
   readonly hint!: Hint
 
   @Prop({ default: 64 }) readonly tileSize!: number
+  // default value added so the tooltip
+  // may be displayed even though there
+  // there is a wrapper issue (say, the graphic)
   // TO DO! do the type
-  @Prop() readonly wrapperRect!: {
+  @Prop({
+    default: () => {
+      return {
+        width: 100,
+        height: 100,
+        top: 0,
+        left: 0
+      }
+    }
+  })
+  readonly wrapperRect!: {
     width: number
     height: number
     y: number
@@ -45,8 +60,6 @@ export default class SpeechBubble extends Mixins(Position) {
   }
 
   @Prop({ default: null }) readonly overlay!: string | null
-
-  @Prop() readonly line!: string
 
   positionX!: number
   positionY!: number
@@ -71,10 +84,10 @@ export default class SpeechBubble extends Mixins(Position) {
   }
 
   /**
-   * used to measure the HTML elements dimensions to
-   *  appropriately wrap it and position
+   * The component holds it own dimensions (and the initial position)
+   * in its state for proper positioning against the wrapper;
+   * updated when appropriate using watchers.
    */
-
   @Watch('wrapperRect')
   @Watch('hint', { deep: true })
   @Watch('overlay')
