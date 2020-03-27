@@ -8,3 +8,13 @@ process.env.VUE_APP_GIT_TAG = commit.gitTag
 process.env.VUE_APP_GIT_DATE = commit.committer.date
 
 process.env.VUE_APP_VERSION = require('./package.json').version
+
+module.exports = {
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `@import "~@/assets/styles/global.scss";`
+      }
+    }
+  }
+}
