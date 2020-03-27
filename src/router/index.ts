@@ -78,6 +78,15 @@ export default new Router({
       component: () => import('@/components/OptionsPage/index.vue')
     },
     {
+      path: '/rocks/:id',
+      name: 'rocks',
+      component: () => import('@/components/RockTalkPage/index.vue')
+    },
+    {
+      path: '/dev/rock_talk',
+      component: () => import('@/components/TestPage/index.vue'),
+    },
+    {
       path: '*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue')
