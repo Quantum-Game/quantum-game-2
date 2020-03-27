@@ -1,4 +1,4 @@
-import rockTalkData from './rock_talk.json'
+import rockTalkData from '@/assets/data/rock_talk/rock_talk.json'
 
 /**
  * rock talk entry type casts:

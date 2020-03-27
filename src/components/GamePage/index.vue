@@ -100,7 +100,7 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
-import { getOverlayNameByLevelId } from '@/assets/data/rock_talk/index.ts'
+import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
 
 @Component({
   components: {
