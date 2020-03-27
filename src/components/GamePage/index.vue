@@ -6,7 +6,7 @@
     <!-- OVERLAY -->
     <app-overlay :game-state="displayGameState" class="overlay" @click.native="frameIndex = 0">
       <p class="backButton">GO BACK</p>
-      <router-link :to="nextLevel">
+      <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
       </router-link>
     </app-overlay>
@@ -20,7 +20,7 @@
           <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
         </router-link>
         {{ level.id + ' - ' + level.name.toUpperCase() }}
-        <router-link :to="nextLevel">
+        <router-link :to="nextLevelOrOvelay">
           <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
         </router-link>
       </h1>
@@ -100,6 +100,7 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
+import { getOverlayNameByLevelId } from '@/assets/data/rock_talk/index.ts'
 
 @Component({
   components: {
@@ -137,6 +138,7 @@ export default class Game extends Vue {
   // LIFECYCLE
   created(): void {
     this.loadLevel()
+    this.mutationSetCurrentLevelID(this.levelId)
     window.addEventListener('keyup', this.handleArrowPress)
   }
 
@@ -481,6 +483,16 @@ export default class Game extends Vue {
 
   get nextLevel(): string {
     return `/level/${this.levelId + 1}`
+  }
+
+  /**
+   * Should an overlay be shown when progressing
+   * to the next level?
+   * @returns an router link :to attribute string
+   */
+  get nextLevelOrOvelay(): string {
+    const possibleOverlay = getOverlayNameByLevelId(this.levelId)
+    return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
   }
 
   get hints(): IHint[] {

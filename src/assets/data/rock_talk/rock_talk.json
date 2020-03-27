@@ -1,0 +1,26 @@
+[
+  {
+    "id": "introduction",
+    "type": "rock",
+    "dialogue": [
+      {
+        "content": "Hi",
+        "color": "purple"
+      }
+    ]
+  },
+  {
+    "id": "talking",
+    "type": "pile2",
+    "dialogue": [
+      {
+        "content": "Hi",
+        "color": "purple"
+      },
+      {
+        "content": "Hello there",
+        "color": "fuscia"
+      }
+    ]
+  }
+]
