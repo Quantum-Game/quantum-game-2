@@ -205,6 +205,7 @@ $leaf: #5c00d3;
   display: block;
   text-align: center;
   color: white;
+  padding-top: 20px;
   @media screen and (max-width: 1000px) {
     border-bottom: 1px solid white;
     min-height: 0px;
