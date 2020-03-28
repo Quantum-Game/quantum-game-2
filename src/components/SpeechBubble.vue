@@ -228,10 +228,10 @@ export default class SpeechBubble extends Mixins(Position) {
   &.second {
     max-width: 10vw;
   }
-  &.hint--fuscia {
-    background-color: $fuscia;
+  &.hint--fuchsia {
+    background-color: $fuchsia;
     &::after {
-      border-color: $fuscia transparent transparent transparent;
+      border-color: $fuchsia transparent transparent transparent;
     }
   }
 
