@@ -94,8 +94,8 @@ export default class InterLevelOverlay extends Vue {
 
 <style lang="scss">
 .inter-level-overlay {
-  height: 100vh;
-  width: 100vw;
+  height: 40vh;
+  width: 40vw;
   color: white;
   display: flex;
   flex-direction: column;

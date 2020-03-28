@@ -22,9 +22,7 @@ export const rockTalk: IRockTalk[] = [...rockTalkData]
 export const postLevelOverlayMapping: {
   [key: number]: string
 } = {
-  1: 'introduction',
-  2: 'custom',
-  3: 'talking'
+  4: 'custom'
 }
 
 /**

@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="rock-text">
-      <p>Well done! You used a quantum phenomenon called <b>SUPERPOSITION</b>.</p>
+      <h1>Well done!</h1>
+      <p>You used a quantum phenomenon called <b>SUPERPOSITION</b>.</p>
       <a href="https://quantumgame.io/info/superposition">learn more</a>
     </div>
       <img src="@/assets/graphics/overlays/rock_talk_line.svg" alt="rock-line" />
@@ -17,7 +18,7 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component
-export default class CustomOverlayExample extends Vue {}
+export default class RockTalkSuperposition extends Vue {}
 </script>
 
 <style>
@@ -25,11 +26,8 @@ h1 {
   text-transform: uppercase;
   font-size: 2rem;
 }
-p {
-  font-size: 1.2rem;
-}
 a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-transform: uppercase;
   text-align: center;
 }
@@ -39,7 +37,7 @@ a {
 }
 .happy-rock {
   /* width: 70%; */
-  margin: 0px 6rem 2rem 6rem;
+  margin: 0px 5rem 2rem 5rem;
   min-width: 100px;
 }
 .rockhappyst0 {clip-path:url(#SVGID_2_);}
