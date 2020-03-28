@@ -4,7 +4,7 @@
     <div class="grids">
       <div class="matrix">
         <matrix-viewer
-          :key="`${operator.toString()}`"
+          :key="`matrix-${matrixIter}`"
           class="matrix-viewer"
           :operator-raw="operator"
           :size="30"
@@ -13,7 +13,7 @@
       </div>
       <div class="eboard">
         <encyclopedia-board
-          :key="`${initialState.vecDirPol.toKetString()}`"
+          :key="`board-${boardIter}`"
           class="board"
           :i-grid="grid.exportGrid()"
           :initial-state="[initialState]"
@@ -55,6 +55,8 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   rotation: number = this.defaultRotation
   grid: Grid = Grid.emptyGrid(3, 3)
+  matrixIter = 0
+  boardIter = 0
   initialState: IXYVec = {
     posX: 0,
     posY: 1,
@@ -82,6 +84,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
    */
   updateRotation(cell: Cell): void {
     this.rotation = cell.rotation
+    this.matrixIter += 1
   }
 
   /**
@@ -110,6 +113,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
       posY: 1 - move.y,
       vecDirPol: hv.changeAllDimsOfVector(vector)
     }
+    this.boardIter += 1
   }
 
   /**
