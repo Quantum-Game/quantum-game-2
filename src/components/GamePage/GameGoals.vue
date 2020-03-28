@@ -1,12 +1,15 @@
 <template>
   <div ref="goals" class="goals-wrapper">
+    <h3 class="title">
+      GOALS
+    </h3>
     <!-- DONUT -->
     <vc-donut
       class="chart"
       background="#210235"
       foreground="inherit"
       unit="px"
-      :size="112"
+      :size="110"
       :thickness="5"
       :total="100"
       :sections="sections"
@@ -15,7 +18,7 @@
       <!-- INNER DONUT -->
       <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div>
-        <div>PROBABILITY</div>
+        <div class="inner-circle-probability">PROBABILITY</div>
       </div>
     </vc-donut>
 
@@ -31,7 +34,12 @@
           :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div class="goal-text">Goal: {{ gameState.totalGoalPercentage }} %</div>
+      <div
+        v-if="gameState.totalGoalPercentage < 100"
+        class="goal-text"
+      >
+        Goal: {{ gameState.totalGoalPercentage }} %
+      </div>
     </div>
 
     <!-- GOALS -->
@@ -48,7 +56,7 @@
       </span>
       <div>
         <span>
-          <b>DETECTORS</b>
+          <p>DETECTORS</p>
         </span>
       </div>
     </div>
@@ -63,10 +71,10 @@
       </span>
       <div>
         <span v-if="gameState.safeFlag" class="success">
-          <b>SAFE</b>
+          <p>SAFE</p>
         </span>
         <span v-else class="defeat">
-          <b>DANGER!</b>
+          <p>DANGER!</p>
         </span>
       </div>
     </div>
@@ -111,7 +119,8 @@ export default class GameGoals extends Vue {
    */
   get sections(): { value: number; color: string }[] {
     return [
-      { value: 100 - this.tweenedPercent, color: '#210235' },
+      { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
+      { value: this.gameState.totalGoalPercentage - this.tweenedPercent, color: '#422853' },
       { value: this.tweenedPercent, color: '#5D00D5' }
     ]
   }
@@ -143,13 +152,25 @@ export default class GameGoals extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  margin-top: 0px;
+  padding-bottom: 5px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+}
+p {
+  font-size: 0.8rem;
+  margin: 0.2rem;
+}
 .goals-wrapper {
-  border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  border-top: 1px solid white;
   @media screen and (max-width: 1000px) {
     flex-direction: row;
     justify-content: space-evenly;
@@ -186,6 +207,9 @@ export default class GameGoals extends Vue {
     & div.inner-circle {
       font-size: 1.2rem;
     }
+    & .inner-circle-probability {
+      font-size: 0.6rem;
+    }
 
     &::after {
       content: '';
@@ -216,7 +240,7 @@ export default class GameGoals extends Vue {
 }
 .goalPercentage {
   margin-top: 10px;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   position: relative;
   min-width: 80px;
   @media screen and (max-width: 1000px) {
@@ -257,10 +281,12 @@ export default class GameGoals extends Vue {
       transition: width 1s ease-in-out;
       z-index: 1;
     }
-    .goal-text {
-      font-size: 0.6rem;
-      padding: 5px;
-    }
+  }
+  .goal-text {
+    font-size: 1rem;
+    padding: 5px;
+    color: #5c00d3;
+    font-weight: 900;
   }
 }
 .defeat {
