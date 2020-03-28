@@ -27,10 +27,9 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-goals
-          :game-state="level.gameState"
-          :percentage="level.gameState.totalAbsorptionPercentage"
-        />
+        <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
+        <game-active-cell />
+        <!-- <game-photons :particles="activeFrame.particles" /> -->
         <game-graph
           :multiverse="multiverseGraph"
           :active-id="frameIndex"
@@ -68,10 +67,11 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
-        <game-active-cell />
-        <game-photons :particles="activeFrame.particles" />
-        <ket-viewer :vector="activeFrame.photons.vector" />
+      <game-goals
+        :game-state="level.gameState"
+        :percentage="level.gameState.totalAbsorptionPercentage"
+      />
+      <ket-viewer class="ket" :vector="activeFrame.photons.vector" />
       </section>
     </game-layout>
   </div>
@@ -577,4 +577,8 @@ h1.title {
 .levelLink {
   text-decoration: none;
 }
+.ket {
+  border-top: 1px solid white;
+}
+
 </style>
