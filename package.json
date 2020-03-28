@@ -20,7 +20,7 @@
     "@types/dagre-d3": "^0.4.39",
     "@types/graphlib": "^2.1.5",
     "@types/lodash": "^4.14.144",
-    "bra-ket-vue": "^0.2.5",
+    "bra-ket-vue": "^0.2.6",
     "core-js": "^3.4.3",
     "d3-array": "^2.3.2",
     "d3-scale": "^3.2.1",

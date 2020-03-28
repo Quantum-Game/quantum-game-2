@@ -2588,10 +2588,10 @@ boxen@^1.2.1:
     term-size "^1.2.0"
     widest-line "^2.0.0"
 
-bra-ket-vue@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.2.5.tgz#3c97fb445786d45c81a02a9122c0d801f0239987"
-  integrity sha512-Ow847TssDozqpXTgSS2xoENZXur2SZicDIXQTb9ebx1jjrZvd7vN9LxGsTChbaa5aiNk+4Pb96XoPMyPysYa7Q==
+bra-ket-vue@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.2.6.tgz#66f80f1b63cfecb2c9e7e9004b01373b2277ce15"
+  integrity sha512-9nT8kN7rTETH8QFJTabzzcnfhVmhZDv2i01+zDWx6aJDVujT+reIBAS2JoaVZIsjpojbyQ3HsAYxw+LyCAr7cQ==
   dependencies:
     quantum-tensors "^0.4.7"
 
