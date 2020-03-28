@@ -49,7 +49,7 @@
       </span>
     </div>
     <div class="ket">
-      <ket-viewer :vector="selectedFrame.photons.vector" :show-legend="false" />
+      <ket-viewer :vector="selectedFrame.photons.vector" :initial-pol-basis="initialPolBasis" />
     </div>
   </div>
 </template>
@@ -138,6 +138,16 @@ export default class EncyclopediaBoard extends Vue {
       this.simulation.computeFrames(this.maxSteps)
     }
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1)
+  }
+
+  get initialPolBasis(): string {
+    if (this.initialState.length === 1) {
+      return this.initialState[0].vecDirPol.dimensions.filter(
+        (dim) => dim.name === 'polarization'
+      )[0].coordString
+    } else {
+      return 'HV'
+    }
   }
 
   get frames(): QuantumFrame[] {

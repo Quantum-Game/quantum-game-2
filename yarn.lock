@@ -2588,12 +2588,12 @@ boxen@^1.2.1:
     term-size "^1.2.0"
     widest-line "^2.0.0"
 
-bra-ket-vue@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.1.1.tgz#82f12651bb3c408ae4e1c904d1b72729cd884cec"
-  integrity sha512-3nx4G2PVX57KKhfmtqMCLwir9mNj+ghcKvPROmOmjlp9K8NTgF5gTwweUy/tQIv+p84TV2+BJbzDAuxpd2JZJQ==
+bra-ket-vue@^0.2.6:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.2.6.tgz#66f80f1b63cfecb2c9e7e9004b01373b2277ce15"
+  integrity sha512-9nT8kN7rTETH8QFJTabzzcnfhVmhZDv2i01+zDWx6aJDVujT+reIBAS2JoaVZIsjpojbyQ3HsAYxw+LyCAr7cQ==
   dependencies:
-    quantum-tensors "^0.3.0"
+    quantum-tensors "^0.4.7"
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -10117,10 +10117,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.3.0.tgz#305fad45d7a4b6cde996bf0b5a0543217d536f93"
-  integrity sha512-abpDx5DvPe7e3PA6K7IwTCyujkQ5rnrUg8jJMXlizLIVSO82XbcPPCXUMEK4WlyGU0AlnQpP8MBrF4ZELs87ow==
+quantum-tensors@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
+  integrity sha512-DLPTSzyREY3PBInKN+vrBymQw/bRu21eZW43VWKWCa3VHJHI9wTrCutuG9s4pHc8y1ENh5UblvaC0zRLYXZhfA==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"

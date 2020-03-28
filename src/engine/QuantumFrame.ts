@@ -28,7 +28,7 @@ export default class QuantumFrame {
   public probPropagated?: number
   public probAfter?: number
 
-  public constructor(sizeX: number, sizeY: number, photons = new qt.Photons(sizeX, sizeY)) {
+  public constructor(sizeX: number, sizeY: number, photons = qt.Photons.emptySpace(sizeX, sizeY)) {
     this.photons = photons
     this.absorptions = []
     this.probBefore = this.probability
@@ -98,7 +98,7 @@ export default class QuantumFrame {
         probability: this.probBefore - this.probPropagated
       })
     }
-    this.photons.actOnSinglePhotons(operatorList)
+    this.photons.actOnSinglePhotons(operatorList.map(([x, y, op]) => ({ x, y, op })))
     this.probAfter = this.probability
   }
 
