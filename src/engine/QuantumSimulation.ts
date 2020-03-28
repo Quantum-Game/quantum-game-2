@@ -75,9 +75,11 @@ export default class QuantumSimulation {
       [posX.toString(), posY.toString()]
     )
     if (vecDirPol.dimensions[0].name === 'direction') {
-      frame.photons.vector = posInd.outer(vecDirPol)
+      frame.photons.vector = posInd.outer(vecDirPol).toBasisAll('polarization', 'HV')
     } else {
-      frame.photons.vector = posInd.outer(vecDirPol.permute([1, 0]))
+      frame.photons.vector = posInd
+        .outer(vecDirPol.permute([1, 0]))
+        .toBasisAll('polarization', 'HV')
     }
 
     this.frames.push(frame)

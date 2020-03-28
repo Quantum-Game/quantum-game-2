@@ -33,7 +33,7 @@ import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { Basis, Operator, Vector, Dimension } from 'quantum-tensors'
+import { Operator, Vector, Dimension } from 'quantum-tensors'
 
 interface IXYVec {
   posX: number
@@ -91,7 +91,6 @@ export default class EncyclopediaMatrixBoard extends Vue {
    */
   updateIndicators(vector: Vector): void {
     this.grid.set(this.cell)
-    const hv = Basis.polarization('HV')
 
     // how to get direction?
     const str = vector.toKetString()
@@ -111,7 +110,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
     this.initialState = {
       posX: 1 - move.x,
       posY: 1 - move.y,
-      vecDirPol: hv.changeAllDimsOfVector(vector)
+      vecDirPol: vector
     }
     this.boardIter += 1
   }
