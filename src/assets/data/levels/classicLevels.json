@@ -1,6 +1,141 @@
 [
   {
     "id": 1,
+    "name": "Start",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 2,
+            "x": 3
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": true
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 9
+          },
+          "element": "Detector",
+          "rotation": 180,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [
+      {
+        "coord": {
+          "y": 1,
+          "x": 3
+        },
+        "content": "PRESS HERE",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      }
+    ],
+    "goals": [
+      {
+        "coord": {
+          "y": 2,
+          "x": 9
+        },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Rock"]
+  },
+
+  {
+    "id": 2,
+    "name": "Drag & Drop",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 2,
+            "x": 4
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": true
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 7
+          },
+          "element": "Detector",
+          "rotation": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 2
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [
+      {
+        "coord": {
+          "y": 0,
+          "x": 2
+        },
+        "content": "DRAG & DROP a mirror from the toolbox.",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 1,
+          "x": 2
+        },
+        "content": "CLICK to rotate it.",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      }
+    ],
+    "goals": [
+      {
+        "coord": {
+          "y": 5,
+          "x": 7
+        },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Mirror"]
+  },
+
+  {
+    "id": 3,
     "name": "The first steps",
     "group": "Classic",
     "description": "",
@@ -59,7 +194,7 @@
           "y": 1,
           "x": 6
         },
-        "content": "GET THE LASER OFF MY FACE! ",
+        "content": "There are 2 mirrors in the toolbox.",
         "color": "purple",
         "rotation": 0,
         "active": true
@@ -78,7 +213,7 @@
   },
 
   {
-    "id": 2,
+    "id": 4,
     "name": "Divide and Conquer!",
     "group": "Classic",
     "description": "",
@@ -121,8 +256,8 @@
         },
         {
           "coord": {
-            "y": 4,
-            "x": 4
+            "y": 1,
+            "x": 8
           },
           "element": "Rock",
           "rotation": 0,
@@ -200,14 +335,14 @@
           "y": 7,
           "x": 8
         },
-        "threshold": 0.125
+        "threshold": 0.25
       }
     ],
     "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"]
   },
 
   {
-    "id": 3,
+    "id": 5,
     "name": "Not all but everywhere",
     "group": "Classic",
     "description": "Error with 90° beamsplitter",
@@ -258,10 +393,42 @@
           "frozen": true,
           "active": false,
           "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 10
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
         }
       ]
     },
-    "hints": [],
+    "hints": [
+      {
+        "coord": {
+          "y": 0,
+          "x": 10
+        },
+        "content": "Look at the GOALS",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      },
+      {
+        "coord": {
+          "y": 1,
+          "x": 10
+        },
+        "content": "You need only 87.5% of total probability",
+        "color": "purple",
+        "rotation": 0,
+        "active": true
+      }
+    ],
     "goals": [
       {
         "coord": {
@@ -289,7 +456,7 @@
   },
 
   {
-    "id": 4,
+    "id": 6,
     "name": "Introducing interference",
     "group": "Classic",
     "description": "",
@@ -304,7 +471,6 @@
           },
           "element": "Laser",
           "rotation": 0,
-          "polarization": 90,
           "frozen": true,
           "active": true,
           "energized": false
@@ -716,7 +882,7 @@
 
   {
     "id": 7,
-    "name": "Breaking interference with a rock",
+    "name": "Breaking interference",
     "group": "Classic",
     "description": "",
     "grid": {
