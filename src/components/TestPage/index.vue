@@ -23,7 +23,7 @@
         <select v-model="dialogue[0].color">
           <option disabled value="">color</option>
           <option>purple</option>
-          <option>fuscia</option>
+          <option>fuchsia</option>
           <option>orange</option>
         </select>
       </section>
@@ -40,7 +40,7 @@
         <select v-model="dialogue[1].color">
           <option disabled value="">color</option>
           <option>purple</option>
-          <option>fuscia</option>
+          <option>fuchsia</option>
           <option>orange</option>
         </select>
       </section>
@@ -76,7 +76,7 @@ export default class TestPage extends Vue {
         y: 4
       },
       content: '',
-      color: 'fuscia'
+      color: 'fuchsia'
     }
   ]
 
