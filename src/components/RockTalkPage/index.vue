@@ -14,7 +14,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { VueConstructor } from 'vue/types/vue'
 import { State } from 'vuex-class'
 import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
-import { getRockTalkById, IRockTalk } from '@/assets/data/rock_talk/index.ts'
+import { getRockTalkById, IRockTalk } from '@/components/RockTalkPage/RTClient'
 import customOverlayExample from '@/components/RockTalkPage/CustomOverlayExample.vue'
 import AppButton from '@/components/AppButton.vue'
 
@@ -27,8 +27,8 @@ type overlayListType = {
  * to actual vue components to be conditionally rendered.
  * NOTE! Adding a component here will make it accessible
  * through URL, but to incorporate it into the game flow
- * the assets/data/rock_talk's postLevelOverlayMapping
- * must be altered as well.
+ * the RTClient's postLevelOverlayMapping must
+ * be altered as well.
  */
 const customOverlaysList: overlayListType = {
   custom: customOverlayExample
@@ -60,7 +60,7 @@ export default class InterLevelOverlay extends Vue {
    * C) user got here by accident?
    */
   assessContentType(): void {
-    // A) if it's a custom overlay, display the corresponding component:
+    // A) if it's a custom overlay, return the corresponding component:
     if (Object.keys(customOverlaysList).includes(this.overlayId)) {
       this.customContent = customOverlaysList[this.overlayId]
       // B) else, default to talking rocks and get the dialogue data

@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
@@ -154,6 +154,10 @@ export default class Board extends Vue {
     this.assessSize()
   }
 
+  beforeDestroy(): void {
+    window.removeEventListener('resize', this.assessSize)
+  }
+
   /**
    * Drilling from appCell to Game to allow clicking laser to start simulation
    */
@@ -196,6 +200,7 @@ export default class Board extends Vue {
     }
   }
 
+  @Watch('$route.path')
   assessSize(): void {
     const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
     this.scalerStyle = {
@@ -206,8 +211,10 @@ export default class Board extends Vue {
       this.boardHeight = currentHeight
     }, 1)
     // this.tileSize = 64 // apparently, the property is hard-coded, no need to change it
-    this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
-    this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
+    this.$nextTick(() => {
+      this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
+      this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
+    })
   }
 
   get totalWidth(): number {
@@ -251,8 +258,6 @@ export default class Board extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/colors.scss';
-
 .probability {
   fill: $fuscia;
   font-size: 0.8rem;
