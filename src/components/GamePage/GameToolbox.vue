@@ -1,8 +1,8 @@
 <template>
   <div class="toolbox" :cell="cell">
-    <h3 class="title">
+    <!-- <p class="title">
       TOOLBOX
-    </h3>
+    </p> -->
     <svg
       v-for="(cell, index) in toolbox.uniqueCellList"
       :key="index"
@@ -99,12 +99,17 @@ body {
   overflow-y: hidden;
 }
 .title {
+  color: rgba($color: #fff, $alpha: 1);
+  font-weight: 900;
   margin-top: 0px;
-  padding-bottom: 5px;
-  font-size: 1.2rem;
+  padding-bottom: 15px;
+  font-size: 0.8rem;
   text-transform: uppercase;
   width: 100%;
   text-align: center;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 }
 .toolbox {
   display: flex;
@@ -112,7 +117,6 @@ body {
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 10px;
   @media screen and (max-width: 1000px) {

@@ -1,8 +1,8 @@
 <template>
   <div ref="goals" class="goals-wrapper">
-    <h3 class="title">
+    <!-- <p class="title">
       GOALS
-    </h3>
+    </p> -->
     <!-- DONUT -->
     <vc-donut
       class="chart"
@@ -18,7 +18,7 @@
       <!-- INNER DONUT -->
       <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div>
-        <div class="inner-circle-probability">PROBABILITY</div>
+        <div class="inner-circle-probability">GOAL: {{gameState.totalGoalPercentage}}%</div>
       </div>
     </vc-donut>
 
@@ -34,9 +34,9 @@
           :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
+      <!-- <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
         Goal: {{ gameState.totalGoalPercentage }} %
-      </div>
+      </div> -->
     </div>
 
     <!-- GOALS -->
@@ -117,8 +117,8 @@ export default class GameGoals extends Vue {
   get sections(): { value: number; color: string }[] {
     return [
       { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
-      { value: this.gameState.totalGoalPercentage - this.tweenedPercent, color: '#422853' },
-      { value: this.tweenedPercent, color: '#5D00D5' }
+      { value: this.gameState.totalGoalPercentage - this.tweenedPercent, color: 'rgba(255, 255, 255, 0.1)' },
+      { value: this.tweenedPercent, color: '#5D00D5'}
     ]
   }
 
@@ -150,16 +150,21 @@ export default class GameGoals extends Vue {
 
 <style lang="scss" scoped>
 .title {
-  margin-top: 0px;
-  padding-bottom: 5px;
-  font-size: 1.2rem;
+  color: rgba($color: #fff, $alpha: 1);
+  font-weight: 900;
+  margin: 0px 0px 15px 0px;
+  padding-bottom: 15px;
+  font-size: 0.8rem;
   text-transform: uppercase;
   width: 100%;
   text-align: center;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 }
 p {
-  font-size: 0.8rem;
-  margin: 0.2rem;
+  font-size: 0.7rem;
+  margin: 0rem;
 }
 .goals-wrapper {
   padding-top: 10px;
@@ -167,7 +172,6 @@ p {
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-top: 1px solid white;
   @media screen and (max-width: 1000px) {
     flex-direction: row;
     justify-content: space-evenly;
@@ -205,7 +209,7 @@ p {
       font-size: 1.2rem;
     }
     & .inner-circle-probability {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
     }
 
     &::after {
@@ -236,8 +240,6 @@ p {
   }
 }
 .goalPercentage {
-  margin-top: 10px;
-  margin-bottom: 1rem;
   position: relative;
   min-width: 80px;
   @media screen and (max-width: 1000px) {
@@ -249,13 +251,15 @@ p {
       left: 0;
     }
     .mobile_progressBar {
+      margin-top: 10px;
+      margin-bottom: 1rem;
       position: absolute;
-      width: 110%;
+      width: 200%;
       height: 18px;
       top: 0;
       left: -5%;
       z-index: 1;
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
     }
     .mobile_progressBarFill {
       position: absolute;
@@ -271,8 +275,8 @@ p {
     .mobile_progressBarFillGoal {
       position: absolute;
       width: 0%;
-      height: 18px;
-      border-right: 1px solid rgba(255, 255, 255, 0.7);
+      height: 14px;
+      background-color:rgba(255, 255, 255, 0.1);
       top: 0;
       left: 0;
       transition: width 1s ease-in-out;
