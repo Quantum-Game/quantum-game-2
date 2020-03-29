@@ -34,10 +34,7 @@
           :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div
-        v-if="gameState.totalGoalPercentage < 100"
-        class="goal-text"
-      >
+      <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
         Goal: {{ gameState.totalGoalPercentage }} %
       </div>
     </div>

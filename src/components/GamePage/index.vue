@@ -67,11 +67,11 @@
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-      <game-goals
-        :game-state="level.gameState"
-        :percentage="level.gameState.totalAbsorptionPercentage"
-      />
-      <ket-viewer class="ket" :vector="activeFrame.photons.vector" />
+        <game-goals
+          :game-state="level.gameState"
+          :percentage="level.gameState.totalAbsorptionPercentage"
+        />
+        <ket-viewer class="ket" :vector="activeFrame.photons.vector" />
       </section>
     </game-layout>
   </div>
@@ -580,5 +580,4 @@ h1.title {
 .ket {
   border-top: 1px solid white;
 }
-
 </style>

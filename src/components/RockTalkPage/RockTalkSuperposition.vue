@@ -5,9 +5,8 @@
       <p>You used a quantum phenomenon called <b>SUPERPOSITION</b>.</p>
       <a href="https://quantumgame.io/info/superposition">learn more</a>
     </div>
-      <img src="@/assets/graphics/overlays/rock_talk_line.svg" alt="rock-line" />
-    <div>
-    </div>
+    <img src="@/assets/graphics/overlays/rock_talk_line.svg" alt="rock-line" />
+    <div></div>
     <div class="happy-rock">
       <img src="@/assets/graphics/overlays/rock_happy.svg" alt="rock-happy" />
     </div>
@@ -40,24 +39,26 @@ a {
   margin: 0px 5rem 2rem 5rem;
   min-width: 100px;
 }
-.rockhappyst0 {clip-path:url(#SVGID_2_);}
+.rockhappyst0 {
+  clip-path: url(#SVGID_2_);
+}
 .rockhappyst1 {
-  fill:#615777;
+  fill: #615777;
 }
 .rockhappyst2 {
-  fill:#2F2549;
+  fill: #2f2549;
 }
 .rockhappyst3 {
-  fill:#120223;
+  fill: #120223;
 }
 .rockhappyst4 {
-  fill:#FFFFFF;
+  fill: #ffffff;
 }
 .rockhappyst5 {
-  fill:#5C00D3;
+  fill: #5c00d3;
 }
 .rockhappyst6 {
-  opacity:0.35;
-  fill:#FFFFFF;
+  opacity: 0.35;
+  fill: #ffffff;
 }
 </style>
