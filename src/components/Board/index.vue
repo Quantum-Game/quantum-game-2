@@ -251,8 +251,6 @@ export default class Board extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/colors.scss';
-
 .probability {
   fill: $fuscia;
   font-size: 0.8rem;

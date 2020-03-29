@@ -135,7 +135,6 @@ export default class AppMenu extends Vue {
       margin: 1vw 0;
     }
   }
-
   /* Rotate first bar */
   &.open .bar1 {
     transform: rotate(-45deg) translate(-7px, 3px);
@@ -143,12 +142,10 @@ export default class AppMenu extends Vue {
       transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
     }
   }
-
   /* Fade out the second bar */
   &.open .bar2 {
     opacity: 0;
   }
-
   /* Rotate last bar */
   &.open .bar3 {
     transform: rotate(45deg) translate(-1vw, -1vw);
@@ -191,7 +188,6 @@ export default class AppMenu extends Vue {
     }
   }
 }
-
 // Animation:
 .fade-enter-active,
 .fade-leave-active {
