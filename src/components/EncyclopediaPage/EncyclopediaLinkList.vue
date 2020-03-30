@@ -37,8 +37,8 @@ export default class EncyclopediaLinkList extends Vue {
     opacity: 0.5;
   }
   @media screen and (max-width: 1000px) {
-    height: 60px;
-    border-bottom: 1px solid white;
+    height: 40px;
+    border-top: none;
     margin-left: -20px;
     padding-left: 20px;
     cursor: pointer;
