@@ -87,10 +87,11 @@
         {{ (absorption.probability * 100).toFixed(1) }}%
       </text>
     </svg>
+
     <!-- SPEECH BUBBLES -->
     <speech-bubble
       v-for="(hint, index) in hints"
-      :key="`hint${index}`"
+      :key="`${url}-${index}`"
       :hint="hint"
       :tile-size="updatedTileSize"
       :wrapper-rect="boardClientRect"
@@ -200,7 +201,7 @@ export default class Board extends Vue {
     }
   }
 
-  @Watch('$route.path')
+  @Watch('url')
   assessSize(): void {
     const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
     this.scalerStyle = {
@@ -253,6 +254,15 @@ export default class Board extends Vue {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`
     }
+  }
+
+  /**
+   * For convenience, as is used both in template
+   * and in the size-assesing watcher
+   * @returns url
+   */
+  get url(): string {
+    return this.$route.params.id
   }
 }
 </script>
