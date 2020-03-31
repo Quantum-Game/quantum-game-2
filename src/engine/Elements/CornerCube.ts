@@ -9,7 +9,7 @@ export default class CornerCube extends Element {
   public name: Elem = Elem.CornerCube
   public group: Group = Group.Direction
   public description = 'Reflects any incoming photon.'
-  public ascii: string[] = ['*']
+  public ascii: string[] = ['X']
   public angles: number[] = [0]
 
   public constructor() {

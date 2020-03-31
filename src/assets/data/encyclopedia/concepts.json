@@ -2,14 +2,8 @@
   "amplitude": {
     "title": "Amplitude",
     "elementName": "Amplitude",
-    "short": "Amplitude describes importance of a particular component of a wavefuction.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "short": "<p>Amplitude describes importance of a particular component of a wavefuction.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
@@ -29,13 +23,7 @@
     "title": "Electromagnetic wave",
     "elementName": "ElectromagneticWave",
     "short": "",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "grids": [],
     "sections": [
       {
         "title": "The basics",
@@ -50,14 +38,8 @@
   "polarization": {
     "title": "Polarization",
     "elementName": "Polarization",
-    "short": "Polarization is the direction of the oscillation of an electromagnetic wave.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "short": "<p>Polarization is the direction of the oscillation of an electromagnetic wave.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
@@ -72,14 +54,8 @@
   "two-level-system": {
     "title": "Two-level system",
     "elementName": "TwoLevelSystem",
-    "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "short": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",

@@ -2,7 +2,7 @@
   "absorber": {
     "title": "Absorber",
     "elementName": "Absorber",
-    "short": "A neutral-density filter that absorbs 50% of light.",
+    "short": "<p>A neutral-density filter that absorbs 50% of light.</p>",
     "grids": [
       {
         "cols": 4,
@@ -45,14 +45,8 @@
   "aom": {
     "title": "Acusto-Optic Modulator",
     "elementName": "Aom",
-    "short": "Using sound, it shifts the frequency of light by a certain amount.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "short": "<p>Using sound, it shifts the frequency of light by a certain amount.</p><p>NOT YET IN THE GAME.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
@@ -79,7 +73,7 @@
   "beam-splitter": {
     "title": "50-50 Beamsplitter",
     "elementName": "BeamSplitter",
-    "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one.",
+    "short": "<p>Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one.</p>",
     "grids": [
       {
         "cols": 4,
@@ -166,7 +160,7 @@
   "coated-beam-splitter": {
     "title": "Coated Beam Splitter",
     "elementName": "CoatedBeamSplitter",
-    "short": "Like beamsplitter but with a different phase change, depending on the direction.",
+    "short": "<p>Like beamsplitter but with a different phase change, depending on the direction.</p><p>COMING SOON!</p>",
     "grids": [
       {
         "cols": 4,
@@ -205,7 +199,7 @@
   "corner-cube": {
     "title": "Corner Cube",
     "elementName": "CornerCube",
-    "short": "COMING SOON!",
+    "short": "<p>COMING SOON!</p>",
     "grids": [
       {
         "cols": 4,
@@ -244,7 +238,7 @@
   "detector-four": {
     "title": "Photon Detector x 4",
     "elementName": "DetectorFour",
-    "short": "It detects any photon which is incident on it by transforming it into an electrical signal.",
+    "short": "<p>It detects any photon which is incident on it by transforming it into an electrical signal.</p><p><em>It is a four-headed plant. Very devourous!</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -287,7 +281,7 @@
   "detector": {
     "title": "Photon Detector",
     "elementName": "Detector",
-    "short": "It detects any photon which is incident on it by transforming it into an electrical signal.",
+    "short": "<p>It detects any photon which is incident on it by transforming it into an electrical signal.</p><p><em>To win the game, you want to feed as many carnivorous plants as possible! They are hungry!</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -342,7 +336,7 @@
   "faraday-rotator": {
     "title": "Faraday Rotator",
     "elementName": "FaradayRotator",
-    "short": "It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.",
+    "short": "<p>It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.</p>",
     "grids": [
       {
         "cols": 4,
@@ -393,7 +387,7 @@
   "glass": {
     "title": "Glass",
     "elementName": "Glass",
-    "short": "Light travels slower in a glass, so it retards a wavepacket (vs if it were traveling in the air).",
+    "short": "<p>Light travels slower in a glass, so it retards a wavepacket (vs if it were traveling in the air).</p>",
     "grids": [
       {
         "cols": 4,
@@ -440,7 +434,7 @@
   "laser": {
     "title": "Single Photon Source",
     "elementName": "Laser",
-    "short": "An on-demand single photon source.",
+    "short": "<p>An on-demand single photon source.</p>",
     "grids": [
       {
         "cols": 4,
@@ -481,7 +475,7 @@
   "mine": {
     "title": "Mine",
     "elementName": "Mine",
-    "short": "Photo-sensitive bomb.",
+    "short": "<p>Photo-sensitive bomb.</p>",
     "grids": [
       {
         "cols": 4,
@@ -528,7 +522,7 @@
   "mirror": {
     "title": "Mirror",
     "elementName": "Mirror",
-    "short": "A mirror is an object that reflects incident light preserving its properties.",
+    "short": "<p>A mirror is an object that reflects incident light preserving its properties.</p><p><em>Mirror, mirror on the board, what is the best quantum game in the world?</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -587,14 +581,8 @@
   "non-linear-crystal": {
     "title": "Non-linear Crystal",
     "elementName": "NonLinearCrystal",
-    "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
-    "grids": [
-      {
-        "cols": 0,
-        "rows": 0,
-        "cells": []
-      }
-    ],
+    "short": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p><p>NOT YET IN THE GAME.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
@@ -621,7 +609,7 @@
   "polarizer": {
     "title": "Polarizer",
     "elementName": "Polarizer",
-    "short": "Filters light of a specific polarization, while blocking light of all other polarisati",
+    "short": "<p>Filters light of a specific polarization, while blocking light of all other polarisations.",
     "grids": [
       {
         "cols": 4,
@@ -668,7 +656,7 @@
   "polarizing-beam-splitter": {
     "title": "Polarizing Beam Splitter",
     "elementName": "PolarizingBeamSplitter",
-    "short": "It reflects vertically-polarized light and passes horizontally-polarized light.",
+    "short": "<p>It reflects vertically-polarized light and passes horizontally-polarized light.</p>",
     "grids": [
       {
         "cols": 4,
@@ -711,7 +699,7 @@
   "quarter-wave-plate": {
     "title": "Quarter Wave Plate",
     "elementName": "QuarterWavePlate",
-    "short": "Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.",
+    "short": "<p>Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.</p>",
     "grids": [
       {
         "cols": 4,
@@ -758,7 +746,7 @@
   "rock": {
     "title": "Rock",
     "elementName": "Rock",
-    "short": "It blocks light and provides valuable hints.",
+    "short": "<p>It blocks light and provides valuable hints.</p><p><em>But I know every rock, and tree, and creature, has a life, has a spirit, has a name.</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -801,7 +789,7 @@
   "sugar-solution": {
     "title": "Sugar Solution",
     "elementName": "SugarSolution",
-    "short": "Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.",
+    "short": "<p>Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.</p>",
     "grids": [
       {
         "cols": 4,
@@ -852,7 +840,7 @@
   "vacuum-jar": {
     "title": "Vacuum Jar",
     "elementName": "VacuumJar",
-    "short": "It advances polarization.",
+    "short": "<p>It advances polarization.</p>",
     "grids": [
       {
         "cols": 4,

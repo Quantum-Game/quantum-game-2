@@ -4,9 +4,9 @@ const fs = require('fs')
 const MarkDownIt = require('markdown-it')
 
 const entriesDir = 'src/assets/qg-encyclopedia/elements/'
-const entriesTarget = 'src/assets/data/entries/entries.json'
+const entriesTarget = 'src/assets/data/encyclopedia/elements.json'
 const relatedConceptsDir = 'src/assets/qg-encyclopedia/key-concepts/'
-const relatedConceptsTarget = 'src/assets/data/entries/related-concepts.json'
+const relatedConceptsTarget = 'src/assets/data/encyclopedia/concepts.json'
 
 const mdOptions = {
   html: true
@@ -52,6 +52,9 @@ function convertMarkdown(dir: string, target: string): {} {
           }
         ]
       }
+
+      // added and removed as a dirty hack for types
+      thisEntry.grids.pop()
 
       returnedObject = {
         ...returnedObject,
@@ -120,8 +123,7 @@ function convertMarkdown(dir: string, target: string): {} {
         ) {
           // handle paragraph, depending whether short or sections content
           if (line.startsWith('<p>') && isFistParagraph) {
-            thisEntry.short = scrubTheTags(line)
-            isFistParagraph = false
+            thisEntry.short += line
           }
           if (thisEntry.sections[currentSectionNumber].content) {
             // if there are already contents for section, let's concatenate:
