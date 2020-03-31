@@ -59,5 +59,8 @@ export default class Info extends Vue {
   color: white;
   text-decoration: none;
   margin-top: 40px;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
   <div class="toolbox" :cell="cell">
+    <!-- <p class="title">
+      TOOLBOX
+    </p> -->
     <svg
       v-for="(cell, index) in toolbox.uniqueCellList"
       :key="index"
@@ -9,6 +12,13 @@
       @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
     >
       <g :class="computeClass(cell)">
+        <g>
+          <rect :width="64" :height="64" class="tool-rect" />
+          <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
+          <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
+          <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
+          <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
+        </g>
         <app-cell
           :cell="cell"
           :available="isAvailable(cell)"
@@ -88,13 +98,25 @@ export default class GameToolbox extends Vue {
 body {
   overflow-y: hidden;
 }
+.title {
+  color: rgba($color: #fff, $alpha: 1);
+  font-weight: 900;
+  margin-top: 0px;
+  padding-bottom: 15px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+}
 .toolbox {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   flex-wrap: wrap;
   width: 100%;
-  border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 10px;
   @media screen and (max-width: 1000px) {
@@ -104,6 +126,10 @@ body {
       content: '';
       flex-grow: 99999999;
     }
+  }
+  .tool-rect {
+    fill: #2e006a;
+    opacity: 0.5;
   }
   .tool {
     width: 30%;
@@ -128,7 +154,7 @@ body {
       font-size: 0.8rem;
     }
     .inactive {
-      opacity: 0.5;
+      opacity: 0.4;
     }
     .active {
       opacity: 1;

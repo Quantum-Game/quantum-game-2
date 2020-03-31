@@ -148,7 +148,10 @@ export default class AppMenu extends Vue {
   }
   /* Rotate last bar */
   &.open .bar3 {
-    transform: rotate(45deg) translate(-1vw, -1vw);
+    transform: rotate(45deg) translate(-11px, -11px);
+    @media screen and (max-width: 1000px) {
+      transform: rotate(45deg) translate(-1vw, -1vw);
+    }
   }
 }
 .menu-overlay {

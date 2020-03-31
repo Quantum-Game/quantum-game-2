@@ -3,7 +3,7 @@
     <h1>404</h1>
     <p>OH NO :(</p>
     <img src="@/assets/graphics/rock_weasel.svg" alt="weasel" />
-    <router-link to="/"> <app-button type="basic">Take me back!</app-button></router-link>
+    <router-link to="/"> <app-button type="basic">TAKE ME BACK!</app-button></router-link>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default class NotFoundPage extends Vue {}
   display: flex;
   flex-direction: column;
   & h1 {
-    font-size: 10rem;
+    font-size: 8rem;
     margin-bottom: 2rem;
   }
 }

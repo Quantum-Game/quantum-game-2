@@ -39,9 +39,9 @@ export default class CornerCubeCell extends Piece {}
 
 <style lang="scss" scoped>
 .st0 {
-  fill: #5a4278;
+  fill: #8468a5;
 }
 .st1 {
-  fill: #aa93cc;
+  fill: #e5d9f7;
 }
 </style>

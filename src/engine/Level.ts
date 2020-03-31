@@ -54,7 +54,7 @@ export default class Level {
     this.gameState = new GameState(this.goals, this.grid.mines.cells)
 
     // Remove toolbox cells from grid
-    this.grid.resetUnfrozen()
+    // this.grid.resetUnfrozen()
   }
 
   /**
