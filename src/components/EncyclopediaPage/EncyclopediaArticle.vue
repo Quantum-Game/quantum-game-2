@@ -3,7 +3,7 @@
     <article>
       <!-- TITLE -->
       <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
-      <h2 class="short" v-html="entry.short"/>
+      <h2 class="short" v-html="entry.short" />
 
       <!-- GRIDS -->
       <div class="grids">
