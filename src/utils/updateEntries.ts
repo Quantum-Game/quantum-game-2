@@ -3,9 +3,9 @@ const fs = require('fs')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const MarkDownIt = require('markdown-it')
 
-const entriesDir = 'src/assets/encyclopedia/elements/'
+const entriesDir = 'src/assets/qg-encyclopedia/elements/'
 const entriesTarget = 'src/assets/data/entries/entries.json'
-const relatedConceptsDir = 'src/assets/encyclopedia/related-concepts/'
+const relatedConceptsDir = 'src/assets/qg-encyclopedia/key-concepts/'
 const relatedConceptsTarget = 'src/assets/data/entries/related-concepts.json'
 
 const mdOptions = {
