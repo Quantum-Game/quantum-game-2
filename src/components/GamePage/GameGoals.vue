@@ -1,12 +1,15 @@
 <template>
   <div ref="goals" class="goals-wrapper">
+    <!-- <p class="title">
+      GOALS
+    </p> -->
     <!-- DONUT -->
     <vc-donut
       class="chart"
       background="#210235"
       foreground="inherit"
       unit="px"
-      :size="112"
+      :size="110"
       :thickness="5"
       :total="100"
       :sections="sections"
@@ -15,7 +18,7 @@
       <!-- INNER DONUT -->
       <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div>
-        <div>PROBABILITY</div>
+        <div class="inner-circle-probability">GOAL: {{gameState.totalGoalPercentage}}%</div>
       </div>
     </vc-donut>
 
@@ -31,7 +34,9 @@
           :style="{ width: tweenedPercent.toFixed(1) + '%' }"
         ></div>
       </div>
-      <div class="goal-text">Goal: {{ gameState.totalGoalPercentage }} %</div>
+      <!-- <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
+        Goal: {{ gameState.totalGoalPercentage }} %
+      </div> -->
     </div>
 
     <!-- GOALS -->
@@ -48,7 +53,7 @@
       </span>
       <div>
         <span>
-          <b>DETECTORS</b>
+          <p>DETECTORS</p>
         </span>
       </div>
     </div>
@@ -63,10 +68,10 @@
       </span>
       <div>
         <span v-if="gameState.safeFlag" class="success">
-          <b>SAFE</b>
+          <p>SAFE</p>
         </span>
         <span v-else class="defeat">
-          <b>DANGER!</b>
+          <p>DANGER!</p>
         </span>
       </div>
     </div>
@@ -111,8 +116,9 @@ export default class GameGoals extends Vue {
    */
   get sections(): { value: number; color: string }[] {
     return [
-      { value: 100 - this.tweenedPercent, color: '#210235' },
-      { value: this.tweenedPercent, color: '#5D00D5' }
+      { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
+      { value: this.gameState.totalGoalPercentage - this.tweenedPercent, color: 'rgba(255, 255, 255, 0.1)' },
+      { value: this.tweenedPercent, color: '#5D00D5'}
     ]
   }
 
@@ -143,8 +149,24 @@ export default class GameGoals extends Vue {
 </script>
 
 <style lang="scss" scoped>
+.title {
+  color: rgba($color: #fff, $alpha: 1);
+  font-weight: 900;
+  margin: 0px 0px 15px 0px;
+  padding-bottom: 15px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  width: 100%;
+  text-align: center;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+}
+p {
+  font-size: 0.7rem;
+  margin: 0rem;
+}
 .goals-wrapper {
-  border-top: 1px solid white;
   padding-top: 10px;
   padding-bottom: 20px;
   width: 100%;
@@ -186,6 +208,9 @@ export default class GameGoals extends Vue {
     & div.inner-circle {
       font-size: 1.2rem;
     }
+    & .inner-circle-probability {
+      font-size: 0.7rem;
+    }
 
     &::after {
       content: '';
@@ -215,8 +240,6 @@ export default class GameGoals extends Vue {
   }
 }
 .goalPercentage {
-  margin-top: 10px;
-  margin-bottom: 2rem;
   position: relative;
   min-width: 80px;
   @media screen and (max-width: 1000px) {
@@ -228,13 +251,15 @@ export default class GameGoals extends Vue {
       left: 0;
     }
     .mobile_progressBar {
+      margin-top: 10px;
+      margin-bottom: 1rem;
       position: absolute;
-      width: 110%;
+      width: 200%;
       height: 18px;
       top: 0;
       left: -5%;
       z-index: 1;
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.7);
     }
     .mobile_progressBarFill {
       position: absolute;
@@ -250,17 +275,19 @@ export default class GameGoals extends Vue {
     .mobile_progressBarFillGoal {
       position: absolute;
       width: 0%;
-      height: 18px;
-      border-right: 1px solid rgba(255, 255, 255, 0.7);
+      height: 14px;
+      background-color:rgba(255, 255, 255, 0.1);
       top: 0;
       left: 0;
       transition: width 1s ease-in-out;
       z-index: 1;
     }
-    .goal-text {
-      font-size: 0.6rem;
-      padding: 5px;
-    }
+  }
+  .goal-text {
+    font-size: 1rem;
+    padding: 5px;
+    color: #5c00d3;
+    font-weight: 900;
   }
 }
 .defeat {

@@ -84,6 +84,9 @@ export default class EncyclopediaArticle extends Vue {
 </script>
 
 <style lang="scss" scoped>
+article {
+  width: 100%;
+}
 .entry {
   display: flex;
   flex-direction: column;
@@ -99,6 +102,9 @@ export default class EncyclopediaArticle extends Vue {
     padding-right: 20%;
     padding-left: 20%;
     padding-bottom: 20px;
+    font-weight: 300;
+    line-height: 1.5rem;
+    letter-spacing: 0.5px;
   }
   & .go-back {
     font-weight: bold;
@@ -112,7 +118,7 @@ export default class EncyclopediaArticle extends Vue {
   @media screen and (max-width: 1000px) {
     width: 100vw;
     article {
-      width: 100vw;
+      width: 90vw;
     }
   }
 }

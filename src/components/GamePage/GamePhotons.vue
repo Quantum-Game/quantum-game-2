@@ -2,7 +2,7 @@
   <div v-if="hoveredParticles.length > 0" ref="wrapper" class="hovered-photons-wrapper">
     <div class="hoveredPhotons">
       <h3>Photon</h3>
-      <div v-for="(particle, index) in hoveredParticles" :key="index">
+      <div v-for="(particle, index) in hoveredParticles" :key="index" class="photon">
         <app-photon
           :particle="particle"
           :width="width"
@@ -10,13 +10,10 @@
           :margin="0"
           :display-magnetic="true"
           :display-electric="true"
-          :display-gaussian="true"
+          :display-gaussian="false"
           :display-opacity="true"
           :display-direction="false"
         />
-        <div class="info">
-          <p>Ket: {{ particle.toKetString() }}</p>
-        </div>
       </div>
     </div>
   </div>
@@ -64,7 +61,8 @@ export default class GamePhotons extends Vue {
   h3 {
     text-transform: uppercase;
     margin-top: 8px;
-    font-size: 1rem;
+    font-size: 0.8rem;
+    font-weight: 300;
   }
   .info {
     font-size: 0.8rem;

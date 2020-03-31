@@ -14,17 +14,17 @@
 import { Vue, Component } from 'vue-property-decorator'
 
 @Component
-export default class CustomOverlayExample extends Vue {}
+export default class RockTalkSuperposition extends Vue {}
 </script>
 
 <style>
-p {
-  font-size: 1.2rem;
+h1 {
+  text-transform: uppercase;
+  font-size: 2rem;
 }
 a {
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-transform: uppercase;
-  font-weight: 900;
   text-align: center;
 }
 .rock-text {
@@ -33,7 +33,7 @@ a {
 }
 .happy-rock {
   /* width: 70%; */
-  margin: 0px 6rem 2rem 6rem;
+  margin: 0px 5rem 2rem 5rem;
   min-width: 100px;
 }
 .rockhappyst0 {

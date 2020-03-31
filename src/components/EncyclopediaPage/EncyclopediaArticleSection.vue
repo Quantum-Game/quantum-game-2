@@ -84,7 +84,7 @@ section.entry-section {
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     line-height: 1.3rem;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     text-align: left;
     line-height: 1.5em;
   }
