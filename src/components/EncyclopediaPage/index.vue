@@ -1,17 +1,16 @@
 <template>
   <app-layout>
     <encyclopedia-link-list slot="left" :entry-list="elementList" title="Elements" />
-    <encyclopedia-link-list slot="left" :entry-list="conceptList" title="Concepts" />
     <div slot="main">
       <router-view />
     </div>
-    <encyclopedia-link-list slot="right" :entry-list="sections" title="Intro" />
+    <encyclopedia-link-list slot="right" :entry-list="conceptList" title="Concepts" />
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import { getEntry, elementNameList, conceptNameList } from './loadData'
+import { Vue, Component } from 'vue-property-decorator'
+import { elementNameList, conceptNameList } from './loadData'
 import AppLayout from '@/components/AppLayout.vue'
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
@@ -43,20 +42,6 @@ export default class Info extends Vue {
       name: entryName,
       ready: true
     }))
-  }
-
-  @Watch('$route')
-  loadEntry(): void {
-    if (this.entryURL) {
-      this.sections = getEntry(this.entryURL).sections.map((section) => ({
-        name: section.title,
-        ready: true
-      }))
-    }
-  }
-
-  get entryURL(): string {
-    return this.$route.params.entry
   }
 }
 </script>
