@@ -54,18 +54,18 @@
       },
       {
         "title": "Usage in everyday life",
-        "content": "<p>It is likely that your laser printer has an AOM embedded into it, to modulate the power of a laser beam.</p>"
+        "content": "<p>Your laser printer likely has an AOM embedded into it, to modulate the power of a laser beam.</p>"
       },
       {
         "title": "Usage in laboratories",
-        "content": "<p>AOMs are used in setups which control certain laser properties, and maintain light stable over a long time.</p>"
+        "content": "<p>AOMs are used in setups that control certain laser properties, and maintain light stable over a long time.</p>"
       },
       {
-        "title": "Digging Deeper",
-        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: a number of different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
+        "title": "Digging deeper",
+        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: several different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
       },
       {
-        "title": "Further Readings",
+        "title": "Further readings4",
         "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Acousto-optic_modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.rp-photonics.com/acousto_optic_modulators.html\">Acusto-optic Modulator</a></li><li><a href=\"https://www.sciencedirect.com/topics/engineering/acousto-optical-modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.youtube.com/watch?v=tEf98SBqbGc\">Lecture: Acusto-optic Modulator and Devices</a></li></ul>"
       }
     ]
@@ -358,7 +358,7 @@
               "x": 2
             },
             "element": "FaradayRotator",
-            "rotation": 90,
+            "rotation": 0,
             "frozen": false,
             "active": false
           }
@@ -678,7 +678,7 @@
               "x": 2
             },
             "element": "PolarizingBeamSplitter",
-            "rotation": 135,
+            "rotation": 0,
             "frozen": false,
             "active": false
           }
