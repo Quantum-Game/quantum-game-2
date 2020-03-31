@@ -14,15 +14,15 @@
 
       <!-- SECTIONS -->
       <encyclopedia-article-section
-        v-for="(section, index) in entry.sections"
+        v-for="section in entry.sections"
         :key="section.title"
         :section="section"
-        :should-be-open-on-init="index === 0"
+        :should-be-open-on-init="true"
       />
 
       <!-- EQUATION GRID -->
       <encyclopedia-transition
-        v-if="theComponentsTransitionMapShouldBeDisplayed"
+        v-if="showMatrix"
         :key="`transition-${entry.elementName}`"
         :element-name="entry.elementName"
         :rotation="entry.defaultRotation"
@@ -35,6 +35,7 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
+import { Cell } from '@/engine/classes'
 import { getEntry } from '@/assets/data/entries/index'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
@@ -76,9 +77,15 @@ export default class EncyclopediaArticle extends Vue {
   }
 
   // FIXME: Code smell, move to element value
-  get theComponentsTransitionMapShouldBeDisplayed(): boolean {
-    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
-    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0
+  get showMatrix(): boolean {
+    const dontShowMatrix = ['Laser']
+    let elementExist: boolean
+    try {
+      elementExist = !!Cell.fromName(this.entry.elementName)
+    } catch (error) {
+      elementExist = false
+    }
+    return dontShowMatrix.indexOf(this.entry.elementName) < 0 && elementExist
   }
 }
 </script>
