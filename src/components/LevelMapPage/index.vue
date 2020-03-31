@@ -3,7 +3,7 @@
     <article slot="main" class="main">
       <div class="container">
         <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
-          <h3>{{ group[0].group }}</h3>
+          <!-- <h3>{{ group[0].group }}</h3> -->
           <ul v-for="(level, j) in group" :key="'level' + j" class="group">
             <router-link class="levelLink" :to="`/level/${level.id}`">
               {{ level.id }} - {{ level.name }}
@@ -51,18 +51,21 @@ export default class LevelMapPage extends Vue {
     display: block;
     padding: 20px;
     margin-top: 20px;
-    border-top: 1px solid white;
+    border-bottom: 1px solid white;
     flex-direction: column;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: bold;
     text-transform: uppercase;
     & a {
-      font-size: 1rem;
+      font-size: 1.2rem;
       text-decoration: none;
       text-transform: uppercase;
       font-weight: 300;
       color: white;
     }
+  }
+  .group {
+    font-weight: 900;
   }
 }
 </style>
