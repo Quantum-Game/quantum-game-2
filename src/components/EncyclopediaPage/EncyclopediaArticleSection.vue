@@ -38,7 +38,7 @@ export default class EncyclopediaArticleSection extends Vue {
 
   get style(): {} {
     return {
-      maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
+      maxHeight: this.isOpen ? null : '0px' //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
     }
   }
 }
@@ -65,7 +65,7 @@ section.entry-section {
       position: relative;
       content: '';
       left: 12px;
-      height: 0;
+      // height: 0;
       border-left: 6px solid #e8e8e8;
       border-bottom: 6px solid transparent;
       border-top: 6px solid transparent;
@@ -80,7 +80,7 @@ section.entry-section {
   & .content-wrapper {
     font-weight: lighter;
     font-size: 1rem;
-    max-height: 0;
+    // max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     line-height: 1.3rem;

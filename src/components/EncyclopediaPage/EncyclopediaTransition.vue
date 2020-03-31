@@ -1,7 +1,12 @@
 <template>
   <div class="container">
-    <h2>{{ elementName }} at {{ rotation }}°</h2>
-    <div class="grids">
+    <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
+      Transition matrix
+    </h2>
+    <p v-show="isOpen">
+      This matrix ({{ elementName }}{{ rotationText }}) is {{ operatorPropertiesText }}.
+    </p>
+    <div v-show="isOpen" class="grids">
       <div class="matrix">
         <matrix-viewer
           :key="`matrix-${matrixIter}`"
@@ -57,6 +62,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   grid: Grid = Grid.emptyGrid(3, 3)
   matrixIter = 0
   boardIter = 0
+  isOpen = true
   initialState: IXYVec = {
     posX: 0,
     posY: 1,
@@ -69,6 +75,39 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   created(): void {
     this.grid.set(this.cell)
+  }
+
+  handleTitleClick(): void {
+    this.isOpen = !this.isOpen
+  }
+
+  get rotationText(): string {
+    return this.cell.element.angles.length > 1 ? ` at ${this.rotation}°` : ''
+  }
+
+  get operatorProperties(): { name: string; is: boolean }[] {
+    return [
+      { name: 'zero', is: this.operator.isCloseToZero() },
+      { name: 'an identity', is: this.operator.isCloseToIdentity() },
+      { name: 'unitary', is: this.operator.isCloseToUnitary() },
+      {
+        name: 'unitary on a non-trivial subspace',
+        is:
+          this.operator.isCloseToUnitaryOnSubspace() &&
+          !this.operator.isCloseToUnitary() &&
+          !this.operator.isCloseToZero()
+      },
+      { name: 'a projection', is: this.operator.isCloseToProjection() },
+      { name: 'Hermitian', is: this.operator.isCloseToHermitian() },
+      { name: 'normal', is: this.operator.isCloseToNormal() }
+    ]
+  }
+
+  get operatorPropertiesText(): string {
+    return this.operatorProperties
+      .filter((property) => property.is)
+      .map((property) => property.name)
+      .join(', ')
   }
 
   get cell(): Cell {
@@ -132,6 +171,55 @@ export default class EncyclopediaMatrixBoard extends Vue {
   border-bottom: 1px solid #8e819d;
   @media screen and (max-width: 1000px) {
     flex-direction: column;
+  }
+}
+
+.container {
+  border-bottom: 1px solid #8e819d;
+  & .entry-title {
+    padding: 1em 0;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.4s;
+    margin: 0;
+    font-weight: bold;
+    text-align: justify;
+    text-transform: uppercase;
+    @media screen and (max-width: 1000px) {
+      text-align: center;
+      width: 90%;
+    }
+    &:after {
+      display: inline-block;
+      position: relative;
+      content: '';
+      left: 12px;
+      // height: 0;
+      border-left: 6px solid #e8e8e8;
+      border-bottom: 6px solid transparent;
+      border-top: 6px solid transparent;
+      clear: both;
+      transition: 0.2s;
+    }
+    &.active:after {
+      transform: rotate(90deg);
+      transition: 0.2s;
+    }
+  }
+  & .content-wrapper {
+    font-weight: lighter;
+    font-size: 1rem;
+    // max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+    line-height: 1.3rem;
+    letter-spacing: 0.5px;
+    text-align: left;
+    line-height: 1.5em;
+  }
+  @media screen and (max-width: 1000px) {
+    padding-left: 20px;
   }
 }
 </style>

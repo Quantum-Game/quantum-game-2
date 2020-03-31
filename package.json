@@ -9,7 +9,7 @@
     "lint": "vue-cli-service lint",
     "lint-fix": "vue-cli-service lint --fix",
     "deploy": "yarn lint && yarn build && npm version patch && yarn build && firebase deploy",
-    "update-entries": "node src/utils/updateEntries"
+    "update-entries": "ts-node src/utils/updateEntries"
   },
   "dependencies": {
     "@types/d3-array": "^2.0.0",
@@ -71,6 +71,7 @@
     "node-sass": "^4.9.0",
     "prettier": "1.19.1",
     "sass-loader": "^8.0.0",
+    "ts-node": "^8.8.1",
     "typescript": "^3.4.3",
     "vue-class-component": "^7.1.0",
     "vue-property-decorator": "^8.2.2",

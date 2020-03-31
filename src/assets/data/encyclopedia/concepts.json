@@ -1,0 +1,74 @@
+{
+  "amplitude": {
+    "title": "Amplitude",
+    "elementName": "Amplitude",
+    "short": "<p>Amplitude describes importance of a particular component of a wavefuction.</p>",
+    "grids": [],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Amplitude describes importance of a particular component of a wavefuction.</p>"
+      },
+      {
+        "title": "Digging Deeper",
+        "content": "<p>TO DO:</p><ul><li>Born's Rule</li><li>Unitary operations</li></ul>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Amplitude\">Amplitude</a></li><li><a href=\"https://observablehq.com/@mateogianolio/complex-numbers-in-javascript\">Complex numbers in JavaScript - Mateo Gianolio</a></li><li><a href=\"https://arxiv.org/abs/quant-ph/0405161\">W. H. Zurek, Probabilities from Entanglement, Born's Rule from Envariance</a></li></ul>"
+      }
+    ]
+  },
+  "electromagnetic-wave": {
+    "title": "Electromagnetic wave",
+    "elementName": "ElectromagneticWave",
+    "short": "",
+    "grids": [],
+    "sections": [
+      {
+        "title": "The basics",
+        "content": "<p>Electromagnetic waves are all around us, it’s thanks to them that most of our domestic appliances work, from our smartphones to our microwaves and computers. And light, any sort of light, light from the sun and light from a lightbulb, lights that you attach to your bike and laser light from your pointer, is an electromagnetic wave.</p><p>Electromagnetic waves are waves which are made of two components, the electric field (E) and the magnetic field (B) component. These two are orthogonal to each other (i.e. they are at 90 degrees to each other). An electromagnetic wave is much like a water wave, it moves up and down in a regular fashion. However, the special thing of electromagnetic waves is that they are <em>transverse waves</em>.</p><p>Transverse waves are special in the fact that the direction of propagation of the wave is orthogonal to the direction of the oscillation. Let’s come back to the sea wave, the waves are travelling towards the shore, however if we are in the water at a specific position, we are moving up and down and the wave rises and lowers, so the oscillation direction is vertical! This is also how electromagnetic waves work, and therefore also light.</p><p>So, to recap, light is an electromagnetic wave, this is a special type of wave, called transverse wave, because the direction of propagation of the wave is orthogonal to the direction of oscillation of the electric field.</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Electromagnetic_radiation\">Electromagnetic radiation</a></li><li><a href=\"https://science.nasa.gov/ems/02_anatomy\">Anatomy of an Electromagnetic Wave</a></li><li><a href=\"https://www.khanacademy.org/science/physics/light-waves/introduction-to-light-waves/a/light-and-the-electromagnetic-spectrum\">Light: Electromagnetic waves, the electromagnetic spectrum and photons</a></li></ul>"
+      }
+    ]
+  },
+  "polarization": {
+    "title": "Polarization",
+    "elementName": "Polarization",
+    "short": "<p>Polarization is the direction of the oscillation of an electromagnetic wave.</p>",
+    "grids": [],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>Polarization is the direction of the oscillation of an electromagnetic wave.</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Polarization_%28waves%29\">Polarization</a></li><li><a href=\"https://www.khanacademy.org/science/physics/light-waves/introduction-to-light-waves/v/polarization-of-light-linear-and-circular\">Polarization of light, linear and circular</a></li><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/introduction-to-polarization/\">Introduction to Polarization</a></li></ul>"
+      }
+    ]
+  },
+  "two-level-system": {
+    "title": "Two-level system",
+    "elementName": "TwoLevelSystem",
+    "short": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>",
+    "grids": [],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>"
+      },
+      {
+        "title": "The basics",
+        "content": "<p>There are different physical implementations of a two-level system. Usually, any property that has two values can be used, such as, for example “open” and “closed”. Depending on the physical system chosen, the two “levels” or “states” are different. For example, for electrons, the two-level is often encoded in the spin state. The electron can either be in state spin up or spin down and these two states can be in a superposition. For light, these are usually polarization states (vertical and horizontal polarization).</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Two-state_quantum_system\">Two-state quantum system</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
+      }
+    ]
+  }
+}
