@@ -1,8 +1,21 @@
 <template>
   <div id="app">
     <router-view />
+    <login-status />
   </div>
 </template>
+
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
+import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
+
+@Component({
+  components: {
+    LoginStatus
+  }
+})
+export default class App extends Vue {}
+</script>
 
 <style lang="scss">
 body {
