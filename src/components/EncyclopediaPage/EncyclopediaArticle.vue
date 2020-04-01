@@ -3,6 +3,7 @@
     <article>
       <!-- TITLE -->
       <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <h2 class="short" v-html="entry.short" />
 
       <!-- GRIDS -->
