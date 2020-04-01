@@ -53,6 +53,7 @@ import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTr
 export default class EncyclopediaArticle extends Vue {
   entry: IEntry = {
     title: '',
+    short: '',
     elementName: 'Mirror',
     grids: [],
     sections: []
@@ -66,6 +67,12 @@ export default class EncyclopediaArticle extends Vue {
   loadEntry(): void {
     if (this.entryURL) {
       this.entry = getEntry(this.entryURL)
+      // dirty, for current 'active' parameter
+      this.entry.grids.forEach((grid) =>
+        grid.cells.forEach((cell) => {
+          cell.active = cell.element === 'Laser'
+        })
+      )
     }
     if (!this.entry.title) {
       this.$router.push({ name: '404' })

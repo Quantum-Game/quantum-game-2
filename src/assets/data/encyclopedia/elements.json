@@ -10,23 +10,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Absorber",
             "rotation": 90,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -81,8 +79,8 @@
         "cells": [
           {
             "coord": {
-              "y": 0,
-              "x": 0
+              "x": 0,
+              "y": 0
             },
             "element": "Laser",
             "rotation": 0,
@@ -91,8 +89,8 @@
           },
           {
             "coord": {
-              "y": 0,
-              "x": 2
+              "x": 2,
+              "y": 0
             },
             "element": "BeamSplitter",
             "rotation": 135,
@@ -107,25 +105,21 @@
         "cells": [
           {
             "coord": {
-              "y": 0,
-              "x": 0
+              "x": 0,
+              "y": 0
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true,
-            "energized": false
+            "frozen": true
           },
           {
             "coord": {
-              "y": 0,
-              "x": 2
+              "x": 2,
+              "y": 0
             },
             "element": "BeamSplitter",
             "rotation": 90,
-            "frozen": false,
-            "active": false,
-            "energized": false
+            "frozen": false
           }
         ]
       }
@@ -168,23 +162,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "CoatedBeamSplitter",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -207,23 +199,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "CornerCube",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -246,23 +236,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 3
+              "x": 3,
+              "y": 1
             },
             "element": "DetectorFour",
             "rotation": 180,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -289,23 +277,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 3
+              "x": 3,
+              "y": 1
             },
             "element": "Detector",
             "rotation": 180,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -344,23 +330,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "FaradayRotator",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -395,23 +379,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Glass",
             "rotation": 90,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -442,13 +424,12 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": false
           }
         ]
       }
@@ -483,23 +464,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Mine",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -530,23 +509,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Mirror",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -597,7 +574,7 @@
         "content": "<p>Non linear crystals are used for research applications in optical communication, optical sensing and materials research.</p>"
       },
       {
-        "title": "Digginf Deeper",
+        "title": "Digging Deeper",
         "content": "<p>BBO, or Barium Borate crystals are very common medium used to create non linear phenomena. They are strongly birefringent, meaning that they have two different refractive indices. In addition, they have a specific crystal symmetry and are resistant to high power light. Other types of non linear crystals are KDP (potassium dihydrogen phosphate), KTP (potassium titanyl phosphate), and lithium niobate.</p><p>Spontaneous parametric down conversion using a non linear crystal can generate two photons with entangled polarisation!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SPDC_figure.png/800px-SPDC_figure.png\">!Quantum Entanglement</a></p>"
       },
       {
@@ -617,23 +594,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "PolarizerH",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -664,23 +639,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "PolarizingBeamSplitter",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -707,23 +680,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "QuarterWavePlate",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -754,23 +725,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Rock",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -797,23 +766,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "SugarSolution",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -848,23 +815,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "VacuumJar",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
