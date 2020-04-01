@@ -339,7 +339,7 @@
           "y": 8,
           "x": 2
         },
-        "content": "The bottom buttons for STEP BY STEP view",
+        "content": "Use the bottom buttons for STEP BY STEP view",
         "color": "purple",
         "rotation": 0,
         "active": true
@@ -1643,38 +1643,6 @@
           "energized": false
         },
         {
-          "coord": { "y": 2, "x": 2 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 2, "x": 4 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 2, "x": 5 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 2, "x": 9 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
           "coord": { "y": 2, "x": 12 },
           "element": "Mirror",
           "rotation": 135,
@@ -1687,30 +1655,6 @@
           "element": "Detector",
           "rotation": 0,
           "frozen": true,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 4, "x": 4 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 4, "x": 8 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 4, "x": 9 },
-          "element": "SugarSolution",
-          "rotation": 0,
-          "frozen": false,
           "active": false,
           "energized": false
         },
@@ -2043,6 +1987,7 @@
           },
           "element": "Laser",
           "rotation": 0,
+          "polarization": 90,
           "frozen": true,
           "active": true,
           "energized": false
@@ -2053,7 +1998,7 @@
             "x": 11
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2064,7 +2009,7 @@
             "x": 1
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2097,7 +2042,7 @@
             "x": 5
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2108,7 +2053,7 @@
             "x": 6
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2141,7 +2086,7 @@
             "x": 11
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2152,7 +2097,7 @@
             "x": 1
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2163,7 +2108,7 @@
             "x": 4
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2196,7 +2141,7 @@
             "x": 4
           },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2219,17 +2164,6 @@
           },
           "element": "Detector",
           "rotation": 90,
-          "frozen": true,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": {
-            "y": 5,
-            "x": 5
-          },
-          "element": "Rock",
-          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2271,7 +2205,6 @@
       "PolarizingBeamSplitter",
       "SugarSolution",
       "SugarSolution",
-      "SugarSolution",
       "SugarSolution"
     ]
   },
@@ -2289,6 +2222,7 @@
           "coord": { "y": 1, "x": 1 },
           "element": "Laser",
           "rotation": 0,
+          "polarization": 90,
           "frozen": true,
           "active": true,
           "energized": false
@@ -2296,6 +2230,14 @@
         {
           "coord": { "y": 1, "x": 4 },
           "element": "PolarizingBeamSplitter",
+          "rotation": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 6 },
+          "element": "Rock",
           "rotation": 0,
           "frozen": true,
           "active": false,
@@ -2304,7 +2246,7 @@
         {
           "coord": { "y": 1, "x": 7 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2312,7 +2254,7 @@
         {
           "coord": { "y": 1, "x": 10 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2328,16 +2270,7 @@
         {
           "coord": { "y": 4, "x": 4 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
-          "frozen": true,
-          "active": false,
-          "energized": false
-        },
-        {
-          "coord": { "y": 4, "x": 6 },
-          "element": "Polarizer",
           "rotation": 90,
-          "polarization": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2345,7 +2278,7 @@
         {
           "coord": { "y": 4, "x": 7 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2353,7 +2286,7 @@
         {
           "coord": { "y": 4, "x": 10 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 0,
+          "rotation": 90,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2377,7 +2310,7 @@
         {
           "coord": { "y": 7, "x": 10 },
           "element": "PolarizingBeamSplitter",
-          "rotation": 90,
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": false
@@ -2392,8 +2325,6 @@
       }
     ],
     "tools": [
-      "SugarSolution",
-      "SugarSolution",
       "SugarSolution",
       "SugarSolution",
       "SugarSolution",
@@ -2524,7 +2455,7 @@
 
   {
     "id": 23,
-    "name": "Optical Table Tennis",
+    "name": "The minefield of interference",
     "group": "Classic",
     "description": "",
     "grid": {
