@@ -3430,7 +3430,7 @@
         "threshold": 1
       }
     ],
-    "tools": ["SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "PolarizingBeamSplitter", "FaradayRotator"]
+    "tools": ["SugarSolution", "PolarizingBeamSplitter", "FaradayRotator"]
   },
 
   {
