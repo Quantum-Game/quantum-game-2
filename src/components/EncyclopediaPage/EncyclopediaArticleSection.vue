@@ -1,7 +1,7 @@
 <template>
   <section v-if="section.title" class="entry-section">
     <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
-      {{ section.title.toUpperCase() }}
+      {{ section.title }}
     </h2>
     <div ref="contentWrapper" class="content-wrapper" :style="style">
       <!-- eslint-disable-next-line vue/no-v-html -->
@@ -80,6 +80,7 @@ section.entry-section {
     margin: 0;
     font-weight: bold;
     text-align: justify;
+    text-transform: uppercase;
     @media screen and (max-width: 1000px) {
       text-align: center;
       width: 90%;

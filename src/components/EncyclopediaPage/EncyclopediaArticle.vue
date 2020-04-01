@@ -2,7 +2,7 @@
   <div v-if="entry" class="entry">
     <article>
       <!-- TITLE -->
-      <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
+      <h1 class="title">{{ entry.title }}</h1>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <h2 class="short" v-html="entry.short" />
 
@@ -111,6 +111,7 @@ article {
     font-size: 2rem;
     font-weight: bold;
     padding-top: 30px;
+    text-transform: uppercase;
   }
   & .short {
     font-size: 1rem;
