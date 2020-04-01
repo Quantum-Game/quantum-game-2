@@ -18,7 +18,7 @@
       <!-- INNER DONUT -->
       <div :class="computeProbabilityClass">
         <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div>
-        <div class="inner-circle-probability">GOAL: {{gameState.totalGoalPercentage}}%</div>
+        <div class="inner-circle-probability">GOAL: {{ gameState.totalGoalPercentage }}%</div>
       </div>
     </vc-donut>
 
@@ -117,8 +117,11 @@ export default class GameGoals extends Vue {
   get sections(): { value: number; color: string }[] {
     return [
       { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
-      { value: this.gameState.totalGoalPercentage - this.tweenedPercent, color: 'rgba(255, 255, 255, 0.1)' },
-      { value: this.tweenedPercent, color: '#5D00D5'}
+      {
+        value: this.gameState.totalGoalPercentage - this.tweenedPercent,
+        color: 'rgba(255, 255, 255, 0.1)'
+      },
+      { value: this.tweenedPercent, color: '#5D00D5' }
     ]
   }
 
@@ -276,7 +279,7 @@ p {
       position: absolute;
       width: 0%;
       height: 14px;
-      background-color:rgba(255, 255, 255, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
       top: 0;
       left: 0;
       transition: width 1s ease-in-out;

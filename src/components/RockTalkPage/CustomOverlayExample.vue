@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="rock-text">
-      <p>We didn't split a photon. It is still one photon in many places at the same time. How is it possible?! Read more about <a href="https://quantumgame.io/info/superposition">SUPERPOSITION</a> in the game encyclopedia.</p>
+      <p>
+        We didn't split a photon. It is still one photon in many places at the same time. How is it
+        possible?! Read more about
+        <a href="https://quantumgame.io/info/superposition">SUPERPOSITION</a> in the game
+        encyclopedia.
+      </p>
     </div>
     <img src="@/assets/graphics/overlays/rock_talk_line.svg" alt="rock-line" />
     <div class="happy-rock">
