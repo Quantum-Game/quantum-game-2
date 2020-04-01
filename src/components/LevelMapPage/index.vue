@@ -57,7 +57,7 @@ export default class LevelMapPage extends Vue {
     font-weight: bold;
     text-transform: uppercase;
     @media screen and (max-width: 800px) {
-          margin: 20px 30px 0px 30px;
+      margin: 20px 30px 0px 30px;
     }
     & a {
       font-size: 1.2rem;
