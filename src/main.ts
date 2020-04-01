@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue, { CreateElement, VNode } from 'vue'
 import Donut from 'vue-css-donut-chart'
 import VueConfetti from 'vue-confetti'
 import 'vue-css-donut-chart/dist/vcdonut.css'
@@ -15,8 +15,7 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  // eslint-disable-next-line
-  render: (h: any) => {
+  render: (h: CreateElement): VNode => {
     return h(App)
   }
 }).$mount('#app')
