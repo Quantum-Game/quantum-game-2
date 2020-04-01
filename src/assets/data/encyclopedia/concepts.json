@@ -51,6 +51,22 @@
       }
     ]
   },
+  "superposition": {
+    "title": "Superposition",
+    "elementName": "Superposition",
+    "short": "<p>.....</p>",
+    "grids": [],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>.....</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "..."
+      }
+    ]
+  },
   "two-level-system": {
     "title": "Two-level system",
     "elementName": "TwoLevelSystem",

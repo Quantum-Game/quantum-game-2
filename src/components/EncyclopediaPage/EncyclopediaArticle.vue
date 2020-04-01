@@ -100,7 +100,7 @@ export default class EncyclopediaArticle extends Vue {
 
 <style lang="scss" scoped>
 article {
-  width: 100%;
+  width: 95%;
 }
 .entry {
   display: flex;
@@ -108,7 +108,7 @@ article {
   justify-content: space-around;
   align-items: center;
   & .title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     padding-top: 30px;
     text-transform: uppercase;

@@ -51,13 +51,16 @@ export default class EncyclopediaLinkList extends Vue {
     }
   }
   a {
-    color: white;
+    color: #837e9b;
     text-decoration: none;
     line-height: 175%;
-    font-size: 75%;
-    & div {
-      margin-left: 10px;
-    }
+    font-size: 90%;
+    // & div {
+    //   margin-left: 10px;
+    // }
+  }
+  a:hover {
+    font-weight: 900;
   }
   h3 {
     @media screen and (max-width: 1000px) {

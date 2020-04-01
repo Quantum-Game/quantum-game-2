@@ -84,8 +84,8 @@ export default class MyAccount extends Vue {
 <style lang="scss" scoped>
 h1 {
   color: white;
-  font-size: 2rem;
-  font-weight: normal;
+  font-size: 1.5rem;
+  font-weight: 900;
   line-height: 150%;
   text-transform: uppercase;
 }
