@@ -2,7 +2,7 @@
   "absorber": {
     "title": "Absorber",
     "elementName": "Absorber",
-    "short": "COMING SOON!",
+    "short": "<p>A neutral-density filter that absorbs 50% of light.</p>",
     "grids": [
       {
         "cols": 4,
@@ -10,75 +10,60 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Absorber",
             "rotation": 90,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "The basics",
+        "content": "<p>Many substances absorb light, turning its energy into heat.<p><img src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Sunscreen_on_back_under_normal_and_UV_light.jpg/640px-Sunscreen_on_back_under_normal_and_UV_light.jpg\" alt=\"CC BY\"></p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Absorption_%28electromagnetic_radiation%29\">Absorption (electromagnetic radiation)</a></li><li><a href=\"https://en.wikipedia.org/wiki/Neutral-density_filter\">Neutral-density filter</a></li></ul>"
       }
     ]
   },
   "aom": {
-    "title": "Acousto-Optic Modulator",
+    "title": "Acusto-Optic Modulator",
     "elementName": "Aom",
-    "short": "Using sound, it shifts the frequency of light by a certain amount.",
-    "grids": [
-      {
-        "cols": 3,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": {
-              "y": 1,
-              "x": 0
-            },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          }
-        ]
-      }
-    ],
+    "short": "<p>Using sound, it shifts the frequency of light by a certain amount.</p><p>NOT YET IN THE GAME.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
-        "content": "<p>Using sound, it shifts the frequency of light by a certain amount.</p>"
+        "content": "<p>Using sound, it shifts the frequency of light by a certain amount.</p><p>NOT YET IN THE GAME.</p>"
       },
       {
         "title": "Usage in everyday life",
-        "content": "<p>It is likely that your laser printer has an AOM embedded into it, to modulate the power of a laser beam.</p>"
+        "content": "<p>Your laser printer likely has an AOM embedded into it, to modulate the power of a laser beam.</p>"
       },
       {
         "title": "Usage in laboratories",
-        "content": "<p>AOMs are used in setups which control certain laser properties, and maintain light stable over a long time.</p>"
+        "content": "<p>AOMs are used in setups that control certain laser properties, and maintain light stable over a long time.</p>"
       },
       {
-        "title": "Digging Deeper",
-        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: a number of different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
+        "title": "Digging deeper",
+        "content": "<p>AOMs usually operate under the Bragg condition. They can be used to modulate different properties of the incoming light beam:</p><ul><li>orders of diffraction: several different beams can be created</li><li>intensity: depending on the intensity of the sound wave, the intensity of light in the diffracted beams can be modified</li><li>frequency: a consequence of the moving sound waves is that different diffracted beams are shifted in frequency</li><li>phase: the diffracted beam phase is shifted by the sound wave phase</li><li>polarization</li></ul>"
       },
       {
-        "title": "Further Readings",
+        "title": "Further readings4",
         "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Acousto-optic_modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.rp-photonics.com/acousto_optic_modulators.html\">Acusto-optic Modulator</a></li><li><a href=\"https://www.sciencedirect.com/topics/engineering/acousto-optical-modulator\">Acusto-optic Modulator</a></li><li><a href=\"https://www.youtube.com/watch?v=tEf98SBqbGc\">Lecture: Acusto-optic Modulator and Devices</a></li></ul>"
       }
     ]
@@ -86,7 +71,7 @@
   "beam-splitter": {
     "title": "50-50 Beamsplitter",
     "elementName": "BeamSplitter",
-    "short": "Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one.",
+    "short": "<p>Optical devices used to split a single beam of laser light into two beams, or to recombine two beams into one.</p>",
     "grids": [
       {
         "cols": 4,
@@ -94,8 +79,8 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 0
             },
             "element": "Laser",
             "rotation": 0,
@@ -104,8 +89,8 @@
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 0
             },
             "element": "BeamSplitter",
             "rotation": 135,
@@ -120,25 +105,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 0
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true,
-            "energized": false
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 0
             },
             "element": "BeamSplitter",
             "rotation": 90,
-            "frozen": false,
-            "active": false,
-            "energized": false
+            "frozen": false
           }
         ]
       }
@@ -154,26 +135,26 @@
       },
       {
         "title": "Explanation",
-        "content": "<p>You can experiment with frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing</p><p>Beamsplitters are used in interferometers, and some spooky phenomenon can be achieved with them (check out level xx)! This phenomenon is due to a phase shift which the beamsplitter imparts on the reflected beam. When light bounces off a material with a higher refractive index, it picks up a phase of 180°, or a π-phase.</p>"
+        "content": "<p>You can experiment with a frustrated total internal reflection yourself by filling a glass with water. If you look down into your glass of water, you will notice that you can’t see the “outside world” at all through the sides of the glass. This is because all the light gets reflected inside the glass of water, none is transmitted to the outside. However, if you hold the glass with your fingers, by holding it tightly you will see your fingerprints appearing</p><p>Beamsplitters are used in interferometers, and some spooky phenomenona can be achieved with them (check out level xx)! This phenomenon is due to a phase shift which the beamsplitter imparts on the reflected beam. When light bounces off material with a higher refractive index, it picks up a phase of 180°, or a π-phase.</p>"
       },
       {
         "title": "Usage in laboratories and experiments",
-        "content": "<p>You can find beamsplitters around you in your everyday life! For example, they used to be inside old TVs. Nowadays, they are used in CCD-cameras, LCD displays and optical fibre communication systems. Of course, they are used daily by thousands of scientists in the world, which align them as part of their large optical systems.</p>"
+        "content": "<p>You can find beamsplitters around you in your everyday life! For example, they used to be inside old TVs. Nowadays, they are used in CCD-c,</p>"
       },
       {
         "title": "Further resources",
-        "content": "<p>Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:</p><ul><li>Michelson-Morley interferometers</li><li>Mach-Zehnder interferometers</li></ul><p><img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1f/Beamsplitter-1.png\" alt=\"Beamsplitter\"></p><p>Famous experiments that used beamsplitters are:</p><ul><li>The Fizeau experiment of 1851 to measure the speeds of light in water</li><li>The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light</li><li>Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories</li><li>Wheeler's delayed choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens</li></ul>"
+        "content": "<p>Beamsplitters are a fundamental optical element in all optics and quantum physics labs. They are commonly used to create more beams from a single incoming beam, such that the two outgoing beams can be recombined later after one of them has undergone further manipulation. Some common setups which embed beamsplitters are:</p><ul><li>Michelson-Morley interferometers</li><li>Mach-Zehnder interferometers</li></ul><p><img src=\"https://upload.wikimedia.org/wikipedia/commons/1/1f/Beamsplitter-1.png\" alt=\"Beamsplitter\"></p><p>Famous experiments that used beamsplitters are:</p><ul><li>The Fizeau experiment of 1851 to measure the speeds of light in water</li><li>The Michelson-Morley experiment of 1887 to measure the effect of the (hypothetical) luminiferous aether on the speed of light</li><li>Bell test experiments (from ca. 1972) to demonstrate consequences of quantum entanglement and exclude local hidden variable theories</li><li>Wheeler's delayed-choice experiment of 1978, 1984 etc., to test what makes a photon behave as a wave or a particle and when it happens</li></ul>"
       },
       {
         "title": "Further reading",
-        "content": "<ul><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/\">What are Beamsplitters?</a></li><li><a href=\"https://en.wikipedia.org/wiki/Beam_splitter\">Beamsplitters on Wikipedia</a></li><li><a href=\"https://www.rp-photonics.com/beam_splitters.html\">Beamsplitters on RP Photonics Encyclopedia</a></li></ul><p>Videos on hommade beamsplitters:</p><ul><li><a href=\"https://www.youtube.com/watch?v=P1n3hizj3c4\">What is a beam splitter and how do you make one?</a></li><li>[Playing with beamsplitters](Playing with beamsplitters)</li></ul>"
+        "content": "<ul><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/what-are-beamsplitters/\">What are Beamsplitters?</a></li><li><a href=\"https://en.wikipedia.org/wiki/Beam_splitter\">Beamsplitters on Wikipedia</a></li><li><a href=\"https://www.rp-photonics.com/beam_splitters.html\">Beamsplitters on RP Photonics Encyclopedia</a></li></ul><p>Videos on homemade beamsplitters:</p><ul><li><a href=\"https://www.youtube.com/watch?v=P1n3hizj3c4\">What is a beam splitter and how do you make one?</a></li><li><a href=\"https://www.youtube.com/watch?v=C7edG13kzgU\">Playing with beamsplitters</a></li></ul>"
       }
     ]
   },
   "coated-beam-splitter": {
     "title": "Coated Beam Splitter",
     "elementName": "CoatedBeamSplitter",
-    "short": "COMING SOON!",
+    "short": "<p>Like beamsplitter but with a different phase change, depending on the direction.</p><p>COMING SOON!</p>",
     "grids": [
       {
         "cols": 4,
@@ -181,23 +162,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "CoatedBeamSplitter",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -205,14 +184,14 @@
     "sections": [
       {
         "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "content": "<p>Like beamsplitter but with a different phase change, depending on the direction.</p><p>COMING SOON!</p>"
       }
     ]
   },
   "corner-cube": {
     "title": "Corner Cube",
     "elementName": "CornerCube",
-    "short": "COMING SOON!",
+    "short": "<p>COMING SOON!</p>",
     "grids": [
       {
         "cols": 4,
@@ -220,38 +199,36 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "CornerCube",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Corner_reflector\">Corner reflectior</a></li></ul>"
       }
     ]
   },
   "detector-four": {
     "title": "Photon Detector x 4",
     "elementName": "DetectorFour",
-    "short": "It detects any photon which is incident on it by transforming it into an electrical sig",
+    "short": "<p>It detects any photon which is incident on it by transforming it into an electrical signal.</p><p><em>It is a four-headed plant. Very devourous!</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -259,54 +236,40 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 3
+              "x": 3,
+              "y": 1
             },
             "element": "DetectorFour",
             "rotation": 180,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "Basics",
-        "content": "<p>Some people argue that us humans, if we really stretch our eyes, can detect even single photons. <a href=\"https://www.nature.com/news/people-can-sense-single-photons-1.20282\">“The most amazing thing is that it’s not like seeing light. It’s almost a feeling, at the threshold of imagination”</a>. Catching a single photon is an enormous challenge! Luckily, scientists have worked for us and have come up with many devices which can sense as little as one photon!</p><p>One of the most common single photon detectors is a called a photomultiplier tube. This is a device which can translate photons, which are light, into electricity, which can be measured precisely.</p>"
+        "title": "In-game usage",
+        "content": "<p>Works like a detector, but accepts incoming light from all directions.</p>"
       },
       {
-        "title": "Everyday use",
-        "content": "<p>Hardly any of us needs such a device on our everyday life, there is generally way too much light around us for us to be able to see single photons. However, single photon detectors are heavily used in quantum physics laboratory! And, of course, in quantum physics games! On the other hand, we find devices which turn light into electricity all around us, for example that’s exactly what solar panels do!</p>"
-      },
-      {
-        "title": "Digging deeper",
-        "content": "<p>How does a photomultiplier tube work?<p>Photomultiplier tubes, also called PMTs, can multiply the original current by 100 million times!</p><p>Photomultiplier tubes have been the first “electrical eye”, and to date are one of the most used devices to count photons. And the fact that we can count photons is yet again a demonstration that Einstein was right, light is not only a wave but also a quantized particle!!</p>"
-      },
-      {
-        "title": "Usage in Laboratories",
-        "content": "<p>PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!</p><p><a href=\"https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html\"><img src=\"https://scx2.b-cdn.net/gfx/news/hires/2016/thesuperkami.jpg\" alt=\"Photomultiplier tubue\"></a></p>"
-      },
-      {
-        "title": "Related concepts:",
-        "content": "<p>-photoelectric effect</p>"
+        "title": "Related concepts",
+        "content": "<ul><li>Detector</li></ul>"
       }
     ]
   },
   "detector": {
     "title": "Photon Detector",
     "elementName": "Detector",
-    "short": "It detects any photon which is incident on it by transforming it into an electrical sig",
+    "short": "<p>It detects any photon which is incident on it by transforming it into an electrical signal.</p><p><em>To win the game, you want to feed as many carnivorous plants as possible! They are hungry!</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -314,23 +277,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 3
+              "x": 3,
+              "y": 1
             },
             "element": "Detector",
             "rotation": 180,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -353,15 +314,15 @@
         "content": "<p>PMTs, along with other types of photon counting detectors, such as photochemical and thermal detectors, are widely used in physics laboratories. In many quantum physics experiments, we need to be able to count the emitted photons. And they are also used to detect very faint signals, for example from passing neutrinos, such as at the superkamiokande experiment, which is a huge underground chamber filled with water and entirely covered in PMTs!</p><p><a href=\"https://phys.org/news/2016-11-super-kamiokande-detector-awaits-neutrinos-supernova.html\"><img src=\"https://scx2.b-cdn.net/gfx/news/hires/2016/thesuperkami.jpg\" alt=\"Photomultiplier tubue\"></a></p>"
       },
       {
-        "title": "Related concepts:",
-        "content": "<p>-photoelectric effect</p>"
+        "title": "Related concepts",
+        "content": "<ul><li>photoelectric effect</li><li>single photon source</li><li>spontaneous emission/absorption/stimulated emission</li></ul>"
       }
     ]
   },
   "faraday-rotator": {
     "title": "Faraday Rotator",
     "elementName": "FaradayRotator",
-    "short": "It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.",
+    "short": "<p>It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.</p>",
     "grids": [
       {
         "cols": 4,
@@ -369,23 +330,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "FaradayRotator",
-            "rotation": 90,
-            "frozen": false,
-            "active": false
+            "rotation": 0,
+            "frozen": false
           }
         ]
       }
@@ -397,7 +356,7 @@
       },
       {
         "title": "Explanations",
-        "content": "<p>Suppose a photon travels through a faraday rotator, gets reflected off the mirror and travels back through the rotator. On the second pass, the effect of the rotator adds up to the first pass, and the photon polarization is rotated by 90 degrees overall. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. This so-called “non-reciprocity” is the reason why Faraday rotators are ubiquitous in optics laboratories.</p>"
+        "content": "<p>Suppose a photon travels through a Faraday rotator, gets reflected off the mirror and travels back through the rotator. On the second pass, the effect of the rotator adds up to the first pass, and the photon polarization is rotated by 90 degrees overall. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. This so-called “non-reciprocity” is the reason why Faraday rotators are ubiquitous in optics laboratories.</p>"
       },
       {
         "title": "USAGE IN LABORATORIES AND EXPERIMENTS",
@@ -412,7 +371,7 @@
   "glass": {
     "title": "Glass",
     "elementName": "Glass",
-    "short": "COMING SOON!",
+    "short": "<p>Light travels slower in a glass, so it retards a wavepacket (vs if it were traveling in the air).</p>",
     "grids": [
       {
         "cols": 4,
@@ -420,38 +379,44 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Glass",
             "rotation": 90,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "Basics",
+        "content": "<p>Glass has a refractive index of around 1.5, meaning that light travels a slower speed (2/3 c).<p>TODO: Photo of refraction.</p>"
+      },
+      {
+        "title": "Going deeper",
+        "content": "<p>To delay 700nm light (red) by lambda/4 you need only 0.35 µm of glass at n=1.5. It is just half of its wavelength in the vacuum.</p><p>In the laboratory, we delay phase by subtler (and more accurate) means.</p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Refractive_index\">Refractive index</a></li><li><a href=\"https://en.wikipedia.org/wiki/Flint_glass\">Flint glass</a></li></ul>"
       }
     ]
   },
   "laser": {
     "title": "Single Photon Source",
     "elementName": "Laser",
-    "short": "An on-demand single photon source. (CLICK to EMIT!)",
+    "short": "<p>An on-demand single photon source.</p>",
     "grids": [
       {
         "cols": 4,
@@ -459,29 +424,24 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>An on-demand single photon source. (CLICK to EMIT!)</p>"
-      },
-      {
         "title": "The basics",
-        "content": "<p>Single photon sources allow the production of individual photons. The single photons have characteristic quantum behaviour. Single photons were created only quite recently, in the 1970s! They are the “quantum”, or the smallest unit, of electromagnetic field!</p>"
+        "content": "<p>Single-photon sources allow the production of individual photons. The single photons have characteristic quantum behaviour. Single photons were created only quite recently, in the 1970s! They are the “quantum”, or the smallest unit, of electromagnetic field!</p>"
       },
       {
         "title": "Digging deeper",
-        "content": "<p>In most cases, there is a system which emits a single photon upon a certain process. Some systems which can produce single photons are trapped ions, attenuated beams of sodium atoms, pentacene molecules and more recently nitrogen vacancy centers in diamond, quantum dots and two dimensional materials.</p><p>One of the processes through which single photons can be created is parametric down conversion. In this process a single photon which interacts with a non linear crystal can be split into two photons, and vice versa.</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/d/df/Scheme_of_spontaneous_parametric_down-conversion.pdf\">!Scheme of spontaneous parametric down conversion</a></p>"
+        "content": "<p>In most cases, there is a system which emits a single photon upon a certain process. Some systems which can produce single photons are trapped ions, attenuated beams of sodium atoms, pentacene molecules and more recently nitrogen vacancy centers in diamond, quantum dots and two-dimensional materials.</p><p>One of the processes through which single photons can be created is parametric down-conversion. In this process, a single photon which interacts with a non linear crystal can be split into two photons, and vice versa.</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/d/df/Scheme_of_spontaneous_parametric_down-conversion.pdf\">!Scheme of spontaneous parametric down conversion</a></p>"
       },
       {
         "title": "USAGE IN THE LABORATORIES",
@@ -489,14 +449,14 @@
       },
       {
         "title": "Further Reading",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Single-photon_source\">Single Photon Source</a></li><li><a href=\"https://en.wikipedia.org/wiki/Spontaneous_parametric_down-conversion\">Spontaneous parametric down-conversion</a></li><li><a href=\"http://news.mit.edu/2019/single-photon-source-fluorescent-quantum-defects-0809\">A single-photon source you can make at home</a></li></ul>"
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Single-photon_source\">Single-photon Source</a></li><li><a href=\"https://en.wikipedia.org/wiki/Spontaneous_parametric_down-conversion\">Spontaneous parametric down-conversion</a></li><li><a href=\"http://news.mit.edu/2019/single-photon-source-fluorescent-quantum-defects-0809\">A single-photon source you can make at home</a></li></ul>"
       }
     ]
   },
   "mine": {
     "title": "Mine",
     "elementName": "Mine",
-    "short": "COMING SOON!",
+    "short": "<p>Photo-sensitive bomb.</p>",
     "grids": [
       {
         "cols": 4,
@@ -504,38 +464,44 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Mine",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "Digging deeper",
+        "content": "<p>Depending on your worldview, either there is a random chance that the bomb explodes or not (e.g. in the Copenhagen interpretation of measurement), or there are two equivalent worlds - one in which it explodes, and one in which it does not (e.g. in the many-world interpretation by Everett).</p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Elitzur%E2%80%93Vaidman_bomb_tester\">Elitzur–Vaidman bomb tester</a></li></ul>"
+      },
+      {
+        "title": "Trivia",
+        "content": "<p>Yes, it is a homage to the classic Minesweeper.</p><ul><li><a href=\"https://pwmarcz.pl/blog/kaboom/\">Kaboom: an unusual Minesweeper</a></li></ul>"
       }
     ]
   },
   "mirror": {
     "title": "Mirror",
     "elementName": "Mirror",
-    "short": "A mirror is an object that reflects incident light preserving its properties.",
+    "short": "<p>A mirror is an object that reflects incident light preserving its properties.</p><p><em>Mirror, mirror on the board, what is the best quantum game in the world?</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -543,34 +509,40 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Mirror",
             "rotation": 135,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "Dig Deeper",
-        "content": "<p>Usually mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminium. Nowadays, most manufacturers achieve this by having a series of coatings, to make sure that as much as possible of the light is reflected.</p><p>In theory, mirrors reflect all of the light. In reality, there is no ideal mirror and there is always a small loss, some light is absorbed or transmitted through the glass. To make sure as much light is reflected as possible, most manufacturers nowadays make mirrors which have a series of coatings.</p><p>Mirrors can be flat or curved, depending whether we want to have a collimated or straight beam after or whether we want to focus our beam to a smaller size. The reflecting coating can be picked to work at any wavelength. Many mirrors are working at visible light, but there are also mirror which reflect ultraviolet and infrared light.</p>"
+        "title": "The basics",
+        "content": "<p>A mirror reflects light, with incidence angle being the same as the reflectance angle.</p><p>It does change left with right! To see that, play with the transition matrix and set basis for circular ⟲⟳.</p>"
       },
       {
-        "title": "TRICKS WITH PHASE!",
+        "title": "In-game",
+        "content": "<p>We use a mirror that reflects light from both sides. While it is technically possible, it is not a common setting for everyday, or laboratory, use.</p>"
+      },
+      {
+        "title": "Dig deeper",
+        "content": "<p>Typical mirrors are made by taking a flat piece of glass and coating one side with a metal such as silver or aluminum.<p><img src=\"https://upload.wikimedia.org/wikipedia/commons/9/9d/Image-Metal-reflectance.png\" alt=\"Reflectance for metals\"></p><p>In laboratory, with mutliple mirrors in a single line, usually is not accetpable - due to heating (for strong beams) or lossing photons (for very weak beams).<br><p>For some applications it is enough to have a mirror that works at a given wavelength (e.g. for monochromatic lasers), but sometimes we need to work at a whole range of weavelength (e.g. for femtosecond impulses). There are mirros for various wavelength ranges, from infrared, through the visible spectrum, to ultraviolet light.</p>"
+      },
+      {
+        "title": "TRICKS WITH PHASE",
         "content": "<p>NB! When light hits a surface which has a higher refractive index than the medium in which is wa travelling it will pick up a 180 degrees phase!</p>"
       },
       {
@@ -578,47 +550,20 @@
         "content": "<p>“Mirror mirror on the wall who's the fairest of them all?”</p><p>We all use mirrors all the time, to check on our hair in the morning, or to look at our backs when we are driving. Mirrors are all around us!</p>"
       },
       {
-        "title": "Further Reading",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mirror\">Mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\">Reflection Phase Change</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_cavity\">Optical Cavity</a></li></ul>"
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mirror\">Mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Specular_reflection\">Specular reflection</a></li><li><a href=\"https://en.wikipedia.org/wiki/Dielectric_mirror\">Dielectric mirror</a></li><li><a href=\"https://en.wikipedia.org/wiki/Reflection_phase_change\">Reflection phase change</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_coating\">Optical coating</a></li><li><a href=\"https://en.wikipedia.org/wiki/Optical_cavity\">Optical Cavity</a></li></ul>"
       }
     ]
   },
   "non-linear-crystal": {
     "title": "Non-linear Crystal",
     "elementName": "NonLinearCrystal",
-    "short": "Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": {
-              "y": 1,
-              "x": 0
-            },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          },
-          {
-            "coord": {
-              "y": 1,
-              "x": 2
-            },
-            "element": "NonLinearCrystal",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          }
-        ]
-      }
-    ],
+    "short": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p><p>NOT YET IN THE GAME.</p>",
+    "grids": [],
     "sections": [
       {
         "title": "",
-        "content": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p>"
+        "content": "<p>Can create 2 photons from a single photon, the two photons have half the frequency of the original photon. Conversely, can combine two photons to create a single photon with double the frequency.</p><p>NOT YET IN THE GAME.</p>"
       },
       {
         "title": "The Basics",
@@ -629,7 +574,7 @@
         "content": "<p>Non linear crystals are used for research applications in optical communication, optical sensing and materials research.</p>"
       },
       {
-        "title": "Digginf Deeper",
+        "title": "Digging Deeper",
         "content": "<p>BBO, or Barium Borate crystals are very common medium used to create non linear phenomena. They are strongly birefringent, meaning that they have two different refractive indices. In addition, they have a specific crystal symmetry and are resistant to high power light. Other types of non linear crystals are KDP (potassium dihydrogen phosphate), KTP (potassium titanyl phosphate), and lithium niobate.</p><p>Spontaneous parametric down conversion using a non linear crystal can generate two photons with entangled polarisation!</p><p><a href=\"https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/SPDC_figure.png/800px-SPDC_figure.png\">!Quantum Entanglement</a></p>"
       },
       {
@@ -641,7 +586,7 @@
   "polarizer": {
     "title": "Polarizer",
     "elementName": "Polarizer",
-    "short": "Filters light of a specific polarization, while blocking light of all other polarisati",
+    "short": "<p>Filters light of a specific polarization, while blocking light of all other polarisations.",
     "grids": [
       {
         "cols": 4,
@@ -649,24 +594,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
-            "element": "Polarizer",
-            "rotation": 0,
-            "polarization": 45,
-            "frozen": false,
-            "active": false
+            "element": "PolarizerH",
+            "rotation": 135,
+            "frozen": false
           }
         ]
       }
@@ -689,7 +631,7 @@
   "polarizing-beam-splitter": {
     "title": "Polarizing Beam Splitter",
     "elementName": "PolarizingBeamSplitter",
-    "short": "COMING SOON!",
+    "short": "<p>It reflects vertically-polarized light and passes horizontally-polarized light.</p>",
     "grids": [
       {
         "cols": 4,
@@ -697,48 +639,40 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 1
-            },
-            "element": "SugarSolution",
-            "rotation": 0,
-            "frozen": false,
-            "active": false
-          },
-          {
-            "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "PolarizingBeamSplitter",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "The basics",
+        "content": "<p>A cube made of two pieces of birefringent materials, that is, ones that have a different refractive index for horizontal and vertical polarization.</p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Birefringence\">Birefringence</a></li><li><a href=\"https://en.wikipedia.org/wiki/Beam_splitter\">Beam-splitter</a></li><li><a href=\"https://www.thorlabs.com/navigation.cfm?guide_id=2318\">Polarizing Beamsplitters - Thor Labs</a></li><li><a href=\"https://www.newport.com/c/beamsplitters\">Beamsplitters - Newport</a></li></ul>"
       }
     ]
   },
   "quarter-wave-plate": {
     "title": "Quarter Wave Plate",
     "elementName": "QuarterWavePlate",
-    "short": "Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.",
+    "short": "<p>Quarter wave plates delay the polarization by lambda/4. This means that they convert linearly polarized light into circularly polarized light and vice versa.</p>",
     "grids": [
       {
         "cols": 4,
@@ -746,24 +680,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "QuarterWavePlate",
-            "rotation": 0,
-            "polarization": 135,
-            "frozen": false,
-            "active": false
+            "rotation": 135,
+            "frozen": false
           }
         ]
       }
@@ -779,14 +710,14 @@
       },
       {
         "title": "Further Reading",
-        "content": "<p><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Wave Plate on Wikipedia</a>"
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Wave Plate on Wikipedia</a></li><li><a href=\"https://www.toweroptical.com/introduction-to-waveplates/\">Introduction to Waveplates</a></li><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/understanding-waveplates/\">Understanding Waveplates</a></li><li><a href=\"https://www.rp-photonics.com/waveplates.html\">More on Waveplates</a></li></ul>"
       }
     ]
   },
   "rock": {
     "title": "Rock",
     "elementName": "Rock",
-    "short": "COMING SOON!",
+    "short": "<p>It blocks light and provides valuable hints.</p><p><em>But I know every rock, and tree, and creature, has a life, has a spirit, has a name.</em></p>",
     "grids": [
       {
         "cols": 4,
@@ -794,38 +725,40 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "Rock",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "Basic",
+        "content": "<p>If a photon hits a rock, it is gone.</p>"
+      },
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Rock_%28geology%29\">Rock (geology)</a></li></ul>"
       }
     ]
   },
   "sugar-solution": {
     "title": "Sugar Solution",
     "elementName": "SugarSolution",
-    "short": "Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.",
+    "short": "<p>Rotates the polarization of light by 45 degrees due to chirality of sugar molecules.</p>",
     "grids": [
       {
         "cols": 4,
@@ -833,23 +766,21 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "SugarSolution",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
@@ -873,47 +804,10 @@
       }
     ]
   },
-  "two-level-system": {
-    "title": "Two-level system",
-    "elementName": "TwoLevelSystem",
-    "short": "The simplest quantum system, it has only two quantum states, which can be in a superposition.",
-    "grids": [
-      {
-        "cols": 4,
-        "rows": 3,
-        "cells": [
-          {
-            "coord": {
-              "y": 1,
-              "x": 0
-            },
-            "element": "Laser",
-            "rotation": 0,
-            "frozen": true,
-            "active": true
-          }
-        ]
-      }
-    ],
-    "sections": [
-      {
-        "title": "",
-        "content": "<p>The simplest quantum system, it has only two quantum states, which can be in a superposition.</p>"
-      },
-      {
-        "title": "The basics",
-        "content": "<p>There are different physical implementations of a two level system. Usually any property that has two values can be used, such as, for example “open” and “closed”. Depending on the physical system chosen, the two “levels” or “states” are different. For example, for electrons, the two level is often encoded in the spin state. The electron can either be in state spin up or spin down and these two states can be in a superposition. For light, these are usually polarization states (vertical and horizontal polarization).</p>"
-      },
-      {
-        "title": "Further Resources",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Two-state_quantum_system\">Two-state quantum system</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
-      }
-    ]
-  },
   "vacuum-jar": {
     "title": "Vacuum Jar",
     "elementName": "VacuumJar",
-    "short": "COMING SOON!",
+    "short": "<p>It advances polarization.</p>",
     "grids": [
       {
         "cols": 4,
@@ -921,31 +815,37 @@
         "cells": [
           {
             "coord": {
-              "y": 1,
-              "x": 0
+              "x": 0,
+              "y": 1
             },
             "element": "Laser",
             "rotation": 0,
-            "frozen": true,
-            "active": true
+            "frozen": true
           },
           {
             "coord": {
-              "y": 1,
-              "x": 2
+              "x": 2,
+              "y": 1
             },
             "element": "VacuumJar",
             "rotation": 0,
-            "frozen": false,
-            "active": false
+            "frozen": false
           }
         ]
       }
     ],
     "sections": [
       {
-        "title": "",
-        "content": "<p>COMING SOON!</p>"
+        "title": "The basics",
+        "content": "<p>The refractive index of air is 1.000293 (at 0 def of Celcius, and 1atm pressure), which means that in the air it takes light 0.0293% more time to travel the same distance.</p>"
+      },
+      {
+        "title": "Digging deeper",
+        "content": "<p>For the wavelength of 700nm (red) it would take around 0.6mm of vacuum to shift its phase by lambda/4.</p>"
+      },
+      {
+        "title": "Related concepts",
+        "content": "<ul><li>Glass</li></ul>"
       }
     ]
   }

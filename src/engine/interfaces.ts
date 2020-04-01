@@ -216,8 +216,8 @@ export interface IEntryNameList {
 export interface IEntry {
   title: string
   elementName: string
-  short?: string
-  grids?: IGrid[]
+  short: string
+  grids: IGrid[]
   sections: IEntrySection[]
 }
 

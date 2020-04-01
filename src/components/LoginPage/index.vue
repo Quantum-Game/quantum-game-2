@@ -101,8 +101,9 @@ export default class Login extends Vue {
 }
 h1 {
   color: white;
-  font-size: 2rem;
-  font-weight: normal;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 30px;
   line-height: 150%;
   text-transform: uppercase;
 }

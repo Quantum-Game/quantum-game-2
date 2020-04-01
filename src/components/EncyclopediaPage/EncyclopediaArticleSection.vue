@@ -1,11 +1,11 @@
 <template>
   <section v-if="section.title" class="entry-section">
     <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
-      {{ section.title.toUpperCase() }}
+      {{ section.title }}
     </h2>
     <div ref="contentWrapper" class="content-wrapper" :style="style">
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <div class="content" v-html="section.content" />
+      <div class="content" v-html="parsedContent" />
     </div>
   </section>
 </template>
@@ -38,13 +38,37 @@ export default class EncyclopediaArticleSection extends Vue {
 
   get style(): {} {
     return {
-      maxHeight: this.isOpen ? `${this.$refs.contentWrapper.scrollHeight}px` : null
+      maxHeight: this.isOpen ? null : '0px' //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
     }
+  }
+
+  /**
+   * Add fontawesome icons to links (dirty).
+   */
+  get parsedContent(): string {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.section
+      .content!.replace(
+        /(href="[^"]+wikipedia[^"]+">[^<]+)/g,
+        '$1 <i class="fab fa-wikipedia-w"></i>'
+      )
+      .replace(/(href="[^"]+youtube[^"]+">[^<]+)/g, '$1 <i class="fab fa-youtube"></i>')
+      .replace(/(href="[^"]+arxiv[^"]+">[^<]+)/g, '$1 <i class="fas fa-book-open"></i>')
+      .replace(
+        /(href="[^"]+(edmundoptics|rp-photonics|thorlabs)[^"]+">[^<]+)/g,
+        '$1 <i class="fas fa-microscope"></i>'
+      )
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+// not scoped so that font-awesome can work with v-html
+$fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
+@import 'node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+
 section.entry-section {
   border-bottom: 1px solid #8e819d;
   & .entry-title {
@@ -56,6 +80,7 @@ section.entry-section {
     margin: 0;
     font-weight: bold;
     text-align: justify;
+    text-transform: uppercase;
     @media screen and (max-width: 1000px) {
       text-align: center;
       width: 90%;
@@ -65,7 +90,7 @@ section.entry-section {
       position: relative;
       content: '';
       left: 12px;
-      height: 0;
+      // height: 0;
       border-left: 6px solid #e8e8e8;
       border-bottom: 6px solid transparent;
       border-top: 6px solid transparent;
@@ -80,7 +105,7 @@ section.entry-section {
   & .content-wrapper {
     font-weight: lighter;
     font-size: 1rem;
-    max-height: 0;
+    // max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
     line-height: 1.3rem;

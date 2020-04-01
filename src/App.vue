@@ -76,7 +76,7 @@ body {
   }
 }
 a {
-  color: #796bbc;
+  color: #837e9b;
   text-decoration: none;
 }
 

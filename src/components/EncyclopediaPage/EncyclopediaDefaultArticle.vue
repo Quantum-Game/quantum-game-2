@@ -9,7 +9,7 @@
 
           <!-- CELLS -->
           <text :x="6.5 * 64" :y="40" class="title" dominant-baseline="middle" text-anchor="middle">
-            Basics
+            Start & finish
           </text>
           <router-link :to="`/info/laser`" :style="moveTo(2, 1)">
             <laser-cell />
@@ -39,7 +39,7 @@
           <router-link :to="`/info/mirror`" :style="moveTo(3, 3)">
             <mirror-cell />
           </router-link>
-          <router-link :to="`/info/mirror`" :style="moveTo(5, 3)">
+          <router-link :to="`/info/corner-cube`" :style="moveTo(5, 3)">
             <corner-cube-cell />
           </router-link>
           <router-link :to="`/info/beam-splitter`" :style="moveTo(7, 3)">
@@ -78,7 +78,7 @@
             dominant-baseline="middle"
             text-anchor="middle"
           >
-            Phase
+            Phase & intensity
           </text>
           <router-link :to="`/info/glass`" :style="moveTo(4, 7)">
             <glass-cell />
@@ -175,6 +175,7 @@ a {
   text-decoration: none;
 }
 h1 {
+  font-size: 1.5rem;
   padding-top: 30px;
 }
 
@@ -184,6 +185,10 @@ h1 {
   text-transform: uppercase;
   fill: white;
   stroke: none;
+}
+
+.grid {
+  width: 100%;
 }
 
 img {
