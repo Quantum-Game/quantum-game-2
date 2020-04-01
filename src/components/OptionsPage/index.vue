@@ -64,6 +64,7 @@ export default class OptionsPage extends Vue {
 .options-wrapper {
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
   & .option {
     display: flex;
     flex-direction: row;
@@ -76,6 +77,10 @@ export default class OptionsPage extends Vue {
   }
   @media screen and (max-width: 1000px) {
     padding: 20px;
+  }
+  h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
   }
 }
 </style>

@@ -13,7 +13,7 @@ Quantum Game is currently being developed by dr [Piotr Migdał](https://p.migdal
 
 This version of the game was funded by the [Center for Quantum Technologies of the National University of Singapore](https://www.quantumlah.org/).
 
-The current version uses [Quantum Tensors](https://github.com/Quantum-Game/quantum-tensors) - a JavaScript / TypeScript package for sparse tensor operations on complex numbers. It is a NPM package we created for this game, but made it in a way it is reusable.
+The current version uses [Quantum Tensors](https://github.com/Quantum-Game/quantum-tensors) - a JavaScript / TypeScript package for sparse tensor operations on complex numbers. It is an NPM package we created for this game, but made it in a way it is reusable.
 
 You can play the old version (2014-2016) [here](http://play.quantumgame.io/); its source is at [stared/quantum-game](https://github.com/stared/quantum-game).
 
@@ -21,7 +21,7 @@ You can play the old version (2014-2016) [here](http://play.quantumgame.io/); it
 
 ## Installation
 
-You need to have [yarn](https://yarnpkg.com/) installed. Then, after cloning install dependecies with:
+You need to have [yarn](https://yarnpkg.com/) installed. Then, after cloning install dependencies with:
 
 ```bash
 yarn
@@ -32,10 +32,3 @@ And run it with:
 ```bash
 yarn serve
 ```
-
-## Conventions
-
-- Rotation start right and go counter-clockwise (Complex number style).
-- Position start at [0, 0] located in top left cell.
-- Percentage are float until displayed. (toPercentString in engine/helpers)
-- All CSS is scoped.

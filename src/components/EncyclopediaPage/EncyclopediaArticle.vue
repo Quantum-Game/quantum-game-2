@@ -2,7 +2,8 @@
   <div v-if="entry" class="entry">
     <article>
       <!-- TITLE -->
-      <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
+      <h1 class="title">{{ entry.title }}</h1>
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <h2 class="short" v-html="entry.short" />
 
       <!-- GRIDS -->
@@ -53,6 +54,7 @@ import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTr
 export default class EncyclopediaArticle extends Vue {
   entry: IEntry = {
     title: '',
+    short: '',
     elementName: 'Mirror',
     grids: [],
     sections: []
@@ -66,6 +68,12 @@ export default class EncyclopediaArticle extends Vue {
   loadEntry(): void {
     if (this.entryURL) {
       this.entry = getEntry(this.entryURL)
+      // dirty, for current 'active' parameter
+      this.entry.grids.forEach((grid) =>
+        grid.cells.forEach((cell) => {
+          cell.active = cell.element === 'Laser'
+        })
+      )
     }
     if (!this.entry.title) {
       this.$router.push({ name: '404' })
@@ -92,7 +100,7 @@ export default class EncyclopediaArticle extends Vue {
 
 <style lang="scss" scoped>
 article {
-  width: 100%;
+  width: 95%;
 }
 .entry {
   display: flex;
@@ -100,9 +108,10 @@ article {
   justify-content: space-around;
   align-items: center;
   & .title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
     padding-top: 30px;
+    text-transform: uppercase;
   }
   & .short {
     font-size: 1rem;
