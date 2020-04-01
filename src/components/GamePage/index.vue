@@ -19,7 +19,7 @@
         <router-link :to="previousLevel">
           <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
         </router-link>
-        {{ level.id + ' - ' + level.name.toUpperCase() }}
+        {{ level.id + ' - ' + level.name }}
         <router-link :to="nextLevelOrOvelay">
           <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
         </router-link>
@@ -527,6 +527,7 @@ h1.title {
   font-size: 1.5rem;
   margin-bottom: 30;
   margin-top: 0;
+  text-transform: uppercase;
   .groupTitle {
     font-size: 14px;
     color: grey;
