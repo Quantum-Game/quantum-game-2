@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hoveredParticles.length === 0" class="explanation">
+  <div v-if="hoveredParticles.length >= 0" class="explanation">
     <h3 class="title">
       {{ spacedName }}
     </h3>
@@ -51,8 +51,7 @@ export default class GameActiveCell extends Vue {
 
 <style lang="scss" scoped>
 .explanation {
-  border-top: 1px solid #8e819d;
-  border-bottom: 1px solid white;
+  border-top: 1px solid white;
   width: 100%;
   text-align: left;
   padding-top: 10px;
@@ -61,9 +60,10 @@ export default class GameActiveCell extends Vue {
     display: none;
   }
   & .title {
-    margin-top: 8px;
-    font-size: 1rem;
     text-transform: uppercase;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 300;
   }
   & .description {
     text-align: left;

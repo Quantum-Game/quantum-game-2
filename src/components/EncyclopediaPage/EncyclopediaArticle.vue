@@ -3,7 +3,7 @@
     <article>
       <!-- TITLE -->
       <h1 class="title">{{ entry.title.toUpperCase() }}</h1>
-      <h2 class="short">{{ entry.short }}</h2>
+      <h2 class="short" v-html="entry.short" />
 
       <!-- GRIDS -->
       <div class="grids">
@@ -14,15 +14,15 @@
 
       <!-- SECTIONS -->
       <encyclopedia-article-section
-        v-for="(section, index) in entry.sections"
+        v-for="section in entry.sections"
         :key="section.title"
         :section="section"
-        :should-be-open-on-init="index === 0"
+        :should-be-open-on-init="true"
       />
 
       <!-- EQUATION GRID -->
       <encyclopedia-transition
-        v-if="theComponentsTransitionMapShouldBeDisplayed"
+        v-if="showMatrix"
         :key="`transition-${entry.elementName}`"
         :element-name="entry.elementName"
         :rotation="entry.defaultRotation"
@@ -35,7 +35,8 @@
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
-import { getEntry } from '@/assets/data/entries/index'
+import { Cell } from '@/engine/classes'
+import { getEntry } from './loadData'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
@@ -76,14 +77,23 @@ export default class EncyclopediaArticle extends Vue {
   }
 
   // FIXME: Code smell, move to element value
-  get theComponentsTransitionMapShouldBeDisplayed(): boolean {
-    const componentsForWhichNotToDisplayTransitionMap = ['Laser', 'CornerCube']
-    return componentsForWhichNotToDisplayTransitionMap.indexOf(this.entry.elementName) < 0
+  get showMatrix(): boolean {
+    const dontShowMatrix = ['Laser']
+    let elementExists: boolean
+    try {
+      elementExists = !!Cell.fromName(this.entry.elementName)
+    } catch (error) {
+      elementExists = false
+    }
+    return dontShowMatrix.indexOf(this.entry.elementName) < 0 && elementExists
   }
 }
 </script>
 
 <style lang="scss" scoped>
+article {
+  width: 100%;
+}
 .entry {
   display: flex;
   flex-direction: column;
@@ -99,6 +109,9 @@ export default class EncyclopediaArticle extends Vue {
     padding-right: 20%;
     padding-left: 20%;
     padding-bottom: 20px;
+    font-weight: 300;
+    line-height: 1.5rem;
+    letter-spacing: 0.5px;
   }
   & .go-back {
     font-weight: bold;
@@ -112,7 +125,7 @@ export default class EncyclopediaArticle extends Vue {
   @media screen and (max-width: 1000px) {
     width: 100vw;
     article {
-      width: 100vw;
+      width: 90vw;
     }
   }
 }
