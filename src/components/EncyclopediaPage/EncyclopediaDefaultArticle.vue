@@ -175,6 +175,7 @@ a {
   text-decoration: none;
 }
 h1 {
+  font-size: 1.5rem;
   padding-top: 30px;
 }
 
@@ -184,6 +185,10 @@ h1 {
   text-transform: uppercase;
   fill: white;
   stroke: none;
+}
+
+.grid {
+  width: 100%;
 }
 
 img {
