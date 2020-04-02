@@ -84,6 +84,7 @@ export interface ILevel {
   goals: IGoal[]
   hints: IHint[]
   tools: string[]
+  safetyThreshold?: number
 }
 
 /**
