@@ -4,7 +4,12 @@
     <div class="hoverCell"></div>
 
     <!-- OVERLAY -->
-    <app-overlay :game-state="displayGameState" class="overlay" @click.native="frameIndex = 0">
+    <app-overlay
+      :game-state="overlayGameState"
+      :victory-already-shown="victoryAlreadyShown"
+      class="overlay"
+      @click.native="frameIndex = 0"
+    >
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -147,6 +152,8 @@ export default class Game extends Vue {
   fateCoord = Coord.importCoord({ x: -1, y: -1 })
   fateStep = 999
   displayFate = false
+  victoryAlreadyShown = false
+  showVictory = false
 
   // LIFECYCLE
   created(): void {
@@ -181,6 +188,7 @@ export default class Game extends Vue {
    * Default to the route level
    */
   loadLevel(iLevel: ILevel = levels[this.levelId]): void {
+    this.victoryAlreadyShown = false
     this.error = ''
     this.level = Level.importLevel(iLevel)
     // Set hovered cell as first element of toolbox
@@ -218,24 +226,12 @@ export default class Game extends Vue {
   /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
-  get displayGameState(): string {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
+  get overlayGameState(): string {
+    if (this.frameIndex === this.fateStep) {
       return this.gameState
     }
     return 'InProgress'
   }
-
-  // /**
-  //  * Get fate from simulation random realization
-  //  * Display on the last frame of simulation, death then fate
-  //  */
-  // get fateCoord(): Coord {
-  //   if (this.frameIndex === this.simulation.frames.length - 1) {
-  //     this.setEnergizedCellAtTheEnd()
-  //     return this.fateCoord
-  //   }
-  //   return Coord.importCoord({ x: -1, y: -1 })
-  // }
 
   /**
    * Set the energized cells from the simulation
@@ -355,9 +351,16 @@ export default class Game extends Vue {
         this.mutationSetSimulationState(false)
         this.setEnergizedCellAtTheEnd()
         clearInterval(this.playInterval)
-        setTimeout(() => {
-          this.updateSimulation()
-        }, 1000)
+        if (!this.victoryAlreadyShown && this.gameState === GameStateEnum.Victory) {
+          setTimeout(() => {
+            // dirty hack
+            this.victoryAlreadyShown = true
+          }, 200)
+        } else {
+          setTimeout(() => {
+            this.updateSimulation()
+          }, 1000)
+        }
       }
     }, 200)
     this.mutationSetSimulationState(true)
