@@ -27,8 +27,7 @@
           @mouseover.native="handleMouseEnter(cell)"
         />
         <text class="counter" :x="counterX" y="80">
-          {{ toolbox.getCount(cell.element.name) }}
-          ({{ toolbox.getCountOriginal(cell.element.name) }})
+          × {{ toolbox.getCount(cell.element.name) }}
         </text>
       </g>
     </svg>
