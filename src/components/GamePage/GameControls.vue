@@ -9,13 +9,13 @@
       <!-- <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" /> -->
     </span>
     <!-- FRAME INFO -->
-    <!-- <span class="frameInfo">
+    <span class="frameInfo">
       <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
       <span class="gameState">({{ gameState }})</span>
-    </span>-->
+    </span>
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <button type="button" :style="computeFateStyle" @click="$emit('new-fate')" />
+      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
       <button type="button" :style="computeSoundStyle" @click="toggleSound" />
       <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
 
@@ -23,10 +23,6 @@
       <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
 
       <button type="button" :style="computeSaveStyle" @click="handleSave()" />
-      <!-- <button type="button" :style="computeReloadStyle" @click="$emit('reload')" /> -->
-      <!-- <button type="button" :style="computeOptionsStyle" @click="handleOptions()" /> -->
-      <!-- <button type="button" :style="computeMapStyle" @click="handleMap()" /> -->
-      <!-- <button type="button" :style="computeAccountStyle" @click="handleAccount()" /> -->
     </span>
   </div>
 </template>
