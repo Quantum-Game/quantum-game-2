@@ -19,6 +19,7 @@ import { getRockTalkById, IRockTalk } from '@/components/RockTalkPage/RTClient'
 import AppButton from '@/components/AppButton.vue'
 import RockTalkSuperposition from '@/components/RockTalkPage/RockTalkSuperposition.vue'
 import RockTalkInterference from '@/components/RockTalkPage/RockTalkInterference.vue'
+import RockTalkEnd from '@/components/RockTalkPage/RockTalkEnd.vue'
 
 type overlayListType = {
   [key: string]: VueConstructor<Vue>
@@ -35,7 +36,8 @@ type overlayListType = {
 const customOverlaysList: overlayListType = {
   // custom: customOverlayExample,
   superposition: RockTalkSuperposition,
-  interference: RockTalkInterference
+  interference: RockTalkInterference,
+  end: RockTalkEnd
 }
 
 @Component({
