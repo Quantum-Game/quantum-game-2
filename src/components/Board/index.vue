@@ -14,32 +14,14 @@
       <board-lasers :pathParticles="pathParticles" />
 
       <!-- FATE -->
-      <g v-if="displayFate" class="fate">
-        <circle
-          :cx="(fate.coord.x + 0.5) * tileSize"
-          :cy="(fate.coord.y + 0.5) * tileSize"
-          fill="purple"
-          r="30"
-          stroke="purple"
-          stroke-width="2"
-        >
-          <animate
-            attributeName="opacity"
-            from="1"
-            to="0"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="r"
-            from="32"
-            to="64"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-        </circle>
+      <g
+        :transform="
+          `translate(${(fate.coord.x + 0.5) * tileSize}, ${(fate.coord.y + 0.5) * tileSize})`
+        "
+      >
+        <transition name="fate-blink">
+          <circle v-if="displayFate" class="fate" fill="purple" r="30" />
+        </transition>
       </g>
 
       <!-- PHOTONS -->
@@ -283,6 +265,25 @@ export default class Board extends Vue {
   transform-origin: 0 0%;
   @media screen and (max-width: 1000px) {
     transform-origin: 0 0;
+  }
+}
+
+.fate {
+  opacity: 0;
+}
+
+.fate-blink-enter-active {
+  animation: fate-blink-in 1.5s;
+}
+
+@keyframes fate-blink-in {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
   }
 }
 </style>
