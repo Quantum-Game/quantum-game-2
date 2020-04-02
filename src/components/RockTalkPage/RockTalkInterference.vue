@@ -2,8 +2,8 @@
   <div>
     <div class="rock-text">
       <p>
-        Crazy, isn't it? Lear more about
-        <a href="https://quantumgame.io/info/interference">INTERFERENCE</a> in the game
+        Crazy, isn't it? Learn more about
+        <a href="https://quantumgame.io/info/interference">INTERFERENCE</a> from the game
         encyclopedia.
       </p>
     </div>
