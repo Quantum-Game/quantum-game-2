@@ -59,6 +59,7 @@
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
+          :display-status="displayStatus"
           @rewind="rewind"
           @step-back="stepBack"
           @play="play"
@@ -154,6 +155,16 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
+
+  get displayStatus(): string {
+    if (this.simulationState) {
+      return 'Quantum simulation (live)' // (each time a random outcome)
+    } else if (this.frameIndex > 0) {
+      return 'Quantum simulation (step-by-step)'
+    } else {
+      return 'Classical laser beam' // (still with polarization & interference)
+    }
+  }
 
   // LIFECYCLE
   created(): void {
