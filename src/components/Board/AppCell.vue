@@ -8,8 +8,8 @@
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
-      :width="tileSize"
-      :height="tileSize"
+      :width="tileSize || 64"
+      :height="tileSize || 64"
       :class="computeRectClass"
       :style="computeRectStyle"
     />
