@@ -90,7 +90,7 @@ h1 {
   text-transform: uppercase;
 }
 h2 {
-  margin-top: 80px; 
+  margin-top: 80px;
   color: white;
   font-size: 1.5rem;
   font-weight: 300;
