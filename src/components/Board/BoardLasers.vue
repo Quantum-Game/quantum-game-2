@@ -1,6 +1,6 @@
 <template>
   <!-- LASER PATH -->
-  <g v-if="!simulationState" class="lasers">
+  <g class="lasers">
     <g v-for="(particle, index) in pathParticles" :key="'laser' + index">
       <path
         :d="computePath(particle)"
@@ -17,13 +17,11 @@
 
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
-import { State } from 'vuex-class'
 import Particle from '@/engine/Particle'
 
 @Component
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly pathParticles!: Particle[]
-  @State simulationState!: boolean
   tileSize = 64
 
   /**

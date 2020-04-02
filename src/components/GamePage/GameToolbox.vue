@@ -13,7 +13,6 @@
     >
       <g :class="computeClass(cell)">
         <g>
-          <rect :width="64" :height="64" class="tool-rect" />
           <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
           <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
           <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
@@ -27,8 +26,7 @@
           @mouseover.native="handleMouseEnter(cell)"
         />
         <text class="counter" :x="counterX" y="80">
-          {{ toolbox.getCount(cell.element.name) }}
-          ({{ toolbox.getCountOriginal(cell.element.name) }})
+          × {{ toolbox.getCount(cell.element.name) }}
         </text>
       </g>
     </svg>
@@ -62,6 +60,7 @@ export default class GameToolbox extends Vue {
 
   handleMouseEnter(cell: Cell): void {
     this.mutationSetHoveredCell(cell)
+    this.$emit('hover', { kind: 'element', cell, particles: [], text: 'Drag&drop on board.' })
   }
 
   handleCellDrop(cell: Cell): void {

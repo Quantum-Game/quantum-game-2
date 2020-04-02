@@ -11,35 +11,13 @@
       <board-dots :rows="grid.rows" :cols="grid.cols" />
 
       <!-- LASER PATH -->
-      <board-lasers :pathParticles="pathParticles" />
+      <board-lasers v-if="classicalView" :pathParticles="pathParticles" />
 
       <!-- FATE -->
-      <g v-if="displayFate" class="fate">
-        <circle
-          :cx="(fate.coord.x + 0.5) * tileSize"
-          :cy="(fate.coord.y + 0.5) * tileSize"
-          fill="purple"
-          r="30"
-          stroke="purple"
-          stroke-width="2"
-        >
-          <animate
-            attributeName="opacity"
-            from="1"
-            to="0"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-          <animate
-            attributeName="r"
-            from="32"
-            to="64"
-            dur="1.5s"
-            begin="0s"
-            repeatCount="indefinite"
-          />
-        </circle>
+      <g :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`">
+        <transition name="fate-blink">
+          <circle v-if="displayFate" class="fate" fill="purple" r="30" />
+        </transition>
       </g>
 
       <!-- PHOTONS -->
@@ -125,16 +103,19 @@ import Absorption from '../../engine/Absorption'
 })
 export default class Board extends Vue {
   @Prop() readonly grid!: Grid
-  @Prop() readonly fate!: Cell
+  @Prop() readonly fate!: Coord
   @Prop({ default: [] }) readonly hints!: IHint[]
   @Prop({ default: [] }) readonly particles!: Particle[]
   @Prop({ default: [] }) readonly pathParticles!: Particle[]
   @Prop({ default: [] }) readonly absorptions!: Absorption[]
+  @Prop({ default: 0 }) readonly frameIndex!: number // dirty for classical vs quantum
+  @Prop({ default: false }) readonly displayFate!: boolean
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   @State hoveredParticles!: Particle[]
   @State hoveredCell!: Cell
   @State activeCell!: Cell
+  @State simulationState!: boolean
 
   tileSize = 64
   updatedTileSize = 64 // this is the actual, dynamic tile size
@@ -157,6 +138,10 @@ export default class Board extends Vue {
 
   beforeDestroy(): void {
     window.removeEventListener('resize', this.assessSize)
+  }
+
+  get classicalView(): boolean {
+    return this.frameIndex === 0 && !this.simulationState
   }
 
   /**
@@ -183,9 +168,11 @@ export default class Board extends Vue {
     })
     if (cell !== this.hoveredCell && !cell.isVoid) {
       this.mutationSetHoveredCell(cell)
+      this.$emit('hover', { kind: 'element', cell, particles: [], text: '' })
     }
     if (particles.length > 0) {
       this.mutationSetHoveredParticles(particles)
+      this.$emit('hover', { kind: 'particles', particles, text: '' })
     }
   }
 
@@ -227,22 +214,11 @@ export default class Board extends Vue {
   }
 
   /**
-   * Display fate if it isn't at default position
-   */
-  get displayFate(): boolean {
-    if (this.fate.coord.x === -1 && this.fate.coord.x === -1) {
-      return false
-    }
-    return true
-  }
-
-  /**
    * Compute fate cell position
    */
   computeFateStyle(): {} {
     return {
-      transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
-        this.tileSize}px`
+      transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`
     }
   }
 
@@ -283,6 +259,25 @@ export default class Board extends Vue {
   transform-origin: 0 0%;
   @media screen and (max-width: 1000px) {
     transform-origin: 0 0;
+  }
+}
+
+.fate {
+  opacity: 0;
+}
+
+.fate-blink-enter-active {
+  animation: fate-blink-in 1.5s;
+}
+
+@keyframes fate-blink-in {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3);
   }
 }
 </style>

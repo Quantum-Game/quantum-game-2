@@ -8,8 +8,8 @@
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
-      :width="tileSize"
-      :height="tileSize"
+      :width="tileSize || 64"
+      :height="tileSize || 64"
       :class="computeRectClass"
       :style="computeRectStyle"
     />
@@ -111,14 +111,11 @@ export default class AppCell extends Mixins(Position) {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
-  @Mutation('RESET_FATE_CELLS') mutationResetFateCells!: (cells: Cell[]) => void
   @State simulationState!: string
   @State gameState!: GameStateEnum
   @State activeCell!: Cell
   @State cellSelected!: boolean
   @State hoveredCell!: Cell
-  @State fateCell!: Cell
   border = ''
   isRotate = false
 
@@ -261,10 +258,6 @@ export default class AppCell extends Mixins(Position) {
    */
   get isActiveCell(): boolean {
     return this.activeCell.equal(this.cell)
-  }
-
-  get isFateCell(): boolean {
-    return this.fateCell.equal(this.cell)
   }
 
   /**
