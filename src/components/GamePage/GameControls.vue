@@ -43,7 +43,7 @@ export default class GameControls extends Vue {
   @State('simulationState') simulationState!: boolean
   soundFlag = false
   soundtract?: Soundtract
-  volume = 10
+  volume = -10
 
   loadJsonLevelFromFile(event: Event): void {
     const reader = new FileReader()
@@ -67,6 +67,10 @@ export default class GameControls extends Vue {
       this.soundtract.setAndPlay(this.volume)
     }
     this.soundtract.setAllGenerative(this.soundFlag)
+  }
+
+  created(): void {
+    window.setTimeout(() => this.toggleSound(), 1000)
   }
 
   get playFlag(): boolean {
