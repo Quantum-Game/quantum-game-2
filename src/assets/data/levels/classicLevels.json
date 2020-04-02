@@ -1314,8 +1314,8 @@
             "y": 2,
             "x": 10
           },
-          "element": "Detector",
-          "rotation": 180,
+          "element": "Mine",
+          "rotation": 0,
           "frozen": true,
           "active": false,
           "energized": true
@@ -1329,7 +1329,7 @@
           "y": 2,
           "x": 10
         },
-        "threshold": 0.008
+        "threshold": 0
       }
     ],
     "tools": ["Absorber", "Absorber", "Absorber", "Absorber", "Absorber", "Absorber", "Absorber"]
