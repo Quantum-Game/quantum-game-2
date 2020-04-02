@@ -1,11 +1,6 @@
 <template>
   <transition :name="gameState">
-    <div v-if="explosion" :class="computeClass">
-      <h2>
-        Mine Exploded
-      </h2>
-    </div>
-    <div v-else-if="victory" :class="computeClass">
+    <div v-if="victory" :class="computeClass">
       <div class="victory-circle">
         <h2>
           You won!
@@ -32,6 +27,7 @@ Vue.use(VueConfetti)
 })
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
+  @Prop() readonly victoryAlreadyShown!: boolean
   $confetti!: {
     start: (params: {}) => void
     stop: () => void
@@ -55,13 +51,13 @@ export default class AppOverlay extends Vue {
     return this.gameState === GameStateEnum.Victory
   }
 
-  get mineExploded(): boolean {
-    return this.gameState === GameStateEnum.MineExploded
-  }
+  // get mineExploded(): boolean {
+  //   return this.gameState === GameStateEnum.MineExploded
+  // }
 
   @Watch('gameState')
   handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
-    if (newGameState === GameStateEnum.Victory) {
+    if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
       this.$confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
