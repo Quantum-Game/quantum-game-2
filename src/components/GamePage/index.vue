@@ -127,6 +127,7 @@ export default class Game extends Vue {
   @State('currentLevelID') currentLevelID!: number
   @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
+  @State('simulationState') simulationState!: boolean
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
@@ -339,6 +340,11 @@ export default class Game extends Vue {
    * @returns void
    */
   play(): void {
+    if (this.simulationState) {
+      clearInterval(this.playInterval)
+      this.mutationSetSimulationState(false)
+      return
+    }
     this.level.grid.resetEnergized()
     this.computeNewFate()
     this.frameIndex = 0
