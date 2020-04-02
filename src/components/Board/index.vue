@@ -14,11 +14,7 @@
       <board-lasers v-if="classicalView" :pathParticles="pathParticles" />
 
       <!-- FATE -->
-      <g
-        :transform="
-          `translate(${(fate.coord.x + 0.5) * tileSize}, ${(fate.coord.y + 0.5) * tileSize})`
-        "
-      >
+      <g :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`">
         <transition name="fate-blink">
           <circle v-if="displayFate" class="fate" fill="purple" r="30" />
         </transition>
@@ -107,12 +103,13 @@ import Absorption from '../../engine/Absorption'
 })
 export default class Board extends Vue {
   @Prop() readonly grid!: Grid
-  @Prop() readonly fate!: Cell
+  @Prop() readonly fate!: Coord
   @Prop({ default: [] }) readonly hints!: IHint[]
   @Prop({ default: [] }) readonly particles!: Particle[]
   @Prop({ default: [] }) readonly pathParticles!: Particle[]
   @Prop({ default: [] }) readonly absorptions!: Absorption[]
   @Prop({ default: 0 }) readonly frameIndex!: number // dirty for classical vs quantum
+  @Prop({ default: false }) readonly displayFate!: boolean
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   @State hoveredParticles!: Particle[]
@@ -217,22 +214,11 @@ export default class Board extends Vue {
   }
 
   /**
-   * Display fate if it isn't at default position
-   */
-  get displayFate(): boolean {
-    if (this.fate.coord.x === -1 && this.fate.coord.x === -1) {
-      return false
-    }
-    return true
-  }
-
-  /**
    * Compute fate cell position
    */
   computeFateStyle(): {} {
     return {
-      transform: `translate: ${this.fate.coord.x * this.tileSize}px ${this.fate.coord.y *
-        this.tileSize}px`
+      transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`
     }
   }
 
