@@ -4,7 +4,6 @@ import Particle from '@/engine/Particle'
 
 export interface IRootState {
   activeCell: Cell
-  fateCells: Cell[]
   hoveredCell: Cell
   hoveredParticles: [Particle]
   cellSelected: boolean

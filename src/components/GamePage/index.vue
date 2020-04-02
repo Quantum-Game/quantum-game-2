@@ -40,7 +40,8 @@
         <game-board
           :particles="particles"
           :path-particles="pathParticles"
-          :fate="displayFate"
+          :fate="fateCoord"
+          :display-fate="displayFate"
           :hints="hints"
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
@@ -86,7 +87,7 @@ import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
-import { Cell, Grid, Level, Particle } from '@/engine/classes'
+import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
@@ -124,14 +125,12 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
 export default class Game extends Vue {
   level = Level.createDummy()
   @State('currentLevelID') currentLevelID!: number
-  @State('fateCells') fateCells!: Cell[] // this need to me removed ASASP
-  @State('activeCell') activeCell!: Cell // this need to me removed ASASP
+  @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
   frameIndex = 0
   simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
   multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
@@ -143,6 +142,10 @@ export default class Game extends Vue {
     particles: [],
     text: 'Hover on a element for more information.'
   }
+
+  fateCoord = Coord.importCoord({ x: -1, y: -1 })
+  fateStep = 999
+  displayFate = false
 
   // LIFECYCLE
   created(): void {
@@ -200,13 +203,11 @@ export default class Game extends Vue {
     this.simulation = new QuantumSimulation(this.level.grid)
     this.simulation.initializeFromLaser()
     this.simulation.computeFrames(40)
-    this.mutationSetFateCells([this.simulation.fate])
-    // Post-process simulation to create particle graph
-    this.multiverseGraph = new MultiverseGraph(this.simulation)
     // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions
     // Reset simulation variables
     this.frameIndex = 0
+    this.displayFate = false
     this.setEnergizedCells()
     this.mutationSetGameState(this.level.gameState.gameState)
     this.mutationSetSimulationState(false)
@@ -223,17 +224,17 @@ export default class Game extends Vue {
     return 'InProgress'
   }
 
-  /**
-   * Get fate from simulation random realization
-   * Display on the last frame of simulation, death then fate
-   */
-  get displayFate(): Cell {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
-      this.setEnergizedCellAtTheEnd()
-      return this.fateCells[0]
-    }
-    return Cell.createDummy({ x: -1, y: -1 })
-  }
+  // /**
+  //  * Get fate from simulation random realization
+  //  * Display on the last frame of simulation, death then fate
+  //  */
+  // get fateCoord(): Coord {
+  //   if (this.frameIndex === this.simulation.frames.length - 1) {
+  //     this.setEnergizedCellAtTheEnd()
+  //     return this.fateCoord
+  //   }
+  //   return Coord.importCoord({ x: -1, y: -1 })
+  // }
 
   /**
    * Set the energized cells from the simulation
@@ -248,8 +249,8 @@ export default class Game extends Vue {
    * Set the energized cells from the simulation
    */
   setEnergizedCellAtTheEnd(): void {
-    const coords = this.fateCells.map((fateCell) => fateCell.coord)
-    this.level.grid.setEnergized(coords)
+    this.displayFate = true
+    this.level.grid.setEnergized([this.fateCoord])
   }
 
   /**
@@ -304,8 +305,10 @@ export default class Game extends Vue {
    * Compute another fate for the simulation
    */
   computeNewFate(): void {
-    const newFate = this.simulation.fate
-    this.mutationSetFateCells([newFate])
+    const fate = this.simulation.sampleRandomRealization()
+    this.displayFate = false
+    this.fateCoord = fate.coord
+    this.fateStep = fate.step
   }
 
   /**
@@ -340,11 +343,15 @@ export default class Game extends Vue {
     this.computeNewFate()
     this.frameIndex = 0
     this.playInterval = setInterval(() => {
-      if (this.frameIndex < this.simulation.frames.length - 1) {
+      if (this.frameIndex < this.fateStep) {
         this.frameIndex += 1
       } else {
         this.mutationSetSimulationState(false)
+        this.setEnergizedCellAtTheEnd()
         clearInterval(this.playInterval)
+        setTimeout(() => {
+          this.updateSimulation()
+        }, 1000)
       }
     }, 200)
     this.mutationSetSimulationState(true)
