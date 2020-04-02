@@ -3,8 +3,11 @@
     <h3 class="title">
       {{ name }}
     </h3>
-    <p class="description">
+    <p v-if="description" class="description">
       {{ description }}
+    </p>
+    <p v-if="infoPayload.text" class="description">
+      {{ infoPayload.text }}
     </p>
     <p v-for="(particle, index) in infoPayload.particles" :key="`info-particle-${index}`">
       Intensity {{ (100 * particle.probability).toFixed(1) }}% at {{ particle.direction }}°
@@ -61,7 +64,7 @@ export default class GameActiveCell extends Vue {
       case 'particles':
         return ''
       case 'ui':
-        return this.infoPayload.text
+        return ''
       default:
         return ''
     }

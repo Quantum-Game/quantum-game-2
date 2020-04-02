@@ -27,7 +27,11 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
+        <game-toolbox
+          :toolbox="level.toolbox"
+          @updateCell="updateCell"
+          @hover="updateInfoPayload"
+        />
         <game-infobox :info-payload="infoPayload" />
       </section>
 

@@ -60,6 +60,7 @@ export default class GameToolbox extends Vue {
 
   handleMouseEnter(cell: Cell): void {
     this.mutationSetHoveredCell(cell)
+    this.$emit('hover', { kind: 'element', cell, particles: [], text: 'Drag&drop on board.' })
   }
 
   handleCellDrop(cell: Cell): void {
