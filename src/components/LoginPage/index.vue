@@ -72,8 +72,7 @@ export default class Login extends Vue {
     rememberMe: true
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get error(): any {
+  get error(): null | Error {
     return $userStore.getters.error
   }
 

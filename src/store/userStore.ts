@@ -163,8 +163,9 @@ const userStore: StoreOptions<IUserState> = {
           commit('SET_ERROR', err.message)
         })
     },
-    SIGN_OUT() {
+    SIGN_OUT({ commit }) {
       auth.signOut().then(() => {
+        commit('SET_LOGGED_IN', false)
         router.replace({
           name: 'login'
         })
@@ -229,7 +230,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_ERROR', err.message)
           })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     UPDATE_LEVEL({ commit }, level) {
@@ -251,7 +252,7 @@ const userStore: StoreOptions<IUserState> = {
           commit('SET_ERROR', err.message)
         })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     FETCH_MY_LEVELS({ commit }) {
@@ -277,7 +278,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_ERROR', err.message)
           })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     FETCH_PUBLIC_LEVELS({ commit }) {
@@ -301,7 +302,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_ERROR', err.message)
           })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     MAKE_LEVEL_PUBLIC({ commit }, levelID) {
@@ -330,7 +331,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_ERROR', err.message)
           })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     MAKE_LEVEL_PRIVATE({ commit }, levelID) {
@@ -361,7 +362,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_ERROR', err.message)
           })
       } else {
-        console.log('You are not logged!')
+        console.log('You are not logged in!')
       }
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
