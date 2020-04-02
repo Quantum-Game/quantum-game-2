@@ -124,8 +124,8 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
 export default class Game extends Vue {
   level = Level.createDummy()
   @State('currentLevelID') currentLevelID!: number
-  @State('fateCells') fateCells!: Cell[]
-  @State('activeCell') activeCell!: Cell
+  @State('fateCells') fateCells!: Cell[] // this need to me removed ASASP
+  @State('activeCell') activeCell!: Cell // this need to me removed ASASP
   @State('gameState') gameState!: GameStateEnum
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
@@ -229,6 +229,7 @@ export default class Game extends Vue {
    */
   get displayFate(): Cell {
     if (this.frameIndex === this.simulation.frames.length - 1) {
+      this.setEnergizedCellAtTheEnd()
       return this.fateCells[0]
     }
     return Cell.createDummy({ x: -1, y: -1 })
@@ -239,9 +240,15 @@ export default class Game extends Vue {
    */
   setEnergizedCells(): void {
     this.level.grid.resetEnergized()
-    const coords = this.fateCells.map((fateCell) => {
-      return fateCell.coord
-    })
+    const coords = this.filteredAbsorptions.map((absorption) => absorption.coord)
+    this.level.grid.setEnergized(coords)
+  }
+
+  /**
+   * Set the energized cells from the simulation
+   */
+  setEnergizedCellAtTheEnd(): void {
+    const coords = this.fateCells.map((fateCell) => fateCell.coord)
     this.level.grid.setEnergized(coords)
   }
 
@@ -299,7 +306,6 @@ export default class Game extends Vue {
   computeNewFate(): void {
     const newFate = this.simulation.fate
     this.mutationSetFateCells([newFate])
-    this.setEnergizedCells()
   }
 
   /**
@@ -330,6 +336,8 @@ export default class Game extends Vue {
    * @returns void
    */
   play(): void {
+    this.level.grid.resetEnergized()
+    this.computeNewFate()
     this.frameIndex = 0
     this.playInterval = setInterval(() => {
       if (this.frameIndex < this.simulation.frames.length - 1) {
@@ -347,6 +355,7 @@ export default class Game extends Vue {
    *  @returns frameIndex
    */
   stepForward(): number {
+    this.level.grid.resetEnergized()
     const newframeIndex = this.frameIndex + 1
     if (newframeIndex > this.simulation.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...")

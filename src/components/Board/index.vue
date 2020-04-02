@@ -112,7 +112,7 @@ export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: Particle[]
   @Prop({ default: [] }) readonly pathParticles!: Particle[]
   @Prop({ default: [] }) readonly absorptions!: Absorption[]
-  @Prop({ default: 0 }) readonly frameIndex!: number  // dirty for classical vs quantum
+  @Prop({ default: 0 }) readonly frameIndex!: number // dirty for classical vs quantum
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   @State hoveredParticles!: Particle[]
