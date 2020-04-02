@@ -44,6 +44,7 @@
           :hints="hints"
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
+          :frame-index="frameIndex"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"

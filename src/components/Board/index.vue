@@ -11,7 +11,7 @@
       <board-dots :rows="grid.rows" :cols="grid.cols" />
 
       <!-- LASER PATH -->
-      <board-lasers :pathParticles="pathParticles" />
+      <board-lasers v-if="classicalView" :pathParticles="pathParticles" />
 
       <!-- FATE -->
       <g
@@ -112,11 +112,13 @@ export default class Board extends Vue {
   @Prop({ default: [] }) readonly particles!: Particle[]
   @Prop({ default: [] }) readonly pathParticles!: Particle[]
   @Prop({ default: [] }) readonly absorptions!: Absorption[]
+  @Prop({ default: 0 }) readonly frameIndex!: number  // dirty for classical vs quantum
   @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   @State hoveredParticles!: Particle[]
   @State hoveredCell!: Cell
   @State activeCell!: Cell
+  @State simulationState!: boolean
 
   tileSize = 64
   updatedTileSize = 64 // this is the actual, dynamic tile size
@@ -139,6 +141,10 @@ export default class Board extends Vue {
 
   beforeDestroy(): void {
     window.removeEventListener('resize', this.assessSize)
+  }
+
+  get classicalView(): boolean {
+    return this.frameIndex === 0 && !this.simulationState
   }
 
   /**
