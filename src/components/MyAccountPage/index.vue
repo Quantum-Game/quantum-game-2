@@ -22,7 +22,7 @@
       >
     </div>
     <div slot="right">
-      <a @click.prevent="signOut"><app-button type="special"> Sign Out! </app-button></a>
+      <a @click.prevent="signOut"><app-button type="special"> Sign Out </app-button></a>
     </div>
   </app-layout>
 </template>
@@ -89,9 +89,17 @@ h1 {
   line-height: 150%;
   text-transform: uppercase;
 }
+h2 {
+  margin-top: 80px; 
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 150%;
+  // text-transform: uppercase;
+}
 p {
-  color: rgba(255, 255, 255, 0.7);
-  // line-height: 150%;
+  color: white;
+  font-size: 0.8rem;
 }
 .levels-progress {
   list-style: none;
