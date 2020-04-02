@@ -20,7 +20,6 @@
         </g>
         <app-cell
           :cell="cell"
-
           :available="isAvailable(cell)"
           :tool="true"
           @updateCell="updateCell"
