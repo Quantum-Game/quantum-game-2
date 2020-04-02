@@ -3,9 +3,29 @@
     <!-- SIMULATION CONTROLS -->
     <span class="playback">
       <!-- <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" /> -->
-      <button type="button" :style="computeBackStyle" @click="$emit('step-back')" />
-      <button id="play" type="button" :style="computePlayStyle" @click="$emit('play')" />
-      <button type="button" :style="computeForwardStyle" @click="$emit('step-forward')" />
+      <button
+        type="button"
+        :style="computeBackStyle"
+        @click="$emit('step-back')"
+        @mouseenter="
+          $emit('hover', { kind: 'ui', particles: [], text: 'Simulation: one step back.' })
+        "
+      />
+      <button
+        id="play"
+        type="button"
+        :style="computePlayStyle"
+        @click="$emit('play')"
+        @mouseenter="$emit('hover', { kind: 'ui', particles: [], text: 'Run the simulation.' })"
+      />
+      <button
+        type="button"
+        :style="computeForwardStyle"
+        @click="$emit('step-forward')"
+        @mouseenter="
+          $emit('hover', { kind: 'ui', particles: [], text: 'Simulation: the next step.' })
+        "
+      />
       <!-- <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" /> -->
     </span>
     <!-- FRAME INFO -->
@@ -15,14 +35,56 @@
     </span>
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
-      <button type="button" :style="computeReloadStyle" @click="$emit('reload')" />
-      <button type="button" :style="computeSoundStyle" @click="toggleSound" />
-      <button type="button" :style="computeDownloadStyle" @click="$emit('downloadLevel')" />
+      <button
+        type="button"
+        :style="computeReloadStyle"
+        @click="$emit('reload')"
+        @mouseenter="$emit('hover', { kind: 'ui', particles: [], text: 'Reset the level.' })"
+      />
+      <button
+        type="button"
+        :style="computeSoundStyle"
+        @click="toggleSound"
+        @mouseenter="
+          $emit('hover', {
+            kind: 'ui',
+            particles: [],
+            text: `Sound is ${soundFlag ? 'ON' : 'OFF'}`
+          })
+        "
+      />
+      <button
+        type="button"
+        :style="computeDownloadStyle"
+        @click="$emit('downloadLevel')"
+        @mouseenter="
+          $emit('hover', { kind: 'ui', particles: [], text: 'Download level as a JSON file.' })
+        "
+      />
 
-      <label for="fileUpload" :style="computeUploadStyle" class="upload"> </label>
+      <label
+        for="fileUpload"
+        :style="computeUploadStyle"
+        class="upload"
+        @mouseenter="
+          $emit('hover', { kind: 'ui', particles: [], text: 'Load level from a JSON file.' })
+        "
+      >
+      </label>
       <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
 
-      <button type="button" :style="computeSaveStyle" @click="handleSave()" />
+      <button
+        type="button"
+        :style="computeSaveStyle"
+        @click="handleSave()"
+        @mouseenter="
+          $emit('hover', {
+            kind: 'ui',
+            particles: [],
+            text: 'Save level to the cloud (you need to be logged in).'
+          })
+        "
+      />
     </span>
   </div>
 </template>
