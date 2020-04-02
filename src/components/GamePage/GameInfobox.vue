@@ -1,0 +1,107 @@
+<template>
+  <div class="explanation">
+    <h3 class="title">
+      {{ name }}
+    </h3>
+    <p class="description">
+      {{ description }}
+    </p>
+    <p v-for="(particle, index) in infoPayload.particles" :key="`info-particle-${index}`">
+      Intensity {{ (100 * particle.probability).toFixed(1) }}% at {{ particle.direction }}°
+    </p>
+    <router-link v-if="infoPayload.kind === 'element'" :to="hyphenedElementEntryURL" class="link">
+      LEARN MORE
+    </router-link>
+  </div>
+</template>
+
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { IInfoPayload } from '@/mixins/gameInterfaces'
+import { camelCaseToDash } from '@/engine/Helpers'
+
+const spacedName = (name: string): string => {
+  const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
+  return name.replace(regexp, '$1$4 $2$3$5')
+}
+
+@Component
+export default class GameActiveCell extends Vue {
+  @Prop({
+    default: () => ({
+      kind: 'ui',
+      particles: [],
+      text: ''
+    })
+  })
+  readonly infoPayload!: IInfoPayload
+
+  /*
+    used at least twice, getter for convenience
+  */
+  get name(): string {
+    switch (this.infoPayload.kind) {
+      case 'element':
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return spacedName(this.infoPayload.cell!.element.name)
+      case 'particles':
+        return 'photon state'
+      case 'ui':
+        return 'HINT'
+      default:
+        return ''
+    }
+  }
+
+  get description(): string {
+    switch (this.infoPayload.kind) {
+      case 'element':
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return this.infoPayload.cell!.element.description
+      case 'particles':
+        return ''
+      case 'ui':
+        return this.infoPayload.text
+      default:
+        return ''
+    }
+  }
+
+  /*
+    Get entry url and use helper to convert it to dash
+  */
+  get hyphenedElementEntryURL(): string {
+    const addressName = camelCaseToDash(this.name)
+    return `/info/${addressName}`
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.explanation {
+  border-top: 1px solid white;
+  width: 100%;
+  text-align: left;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
+  & .title {
+    text-transform: uppercase;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    font-weight: 300;
+  }
+  & .description {
+    text-align: left;
+    font-size: 0.8rem;
+    line-height: 150%;
+  }
+  & .link {
+    color: #837e9b;
+    font-size: 0.8rem;
+    text-decoration: none;
+  }
+}
+</style>

@@ -165,9 +165,11 @@ export default class Board extends Vue {
     })
     if (cell !== this.hoveredCell && !cell.isVoid) {
       this.mutationSetHoveredCell(cell)
+      this.$emit('hover', { kind: 'element', cell, particles: [], text: '' })
     }
     if (particles.length > 0) {
       this.mutationSetHoveredParticles(particles)
+      this.$emit('hover', { kind: 'particles', particles, text: '' })
     }
   }
 

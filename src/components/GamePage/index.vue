@@ -28,13 +28,7 @@
       <!-- MAIN-LEFT -->
       <section slot="main-left">
         <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
-        <game-active-cell />
-        <!-- <game-photons :particles="activeFrame.particles" /> -->
-        <!-- <game-graph
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
-        /> -->
+        <game-infobox :info-payload="infoPayload" />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -49,6 +43,7 @@
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"
+          @hover="updateInfoPayload"
         />
         <game-controls
           :frame-index="frameIndex"
@@ -62,6 +57,7 @@
           @reload="reload"
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
+          @hover="updateInfoPayload"
         />
       </section>
 
@@ -84,6 +80,7 @@ import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
+import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
@@ -93,7 +90,7 @@ import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
-import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
+import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
 import GamePhotons from '@/components/GamePage/GamePhotons.vue'
@@ -110,7 +107,7 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
     GamePhotons,
     KetViewer,
     GameGoals,
-    GameActiveCell,
+    GameInfobox,
     GameToolbox,
     GameGraph,
     GameControls,
@@ -136,6 +133,11 @@ export default class Game extends Vue {
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
+  infoPayload: IInfoPayload = {
+    kind: 'ui',
+    particles: [],
+    text: 'Hover on a element for more information.'
+  }
 
   // LIFECYCLE
   created(): void {
@@ -178,6 +180,10 @@ export default class Game extends Vue {
     }
     // Process simulation
     this.updateSimulation()
+  }
+
+  updateInfoPayload(infoPayload: IInfoPayload): void {
+    this.infoPayload = infoPayload
   }
 
   /**
