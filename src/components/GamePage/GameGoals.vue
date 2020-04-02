@@ -68,10 +68,10 @@
       </span>
       <div>
         <span v-if="gameState.safeFlag" class="success">
-          <p>SAFE</p>
+          <p>{{ textRiskSafe }}</p>
         </span>
         <span v-else class="defeat">
-          <p>DANGER!</p>
+          <p>{{ textRiskDanger }}</p>
         </span>
       </div>
     </div>
@@ -108,6 +108,22 @@ export default class GameGoals extends Vue {
 
   get computeSafeClass(): string[] {
     return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons']
+  }
+
+  get textRiskSafe(): string {
+    if (this.gameState.safetyThreshold < 1e-6) {
+      return 'SAFE'
+    } else {
+      return `SAFEISH  (<${(100 * this.gameState.safetyThreshold).toFixed(1)}%)`
+    }
+  }
+
+  get textRiskDanger(): string {
+    if (this.gameState.safetyThreshold < 1e-6) {
+      return 'DANGER!'
+    } else {
+      return `PUT DANGER BELOW ${(100 * this.gameState.safetyThreshold).toFixed(1)}%`
+    }
   }
 
   /**

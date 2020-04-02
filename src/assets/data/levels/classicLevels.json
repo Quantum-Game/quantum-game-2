@@ -1323,15 +1323,8 @@
       ]
     },
     "hints": [],
-    "goals": [
-      {
-        "coord": {
-          "y": 2,
-          "x": 10
-        },
-        "threshold": 0
-      }
-    ],
+    "goals": [],
+    "safetyThreshold": 0.01,
     "tools": ["Absorber", "Absorber", "Absorber", "Absorber", "Absorber", "Absorber", "Absorber"]
   },
 
