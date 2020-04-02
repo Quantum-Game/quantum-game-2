@@ -3,7 +3,7 @@
     <h1 class="title">{{ title }}</h1>
     <component :is="customContent" v-if="customContent" class="image" />
     <rock-talk v-if="rt" :dialogue="rt.dialogue" :type="rt.type" />
-    <router-link class="button-next" :to="nextLevel">
+    <router-link v-if="this.currentLevelID != '31'" class="button-next" :to="nextLevel">
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
     </router-link>
   </div>
