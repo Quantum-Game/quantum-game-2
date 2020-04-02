@@ -23,7 +23,8 @@ export const postLevelOverlayMapping: {
   [key: number]: string
 } = {
   4: 'superposition',
-  6: 'interference'
+  6: 'interference',
+  31: 'end'
 }
 
 /**
