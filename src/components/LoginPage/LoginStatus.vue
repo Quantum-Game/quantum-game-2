@@ -64,6 +64,9 @@ export default class LoginStatus extends Vue {
   top: 0;
   margin-right: 20px;
   margin-top: 10px;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 }
 p {
   color: white;
