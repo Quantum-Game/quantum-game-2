@@ -13,7 +13,6 @@
     >
       <g :class="computeClass(cell)">
         <g>
-          <rect :width="64" :height="64" class="tool-rect" />
           <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
           <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
           <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
@@ -21,6 +20,7 @@
         </g>
         <app-cell
           :cell="cell"
+
           :available="isAvailable(cell)"
           :tool="true"
           @updateCell="updateCell"
