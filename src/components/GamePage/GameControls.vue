@@ -30,8 +30,7 @@
     </span>
     <!-- FRAME INFO -->
     <span class="frameInfo">
-      <b>STEP {{ frameIndex + 1 }} / {{ totalFrames }}</b>
-      <span class="gameState">({{ gameState }})</span>
+      <span class="gameState">{{ displayStatus }}</span>
     </span>
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
@@ -101,6 +100,7 @@ export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number
   @Prop() readonly totalFrames!: number
+  @Prop({ default: '' }) readonly displayStatus!: string
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
   soundFlag = false
@@ -328,8 +328,9 @@ button {
   }
 }
 .gameState {
-  font-size: 0.75rem;
+  font-size: 1rem;
   padding-left: 10px;
+  text-transform: uppercase;
 }
 
 input[type='file'] {
