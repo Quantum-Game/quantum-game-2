@@ -1582,6 +1582,397 @@
 
   {
     "id": 16,
+    "name": "Make it all pass",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": { "y": 2, "x": 0 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": { "y": 2, "x": 3 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 2, "x": 7 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 2, "x": 10 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 3 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 7 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 2, "x": 12 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 0 },
+          "element": "Detector",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 12 },
+          "element": "Mirror",
+          "rotation": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 4, "x": 0 },
+        "threshold": 1
+      }
+    ],
+    "tools": [
+      "SugarSolution",
+      "SugarSolution",
+      "SugarSolution",
+      "SugarSolution",
+      "SugarSolution",
+      "SugarSolution",
+      "SugarSolution"
+    ]
+  },
+
+  {
+    "id": 17,
+    "name": "Apples to apples",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": { "y": 1, "x": 1 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": { "y": 1, "x": 4 },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 1, "x": 5 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 1, "x": 7 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 4 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 5 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 9 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 11 },
+          "element": "Detector",
+          "rotation": 180,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 6, "x": 7 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 6, "x": 9 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 6, "x": 11 },
+          "element": "Detector",
+          "rotation": 180,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 4, "x": 11 },
+        "threshold": 0.5
+      },
+      {
+        "coord": { "y": 6, "x": 11 },
+        "threshold": 0.5
+      }
+    ],
+    "tools": ["SugarSolution", "SugarSolution", "Mirror"]
+  },
+
+  {
+    "id": 18,
+    "name": "Three polarizers",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": { "y": 3, "x": 1 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 3 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 7 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 9 },
+          "element": "Detector",
+          "rotation": 180,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 3, "x": 9 },
+        "threshold": 1
+      }
+    ],
+    "tools": ["Polarizer"]
+  },
+
+  {
+    "id": 19,
+    "name": "Sugar recycling",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": { "y": 1, "x": 3 },
+          "element": "Mirror",
+          "rotation": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 1, "x": 4 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 1, "x": 6 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 6 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 7 },
+          "element": "Mirror",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 5, "x": 1 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": { "y": 5, "x": 2 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 5, "x": 6 },
+          "element": "Polarizer",
+          "rotation": 0,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 5, "x": 7 },
+          "element": "Mirror",
+          "rotation": 45,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 7, "x": 3 },
+          "element": "Polarizer",
+          "rotation": 270,
+          "polarization": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 9, "x": 3 },
+          "element": "Detector",
+          "rotation": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 9, "x": 3 },
+        "threshold": 1
+      }
+    ],
+    "tools": ["SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution", "SugarSolution"]
+  },
+
+  {
+    "id": 20,
     "name": "Polarizing beam splitter",
     "group": "Classic",
     "description": "",
@@ -1819,7 +2210,7 @@
   },
 
   {
-    "id": 17,
+    "id": 21,
     "name": "Optical Table Tennis",
     "group": "Classic",
     "description": "",
@@ -1946,7 +2337,7 @@
   },
 
   {
-    "id": 18,
+    "id": 22,
     "name": "Perpendicular are different",
     "group": "Classic",
     "description": "",
@@ -2063,7 +2454,7 @@
   },
 
   {
-    "id": 19,
+    "id": 23,
     "name": "The minefield of interference",
     "group": "Classic",
     "description": "",
@@ -2152,7 +2543,7 @@
   },
 
   {
-    "id": 20,
+    "id": 24,
     "name": "It can wait",
     "group": "Classic",
     "description": "",
@@ -2221,7 +2612,7 @@
   },
 
   {
-    "id": 21,
+    "id": 25,
     "name": "Sagnac-Michelson-Morley",
     "group": "Classic",
     "description": "",
@@ -2290,7 +2681,7 @@
   },
 
   {
-    "id": 22,
+    "id": 26,
     "name": "Sweet madness",
     "group": "Classic",
     "description": "",
@@ -2469,7 +2860,7 @@
   },
 
   {
-    "id": 23,
+    "id": 27,
     "name": "Interfrenzy",
     "group": "Classic",
     "description": "",
@@ -2554,7 +2945,7 @@
   },
 
   {
-    "id": 24,
+    "id": 28,
     "name": "Faraday and mirrors",
     "group": "Classic",
     "description": "",
@@ -2624,7 +3015,76 @@
   },
 
   {
-    "id": 25,
+    "id": 29,
+    "name": "You shouldnt look back",
+    "group": "Classic",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": { "y": 2, "x": 3 },
+          "element": "Mine",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 1 },
+          "element": "Laser",
+          "rotation": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 3 },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 9 },
+          "element": "BeamSplitter",
+          "rotation": 90,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 3, "x": 11 },
+          "element": "Detector",
+          "rotation": 180,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": { "y": 4, "x": 3 },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": { "y": 3, "x": 11 },
+        "threshold": 0.25
+      }
+    ],
+    "tools": ["FaradayRotator", "Polarizer"]
+  },
+
+  {
+    "id": 30,
     "name": "Sagnac twist",
     "group": "Classic",
     "description": "",
@@ -2726,7 +3186,7 @@
   },
 
   {
-    "id": 26,
+    "id": 31,
     "name": "Nine polarizing beam splitters",
     "group": "Classic",
     "description": "",
@@ -2872,7 +3332,7 @@
   },
 
   {
-    "id": 27,
+    "id": 32,
     "name": "One-way mirror",
     "group": "Classic",
     "description": "Wrong right beamsplitter",
@@ -2974,7 +3434,7 @@
   },
 
   {
-    "id": 28,
+    "id": 33,
     "name": "Sweet Faraday",
     "group": "Classic",
     "description": "Inverted Faraday rotation from classic",
@@ -3158,7 +3618,7 @@
   },
 
   {
-    "id": 29,
+    "id": 34,
     "name": "Cascade switches",
     "group": "Classic",
     "description": "",
@@ -3259,7 +3719,7 @@
   },
 
   {
-    "id": 30,
+    "id": 35,
     "name": "Interfering polarization",
     "group": "Classic",
     "description": "",
@@ -3365,7 +3825,7 @@
   },
 
   {
-    "id": 31,
+    "id": 36,
     "name": "A bit of a lot",
     "group": "Classic",
     "description": "",
@@ -3480,7 +3940,7 @@
   },
 
   {
-    "id": 32,
+    "id": 37,
     "name": "To be continued",
     "group": "Classic",
     "description": "",
