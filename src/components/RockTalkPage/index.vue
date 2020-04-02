@@ -1,7 +1,7 @@
 <template>
   <div class="inter-level-overlay">
     <h1 class="title">{{ title }}</h1>
-    <component :is="customContent" v-if="customContent" class="image"/>
+    <component :is="customContent" v-if="customContent" class="image" />
     <rock-talk v-if="rt" :dialogue="rt.dialogue" :type="rt.type" />
     <router-link class="button-next" :to="nextLevel">
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
