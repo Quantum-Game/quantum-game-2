@@ -2,15 +2,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
+import { Module } from 'vuex'
 import { IUserState } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
+import { IRootState } from '@/types'
 
-Vue.use(Vuex)
-
-const userStore: StoreOptions<IUserState> = {
+const userModule: Module<IUserState, IRootState> = {
+  namespaced: true,
   state: {
     user: {
       loggedIn: false,
@@ -383,4 +382,4 @@ const userStore: StoreOptions<IUserState> = {
   }
 }
 
-export default new Vuex.Store<IUserState>(userStore)
+export default userModule

@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
-import $userStore from '@/store/userStore'
+import store from '@/store/store'
 
 const firebaseConfig = {
   apiKey: `${process.env.VUE_APP_Api_Key}`,
@@ -19,7 +19,7 @@ const db = firebase.firestore()
 const auth = firebase.auth()
 auth.onAuthStateChanged((user) => {
   if (user) {
-    $userStore.dispatch('FETCH_USER', user)
+    store.dispatch('userModule/FETCH_USER', user)
   }
 })
 export { db, auth }

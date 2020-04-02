@@ -6,15 +6,15 @@
       </h1>
       <p>Login with your social account</p>
       <div class="social-login">
-        <div class="social-login__btn social-login__gh" @click="signInGithub">Github</div>
-        <div class="social-login__btn social-login__fb " @click="signInFacebook">
+        <div class="social-login__btn social-login__gh" @click="actionSignInGithub">Github</div>
+        <div class="social-login__btn social-login__fb " @click="actionSignInFacebook">
           Facebook
         </div>
-        <div class="social-login__btn social-login__g" @click="signInGoogle">Google</div>
+        <div class="social-login__btn social-login__g" @click="actionSignInGoogle">Google</div>
       </div>
       <p class="separator">or</p>
-      <div v-if="error" class="alert-error">{{ error }}</div>
-      <form class="email-login" action="#" @submit.prevent="signIn">
+      <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
+      <form class="email-login" action="#" @submit.prevent="actionSignIn(user)">
         <div class="email-login__email">
           <input
             id="email"
@@ -55,9 +55,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import $userStore from '@/store/userStore'
+import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+
+const user = namespace('userModule')
 
 @Component({
   components: {
@@ -66,30 +68,15 @@ import AppButton from '@/components/AppButton.vue'
   }
 })
 export default class Login extends Vue {
+  @user.Action('SIGN_IN') actionSignIn!: Function
+  @user.Action('SIGN_IN_GITHUB') actionSignInGithub!: Function
+  @user.Action('SIGN_IN_FACEBOOK') actionSignInFacebook!: Function
+  @user.Action('SIGN_IN_GOOGLE') actionSignInGoogle!: Function
+  @user.Getter('error') moduleGetterError!: string | null
   user: {} = {
     email: '',
     password: '',
     rememberMe: true
-  }
-
-  get error(): null | Error {
-    return $userStore.getters.error
-  }
-
-  signIn(): void {
-    $userStore.dispatch('SIGN_IN', this.user)
-  }
-
-  signInGithub(): void {
-    $userStore.dispatch('SIGN_IN_GITHUB')
-  }
-
-  signInFacebook(): void {
-    $userStore.dispatch('SIGN_IN_FACEBOOK')
-  }
-
-  signInGoogle(): void {
-    $userStore.dispatch('SIGN_IN_GOOGLE')
   }
 }
 </script>

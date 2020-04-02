@@ -139,6 +139,8 @@ export default class Game extends Vue {
 
   // LIFECYCLE
   created(): void {
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAa')
+    console.log(this.$route.params.levelsaved)
     this.loadLevel()
     this.mutationSetCurrentLevelID(this.levelId)
     window.addEventListener('keyup', this.handleArrowPress)
@@ -468,6 +470,10 @@ export default class Game extends Vue {
   saveLevelToStore(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     localStorage.setItem(this.currentLevelName, currentStateJSONString)
+  }
+
+  saveGridToFirebase(): void {
+    this.$store.dispatch('userModule/SAVE_LEVEL', this.$store.state)
   }
 
   clearLS(): void {

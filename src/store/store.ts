@@ -16,6 +16,7 @@ import {
 } from './mutation-types'
 import optionsModule from './optionsModule'
 import { GameStateEnum } from '@/engine/interfaces'
+import userModule from './userStore'
 
 const initialCell = Cell.createDummy()
 const initialParticle = Particle.createDummy()
@@ -72,7 +73,8 @@ const store: StoreOptions<IRootState> = {
     }
   },
   modules: {
-    optionsModule
+    optionsModule,
+    userModule
   }
 }
 

@@ -4,8 +4,8 @@
       <h1>
         User Registration
       </h1>
-      <div v-if="error" class="alert-error">{{ error }}</div>
-      <form class="email-login" action="#" @submit.prevent="signUp">
+      <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
+      <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
         <div class="col-md-6">
           <input
             id="name"
@@ -55,9 +55,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import $userStore from '@/store/userStore'
+import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+
+const userStore = namespace('userModule')
 
 @Component({
   components: {
@@ -66,19 +68,13 @@ import AppButton from '@/components/AppButton.vue'
   }
 })
 export default class Register extends Vue {
+  @userStore.Getter('error') moduleGetterError!: Error | null
+  @userStore.Action('SIGN_UP') actionSignUp!: Function
+
   user: {} = {
     email: '',
     password: '',
     name: ''
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get error(): any {
-    return $userStore.getters.error
-  }
-
-  signUp(): void {
-    $userStore.dispatch('SIGN_UP', this.user)
   }
 }
 </script>
