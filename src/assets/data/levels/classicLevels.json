@@ -3477,48 +3477,5 @@
       "VacuumJar",
       "PolarizingBeamSplitter"
     ]
-  },
-
-  {
-    "id": 32,
-    "name": "To be continued",
-    "group": "Classic",
-    "description": "",
-    "grid": {
-      "cols": 13,
-      "rows": 10,
-      "cells": [
-        {
-          "coord": { "y": 3, "x": 6 },
-          "element": "Rock",
-          "frozen": true,
-          "active": true,
-          "energized": false
-        },
-        {
-          "coord": { "y": 7, "x": 6 },
-          "element": "Laser",
-          "rotation": 90,
-          "polarization": 0,
-          "frozen": true,
-          "active": true,
-          "energized": false
-        }
-      ]
-    },
-    "hints": [
-      {
-        "coord": {
-          "y": 2,
-          "x": 6
-        },
-        "content": "THE END!",
-        "color": "purple",
-        "rotation": 0,
-        "active": true
-      }
-    ],
-    "goals": [],
-    "tools": []
   }
 ]
