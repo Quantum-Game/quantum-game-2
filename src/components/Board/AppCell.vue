@@ -215,7 +215,8 @@ export default class AppCell extends Mixins(Position) {
   handleCellClick(): void {
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
-      this.$emit('play', true)
+      // delay, otherwise it interferes with game state and energized are not updated
+      setTimeout(() => this.$emit('play', true), 100)
     } else if (
       // TOOLBOX LOGIC
       this.cell.frozen ||
