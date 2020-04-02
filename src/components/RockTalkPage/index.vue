@@ -1,9 +1,9 @@
 <template>
   <div class="inter-level-overlay">
     <h1 class="title">{{ title }}</h1>
-    <component :is="customContent" v-if="customContent" />
+    <component :is="customContent" v-if="customContent" class="image"/>
     <rock-talk v-if="rt" :dialogue="rt.dialogue" :type="rt.type" />
-    <router-link :to="nextLevel">
+    <router-link class="button-next" :to="nextLevel">
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
     </router-link>
   </div>
@@ -15,8 +15,10 @@ import { VueConstructor } from 'vue/types/vue'
 import { State } from 'vuex-class'
 import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
 import { getRockTalkById, IRockTalk } from '@/components/RockTalkPage/RTClient'
-import customOverlayExample from '@/components/RockTalkPage/CustomOverlayExample.vue'
+// import customOverlayExample from '@/components/RockTalkPage/CustomOverlayExample.vue'
 import AppButton from '@/components/AppButton.vue'
+import RockTalkSuperposition from '@/components/RockTalkPage/RockTalkSuperposition.vue'
+import RockTalkInterference from '@/components/RockTalkPage/RockTalkInterference.vue'
 
 type overlayListType = {
   [key: string]: VueConstructor<Vue>
@@ -31,7 +33,9 @@ type overlayListType = {
  * be altered as well.
  */
 const customOverlaysList: overlayListType = {
-  custom: customOverlayExample
+  // custom: customOverlayExample,
+  superposition: RockTalkSuperposition,
+  interference: RockTalkInterference
 }
 
 @Component({
@@ -94,12 +98,18 @@ export default class InterLevelOverlay extends Vue {
 
 <style lang="scss">
 .inter-level-overlay {
-  height: 40vh;
+  // height: 40vh;
   width: 40vw;
   color: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  // justify-content: space-between;
   align-items: center;
+}
+.image {
+  height: 70vh;
+}
+.button-next {
+  margin: 10px;
 }
 </style>
