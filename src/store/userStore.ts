@@ -22,7 +22,7 @@ const userModule: Module<IUserState, IRootState> = {
     progressArr: [],
     savedLevelsList: [],
     publicLevels: [],
-    fetchedLevel: undefined,
+    fetchedLevel: null,
     error: null
   },
   getters: {
@@ -86,6 +86,9 @@ const userModule: Module<IUserState, IRootState> = {
     },
     SET_FETCHED_LEVEL(state, payload) {
       state.fetchedLevel = payload
+    },
+    RESET_FETCHED_LEVEL(state) {
+      state.fetchedLevel = null
     }
   },
   actions: {
@@ -405,6 +408,9 @@ const userModule: Module<IUserState, IRootState> = {
         .catch((err) => {
           commit('SET_ERROR', err.message)
         })
+    },
+    CLEAR_LEVEL_DATA({ commit }) {
+      commit('RESET_FETCHED_LEVEL')
     }
   }
 }

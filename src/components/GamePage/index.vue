@@ -139,7 +139,8 @@ export default class Game extends Vue {
   @State('simulationState') simulationState!: boolean
   @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
   @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
-  @userModule.Action('GET_LEVEL_DATA') actionGetLevelData!: Function
+  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: Function
+  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: Function
   @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
@@ -219,13 +220,11 @@ export default class Game extends Vue {
 
     if (saved) {
       // 1) dispatch action for vuex to get the level
-      this.actionGetLevelData(this.$route.params.levelsaved)
+      this.actionGetLevelStoreData(this.$route.params.levelsaved)
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
           this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
             if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
-              console.log('MUTATION TOOK PLACE!')
-
               // 3) in case of a successful fetch,
               //    get substitute this.level with store data.
               if (rootState.userModule.fetchedLevel) {
@@ -233,6 +232,7 @@ export default class Game extends Vue {
                 this.level = Level.importLevel(fetchedLevelBoardObj)
                 this.setFirstToolAsHovered()
                 this.updateSimulation()
+                this.actionClearLevelStoreData()
               }
             }
           })
