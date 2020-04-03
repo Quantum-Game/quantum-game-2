@@ -1,8 +1,8 @@
 <template>
   <div v-if="shown" class="login-status">
     <router-link :to="to">
-      <app-button v-if="!isLoggedIn">Click here to log in</app-button>
-      <app-button v-else>Playing as {{ userName }}</app-button>
+      <app-button v-if="!moduleGetterIsLoggedIn">Click here to log in</app-button>
+      <app-button v-else>Playing as {{ moduleGetterUserName }}</app-button>
     </router-link>
   </div>
 </template>
