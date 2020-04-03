@@ -70,6 +70,7 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
           @hover="updateInfoPayload"
+          @saveLevel="handleSave"
         />
       </section>
 
@@ -90,8 +91,8 @@
 <script lang="ts">
 import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { State, Mutation } from 'vuex-class'
-import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
+import { State, Mutation, namespace } from 'vuex-class'
+import { IHint, GameStateEnum } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
@@ -112,6 +113,8 @@ import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
+
+const userModule = namespace('userModule')
 
 @Component({
   components: {
@@ -134,6 +137,10 @@ export default class Game extends Vue {
   @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
+  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
+  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
+  @userModule.Action('GET_LEVEL_DATA') actionGetLevelData!: Function
+  @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
@@ -155,6 +162,7 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
+  unsubscribe?: Function
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -168,8 +176,6 @@ export default class Game extends Vue {
 
   // LIFECYCLE
   created(): void {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAa')
-    console.log(this.$route.params.levelsaved)
     this.loadLevel()
     this.mutationSetCurrentLevelID(this.levelId)
     window.addEventListener('keyup', this.handleArrowPress)
@@ -177,6 +183,9 @@ export default class Game extends Vue {
 
   beforeDestroy(): void {
     window.removeEventListener('keyup', this.handleArrowPress)
+    if (this.unsubscribe) {
+      this.unsubscribe()
+    }
   }
 
   /**
@@ -193,23 +202,56 @@ export default class Game extends Vue {
   @Watch('$route')
   changeLevel(): void {
     this.mutationSetCurrentLevelID(this.levelId)
-    this.loadLevel(levels[this.levelId])
+    this.loadLevel()
   }
 
   /**
-   * Decoupling the level loading and the route changing
-   * Default to the route level
+   * Level Loading Logic
+   * @params none, the function evaluates which level should be loaded
+   * @returns nothing, function substitures this.level
+   * @remarks the 'saved' variable determines whether the level should
+   * be loaded out of app data, or fetched from db
    */
-  loadLevel(iLevel: ILevel = levels[this.levelId]): void {
+  loadLevel(): void {
     this.victoryAlreadyShown = false
     this.error = ''
-    this.level = Level.importLevel(iLevel)
-    // Set hovered cell as first element of toolbox
+    const saved = this.$route.meta.levelSaved
+
+    if (saved) {
+      // 1) dispatch action for vuex to get the level
+      this.actionGetLevelData(this.$route.params.levelsaved)
+        .then(() => {
+          // 2) subscribe to mutation triggered asynchronously
+          this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
+            if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
+              console.log('MUTATION TOOK PLACE!')
+
+              // 3) in case of a successful fetch,
+              //    get substitute this.level with store data.
+              if (rootState.userModule.fetchedLevel) {
+                const fetchedLevelBoardObj = JSON.parse(this.moduleGetterFetchedBoardState)
+                this.level = Level.importLevel(fetchedLevelBoardObj)
+                this.setFirstToolAsHovered()
+                this.updateSimulation()
+              }
+            }
+          })
+        })
+        .catch((error: Error) => {
+          this.error = error.message
+        })
+    } else {
+      this.level = Level.importLevel(levels[this.levelId])
+      this.setFirstToolAsHovered()
+      this.updateSimulation()
+    }
+  }
+
+  // Set hovered cell as first element of toolbox
+  setFirstToolAsHovered(): void {
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0])
     }
-    // Process simulation
-    this.updateSimulation()
   }
 
   updateInfoPayload(infoPayload: IInfoPayload): void {
@@ -513,14 +555,25 @@ export default class Game extends Vue {
     this.updateSimulation()
   }
 
-  // Used to store in local storage the current state of the game
+  /**
+   * Utilized by updateCell to keep level in localStorage
+   */
   saveLevelToStore(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     localStorage.setItem(this.currentLevelName, currentStateJSONString)
   }
 
-  saveGridToFirebase(): void {
-    this.$store.dispatch('userModule/SAVE_LEVEL', this.$store.state)
+  /**
+   * Actual 'save' button handling
+   */
+  handleSave(): void {
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel())
+    const newState = { ...this.$store.state, boardState: currentStateJSONString }
+    if (!this.$route.meta.levelSaved) {
+      this.actionSaveLevel(newState)
+    } else {
+      this.actionUpdateLevel(newState)
+    }
   }
 
   clearLS(): void {

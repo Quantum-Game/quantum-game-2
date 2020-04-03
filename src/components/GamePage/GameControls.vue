@@ -273,20 +273,8 @@ export default class GameControls extends Vue {
     }
   }
 
-  saveLevel(): void {
-    this.actionSaveLevel(this.$store.state)
-  }
-
-  updateLevel(): void {
-    this.actionUpdateLevel(this.$store.state)
-  }
-
   handleSave(): void {
-    if (!this.$route.meta.levelSaved) {
-      this.saveLevel()
-    } else {
-      this.updateLevel()
-    }
+    this.$emit('saveLevel')
   }
 
   handleAccount(): void {

@@ -22,6 +22,7 @@ const userModule: Module<IUserState, IRootState> = {
     progressArr: [],
     savedLevelsList: [],
     publicLevels: [],
+    fetchedLevel: undefined,
     error: null
   },
   getters: {
@@ -45,6 +46,9 @@ const userModule: Module<IUserState, IRootState> = {
     },
     isLoggedIn(state) {
       return state.user.loggedIn
+    },
+    fetchedLevelBoardState(state) {
+      return state.fetchedLevel
     }
   },
   mutations: {
@@ -79,6 +83,9 @@ const userModule: Module<IUserState, IRootState> = {
       state.savedLevelsList = state.savedLevelsList.filter(function(obj) {
         return obj.id !== payload
       })
+    },
+    SET_FETCHED_LEVEL(state, payload) {
+      state.fetchedLevel = payload
     }
   },
   actions: {
@@ -205,12 +212,14 @@ const userModule: Module<IUserState, IRootState> = {
       }
     },
     SAVE_LEVEL({ commit }, level) {
+      console.log(level)
       if (auth.currentUser) {
         const customLevel: any = {
           userId: auth.currentUser.uid,
           level: {
             currentLevelID: level.currentLevelID,
-            gameState: level.gameState
+            gameState: level.gameState,
+            boardState: level.boardState
           },
           public: false,
           createdAt: firebase.firestore.Timestamp.fromDate(new Date())
@@ -233,12 +242,14 @@ const userModule: Module<IUserState, IRootState> = {
       }
     },
     UPDATE_LEVEL({ commit }, level) {
+      console.log(level)
       if (auth.currentUser) {
         const customLevel: any = {
           userId: auth.currentUser.uid,
           level: {
             currentLevelID: level.currentLevelID,
-            gameState: level.gameState
+            gameState: level.gameState,
+            boardState: level.boardState
           },
           // created for firestore update test
           lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
@@ -374,6 +385,22 @@ const userModule: Module<IUserState, IRootState> = {
         .then(() => {
           commit('REMOVE_LEVEL', levelID)
           console.log('Level removed', levelID)
+        })
+        .catch((err) => {
+          commit('SET_ERROR', err.message)
+        })
+    },
+    GET_LEVEL_DATA({ commit }, savedLevelID) {
+      db.collection('levels')
+        .doc(savedLevelID)
+        .get()
+        .then((response) => {
+          const levelData = response.data()
+          if (levelData) {
+            commit('SET_FETCHED_LEVEL', levelData.level.boardState)
+          } else {
+            console.log('No Level Data Found!')
+          }
         })
         .catch((err) => {
           commit('SET_ERROR', err.message)

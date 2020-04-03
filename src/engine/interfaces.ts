@@ -13,6 +13,7 @@ export interface IUserState {
   progressArr: IProgressObj[]
   savedLevelsList: ISavedLevel[]
   publicLevels: IPublicLevel[]
+  fetchedLevel?: string
   error: null
 }
 
