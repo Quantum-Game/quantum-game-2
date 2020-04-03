@@ -101,6 +101,8 @@ export default class EncyclopediaBoard extends Vue {
   }
 
   created(): void {
+    // eslint-disable-next-line no-return-assign
+    this.grid.cells.forEach((cell) => (cell.tool = false))
     this.reset()
   }
 
