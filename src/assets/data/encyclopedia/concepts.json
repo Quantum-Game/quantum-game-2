@@ -2,12 +2,12 @@
   "amplitude": {
     "title": "Amplitude",
     "elementName": "Amplitude",
-    "short": "<p>Amplitude describes importance of a particular component of a wavefuction.</p>",
+    "short": "<p>Amplitude describes the importance of a particular component of a wavefunction.</p>",
     "grids": [],
     "sections": [
       {
         "title": "",
-        "content": "<p>Amplitude describes importance of a particular component of a wavefuction.</p>"
+        "content": "<p>Amplitude describes the importance of a particular component of a wavefunction.</p>"
       },
       {
         "title": "Digging Deeper",
@@ -35,6 +35,30 @@
       }
     ]
   },
+  "interference": {
+    "title": "Interference",
+    "elementName": "Interference",
+    "short": "<p>A phenomenon in which two waves superpose to form a resultant wave of greater, lower, or the same amplitude.</p>",
+    "grids": [],
+    "sections": [
+      {
+        "title": "",
+        "content": "<p>A phenomenon in which two waves superpose to form a resultant wave of greater, lower, or the same amplitude.</p>"
+      },
+      {
+        "title": "The basics",
+        "content": "<p>Constructive and destructive interference result from the interaction of waves that are correlated or coherent with each other, either because they come from the same source or because they have the same or nearly the same frequency. Interference effects can be observed with all types of waves, for example, light, radio, acoustic, surface.</p>"
+      },
+      {
+        "title": "Digging Deeper",
+        "content": "<p>TO DO:</p>"
+      },
+      {
+        "title": "Further Resources",
+        "content": "<ul><li><a href=\"https://www.khanacademy.org/science/physics/light-waves/interference-of-light-waves/v/youngs-double-split-part-1\">Young's double slit introduction</a></li><li><a href=\"https://en.wikipedia.org/wiki/Wave_interference\">Wave interference</a></li></ul>"
+      }
+    ]
+  },
   "polarization": {
     "title": "Polarization",
     "elementName": "Polarization",
@@ -54,16 +78,20 @@
   "superposition": {
     "title": "Superposition",
     "elementName": "Superposition",
-    "short": "<p>.....</p>",
+    "short": "<p>It is the ability of a quantum system to be in multiple states at the same time until measured.</p>",
     "grids": [],
     "sections": [
       {
         "title": "",
-        "content": "<p>.....</p>"
+        "content": "<p>It is the ability of a quantum system to be in multiple states at the same time until measured.</p>"
+      },
+      {
+        "title": "Digging Deeper",
+        "content": "<p>TO DO</p>"
       },
       {
         "title": "Further Resources",
-        "content": "..."
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Quantum_superposition\">Quantum Superposition</a></li><li><a href=\"https://en.wikipedia.org/wiki/Qubit\">Qubit</a></li></ul>"
       }
     ]
   },

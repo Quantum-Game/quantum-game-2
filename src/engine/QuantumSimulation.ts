@@ -3,7 +3,6 @@ import { Vector, Photons } from 'quantum-tensors'
 import { weightedRandomInt } from '@/engine/Helpers'
 import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
 import Coord from '@/engine/Coord'
-import Cell from '@/engine/Cell'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
 import Absorption from '@/engine/Absorption'
@@ -226,7 +225,8 @@ export default class QuantumSimulation {
   public sampleRandomRealization(): {
     statePerFrame: Photons[]
     probability: number
-    fate: Cell
+    step: number
+    coord: Coord
   } {
     // first, which frame
     const lastId = weightedRandomInt(this.totalAbsorptionPerFrame, false)
@@ -239,28 +239,14 @@ export default class QuantumSimulation {
     const absorption = lastFrameAbs[absorptionId]
     const states = this.frames.slice(0, lastId).map((frame): Photons => frame.photons.normalize())
 
-    // if particle escaped it has at least an adjacent cell inside grid
+    // TO FIX: should NOT use Coord object, just absorption.coord
     const coord = Coord.importCoord(absorption.coord)
-    let cell
-    if (this.grid.includes(coord)) {
-      cell = this.grid.get(coord)
-    } else {
-      // cell = this.grid.lastCellBeforeEscape(coord);
-      cell = Cell.createDummy({ x: -1, y: -1 })
-    }
 
     return {
       statePerFrame: states,
       probability: absorption.probability,
-      fate: cell
+      step: lastId,
+      coord: coord
     }
-  }
-
-  /**
-   * Compute particle detection path from sampleRandomRealization
-   * @returns fate cell
-   */
-  public get fate(): Cell {
-    return this.sampleRandomRealization().fate
   }
 }

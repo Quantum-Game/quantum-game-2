@@ -4,7 +4,12 @@
     <div class="hoverCell"></div>
 
     <!-- OVERLAY -->
-    <app-overlay :game-state="displayGameState" class="overlay" @click.native="frameIndex = 0">
+    <app-overlay
+      :game-state="overlayGameState"
+      :victory-already-shown="victoryAlreadyShown"
+      class="overlay"
+      @click.native="frameIndex = 0"
+    >
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -27,14 +32,12 @@
 
       <!-- MAIN-LEFT -->
       <section slot="main-left">
-        <game-toolbox :toolbox="level.toolbox" @updateCell="updateCell" />
-        <game-active-cell />
-        <!-- <game-photons :particles="activeFrame.particles" /> -->
-        <!-- <game-graph
-          :multiverse="multiverseGraph"
-          :active-id="frameIndex"
-          @changeActiveFrame="handleChangeActiveFrame"
-        /> -->
+        <game-toolbox
+          :toolbox="level.toolbox"
+          @updateCell="updateCell"
+          @hover="updateInfoPayload"
+        />
+        <game-infobox :info-payload="infoPayload" />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -42,17 +45,21 @@
         <game-board
           :particles="particles"
           :path-particles="pathParticles"
-          :fate="displayFate"
+          :fate="fateCoord"
+          :display-fate="displayFate"
           :hints="hints"
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
+          :frame-index="frameIndex"
           @updateSimulation="updateSimulation"
           @updateCell="updateCell"
           @play="play"
+          @hover="updateInfoPayload"
         />
         <game-controls
           :frame-index="frameIndex"
           :total-frames="simulation.frames.length"
+          :display-status="displayStatus"
           @rewind="rewind"
           @step-back="stepBack"
           @play="play"
@@ -62,6 +69,7 @@
           @reload="reload"
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
+          @hover="updateInfoPayload"
         />
       </section>
 
@@ -84,7 +92,8 @@ import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation } from 'vuex-class'
 import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
-import { Cell, Grid, Level, Particle } from '@/engine/classes'
+import { IInfoPayload } from '@/mixins/gameInterfaces'
+import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
@@ -93,7 +102,7 @@ import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
 import GameGoals from '@/components/GamePage/GameGoals.vue'
-import GameActiveCell from '@/components/GamePage/GameActiveCell.vue'
+import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
 import GamePhotons from '@/components/GamePage/GamePhotons.vue'
@@ -110,7 +119,7 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
     GamePhotons,
     KetViewer,
     GameGoals,
-    GameActiveCell,
+    GameInfobox,
     GameToolbox,
     GameGraph,
     GameControls,
@@ -122,20 +131,40 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
 export default class Game extends Vue {
   level = Level.createDummy()
   @State('currentLevelID') currentLevelID!: number
-  @State('fateCells') fateCells!: Cell[]
-  @State('activeCell') activeCell!: Cell
+  @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
+  @State('simulationState') simulationState!: boolean
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
   frameIndex = 0
   simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
   multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
+  infoPayload: IInfoPayload = {
+    kind: 'ui',
+    particles: [],
+    text: 'Hover on a element for more information.'
+  }
+
+  fateCoord = Coord.importCoord({ x: -1, y: -1 })
+  fateStep = 999
+  displayFate = false
+  victoryAlreadyShown = false
+  showVictory = false
+
+  get displayStatus(): string {
+    if (this.simulationState) {
+      return 'Quantum simulation (live)' // (each time a random outcome)
+    } else if (this.frameIndex > 0) {
+      return 'Quantum simulation (step-by-step)'
+    } else {
+      return 'Classical laser beam' // (still with polarization & interference)
+    }
+  }
 
   // LIFECYCLE
   created(): void {
@@ -172,6 +201,7 @@ export default class Game extends Vue {
    * Default to the route level
    */
   loadLevel(iLevel: ILevel = levels[this.levelId]): void {
+    this.victoryAlreadyShown = false
     this.error = ''
     this.level = Level.importLevel(iLevel)
     // Set hovered cell as first element of toolbox
@@ -180,6 +210,10 @@ export default class Game extends Vue {
     }
     // Process simulation
     this.updateSimulation()
+  }
+
+  updateInfoPayload(infoPayload: IInfoPayload): void {
+    this.infoPayload = infoPayload
   }
 
   /**
@@ -191,13 +225,11 @@ export default class Game extends Vue {
     this.simulation = new QuantumSimulation(this.level.grid)
     this.simulation.initializeFromLaser()
     this.simulation.computeFrames(40)
-    this.mutationSetFateCells([this.simulation.fate])
-    // Post-process simulation to create particle graph
-    this.multiverseGraph = new MultiverseGraph(this.simulation)
     // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions
     // Reset simulation variables
     this.frameIndex = 0
+    this.displayFate = false
     this.setEnergizedCells()
     this.mutationSetGameState(this.level.gameState.gameState)
     this.mutationSetSimulationState(false)
@@ -207,22 +239,11 @@ export default class Game extends Vue {
   /**
    * Launch overlay if it's the last frame and the player has a game state set
    */
-  get displayGameState(): string {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
+  get overlayGameState(): string {
+    if (this.frameIndex === this.fateStep) {
       return this.gameState
     }
     return 'InProgress'
-  }
-
-  /**
-   * Get fate from simulation random realization
-   * Display on the last frame of simulation, death then fate
-   */
-  get displayFate(): Cell {
-    if (this.frameIndex === this.simulation.frames.length - 1) {
-      return this.fateCells[0]
-    }
-    return Cell.createDummy({ x: -1, y: -1 })
   }
 
   /**
@@ -230,10 +251,16 @@ export default class Game extends Vue {
    */
   setEnergizedCells(): void {
     this.level.grid.resetEnergized()
-    const coords = this.fateCells.map((fateCell) => {
-      return fateCell.coord
-    })
+    const coords = this.filteredAbsorptions.map((absorption) => absorption.coord)
     this.level.grid.setEnergized(coords)
+  }
+
+  /**
+   * Set the energized cells from the simulation
+   */
+  setEnergizedCellAtTheEnd(): void {
+    this.displayFate = true
+    this.level.grid.setEnergized([this.fateCoord])
   }
 
   /**
@@ -288,9 +315,10 @@ export default class Game extends Vue {
    * Compute another fate for the simulation
    */
   computeNewFate(): void {
-    const newFate = this.simulation.fate
-    this.mutationSetFateCells([newFate])
-    this.setEnergizedCells()
+    const fate = this.simulation.sampleRandomRealization()
+    this.displayFate = false
+    this.fateCoord = fate.coord
+    this.fateStep = fate.step
   }
 
   /**
@@ -321,13 +349,31 @@ export default class Game extends Vue {
    * @returns void
    */
   play(): void {
+    if (this.simulationState) {
+      clearInterval(this.playInterval)
+      this.mutationSetSimulationState(false)
+      return
+    }
+    this.level.grid.resetEnergized()
+    this.computeNewFate()
     this.frameIndex = 0
     this.playInterval = setInterval(() => {
-      if (this.frameIndex < this.simulation.frames.length - 1) {
+      if (this.frameIndex < this.fateStep) {
         this.frameIndex += 1
       } else {
         this.mutationSetSimulationState(false)
+        this.setEnergizedCellAtTheEnd()
         clearInterval(this.playInterval)
+        if (!this.victoryAlreadyShown && this.gameState === GameStateEnum.Victory) {
+          setTimeout(() => {
+            // dirty hack
+            this.victoryAlreadyShown = true
+          }, 200)
+        } else {
+          setTimeout(() => {
+            this.updateSimulation()
+          }, 1000)
+        }
       }
     }, 200)
     this.mutationSetSimulationState(true)
@@ -338,6 +384,7 @@ export default class Game extends Vue {
    *  @returns frameIndex
    */
   stepForward(): number {
+    this.level.grid.resetEnergized()
     const newframeIndex = this.frameIndex + 1
     if (newframeIndex > this.simulation.frames.length - 1) {
       console.error("Can't access frames that are not computed yet...")

@@ -88,10 +88,12 @@ export default class Grid extends Cluster {
    * Energize the following list of cells
    */
   public setEnergized(coords: Coord[]): void {
-    coords.forEach((coord): void => {
-      const cell = this.get(coord)
-      cell.energized = true
-    })
+    coords
+      .filter((coord) => coord.x !== -1 && coord.y !== -1)
+      .forEach((coord): void => {
+        const cell = this.get(coord)
+        cell.energized = true
+      })
   }
 
   /**

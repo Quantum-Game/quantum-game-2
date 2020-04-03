@@ -1,8 +1,8 @@
 <template>
   <div v-if="shown" class="login-status">
-    <router-link :to="to">
-      <app-button v-if="!moduleGetterIsLoggedIn">Click here to log in</app-button>
-      <app-button v-else>Playing as {{ moduleGetterUserName }}</app-button>
+    <router-link :to="to" class="login-style">
+      <p v-if="!moduleGetterIsLoggedIn">LOG IN</p>
+      <p v-else>Playing as {{ moduleGetterUserName }}</p>
     </router-link>
   </div>
 </template>
@@ -37,7 +37,7 @@ export default class LoginStatus extends Vue {
    */
   get shown(): boolean {
     const { name } = this.$route
-    return name !== 'login' && name !== 'home'
+    return name !== 'login' && name !== 'home' && name !== 'rocks'
   }
 }
 </script>
@@ -48,6 +48,17 @@ export default class LoginStatus extends Vue {
   display: block;
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 0;
+  margin-right: 20px;
+  margin-top: 10px;
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
+}
+p {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 300;
+  text-transform: none;
 }
 </style>

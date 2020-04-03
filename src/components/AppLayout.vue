@@ -63,6 +63,7 @@ export default class AppLayout extends Vue {}
     &.right {
       width: 16%;
       padding: 50px 0 0 20px;
+      margin-top: 42px;
       text-transform: uppercase;
       text-align: left;
       color: white;

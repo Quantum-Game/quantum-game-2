@@ -8,8 +8,8 @@
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
-      :width="tileSize"
-      :height="tileSize"
+      :width="tileSize || 64"
+      :height="tileSize || 64"
       :class="computeRectClass"
       :style="computeRectStyle"
     />
@@ -107,18 +107,15 @@ const borderColors = {
 export default class AppCell extends Mixins(Position) {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
-  @Prop({ default: true }) readonly available!: boolean
+  @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @Mutation('SET_FATE_CELLS') mutationSetFateCells!: (cells: Cell[]) => void
-  @Mutation('RESET_FATE_CELLS') mutationResetFateCells!: (cells: Cell[]) => void
   @State simulationState!: string
   @State gameState!: GameStateEnum
   @State activeCell!: Cell
   @State cellSelected!: boolean
   @State hoveredCell!: Cell
-  @State fateCell!: Cell
   border = ''
   isRotate = false
 
@@ -215,10 +212,14 @@ export default class AppCell extends Mixins(Position) {
     window.removeEventListener('mouseup', this.dragEnd)
   }
 
+  /**
+   * This below is a monstrosity
+   */
   handleCellClick(): void {
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
-      this.$emit('play', true)
+      // delay, otherwise it interferes with game state and energized are not updated
+      setTimeout(() => this.$emit('play', true), 100)
     } else if (
       // TOOLBOX LOGIC
       this.cell.frozen ||
@@ -230,7 +231,7 @@ export default class AppCell extends Mixins(Position) {
       this.mutationResetActiveCell()
     } else {
       // ROTATE CELL
-      if (this.isActiveCell && this.cell.isFromGrid && this.isRotate) {
+      if (this.isActiveCell && !this.cell.isFromGrid && this.isRotate) {
         this.cell.rotate()
         this.isRotate = false
       }
@@ -261,10 +262,6 @@ export default class AppCell extends Mixins(Position) {
    */
   get isActiveCell(): boolean {
     return this.activeCell.equal(this.cell)
-  }
-
-  get isFateCell(): boolean {
-    return this.fateCell.equal(this.cell)
   }
 
   /**
@@ -298,6 +295,7 @@ export default class AppCell extends Mixins(Position) {
 
   /**
    * Computed class
+   * A fcking monstrosity
    */
   get computeCellClass(): string[] {
     return [

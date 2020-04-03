@@ -51,7 +51,7 @@ export default class Cell {
     frozen = false,
     active = false,
     energized = false,
-    tool = false
+    tool = true // dangerous, interferes with frozen
   ) {
     // super(coord.y, coord.x)
     this.coord = coord
@@ -215,7 +215,8 @@ export default class Cell {
       iCell.percentage,
       iCell.frozen,
       iCell.active,
-      iCell.energized
+      iCell.energized,
+      !iCell.frozen
     )
     return cell
   }

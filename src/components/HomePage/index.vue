@@ -7,7 +7,7 @@
       <app-button type="big">PLAY</app-button>
     </router-link>
     <p>
-      Version {{ version }} (alpha), based on a
+      Version {{ version }} (beta), based on a
       <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit
     </p>
     <div class="hello">
@@ -21,7 +21,9 @@
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
         <a href="https://github.com/Quantum-Game" target="_blank">GitHub</a>
-        and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>.
+        and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>. If you have any
+        comments, @ as at Twitter, create a GitHub Issue or simply
+        <a href="mailto:pmigdal+qg@gmail.com">email us</a>! :)
       </h1>
       <p>
         Quantum Game is currently being developed by
