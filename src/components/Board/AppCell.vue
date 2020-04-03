@@ -107,7 +107,7 @@ const borderColors = {
 export default class AppCell extends Mixins(Position) {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
-  @Prop({ default: true }) readonly available!: boolean
+  @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
@@ -212,6 +212,9 @@ export default class AppCell extends Mixins(Position) {
     window.removeEventListener('mouseup', this.dragEnd)
   }
 
+  /**
+   * This below is a monstrosity
+   */
   handleCellClick(): void {
     // START SIMULATION: Drilling to Game
     if (this.cell.isLaser && this.cell.frozen) {
@@ -228,7 +231,7 @@ export default class AppCell extends Mixins(Position) {
       this.mutationResetActiveCell()
     } else {
       // ROTATE CELL
-      if (this.isActiveCell && this.cell.isFromGrid && this.isRotate) {
+      if (this.isActiveCell && !this.cell.isFromGrid && this.isRotate) {
         this.cell.rotate()
         this.isRotate = false
       }
@@ -292,6 +295,7 @@ export default class AppCell extends Mixins(Position) {
 
   /**
    * Computed class
+   * A fcking monstrosity
    */
   get computeCellClass(): string[] {
     return [
