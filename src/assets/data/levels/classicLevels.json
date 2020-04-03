@@ -140,6 +140,17 @@
           "frozen": true,
           "active": false,
           "energized": false
+        },
+        {
+          "coord": {
+            "y": 8,
+            "x": 9
+          },
+          "element": "Rock",
+          "rotation": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
         }
       ]
     },
