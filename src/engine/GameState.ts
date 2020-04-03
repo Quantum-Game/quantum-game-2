@@ -6,16 +6,24 @@ import Cell from '@/engine/Cell'
 /**
  * GAME STATE CLASS
  * Computes the current game state from the goals and the absorptions.
+ * @todo VERY poor abstraction, should be rewritten
  */
 export default class GameState {
   public goals: Goal[]
   public mines: Cell[]
   public absorptions: Absorption[]
+  public safetyThreshold: number
 
-  public constructor(goals: Goal[], mines: Cell[] = [], absorptions: Absorption[] = []) {
+  public constructor(
+    goals: Goal[],
+    mines: Cell[] = [],
+    absorptions: Absorption[] = [],
+    safetyThreshold: number
+  ) {
     this.goals = goals
     this.mines = mines
     this.absorptions = absorptions
+    this.safetyThreshold = safetyThreshold
   }
 
   /**
@@ -120,7 +128,7 @@ export default class GameState {
    */
   public get minesHit(): Cell[] {
     return this.absorptions.filter((absorption): boolean => {
-      return absorption.cell.isMine
+      return absorption.probability > this.safetyThreshold && absorption.cell.isMine
     })
   }
 
