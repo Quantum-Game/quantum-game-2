@@ -7,6 +7,8 @@ const entriesDir = 'src/assets/qg-encyclopedia/elements/'
 const entriesTarget = 'src/assets/data/encyclopedia/elements.json'
 const relatedConceptsDir = 'src/assets/qg-encyclopedia/key-concepts/'
 const relatedConceptsTarget = 'src/assets/data/encyclopedia/concepts.json'
+const imgsPath =
+  'https://media.githubusercontent.com/media/Quantum-Game/qg-encyclopedia/master/imgs'
 
 const mdOptions = {
   html: true
@@ -123,14 +125,17 @@ function convertMarkdown(dir: string, target: string): {} {
         ) {
           // handle paragraph, depending whether short or sections content
           if (line.startsWith('<p>') && isFistParagraph) {
-            thisEntry.short += line
+            thisEntry.short += line.replace(/\.\.\/imgs/g, imgsPath)
           }
           if (thisEntry.sections[currentSectionNumber].content) {
             // if there are already contents for section, let's concatenate:
-            thisEntry.sections[currentSectionNumber].content += line
+            thisEntry.sections[currentSectionNumber].content += line.replace(
+              /\.\.\/imgs/g,
+              imgsPath
+            )
           } else {
             // if there is no content already, populate the 'contents' property:
-            thisEntry.sections[currentSectionNumber].content = line
+            thisEntry.sections[currentSectionNumber].content = line.replace(/\.\.\/imgs/g, imgsPath)
           }
           // in case the upcoming line marks a beginning of a new section,
           // make sure the section counter goes up:
