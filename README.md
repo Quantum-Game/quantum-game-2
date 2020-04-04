@@ -13,6 +13,8 @@ Quantum Game is currently being developed by dr [Piotr Migdał](https://p.migdal
 
 This version of the game was funded by the [Center for Quantum Technologies of the National University of Singapore](https://www.quantumlah.org/).
 
+![Quantum Game 2 logo](public\img\qg2_logo.png)
+
 The current version uses subcomponents:
 
 * [Quantum Tensors](https://github.com/Quantum-Game/quantum-tensors) - a JavaScript / TypeScript package for sparse tensor operations on complex numbers. It is an NPM package we created for this game, but made it in a way it is reusable.
@@ -37,7 +39,7 @@ And run it with:
 yarn serve
 ```
 
-![In-game screenshot from Quantum Game 2](public\img\qg2_social_media_screenshot.jpg)
+![In-game screenshot from Quantum Game 2](public\img\qg2_social_media_screenshot.png)
 
 ## Contribution
 
