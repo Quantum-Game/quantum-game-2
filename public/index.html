@@ -9,7 +9,24 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:300,700&display=swap"
       rel="stylesheet"
     />
-    <title>quantum</title>
+    <title><%= VUE_APP_TITLE %></title>
+    <meta name="description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta name="author" content="<%= VUE_APP_AUTHORS %>" />
+    <!-- Twitter stuff -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="<%= VUE_APP_MAIN_URL %>" />
+    <meta name="twitter:title" content="<%= VUE_APP_TITLE %>" />
+    <meta name="twitter:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta name="twitter:image" content="<%= BASE_URL %>/img/qg2_social_media_screenshot.jpg" />
+    <meta name="twitter:image:alt" content="<%= VUE_APP_IMG_ALT_TEXT %>" />
+    <meta name="twitter:site" content="<%= VUE_APP_TWITTER %>" />
+    <meta name="twitter:creator" content="<%= VUE_APP_TWITTER %>" />
+    <!-- Facebook stuff -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= VUE_APP_TITLE %>" />
+    <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta property="og:url" content="<%= VUE_APP_MAIN_URL %>" /> 
+    <meta property="og:image" content="%= VUE_APP_BASE_URL %>/img/qg2_social_media_screenshot.jpg" />
   </head>
 
   <body>
