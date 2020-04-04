@@ -37,6 +37,8 @@ And run it with:
 yarn serve
 ```
 
+![In-game screenshot from Quantum Game 2](public\img\qg2_social_media_screenshot.jpg)
+
 ## Contribution
 
 It as an open source project and we appreciate contributions.
