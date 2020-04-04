@@ -42,8 +42,8 @@ import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
 @Component({
   components: {
-    AppCell
-  }
+    AppCell,
+  },
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox

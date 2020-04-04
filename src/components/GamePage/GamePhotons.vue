@@ -29,8 +29,8 @@ import AppButton from '@/components/AppButton.vue'
 @Component({
   components: {
     AppPhoton,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[]

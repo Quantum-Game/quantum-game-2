@@ -3,8 +3,8 @@ module.exports = {
   semi: false,
   singleQuote: true,
   quoteProps: 'as-needed',
-  tailingComma: 'all',
+  trailingComma: 'es5',
   bracketSpacing: true,
   jsxBracketSameLine: false,
-  arrowParens: 'always'
+  arrowParens: 'always',
 }

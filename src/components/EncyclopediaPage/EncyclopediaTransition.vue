@@ -49,8 +49,8 @@ interface IXYVec {
 @Component({
   components: {
     EncyclopediaBoard,
-    MatrixViewer
-  }
+    MatrixViewer,
+  },
 })
 export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: 'Mirror' }) readonly elementName!: string
@@ -66,7 +66,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   initialState: IXYVec = {
     posX: 0,
     posY: 1,
-    vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H'])
+    vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H']),
   }
 
   $refs!: {
@@ -95,11 +95,11 @@ export default class EncyclopediaMatrixBoard extends Vue {
         is:
           this.operator.isCloseToUnitaryOnSubspace() &&
           !this.operator.isCloseToUnitary() &&
-          !this.operator.isCloseToZero()
+          !this.operator.isCloseToZero(),
       },
       { name: 'a projection', is: this.operator.isCloseToProjection() },
       { name: 'Hermitian', is: this.operator.isCloseToHermitian() },
-      { name: 'normal', is: this.operator.isCloseToNormal() }
+      { name: 'normal', is: this.operator.isCloseToNormal() },
     ]
   }
 
@@ -149,7 +149,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
     this.initialState = {
       posX: 1 - move.x,
       posY: 1 - move.y,
-      vecDirPol: vector
+      vecDirPol: vector,
     }
     this.boardIter += 1
   }

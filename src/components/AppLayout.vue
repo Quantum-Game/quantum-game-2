@@ -19,8 +19,8 @@ import AppMenu from '@/components/AppMenu.vue'
 
 @Component({
   components: {
-    AppMenu
-  }
+    AppMenu,
+  },
 })
 export default class AppLayout extends Vue {}
 </script>

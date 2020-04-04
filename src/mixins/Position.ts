@@ -10,7 +10,7 @@ export default class Position extends Vue {
   public tileSize!: number
   public coord = {
     x: 0,
-    y: 0
+    y: 0,
   }
 
   /**

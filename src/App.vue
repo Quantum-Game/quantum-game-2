@@ -11,8 +11,8 @@ import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
 
 @Component({
   components: {
-    LoginStatus
-  }
+    LoginStatus,
+  },
 })
 export default class App extends Vue {}
 </script>

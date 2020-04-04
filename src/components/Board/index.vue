@@ -98,8 +98,8 @@ import Absorption from '../../engine/Absorption'
     AppPhoton,
     BoardLasers,
     BoardDots,
-    SpeechBubble
-  }
+    SpeechBubble,
+  },
 })
 export default class Board extends Vue {
   @Prop() readonly grid!: Grid
@@ -121,7 +121,7 @@ export default class Board extends Vue {
   updatedTileSize = 64 // this is the actual, dynamic tile size
   boardHeight = 0
   scalerStyle = {
-    transform: `scale(1)`
+    transform: `scale(1)`,
   }
 
   $refs!: {
@@ -192,7 +192,7 @@ export default class Board extends Vue {
   assessSize(): void {
     const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
     this.scalerStyle = {
-      transform: `scale(${currentWidth / 845})`
+      transform: `scale(${currentWidth / 845})`,
     }
     setTimeout(() => {
       const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
@@ -218,7 +218,7 @@ export default class Board extends Vue {
    */
   computeFateStyle(): {} {
     return {
-      transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`
+      transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`,
     }
   }
 
@@ -228,7 +228,7 @@ export default class Board extends Vue {
   computeParticleStyle(particle: Particle): {} {
     return {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
-        this.tileSize}px)`
+        this.tileSize}px)`,
     }
   }
 

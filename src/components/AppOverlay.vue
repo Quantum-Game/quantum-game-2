@@ -22,8 +22,8 @@ Vue.use(VueConfetti)
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
@@ -63,8 +63,8 @@ export default class AppOverlay extends Vue {
         defaultSize: 8,
         particles: [
           {
-            dropRate: 15
-          }
+            dropRate: 15,
+          },
         ],
         defaultColors: [
           '#ffbb3b', // Q yellow
@@ -78,8 +78,8 @@ export default class AppOverlay extends Vue {
           '#ff0055', // Q red
           '#ff8b00', // orange 01
           '#ff5d15', // orange 02
-          '#ba00ff' // purple 02
-        ]
+          '#ba00ff', // purple 02
+        ],
       })
     } else if (newGameState === GameStateEnum.MineExploded) {
       this.mineExploding()

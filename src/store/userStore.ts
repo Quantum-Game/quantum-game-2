@@ -17,13 +17,13 @@ const userStore: StoreOptions<IUserState> = {
       rememberMe: true,
       data: {
         displayName: '',
-        email: ''
-      }
+        email: '',
+      },
     },
     progressArr: [],
     savedLevelsList: [],
     publicLevels: [],
-    error: null
+    error: null,
   },
   getters: {
     user(state) {
@@ -46,7 +46,7 @@ const userStore: StoreOptions<IUserState> = {
     },
     isLoggedIn(state) {
       return state.user.loggedIn
-    }
+    },
   },
   mutations: {
     SET_LOGGED_IN(state, payload) {
@@ -80,13 +80,13 @@ const userStore: StoreOptions<IUserState> = {
       state.savedLevelsList = state.savedLevelsList.filter(function(obj) {
         return obj.id !== payload
       })
-    }
+    },
   },
   actions: {
     SET_INITIAL_PROGRESS({ commit }) {
       commit('SET_PROGRESS', [
         { id: 1, status: 'solved', score: 150 },
-        { id: 2, status: 'no', score: 100 }
+        { id: 2, status: 'no', score: 100 },
       ])
     },
     FETCH_USER({ commit, dispatch }, user) {
@@ -98,7 +98,7 @@ const userStore: StoreOptions<IUserState> = {
         commit('SET_ERROR', null)
         commit('SET_USER', {
           displayName: user.displayName,
-          email: user.email
+          email: user.email,
         })
       } else {
         commit('SET_USER', null)
@@ -152,7 +152,7 @@ const userStore: StoreOptions<IUserState> = {
         .then((data) => {
           if (data.user) {
             data.user.updateProfile({
-              displayName: user.name
+              displayName: user.name,
             })
           }
         })
@@ -167,7 +167,7 @@ const userStore: StoreOptions<IUserState> = {
       auth.signOut().then(() => {
         commit('SET_LOGGED_IN', false)
         router.replace({
-          name: 'login'
+          name: 'login',
         })
       })
     },
@@ -211,10 +211,10 @@ const userStore: StoreOptions<IUserState> = {
           userId: auth.currentUser.uid,
           level: {
             currentLevelID: level.currentLevelID,
-            gameState: level.gameState
+            gameState: level.gameState,
           },
           public: false,
-          createdAt: firebase.firestore.Timestamp.fromDate(new Date())
+          createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
         }
 
         console.log(level)
@@ -239,10 +239,10 @@ const userStore: StoreOptions<IUserState> = {
           userId: auth.currentUser.uid,
           level: {
             currentLevelID: level.currentLevelID,
-            gameState: level.gameState
+            gameState: level.gameState,
           },
           // created for firestore update test
-          lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
+          lastModifed: firebase.firestore.Timestamp.fromDate(new Date()),
         }
         const levelSaved = router.currentRoute.params.levelsaved
 
@@ -267,7 +267,7 @@ const userStore: StoreOptions<IUserState> = {
               myLevels.push({
                 id: doc.id,
                 link: `/level/${doc.data().level.currentLevelID}/${doc.id}`,
-                public: doc.data().public
+                public: doc.data().public,
               })
             })
           })
@@ -291,7 +291,7 @@ const userStore: StoreOptions<IUserState> = {
           .then((querySnapshot) => {
             querySnapshot.forEach(function(doc) {
               publicLevels.push({
-                link: `/levels/shared/${doc.data().level.currentLevelID}/${doc.id}`
+                link: `/levels/shared/${doc.data().level.currentLevelID}/${doc.id}`,
               })
             })
           })
@@ -379,8 +379,8 @@ const userStore: StoreOptions<IUserState> = {
         .catch((err) => {
           commit('SET_ERROR', err.message)
         })
-    }
-  }
+    },
+  },
 }
 
 export default new Vuex.Store<IUserState>(userStore)

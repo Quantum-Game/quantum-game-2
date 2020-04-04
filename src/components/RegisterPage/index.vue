@@ -62,14 +62,14 @@ import AppButton from '@/components/AppButton.vue'
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class Register extends Vue {
   user: {} = {
     email: '',
     password: '',
-    name: ''
+    name: '',
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -59,7 +59,7 @@ export default class QuantumFrame {
           )
           return {
             amplitude: entry.value,
-            particleCoords
+            particleCoords,
           }
         }
       )
@@ -87,7 +87,7 @@ export default class QuantumFrame {
         ([x, y, op]): IDetection => {
           return {
             coord: { x, y },
-            probability: this.photons.measureAbsorptionAtOperator(x, y, op)
+            probability: this.photons.measureAbsorptionAtOperator(x, y, op),
           }
         }
       )
@@ -95,7 +95,7 @@ export default class QuantumFrame {
     if (this.probBefore - this.probPropagated > this.probThreshold) {
       this.absorptions.push({
         coord: { x: -1, y: -1 },
-        probability: this.probBefore - this.probPropagated
+        probability: this.probBefore - this.probPropagated,
       })
     }
     this.photons.actOnSinglePhotons(operatorList.map(([x, y, op]) => ({ x, y, op })))

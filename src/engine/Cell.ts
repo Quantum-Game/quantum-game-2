@@ -24,7 +24,7 @@ import {
   VacuumJar,
   Wall,
   Void,
-  PolarizingBeamSplitter
+  PolarizingBeamSplitter,
 } from '@/engine/Elements/index'
 /**
  * CELL CLASS
@@ -108,7 +108,7 @@ export default class Cell {
         x: this.coord.x,
         y: this.coord.y,
         direction: startingDirection(this.rotation),
-        polarization: startingPolarization(this.polarization)
+        polarization: startingPolarization(this.polarization),
       }
     }
     throw new Error(`Cannot create photon indicator from ${this.element.name}`)
@@ -195,7 +195,7 @@ export default class Cell {
       percentage: this.percentage,
       frozen: this.frozen,
       active: this.active,
-      energized: this.energized
+      energized: this.energized,
     }
   }
 
@@ -253,7 +253,7 @@ export default class Cell {
     const options: ITransition = {
       rotation: this.rotation,
       polarization: this.polarization,
-      percentage: this.percentage
+      percentage: this.percentage,
     }
     const transition = this.element.transition(options)
     return [this.coord.x, this.coord.y, transition]

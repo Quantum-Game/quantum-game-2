@@ -14,8 +14,8 @@ import $userStore from '@/store/userStore'
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class LoginStatus extends Vue {
   /**

@@ -48,8 +48,8 @@ import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTr
     AppButton,
     EncyclopediaArticleSection,
     EncyclopediaBoard,
-    EncyclopediaTransition
-  }
+    EncyclopediaTransition,
+  },
 })
 export default class EncyclopediaArticle extends Vue {
   entry: IEntry = {
@@ -57,7 +57,7 @@ export default class EncyclopediaArticle extends Vue {
     short: '',
     elementName: 'Mirror',
     grids: [],
-    sections: []
+    sections: [],
   }
 
   created(): void {

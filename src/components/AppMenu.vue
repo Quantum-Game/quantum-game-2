@@ -40,24 +40,24 @@ export default class AppMenu extends Vue {
   menuItems = [
     {
       name: 'LEVELS',
-      url: '/levels'
+      url: '/levels',
     },
     {
       name: 'LOGIN',
-      url: '/login'
+      url: '/login',
     },
     {
       name: 'SANDBOX',
-      url: '/sandbox'
+      url: '/sandbox',
     },
     {
       name: 'ENCYCLOPEDIA',
-      url: '/info'
+      url: '/info',
     },
     {
       name: 'OPTIONS',
-      url: '/options'
-    }
+      url: '/options',
+    },
   ]
 
   created(): void {
