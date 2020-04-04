@@ -8,6 +8,11 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
+import VueGtag from 'vue-gtag'
+
+Vue.use(VueGtag, {
+  config: { id: 'UA-56225776-1' }
+})
 
 @Component({
   components: {
