@@ -37,10 +37,12 @@ And run it with:
 yarn serve
 ```
 
+![In-game screenshot from Quantum Game 2](public\img\qg2_social_media_screenshot.jpg)
+
 ## Contribution
 
-It as an open source project and we appreciate contributions.
+It as an open-source project and we appreciate contributions.
 
 ## Issues
 
-Please report all errors using [Issues](https://github.com/Quantum-Game/quantum-game-2/issues). Please be explicit what is wrong, and what is the desired behavor. Screenshots do help a lot.
+Please report all errors using [Issues](https://github.com/Quantum-Game/quantum-game-2/issues). Please be explicit what is wrong, and what is the desired behavior. Screenshots do help a lot.
