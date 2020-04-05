@@ -11,7 +11,7 @@ import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
 import VueGtag from 'vue-gtag'
 
 Vue.use(VueGtag, {
-  config: { id: 'UA-56225776-1' }
+  config: { id: 'UA-56225776-1' },
 })
 
 @Component({
