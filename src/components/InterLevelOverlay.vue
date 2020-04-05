@@ -25,8 +25,8 @@ import Hint from '@/engine/Hint'
 
 @Component({
   components: {
-    SpeechBubble
-  }
+    SpeechBubble,
+  },
 })
 export default class InterLevelOverlay extends Vue {
   @Prop({ default: 'rock' }) readonly type!: string | undefined

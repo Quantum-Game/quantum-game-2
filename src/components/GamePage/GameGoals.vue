@@ -86,8 +86,8 @@ import AppCell from '@/components/Board/AppCell.vue'
 
 @Component({
   components: {
-    AppCell
-  }
+    AppCell,
+  },
 })
 export default class GameGoals extends Vue {
   @Prop() readonly gameState!: GameState
@@ -135,9 +135,9 @@ export default class GameGoals extends Vue {
       { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
       {
         value: this.gameState.totalGoalPercentage - this.tweenedPercent,
-        color: 'rgba(255, 255, 255, 0.1)'
+        color: 'rgba(255, 255, 255, 0.1)',
       },
-      { value: this.tweenedPercent, color: '#5D00D5' }
+      { value: this.tweenedPercent, color: '#5D00D5' },
     ]
   }
 

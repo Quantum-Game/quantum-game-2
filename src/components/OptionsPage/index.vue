@@ -29,8 +29,8 @@ const options = namespace('optionsModule')
 
 @Component({
   components: {
-    AppLayout
-  }
+    AppLayout,
+  },
 })
 export default class OptionsPage extends Vue {
   @options.Mutation(SET_GAME_SPEED_INTERVAL) mutationSetGameSpeedInterval!: (
@@ -45,8 +45,8 @@ export default class OptionsPage extends Vue {
       name: 'Game Speed',
       value: this.gameSpeedInterval,
       min: 100,
-      max: 2000
-    }
+      max: 2000,
+    },
   }
 
   /**

@@ -68,7 +68,7 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 
 @Component({
-  components: {}
+  components: {},
 })
 export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph
@@ -95,14 +95,14 @@ export default class GameGraph extends Vue {
     const { height } = this.graph.graph()
     return {
       height: `${height}px`,
-      'max-height': '500px'
+      'max-height': '500px',
     }
   }
 
   get computeNodeStyle(): {} {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2
     return {
-      transform: `translate(${xCenterOffset}px, 0px)`
+      transform: `translate(${xCenterOffset}px, 0px)`,
     }
   }
 

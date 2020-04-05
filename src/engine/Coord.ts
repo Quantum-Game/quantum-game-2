@@ -163,7 +163,7 @@ export default class Coord implements ICoord {
   public exportCoord(): ICoord {
     return {
       y: this.y,
-      x: this.x
+      x: this.x,
     }
   }
 

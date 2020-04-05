@@ -306,9 +306,9 @@ export default class Grid extends Cluster {
           element: Elem.Laser,
           rotation: 0,
           active: true,
-          frozen: true
-        }
-      ]
+          frozen: true,
+        },
+      ],
     }
   }
 
@@ -343,7 +343,7 @@ export default class Grid extends Cluster {
     return {
       cols: this.cols,
       rows: this.rows,
-      cells
+      cells,
     }
   }
 
@@ -364,7 +364,7 @@ export default class Grid extends Cluster {
     return {
       cols: this.cols,
       rows: this.rows,
-      cells
+      cells,
     }
   }
 }

@@ -164,7 +164,7 @@ export default class QuantumSimulation {
       .map(
         (absorptions): IAbsorption => ({
           coord: absorptions[0].coord,
-          probability: _.sumBy(absorptions, 'probability')
+          probability: _.sumBy(absorptions, 'probability'),
         })
       )
       .value()
@@ -246,7 +246,7 @@ export default class QuantumSimulation {
       statePerFrame: states,
       probability: absorption.probability,
       step: lastId,
-      coord: coord
+      coord: coord,
     }
   }
 }

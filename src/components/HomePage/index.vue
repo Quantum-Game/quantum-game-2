@@ -61,8 +61,8 @@ console.log('env', process.env)
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class HomePage extends Vue {
   version: string = process.env.VUE_APP_VERSION

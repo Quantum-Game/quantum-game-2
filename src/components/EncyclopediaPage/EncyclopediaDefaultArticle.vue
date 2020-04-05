@@ -119,7 +119,7 @@ import {
   GlassCell,
   VacuumJarCell,
   FaradayRotatorCell,
-  NonLinearCrystalCell
+  NonLinearCrystalCell,
 } from '@/components/Board/Cell/index'
 
 @Component({
@@ -144,8 +144,8 @@ import {
     GlassCell,
     VacuumJarCell,
     FaradayRotatorCell,
-    NonLinearCrystalCell
-  }
+    NonLinearCrystalCell,
+  },
 })
 export default class EncyclopediaDefaultArticle extends Vue {
   grid = Grid.dummyGrid(8, 13)
@@ -154,7 +154,7 @@ export default class EncyclopediaDefaultArticle extends Vue {
 
   moveTo(x: number, y: number): {} {
     return {
-      transform: `translate(${x * this.tileSize}px, ${y * this.tileSize}px)`
+      transform: `translate(${x * this.tileSize}px, ${y * this.tileSize}px)`,
     }
   }
 

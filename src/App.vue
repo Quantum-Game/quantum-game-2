@@ -16,8 +16,8 @@ Vue.use(VueGtag, {
 
 @Component({
   components: {
-    LoginStatus
-  }
+    LoginStatus,
+  },
 })
 export default class App extends Vue {}
 </script>

@@ -39,7 +39,7 @@ export default class Hint extends Coord {
       content: this.content,
       color: this.color,
       rotation: this.rotation,
-      active: this.active
+      active: this.active,
     }
   }
 

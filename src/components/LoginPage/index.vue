@@ -62,14 +62,14 @@ import AppButton from '@/components/AppButton.vue'
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class Login extends Vue {
   user: {} = {
     email: '',
     password: '',
-    rememberMe: true
+    rememberMe: true,
   }
 
   get error(): null | Error {

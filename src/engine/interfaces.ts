@@ -273,7 +273,7 @@ export enum Elem {
   FaradayRotator = 'FaradayRotator',
   // Phase
   Glass = 'Glass',
-  VacuumJar = 'VacuumJar'
+  VacuumJar = 'VacuumJar',
 }
 
 /**
@@ -306,7 +306,7 @@ export const enum ElemLower {
   FaradayRotator = 'faraday-rotator',
   // Phase
   Glass = 'glass',
-  VacuumJar = 'vacuum-jar'
+  VacuumJar = 'vacuum-jar',
 }
 
 /**
@@ -318,7 +318,7 @@ export const enum Group {
   Direction = 'Direction',
   Absorption = 'Absorption',
   Polarization = 'Polarization',
-  Phase = 'Phase'
+  Phase = 'Phase',
 }
 
 /**
@@ -332,7 +332,7 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.BeamSplitter,
     Elem.PolarizingBeamSplitter,
     Elem.CoatedBeamSplitter,
-    Elem.CornerCube
+    Elem.CornerCube,
   ],
   Absorption: [
     Elem.Gate,
@@ -341,10 +341,10 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.Mine,
     Elem.Absorber,
     Elem.DetectorFour,
-    Elem.Wall
+    Elem.Wall,
   ],
   Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
-  Phase: [Elem.Glass, Elem.VacuumJar]
+  Phase: [Elem.Glass, Elem.VacuumJar],
 }
 
 /**
@@ -352,7 +352,7 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
  */
 export const enum PolEnum {
   V = 'V',
-  H = 'H'
+  H = 'H',
 }
 
 /**
@@ -362,7 +362,7 @@ export const enum DirEnum {
   '>' = '>',
   '^' = '^',
   '<' = '<',
-  'v' = 'v'
+  'v' = 'v',
 }
 
 /**
@@ -377,5 +377,5 @@ export const enum GameStateEnum {
   // Defeat
   MineExploded = 'MineExploded',
   GoalsNotCompleted = 'GoalsNotCompleted',
-  ProbabilityTooLow = 'ProbabilityTooLow'
+  ProbabilityTooLow = 'ProbabilityTooLow',
 }

@@ -8,13 +8,13 @@ export interface IOptionsModule {
 }
 
 const defaultOptionsObj: IOptionsModule = {
-  gameSpeedInterval: 200
+  gameSpeedInterval: 200,
 }
 
 const optionsModule: Module<IOptionsModule, IRootState> = {
   namespaced: true,
   state: {
-    gameSpeedInterval: 1000
+    gameSpeedInterval: 1000,
   },
   mutations: {
     [SET_GAME_SPEED_INTERVAL](state, newInterval: number): void {
@@ -29,11 +29,11 @@ const optionsModule: Module<IOptionsModule, IRootState> = {
       Object.keys(state).forEach((optionName: string): void => {
         state[optionName.toString()] = newOptionsObject[optionName]
       })
-    }
+    },
   },
   getters: {
-    gameSpeedInterval: (state): number => state.gameSpeedInterval
-  }
+    gameSpeedInterval: (state): number => state.gameSpeedInterval,
+  },
 }
 
 export default optionsModule
