@@ -1,6 +1,6 @@
 {
   "name": "quantum-game",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "private": true,
   "license": "MIT",
   "scripts": {
