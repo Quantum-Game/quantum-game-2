@@ -8,7 +8,8 @@
     </router-link>
     <p>
       Version {{ version }} (beta), based on a
-      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit
+      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit.
+      For optimal experience, play PC (mobile version coming soon).
     </p>
     <div class="hello">
       <h1>
@@ -40,6 +41,7 @@
         This version of the game was funded by the
         <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
         of the National University of Singapore.
+        Read a CQT post on the game: <a href="https://www.quantumlah.org/about/highlight/2020-04-play-new-quantum-game" target="_blank">Ready to play the Quantum Game with Photons 2?</a>
       </p>
       <img src="@/assets/graphics/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
       <p>
