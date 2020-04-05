@@ -13,7 +13,7 @@ Quantum Game is currently being developed by dr [Piotr Migdał](https://p.migdal
 
 This version of the game was funded by the [Center for Quantum Technologies of the National University of Singapore](https://www.quantumlah.org/).
 
-![Quantum Game 2 logo](public\img\qg2_logo.png)
+![Quantum Game 2 logo](public/img/qg2_logo.png)
 
 The current version uses subcomponents:
 
@@ -39,7 +39,7 @@ And run it with:
 yarn serve
 ```
 
-![In-game screenshot from Quantum Game 2](public\img\qg2_social_media_screenshot.png)
+![In-game screenshot from Quantum Game 2](public/img/qg2_social_media_screenshot.png)
 
 ## Contribution
 
