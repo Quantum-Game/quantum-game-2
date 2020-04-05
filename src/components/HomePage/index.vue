@@ -16,7 +16,7 @@
         With true quantum mechanics underneath!
         <br />
       </h1>
-      <h1>
+      <p>
         Visit us on
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
@@ -24,7 +24,7 @@
         and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>. If you have any
         comments, @ as at Twitter, create a GitHub Issue or simply
         <a href="mailto:pmigdal+qg@gmail.com">email us</a>! :)
-      </h1>
+      </p>
       <p>
         Quantum Game is currently being developed by
         <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a>,
@@ -139,8 +139,7 @@ p {
   min-width: 1300px;
   position: center;
   height: 100px;
-  margin-top: 100px;
-  margin-bottom: 12vw;
+  margin-bottom: 8vw;
   align-items: center;
 }
 .CQTlogo {
