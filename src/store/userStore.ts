@@ -97,7 +97,7 @@ const userModule: Module<IUserState, IRootState> = {
         dispatch('GET_PROGRESS')
         dispatch('FETCH_MY_LEVELS')
         dispatch('FETCH_PUBLIC_LEVELS')
-        commit('RESET_ERROR', null, { root: true })
+        commit('RESET_ERRORS', null, { root: true })
         commit('SET_USER', {
           displayName: user.displayName,
           email: user.email,
