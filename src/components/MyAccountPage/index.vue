@@ -19,7 +19,10 @@
       </ul>
       <a @click.prevent="saveProgressToDB"
         ><app-button type="special"> Save data to Firestore!!! </app-button></a
-      >
+      ><br />
+      <router-link to="/savedlevels"
+        ><app-button type="special"> Savedlevels </app-button>
+      </router-link>
     </div>
     <div slot="right">
       <a @click.prevent="signOut"><app-button type="special"> Sign Out </app-button></a>
@@ -95,10 +98,6 @@ h2 {
   font-weight: 300;
   line-height: 150%;
   // text-transform: uppercase;
-}
-p {
-  color: white;
-  font-size: 0.8rem;
 }
 .levels-progress {
   list-style: none;
