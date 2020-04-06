@@ -92,16 +92,6 @@ export default class HomePage extends Vue {
   align-items: center;
   background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
   width: 100%;
-  h2 {
-    color: white;
-    font-size: 1.4rem;
-    font-weight: normal;
-    line-height: 150%;
-    margin-block-start: 0.67em;
-    margin-block-end: 0.67em;
-    margin-inline-start: 0px;
-    margin-inline-end: 0px;
-  }
   & a {
     width: 100%;
     & img {
@@ -114,14 +104,6 @@ h1 {
   font-size: 1.4rem;
   font-weight: normal;
   line-height: 150%;
-}
-h2 {
-  margin-top: 20px;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 150%;
-  text-transform: uppercase;
 }
 p {
   color: white;
@@ -153,26 +135,7 @@ p {
   padding-bottom: 10px;
   min-width: 250px;
 }
-.blog {
-  border-top: 1px solid white;
-  color: white;
-  font-size: 1rem;
-  font-weight: normal;
-  line-height: 150%;
-}
 
-h3 {
-  color: white;
-  text-align: left;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
 a {
   color: rgb(255, 181, 209);
   text-decoration: none;
@@ -185,50 +148,8 @@ a:hover {
   transition: all 0.6s;
 }
 
-input[type='email'] {
-  outline: none;
-  display: inline-block;
-  width: 60%;
-  padding: 10px;
-  background: none;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 1px solid white;
-  box-sizing: border-box;
-  color: white;
-  font-size: 1rem;
-  font-weight: normal;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  -o-box-sizing: border-box;
-  -ms-box-sizing: border-box;
-  margin-right: 20px;
-}
-
-input[type='email']:focus {
-  color: white;
-  font-family: Montserrat, Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  font-weight: normal;
-  border-top: none;
-  border-right: none;
-  border-left: none;
-  border-bottom: 1px solid white;
-}
-
 ::placeholder {
   color: white;
   font-family: Montserrat, Arial, Helvetica, sans-serif;
-}
-
-@media screen and (max-width: 736px) {
-  input[type='email'] {
-    color: white;
-    font-size: 1rem;
-    font-weight: normal;
-    display: block;
-    width: 100%;
-  }
 }
 </style>

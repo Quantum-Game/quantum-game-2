@@ -18,7 +18,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class RockTalkEnd extends Vue {}
 </script>
 
-<style>
+<style scoped>
 p {
   font-size: 1.2rem;
   line-height: 1;

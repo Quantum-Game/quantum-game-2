@@ -93,7 +93,7 @@ export default class InterLevelOverlay extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .inter-level-overlay {
   height: 100vh;
   width: 100vw;

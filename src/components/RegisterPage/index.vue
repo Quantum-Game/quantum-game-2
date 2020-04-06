@@ -144,10 +144,6 @@ input[type='password']:focus {
   width: 100%;
   align-items: center;
   margin-top: 25px;
-
-  button {
-    margin: 0 auto;
-  }
 }
 
 .alert-error {

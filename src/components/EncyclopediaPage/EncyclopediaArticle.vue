@@ -122,15 +122,6 @@ article {
     line-height: 1.5rem;
     letter-spacing: 0.5px;
   }
-  & .go-back {
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-  }
-  & p {
-    line-height: 2em;
-    text-align: left;
-  }
   @media screen and (max-width: 1000px) {
     width: 100vw;
     article {
@@ -151,22 +142,6 @@ h1 {
   border-bottom: 1px solid #8e819d;
   @media screen and (max-width: 1000px) {
     flex-direction: column;
-  }
-}
-.placeholder {
-  padding-top: 2rem;
-  width: 100%;
-  border-bottom: 1px solid #8e819d;
-  & .grid {
-    width: 100%;
-    margin: 0 auto 0rem;
-    height: 200px;
-    text-align: center;
-    padding-bottom: 4rem;
-    & span {
-      font-size: 1rem;
-      color: gold;
-    }
   }
 }
 </style>

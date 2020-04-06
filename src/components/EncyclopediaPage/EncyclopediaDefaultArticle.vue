@@ -169,11 +169,6 @@ export default class EncyclopediaDefaultArticle extends Vue {
 </script>
 
 <style lang="scss" scoped>
-a {
-  color: white;
-  text-align: left;
-  text-decoration: none;
-}
 h1 {
   font-size: 1.5rem;
   padding-top: 30px;
@@ -191,18 +186,7 @@ h1 {
   width: 100%;
 }
 
-img {
-  border-top: 1px solid white;
-  padding-top: 30px;
-  padding-bottom: 30px;
-}
-
 .default-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.entries {
   display: flex;
   flex-direction: column;
   align-items: center;

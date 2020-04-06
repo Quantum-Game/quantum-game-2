@@ -14,7 +14,7 @@ export interface IUserState {
   savedLevelsList: ISavedLevel[]
   publicLevels: IPublicLevel[]
   fetchedLevel: null
-  error: null
+  error?: null
 }
 
 interface IProgressObj {

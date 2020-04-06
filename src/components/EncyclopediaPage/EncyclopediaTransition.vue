@@ -207,17 +207,6 @@ export default class EncyclopediaMatrixBoard extends Vue {
       transition: 0.2s;
     }
   }
-  & .content-wrapper {
-    font-weight: lighter;
-    font-size: 1rem;
-    // max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    line-height: 1.3rem;
-    letter-spacing: 0.5px;
-    text-align: left;
-    line-height: 1.5em;
-  }
   @media screen and (max-width: 1000px) {
     padding-left: 20px;
   }

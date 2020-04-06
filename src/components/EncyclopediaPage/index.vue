@@ -45,16 +45,3 @@ export default class Info extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.upper-border {
-  border-top: 1px solid white;
-  text-align: left;
-  color: white;
-  text-decoration: none;
-  margin-top: 40px;
-  @media screen and (max-width: 1000px) {
-    display: none;
-  }
-}
-</style>

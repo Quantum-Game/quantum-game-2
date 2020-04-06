@@ -21,11 +21,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class RockTalkIntereference extends Vue {}
 </script>
 
-<style>
-h1 {
-  text-transform: uppercase;
-  font-size: 2rem;
-}
+<style scoped>
 p {
   font-size: 1rem;
   text-align: center;

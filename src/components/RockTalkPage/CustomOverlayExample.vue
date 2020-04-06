@@ -22,7 +22,7 @@ import { Vue, Component } from 'vue-property-decorator'
 export default class CustomOverlayExample extends Vue {}
 </script>
 
-<style>
+<style scoped>
 p {
   font-size: 1.2rem;
 }
@@ -40,27 +40,5 @@ a {
   /* width: 70%; */
   margin: 0px 6rem 2rem 6rem;
   min-width: 100px;
-}
-.rockhappyst0 {
-  clip-path: url(#SVGID_2_);
-}
-.rockhappyst1 {
-  fill: #615777;
-}
-.rockhappyst2 {
-  fill: #2f2549;
-}
-.rockhappyst3 {
-  fill: #120223;
-}
-.rockhappyst4 {
-  fill: #ffffff;
-}
-.rockhappyst5 {
-  fill: #5c00d3;
-}
-.rockhappyst6 {
-  opacity: 0.35;
-  fill: #ffffff;
 }
 </style>

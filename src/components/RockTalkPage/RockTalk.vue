@@ -99,7 +99,7 @@ export default class RockTalk extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .rock-talk {
   height: 100vh;
   width: 100vw;

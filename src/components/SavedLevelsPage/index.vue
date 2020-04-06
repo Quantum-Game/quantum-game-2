@@ -107,20 +107,11 @@ h1 {
   line-height: 150%;
   text-transform: uppercase;
 }
-p {
-  color: rgba(255, 255, 255, 0.7);
-  // line-height: 150%;
-}
 .levels-list {
   list-style: none;
   li {
     margin: 5px auto;
   }
-}
-.edit-level {
-  cursor: pointer;
-  border: 1px solid #fff;
-  margin: 10px;
 }
 .remove-btn {
   margin-right: 20px;
