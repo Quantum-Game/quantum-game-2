@@ -133,7 +133,6 @@ const userModule = namespace('userModule')
 })
 export default class Game extends Vue {
   level = Level.createDummy()
-  @State('currentLevelID') currentLevelID!: number
   @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
@@ -142,7 +141,7 @@ export default class Game extends Vue {
   @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: Function
   @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: Function
   @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
-  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
+  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: string) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
@@ -193,17 +192,28 @@ export default class Game extends Vue {
    * Parse url to extract level number
    * if missing then fallback to '0' for infinity level / sandbox
    */
-  get levelId(): number {
-    return parseInt(this.$route.params.id || '0', 10)
+  get levelId(): string {
+    return this.$route.params.id || '0'
   }
 
   /**
    * Watch the current route and update level accordingly
    */
-  @Watch('$route')
+  @Watch('levelId')
   changeLevel(): void {
     this.mutationSetCurrentLevelID(this.levelId)
     this.loadLevel()
+  }
+
+  /**
+   * Depending on whether the level at hand is a custom
+   * or a default one, appropriate level loading logic is applied.
+   * @returns an answear to whether the level is a custom one
+   * @remarks In the future we need a more flexible way
+   * to determine this.
+   */
+  get isCustomLevel(): boolean {
+    return this.levelId.length > 4
   }
 
   /**
@@ -216,11 +226,11 @@ export default class Game extends Vue {
   loadLevel(): void {
     this.victoryAlreadyShown = false
     this.error = ''
-    const saved = this.$route.meta.levelSaved
 
-    if (saved) {
-      // 1) dispatch action for vuex to get the level
-      this.actionGetLevelStoreData(this.$route.params.levelsaved)
+    if (this.isCustomLevel) {
+      // 1) dispatch action for vuex to get the level, the "shared" parameter
+      //    handles which db we target
+      this.actionGetLevelStoreData({ id: this.levelId, shared: this.$route.meta.shared })
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
           this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
@@ -241,7 +251,7 @@ export default class Game extends Vue {
           this.error = error.message
         })
     } else {
-      this.level = Level.importLevel(levels[this.levelId])
+      this.level = Level.importLevel(levels[parseInt(this.levelId)])
       this.setFirstToolAsHovered()
       this.updateSimulation()
     }
@@ -569,7 +579,7 @@ export default class Game extends Vue {
   handleSave(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     const newState = { ...this.$store.state, boardState: currentStateJSONString }
-    if (!this.$route.meta.levelSaved) {
+    if (!this.isCustomLevel) {
       this.actionSaveLevel(newState)
     } else {
       this.actionUpdateLevel(newState)
@@ -585,12 +595,23 @@ export default class Game extends Vue {
     return `level${this.levelId}`
   }
 
+  /**
+   * The next/previous level url getters
+   * They get blocked in case it is a custom level
+   * with its hashed ID.
+   */
   get previousLevel(): string {
-    return `/level/${this.levelId - 1}`
+    if (this.isCustomLevel) {
+      return `/level/${this.levelId}`
+    }
+    return `/level/${parseInt(this.levelId) - 1}`
   }
 
   get nextLevel(): string {
-    return `/level/${this.levelId + 1}`
+    if (this.isCustomLevel) {
+      return `/level/${this.levelId}`
+    }
+    return `/level/${parseInt(this.levelId) + 1}`
   }
 
   /**
@@ -634,10 +655,6 @@ h1.title {
   margin-bottom: 30;
   margin-top: 0;
   text-transform: uppercase;
-  .groupTitle {
-    font-size: 14px;
-    color: grey;
-  }
   @media screen and (max-width: 1000px) {
     a img {
       width: 6vw !important;
@@ -645,46 +662,12 @@ h1.title {
   }
 }
 
-.grid {
-  width: 100%;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .row {
-    display: flex;
-    flex-direction: row;
-    & .tile {
-      width: 64px;
-      min-height: 64px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-      margin: none;
-      &:hover {
-        color: black;
-      }
-    }
-  }
-}
 .game {
   width: 100%;
   min-height: 100vh;
   &.goals {
     height: 600px;
-    a:link,
-    a:visited {
-      color: white;
-      font-size: 12;
-      text-decoration: none;
-    }
   }
-}
-.levelLink {
-  text-decoration: none;
 }
 .ket-viewer-game {
   border-top: 1px solid white;

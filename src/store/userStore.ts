@@ -16,13 +16,13 @@ const userModule: Module<IUserState, IRootState> = {
       rememberMe: true,
       data: {
         displayName: '',
-        email: ''
-      }
+        email: '',
+      },
     },
     progressArr: [],
     savedLevelsList: [],
     publicLevels: [],
-    fetchedLevel: null
+    fetchedLevel: null,
   },
   getters: {
     user(state) {
@@ -45,7 +45,7 @@ const userModule: Module<IUserState, IRootState> = {
     },
     fetchedLevelBoardState(state) {
       return state.fetchedLevel
-    }
+    },
   },
   mutations: {
     SET_LOGGED_IN(state, payload) {
@@ -82,13 +82,13 @@ const userModule: Module<IUserState, IRootState> = {
     },
     RESET_FETCHED_LEVEL(state) {
       state.fetchedLevel = null
-    }
+    },
   },
   actions: {
     SET_INITIAL_PROGRESS({ commit }) {
       commit('SET_PROGRESS', [
         { id: 1, status: 'solved', score: 150 },
-        { id: 2, status: 'no', score: 100 }
+        { id: 2, status: 'no', score: 100 },
       ])
     },
     FETCH_USER({ commit, dispatch }, user) {
@@ -100,7 +100,7 @@ const userModule: Module<IUserState, IRootState> = {
         commit('RESET_ERROR', null, { root: true })
         commit('SET_USER', {
           displayName: user.displayName,
-          email: user.email
+          email: user.email,
         })
       } else {
         commit('SET_USER', null)
@@ -154,7 +154,7 @@ const userModule: Module<IUserState, IRootState> = {
         .then((data) => {
           if (data.user) {
             data.user.updateProfile({
-              displayName: user.name
+              displayName: user.name,
             })
           }
         })
@@ -169,7 +169,7 @@ const userModule: Module<IUserState, IRootState> = {
       auth.signOut().then(() => {
         commit('SET_LOGGED_IN', false)
         router.replace({
-          name: 'login'
+          name: 'login',
         })
       })
     },
@@ -215,10 +215,10 @@ const userModule: Module<IUserState, IRootState> = {
           level: {
             currentLevelID: level.currentLevelID,
             gameState: level.gameState,
-            boardState: level.boardState
+            boardState: level.boardState,
           },
           public: false,
-          createdAt: firebase.firestore.Timestamp.fromDate(new Date())
+          createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
         }
 
         const dbRef = db.collection('levels')
@@ -244,10 +244,10 @@ const userModule: Module<IUserState, IRootState> = {
           level: {
             currentLevelID: level.currentLevelID,
             gameState: level.gameState,
-            boardState: level.boardState
+            boardState: level.boardState,
           },
           // created for firestore update test
-          lastModifed: firebase.firestore.Timestamp.fromDate(new Date())
+          lastModifed: firebase.firestore.Timestamp.fromDate(new Date()),
         }
         const levelSaved = router.currentRoute.params.id
 
@@ -272,7 +272,7 @@ const userModule: Module<IUserState, IRootState> = {
               myLevels.push({
                 id: doc.id,
                 link: `/level/${doc.id}`,
-                public: doc.data().public
+                public: doc.data().public,
               })
             })
           })
@@ -296,7 +296,7 @@ const userModule: Module<IUserState, IRootState> = {
           .then((querySnapshot) => {
             querySnapshot.forEach(function(doc) {
               publicLevels.push({
-                link: `/levels/shared/${doc.id}`
+                link: `/levels/shared/${doc.id}`,
               })
             })
           })
@@ -411,8 +411,8 @@ const userModule: Module<IUserState, IRootState> = {
     UPDATE_LEVEL_LISTS({ dispatch }) {
       dispatch('FETCH_MY_LEVELS')
       dispatch('FETCH_PUBLIC_LEVELS')
-    }
-  }
+    },
+  },
 }
 
 export default userModule

@@ -20,11 +20,11 @@ export const rockTalk: IRockTalk[] = [...rockTalkData]
  * mapping of level IDs against the overlays coming afterwards
  */
 export const postLevelOverlayMapping: {
-  [key: number]: string
+  [key: string]: string
 } = {
-  4: 'superposition',
-  6: 'interference',
-  31: 'end',
+  '4': 'superposition',
+  '6': 'interference',
+  '31': 'end',
 }
 
 /**
@@ -35,7 +35,7 @@ export const postLevelOverlayMapping: {
  * @returns an overlay name (string) or null
  * if there is no overlay to display
  */
-export const getOverlayNameByLevelId = (id: number): string | null => {
+export const getOverlayNameByLevelId = (id: string): string | null => {
   return postLevelOverlayMapping[id] || null
 }
 

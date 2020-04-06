@@ -18,20 +18,17 @@ export default new Router({
       component: () => import('@/components/LevelMapPage/index.vue')
     },
     {
-      path: '/levels/shared/:id/:levelsaved',
+      path: '/levels/shared/:id/',
       name: 'sharedlevels',
-      component: () => import('@/components/GamePage/index.vue')
+      component: () => import('@/components/GamePage/index.vue'),
+      meta: {
+        shared: true
+      }
     },
     {
       path: '/level/:id',
       name: 'level',
       component: () => import('@/components/GamePage/index.vue')
-    },
-    {
-      path: '/level/:id/:levelsaved',
-      name: 'levelsaved',
-      component: () => import('@/components/GamePage/index.vue'),
-      meta: { levelSaved: true }
     },
     {
       path: '/sandbox',
