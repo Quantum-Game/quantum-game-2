@@ -37,14 +37,14 @@ const customOverlaysList: overlayListType = {
   // custom: customOverlayExample,
   superposition: RockTalkSuperposition,
   interference: RockTalkInterference,
-  end: RockTalkEnd
+  end: RockTalkEnd,
 }
 
 @Component({
   components: {
     RockTalk,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class InterLevelOverlay extends Vue {
   @State('currentLevelID') currentLevelID!: number

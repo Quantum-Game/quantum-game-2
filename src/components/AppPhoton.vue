@@ -43,7 +43,7 @@ const d3 = {
   scaleLinear,
   scaleSequential,
   interpolateInferno,
-  interpolateViridis
+  interpolateViridis,
 }
 
 @Component
@@ -112,7 +112,7 @@ export default class AppPhoton extends Vue {
     return {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
-      transform: `rotate(${this.displayDirection ? this.particle.direction : 0}deg)`
+      transform: `rotate(${this.displayDirection ? this.particle.direction : 0}deg)`,
     }
   }
 

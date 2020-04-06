@@ -10,7 +10,7 @@ import {
   RESET_ACTIVE_CELL,
   SET_CURRENT_LEVEL_ID,
   SET_HOVERED_CELL,
-  SET_HOVERED_PARTICLE
+  SET_HOVERED_PARTICLE,
 } from './mutation-types'
 import optionsModule from './optionsModule'
 import { GameStateEnum } from '@/engine/interfaces'
@@ -27,7 +27,7 @@ const store: StoreOptions<IRootState> = {
     hoveredParticles: [initialParticle],
     gameState: GameStateEnum.InProgress,
     simulationState: false,
-    currentLevelID: 0
+    currentLevelID: 0,
   },
   mutations: {
     // set active level
@@ -58,11 +58,11 @@ const store: StoreOptions<IRootState> = {
     },
     [SET_CURRENT_LEVEL_ID](state, id): void {
       state.currentLevelID = id
-    }
+    },
   },
   modules: {
-    optionsModule
-  }
+    optionsModule,
+  },
 }
 
 export default new Vuex.Store<IRootState>(store)

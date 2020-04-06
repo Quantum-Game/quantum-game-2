@@ -38,7 +38,7 @@ export default class Goal extends Coord {
   public exportGoal(): IGoal {
     return {
       coord: this.coord.exportCoord(),
-      threshold: this.threshold
+      threshold: this.threshold,
     }
   }
 

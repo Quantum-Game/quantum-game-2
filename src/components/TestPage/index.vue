@@ -56,8 +56,8 @@ import AppButton from '@/components/AppButton.vue'
 @Component({
   components: {
     RockTalk,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class TestPage extends Vue {
   type = 'rock'
@@ -65,19 +65,19 @@ export default class TestPage extends Vue {
     {
       coord: {
         x: 4,
-        y: 4
+        y: 4,
       },
       content: 'Well, hello there',
-      color: 'purple'
+      color: 'purple',
     },
     {
       coord: {
         x: 4,
-        y: 4
+        y: 4,
       },
       content: '',
-      color: 'fuchsia'
-    }
+      color: 'fuchsia',
+    },
   ]
 
   get isSecondDisabled(): boolean {

@@ -177,7 +177,7 @@ export default class Soundtrack {
       'E9',
       'F9',
       'F#9',
-      'G9'
+      'G9',
     ]
     this.samples = [
       /* 00 */ 'sfx/C2-MP3.mp3',
@@ -209,13 +209,13 @@ export default class Soundtrack {
       /* 26 */ 'sfx/Track02-MP3.mp3',
       /* 27 */ 'sfx/Track08-MP3.mp3',
       /* 28 */ 'sfx/Track11-MP3.mp3',
-      /* 29 */ 'sfx/TrolleyHornBeep_S08TT34-MP3.mp3'
+      /* 29 */ 'sfx/TrolleyHornBeep_S08TT34-MP3.mp3',
     ]
     this.scales = [
       [0, 2, 4, 5, 7, 9, 11], // major
       [0, 2, 3, 5, 7, 8, 10], // minor
       [0, 2, 5, 7, 9], // penta
-      [0, 2, 4, 6, 10] // dim
+      [0, 2, 4, 6, 10], // dim
     ]
     this.currentScale = 1
     this.transpositions = [-12, -10, -8, -6]
@@ -247,13 +247,13 @@ export default class Soundtrack {
       bars: 0,
       beats: 0,
       quarters: 0,
-      ticks: 0 // not sure if this is expressed in ticks
+      ticks: 0, // not sure if this is expressed in ticks
     }
     this.previousTransportPosition = {
       bars: 0,
       beats: 0,
       quarters: 0,
-      ticks: 0 // not sure if this is expressed in ticks
+      ticks: 0, // not sure if this is expressed in ticks
     }
     this.effectSamplers = []
   }
@@ -567,7 +567,7 @@ export default class Soundtrack {
       this.pingPongDelay.connect(this.hip1)
       this.synth1 = new Tone.PolySynth(4, Tone.Synth, {
         oscillator: { type: 'sine3' },
-        envelope: { attack: 0.2, decay: 0.6, sustain: 0.3, release: 1.1 }
+        envelope: { attack: 0.2, decay: 0.6, sustain: 0.3, release: 1.1 },
       })
       this.synth1.disconnect()
       this.synth1.connect(this.feedbackDelay)
@@ -577,12 +577,12 @@ export default class Soundtrack {
         roomSize: 0.97,
         dampening: 500,
         wet: 1.0,
-        dry: 0.0
+        dry: 0.0,
       })
       this.synth2Freeverb.disconnect()
       this.synth2 = new Tone.PolySynth(1, Tone.Synth, {
         oscillator: { type: 'sine' },
-        envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.3 }
+        envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.3 },
       })
       this.synth2.disconnect()
       this.synth2.connect(this.chorus)
@@ -594,26 +594,26 @@ export default class Soundtrack {
         oscillator: {
           type: 'amsine2',
           modulationType: 'sine',
-          harmonicity: 1.0
+          harmonicity: 1.0,
         },
         envelope: {
           attack: 0.406,
           decay: 1,
           sustain: 0.34,
-          release: 1.2
+          release: 1.2,
         },
         modulation: {
           volume: 2,
           type: 'amsine',
           modulationType: 'triangle',
-          harmonicity: 2
+          harmonicity: 2,
         },
         modulationEnvelope: {
           attack: 0.006,
           decay: 0.2,
           sustain: 0.2,
-          release: 0.4
-        }
+          release: 0.4,
+        },
       })
       this.synth3.volume.value = this.synth3BaseVolumeFactor
       this.synth3.disconnect()
@@ -623,26 +623,26 @@ export default class Soundtrack {
         oscillator: {
           type: 'amsine2',
           modulationType: 'sine3',
-          harmonicity: 1.5
+          harmonicity: 1.5,
         },
         envelope: {
           attack: 0.206,
           decay: 0.3,
           sustain: 0.34,
-          release: 2.2
+          release: 2.2,
         },
         modulation: {
           volume: 2,
           type: 'amsine3',
           modulationType: 'sine4',
-          harmonicity: 2
+          harmonicity: 2,
         },
         modulationEnvelope: {
           attack: 0.2,
           decay: 0.2,
           sustain: 0.2,
-          release: 1.4
-        }
+          release: 1.4,
+        },
       })
       this.synth4.volume.value = this.synth4BaseVolumeFactor
       this.synth4.disconnect()

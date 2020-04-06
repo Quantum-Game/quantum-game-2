@@ -24,8 +24,8 @@ import levels from '@/assets/data/levels/index'
 
 @Component({
   components: {
-    AppLayout
-  }
+    AppLayout,
+  },
 })
 export default class LevelMapPage extends Vue {
   get groups(): {} {

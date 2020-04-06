@@ -38,7 +38,7 @@ export default class EncyclopediaArticleSection extends Vue {
 
   get style(): {} {
     return {
-      maxHeight: this.isOpen ? null : '0px' //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
+      maxHeight: this.isOpen ? null : '0px', //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
     }
   }
 

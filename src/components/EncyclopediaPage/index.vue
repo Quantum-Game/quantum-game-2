@@ -25,8 +25,8 @@ interface IEntryList {
   components: {
     AppLayout,
     EncyclopediaArticle,
-    EncyclopediaLinkList
-  }
+    EncyclopediaLinkList,
+  },
 })
 export default class Info extends Vue {
   elementList: IEntryList[] = []
@@ -36,11 +36,11 @@ export default class Info extends Vue {
   created(): void {
     this.elementList = elementNameList.map((entryName: string) => ({
       name: entryName,
-      ready: true
+      ready: true,
     }))
     this.conceptList = conceptNameList.map((entryName: string) => ({
       name: entryName,
-      ready: true
+      ready: true,
     }))
   }
 }

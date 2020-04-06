@@ -125,8 +125,8 @@ import { getOverlayNameByLevelId } from '@/components/RockTalkPage/RTClient'
     GameControls,
     GameBoard,
     AppButton,
-    AppOverlay
-  }
+    AppOverlay,
+  },
 })
 export default class Game extends Vue {
   level = Level.createDummy()
@@ -147,7 +147,7 @@ export default class Game extends Vue {
   infoPayload: IInfoPayload = {
     kind: 'ui',
     particles: [],
-    text: 'Hover on a element for more information.'
+    text: 'Hover on a element for more information.',
   }
 
   fateCoord = Coord.importCoord({ x: -1, y: -1 })
