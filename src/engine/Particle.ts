@@ -212,7 +212,7 @@ export default class Particle extends Coord {
       are: this.are,
       aim: this.aim,
       bre: this.bre,
-      bim: this.bim
+      bim: this.bim,
     }
   }
 

@@ -34,8 +34,8 @@ import AppMenu from '@/components/AppMenu.vue'
 
 @Component({
   components: {
-    AppMenu
-  }
+    AppMenu,
+  },
 })
 export default class GameLayout extends Vue {}
 </script>

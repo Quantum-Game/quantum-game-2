@@ -97,7 +97,7 @@ export default class Level {
       grid: this.grid.exportGrid(),
       hints: this.hints.map((hint): IHint => hint.exportHint()),
       goals: this.goals.map((goal): IGoal => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
+      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name),
     }
   }
 
@@ -119,7 +119,7 @@ export default class Level {
       grid: this.grid.exportGridForDownload(),
       hints: this.hints.map((hint): IHint => hint.exportHint()),
       goals: goals.map((goal): IGoal => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name)
+      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name),
     }
   }
 
@@ -159,7 +159,7 @@ export default class Level {
       grid: new Grid(2, 2).exportGrid(),
       goals: [],
       hints: [],
-      tools: []
+      tools: [],
     })
   }
 }

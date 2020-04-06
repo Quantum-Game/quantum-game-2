@@ -64,8 +64,8 @@ const user = namespace('userModule')
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class Login extends Vue {
   @user.Action('SIGN_IN') actionSignIn!: Function
@@ -76,7 +76,7 @@ export default class Login extends Vue {
   user: {} = {
     email: '',
     password: '',
-    rememberMe: true
+    rememberMe: true,
   }
 }
 </script>

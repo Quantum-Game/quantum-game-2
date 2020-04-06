@@ -24,7 +24,7 @@ export const postLevelOverlayMapping: {
 } = {
   4: 'superposition',
   6: 'interference',
-  31: 'end'
+  31: 'end',
 }
 
 /**
@@ -54,5 +54,5 @@ export default {
   ...rockTalk,
   postLevelOverlayMapping,
   getOverlayNameByLevelId,
-  getRockTalkById
+  getRockTalkById,
 }

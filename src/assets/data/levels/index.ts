@@ -16,7 +16,7 @@ export {
   interferenceLevels,
   polarizationLevels,
   finalLevels,
-  classicLevels
+  classicLevels,
 }
 
 const introGroup: ILevel[] = introLevels
@@ -35,7 +35,7 @@ const levels: ILevel[] = [
   ...phaseGroup,
   ...interferenceGroup,
   ...polarizationGroup,
-  ...finalGroup
+  ...finalGroup,
 ]
 
 export default levels

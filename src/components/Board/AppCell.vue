@@ -72,14 +72,14 @@ import {
   SugarSolutionCell,
   FaradayRotatorCell,
   GlassCell,
-  VacuumJarCell
+  VacuumJarCell,
 } from '@/components/Board/Cell/index'
 
 const borderColors = {
   active: 'transparent',
   frozen: 'turquoise',
   rotable: 'white',
-  energized: 'blue'
+  energized: 'blue',
 }
 
 @Component({
@@ -101,8 +101,8 @@ const borderColors = {
     SugarSolutionCell,
     FaradayRotatorCell,
     GlassCell,
-    VacuumJarCell
-  }
+    VacuumJarCell,
+  },
 })
 export default class AppCell extends Mixins(Position) {
   @Prop() readonly cell!: Cell
@@ -305,7 +305,7 @@ export default class AppCell extends Mixins(Position) {
         ? 'frozen'
         : '',
       this.cell.isFromToolbox && !this.available ? 'transparent' : '',
-      this.cell.isLaser ? 'laser' : ''
+      this.cell.isLaser ? 'laser' : '',
     ]
   }
 
@@ -321,7 +321,7 @@ export default class AppCell extends Mixins(Position) {
       'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
       transform: `
         rotate(-${rotation}deg)
-        translate(${this.positionX}px, ${this.positionY}px)`
+        translate(${this.positionX}px, ${this.positionY}px)`,
     }
     return styleObj
   }
@@ -335,7 +335,7 @@ export default class AppCell extends Mixins(Position) {
     styleObj = {
       'transform-origin': `${halfSize}px ${halfSize}px`,
       transform: `
-        rotate(${this.cell.rotation}deg)`
+        rotate(${this.cell.rotation}deg)`,
     }
     return styleObj
   }

@@ -11,7 +11,7 @@ const imgsPath =
   'https://media.githubusercontent.com/media/Quantum-Game/qg-encyclopedia/master/imgs'
 
 const mdOptions = {
-  html: true
+  html: true,
 }
 const md = new MarkDownIt(mdOptions)
 
@@ -44,15 +44,15 @@ function convertMarkdown(dir: string, target: string): {} {
           {
             cols: 0,
             rows: 0,
-            cells: []
-          }
+            cells: [],
+          },
         ],
         sections: [
           {
             title: '',
-            content: ''
-          }
-        ]
+            content: '',
+          },
+        ],
       }
 
       // added and removed as a dirty hack for types
@@ -60,7 +60,7 @@ function convertMarkdown(dir: string, target: string): {} {
 
       returnedObject = {
         ...returnedObject,
-        [entryName]: thisEntry
+        [entryName]: thisEntry,
       }
 
       // read the file in UTF8
@@ -108,7 +108,7 @@ function convertMarkdown(dir: string, target: string): {} {
             // handle secondary title:
             thisEntry.sections[currentSectionNumber] = {
               title: scrubbedTitle,
-              content: ''
+              content: '',
             }
           }
           // mark the beginning of the mini-grid parsing mode:

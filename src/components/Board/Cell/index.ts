@@ -60,7 +60,7 @@ const CellList: ICellList = {
   GlassCell,
   VacuumJarCell,
   FaradayRotatorCell,
-  NonLinearCrystalCell
+  NonLinearCrystalCell,
 }
 
 export default CellList

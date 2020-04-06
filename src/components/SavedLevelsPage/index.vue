@@ -48,8 +48,8 @@ const user = namespace('userModule')
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class SavedLevels extends Vue {
   @user.Action('MAKE_LEVEL_PRIVATE') actionMakeLevelPrivate!: Function

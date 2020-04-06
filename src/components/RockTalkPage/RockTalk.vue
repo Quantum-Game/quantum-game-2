@@ -24,8 +24,8 @@ import SpeechBubble from '@/components/SpeechBubble.vue'
 
 @Component({
   components: {
-    SpeechBubble
-  }
+    SpeechBubble,
+  },
 })
 export default class RockTalk extends Vue {
   @Prop({ default: 'rock' }) readonly type!: string | undefined

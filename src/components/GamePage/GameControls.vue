@@ -48,7 +48,7 @@
           $emit('hover', {
             kind: 'ui',
             particles: [],
-            text: `Sound is ${soundFlag ? 'ON' : 'OFF'}`
+            text: `Sound is ${soundFlag ? 'ON' : 'OFF'}`,
           })
         "
       />
@@ -80,7 +80,7 @@
           $emit('hover', {
             kind: 'ui',
             particles: [],
-            text: 'Save level to the cloud (you need to be logged in).'
+            text: 'Save level to the cloud (you need to be logged in).',
           })
         "
       />
@@ -154,21 +154,21 @@ export default class GameControls extends Vue {
   get computeFateStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: 1
+      opacity: 1,
     }
   }
 
   get computeRewindStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
     }
   }
 
   get computeBackStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_back.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
     }
   }
 
@@ -176,33 +176,33 @@ export default class GameControls extends Vue {
     if (this.simulationState) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`,
-        opacity: 1
+        opacity: 1,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`,
-      opacity: 1
+      opacity: 1,
     }
   }
 
   get computeForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
     }
   }
 
   get computeFastForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
     }
   }
 
   get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
@@ -210,26 +210,26 @@ export default class GameControls extends Vue {
     if (this.soundFlag) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3
+        opacity: this.playFlag ? 1 : 0.3,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
   get computeDownloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
   get computeUploadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/upload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
@@ -237,12 +237,12 @@ export default class GameControls extends Vue {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3
+        opacity: this.playFlag ? 1 : 0.3,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-      opacity: 0.3
+      opacity: 0.3,
     }
   }
 
@@ -250,26 +250,26 @@ export default class GameControls extends Vue {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3
+        opacity: this.playFlag ? 1 : 0.3,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
   get computeOptionsStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 
   get computeMapStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3
+      opacity: this.playFlag ? 1 : 0.3,
     }
   }
 

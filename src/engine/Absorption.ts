@@ -37,7 +37,7 @@ export default class Absorption extends Cell {
   public exportAbsorption(): IAbsorption {
     return {
       coord: this.cell.coord.exportCoord(),
-      probability: this.probability
+      probability: this.probability,
     }
   }
 }

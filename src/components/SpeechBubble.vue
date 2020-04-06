@@ -27,9 +27,9 @@ export default class SpeechBubble extends Mixins(Position) {
   @Prop({
     default: () => {
       return {
-        color: 'purple'
+        color: 'purple',
       }
-    }
+    },
   })
   readonly hint!: Hint
 
@@ -44,9 +44,9 @@ export default class SpeechBubble extends Mixins(Position) {
         width: 100,
         height: 100,
         top: 0,
-        left: 0
+        left: 0,
       }
-    }
+    },
   })
   readonly wrapperRect!: {
     width: number
@@ -66,7 +66,7 @@ export default class SpeechBubble extends Mixins(Position) {
 
   contentRect = {
     width: 0,
-    height: 0
+    height: 0,
   }
 
   shown = true
@@ -144,7 +144,7 @@ export default class SpeechBubble extends Mixins(Position) {
 
     return {
       left: leftOffset + 'px',
-      top: topOffset + 'px'
+      top: topOffset + 'px',
     }
   }
 
@@ -191,7 +191,7 @@ export default class SpeechBubble extends Mixins(Position) {
 
     return {
       top: `${topOffset}px`,
-      left: `${leftOffset}px`
+      left: `${leftOffset}px`,
     }
   }
 }

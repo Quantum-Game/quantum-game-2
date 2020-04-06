@@ -13,8 +13,8 @@ import AppButton from '@/components/AppButton.vue'
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class NotFoundPage extends Vue {}
 </script>

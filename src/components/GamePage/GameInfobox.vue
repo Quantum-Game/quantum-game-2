@@ -34,8 +34,8 @@ export default class GameActiveCell extends Vue {
     default: () => ({
       kind: 'ui',
       particles: [],
-      text: ''
-    })
+      text: '',
+    }),
   })
   readonly infoPayload!: IInfoPayload
 

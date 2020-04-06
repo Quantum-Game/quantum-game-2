@@ -64,8 +64,8 @@ const userStore = namespace('userModule')
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class Register extends Vue {
   @userStore.Getter('error') moduleGetterError!: Error | null
@@ -74,7 +74,7 @@ export default class Register extends Vue {
   user: {} = {
     email: '',
     password: '',
-    name: ''
+    name: '',
   }
 }
 </script>

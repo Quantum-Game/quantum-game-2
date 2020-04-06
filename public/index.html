@@ -1,21 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,700&display=swap"
+      rel="stylesheet"
+    />
+    <title><%= VUE_APP_TITLE %></title>
+    <meta name="description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta name="author" content="<%= VUE_APP_AUTHORS %>" />
+    <!-- Twitter stuff -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="<%= VUE_APP_MAIN_URL %>" />
+    <meta name="twitter:title" content="<%= VUE_APP_TITLE %>" />
+    <meta name="twitter:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta name="twitter:image" content="<%= VUE_APP_MAIN_URL %>/img/qg2_social_media_screenshot.png" />
+    <meta name="twitter:image:alt" content="<%= VUE_APP_IMG_ALT_TEXT %>" />
+    <meta name="twitter:site" content="<%= VUE_APP_TWITTER %>" />
+    <meta name="twitter:creator" content="<%= VUE_APP_TWITTER %>" />
+    <!-- Facebook stuff -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="<%= VUE_APP_TITLE %>" />
+    <meta property="og:description" content="<%= VUE_APP_DESCRIPTION %>" />
+    <meta property="og:url" content="<%= VUE_APP_MAIN_URL %>" /> 
+    <meta property="og:image" content="<%= VUE_APP_MAIN_URL %>/img/qg2_social_media_screenshot.png" />
+  </head>
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,700&display=swap" rel="stylesheet">
-    <title>quantum</title>
-</head>
-
-<body>
+  <body>
     <noscript>
-      <strong>We're sorry but quantum doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but quantum doesn't work properly without JavaScript enabled. Please enable it
+        to continue.</strong
+      >
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-</body>
-
+  </body>
 </html>

@@ -16,8 +16,8 @@ const user = namespace('userModule')
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class LoginStatus extends Vue {
   @user.Getter('userName') moduleGetterUserName!: string

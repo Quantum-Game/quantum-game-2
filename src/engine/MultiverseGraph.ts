@@ -20,7 +20,7 @@ export default class MultiverseGraph {
         nodesep: 5,
         ranksep: 20,
         marginy: 10,
-        rankdir: 'TB'
+        rankdir: 'TB',
       })
       .setDefaultEdgeLabel((): {} => {
         return {}
@@ -44,7 +44,7 @@ export default class MultiverseGraph {
           pIndex,
           height: 15,
           width: 15,
-          detectionEvent
+          detectionEvent,
         })
         // Set edges from particle directions
         this.findParent(fIndex, pIndex).forEach((parentUid: string): void => {
@@ -52,7 +52,7 @@ export default class MultiverseGraph {
             label: `${parentUid} -> ${uid}`,
             width: particle.probability * 4 + 1,
             fIndex,
-            pIndex
+            pIndex,
           })
         })
       })

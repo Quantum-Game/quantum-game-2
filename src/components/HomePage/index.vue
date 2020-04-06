@@ -8,7 +8,8 @@
     </router-link>
     <p>
       Version {{ version }} (beta), based on a
-      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit
+      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit. For optimal experience,
+      play PC (mobile version coming soon).
     </p>
     <div class="hello">
       <h1>
@@ -16,7 +17,7 @@
         With true quantum mechanics underneath!
         <br />
       </h1>
-      <h1>
+      <p>
         Visit us on
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
@@ -24,7 +25,7 @@
         and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>. If you have any
         comments, @ as at Twitter, create a GitHub Issue or simply
         <a href="mailto:pmigdal+qg@gmail.com">email us</a>! :)
-      </h1>
+      </p>
       <p>
         Quantum Game is currently being developed by
         <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a>,
@@ -39,7 +40,12 @@
       <p>
         This version of the game was funded by the
         <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
-        of the National University of Singapore.
+        of the National University of Singapore. Read a CQT post on the game:
+        <a
+          href="https://www.quantumlah.org/about/highlight/2020-04-play-new-quantum-game"
+          target="_blank"
+          >Ready to play the Quantum Game with Photons 2?</a
+        >
       </p>
       <img src="@/assets/graphics/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
       <p>
@@ -61,8 +67,8 @@ console.log('env', process.env)
 
 @Component({
   components: {
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class HomePage extends Vue {
   version: string = process.env.VUE_APP_VERSION
@@ -139,8 +145,7 @@ p {
   min-width: 1300px;
   position: center;
   height: 100px;
-  margin-top: 100px;
-  margin-bottom: 12vw;
+  margin-bottom: 8vw;
   align-items: center;
 }
 .CQTlogo {

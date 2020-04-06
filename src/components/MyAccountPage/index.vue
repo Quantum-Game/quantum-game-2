@@ -44,8 +44,8 @@ interface IAccountLevel {
 @Component({
   components: {
     AppLayout,
-    AppButton
-  }
+    AppButton,
+  },
 })
 export default class MyAccount extends Vue {
   @user.Mutation('SET_PROGRESS') mutationSetProgress!: Function
@@ -57,7 +57,7 @@ export default class MyAccount extends Vue {
   level = {
     id: 0,
     status: '',
-    score: 0
+    score: 0,
   }
 
   created(): void {

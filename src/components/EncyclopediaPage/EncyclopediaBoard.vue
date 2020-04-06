@@ -75,8 +75,8 @@ import { Vector } from 'quantum-tensors'
     AppCell,
     BoardLasers,
     BoardDots,
-    KetViewer
-  }
+    KetViewer,
+  },
 })
 export default class EncyclopediaBoard extends Vue {
   @Prop({ default: () => Grid.dummyIGrid() }) iGrid!: IGrid
@@ -187,7 +187,7 @@ export default class EncyclopediaBoard extends Vue {
   computeParticleStyle(particle: IParticle): {} {
     return {
       transform: `
-        translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`
+        translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`,
     }
   }
 }
