@@ -1,8 +1,6 @@
 <template>
   <div class="inter-level-overlay">
-    <h1 class="title">{{ title }}</h1>
-    <component :is="customContent" v-if="customContent" class="image" />
-    <rock-talk v-if="rt" :dialogue="rt.dialogue" :type="rt.type" />
+    <rock-talk-line :dialogue="rockTalk.dialogue" :graphics="rockTalk.graphics" />
     <router-link v-if="currentLevelID != '31'" class="button-next" :to="nextLevel">
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
     </router-link>
@@ -11,19 +9,9 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { VueConstructor } from 'vue/types/vue'
 import { State } from 'vuex-class'
-import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
-import { getRockTalkById, IRockTalk } from '@/components/RockTalkPage/RTClient'
-// import customOverlayExample from '@/components/RockTalkPage/CustomOverlayExample.vue'
+import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
-import RockTalkSuperposition from '@/components/RockTalkPage/RockTalkSuperposition.vue'
-import RockTalkInterference from '@/components/RockTalkPage/RockTalkInterference.vue'
-import RockTalkEnd from '@/components/RockTalkPage/RockTalkEnd.vue'
-
-type overlayListType = {
-  [key: string]: VueConstructor<Vue>
-}
 
 /**
  * This is the mapping of overlay route id params
@@ -33,51 +21,43 @@ type overlayListType = {
  * the RTClient's postLevelOverlayMapping must
  * be altered as well.
  */
-const customOverlaysList: overlayListType = {
-  // custom: customOverlayExample,
-  superposition: RockTalkSuperposition,
-  interference: RockTalkInterference,
-  end: RockTalkEnd,
+const customOverlaysList: Record<string, { dialogue: string; graphics: string }> = {
+  superposition: {
+    graphics: 'rock_happy',
+    dialogue:
+      'We didn\'t split a photon. It is still one photon in many places at the same time. How is it possible?! Read more about <a href="https://quantumgame.io/info/superposition">SUPERPOSITION</a> in the game encyclopedia.',
+  },
+  interference: {
+    graphics: 'weasel',
+    dialogue:
+      'Crazy, isn\'t it? Learn more about <a href="https://quantumgame.io/info/interference">INTERFERENCE</a> from the game encyclopedia.',
+  },
+  end: {
+    graphics: 'pile',
+    dialogue:
+      '<p>That\'s it for now!</p><p>Write to us on <a href="https://twitter.com/quantumgameio">Twitter</a>.</p>',
+  },
 }
 
 @Component({
   components: {
-    RockTalk,
+    RockTalkLine,
     AppButton,
   },
 })
 export default class InterLevelOverlay extends Vue {
   @State('currentLevelID') currentLevelID!: number
-  rt: IRockTalk | null = null
-  customContent: VueConstructor<Vue> | null = null
-  title = ''
 
   /**
    * Once created, find out what kind of content is required:
    */
-  created(): void {
-    this.assessContentType()
-  }
-
-  /**
-   * We want to find out what should be the main element of the overlay:
-   * A) a custom template (here exemplified by customOverlayExample)? or
-   * B) the rocks talking or perhaps
-   * C) user got here by accident?
-   */
-  assessContentType(): void {
-    // A) if it's a custom overlay, return the corresponding component:
+  get rockTalk(): { dialogue: string; graphics: string } {
     if (Object.keys(customOverlaysList).includes(this.overlayId)) {
-      this.customContent = customOverlaysList[this.overlayId]
-      // B) else, default to talking rocks and get the dialogue data
-    } else {
-      this.rt = getRockTalkById(this.overlayId)
-      // C) if the overlay ID was not listed as custom, nor was
-      // there a corresponding rocktalk entry, navigate to 404
-      if (!this.rt) {
-        console.error(`No data found for rocks/${this.overlayId}`)
-        this.$router.push({ name: '404' })
-      }
+      return customOverlaysList[this.overlayId]
+    }
+    return {
+      graphics: 'weasel',
+      dialogue: 'Rock dialogue not found.',
     }
   }
 
@@ -98,19 +78,15 @@ export default class InterLevelOverlay extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .inter-level-overlay {
-  // height: 40vh;
   width: 40vw;
   color: white;
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
   align-items: center;
 }
-.image {
-  height: 70vh;
-}
+
 .button-next {
   margin: 10px;
 }
