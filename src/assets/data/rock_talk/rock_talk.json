@@ -1,26 +1,23 @@
 [
   {
-    "id": "introduction",
-    "type": "rock",
+    "id": "superposition",
+    "graphics": "rock_happy",
     "dialogue": [
-      {
-        "content": "Hi",
-        "color": "purple"
-      }
-    ]
+      "We didn't split a photon. It is still one photon in many places at the same time.",
+      "How is it possible?!"
+    ],
+    "link": "superposition"
   },
   {
-    "id": "talking",
-    "type": "pile2",
-    "dialogue": [
-      {
-        "content": "Hi",
-        "color": "purple"
-      },
-      {
-        "content": "Hello there",
-        "color": "fuchsia"
-      }
-    ]
+    "id": "interference",
+    "graphics": "weasel",
+    "dialogue": ["It is unexpected, isn't it?"],
+    "link": "interference"
+  },
+  {
+    "id": "twitter",
+    "graphics": "pile",
+    "dialogue": ["That's it for now!", "Do you want something more? Check us on Twitter!"],
+    "link": "https://twitter.com/quantumgameio"
   }
 ]

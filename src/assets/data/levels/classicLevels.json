@@ -393,7 +393,8 @@
         "threshold": 0.25
       }
     ],
-    "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"]
+    "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"],
+    "rockTalkId": "superposition"
   },
 
   {
@@ -620,7 +621,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Mirror", "Mirror"],
+    "rockTalkId": "interference"
   },
 
   {
@@ -3480,6 +3482,7 @@
       "FaradayRotator",
       "VacuumJar",
       "PolarizingBeamSplitter"
-    ]
+    ],
+    "rockTalkId": "twitter"
   }
 ]

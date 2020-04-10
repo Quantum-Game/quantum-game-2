@@ -111,7 +111,7 @@ import GameBoard from '@/components/Board/index.vue'
 import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
-import { getOverlayNameByLevelId } from '@/components/RockTalkPage/loadRockTalks'
+import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 
 @Component({
   components: {
@@ -540,7 +540,7 @@ export default class Game extends Vue {
    * @returns an router link :to attribute string
    */
   get nextLevelOrOvelay(): string {
-    const possibleOverlay = getOverlayNameByLevelId(this.levelId)
+    const possibleOverlay = getRockTalkIdByLevelId(this.levelId)
     return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
   }
 
