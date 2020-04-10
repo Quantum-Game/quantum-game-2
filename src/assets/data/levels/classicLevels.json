@@ -736,7 +736,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Glass", "Glass"]
+    "tools": ["Glass", "Glass"],
+    "rockTalkId": "mach-zehnder-interferometer"
   },
 
   {

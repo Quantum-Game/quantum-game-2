@@ -33,6 +33,12 @@
     "link": "interference"
   },
   {
+    "id": "mach-zehnder-interferometer",
+    "graphics": "pile",
+    "dialogue": ["What happens?", "Let's see what is phase and why does it matter."],
+    "link": "mach-zehnder-interferometer"
+  },
+  {
     "id": "twitter",
     "graphics": "pile",
     "dialogue": ["That's it for now!", "Do you want something more? Check us on Twitter!"],
