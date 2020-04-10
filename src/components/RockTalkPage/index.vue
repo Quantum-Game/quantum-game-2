@@ -1,6 +1,10 @@
 <template>
   <div class="inter-level-overlay">
-    <rock-talk-line :dialogue="rockTalk.dialogue" :graphics="rockTalk.graphics" />
+    <rock-talk-line
+      :graphics="rockTalk.graphics"
+      :dialogue="rockTalk.dialogue"
+      :link="rockTalk.link"
+    />
     <router-link v-if="currentLevelID != '31'" class="button-next" :to="nextLevel">
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
     </router-link>
@@ -10,6 +14,7 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import { State } from 'vuex-class'
+import { IDialogue } from '@/mixins/dataInterfaces'
 import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
 
@@ -21,21 +26,24 @@ import AppButton from '@/components/AppButton.vue'
  * the RTClient's postLevelOverlayMapping must
  * be altered as well.
  */
-const customOverlaysList: Record<string, { dialogue: string; graphics: string }> = {
+const customOverlaysList: Record<string, IDialogue> = {
   superposition: {
     graphics: 'rock_happy',
-    dialogue:
-      'We didn\'t split a photon. It is still one photon in many places at the same time. How is it possible?! Read more about <a href="https://quantumgame.io/info/superposition">SUPERPOSITION</a> in the game encyclopedia.',
+    dialogue: [
+      "We didn't split a photon. It is still one photon in many places at the same time.",
+      'How is it possible?!',
+    ],
+    link: 'superposition',
   },
   interference: {
     graphics: 'weasel',
-    dialogue:
-      'Crazy, isn\'t it? Learn more about <a href="https://quantumgame.io/info/interference">INTERFERENCE</a> from the game encyclopedia.',
+    dialogue: ["It is unexpected, isn't it?"],
+    link: 'interference',
   },
   end: {
     graphics: 'pile',
-    dialogue:
-      '<p>That\'s it for now!</p><p>Write to us on <a href="https://twitter.com/quantumgameio">Twitter</a>.</p>',
+    dialogue: ["That's it for now!", 'Dd you want something more? Check us on Twitter!'],
+    link: 'https://twitter.com/quantumgameio',
   },
 }
 
@@ -51,13 +59,14 @@ export default class InterLevelOverlay extends Vue {
   /**
    * Once created, find out what kind of content is required:
    */
-  get rockTalk(): { dialogue: string; graphics: string } {
+  get rockTalk(): IDialogue {
     if (Object.keys(customOverlaysList).includes(this.overlayId)) {
       return customOverlaysList[this.overlayId]
     }
     return {
       graphics: 'weasel',
-      dialogue: 'Rock dialogue not found.',
+      dialogue: ['Rock dialogue not found.'],
+      link: '',
     }
   }
 

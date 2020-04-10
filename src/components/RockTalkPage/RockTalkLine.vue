@@ -1,7 +1,14 @@
 <template>
   <div>
-    <!-- eslint-disable-next-line vue/no-v-html -->
-    <div class="rock-text" v-html="dialogue"></div>
+    <div class="rock-text">
+      <p v-for="(line, i) in dialogue" :key="`line-${i}`">
+        {{ line }}
+      </p>
+      <p v-if="isLinkEncyclopedia">
+        Check the <router-link :to="`/info/${link}`">{{ link }}</router-link> encyclopedia entry.
+      </p>
+      <p v-if="isLinkExternal">Visit <a :href="link">link</a>.</p>
+    </div>
     <img class="rock-line" src="@/assets/graphics/overlays/rock_talk_line.svg" alt="rock-line" />
     <div class="rock-img">
       <img :src="require(`@/assets/graphics/overlays/${graphics}.svg`)" :alt="graphics" />
@@ -14,8 +21,17 @@ import { Prop, Vue, Component } from 'vue-property-decorator'
 
 @Component
 export default class RockTalkLine extends Vue {
-  @Prop({ default: '' }) dialogue!: string
   @Prop({ default: 'pile' }) graphics!: string
+  @Prop({ default: () => [''] }) dialogue!: string[]
+  @Prop({ default: '' }) link!: string
+
+  get isLinkEncyclopedia(): boolean {
+    return this.link.length > 0 && this.link.indexOf('://') === -1
+  }
+
+  get isLinkExternal(): boolean {
+    return this.link.length > 0 && this.link.indexOf('://') !== -1
+  }
 }
 </script>
 
@@ -23,6 +39,9 @@ export default class RockTalkLine extends Vue {
 .rock-text {
   margin-bottom: 1rem;
   font-size: 1rem;
+  & a {
+    text-transform: uppercase;
+  }
 }
 .rock-img {
   margin: 0px 5rem 2rem 5rem;
