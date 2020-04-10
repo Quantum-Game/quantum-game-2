@@ -1,5 +1,23 @@
 [
   {
+    "id": "first-step",
+    "graphics": "rock_happy",
+    "dialogue": [
+      "You pressed the button!",
+      "A small step for the classical world, but a big for the quantum one."
+    ],
+    "link": ""
+  },
+  {
+    "id": "mirror",
+    "graphics": "rock_happy",
+    "dialogue": [
+      "Do you really know what is a mirror?",
+      "And what is better than silver?"
+    ],
+    "link": "mirror"
+  },
+  {
     "id": "superposition",
     "graphics": "rock_happy",
     "dialogue": [

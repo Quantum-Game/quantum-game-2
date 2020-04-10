@@ -53,7 +53,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Rock"]
+    "tools": ["Rock"],
+    "rockTalkId": "first-step"
   },
 
   {
@@ -253,7 +254,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Mirror", "Mirror"],
+    "rockTalkId": "mirror"
   },
 
   {
