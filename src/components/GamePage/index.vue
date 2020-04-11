@@ -620,7 +620,7 @@ export default class Game extends Vue {
    * @returns an router link :to attribute string
    */
   get nextLevelOrOvelay(): string {
-    const possibleOverlay = getRockTalkIdByLevelId(this.levelId)
+    const possibleOverlay = getRockTalkIdByLevelId(parseInt(this.levelId))
     return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
   }
 

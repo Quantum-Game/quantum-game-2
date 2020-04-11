@@ -9,7 +9,11 @@
     <p v-if="infoPayload.text" class="description">
       {{ infoPayload.text }}
     </p>
-    <p v-for="(particle, index) in infoPayload.particles" :key="`info-particle-${index}`" class="description">
+    <p
+      v-for="(particle, index) in infoPayload.particles"
+      :key="`info-particle-${index}`"
+      class="description"
+    >
       Intensity {{ (100 * particle.probability).toFixed(1) }}% at {{ particle.direction }}°
     </p>
     <router-link v-if="infoPayload.kind === 'element'" :to="hyphenedElementEntryURL" class="link">
