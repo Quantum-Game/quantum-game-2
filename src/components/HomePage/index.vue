@@ -21,9 +21,9 @@
         Visit us on
         <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
         <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
-        <a href="https://github.com/Quantum-Game" target="_blank">GitHub</a>
+        <a href="https://github.com/Quantum-Game" target="_blank">GitHub</a>,
         and <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>. If you have any
-        comments, @ as at Twitter, create a GitHub Issue or simply
+        comments, @ us at Twitter, create a GitHub Issue or simply
         <a href="mailto:pmigdal+qg@gmail.com">email us</a>! :)
       </p>
       <p>

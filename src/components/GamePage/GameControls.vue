@@ -316,7 +316,7 @@ button {
   }
 }
 .gameState {
-  font-size: 1rem;
+  font-size: 0.8rem;
   padding-left: 10px;
   text-transform: uppercase;
 }

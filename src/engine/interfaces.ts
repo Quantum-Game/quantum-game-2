@@ -86,6 +86,7 @@ export interface ILevel {
   hints: IHint[]
   tools: string[]
   safetyThreshold?: number
+  rockTalkId?: string
 }
 
 /**
