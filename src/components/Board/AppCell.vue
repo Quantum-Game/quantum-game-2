@@ -372,7 +372,7 @@ export default class AppCell extends Mixins(Position) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 rect {
   fill: transparent;
 }

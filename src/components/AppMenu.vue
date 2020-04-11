@@ -31,34 +31,16 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import { State } from 'vuex-class'
+import { State, namespace } from 'vuex-class'
+
+const user = namespace('userModule')
 
 @Component
 export default class AppMenu extends Vue {
   @State('currentLevelID') currentLevelID!: number
+  @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
+
   isMenuOpen = false
-  menuItems = [
-    {
-      name: 'LEVELS',
-      url: '/levels',
-    },
-    {
-      name: 'LOGIN',
-      url: '/login',
-    },
-    {
-      name: 'SANDBOX',
-      url: '/sandbox',
-    },
-    {
-      name: 'ENCYCLOPEDIA',
-      url: '/info',
-    },
-    {
-      name: 'OPTIONS',
-      url: '/options',
-    },
-  ]
 
   created(): void {
     window.addEventListener('keyup', this.handleEscPress)
@@ -94,6 +76,37 @@ export default class AppMenu extends Vue {
 
   get continueLink(): string {
     return `/level/${this.currentLevelID}`
+  }
+
+  /**
+   * Created to iterate over in template;
+   * the second element depends on whether
+   * the user is logged in.
+   * @remarks showing link to login page
+   * for users logged in seemed silly.
+   */
+  get menuItems(): { name: string; url: string }[] {
+    return [
+      {
+        name: 'LEVELS',
+        url: '/levels',
+      },
+      this.moduleGetterIsLoggedIn
+        ? { name: 'MY ACCOUNT', url: '/myaccount' }
+        : { name: 'LOGIN', url: '/login' },
+      {
+        name: 'SANDBOX',
+        url: '/sandbox',
+      },
+      {
+        name: 'ENCYCLOPEDIA',
+        url: '/info',
+      },
+      {
+        name: 'OPTIONS',
+        url: '/options',
+      },
+    ]
   }
 }
 </script>
@@ -185,9 +198,6 @@ export default class AppMenu extends Vue {
         font-weight: bold;
         // text-shadow: 1px 1px 2px white, -1px -1px 2px white;
       }
-    }
-    span {
-      text-decoration: line-through;
     }
   }
 }

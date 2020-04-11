@@ -275,13 +275,6 @@ export default class AppPhoton extends Vue {
 .photon {
   padding: 0px;
   position: relative;
-  .text {
-    fill: lightgrey;
-    stroke: lightgrey;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 20px;
-    text-anchor: middle;
-  }
   .electric {
     fill: transparent;
   }

@@ -90,7 +90,7 @@ export default class AppOverlay extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .Victory-enter-active,
 .Victory-leave-active {
   transition: opacity 0.5s;

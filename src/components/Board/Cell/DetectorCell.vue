@@ -212,9 +212,6 @@ export default class DetectorCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>
-.st0 {
-  display: none;
-}
 .st1 {
   display: inline;
   fill: #891879;

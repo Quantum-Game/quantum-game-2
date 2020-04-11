@@ -70,6 +70,7 @@
           @downloadLevel="downloadLevel"
           @loadedLevel="loadLevel($event)"
           @hover="updateInfoPayload"
+          @saveLevel="handleSave"
         />
       </section>
 
@@ -90,8 +91,8 @@
 <script lang="ts">
 import _ from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { State, Mutation } from 'vuex-class'
-import { IHint, GameStateEnum, ILevel } from '@/engine/interfaces'
+import { State, Mutation, namespace } from 'vuex-class'
+import { IHint, GameStateEnum } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
@@ -113,6 +114,8 @@ import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 
+const userModule = namespace('userModule')
+
 @Component({
   components: {
     GameLayout,
@@ -130,11 +133,15 @@ import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 })
 export default class Game extends Vue {
   level = Level.createDummy()
-  @State('currentLevelID') currentLevelID!: number
   @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
-  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: number) => void
+  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
+  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
+  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: Function
+  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: Function
+  @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
+  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: string) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
@@ -155,6 +162,7 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
+  unsubscribe?: Function
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -175,39 +183,85 @@ export default class Game extends Vue {
 
   beforeDestroy(): void {
     window.removeEventListener('keyup', this.handleArrowPress)
+    if (this.unsubscribe) {
+      this.unsubscribe()
+    }
   }
 
   /**
    * Parse url to extract level number
    * if missing then fallback to '0' for infinity level / sandbox
    */
-  get levelId(): number {
-    return parseInt(this.$route.params.id || '0', 10)
+  get levelId(): string {
+    return this.$route.params.id || '0'
   }
 
   /**
    * Watch the current route and update level accordingly
    */
-  @Watch('$route')
+  @Watch('levelId')
   changeLevel(): void {
     this.mutationSetCurrentLevelID(this.levelId)
-    this.loadLevel(levels[this.levelId])
+    this.loadLevel()
   }
 
   /**
-   * Decoupling the level loading and the route changing
-   * Default to the route level
+   * Depending on whether the level at hand is a custom
+   * or a default one, appropriate level loading logic is applied.
+   * @returns an answear to whether the level is a custom one
+   * @remarks In the future we need a more flexible way
+   * to determine this.
    */
-  loadLevel(iLevel: ILevel = levels[this.levelId]): void {
+  get isCustomLevel(): boolean {
+    return this.levelId.length > 4
+  }
+
+  /**
+   * Level Loading Logic
+   * @params none, the function evaluates which level should be loaded
+   * @returns nothing, function substitures this.level
+   * @remarks the 'saved' variable determines whether the level should
+   * be loaded out of app data, or fetched from db
+   */
+  loadLevel(): void {
     this.victoryAlreadyShown = false
     this.error = ''
-    this.level = Level.importLevel(iLevel)
-    // Set hovered cell as first element of toolbox
+
+    if (this.isCustomLevel) {
+      // 1) dispatch action for vuex to get the level, the "shared" parameter
+      //    handles which db we target
+      this.actionGetLevelStoreData({ id: this.levelId, shared: this.$route.meta.shared })
+        .then(() => {
+          // 2) subscribe to mutation triggered asynchronously
+          this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
+            if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
+              // 3) in case of a successful fetch,
+              //    get substitute this.level with store data.
+              if (rootState.userModule.fetchedLevel) {
+                const fetchedLevelBoardObj = JSON.parse(this.moduleGetterFetchedBoardState)
+                this.level = Level.importLevel(fetchedLevelBoardObj)
+                this.setFirstToolAsHovered()
+                this.updateSimulation()
+                this.actionClearLevelStoreData()
+              }
+            }
+          })
+        })
+        .catch((error: Error) => {
+          this.error = error.message
+        })
+    } else {
+      this.level = Level.importLevel(levels[parseInt(this.levelId)])
+      this.setFirstToolAsHovered()
+      this.updateSimulation()
+    }
+  }
+
+  // Set hovered cell as first element of toolbox
+  setFirstToolAsHovered(): void {
     if (this.level.toolbox.uniqueCellList.length > 0) {
       this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0])
     }
-    // Process simulation
-    this.updateSimulation()
   }
 
   updateInfoPayload(infoPayload: IInfoPayload): void {
@@ -511,10 +565,25 @@ export default class Game extends Vue {
     this.updateSimulation()
   }
 
-  // Used to store in local storage the current state of the game
+  /**
+   * Utilized by updateCell to keep level in localStorage
+   */
   saveLevelToStore(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
     localStorage.setItem(this.currentLevelName, currentStateJSONString)
+  }
+
+  /**
+   * Actual 'save' button handling
+   */
+  handleSave(): void {
+    const currentStateJSONString = JSON.stringify(this.level.exportLevel())
+    const newState = { ...this.$store.state, boardState: currentStateJSONString }
+    if (!this.isCustomLevel) {
+      this.actionSaveLevel(newState)
+    } else {
+      this.actionUpdateLevel(newState)
+    }
   }
 
   clearLS(): void {
@@ -526,12 +595,23 @@ export default class Game extends Vue {
     return `level${this.levelId}`
   }
 
+  /**
+   * The next/previous level url getters
+   * They get blocked in case it is a custom level
+   * with its hashed ID.
+   */
   get previousLevel(): string {
-    return `/level/${this.levelId - 1}`
+    if (this.isCustomLevel) {
+      return `/level/${this.levelId}`
+    }
+    return `/level/${parseInt(this.levelId) - 1}`
   }
 
   get nextLevel(): string {
-    return `/level/${this.levelId + 1}`
+    if (this.isCustomLevel) {
+      return `/level/${this.levelId}`
+    }
+    return `/level/${parseInt(this.levelId) + 1}`
   }
 
   /**
@@ -575,10 +655,6 @@ h1.title {
   margin-bottom: 30;
   margin-top: 0;
   text-transform: uppercase;
-  .groupTitle {
-    font-size: 14px;
-    color: grey;
-  }
   @media screen and (max-width: 1000px) {
     a img {
       width: 6vw !important;
@@ -586,46 +662,12 @@ h1.title {
   }
 }
 
-.grid {
-  width: 100%;
-  max-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .row {
-    display: flex;
-    flex-direction: row;
-    & .tile {
-      width: 64px;
-      min-height: 64px;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      color: white;
-      font-size: 1rem;
-      margin: none;
-      &:hover {
-        color: black;
-      }
-    }
-  }
-}
 .game {
   width: 100%;
   min-height: 100vh;
   &.goals {
     height: 600px;
-    a:link,
-    a:visited {
-      color: white;
-      font-size: 12;
-      text-decoration: none;
-    }
   }
-}
-.levelLink {
-  text-decoration: none;
 }
 .ket-viewer-game {
   border-top: 1px solid white;

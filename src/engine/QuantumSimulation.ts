@@ -113,7 +113,7 @@ export default class QuantumSimulation {
    * @param stopThreshold stop if probability below threshold
    */
   public computeFrames(n = 20, stopThreshold = 1e-6): void {
-    const logging = true
+    const logging = false
     for (let i = 0; i < n; i += 1) {
       this.frames.push(this.nextFrame())
       if (this.lastFrame.probability < stopThreshold) {

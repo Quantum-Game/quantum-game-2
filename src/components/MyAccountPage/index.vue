@@ -2,7 +2,7 @@
   <app-layout>
     <div slot="main">
       <h1>My Account</h1>
-      <h2>Hello {{ user }}</h2>
+      <h2>Hello {{ moduleGetterUserName }}</h2>
       <div>
         <label>Status: </label>
         <input v-model="level.status" type="text" />
@@ -12,14 +12,17 @@
       <br />
       <br />
       <ul class="levels-progress">
-        <li v-for="(lvl, index) in progressArr" :key="index">
+        <li v-for="(lvl, index) in moduleGettrProgressArr" :key="index">
           Level: {{ lvl.id }} Status: {{ lvl.status }} Score: {{ lvl.score }}
           <span class="edit-level" @click="editLevel(lvl)"> >>>> Edit</span>
         </li>
       </ul>
       <a @click.prevent="saveProgressToDB"
         ><app-button type="special"> Save data to Firestore!!! </app-button></a
-      >
+      ><br />
+      <router-link to="/savedlevels"
+        ><app-button type="special"> Savedlevels </app-button>
+      </router-link>
     </div>
     <div slot="right">
       <a @click.prevent="signOut"><app-button type="special"> Sign Out </app-button></a>
@@ -29,9 +32,11 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
-import $userStore from '@/store/userStore'
+import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+
+const user = namespace('userModule')
 
 interface IAccountLevel {
   id: number
@@ -46,6 +51,12 @@ interface IAccountLevel {
   },
 })
 export default class MyAccount extends Vue {
+  @user.Mutation('SET_PROGRESS') mutationSetProgress!: Function
+  @user.Action('SET_INITIAL_PROGRESS') actionSetInitialProgress!: Function
+  @user.Action('SAVE_PROGRESS') actionSaveProgress!: Function
+  @user.Action('SIGN_OUT') actionSignOut!: Function
+  @user.Getter('progressArr') moduleGettrProgressArr!: []
+  @user.Getter('userName') moduleGetterUserName!: string
   level = {
     id: 0,
     status: '',
@@ -53,26 +64,17 @@ export default class MyAccount extends Vue {
   }
 
   created(): void {
-    $userStore.dispatch('SET_INITIAL_PROGRESS')
-  }
-
-  get user(): string {
-    return $userStore.getters.userName
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  get progressArr(): any {
-    return $userStore.getters.progressArr
+    this.actionSetInitialProgress()
   }
 
   signOut(): void {
-    $userStore.dispatch('SIGN_OUT', this.user)
+    this.actionSignOut(this.moduleGetterUserName)
   }
 
   saveProgressToDB(): void {
-    console.debug(this.progressArr)
-    $userStore.commit('SET_PROGRESS', this.progressArr)
-    $userStore.dispatch('SAVE_PROGRESS')
+    console.debug(this.moduleGettrProgressArr)
+    this.mutationSetProgress(this.moduleGettrProgressArr)
+    this.actionSaveProgress()
   }
 
   editLevel(lvl: IAccountLevel): void {
@@ -96,10 +98,6 @@ h2 {
   font-weight: 300;
   line-height: 150%;
   // text-transform: uppercase;
-}
-p {
-  color: white;
-  font-size: 0.8rem;
 }
 .levels-progress {
   list-style: none;

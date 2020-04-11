@@ -10,4 +10,5 @@ export interface IRootState {
   gameState: GameStateEnum
   simulationState: boolean
   currentLevelID: number
+  errors: string[]
 }

@@ -2,15 +2,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
-import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
+import { Module } from 'vuex'
 import { IUserState } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
+import { IRootState } from '@/types'
 
-Vue.use(Vuex)
-
-const userStore: StoreOptions<IUserState> = {
+const userModule: Module<IUserState, IRootState> = {
+  namespaced: true,
   state: {
     user: {
       loggedIn: false,
@@ -23,7 +22,7 @@ const userStore: StoreOptions<IUserState> = {
     progressArr: [],
     savedLevelsList: [],
     publicLevels: [],
-    error: null,
+    fetchedLevel: null,
   },
   getters: {
     user(state) {
@@ -41,11 +40,11 @@ const userStore: StoreOptions<IUserState> = {
     publicLevels(state) {
       return state.publicLevels
     },
-    error(state) {
-      return state.error
-    },
     isLoggedIn(state) {
       return state.user.loggedIn
+    },
+    fetchedLevelBoardState(state) {
+      return state.fetchedLevel
     },
   },
   mutations: {
@@ -57,9 +56,6 @@ const userStore: StoreOptions<IUserState> = {
     },
     SET_USER(state, payload) {
       state.user.data = payload
-    },
-    SET_ERROR(state, payload) {
-      state.error = payload
     },
     SET_PROGRESS(state, payload) {
       state.progressArr = payload
@@ -81,6 +77,12 @@ const userStore: StoreOptions<IUserState> = {
         return obj.id !== payload
       })
     },
+    SET_FETCHED_LEVEL(state, payload) {
+      state.fetchedLevel = payload
+    },
+    RESET_FETCHED_LEVEL(state) {
+      state.fetchedLevel = null
+    },
   },
   actions: {
     SET_INITIAL_PROGRESS({ commit }) {
@@ -95,7 +97,7 @@ const userStore: StoreOptions<IUserState> = {
         dispatch('GET_PROGRESS')
         dispatch('FETCH_MY_LEVELS')
         dispatch('FETCH_PUBLIC_LEVELS')
-        commit('SET_ERROR', null)
+        commit('RESET_ERRORS', null, { root: true })
         commit('SET_USER', {
           displayName: user.displayName,
           email: user.email,
@@ -121,7 +123,7 @@ const userStore: StoreOptions<IUserState> = {
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message)
+          commit('SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_IN_GITHUB({ dispatch }) {
@@ -143,7 +145,7 @@ const userStore: StoreOptions<IUserState> = {
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message)
+          commit('SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_UP({ commit }, user) {
@@ -160,7 +162,7 @@ const userStore: StoreOptions<IUserState> = {
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message)
+          commit('SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_OUT({ commit }) {
@@ -183,7 +185,7 @@ const userStore: StoreOptions<IUserState> = {
             console.debug('Data stored: ', data)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       }
     },
@@ -201,33 +203,35 @@ const userStore: StoreOptions<IUserState> = {
             }
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       }
     },
-    SAVE_LEVEL({ commit }, level) {
+    SAVE_LEVEL({ commit, dispatch }, level) {
+      // console.log(level)
       if (auth.currentUser) {
         const customLevel: any = {
           userId: auth.currentUser.uid,
           level: {
             currentLevelID: level.currentLevelID,
             gameState: level.gameState,
+            boardState: level.boardState,
           },
           public: false,
           createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
         }
 
-        console.log(level)
         const dbRef = db.collection('levels')
 
         dbRef
           .add(customLevel)
           .then((data) => {
-            console.log('Level saved: ', data)
-            router.replace({ path: `/level/${level.currentLevelID}/${data.id}` })
+            console.log('Level saved: ', data.id)
+            router.replace({ path: `/level/${data.id}` })
+            dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
@@ -240,16 +244,17 @@ const userStore: StoreOptions<IUserState> = {
           level: {
             currentLevelID: level.currentLevelID,
             gameState: level.gameState,
+            boardState: level.boardState,
           },
           // created for firestore update test
           lastModifed: firebase.firestore.Timestamp.fromDate(new Date()),
         }
-        const levelSaved = router.currentRoute.params.levelsaved
+        const levelSaved = router.currentRoute.params.id
 
         const doc = db.collection('levels').doc(levelSaved)
 
         doc.update(customLevel).catch((err) => {
-          commit('SET_ERROR', err.message)
+          commit('SET_ERROR', err.message, { root: true })
         })
       } else {
         console.log('You are not logged in!')
@@ -266,7 +271,7 @@ const userStore: StoreOptions<IUserState> = {
             querySnapshot.forEach(function(doc) {
               myLevels.push({
                 id: doc.id,
-                link: `/level/${doc.data().level.currentLevelID}/${doc.id}`,
+                link: `/level/${doc.id}`,
                 public: doc.data().public,
               })
             })
@@ -275,7 +280,7 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_SAVED_LEVELS_LIST', myLevels)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
@@ -291,7 +296,7 @@ const userStore: StoreOptions<IUserState> = {
           .then((querySnapshot) => {
             querySnapshot.forEach(function(doc) {
               publicLevels.push({
-                link: `/levels/shared/${doc.data().level.currentLevelID}/${doc.id}`,
+                link: `/levels/shared/${doc.id}`,
               })
             })
           })
@@ -299,13 +304,13 @@ const userStore: StoreOptions<IUserState> = {
             commit('SET_PUBLIC_LEVELS', publicLevels)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PUBLIC({ commit }, levelID) {
+    MAKE_LEVEL_PUBLIC({ commit, dispatch }, levelID) {
       if (auth.currentUser) {
         const docs = db
           .collection('levels')
@@ -323,18 +328,19 @@ const userStore: StoreOptions<IUserState> = {
                 sharedDoc.add(docShared).then(() => {
                   console.log('data added')
                   commit('SET_PUBLIC', levelID)
+                  dispatch('UPDATE_LEVEL_LISTS')
                 })
               }
             })
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PRIVATE({ commit }, levelID) {
+    MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID) {
       if (auth.currentUser) {
         const doc = db.collection('levels').doc(levelID)
         const sharedDoc = db.collection('shared_levels').where('userId', '==', auth.currentUser.uid)
@@ -353,13 +359,14 @@ const userStore: StoreOptions<IUserState> = {
               .then(() => {
                 console.log('data removed')
                 commit('SET_PRIVATE', levelID)
+                dispatch('UPDATE_LEVEL_LISTS')
               })
               .catch((err) => {
-                commit('SET_ERROR', err.message)
+                commit('SET_ERROR', err.message, { root: true })
               })
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message)
+            commit('SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
@@ -377,10 +384,35 @@ const userStore: StoreOptions<IUserState> = {
           console.log('Level removed', levelID)
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message)
+          commit('SET_ERROR', err.message, { root: true })
         })
+    },
+    GET_LEVEL_DATA({ commit }, { id, shared }) {
+      const collectionName = shared ? 'shared_levels' : 'levels'
+      db.collection(collectionName)
+        .doc(id)
+        .get()
+        .then((response) => {
+          const levelData = response.data()
+          console.log(levelData)
+          if (levelData) {
+            commit('SET_FETCHED_LEVEL', levelData.level.boardState)
+          } else {
+            console.log('No Level Data Found!')
+          }
+        })
+        .catch((err) => {
+          commit('SET_ERROR', err.message, { root: true })
+        })
+    },
+    CLEAR_LEVEL_DATA({ commit }) {
+      commit('RESET_FETCHED_LEVEL')
+    },
+    UPDATE_LEVEL_LISTS({ dispatch }) {
+      dispatch('FETCH_MY_LEVELS')
+      dispatch('FETCH_PUBLIC_LEVELS')
     },
   },
 }
 
-export default new Vuex.Store<IUserState>(userStore)
+export default userModule

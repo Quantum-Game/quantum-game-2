@@ -246,10 +246,6 @@ $leaf: #5c00d3;
       fill: $root;
       stroke: $root;
     }
-    rect {
-      width: 20px;
-      height: 20px;
-    }
   }
 
   .edge {

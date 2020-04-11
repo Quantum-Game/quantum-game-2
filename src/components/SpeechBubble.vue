@@ -197,7 +197,7 @@ export default class SpeechBubble extends Mixins(Position) {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .hint {
   padding: 6px;
   z-index: 2;

@@ -1,8 +1,8 @@
 <template>
   <div v-if="shown" class="login-status">
     <router-link :to="to" class="login-style">
-      <p v-if="!isLoggedIn">LOG IN</p>
-      <p v-else>Playing as {{ userName }}</p>
+      <p v-if="!moduleGetterIsLoggedIn">LOG IN</p>
+      <p v-else>Playing as {{ moduleGetterUserName }}</p>
     </router-link>
   </div>
 </template>
@@ -10,7 +10,9 @@
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import AppButton from '@/components/AppButton.vue'
-import $userStore from '@/store/userStore'
+import { namespace } from 'vuex-class'
+
+const user = namespace('userModule')
 
 @Component({
   components: {
@@ -18,12 +20,14 @@ import $userStore from '@/store/userStore'
   },
 })
 export default class LoginStatus extends Vue {
+  @user.Getter('userName') moduleGetterUserName!: string
+  @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
   /**
    * Dynamic route depending on context
    * @returns a route string
    */
   get to(): string {
-    return this.isLoggedIn ? '/myaccount' : '/login'
+    return this.moduleGetterIsLoggedIn ? '/myaccount' : '/login'
   }
 
   /**
@@ -34,23 +38,6 @@ export default class LoginStatus extends Vue {
   get shown(): boolean {
     const { name } = this.$route
     return name !== 'login' && name !== 'home' && name !== 'rocks'
-  }
-
-  // TODO: could be done with mapGetters vuex helper,
-  // but $userStore would need to be turned into a
-  // regular, namespaced module
-  /**
-   * @returns isLoggedIn store boolean
-   */
-  get isLoggedIn(): boolean {
-    return $userStore.getters.isLoggedIn
-  }
-
-  /**
-   * @returns userName store string
-   */
-  get userName(): string {
-    return $userStore.getters.userName
   }
 }
 </script>

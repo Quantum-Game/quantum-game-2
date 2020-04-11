@@ -75,7 +75,7 @@
       <button
         type="button"
         :style="computeSaveStyle"
-        @click="handleSave()"
+        @click="handleSave"
         @mouseenter="
           $emit('hover', {
             kind: 'ui',
@@ -90,10 +90,11 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { State } from 'vuex-class'
+import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
-import $userStore from '@/store/userStore'
 import Soundtract from '@/mixins/soundtrack'
+
+const userModule = namespace('userModule')
 
 @Component
 export default class GameControls extends Vue {
@@ -103,6 +104,9 @@ export default class GameControls extends Vue {
   @Prop({ default: '' }) readonly displayStatus!: string
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
+  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
+  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
+  @userModule.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
   soundFlag = false
   soundtract?: Soundtract
   volume = -10
@@ -230,7 +234,7 @@ export default class GameControls extends Vue {
   }
 
   get computeSaveStyle(): {} {
-    if (this.isLoggedIn) {
+    if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
         opacity: this.playFlag ? 1 : 0.3,
@@ -243,7 +247,7 @@ export default class GameControls extends Vue {
   }
 
   get computeAccountStyle(): {} {
-    if (this.isLoggedIn) {
+    if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`,
         opacity: this.playFlag ? 1 : 0.3,
@@ -269,28 +273,12 @@ export default class GameControls extends Vue {
     }
   }
 
-  get isLoggedIn(): boolean {
-    return $userStore.getters.isLoggedIn
-  }
-
-  saveLevel(): void {
-    $userStore.dispatch('SAVE_LEVEL', this.$store.state)
-  }
-
-  updateLevel(): void {
-    $userStore.dispatch('UPDATE_LEVEL', this.$store.state)
-  }
-
   handleSave(): void {
-    if (!this.$route.meta.levelSaved) {
-      this.saveLevel()
-    } else {
-      this.updateLevel()
-    }
+    this.$emit('saveLevel')
   }
 
   handleAccount(): void {
-    if (!this.isLoggedIn) {
+    if (!this.moduleGetterIsLoggedIn) {
       this.$router.push('/login')
     } else {
       this.$router.push('/myaccount')

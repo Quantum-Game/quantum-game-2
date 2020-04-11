@@ -312,19 +312,9 @@ p {
 .defeat {
   color: white;
   opacity: 0.9;
-  @media screen and (max-width: 1000px) {
-    b {
-      font-size: calc(8px + 4 * ((100vw - 320px) / 680));
-    }
-  }
 }
 .success {
   color: white;
-  @media screen and (max-width: 1000px) {
-    b {
-      font-size: calc(8px + 4 * ((100vw - 320px) / 680));
-    }
-  }
 }
 
 .cdc-container {
