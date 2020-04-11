@@ -86,7 +86,7 @@ export default class TestPage extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .test-page {
   & .test-page__controls {
     position: fixed;

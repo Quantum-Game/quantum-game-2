@@ -1,26 +1,47 @@
 [
   {
-    "id": "introduction",
-    "type": "rock",
+    "id": "first-step",
+    "graphics": "rock_happy",
     "dialogue": [
-      {
-        "content": "Hi",
-        "color": "purple"
-      }
-    ]
+      "You pressed the button!",
+      "A small step for the classical world, but a big for the quantum one."
+    ],
+    "link": ""
   },
   {
-    "id": "talking",
-    "type": "pile2",
+    "id": "mirror",
+    "graphics": "rock_happy",
     "dialogue": [
-      {
-        "content": "Hi",
-        "color": "purple"
-      },
-      {
-        "content": "Hello there",
-        "color": "fuchsia"
-      }
-    ]
+      "Do you really know what is a mirror?",
+      "And what is better than silver?"
+    ],
+    "link": "mirror"
+  },
+  {
+    "id": "superposition",
+    "graphics": "rock_happy",
+    "dialogue": [
+      "We didn't split a photon. It is still one photon in many places at the same time.",
+      "How is it possible?!"
+    ],
+    "link": "superposition"
+  },
+  {
+    "id": "interference",
+    "graphics": "weasel",
+    "dialogue": ["It is unexpected, isn't it?"],
+    "link": "interference"
+  },
+  {
+    "id": "mach-zehnder-interferometer",
+    "graphics": "pile",
+    "dialogue": ["What happens?", "Let's see what is phase and why does it matter."],
+    "link": "mach-zehnder-interferometer"
+  },
+  {
+    "id": "twitter",
+    "graphics": "pile",
+    "dialogue": ["That's it for now!", "Do you want something more? Check us on Twitter!"],
+    "link": "https://twitter.com/quantumgameio"
   }
 ]

@@ -59,6 +59,139 @@
       }
     ]
   },
+  "mach-zehnder-interferometer": {
+    "title": "Mach-Zehnder interferometer",
+    "elementName": "MachZehnderInterferometer",
+    "short": "<p>A classic interferometer setup for measuring relative phase change.</p>",
+    "grids": [
+      {
+        "cols": 6,
+        "rows": 4,
+        "cells": [
+          {
+            "coord": {
+              "x": 0,
+              "y": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 2,
+              "y": 0
+            },
+            "element": "BeamSplitter",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 0
+            },
+            "element": "Mirror",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 2,
+              "y": 2
+            },
+            "element": "Mirror",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 2
+            },
+            "element": "BeamSplitter",
+            "rotation": 135,
+            "frozen": true
+          }
+        ]
+      },
+      {
+        "cols": 6,
+        "rows": 4,
+        "cells": [
+          {
+            "coord": {
+              "x": 0,
+              "y": 0
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 2,
+              "y": 0
+            },
+            "element": "BeamSplitter",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 3,
+              "y": 0
+            },
+            "element": "Glass",
+            "rotation": 0,
+            "frozen": false
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 0
+            },
+            "element": "Mirror",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 1
+            },
+            "element": "Glass",
+            "rotation": 0,
+            "frozen": false
+          },
+          {
+            "coord": {
+              "x": 2,
+              "y": 2
+            },
+            "element": "Mirror",
+            "rotation": 135,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 2
+            },
+            "element": "BeamSplitter",
+            "rotation": 135,
+            "frozen": true
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "Further reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Mach%E2%80%93Zehnder_interferometer\">Mach–Zehnder interferometer</a></li><li><a href=\"https://www.youtube.com/watch?v=0USje5vTIKs\">Mach-Zehnder interferometers and beam splitters - MIT 8.04 Quantum Physics I, Spring 2016</a></li></ul>"
+      }
+    ]
+  },
   "polarization": {
     "title": "Polarization",
     "elementName": "Polarization",

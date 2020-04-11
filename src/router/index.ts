@@ -84,7 +84,7 @@ export default new Router({
     },
     {
       path: '/dev/rock_talk',
-      component: () => import('@/components/TestPage/index.vue'),
+      component: () => import('@/components/RockTalkPage/RockDemo.vue'),
     },
     {
       path: '*',

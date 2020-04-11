@@ -53,7 +53,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Rock"]
+    "tools": ["Rock"],
+    "rockTalkId": "first-step"
   },
 
   {
@@ -253,7 +254,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Mirror", "Mirror"],
+    "rockTalkId": "mirror"
   },
 
   {
@@ -393,7 +395,8 @@
         "threshold": 0.25
       }
     ],
-    "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"]
+    "tools": ["BeamSplitter", "BeamSplitter", "BeamSplitter", "BeamSplitter"],
+    "rockTalkId": "superposition"
   },
 
   {
@@ -620,7 +623,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Mirror", "Mirror"]
+    "tools": ["Mirror", "Mirror"],
+    "rockTalkId": "interference"
   },
 
   {
@@ -732,7 +736,8 @@
         "threshold": 1
       }
     ],
-    "tools": ["Glass", "Glass"]
+    "tools": ["Glass", "Glass"],
+    "rockTalkId": "mach-zehnder-interferometer"
   },
 
   {
@@ -3480,6 +3485,7 @@
       "FaradayRotator",
       "VacuumJar",
       "PolarizingBeamSplitter"
-    ]
+    ],
+    "rockTalkId": "twitter"
   }
 ]
