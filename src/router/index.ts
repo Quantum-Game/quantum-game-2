@@ -18,7 +18,7 @@ export default new Router({
       component: () => import('@/components/LevelMapPage/index.vue')
     },
     {
-      path: '/levels/shared/:id/',
+      path: '/level/:username/:id/',
       name: 'sharedlevels',
       component: () => import('@/components/GamePage/index.vue'),
       meta: {

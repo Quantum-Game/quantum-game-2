@@ -219,6 +219,7 @@ const userModule: Module<IUserState, IRootState> = {
           },
           public: false,
           createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+          lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
         }
 
         const dbRef = db.collection('levels')
@@ -248,7 +249,7 @@ const userModule: Module<IUserState, IRootState> = {
             boardState: level.boardState,
           },
           // created for firestore update test
-          lastModifed: firebase.firestore.Timestamp.fromDate(new Date()),
+          lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
         }
         const levelSaved = router.currentRoute.params.id
 
@@ -274,6 +275,8 @@ const userModule: Module<IUserState, IRootState> = {
                 id: doc.id,
                 link: `/level/${doc.id}`,
                 public: doc.data().public,
+                createdAt: doc.data().createdAt,
+                lastModified: doc.data().lastModified,
               })
             })
           })
@@ -297,7 +300,11 @@ const userModule: Module<IUserState, IRootState> = {
           .then((querySnapshot) => {
             querySnapshot.forEach(function(doc) {
               publicLevels.push({
-                link: `/levels/shared/${doc.id}`,
+                id: doc.id,
+                link: `/levels/${doc.id}`,
+                public: doc.data().public, // always true
+                createdAt: doc.data().createdAt,
+                lastModified: doc.data().lastModified,
               })
             })
           })

@@ -3,15 +3,16 @@
     <div slot="main">
       <h1>Saved Levels</h1>
       <div class="my-levels">
-        <h2>My levels:</h2>
+        <h2>My levels</h2>
         <ul class="levels-list">
           <li v-for="(lvl, index) in moduleGetterSavedLevelsList" :key="index">
-            Level: <router-link :to="lvl.link">{{ lvl.link }}</router-link>
+            <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
+            ({{ printDate(lvl.createdAt) }})
             <a class="remove-btn" @click.prevent="removeLevel(lvl.id, lvl.public)"
               ><app-button type="special"> X </app-button></a
             >
             <a v-if="!lvl.public" class="private-btn" @click.prevent="makePublic(lvl.id)"
-              ><app-button type="special"> Private </app-button></a
+              ><app-button type="special"> Unlisted </app-button></a
             >
             <a v-if="lvl.public" class="public-btn" @click.prevent="makePrivate(lvl.id)"
               ><app-button type="basic"> Public </app-button></a
@@ -22,10 +23,11 @@
       <br />
       <br />
       <div class="public-levels">
-        <h2>All public levels:</h2>
+        <h2>All public levels</h2>
         <ul class="levels-list">
           <li v-for="(lvl, index) in moduleGetterPublicLevels" :key="index">
-            Level: <router-link :to="lvl.link">{{ lvl.link }}</router-link>
+            <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
+            ({{ printDate(lvl.createdAt) }})
           </li>
         </ul>
       </div>
@@ -60,41 +62,31 @@ export default class SavedLevels extends Vue {
   @user.Getter('savedLevelsList') moduleGetterSavedLevelsList!: []
   @user.Getter('publicLevels') moduleGetterPublicLevels!: []
 
-  // get user(): string {
-  //   return $userStore.getters.userName
-  // }
-
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // get savedLevels(): any {
-  //   return $userStore.getters.savedLevelsList
-  // }
-
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // get publicLevels(): any {
-  //   return $userStore.getters.publicLevels
-  // }
-
   removeLevel(id: string, isPublic: boolean): void {
     if (isPublic) {
       this.actionMakeLevelPrivate(id)
     }
-    // $userStore.dispatch('REMOVE_LEVEL', id)
     this.actionRemoveLevel(id)
   }
 
   makePublic(id: string): void {
-    // $userStore.dispatch('MAKE_LEVEL_PUBLIC', id)
     this.actionMakeLevelPublic(id)
   }
 
   makePrivate(id: string): void {
-    // $userStore.dispatch('MAKE_LEVEL_PRIVATE', id)
     this.actionMakeLevelPrivate(id)
   }
 
   signOut(): void {
     this.actionSignOut(this.moduleGetterUserName)
-    // $userStore.dispatch('SIGN_OUT', this.moduleGetterUserName)
+  }
+
+  printDate(timestamp: any): string {
+    if (!timestamp) {
+      return ''
+    }
+    const date = timestamp.toDate()
+    return date.toUTCString()
   }
 }
 </script>
