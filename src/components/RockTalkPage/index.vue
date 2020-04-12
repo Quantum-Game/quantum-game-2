@@ -26,7 +26,7 @@ import AppButton from '@/components/AppButton.vue'
   },
 })
 export default class InterLevelOverlay extends Vue {
-  @State('currentLevelID') currentLevelID!: number
+  @State('currentLevelID') currentLevelID!: string
 
   get rockTalkId(): string {
     return this.$route.params.id
@@ -41,7 +41,7 @@ export default class InterLevelOverlay extends Vue {
    * @returns a router link :to string parameter
    */
   get nextLevel(): string {
-    return `/level/${this.currentLevelID + 1}`
+    return `/level/${parseInt(this.currentLevelID) + 1}`
   }
 }
 </script>
