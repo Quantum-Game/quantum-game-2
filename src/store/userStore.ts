@@ -228,6 +228,7 @@ const userModule: Module<IUserState, IRootState> = {
           .then((data) => {
             console.log('Level saved: ', data.id)
             router.replace({ path: `/level/${data.id}` })
+            commit('SET_PUBLIC', data.id)
             dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
@@ -289,7 +290,7 @@ const userModule: Module<IUserState, IRootState> = {
     FETCH_PUBLIC_LEVELS({ commit }) {
       if (auth.currentUser) {
         const publicLevels: any = []
-        const docs = db.collection('shared_levels')
+        const docs = db.collection('levels').where('public', '==', true)
 
         docs
           .get()
@@ -316,7 +317,6 @@ const userModule: Module<IUserState, IRootState> = {
           .collection('levels')
           .where('userId', '==', auth.currentUser.uid)
           .where(firebase.firestore.FieldPath.documentId(), '==', levelID)
-        const sharedDoc = db.collection('shared_levels')
 
         docs
           .get()
@@ -324,14 +324,11 @@ const userModule: Module<IUserState, IRootState> = {
             querySnapshot.forEach(function(doc) {
               if (doc.id === levelID) {
                 doc.ref.update({ public: true })
-                const docShared = Object.assign({}, { guid: doc.id }, doc.data())
-                sharedDoc.add(docShared).then(() => {
-                  console.log('data added')
-                  commit('SET_PUBLIC', levelID)
-                  dispatch('UPDATE_LEVEL_LISTS')
-                })
               }
             })
+          })
+          .then(() => {
+            dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
             commit('SET_ERROR', err.message, { root: true })
@@ -343,27 +340,11 @@ const userModule: Module<IUserState, IRootState> = {
     MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID) {
       if (auth.currentUser) {
         const doc = db.collection('levels').doc(levelID)
-        const sharedDoc = db.collection('shared_levels').where('userId', '==', auth.currentUser.uid)
 
         doc
           .update({ public: false })
           .then(() => {
-            sharedDoc
-              .where('guid', '==', levelID)
-              .get()
-              .then((querySnapshot) => {
-                querySnapshot.forEach(function(d) {
-                  d.ref.delete()
-                })
-              })
-              .then(() => {
-                console.log('data removed')
-                commit('SET_PRIVATE', levelID)
-                dispatch('UPDATE_LEVEL_LISTS')
-              })
-              .catch((err) => {
-                commit('SET_ERROR', err.message, { root: true })
-              })
+            dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
             commit('SET_ERROR', err.message, { root: true })
@@ -387,9 +368,8 @@ const userModule: Module<IUserState, IRootState> = {
           commit('SET_ERROR', err.message, { root: true })
         })
     },
-    GET_LEVEL_DATA({ commit }, { id, shared }) {
-      const collectionName = shared ? 'shared_levels' : 'levels'
-      db.collection(collectionName)
+    GET_LEVEL_DATA({ commit }, { id }) {
+      db.collection('levels')
         .doc(id)
         .get()
         .then((response) => {
