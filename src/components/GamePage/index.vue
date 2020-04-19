@@ -230,7 +230,7 @@ export default class Game extends Vue {
     if (this.isCustomLevel) {
       // 1) dispatch action for vuex to get the level, the "shared" parameter
       //    handles which db we target
-      this.actionGetLevelStoreData({ id: this.levelId, shared: this.$route.meta.shared })
+      this.actionGetLevelStoreData({ id: this.levelId })
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
           this.unsubscribe = this.$store.subscribe((mutation, rootState) => {

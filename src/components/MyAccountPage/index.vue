@@ -2,26 +2,10 @@
   <app-layout>
     <div slot="main">
       <h1>My Account</h1>
-      <h2>Hello {{ moduleGetterUserName }}</h2>
-      <div>
-        <label>Status: </label>
-        <input v-model="level.status" type="text" />
-        <label> Score: </label>
-        <input v-model="level.score" type="text" />
-      </div>
-      <br />
-      <br />
-      <ul class="levels-progress">
-        <li v-for="(lvl, index) in moduleGettrProgressArr" :key="index">
-          Level: {{ lvl.id }} Status: {{ lvl.status }} Score: {{ lvl.score }}
-          <span class="edit-level" @click="editLevel(lvl)"> >>>> Edit</span>
-        </li>
-      </ul>
-      <a @click.prevent="saveProgressToDB"
-        ><app-button type="special"> Save data to Firestore!!! </app-button></a
-      ><br />
+      <h2>Hi {{ moduleGetterUserName }}!</h2>
+      <p>User page is under construction. Right now, see:</p>
       <router-link to="/savedlevels"
-        ><app-button type="special"> Savedlevels </app-button>
+        ><app-button type="special"> Saved and shared levels </app-button>
       </router-link>
     </div>
     <div slot="right">
@@ -38,12 +22,6 @@ import AppButton from '@/components/AppButton.vue'
 
 const user = namespace('userModule')
 
-interface IAccountLevel {
-  id: number
-  status: ''
-  score: number
-}
-
 @Component({
   components: {
     AppLayout,
@@ -51,34 +29,11 @@ interface IAccountLevel {
   },
 })
 export default class MyAccount extends Vue {
-  @user.Mutation('SET_PROGRESS') mutationSetProgress!: Function
-  @user.Action('SET_INITIAL_PROGRESS') actionSetInitialProgress!: Function
-  @user.Action('SAVE_PROGRESS') actionSaveProgress!: Function
   @user.Action('SIGN_OUT') actionSignOut!: Function
-  @user.Getter('progressArr') moduleGettrProgressArr!: []
   @user.Getter('userName') moduleGetterUserName!: string
-  level = {
-    id: 0,
-    status: '',
-    score: 0,
-  }
-
-  created(): void {
-    this.actionSetInitialProgress()
-  }
 
   signOut(): void {
     this.actionSignOut(this.moduleGetterUserName)
-  }
-
-  saveProgressToDB(): void {
-    console.debug(this.moduleGettrProgressArr)
-    this.mutationSetProgress(this.moduleGettrProgressArr)
-    this.actionSaveProgress()
-  }
-
-  editLevel(lvl: IAccountLevel): void {
-    this.level = lvl
   }
 }
 </script>
