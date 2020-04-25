@@ -5,7 +5,7 @@
         {{ line }}
       </p>
       <p v-if="isLinkEncyclopedia">
-        Check the <router-link :to="`/info/${link}`">{{ link }}</router-link> encyclopedia entry.
+        Check the <router-link :to="`/info/${link}`"><b>{{ link }}</b></router-link> encyclopedia entry.
       </p>
       <p v-if="isLinkExternal">Visit <a :href="link">link</a>.</p>
     </div>
@@ -37,17 +37,21 @@ export default class RockTalkLine extends Vue {
 
 <style lang="scss" scoped>
 .rock-text {
+  margin-top: 4rem;
   margin-bottom: 1rem;
   font-size: 1rem;
   & a {
     text-transform: uppercase;
   }
 }
+.rock-line {
+  width: 95%;
+}
 .rock-img {
   margin: 0px 5rem 2rem 5rem;
   height: 100%;
   min-height: 100px;
   width: 30vw;
-  max-width: 500px;
+  max-width: 400px;
 }
 </style>

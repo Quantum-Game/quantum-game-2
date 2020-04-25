@@ -10,7 +10,7 @@
   },
   {
     "id": "mirror",
-    "graphics": "rock_happy",
+    "graphics": "rock_sceptical",
     "dialogue": [
       "Do you really know what is a mirror?",
       "And what is better than silver?"
@@ -19,10 +19,9 @@
   },
   {
     "id": "superposition",
-    "graphics": "rock_happy",
+    "graphics": "pile2",
     "dialogue": [
-      "We didn't split a photon. It is still one photon in many places at the same time.",
-      "How is it possible?!"
+      "We didn't split a photon. It is still one photon in many places at the same time. How is it possible?!"
     ],
     "link": "superposition"
   },
