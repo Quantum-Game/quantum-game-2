@@ -1,6 +1,13 @@
 <template>
   <svg :width="width + 2 * margin" :height="height + 2 * margin">
     <g class="photon" :style="computeStyle">
+      <g>
+        <radialGradient id="SVGID_1_" cx="32" cy="32" r="32" gradientUnits="userSpaceOnUse">
+          <stop  offset="0" style="stop-color:#5C00D3"/>
+          <stop  offset="1" style="stop-color:#5C00D3;stop-opacity:0"/>
+        </radialGradient>
+        <circle class="st0" cx="32" cy="32" r="32"/>
+      </g>
       <g v-if="displayGaussian" class="gaussian">
         <path class="gaussian" :d="computeGaussianPath.pathUp" />
         <path class="gaussian" :d="computeGaussianPath.pathDown" />
@@ -246,7 +253,7 @@ export default class AppPhoton extends Vue {
   eColor = d3
     .scaleLinear<string>()
     .domain([-1, 0, 1])
-    .range(['#ffbb3b', '#ff0055', '#5c00d3']) // YELLOW RED PURPLE
+    .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
 
   /**
    * Compute graph properties from complex values
@@ -282,9 +289,14 @@ export default class AppPhoton extends Vue {
     fill: transparent;
   }
   .gaussian {
-    stroke-width: 6px;
-    fill: #5c00d3;
-    stroke: #5c00d3;
+    stroke-width: 3px;
+    fill: rgba(92, 0, 211, 1);
+    stroke: rgba(92, 0, 211, 0.5);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .st0 {
+    fill: url(#SVGID_1_);
   }
 }
 </style>
