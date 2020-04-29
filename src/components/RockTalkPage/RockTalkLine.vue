@@ -5,7 +5,11 @@
         {{ line }}
       </p>
       <p v-if="isLinkEncyclopedia">
-        Check the <router-link :to="`/info/${link}`"><b>{{ link }}</b></router-link> encyclopedia entry.
+        Check the
+        <router-link :to="`/info/${link}`"
+          ><b>{{ link }}</b></router-link
+        >
+        encyclopedia entry.
       </p>
       <p v-if="isLinkExternal">Visit <a :href="link">link</a>.</p>
     </div>
