@@ -11,20 +11,17 @@ export default class QuarterWavePlate extends Element {
   public description =
     'It delays one polarization (with darker lines) by λ/4. When applied correctly, it can change linear polarization into circular, and vice versa.'
 
-  public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
-  public angles: number[] = [0, 90, 180, 270]
+  public ascii: string[] = ['▤', '▨', '▥', '▧', '▤', '▨', '▥', '▧']
+  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  public polarization = 0
-
-  public constructor(polarization = 0) {
+  public constructor() {
     super(Elem.QuarterWavePlate, Group.Polarization)
-    this.polarization = polarization
   }
 
   public transition(options: ITransition): qt.Operator {
-    if (options.rotation === 90 || options.rotation === 270) {
-      return qt.Elements.quarterWavePlateNS(options.polarization)
-    }
-    return qt.Elements.quarterWavePlateWE(options.polarization)
+    return qt.Operator.add([
+      qt.Elements.quarterWavePlateWE(options.rotation),
+      qt.Elements.quarterWavePlateNS(options.rotation + 90),
+    ])
   }
 }

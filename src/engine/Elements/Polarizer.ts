@@ -23,6 +23,5 @@ export default class Polarizer extends Element {
       qt.Elements.polarizerWE(options.rotation),
       qt.Elements.polarizerNS(options.rotation + 90),
     ])
-    // return qt.Elements.polarizer(options.rotation, options.polarization)
   }
 }
