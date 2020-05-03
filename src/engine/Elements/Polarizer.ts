@@ -11,17 +11,18 @@ export default class Polarizer extends Element {
   public description =
     'A polarization filter... Anisotropic polymer strands capture electric oscillations parallel to them. Used in photography.'
 
-  public ascii: string[] = ['🡢', '🡥', '🡢', '🡥']
-  public angles: number[] = [0, 90, 180, 270]
+  public ascii: string[] = ['▤', '▨', '▥', '▧', '▤', '▨', '▥', '▧']
+  public angles: number[] = [0, 45, 90, 135, 180, 225, 270, 315]
 
-  public polarization = 0
-
-  public constructor(polarization = 0) {
+  public constructor() {
     super(Elem.Polarizer, Group.Polarization)
-    this.polarization = polarization
   }
 
   public transition(options: ITransition): qt.Operator {
-    return qt.Elements.polarizer(options.rotation, options.polarization)
+    return qt.Operator.add([
+      qt.Elements.polarizerWE(options.rotation),
+      qt.Elements.polarizerNS(options.rotation + 90),
+    ])
+    // return qt.Elements.polarizer(options.rotation, options.polarization)
   }
 }

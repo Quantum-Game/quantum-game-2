@@ -2,7 +2,7 @@
   <svg id="Layer_1" style="enable-background:new 0 0 64 64;" xml:space="preserve">
     <g>
       <!-- BARS -->
-      <g :style="computePolarization">
+      <g>
         <rect x="8.5" y="-7" class="st2" width="3" height="69" />
         <rect x="14.5" y="-7" class="st2" width="3" height="69" />
         <rect x="20.5" y="-7" class="st2" width="3" height="69" />
@@ -42,18 +42,7 @@ import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
 @Component
-export default class PolarizerCell extends Piece {
-  /**
-   * Compute inner grid rotation from cell polarization
-   */
-  get computePolarization(): {} {
-    const polarization = this.cell ? this.cell.polarization : 0
-    return {
-      'transform-origin': `32px 32px`,
-      transform: `rotate(${(polarization + 90) % 180}deg)`,
-    }
-  }
-}
+export default class PolarizerCell extends Piece {}
 </script>
 
 <style lang="scss" scoped>
@@ -68,7 +57,7 @@ export default class PolarizerCell extends Piece {
   fill: #4e3b6b;
 }
 .st2 {
-  clip-path: url(#clip);
+  // clip-path: url(#clip);
   fill: #5a4278;
 }
 </style>
