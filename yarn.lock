@@ -4407,18 +4407,18 @@ eslint-plugin-standard@^4.0.1:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.1.tgz#ff0519f7ffaff114f76d1bd7c3996eef0f6e20b4"
   integrity sha512-v/KBnfyaOMPmZc/dmc6ozOdWqekGp7bBGq4jLAecEfPGmfKiWS4sA8sC0LqiV9w5qmXAtXVn4M3p1jSyhY85SQ==
 
-eslint-plugin-vue-scoped-css@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue-scoped-css/-/eslint-plugin-vue-scoped-css-0.3.4.tgz#059849d53d08146ca2cef30119aa4296d88c904a"
-  integrity sha512-PX024tOIqbZ+/Q+mq5WfFmhRrSyLre/dsQqHxLSovelOjvH+22ku67u83HEtt2jdSNA99K9OLV+pZ/T5d3lGpw==
+eslint-plugin-vue-scoped-css@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue-scoped-css/-/eslint-plugin-vue-scoped-css-0.4.0.tgz#7a95fb290b3993c52e50590f2f9a60eee01a3e5a"
+  integrity sha512-eQ5k7RWgit1N4wLZBVYz5AR9AJ9QXP1EFMkUzFwjdaEcescTLcZZ1SBVM+flkJmTjc1ZXPqA+uA5kyx33fPbLg==
   dependencies:
     eslint-utils "^1.4.3"
     lodash "^4.17.15"
-    postcss "^7.0.21"
-    postcss-safe-parser "^4.0.1"
+    postcss "^7.0.27"
+    postcss-safe-parser "^4.0.2"
     postcss-scss "^2.0.0"
     postcss-selector-parser "^6.0.2"
-    postcss-styl "^0.5.1"
+    postcss-styl "^0.5.11"
     vue-eslint-parser "^7.0.0 || ^6.0.0 || ^5.0.0"
 
 eslint-plugin-vue@^6.0.1:
@@ -8931,7 +8931,7 @@ postcss-reduce-transforms@^4.0.2:
     postcss "^7.0.0"
     postcss-value-parser "^3.0.0"
 
-postcss-safe-parser@^4.0.1:
+postcss-safe-parser@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/postcss-safe-parser/-/postcss-safe-parser-4.0.2.tgz#a6d4e48f0f37d9f7c11b2a581bf00f8ba4870b96"
   integrity sha512-Uw6ekxSWNLCPesSv/cmqf2bY/77z11O7jZGPax3ycZMFU/oi2DMH9i89AdHc1tRwFg/arFoEwX0IS3LCUxJh1g==
@@ -8972,10 +8972,10 @@ postcss-selector-parser@^6.0.0, postcss-selector-parser@^6.0.2:
     indexes-of "^1.0.1"
     uniq "^1.0.1"
 
-postcss-styl@^0.5.1:
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/postcss-styl/-/postcss-styl-0.5.10.tgz#192f4cad8506c7dd86ee8bbb6078e95bf4ae9cf1"
-  integrity sha512-1+Bw37sq7i8Zw5MiRqEhmK+tJ0SrkDevGsNSZtda2JKuwFKdTRs9L7e1JYFBof0QNJX8/1v6WV8wWwKekjzmEg==
+postcss-styl@^0.5.11:
+  version "0.5.11"
+  resolved "https://registry.yarnpkg.com/postcss-styl/-/postcss-styl-0.5.11.tgz#9d33789fb606f30c504a11b47894179f8a6ab8d4"
+  integrity sha512-tx+YvZpgSms90f5HL8B1ohqJc9n+YG49veP2YcDrhz5P317OPKjy5JU34Y/b1cyBC8thZ0d51FurrfaLwOLwpQ==
   dependencies:
     debug "^4.1.1"
     fast-diff "^1.2.0"
@@ -9021,7 +9021,7 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.1
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
-postcss@^7.0.21, postcss@^7.0.26, postcss@^7.0.27:
+postcss@^7.0.26, postcss@^7.0.27:
   version "7.0.27"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.27.tgz#cc67cdc6b0daa375105b7c424a85567345fc54d9"
   integrity sha512-WuQETPMcW9Uf1/22HWUWP9lgsIC+KEHg2kozMflKjbeUtw9ujvFX6QmIfozaErDkmLWS9WEnEdEe6Uo9/BNTdQ==
