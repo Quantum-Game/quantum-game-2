@@ -19,6 +19,7 @@ import {
   NonLinearCrystal,
   Polarizer,
   QuarterWavePlate,
+  HalfWavePlate,
   Rock,
   SugarSolution,
   VacuumJar,
@@ -298,6 +299,8 @@ export default class Cell {
         return new PolarizingBeamSplitter()
       case Elem.QuarterWavePlate:
         return new QuarterWavePlate()
+      case Elem.HalfWavePlate:
+        return new HalfWavePlate()
       case Elem.Rock:
         return new Rock()
       case Elem.SugarSolution:

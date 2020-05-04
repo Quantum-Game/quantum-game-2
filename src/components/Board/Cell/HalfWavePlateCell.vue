@@ -11,7 +11,7 @@ import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
 @Component
-export default class QuarterWavePlateCell extends Piece {
+export default class HalfWavePlateCell extends Piece {
   strips = [0, 1, 2, 3, 4, 5, 6, 7]
 }
 </script>
@@ -19,6 +19,5 @@ export default class QuarterWavePlateCell extends Piece {
 <style lang="scss" scoped>
 .st2 {
   fill: #61dbef;
-  opacity: 0.5;
 }
 </style>
