@@ -11,13 +11,13 @@ import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
 @Component
-export default class PolarizerCell extends Piece {
+export default class HalfWavePlateCell extends Piece {
   strips = [0, 1, 2, 3, 4, 5, 6, 7]
 }
 </script>
 
 <style lang="scss" scoped>
 .st2 {
-  fill: #5a4278;
+  fill: #61dbef;
 }
 </style>

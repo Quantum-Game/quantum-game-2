@@ -283,7 +283,9 @@ export default class Game extends Vue {
     this.frameIndex = 0
     this.displayFate = false
     this.setEnergizedCells()
-    this.mutationSetGameState(this.level.gameState.gameState)
+    if (this.levelId !== '0' && this.levelId.length < 5) {
+      this.mutationSetGameState(this.level.gameState.gameState)
+    }
     this.mutationSetSimulationState(false)
     console.debug(this.level.gameState.toString())
   }

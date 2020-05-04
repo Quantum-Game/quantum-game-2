@@ -27,7 +27,7 @@
         :v-if="particles.length > 0"
         :style="computeParticleStyle(particle)"
         class="photons"
-        @mouseenter.native="handleMouseEnter(particle.coord)"
+        @mouseenter="handleMouseEnter(particle.coord)"
       >
         <app-photon
           name

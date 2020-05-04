@@ -236,6 +236,7 @@ export enum Elem {
   // Polarization
   Polarizer = 'Polarizer',
   QuarterWavePlate = 'QuarterWavePlate',
+  HalfWavePlate = 'HalfWavePlate',
   SugarSolution = 'SugarSolution',
   FaradayRotator = 'FaradayRotator',
   // Phase
@@ -269,6 +270,7 @@ export const enum ElemLower {
   // Polarization
   Polarizer = 'polarizer',
   QuarterWavePlate = 'quarter-wave-plate',
+  HalfWavePlate = 'half-wave-plate',
   SugarSolution = 'sugar-solution',
   FaradayRotator = 'faraday-rotator',
   // Phase
@@ -310,7 +312,13 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.DetectorFour,
     Elem.Wall,
   ],
-  Polarization: [Elem.Polarizer, Elem.QuarterWavePlate, Elem.SugarSolution, Elem.FaradayRotator],
+  Polarization: [
+    Elem.Polarizer,
+    Elem.QuarterWavePlate,
+    Elem.HalfWavePlate,
+    Elem.SugarSolution,
+    Elem.FaradayRotator,
+  ],
   Phase: [Elem.Glass, Elem.VacuumJar],
 }
 

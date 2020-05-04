@@ -14,6 +14,7 @@ import RockCell from './RockCell.vue'
 import SugarSolutionCell from './SugarSolutionCell.vue'
 import VacuumJarCell from './VacuumJarCell.vue'
 import QuarterWavePlateCell from './QuarterWavePlateCell.vue'
+import HalfWavePlateCell from './HalfWavePlateCell.vue'
 import FaradayRotatorCell from './FaradayRotatorCell.vue'
 import NonLinearCrystalCell from './NonLinearCrystalCell.vue'
 
@@ -33,6 +34,7 @@ export { RockCell }
 export { SugarSolutionCell }
 export { VacuumJarCell }
 export { QuarterWavePlateCell }
+export { HalfWavePlateCell }
 export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
 
@@ -56,6 +58,7 @@ const CellList: ICellList = {
   DetectorFourCell,
   PolarizerCell,
   QuarterWavePlateCell,
+  HalfWavePlateCell,
   SugarSolutionCell,
   GlassCell,
   VacuumJarCell,
