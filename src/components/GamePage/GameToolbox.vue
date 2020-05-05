@@ -106,6 +106,7 @@ body {
   text-transform: uppercase;
   width: 100%;
   text-align: center;
+  border-top: solid 2px #fff;
   @media screen and (max-width: 1000px) {
     display: none;
   }
@@ -118,6 +119,7 @@ body {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
+  padding: 5px;
   @media screen and (max-width: 1000px) {
     justify-content: space-evenly;
     border-top: none;
