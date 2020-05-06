@@ -1,10 +1,11 @@
-<svg version="1.1" id="prefix__Layer_1" 
-  xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 30 30" xml:space="preserve">
-  <style>
-        .st0{fill:#FFFFFF;}
-  </style>
-  <g>
-    <rect x="4.5" y="3" class="st0" width="5" height="24"/>
-    <polygon class="st0" points="9.7,15 27.5,27 27.5,3 	"/>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="prefix__Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" viewBox="0 0 30 30" style="enable-background:new 0 0 30 30;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;}
+</style>
+<g>
+	<rect x="5.5" y="4.6" class="st0" width="4.3" height="20.9"/>
+	<polygon class="st0" points="10.1,15 25.5,25.4 25.5,4.6 	"/>
+</g>
 </svg>
