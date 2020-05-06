@@ -3,7 +3,7 @@
     <div slot="main">
       <h1>Saved Levels</h1>
       <div class="my-levels">
-        <h2>My levels</h2>
+        <h3>My levels</h3>
         <ul class="levels-list">
           <li v-for="(lvl, index) in moduleGetterSavedLevelsList" :key="index">
             <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
@@ -23,7 +23,7 @@
       <br />
       <br />
       <div class="public-levels">
-        <h2>All public levels</h2>
+        <h3>All public levels</h3>
         <ul class="levels-list">
           <li v-for="(lvl, index) in moduleGetterPublicLevels" :key="index">
             <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
@@ -31,9 +31,9 @@
           </li>
         </ul>
       </div>
-    </div>
-    <div slot="right">
-      <a @click.prevent="signOut"><app-button type="special"> Sign Out! </app-button></a>
+      <div class="signOut">
+        <a @click.prevent="signOut">Sign Out</a>
+      </div>
     </div>
   </app-layout>
 </template>
@@ -108,5 +108,8 @@ h1 {
 .remove-btn {
   margin-right: 20px;
   margin-left: 20px;
+}
+.signOut {
+  margin: 20px 10px 10px 10px;
 }
 </style>

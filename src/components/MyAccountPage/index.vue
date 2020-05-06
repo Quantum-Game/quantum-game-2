@@ -5,11 +5,11 @@
       <h2>Hi {{ moduleGetterUserName }}!</h2>
       <p>User page is under construction. Right now, see:</p>
       <router-link to="/savedlevels"
-        ><app-button type="special"> Saved and shared levels </app-button>
+        ><app-button> Saved and shared levels </app-button>
       </router-link>
-    </div>
-    <div slot="right">
-      <a @click.prevent="signOut"><app-button type="special"> Sign Out </app-button></a>
+      <div class="signOut">
+        <a @click.prevent="signOut">Sign Out</a>
+      </div>
     </div>
   </app-layout>
 </template>
@@ -64,5 +64,8 @@ h2 {
   cursor: pointer;
   border: 1px solid #fff;
   margin: 10px;
+}
+.signOut {
+  margin: 20px 10px 10px 10px;
 }
 </style>
