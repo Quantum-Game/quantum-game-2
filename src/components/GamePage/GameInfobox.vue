@@ -86,7 +86,6 @@ export default class GameActiveCell extends Vue {
 
 <style lang="scss" scoped>
 .explanation {
-  // border-top: 1px solid white;
   background-color: rgba(0, 0, 0, 0.1);
   width: 100%;
   text-align: left;

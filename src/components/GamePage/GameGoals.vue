@@ -6,8 +6,10 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div :class="computeProbabilityClass">
-       <!-- <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div> -->
-        <div class="mobile_progressBarText"><p>You need {{ gameState.totalGoalPercentage }}% detection</p></div>
+        <!-- <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div> -->
+        <div class="mobile_progressBarText">
+          <p>You need {{ gameState.totalGoalPercentage }}% detection</p>
+        </div>
       </div>
       <div class="mobile_progressBar">
         <div
@@ -168,7 +170,7 @@ export default class GameGoals extends Vue {
 p {
   font-size: 0.7rem;
   margin: 0rem;
-  color:rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.6);
   @media screen and (max-width: 1000px) {
     font-size: 0.5rem;
     margin-bottom: 0.5rem;
@@ -224,7 +226,7 @@ p {
 .mobile_progressBarText {
   margin-top: 5px;
   font-size: 0.7rem;
-  color:rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .detection {

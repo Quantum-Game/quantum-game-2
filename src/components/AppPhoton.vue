@@ -3,10 +3,10 @@
     <g class="photon" :style="computeStyle">
       <g>
         <radialGradient id="SVGID_1_" cx="32" cy="32" r="32" gradientUnits="userSpaceOnUse">
-          <stop  offset="0" style="stop-color:#5C00D3"/>
-          <stop  offset="1" style="stop-color:#5C00D3;stop-opacity:0"/>
+          <stop offset="0" style="stop-color:#5C00D3" />
+          <stop offset="1" style="stop-color:#5C00D3;stop-opacity:0" />
         </radialGradient>
-        <circle class="st0" cx="32" cy="32" r="32"/>
+        <circle class="st0" cx="32" cy="32" r="32" />
       </g>
       <g v-if="displayGaussian" class="gaussian">
         <path class="gaussian" :d="computeGaussianPath.pathUp" />
