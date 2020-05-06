@@ -672,7 +672,8 @@ h1.title {
   }
 }
 .ket-viewer-game {
-  border-top: 1px solid white;
-  padding-top: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 </style>
