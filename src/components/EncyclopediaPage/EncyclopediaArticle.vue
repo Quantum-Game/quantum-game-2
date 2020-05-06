@@ -132,14 +132,14 @@ article {
 
 h1 {
   padding-bottom: 1rem;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   text-align: center;
 }
 .grids {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  border-bottom: 1px solid #8e819d;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   @media screen and (max-width: 1000px) {
     flex-direction: column;
   }

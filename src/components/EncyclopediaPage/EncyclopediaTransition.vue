@@ -168,14 +168,12 @@ export default class EncyclopediaMatrixBoard extends Vue {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  border-bottom: 1px solid #8e819d;
   @media screen and (max-width: 1000px) {
     flex-direction: column;
   }
 }
 
 .container {
-  border-bottom: 1px solid #8e819d;
   & .entry-title {
     padding: 1em 0;
     font-size: 1em;

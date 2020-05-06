@@ -70,7 +70,7 @@ $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
 
 section.entry-section {
-  border-bottom: 1px solid #8e819d;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   & .entry-title {
     padding: 1em 0;
     font-size: 1em;
