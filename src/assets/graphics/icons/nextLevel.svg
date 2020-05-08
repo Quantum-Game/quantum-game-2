@@ -2,7 +2,8 @@
   xmlns="http://www.w3.org/2000/svg" x="0" y="0" viewBox="0 0 30 30" xml:space="preserve">
   <style>
         .prefix__st0{fill:none;stroke:#fff;stroke-width:2;stroke-miterlimit:10}
+        .prefix__st1{fill:rgba(255,255,255,0.2);stroke:none;}
   </style>
-  <circle class="prefix__st0" cx="15" cy="15" r="13"/>
+  <circle class="prefix__st1" cx="15" cy="15" r="13"/>
   <path class="prefix__st0" d="M10.5 8.8l9 6.2-9 6.2"/>
 </svg>

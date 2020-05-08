@@ -43,10 +43,10 @@ button {
   }
 
   &.basic {
-    background-color: #5c00d3;
+    background-color: #5b00d1;
     border-bottom: 4px solid #120223;
     &:hover {
-      background-color: #4302bf;
+      background-color: #4700a3;
       transition: 0.5s;
       text-decoration: none;
     }
@@ -56,7 +56,7 @@ button {
     background-color: #ff0055;
     border-bottom: 4px solid #890236;
     &:hover {
-      background-color: #e80054;
+      background-color: #c20047;
       transition: 0.5s;
       text-decoration: none;
     }
@@ -67,7 +67,7 @@ button {
     font-size: 1.5rem;
     border-bottom: 4px solid #120223;
     &:hover {
-      background-color: #4302bf;
+      background-color: #4700a3;
       transition: 0.5s;
       text-decoration: none;
     }

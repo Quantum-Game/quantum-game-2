@@ -8,6 +8,7 @@
       :style="absolutePositionStyle"
       @click="shouldHide"
     >
+      <div class="close">x</div>
       <span>{{ hint.content }}</span>
     </div>
   </transition>
@@ -199,7 +200,7 @@ export default class SpeechBubble extends Mixins(Position) {
 
 <style lang="scss" scoped>
 .hint {
-  padding: 6px;
+  padding: 2px 6px 6px 6px;
   z-index: 2;
   max-width: 500px;
   position: absolute;
@@ -211,7 +212,13 @@ export default class SpeechBubble extends Mixins(Position) {
   }
   @media screen and (min-width: $medium) {
     font-size: 16px;
-    padding: 12px;
+    padding: 4px 12px 12px 12px;
+  }
+  & .close {
+    text-align: right;
+    font-size: 10px;
+    font-weight: 900;
+    color: rgba(0, 0, 0, 0.5);
   }
   &::after {
     content: ' ';

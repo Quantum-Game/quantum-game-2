@@ -161,14 +161,14 @@ export default class GameControls extends Vue {
   get computeRewindStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.16,
     }
   }
 
   get computeBackStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_back.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.3,
+      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.16,
     }
   }
 
@@ -188,21 +188,21 @@ export default class GameControls extends Vue {
   get computeForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.16,
     }
   }
 
   get computeFastForwardStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.3,
+      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.16,
     }
   }
 
   get computeReloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
@@ -210,26 +210,26 @@ export default class GameControls extends Vue {
     if (this.soundFlag) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3,
+        opacity: this.playFlag ? 1 : 0.16,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
   get computeDownloadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
   get computeUploadStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/upload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
@@ -237,12 +237,12 @@ export default class GameControls extends Vue {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3,
+        opacity: this.playFlag ? 1 : 0.16,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-      opacity: 0.3,
+      opacity: 0.16,
     }
   }
 
@@ -250,26 +250,26 @@ export default class GameControls extends Vue {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.3,
+        opacity: this.playFlag ? 1 : 0.16,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
   get computeOptionsStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
   get computeMapStyle(): {} {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.3,
+      opacity: this.playFlag ? 1 : 0.16,
     }
   }
 
@@ -331,17 +331,18 @@ input[type='file'] {
   background-color: transparent;
   border: none;
   cursor: pointer;
+  @media screen and (max-width: 1000px) {
+    display: none;
+  }
 }
 .controls {
   width: 100%;
-  border-bottom: 1px solid white;
   display: flex;
   padding-top: 1rem;
   padding-bottom: 1rem;
   justify-content: space-between;
   align-items: center;
   @media screen and (max-width: 1000px) {
-    padding-bottom: 0;
     button {
       display: none;
     }

@@ -3,14 +3,16 @@
     <div class="row-full">
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
+    <div class="gameVersion">
+      <p>
+        Version {{ version }} (beta), based on a
+        <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit.<br>
+        For optimal experience, play PC (mobile version coming soon).
+      </p>
+    </div>
     <router-link to="/level/1">
       <app-button type="big">PLAY</app-button>
     </router-link>
-    <p>
-      Version {{ version }} (beta), based on a
-      <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit. For optimal experience,
-      play PC (mobile version coming soon).
-    </p>
     <div class="hello">
       <h1>
         A puzzle game with photons, superposition and quantum measurement, right in your browser.
@@ -99,6 +101,13 @@ export default class HomePage extends Vue {
     }
   }
 }
+.gameVersion {
+  font-size: 0.8rem;
+  @media screen and (max-width: 1000px) {
+    font-size: 1rem;
+    width: 80%;
+  }
+}
 h1 {
   color: white;
   font-size: 1.4rem;
@@ -119,7 +128,7 @@ p {
     width: 60%;
   }
   @media screen and (max-width: 560px) {
-    width: 100%;
+    width: 80%;
   }
 }
 .row-full {
@@ -127,8 +136,11 @@ p {
   min-width: 1300px;
   position: center;
   height: 100px;
-  margin-bottom: 8vw;
+  margin-bottom: 8rem;
   align-items: center;
+  @media screen and (max-width: 1000px) {
+    margin-bottom: 6rem;
+  }
 }
 .CQTlogo {
   width: 40%;
