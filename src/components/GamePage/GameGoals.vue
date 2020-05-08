@@ -271,6 +271,7 @@ p {
     width: 0%;
     height: 18px;
     background-color: rgba(255, 255, 255, 0.1);
+    border-right: 1px solid white;
     // top: 0;
     // left: 0;
     transition: width 1s ease-in-out;
