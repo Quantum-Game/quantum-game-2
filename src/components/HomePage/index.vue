@@ -6,7 +6,7 @@
     <div class="gameVersion">
       <p>
         Version {{ version }} (beta), based on a
-        <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit.<br>
+        <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit.<br />
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
