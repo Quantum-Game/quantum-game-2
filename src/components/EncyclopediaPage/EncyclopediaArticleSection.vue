@@ -62,7 +62,7 @@ export default class EncyclopediaArticleSection extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 // not scoped so that font-awesome can work with v-html
 $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
