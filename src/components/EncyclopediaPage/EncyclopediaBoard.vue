@@ -203,7 +203,7 @@ export default class EncyclopediaBoard extends Vue {
 }
 
 .ket {
-  // width: 360px;
+  width: 360px;
   padding: 5px 10px;
   margin-top: 5px;
   background-color: rgba(0, 0, 0, 0.1);
