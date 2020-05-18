@@ -14,7 +14,7 @@ Here:
 
 ### Added
 
-* Levels that include polarizators. Overall there are 36 levels.
+* Levels that include polarizers. Overall there are 36 levels.
 
 ### Style
 
