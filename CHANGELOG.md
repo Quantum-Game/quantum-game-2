@@ -10,6 +10,20 @@ Here:
 * The minor is for major releases (kind of more subjective).
 * Each match version is any release on [quantumgame.io](https://quantumgame.io/) that might have some backward-incompatible changes.
 
+## [2.2.12] - 2020-05-18
+
+### Added
+
+* Levels that include polarizators. Overall there are 36 levels.
+
+### Style
+
+* Polarizer and Wave Plates style improvement (see [PR #213 for a screenshot](https://github.com/Quantum-Game/quantum-game-2/pull/213))
+
+### Fixes
+
+* Icons for linked articles in encyclopedia are again visible (see [PR #214 for a screenshot](https://github.com/Quantum-Game/quantum-game-2/pull/214)).
+
 ## [2.2.11] - 2020-05-08
 
 ### Added
