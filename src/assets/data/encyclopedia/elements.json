@@ -297,7 +297,7 @@
     "short": "<p>It rotates the polarization of light by 45 degrees due to interaction with magnetic crystal.</p>",
     "grids": [
       {
-        "cols": 4,
+        "cols": 6,
         "rows": 3,
         "cells": [
           {
@@ -317,6 +317,15 @@
             "element": "FaradayRotator",
             "rotation": 0,
             "frozen": false
+          },
+          {
+            "coord": {
+              "x": 4,
+              "y": 1
+            },
+            "element": "FaradayRotator",
+            "rotation": 0,
+            "frozen": false
           }
         ]
       }
@@ -324,19 +333,19 @@
     "sections": [
       {
         "title": "The basics",
-        "content": "<p>A photon enters a ferromagnetic crystal placed in a strong magnetic field. Due to the “magneto-optic effect”, the polarization of the photon is rotated by an angle proportional to the magnetic field along the propagation direction. Consequently, if the photon enters from the opposite end, its polarization will be rotated in the opposite direction.</p>"
+        "content": "<p>A photon enters a ferromagnetic crystal placed in a strong magnetic field. Due to the “magneto-optic effect”, the polarization of the photon is rotated by an angle proportional to the magnetic field along the propagation direction. Consequently, if the photon enters from the opposite end, its polarization will be rotated in the opposite direction.</p><p>The strength of the effect is described by the Verdet coefficient. For olive oil and red light (659.2 nm) it is 192° per meter per Tesla.</p>"
       },
       {
         "title": "Explanations",
         "content": "<p>Suppose a photon travels through a Faraday rotator, gets reflected off the mirror and travels back through the rotator. On the second pass, the effect of the rotator adds up to the first pass, and the photon polarization is rotated by 90 degrees overall. The reason for this is that upon reflection, the wave changes chirality - so left-circularly polarized light becomes right-circularly polarized, and vice versa. This so-called “non-reciprocity” is the reason why Faraday rotators are ubiquitous in optics laboratories.</p>"
       },
       {
-        "title": "USAGE IN LABORATORIES AND EXPERIMENTS",
+        "title": "Usage in laboratories and experiments",
         "content": "<p>By combining a Faraday rotator with two polarizing beamsplitters we create an optical isolator. This device allows light to pass in one direction, while blocking the other. Isolators are commonly used to protect sensitive equipment (such as laser diodes) that can break due to back-reflections. Faraday rotators can also be used to create double-pass amplifiers.</p>"
       },
       {
         "title": "Further Reading",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Magneto-optic_effect\">Magneto-optic Effects</a></li><li><a href=\"https://www.rp-photonics.com/faraday_rotators.html\">Faraday Rotators</a></li><li><a href=\"https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12684\">Faraday Rotators on ThorLabs</a></li></ul>"
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Magneto-optic_effect\">Magneto-optic Effects</a></li><li><a href=\"https://www.rp-photonics.com/faraday_rotators.html\">Faraday Rotators</a></li><li><a href=\"https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=12684\">Faraday Rotators on ThorLabs</a></li><li><a href=\"https://www.youtube.com/watch?v=XhU-nNiAgtI\">Control light with magnets and olive oil?!</a></li><li><a href=\"https://arxiv.org/abs/1908.08120\">Measuring the Faraday effect in olive oil using permanent magnets and Malus' law</a></li></ul>"
       }
     ]
   },
@@ -382,6 +391,51 @@
       {
         "title": "Further reading",
         "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Refractive_index\">Refractive index</a></li><li><a href=\"https://en.wikipedia.org/wiki/Flint_glass\">Flint glass</a></li></ul>"
+      }
+    ]
+  },
+  "half-wave-plate": {
+    "title": "Half Wave Plate",
+    "elementName": "HalfWavePlate",
+    "short": "<p>Half wave plates delay the polarization by lambda/2. This means that they reflect the axis of polarization.</p>",
+    "grids": [
+      {
+        "cols": 4,
+        "rows": 3,
+        "cells": [
+          {
+            "coord": {
+              "x": 0,
+              "y": 1
+            },
+            "element": "Laser",
+            "rotation": 0,
+            "frozen": true
+          },
+          {
+            "coord": {
+              "x": 2,
+              "y": 1
+            },
+            "element": "HalfWavePlate",
+            "rotation": 135,
+            "frozen": false
+          }
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "title": "The basics",
+        "content": "<p>See <strong>Quarter wave plate</strong>.</p>"
+      },
+      {
+        "title": "Everyday use &amp; usage in laboratories",
+        "content": "<p>Waveplates are widely used to change the axis of polarization.</p>"
+      },
+      {
+        "title": "Further Reading",
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Waveplate</a></li><li><a href=\"https://www.toweroptical.com/introduction-to-waveplates/\">Introduction to Waveplates</a></li><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/understanding-waveplates/\">Understanding Waveplates</a></li><li><a href=\"https://www.rp-photonics.com/waveplates.html\">More on Waveplates</a></li></ul>"
       }
     ]
   },
@@ -658,11 +712,11 @@
       },
       {
         "title": "Digging deeper",
-        "content": "<p>The two axis of the crystalline birefringent material are called the fast and slow axis. Manufacturing these plates is extremely challenging. The plate must be cut at exactly the right thickness to achieve the desired delay, and the tolerance for this is very tight, there is no room for error!</p>"
+        "content": "<p>The two-axis of the crystalline birefringent material are called the fast and slow axis. Manufacturing these plates is extremely challenging. The plate must be cut at exactly the right thickness to achieve the desired delay, and the tolerance for this is very tight, there is no room for error!</p>"
       },
       {
         "title": "Further Reading",
-        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Wave Plate on Wikipedia</a></li><li><a href=\"https://www.toweroptical.com/introduction-to-waveplates/\">Introduction to Waveplates</a></li><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/understanding-waveplates/\">Understanding Waveplates</a></li><li><a href=\"https://www.rp-photonics.com/waveplates.html\">More on Waveplates</a></li></ul>"
+        "content": "<ul><li><a href=\"https://en.wikipedia.org/wiki/Waveplate\">Waveplate</a></li><li><a href=\"https://www.toweroptical.com/introduction-to-waveplates/\">Introduction to Waveplates</a></li><li><a href=\"https://www.edmundoptics.com/resources/application-notes/optics/understanding-waveplates/\">Understanding Waveplates</a></li><li><a href=\"https://www.rp-photonics.com/waveplates.html\">More on Waveplates</a></li></ul>"
       }
     ]
   },
