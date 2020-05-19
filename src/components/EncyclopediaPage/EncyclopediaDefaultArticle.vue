@@ -182,10 +182,6 @@ h1 {
   stroke: none;
 }
 
-.grid {
-  width: 100%;
-}
-
 .default-content {
   display: flex;
   flex-direction: column;
