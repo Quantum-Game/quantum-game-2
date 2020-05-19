@@ -58,17 +58,20 @@
           >
             Polarization
           </text>
-          <router-link :to="`/info/sugar-solution`" :style="moveTo(3, 5)">
+          <router-link :to="`/info/sugar-solution`" :style="moveTo(2, 5)">
             <sugar-solution-cell />
           </router-link>
-          <router-link :to="`/info/faraday-rotator`" :style="moveTo(5, 5)">
+          <router-link :to="`/info/faraday-rotator`" :style="moveTo(4, 5)">
             <faraday-rotator-cell />
           </router-link>
-          <router-link :to="`/info/polarizer`" :style="moveTo(7, 5)">
+          <router-link :to="`/info/polarizer`" :style="moveTo(6, 5)">
             <polarizer-cell />
           </router-link>
-          <router-link :to="`/info/quarter-wave-plate`" :style="moveTo(9, 5)">
+          <router-link :to="`/info/quarter-wave-plate`" :style="moveTo(8, 5)">
             <quarter-wave-plate-cell />
+          </router-link>
+          <router-link :to="`/info/half-wave-plate`" :style="moveTo(10, 5)">
+            <half-wave-plate-cell />
           </router-link>
 
           <text
@@ -115,6 +118,7 @@ import {
   DetectorFourCell,
   PolarizerCell,
   QuarterWavePlateCell,
+  HalfWavePlateCell,
   SugarSolutionCell,
   GlassCell,
   VacuumJarCell,
@@ -140,6 +144,7 @@ import {
     DetectorFourCell,
     PolarizerCell,
     QuarterWavePlateCell,
+    HalfWavePlateCell,
     SugarSolutionCell,
     GlassCell,
     VacuumJarCell,
