@@ -10,11 +10,12 @@ Here:
 * The minor is for major releases (kind of more subjective).
 * Each match version is any release on [quantumgame.io](https://quantumgame.io/) that might have some backward-incompatible changes.
 
-## [2.2.12] - 2020-05-18
+## [2.2.12] - 2020-05-19
 
 ### Added
 
 * Levels that include polarizers. Overall there are 36 levels.
+* Added olive oil reference to the Faraday rotator encyclopedia entry.
 
 ### Style
 
@@ -22,7 +23,8 @@ Here:
 
 ### Fixes
 
-* Icons for linked articles in encyclopedia are again visible (see [PR #214 for a screenshot](https://github.com/Quantum-Game/quantum-game-2/pull/214)).
+* Icons for linked articles in the encyclopedia are again visible (see [PR #214 for a screenshot](https://github.com/Quantum-Game/quantum-game-2/pull/214)).
+* Fixed the encyclopedia menu page.
 
 ## [2.2.11] - 2020-05-08
 
