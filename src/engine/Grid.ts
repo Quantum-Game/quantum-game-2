@@ -1,7 +1,6 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
-import * as qt from 'quantum-tensors'
-import { ICell, IGrid, Elem } from './interfaces'
+import { ICell, IGrid, Elem, IXYOperator } from './interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import Cluster from './Cluster'
@@ -107,12 +106,14 @@ export default class Grid extends Cluster {
 
   /**
    * Retrieve the list of quantum operators from the elements
-   * @returns list of operators
+   * @returns list of operators in IXYOperator format
    */
-  public get operatorList(): [number, number, qt.Operator][] {
-    return this.unvoid.cells.map((cell): [number, number, qt.Operator] => {
-      return cell.operator
-    })
+  public get operatorList(): IXYOperator[] {
+    return this.unvoid.cells.map(
+      (cell): IXYOperator => {
+        return cell.operator
+      }
+    )
   }
 
   /**

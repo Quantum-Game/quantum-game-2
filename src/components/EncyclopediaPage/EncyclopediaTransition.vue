@@ -158,7 +158,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
    * Return the generated cell operator and select the entries
    */
   get operator(): Operator {
-    return this.cell.operator[2]
+    return this.cell.operator.op
   }
 }
 </script>

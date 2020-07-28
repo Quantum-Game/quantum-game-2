@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
+import { ICoord, ICell, Elem, ITransition, IIndicator, IXYOperator } from './interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'
@@ -27,6 +26,7 @@ import {
   Void,
   PolarizingBeamSplitter,
 } from '@/engine/Elements/index'
+
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate
@@ -249,15 +249,16 @@ export default class Cell {
   /**
    * Get operator from transition
    * @param name
+   * @returns IXYOperator inteface for QT
    */
-  public get operator(): [number, number, qt.Operator] {
+  public get operator(): IXYOperator {
     const options: ITransition = {
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage,
     }
     const transition = this.element.transition(options)
-    return [this.coord.x, this.coord.y, transition]
+    return { x: this.coord.x, y: this.coord.y, op: transition }
   }
 
   /**

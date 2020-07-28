@@ -34,7 +34,7 @@
     "global": "^4.4.0",
     "graphlib": "^2.1.7",
     "lodash": "^4.17.15",
-    "quantum-tensors": "^0.4.7",
+    "quantum-tensors": "https://github.com/Quantum-Game/quantum-tensors.git",
     "register-service-worker": "^1.6.2",
     "tone": "^13.8.25",
     "vue": "^2.6.10",

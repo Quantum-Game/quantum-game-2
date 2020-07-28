@@ -1,3 +1,5 @@
+import { Operator } from 'quantum-tensors'
+
 /**
  * PARTICLE INTERFACE
  * Particle interface in primitives
@@ -19,6 +21,13 @@ export interface IParticleCoord {
   y: number
   dir: number // 0: > 1: ^, 2: <. 3: v
   pol: number // 0: H, 1: V
+}
+
+// Setup quantum tensor photons
+export interface IXYOperator {
+  x: number
+  y: number
+  op: Operator
 }
 
 /**
