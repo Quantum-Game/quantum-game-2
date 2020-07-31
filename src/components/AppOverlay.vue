@@ -55,6 +55,10 @@ export default class AppOverlay extends Vue {
   //   return this.gameState === GameStateEnum.MineExploded
   // }
 
+  destroyed(): void {
+    this.$confetti.stop()
+  }
+
   @Watch('gameState')
   handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
     if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
