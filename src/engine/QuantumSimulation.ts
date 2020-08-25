@@ -1,5 +1,5 @@
 import { sumBy, groupBy, map } from 'lodash'
-import { Vector, Photons } from 'quantum-tensors'
+import { Vector, Photons, interfaces } from 'quantum-tensors'
 import { weightedRandomInt } from '@/engine/Helpers'
 import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
 import Coord from '@/engine/Coord'
@@ -15,10 +15,17 @@ import QuantumFrame from '@/engine/QuantumFrame'
 export default class QuantumSimulation {
   private grid: Grid
   public frames: QuantumFrame[]
+  public xyops: interfaces.IXYOperator[]
 
   public constructor(grid: Grid) {
     this.grid = grid
     this.frames = []
+    this.xyops = this.grid.operatorList.map(([x, y, op]) => ({
+      x,
+      y,
+      op,
+    }))
+    console.log('xyops', this.xyops)
   }
 
   /**
@@ -46,6 +53,7 @@ export default class QuantumSimulation {
       laserIndicator.direction,
       laserIndicator.polarization
     )
+    initFrame.photons.updateOperators(this.xyops)
     this.frames.push(initFrame)
   }
 
@@ -62,6 +70,7 @@ export default class QuantumSimulation {
       indicator.direction,
       indicator.polarization
     )
+    frame.photons.updateOperators(this.xyops)
     this.frames.push(frame)
   }
 
@@ -80,7 +89,7 @@ export default class QuantumSimulation {
         .outer(vecDirPol.permute([1, 0]))
         .toBasisAll('polarization', 'HV')
     }
-
+    frame.photons.updateOperators(this.xyops)
     this.frames.push(frame)
   }
 
@@ -103,7 +112,7 @@ export default class QuantumSimulation {
       )
     }
     const frame = QuantumFrame.fromPhotons(this.lastFrame.photons)
-    frame.propagateAndInteract(this.grid.operatorList)
+    frame.propagateAndInteract(this.xyops)
     return frame
   }
 

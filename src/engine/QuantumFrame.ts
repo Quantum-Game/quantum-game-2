@@ -75,19 +75,22 @@ export default class QuantumFrame {
     return this.photons.vector.normSquared()
   }
 
-  public propagateAndInteract(operatorList: [number, number, qt.Operator][]): void {
+  public propagateAndInteract(operatorList: qt.interfaces.IXYOperator[]): void {
     if (this.probPropagated !== undefined) {
       throw new Error('You cannot propagateAndInteract more times with the same frame!')
     }
+
+    console.log('BEFORE', this.photons.ketString())
     this.photons.propagatePhotons()
+    console.log('PROPAGATION', this.photons.ketString())
     this.probPropagated = this.probability
     // TODO: Rework array into interface
     this.absorptions = operatorList
       .map(
-        ([x, y, op]): IDetection => {
+        ({ x, y, op }): IDetection => {
           return {
             coord: { x, y },
-            probability: this.photons.measureAbsorptionAtOperator(x, y, op),
+            probability: this.photons.measureAbsorptionAtOperator({ x, y, op }),
           }
         }
       )
@@ -98,7 +101,9 @@ export default class QuantumFrame {
         probability: this.probBefore - this.probPropagated,
       })
     }
-    this.photons.actOnSinglePhotons(operatorList.map(([x, y, op]) => ({ x, y, op })))
+    this.photons.actOnSinglePhotons()
+    // console.log('dU', this.photons.cachedDiffU.toString())
+    console.log('ACTION', this.photons.ketString())
     this.probAfter = this.probability
   }
 
