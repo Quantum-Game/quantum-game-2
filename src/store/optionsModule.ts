@@ -1,36 +1,48 @@
-import { SET_GAME_SPEED_INTERVAL, RESET_OPTIONS, SET_OPTIONS } from './mutation-types'
+import { RESET_OPTIONS, SET_OPTIONS, TOGGLE_SOUND } from './mutation-types'
 import { storeModule } from './storeInterfaces'
 
 export interface IOptionsModule {
+  /** Delay in ms between game ticks. */
   gameSpeedInterval: number
-  [index: string]: number | string
+  /** Sound volume in [0;1] range. Doesn't change to 0 when muted. */
+  volume: number
+  /** True when all sound is muted. Separate from volume to preserve the value when toggled. */
+  mute: boolean
 }
 
 const defaultOptionsObj: IOptionsModule = {
   gameSpeedInterval: 200,
+  volume: 1,
+  mute: false,
 }
 
 export default storeModule<IOptionsModule>({
   namespaced: true,
   state: {
-    gameSpeedInterval: 1000,
+    ...defaultOptionsObj,
   },
   mutations: {
-    [SET_GAME_SPEED_INTERVAL](state, newInterval: number): void {
-      state.gameSpeedInterval = newInterval
-    },
     [RESET_OPTIONS](state): void {
-      Object.keys(state).forEach((optionName: string): void => {
-        state[optionName.toString()] = defaultOptionsObj[optionName]
-      })
+      Object.assign(state, defaultOptionsObj)
     },
-    [SET_OPTIONS](state, newOptionsObject): void {
-      Object.keys(state).forEach((optionName: string): void => {
-        state[optionName.toString()] = newOptionsObject[optionName]
-      })
+    [SET_OPTIONS](state, newOptionsObject: Partial<IOptionsModule>): void {
+      Object.assign(state, newOptionsObject)
+    },
+  },
+  actions: {
+    [TOGGLE_SOUND]({ commit, state }): void {
+      if (state.volume === 0) {
+        // force unmute if volume is turned down
+        commit(SET_OPTIONS, { volume: 1, mute: false })
+      } else {
+        commit(SET_OPTIONS, { mute: !state.mute })
+      }
     },
   },
   getters: {
     gameSpeedInterval: (state): number => state.gameSpeedInterval,
+    allOptions: (state) => state,
+    soundActive: (state) => !state.mute && state.volume > 0,
+    volume: (state) => state.volume,
   },
 })

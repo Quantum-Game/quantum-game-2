@@ -10,30 +10,33 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/components/HomePage/index.vue')
+      component: () => import('@/components/HomePage/index.vue'),
+      meta: {
+        preventSound: true,
+      },
     },
     {
       path: '/levels',
       name: 'levels',
-      component: () => import('@/components/LevelMapPage/index.vue')
+      component: () => import('@/components/LevelMapPage/index.vue'),
     },
     {
       path: '/level/:username/:id/',
       name: 'sharedlevels',
       component: () => import('@/components/GamePage/index.vue'),
       meta: {
-        shared: true
-      }
+        shared: true,
+      },
     },
     {
       path: '/level/:id',
       name: 'level',
-      component: () => import('@/components/GamePage/index.vue')
+      component: () => import('@/components/GamePage/index.vue'),
     },
     {
       path: '/sandbox',
       name: 'sandbox',
-      component: () => import('@/components/GamePage/index.vue')
+      component: () => import('@/components/GamePage/index.vue'),
     },
     {
       path: '/info',
@@ -41,43 +44,43 @@ export default new Router({
       children: [
         {
           path: '',
-          component: () => import('@/components/EncyclopediaPage/EncyclopediaDefaultArticle.vue')
+          component: () => import('@/components/EncyclopediaPage/EncyclopediaDefaultArticle.vue'),
         },
         {
           path: '/info/:entry',
-          component: () => import('@/components/EncyclopediaPage/EncyclopediaArticle.vue')
-        }
-      ]
+          component: () => import('@/components/EncyclopediaPage/EncyclopediaArticle.vue'),
+        },
+      ],
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('@/components/RegisterPage/index.vue')
+      component: () => import('@/components/RegisterPage/index.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      component: () => import('@/components/LoginPage/index.vue')
+      component: () => import('@/components/LoginPage/index.vue'),
     },
     {
       path: '/myaccount',
       name: 'myaccount',
-      component: () => import('@/components/MyAccountPage/index.vue')
+      component: () => import('@/components/MyAccountPage/index.vue'),
     },
     {
       path: '/savedlevels',
       name: 'savedlevels',
-      component: () => import('@/components/SavedLevelsPage/index.vue')
+      component: () => import('@/components/SavedLevelsPage/index.vue'),
     },
     {
       path: '/options',
       name: 'options',
-      component: () => import('@/components/OptionsPage/index.vue')
+      component: () => import('@/components/OptionsPage/index.vue'),
     },
     {
       path: '/rocks/:id',
       name: 'rocks',
-      component: () => import('@/components/RockTalkPage/index.vue')
+      component: () => import('@/components/RockTalkPage/index.vue'),
     },
     {
       path: '/dev/rock_talk',
@@ -86,8 +89,8 @@ export default new Router({
     {
       path: '*',
       name: '404',
-      component: () => import('@/components/NotFoundPage/index.vue')
-    }
-  ]
+      component: () => import('@/components/NotFoundPage/index.vue'),
+    },
+  ],
 })
 /* eslint-enable */

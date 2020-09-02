@@ -63,15 +63,6 @@ export default class EncyclopediaArticleSection extends Vue {
 }
 </script>
 
-<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
-<style lang="scss">
-// not scoped so that font-awesome can work with v-html
-$fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
-@import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
-@import 'node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
-@import 'node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
-</style>
-
 <style scoped lang="scss">
 section.entry-section {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
