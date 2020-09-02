@@ -275,7 +275,7 @@ export default class GameControls extends Vue {
     this.$router.push('/levels')
   }
 
-  showSoundHint() {
+  showSoundHint(): void {
     this.$emit('hover', {
       kind: 'ui',
       particles: [],

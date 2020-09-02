@@ -21,13 +21,11 @@ export default class SoundController extends Vue {
 
   get effectiveVolume(): number {
     const routeAllowsSound = this.$route.name != null && this.$route.meta.preventSound !== true
-    console.log('this.soundActive', this.soundActive)
     return this.soundActive && routeAllowsSound ? this.volume : 0
   }
 
   @Watch('effectiveVolume')
   onVolumeChange(volume: number): void {
-    console.log('onVolumeChange', volume)
     const doPlay = volume !== 0
     this.soundtract.setAllGenerative(doPlay)
     this.soundtract.setOverallVolume(volume)
