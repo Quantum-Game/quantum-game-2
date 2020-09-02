@@ -1,6 +1,5 @@
 import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
-import { IRootState } from '@/types'
+import Vuex from 'vuex'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import {
@@ -17,12 +16,13 @@ import {
 import optionsModule from './optionsModule'
 import { GameStateEnum } from '@/engine/interfaces'
 import userModule from './userStore'
+import { IRootState } from './storeInterfaces'
 
 const initialCell = Cell.createDummy()
 const initialParticle = Particle.createDummy()
 Vue.use(Vuex)
 
-const store: StoreOptions<IRootState> = {
+export default new Vuex.Store<IRootState>({
   state: {
     activeCell: initialCell,
     cellSelected: false,
@@ -75,6 +75,4 @@ const store: StoreOptions<IRootState> = {
     optionsModule,
     userModule,
   },
-}
-
-export default new Vuex.Store<IRootState>(store)
+})

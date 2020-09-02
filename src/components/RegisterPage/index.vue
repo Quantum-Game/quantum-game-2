@@ -58,6 +58,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+import { ActionMethod } from 'vuex'
 
 const userStore = namespace('userModule')
 
@@ -69,9 +70,9 @@ const userStore = namespace('userModule')
 })
 export default class Register extends Vue {
   @userStore.Getter('error') moduleGetterError!: Error | null
-  @userStore.Action('SIGN_UP') actionSignUp!: Function
+  @userStore.Action('SIGN_UP') actionSignUp!: ActionMethod
 
-  user: {} = {
+  user = {
     email: '',
     password: '',
     name: '',

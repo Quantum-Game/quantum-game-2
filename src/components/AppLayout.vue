@@ -44,10 +44,14 @@ export default class AppLayout extends Vue {}
     width: 65%;
     margin: 0;
     padding: 0;
+
     @media screen and (max-width: 1000px) {
       width: 100%;
       padding: 0;
     }
+  }
+
+  & aside {
     &.left {
       width: 16%;
       padding: 50px 20px 0 0;

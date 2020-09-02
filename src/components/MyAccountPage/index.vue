@@ -19,6 +19,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+import { ActionMethod } from 'vuex'
 
 const user = namespace('userModule')
 
@@ -29,7 +30,7 @@ const user = namespace('userModule')
   },
 })
 export default class MyAccount extends Vue {
-  @user.Action('SIGN_OUT') actionSignOut!: Function
+  @user.Action('SIGN_OUT') actionSignOut!: ActionMethod
   @user.Getter('userName') moduleGetterUserName!: string
 
   signOut(): void {
@@ -53,17 +54,6 @@ h2 {
   font-weight: 300;
   line-height: 150%;
   // text-transform: uppercase;
-}
-.levels-progress {
-  list-style: none;
-  li {
-    margin: 5px auto;
-  }
-}
-.edit-level {
-  cursor: pointer;
-  border: 1px solid #fff;
-  margin: 10px;
 }
 .signOut {
   margin: 20px 10px 10px 10px;

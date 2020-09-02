@@ -1,17 +1,16 @@
-import { Module } from 'vuex'
 import {
   IUserState,
   IUser,
   IProgressObj,
   ISavedLevel,
   ISavedLevelMetadata,
+  storeModule,
 } from '@/store/storeInterfaces'
 import { ILevel } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
-import { IRootState } from '@/types'
 
-const userModule: Module<IUserState, IRootState> = {
+export default storeModule<IUserState>({
   namespaced: true,
   state: {
     user: {
@@ -203,8 +202,10 @@ const userModule: Module<IUserState, IRootState> = {
           .get()
           .then((doc) => {
             if (doc.exists) {
-              const { progress } = doc.data()!
-              commit('SET_PROGRESS', progress)
+              const data = doc.data()
+              if (data != null) {
+                commit('SET_PROGRESS', data.progress)
+              }
             } else {
               console.debug('No such document!')
             }
@@ -217,7 +218,7 @@ const userModule: Module<IUserState, IRootState> = {
     /**
      * @todo Does not match level structure from levels in JSON.
      */
-    SAVE_LEVEL({ commit, dispatch }, level: any): void {
+    SAVE_LEVEL({ commit, dispatch }, level: ISavedLevel['level']): void {
       if (auth.currentUser) {
         const customLevel: ISavedLevel = {
           userId: auth.currentUser.uid,
@@ -407,6 +408,4 @@ const userModule: Module<IUserState, IRootState> = {
       dispatch('FETCH_PUBLIC_LEVELS')
     },
   },
-}
-
-export default userModule
+})

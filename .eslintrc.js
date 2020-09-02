@@ -14,7 +14,15 @@ module.exports = {
   ],
   rules: {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    '@typescript-eslint/interface-name-prefix': ['error', 'always'],
+    '@typescript-eslint/naming-convention': [
+      'error',
+      {
+        selector: 'interface',
+        format: ['PascalCase'],
+        prefix: ['I'],
+      },
+    ],
+    'no-use-before-define': 'off',
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

@@ -75,6 +75,7 @@ import {
   GlassCell,
   VacuumJarCell,
 } from '@/components/Board/Cell/index'
+import { IStyle } from '@/types'
 
 const borderColors = {
   active: 'transparent',
@@ -136,7 +137,7 @@ export default class AppCell extends Mixins(Position) {
   /**
    *  handles clicking, namely
    *  1. distinguishes a selecting vs a placing click
-   *  2. determines if the updateCell event should be emitted
+   *  2. determines if the update-cell event should be emitted
    *  @returns void
    */
   deviceTargetDown(): void {
@@ -172,7 +173,7 @@ export default class AppCell extends Mixins(Position) {
       if (this.isActiveCell && this.cell.isFromGrid) {
         this.cell.rotate()
       }
-      this.$emit('updateCell', this.cell)
+      this.$emit('update-cell', this.cell)
       this.mutationResetActiveCell()
     }
   }
@@ -255,7 +256,7 @@ export default class AppCell extends Mixins(Position) {
     if (this.isActiveCell && this.cell.isFromGrid) {
       this.cell.rotate()
     }
-    this.$emit('updateCell', this.cell)
+    this.$emit('update-cell', this.cell)
     this.mutationResetActiveCell()
   }
 
@@ -316,7 +317,7 @@ export default class AppCell extends Mixins(Position) {
    * using the Position mixin;
    * @returns a style object
    */
-  get computeCellStyle(): {} {
+  get computeCellStyle(): IStyle {
     const { rotation } = this.cell
     let styleObj = {}
     styleObj = {
@@ -331,7 +332,7 @@ export default class AppCell extends Mixins(Position) {
   /**
    * Undoes the parent element rotation
    */
-  get computeRectStyle(): {} {
+  get computeRectStyle(): IStyle {
     let styleObj = {}
     const halfSize = this.tileSize / 2
     styleObj = {

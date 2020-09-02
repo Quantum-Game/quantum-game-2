@@ -1,7 +1,26 @@
+import { Module } from 'vuex'
 import firebase from '@/config/firebase'
-
-import { ILevel } from '@/engine/interfaces'
+import { GameStateEnum, ILevel } from '@/engine/interfaces'
 import GameState from '@/engine/GameState'
+import Cell from '@/engine/Cell'
+import Particle from '@/engine/Particle'
+
+export interface IRootState {
+  activeCell: Cell
+  hoveredCell: Cell
+  hoveredParticles: [Particle]
+  cellSelected: boolean
+  gameState: GameStateEnum
+  simulationState: boolean
+  currentLevelID: number
+  errors: string[]
+}
+
+export type Timestamp = firebase.firestore.Timestamp
+
+export function storeModule<S>(def: Module<S, IRootState>): typeof def {
+  return def
+}
 
 /**
  * @todo Right now really bad, as level does not match the ILevel format
@@ -14,8 +33,8 @@ export interface ISavedLevel {
     boardState: string // JSON.stringify format
   }
   public: boolean
-  createdAt: firebase.firestore.Timestamp
-  lastModified: firebase.firestore.Timestamp
+  createdAt: Timestamp
+  lastModified: Timestamp
 }
 
 export interface IUserState {
@@ -39,14 +58,14 @@ export interface IUser {
 export interface IProgressObj {
   id: number
   status: string
-  timeOpened: firebase.firestore.Timestamp
-  timeWon?: firebase.firestore.Timestamp
+  timeOpened: Timestamp
+  timeWon?: Timestamp
 }
 
 export interface ISavedLevelMetadata {
   id: string
   link: string
-  createdAt: firebase.firestore.Timestamp
-  lastModified: firebase.firestore.Timestamp
+  createdAt: Timestamp
+  lastModified: Timestamp
   public: boolean
 }

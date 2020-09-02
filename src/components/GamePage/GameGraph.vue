@@ -66,6 +66,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import MultiverseGraph from '@/engine/MultiverseGraph'
+import { IStyle } from '@/types'
 
 @Component({
   components: {},
@@ -91,7 +92,7 @@ export default class GameGraph extends Vue {
     return this.multiverse.qs.frames.length
   }
 
-  get computeSvgStyle(): {} {
+  get computeSvgStyle(): IStyle {
     const { height } = this.graph.graph()
     return {
       height: `${height}px`,
@@ -99,7 +100,7 @@ export default class GameGraph extends Vue {
     }
   }
 
-  get computeNodeStyle(): {} {
+  get computeNodeStyle(): IStyle {
     const xCenterOffset = (this.rect.width - this.graph.graph().width) / 2
     return {
       transform: `translate(${xCenterOffset}px, 0px)`,
@@ -157,7 +158,7 @@ export default class GameGraph extends Vue {
     })
   }
 
-  get edges(): {}[] {
+  get edges(): { fIndex: number }[] {
     const edgeIds = this.multiverse.graph.edges()
     return edgeIds.map((edgeId: { u: string; v: string }) => {
       return this.graph.edge(edgeId)
@@ -184,7 +185,7 @@ export default class GameGraph extends Vue {
   }
 
   debugEdges(): void {
-    this.edges.forEach((edge: {}) => {
+    this.edges.forEach((edge) => {
       console.debug(`Edge ${edge}: ${JSON.stringify(edge)}`)
     })
   }

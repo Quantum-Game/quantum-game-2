@@ -7,6 +7,7 @@ process.env.VUE_APP_GIT_HASH = commit.hash
 process.env.VUE_APP_GIT_TAG = commit.gitTag
 process.env.VUE_APP_GIT_DATE = commit.committer.date
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 process.env.VUE_APP_VERSION = require('./package.json').version
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

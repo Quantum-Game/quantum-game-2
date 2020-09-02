@@ -44,6 +44,8 @@ import { namespace } from 'vuex-class'
 // import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+import { ActionMethod } from 'vuex'
+import { Timestamp } from '@/store/storeInterfaces'
 
 const user = namespace('userModule')
 
@@ -54,10 +56,10 @@ const user = namespace('userModule')
   },
 })
 export default class SavedLevels extends Vue {
-  @user.Action('MAKE_LEVEL_PRIVATE') actionMakeLevelPrivate!: Function
-  @user.Action('MAKE_LEVEL_PUBLIC') actionMakeLevelPublic!: Function
-  @user.Action('SIGN_OUT') actionSignOut!: Function
-  @user.Action('REMOVE_LEVEL') actionRemoveLevel!: Function
+  @user.Action('MAKE_LEVEL_PRIVATE') actionMakeLevelPrivate!: ActionMethod
+  @user.Action('MAKE_LEVEL_PUBLIC') actionMakeLevelPublic!: ActionMethod
+  @user.Action('SIGN_OUT') actionSignOut!: ActionMethod
+  @user.Action('REMOVE_LEVEL') actionRemoveLevel!: ActionMethod
   @user.Getter('userName') moduleGetterUserName!: string
   @user.Getter('savedLevelsList') moduleGetterSavedLevelsList!: []
   @user.Getter('publicLevels') moduleGetterPublicLevels!: []
@@ -81,7 +83,7 @@ export default class SavedLevels extends Vue {
     this.actionSignOut(this.moduleGetterUserName)
   }
 
-  printDate(timestamp: any): string {
+  printDate(timestamp: Timestamp): string {
     if (!timestamp) {
       return ''
     }

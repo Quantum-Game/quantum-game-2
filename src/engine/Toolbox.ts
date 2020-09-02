@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { countBy, cloneDeep } from 'lodash'
 import Coord from '@/engine/Coord'
 import Cell from '@/engine/Cell'
 /**
@@ -20,8 +20,8 @@ export default class Toolbox {
 
   public constructor(tools: Cell[]) {
     const elements = tools.map((cell): string => cell.element.name)
-    this.toolbox = _.countBy(elements)
-    this.originalToolbox = _.cloneDeep(this.toolbox)
+    this.toolbox = countBy(elements)
+    this.originalToolbox = cloneDeep(this.toolbox)
   }
 
   /**

@@ -21,7 +21,7 @@ Vue.use(VueGtag, {
 })
 export default class App extends Vue {}
 </script>
-
+<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
 <style lang="scss">
 body {
   margin: 0;
