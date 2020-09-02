@@ -66,7 +66,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
-import { Tween, update as updateTween } from 'es6-tween'
+import TWEEN from '@tweenjs/tween.js'
 import GameState from '@/engine/GameState'
 import AppCell from '@/components/Board/AppCell.vue'
 
@@ -133,7 +133,7 @@ export default class GameGoals extends Vue {
    */
   animateTween(time: number): void {
     const id = requestAnimationFrame(this.animateTween)
-    const result = updateTween(time)
+    const result = TWEEN.update(time)
     if (!result) cancelAnimationFrame(id)
   }
 
@@ -142,12 +142,12 @@ export default class GameGoals extends Vue {
    */
   @Watch('percentage')
   onPercentChanged(val: number, oldVal: number): void {
-    new Tween({ value: oldVal })
+    new TWEEN.Tween({ value: oldVal })
       .to({ value: val }, 500)
-      .on('update', ({ value }: { value: number }) => {
+      .onUpdate(({ value }) => {
         this.tweenedPercent = value
       })
-      .start()
+      .start(0)
     requestAnimationFrame(this.animateTween)
   }
 }

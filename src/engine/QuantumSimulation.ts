@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { sumBy, groupBy, map } from 'lodash'
 import { Vector, Photons } from 'quantum-tensors'
 import { weightedRandomInt } from '@/engine/Helpers'
 import { IIndicator, PolEnum, IAbsorption } from '@/engine/interfaces'
@@ -157,17 +157,14 @@ export default class QuantumSimulation {
    * [{x: 2, y: 1, probability: 0.25}, {x: 3, y: 5, probability: 0.25}, {x: -1, y: -1, probability: 0.25}]
    */
   public get totalIAbsorptionPerTile(): IAbsorption[] {
-    return _(this.frames)
-      .flatMap((frame): IAbsorption[] => frame.absorptions)
-      .groupBy((absorption: IAbsorption): string => `(${absorption.coord.x}.${absorption.coord.y})`)
-      .values()
-      .map(
-        (absorptions): IAbsorption => ({
-          coord: absorptions[0].coord,
-          probability: _.sumBy(absorptions, 'probability'),
-        })
-      )
-      .value()
+    const perTile = groupBy(
+      this.frames.flatMap((frame) => frame.absorptions),
+      (absorption: IAbsorption) => `(${absorption.coord.x}.${absorption.coord.y})`
+    )
+    return map(perTile, (absorptions) => ({
+      coord: absorptions[0].coord,
+      probability: sumBy(absorptions, 'probability'),
+    }))
   }
 
   /**
@@ -199,7 +196,7 @@ export default class QuantumSimulation {
         return Coord.importCoord(absorption.cell.coord)
       }
     )
-    return _.includes(coords, coord)
+    return coords.includes(coord)
   }
 
   /**

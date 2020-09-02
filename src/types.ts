@@ -1,14 +1,5 @@
-import { GameStateEnum } from '@/engine/interfaces'
-import Cell from '@/engine/Cell'
-import Particle from '@/engine/Particle'
-
-export interface IRootState {
-  activeCell: Cell
-  hoveredCell: Cell
-  hoveredParticles: [Particle]
-  cellSelected: boolean
-  gameState: GameStateEnum
-  simulationState: boolean
-  currentLevelID: number
-  errors: string[]
+// TODO: we might make this interface more explicit by listing
+// a subset of CSS properties directly to avoid typos.
+export interface IStyle {
+  [k: string]: string | undefined
 }

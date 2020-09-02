@@ -68,6 +68,7 @@ import AppCell from '@/components/Board/AppCell.vue'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 import { Vector } from 'quantum-tensors'
+import { IStyle } from '@/types'
 
 @Component({
   components: {
@@ -184,7 +185,7 @@ export default class EncyclopediaBoard extends Vue {
     return (val + 0.5) * this.tileSize
   }
 
-  computeParticleStyle(particle: IParticle): {} {
+  computeParticleStyle(particle: IParticle): IStyle {
     return {
       transform: `
         translate(${particle.x * this.tileSize}px, ${particle.y * this.tileSize}px)`,

@@ -13,6 +13,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { IEntrySection } from '@/engine/interfaces'
+import { IStyle } from '@/types'
 
 @Component
 export default class EncyclopediaArticleSection extends Vue {
@@ -36,9 +37,9 @@ export default class EncyclopediaArticleSection extends Vue {
     this.isOpen = !this.isOpen
   }
 
-  get style(): {} {
+  get style(): IStyle {
     return {
-      maxHeight: this.isOpen ? null : '0px', //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
+      maxHeight: this.isOpen ? undefined : '0px', //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
     }
   }
 
@@ -62,13 +63,16 @@ export default class EncyclopediaArticleSection extends Vue {
 }
 </script>
 
+<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
 <style lang="scss">
 // not scoped so that font-awesome can work with v-html
 $fa-font-path: '../../../node_modules/@fortawesome/fontawesome-free/webfonts';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/fontawesome.scss';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/brands.scss';
 @import 'node_modules/@fortawesome/fontawesome-free/scss/solid.scss';
+</style>
 
+<style scoped lang="scss">
 section.entry-section {
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   & .entry-title {

@@ -1,3 +1,5 @@
+import { IEntry } from '@/engine/interfaces'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const fs = require('fs')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -28,8 +30,8 @@ function scrubTheTags(stringToClean: string): string {
   return stringToClean.slice(tagLength, stringToClean.length - closingTagLength)
 }
 
-function convertMarkdown(dir: string, target: string): {} {
-  let returnedObject = {}
+function convertMarkdown(dir: string, target: string): Record<string, IEntry> {
+  const returnedObject: Record<string, IEntry> = {}
   const dirEntries = fs.readdirSync(dir)
   dirEntries.forEach((fileName: string) => {
     // within each file:
@@ -58,10 +60,7 @@ function convertMarkdown(dir: string, target: string): {} {
       // added and removed as a dirty hack for types
       thisEntry.grids.pop()
 
-      returnedObject = {
-        ...returnedObject,
-        [entryName]: thisEntry,
-      }
+      returnedObject[entryName] = thisEntry
 
       // read the file in UTF8
       const readFile = fs.readFileSync(filePath, 'utf8')

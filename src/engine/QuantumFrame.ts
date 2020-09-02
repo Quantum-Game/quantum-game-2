@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { range } from 'lodash'
 import * as qt from 'quantum-tensors'
 
 import Coord from './Coord'
@@ -47,7 +47,7 @@ export default class QuantumFrame {
   }
 
   public get ketComponents(): IKetComponent[] {
-    const ns = _.range(this.photons.nPhotons)
+    const ns = range(this.photons.nPhotons)
     return this.photons.vector.entries
       .map(
         (entry: qt.VectorEntry): IKetComponent => {

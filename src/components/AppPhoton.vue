@@ -43,6 +43,7 @@ import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
 import Particle from '@/engine/Particle'
+import { IStyle } from '@/types'
 
 const d3 = {
   select,
@@ -115,7 +116,7 @@ export default class AppPhoton extends Vue {
     return this.particle.probability ** scalingPow
   }
 
-  get computeStyle(): {} {
+  get computeStyle(): IStyle {
     return {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,

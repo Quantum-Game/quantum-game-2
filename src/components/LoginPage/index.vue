@@ -58,6 +58,7 @@ import { Vue, Component } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
+import { ActionMethod } from 'vuex'
 
 const user = namespace('userModule')
 
@@ -68,12 +69,12 @@ const user = namespace('userModule')
   },
 })
 export default class Login extends Vue {
-  @user.Action('SIGN_IN') actionSignIn!: Function
-  @user.Action('SIGN_IN_GITHUB') actionSignInGithub!: Function
-  @user.Action('SIGN_IN_FACEBOOK') actionSignInFacebook!: Function
-  @user.Action('SIGN_IN_GOOGLE') actionSignInGoogle!: Function
+  @user.Action('SIGN_IN') actionSignIn!: ActionMethod
+  @user.Action('SIGN_IN_GITHUB') actionSignInGithub!: ActionMethod
+  @user.Action('SIGN_IN_FACEBOOK') actionSignInFacebook!: ActionMethod
+  @user.Action('SIGN_IN_GOOGLE') actionSignInGoogle!: ActionMethod
   @user.Getter('error') moduleGetterError!: string | null
-  user: {} = {
+  user = {
     email: '',
     password: '',
     rememberMe: true,

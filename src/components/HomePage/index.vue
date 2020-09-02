@@ -65,8 +65,6 @@
 import { Vue, Component } from 'vue-property-decorator'
 import AppButton from '@/components/AppButton.vue'
 
-console.log('env', process.env)
-
 @Component({
   components: {
     AppButton,

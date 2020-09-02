@@ -47,7 +47,7 @@
         :key="'cell' + i"
         :cell="cell"
         :tileSize="tileSize"
-        @updateCell="updateCell"
+        @update-cell="updateCell"
         @mouseover.native="handleMouseEnter(cell.coord)"
         @mouseleave.native="handleMouseLeave(cell.coord)"
         @play="play"
@@ -91,6 +91,7 @@ import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import Absorption from '../../engine/Absorption'
+import { IStyle } from '@/types'
 
 @Component({
   components: {
@@ -155,7 +156,7 @@ export default class Board extends Vue {
    * Drilling from appCell to updateCell
    */
   updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell)
+    this.$emit('update-cell', cell)
   }
 
   /**
@@ -216,7 +217,7 @@ export default class Board extends Vue {
   /**
    * Compute fate cell position
    */
-  computeFateStyle(): {} {
+  computeFateStyle(): IStyle {
     return {
       transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`,
     }
@@ -225,7 +226,7 @@ export default class Board extends Vue {
   /**
    * Compute photon grid position
    */
-  computeParticleStyle(particle: Particle): {} {
+  computeParticleStyle(particle: Particle): IStyle {
     return {
       transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
         this.tileSize}px)`,

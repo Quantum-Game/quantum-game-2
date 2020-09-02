@@ -125,6 +125,7 @@ import {
   FaradayRotatorCell,
   NonLinearCrystalCell,
 } from '@/components/Board/Cell/index'
+import { IStyle } from '@/types'
 
 @Component({
   components: {
@@ -157,7 +158,7 @@ export default class EncyclopediaDefaultArticle extends Vue {
   tileSize = 64
   boardHeight = 0
 
-  moveTo(x: number, y: number): {} {
+  moveTo(x: number, y: number): IStyle {
     return {
       transform: `translate(${x * this.tileSize}px, ${y * this.tileSize}px)`,
     }

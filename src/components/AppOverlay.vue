@@ -29,7 +29,7 @@ export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
   @Prop() readonly victoryAlreadyShown!: boolean
   $confetti!: {
-    start: (params: {}) => void
+    start: (params: Record<string, unknown>) => void
     stop: () => void
   }
 

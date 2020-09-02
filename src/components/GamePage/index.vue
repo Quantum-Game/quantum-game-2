@@ -34,7 +34,7 @@
       <section slot="main-left">
         <game-toolbox
           :toolbox="level.toolbox"
-          @updateCell="updateCell"
+          @update-cell="updateCell"
           @hover="updateInfoPayload"
         />
         <game-infobox :info-payload="infoPayload" />
@@ -51,8 +51,7 @@
           :grid="level.grid"
           :absorptions="filteredAbsorptions"
           :frame-index="frameIndex"
-          @updateSimulation="updateSimulation"
-          @updateCell="updateCell"
+          @update-cell="updateCell"
           @play="play"
           @hover="updateInfoPayload"
         />
@@ -67,16 +66,16 @@
           @fast-forward="fastForward"
           @new-fate="computeNewFate"
           @reload="reload"
-          @downloadLevel="downloadLevel"
-          @loadedLevel="loadLevel($event)"
+          @download-level="downloadLevel"
+          @loaded-level="loadLevel($event)"
           @hover="updateInfoPayload"
-          @saveLevel="handleSave"
+          @save-level="handleSave"
         />
       </section>
 
       <!-- MAIN-RIGHT -->
       <section slot="main-right">
-        <game-goals
+        <GameGoals
           :game-state="level.gameState"
           :percentage="level.gameState.totalAbsorptionPercentage"
         />
@@ -89,14 +88,13 @@
 </template>
 
 <script lang="ts">
-import _ from 'lodash'
+import { uniq } from 'lodash'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
-import MultiverseGraph from '@/engine/MultiverseGraph'
 import QuantumFrame from '@/engine/QuantumFrame'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 import Absorption from '@/engine/Absorption'
@@ -113,7 +111,7 @@ import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
-
+import type { ActionMethod } from 'vuex';
 const userModule = namespace('userModule')
 
 @Component({
@@ -136,10 +134,10 @@ export default class Game extends Vue {
   @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
-  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
-  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
-  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: Function
-  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: Function
+  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
+  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
+  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: ActionMethod
+  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: ActionMethod
   @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
   @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: string) => void
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
@@ -147,7 +145,6 @@ export default class Game extends Vue {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   frameIndex = 0
   simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
-  multiverseGraph: MultiverseGraph = new MultiverseGraph(this.simulation)
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
@@ -162,7 +159,7 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
-  unsubscribe?: Function
+  unsubscribe? (): void
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -348,7 +345,7 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): Particle[] {
-    return _.uniq(this.simulation.allParticles)
+    return uniq(this.simulation.allParticles)
   }
 
   /**

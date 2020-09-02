@@ -55,7 +55,7 @@
       <button
         type="button"
         :style="computeDownloadStyle"
-        @click="$emit('downloadLevel')"
+        @click="$emit('download-level')"
         @mouseenter="
           $emit('hover', { kind: 'ui', particles: [], text: 'Download level as a JSON file.' })
         "
@@ -93,6 +93,8 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import Soundtract from '@/mixins/soundtrack'
+import { IStyle } from '@/types'
+import { ActionMethod } from 'vuex'
 
 const userModule = namespace('userModule')
 
@@ -104,8 +106,8 @@ export default class GameControls extends Vue {
   @Prop({ default: '' }) readonly displayStatus!: string
   @State('gameState') gameState!: GameStateEnum
   @State('simulationState') simulationState!: boolean
-  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: Function
-  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: Function
+  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
+  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
   @userModule.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
   soundFlag = false
   soundtract?: Soundtract
@@ -120,7 +122,7 @@ export default class GameControls extends Vue {
       if (reader.result !== undefined && reader.result !== null) {
         const result: string = reader.result.toString()
         const iLevel = JSON.parse(result)
-        this.$emit('loadedLevel', iLevel)
+        this.$emit('loaded-level', iLevel)
       }
     }
     reader.readAsText(file)
@@ -151,130 +153,130 @@ export default class GameControls extends Vue {
     return this.frameIndex > 0
   }
 
-  get computeFateStyle(): {} {
+  get computeFateStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: 1,
+      opacity: `1`,
     }
   }
 
-  get computeRewindStyle(): {} {
+  get computeRewindStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.16,
+      opacity: `${this.playFlag && this.stepBackFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeBackStyle(): {} {
+  get computeBackStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_back.svg`)})`,
-      opacity: this.playFlag && this.stepBackFlag ? 1 : 0.16,
+      opacity: `${this.playFlag && this.stepBackFlag ? 1 : 0.16}`,
     }
   }
 
-  get computePlayStyle(): {} {
+  get computePlayStyle(): IStyle {
     if (this.simulationState) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`,
-        opacity: 1,
+        opacity: `1`,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`,
-      opacity: 1,
+      opacity: `1`,
     }
   }
 
-  get computeForwardStyle(): {} {
+  get computeForwardStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.16,
+      opacity: `${this.playFlag && this.stepForwardFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeFastForwardStyle(): {} {
+  get computeFastForwardStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`,
-      opacity: this.playFlag && this.stepForwardFlag ? 1 : 0.16,
+      opacity: `${this.playFlag && this.stepForwardFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeReloadStyle(): {} {
+  get computeReloadStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeSoundStyle(): {} {
+  get computeSoundStyle(): IStyle {
     if (this.soundFlag) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.16,
+        opacity: `${this.playFlag ? 1 : 0.16}`,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeDownloadStyle(): {} {
+  get computeDownloadStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeUploadStyle(): {} {
+  get computeUploadStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/upload.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeSaveStyle(): {} {
+  get computeSaveStyle(): IStyle {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.16,
+        opacity: `${this.playFlag ? 1 : 0.16}`,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-      opacity: 0.16,
+      opacity: `0.16`,
     }
   }
 
-  get computeAccountStyle(): {} {
+  get computeAccountStyle(): IStyle {
     if (this.moduleGetterIsLoggedIn) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`,
-        opacity: this.playFlag ? 1 : 0.16,
+        opacity: `${this.playFlag ? 1 : 0.16}`,
       }
     }
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeOptionsStyle(): {} {
+  get computeOptionsStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
-  get computeMapStyle(): {} {
+  get computeMapStyle(): IStyle {
     return {
       backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`,
-      opacity: this.playFlag ? 1 : 0.16,
+      opacity: `${this.playFlag ? 1 : 0.16}`,
     }
   }
 
   handleSave(): void {
-    this.$emit('saveLevel')
+    this.$emit('save-level')
   }
 
   handleAccount(): void {

@@ -1,5 +1,4 @@
 import * as dagre from 'dagre'
-import _ from 'lodash'
 import QuantumSimulation from '@/engine/QuantumSimulation'
 import QuantumFrame from '@/engine/QuantumFrame'
 import Particle from '@/engine/Particle'
@@ -9,7 +8,9 @@ import Particle from '@/engine/Particle'
  * Creates a graph after post processing the current simulation frames
  */
 export default class MultiverseGraph {
+  // FIXME: graph should be typed
   public graph: any // eslint-disable-line
+  // public graph: dagre.graphlib.Graph<IMultiverseNode>
   public qs: QuantumSimulation
 
   public constructor(qs: QuantumSimulation) {
@@ -22,9 +23,8 @@ export default class MultiverseGraph {
         marginy: 10,
         rankdir: 'TB',
       })
-      .setDefaultEdgeLabel((): {} => {
-        return {}
-      })
+      .setDefaultEdgeLabel(() => ({}))
+    console.log(this.graph)
     this.processFrames()
     dagre.layout(this.graph)
   }
@@ -92,7 +92,7 @@ export default class MultiverseGraph {
    * Find successors of a particle, used to generate photon path
    * @returns nodes
    */
-  public successors(particleUid: string): string {
+  public successors(particleUid: string): string | undefined {
     const successors = this.graph.children(particleUid)
     return successors
   }
@@ -133,7 +133,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   public isLeaf(uid: string): boolean {
-    return _.includes(this.leafs, uid)
+    return this.leafs.includes(uid)
   }
 
   /**
@@ -141,7 +141,7 @@ export default class MultiverseGraph {
    * @returns leafs string names
    */
   public isRoot(uid: string): boolean {
-    return _.includes(this.roots, uid)
+    return this.roots.includes(uid)
   }
 
   /**
