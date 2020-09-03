@@ -1,2 +1,5 @@
+// Global scss variables and functions included into every single stylesheet.
+// Do NOT emit any actual css rules from here, as those would end up repeated many times.
+
 @import './breakpoints.scss';
 @import './colors.scss';

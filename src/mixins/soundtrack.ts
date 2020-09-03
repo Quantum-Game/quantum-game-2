@@ -18,6 +18,7 @@ export default class Soundtrack {
   transpositions: number[]
   transpose: number
   limiter: any
+  gain: any
   feedbackDelay: any
   pingPongDelay: any
   chorus: any
@@ -541,6 +542,10 @@ export default class Soundtrack {
     return result
   }
 
+  setOverallVolume(volume: number): void {
+    this.gain.gain.rampTo(volume, 0.1)
+  }
+
   /**
    * Initialize
    */
@@ -554,9 +559,12 @@ export default class Soundtrack {
       this.limiter = new Tone.Limiter({ threshold: -2 })
       this.limiter.disconnect()
       this.limiter.toMaster()
+      this.gain = new Tone.Gain()
+      this.gain.disconnect()
+      this.gain.connect(this.limiter)
       this.hip1 = new Tone.Filter(1000, 'highpass')
       this.hip1.disconnect()
-      this.hip1.connect(this.limiter)
+      this.hip1.connect(this.gain)
       this.feedbackDelay = new Tone.FeedbackDelay('8n', 0.7)
       this.feedbackDelay.disconnect()
       this.feedbackDelay.connect(this.hip1)
@@ -617,7 +625,7 @@ export default class Soundtrack {
       })
       this.synth3.volume.value = this.synth3BaseVolumeFactor
       this.synth3.disconnect()
-      this.synth3.connect(this.limiter)
+      this.synth3.connect(this.gain)
       this.synth4 = new Tone.AMSynth({
         harmonicity: 0.5,
         oscillator: {
@@ -658,7 +666,7 @@ export default class Soundtrack {
         // this.effectSamplers[i].connect(this.pingPongDelay);
         this.effectSamplers[i].connect(this.chorus)
         this.effectSamplers[i].volume.value = 0.3
-        // this.effectSamplers[i].connect(this.limiter);
+        // this.effectSamplers[i].connect(this.gain);
       }
       Tone.Transport.scheduleRepeat(() => {
         /*

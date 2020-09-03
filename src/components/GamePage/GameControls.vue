@@ -43,14 +43,8 @@
       <button
         type="button"
         :style="computeSoundStyle"
-        @click="toggleSound"
-        @mouseenter="
-          $emit('hover', {
-            kind: 'ui',
-            particles: [],
-            text: `Sound is ${soundFlag ? 'ON' : 'OFF'}`,
-          })
-        "
+        @click="toggleSound(), showSoundHint()"
+        @mouseenter="showSoundHint"
       />
       <button
         type="button"
@@ -92,11 +86,11 @@
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
-import Soundtract from '@/mixins/soundtrack'
 import { IStyle } from '@/types'
 import { ActionMethod } from 'vuex'
 
 const userModule = namespace('userModule')
+const optionsModule = namespace('optionsModule')
 
 @Component
 export default class GameControls extends Vue {
@@ -108,10 +102,9 @@ export default class GameControls extends Vue {
   @State('simulationState') simulationState!: boolean
   @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
   @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
+  @optionsModule.Action('TOGGLE_SOUND') toggleSound!: ActionMethod
   @userModule.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
-  soundFlag = false
-  soundtract?: Soundtract
-  volume = -10
+  @optionsModule.Getter('soundActive') soundActive!: boolean
 
   loadJsonLevelFromFile(event: Event): void {
     const reader = new FileReader()
@@ -126,19 +119,6 @@ export default class GameControls extends Vue {
       }
     }
     reader.readAsText(file)
-  }
-
-  toggleSound(): void {
-    this.soundFlag = !this.soundFlag
-    if (this.soundtract === undefined) {
-      this.soundtract = new Soundtract()
-      this.soundtract.setAndPlay(this.volume)
-    }
-    this.soundtract.setAllGenerative(this.soundFlag)
-  }
-
-  created(): void {
-    window.setTimeout(() => this.toggleSound(), 1000)
   }
 
   get playFlag(): boolean {
@@ -209,7 +189,7 @@ export default class GameControls extends Vue {
   }
 
   get computeSoundStyle(): IStyle {
-    if (this.soundFlag) {
+    if (this.soundActive) {
       return {
         backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`,
         opacity: `${this.playFlag ? 1 : 0.16}`,
@@ -293,6 +273,14 @@ export default class GameControls extends Vue {
 
   handleMap(): void {
     this.$router.push('/levels')
+  }
+
+  showSoundHint(): void {
+    this.$emit('hover', {
+      kind: 'ui',
+      particles: [],
+      text: `Sound is ${this.soundActive ? 'ON' : 'OFF'}`,
+    })
   }
 }
 </script>

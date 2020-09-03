@@ -1,0 +1,29 @@
+[layout] {
+    display: flex;
+    align-items: stretch;
+}
+
+[layout] > * {
+    flex-shrink: 0;
+}
+
+[flex] { flex: 1; }
+
+[layout~=column] { flex-direction: column; }
+[layout~=row] { flex-direction: row; }
+
+[layout~=start] { align-items: flex-start; }
+[layout~=end] { align-items: flex-end; }
+[layout~=center] { align-items: center; }
+[layout~=middle] { justify-content: middle; }
+[layout~=around] { justify-content: space-around; }
+[layout~=between] { justify-content: space-between; }
+
+@mixin  define-spacing($name, $size) {
+    [layout~="#{$name}"][layout~=row] > * + * { margin-left: $size; }
+    [layout~="#{$name}"][layout~=column] > * + * { margin-top: $size; }
+}
+
+@include define-spacing(u1, 4px);
+@include define-spacing(u2, 8px);
+@include define-spacing(u4, 16px);
