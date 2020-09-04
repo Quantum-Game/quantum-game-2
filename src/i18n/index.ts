@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 import VueI18n, { LocaleMessageObject } from 'vue-i18n'
+import Vue from 'vue'
 
 // Load all locales and remember context for hot reloading
 function loadMessages() {
@@ -18,18 +19,42 @@ function loadMessages() {
 
 const { context, messages } = loadMessages()
 
+const availableLanguages = Object.keys(messages)
+
 function getBrowserLocale() {
   const langs = navigator.languages != null ? navigator.languages : [navigator.language]
   const countryCodes = langs.map((lang) => lang.trim().split(/-|_/)[0])
-  const available = Object.keys(messages)
-  return countryCodes.find((c) => available.includes(c)) || 'en'
+  return countryCodes.find((c) => availableLanguages.includes(c)) || 'en'
+}
+
+const LANG_STORAGE_KEY = 'lang'
+
+function getSavedLocale() {
+  const lang = localStorage.getItem(LANG_STORAGE_KEY)
+  if (lang != null && availableLanguages.includes(lang)) {
+    return lang
+  }
+  return null
+}
+
+function saveCurrentLocale() {
+  try {
+    console.log('saveCurrentLocale', i18n.locale)
+    localStorage.setItem(LANG_STORAGE_KEY, i18n.locale)
+  } catch (_) {
+    // localStorage write failed, we can ignore that here
+  }
 }
 
 export const i18n: VueI18n = new VueI18n({
-  locale: getBrowserLocale(),
+  locale: getSavedLocale() || getBrowserLocale(),
   fallbackLocale: 'en',
   messages,
 })
+
+// in vue3, that should just be watch(..)
+const observer = new Vue()
+observer.$watch(() => i18n.locale, saveCurrentLocale)
 
 // in-place localization hot reloading
 if (module.hot) {
