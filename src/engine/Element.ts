@@ -47,12 +47,4 @@ export default class Element {
   public toString(): string {
     return this.name
   }
-
-  /**
-   * Will be overriden by child transition
-   */
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(0)
-  }
 }

@@ -20,8 +20,4 @@ export default class BeamSplitter extends Element {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
   }
-
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.beamSplitter(options.rotation)
-  }
 }

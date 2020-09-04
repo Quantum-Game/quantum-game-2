@@ -264,20 +264,6 @@ export default class Cell {
   }
 
   /**
-   * Get operator from transition
-   * @param name
-   */
-  public get operator(): [number, number, qt.Operator] {
-    const options: ITransition = {
-      rotation: this.rotation,
-      polarization: this.polarization,
-      percentage: this.percentage,
-    }
-    const transition = this.element.transition(options)
-    return [this.coord.x, this.coord.y, transition]
-  }
-
-  /**
    * Create a instance of the descendant class from Element
    * @param name element name
    * @returns element class instance

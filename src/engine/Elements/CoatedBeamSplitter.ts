@@ -17,9 +17,4 @@ export default class CoatedBeamSplitter extends Element {
   public constructor() {
     super(Elem.CoatedBeamSplitter, Group.Direction)
   }
-
-  // FIXME: Add qt operator for coated beam splitter, using beamsplitter meanwhile
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.beamSplitter(options.rotation)
-  }
 }

@@ -15,9 +15,4 @@ export default class CornerCube extends Element {
   public constructor() {
     super(Elem.CornerCube, Group.Direction)
   }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.cornerCube()
-  }
 }

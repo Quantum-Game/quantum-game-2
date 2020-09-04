@@ -18,10 +18,4 @@ export default class Absorber extends Element {
     super(Elem.Absorber, Group.Absorption)
     this.percentage = percentage
   }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(Math.SQRT1_2)
-    // return qt.attenuator(options.percentage);
-  }
 }

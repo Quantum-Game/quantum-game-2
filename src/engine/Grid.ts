@@ -106,16 +106,6 @@ export default class Grid extends Cluster {
   }
 
   /**
-   * Retrieve the list of quantum operators from the elements
-   * @returns list of operators
-   */
-  public get operatorList(): [number, number, qt.Operator][] {
-    return this.unvoid.cells.map((cell): [number, number, qt.Operator] => {
-      return cell.operator
-    })
-  }
-
-  /**
    * Is a coordinate inside the grid
    * @param coord Coordiante to test
    * @returns boolean if included
