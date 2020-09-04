@@ -1,0 +1,503 @@
+[
+  {
+    "id": 37,
+    "name": "Benchmark 1",
+    "group": "Benchmark",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 0,
+            "x": 0
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 0,
+            "x": 12
+          },
+          "element": "Mirror",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 2
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 3
+          },
+          "element": "Mirror",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 1
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 2
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 3
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 0
+          },
+          "element": "Detector",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": true
+        },
+        {
+          "coord": {
+            "y": 9,
+            "x": 2
+          },
+          "element": "Mirror",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 9,
+            "x": 12
+          },
+          "element": "Mirror",
+          "rotation": 45,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": {
+          "y": 2,
+          "x": 0
+        },
+        "threshold": 0.001
+      }
+    ],
+    "tools": []
+  },
+  {
+    "id": 38,
+    "name": "Benchmark 2",
+    "group": "Benchmark",
+    "description": "",
+    "grid": {
+      "cols": 13,
+      "rows": 10,
+      "cells": [
+        {
+          "coord": {
+            "y": 2,
+            "x": 6
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 7
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 2,
+            "x": 8
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 1
+          },
+          "element": "Laser",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": true,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 1
+          },
+          "element": "SugarSolution",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 2
+          },
+          "element": "SugarSolution",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 4
+          },
+          "element": "PolarizingBeamSplitter",
+          "rotation": 180,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 5
+          },
+          "element": "FaradayRotator",
+          "rotation": 180,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 6
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 7
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 8
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 3,
+            "x": 9
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 5
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 6
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 7
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 8
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 4,
+            "x": 9
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 5
+          },
+          "element": "Mirror",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 6
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 7
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 8
+          },
+          "element": "BeamSplitter",
+          "rotation": 135,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 4
+          },
+          "element": "Detector",
+          "rotation": 90,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": true
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 6
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 7
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 6,
+            "x": 8
+          },
+          "element": "Mirror",
+          "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        }
+      ]
+    },
+    "hints": [],
+    "goals": [
+      {
+        "coord": {
+          "y": 5,
+          "x": 4
+        },
+        "threshold": 0.001
+      }
+    ],
+    "tools": ["Mirror"]
+  }
+]
