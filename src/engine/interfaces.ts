@@ -103,6 +103,25 @@ export interface ICluster {
 }
 
 /**
+ * CELL SIM INTERFACE (JSON format needs to be discussed)
+ * A cell interface composed of primitives
+ */
+export interface ISimGrid {
+  cols: number
+  rows: number
+  cells: ISimCell[]
+}
+export interface ISimCell {
+  x: number
+  y: number
+  element: string
+  frozen: boolean
+  rotation: number
+  polarization: number
+  percentage: number
+}
+
+/**
  * CELL INTERFACE
  * A cell interface composed of primitives
  */

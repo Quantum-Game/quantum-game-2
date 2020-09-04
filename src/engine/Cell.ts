@@ -1,5 +1,5 @@
 import * as qt from 'quantum-tensors'
-import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
+import { ICoord, ICell, ISimCell, Elem, ITransition, IIndicator } from './interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'
@@ -197,6 +197,23 @@ export default class Cell {
       frozen: this.frozen,
       active: this.active,
       energized: this.energized,
+    }
+  }
+
+  /**
+   * Export a cell interface for qt Simulation
+   * @todo discuss json grid format
+   * @returns ICell
+   */
+  public exportSimCell(): ISimCell {
+    return {
+      x: this.coord.x,
+      y: this.coord.y,
+      element: this.element.name,
+      rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage,
+      frozen: this.frozen,
     }
   }
 
