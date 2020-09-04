@@ -80,7 +80,7 @@
           :percentage="level.gameState.totalAbsorptionPercentage"
         />
         <div class="ket-viewer-game">
-          <ket-viewer class="ket" :vector="activeFrame.photons.vector" />
+          <ket-viewer class="ket" :vector="activeFrame.vector" />
         </div>
       </section>
     </game-layout>
@@ -89,14 +89,13 @@
 
 <script lang="ts">
 import { uniq } from 'lodash'
+import { Frame, Simulation } from 'quantum-tensors'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
-import { IHint, GameStateEnum } from '@/engine/interfaces'
+import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
 import Toolbox from '@/engine/Toolbox'
-import QuantumFrame from '@/engine/QuantumFrame'
-import QuantumSimulation from '@/engine/QuantumSimulation'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
@@ -112,6 +111,7 @@ import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 import type { ActionMethod } from 'vuex';
+import { IAbsorption } from 'quantum-tensors/dist/interfaces'
 const userModule = namespace('userModule')
 
 @Component({
@@ -144,7 +144,7 @@ export default class Game extends Vue {
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   frameIndex = 0
-  simulation: QuantumSimulation = new QuantumSimulation(Grid.emptyGrid())
+  simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
@@ -271,9 +271,11 @@ export default class Game extends Vue {
    */
   updateSimulation(): void {
     // Compute simulation frames
-    this.simulation = new QuantumSimulation(this.level.grid)
-    this.simulation.initializeFromLaser()
-    this.simulation.computeFrames(40)
+    this.simulation = new Simulation(this.level.grid.exportSimGrid())
+    const indicator = this.simulation.generateLaserIndicator()
+    this.simulation.initializeFromIndicator(indicator)
+    this.simulation.generateFrames(40)
+
     // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions
     // Reset simulation variables
@@ -314,13 +316,25 @@ export default class Game extends Vue {
     this.level.grid.setEnergized([this.fateCoord])
   }
 
+
   /**
-   * Output cells linked to detection events
-   * @returns Cell and percentage
-   */
+  * Convert IAbsorption to Absorption class instances
+  * Filter the escaping particle absorption events
+  * @param IAbsorption[]
+  * @returns absorption instance list (cell, probability)
+  */
   get filteredAbsorptions(): Absorption[] {
+    const absorptions: Absorption[] = []
+    this.simulation.totalAbsorptionPerTile.forEach((absorptionI: IAbsorption): void => {
+      const coord = Coord.importCoord({x: absorptionI.x, y: absorptionI.y})
+      if (!coord.outOfGrid) {
+        const cell = this.level.grid.get(coord)
+        cell.energized = true
+        absorptions.push(new Absorption(cell, absorptionI.probability))
+      }
+    })
     // Filter out of grid cells
-    return this.simulation.absorptions.filter((absorption: Absorption) => {
+    return absorptions.filter((absorption: Absorption) => {
       return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold
     })
   }
@@ -344,14 +358,20 @@ export default class Game extends Vue {
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get pathParticles(): Particle[] {
-    return uniq(this.simulation.allParticles)
+  get pathParticles(): IParticle[] {
+    const result: IParticle[] = []
+    this.simulation.frames.forEach((frame): void => {
+      frame.particles.forEach((particle): void => {
+        result.push(particle)
+      })
+    })
+    return uniq(result)
   }
 
   /**
    * Get the current simulation frame
    */
-  get activeFrame(): QuantumFrame {
+  get activeFrame(): Frame {
     return this.simulation.frames[this.frameIndex]
   }
 
@@ -359,7 +379,9 @@ export default class Game extends Vue {
    * Current simulation frame particles
    */
   get particles(): Particle[] {
-    return this.activeFrame.particles
+    return this.activeFrame.particles.map((iparticle) => {
+      return Particle.importParticle(iparticle)
+    })
   }
 
   /**
@@ -368,7 +390,7 @@ export default class Game extends Vue {
   computeNewFate(): void {
     const fate = this.simulation.sampleRandomRealization()
     this.displayFate = false
-    this.fateCoord = fate.coord
+    this.fateCoord = Coord.importCoord({x: fate.x, y: fate.y })
     this.fateStep = fate.step
   }
 

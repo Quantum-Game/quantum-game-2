@@ -87,7 +87,7 @@ export default class QuantumFrame {
         ([x, y, op]): IDetection => {
           return {
             coord: { x, y },
-            probability: this.photons.measureAbsorptionAtOperator(x, y, op),
+            probability: this.photons.measureAbsorptionAtOperator({ x, y, op }),
           }
         }
       )
@@ -98,7 +98,7 @@ export default class QuantumFrame {
         probability: this.probBefore - this.probPropagated,
       })
     }
-    this.photons.actOnSinglePhotons(operatorList.map(([x, y, op]) => ({ x, y, op })))
+    this.photons.actOnSinglePhotons()
     this.probAfter = this.probability
   }
 

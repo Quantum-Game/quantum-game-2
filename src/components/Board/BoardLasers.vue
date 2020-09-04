@@ -18,18 +18,19 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import Particle from '@/engine/Particle'
+import { IParticle } from '@/engine/interfaces'
 
 @Component
 export default class Board extends Vue {
-  @Prop({ default: '' }) readonly pathParticles!: Particle[]
+  @Prop({ default: '' }) readonly pathParticles!: IParticle[]
   tileSize = 64
 
   /**
    * Compute the laser path
    * @returns SVG path
    */
-  computePath(particle: Particle): string {
-    return particle.toSvg()
+  computePath(particle: IParticle): string {
+    return Particle.importParticle(particle).toSvg()
   }
 
   /**
