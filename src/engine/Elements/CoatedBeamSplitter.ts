@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**

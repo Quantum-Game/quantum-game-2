@@ -1,6 +1,5 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
-import * as qt from 'quantum-tensors'
 import { ICell, ISimCell, IGrid, ISimGrid, Elem } from './interfaces'
 import Coord from './Coord'
 import Cell from './Cell'

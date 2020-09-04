@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from './interfaces'
+import { Elem, Group } from './interfaces'
 
 /**
  * ELEMENT CLASS
