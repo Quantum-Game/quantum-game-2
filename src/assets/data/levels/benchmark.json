@@ -222,7 +222,7 @@
           "rotation": 0,
           "polarization": 0,
           "percentage": 0,
-          "frozen": true,
+          "frozen": false,
           "active": false,
           "energized": false
         },
@@ -235,7 +235,7 @@
           "rotation": 0,
           "polarization": 0,
           "percentage": 0,
-          "frozen": true,
+          "frozen": false,
           "active": false,
           "energized": false
         },
@@ -480,6 +480,19 @@
           },
           "element": "Mirror",
           "rotation": 0,
+          "polarization": 0,
+          "percentage": 0,
+          "frozen": true,
+          "active": false,
+          "energized": false
+        },
+        {
+          "coord": {
+            "y": 5,
+            "x": 9
+          },
+          "element": "Mirror",
+          "rotation": 90,
           "polarization": 0,
           "percentage": 0,
           "frozen": true,
