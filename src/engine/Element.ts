@@ -1,4 +1,4 @@
-import { Elem, Group } from './interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 
 /**
  * ELEMENT CLASS

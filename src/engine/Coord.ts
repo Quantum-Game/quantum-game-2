@@ -1,4 +1,4 @@
-import { ICoord } from './interfaces'
+import { ICoord } from '@/engine/interfaces'
 
 /**
  * COORDINATE CLASS

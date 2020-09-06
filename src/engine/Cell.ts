@@ -1,4 +1,4 @@
-import { ICoord, ICell, ISimCell, Elem, IIndicator } from './interfaces'
+import { ICoord, ICell, ISimCell, Elem, IIndicator } from '@/engine/interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'

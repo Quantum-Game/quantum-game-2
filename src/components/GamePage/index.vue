@@ -38,17 +38,12 @@
           @hover="updateInfoPayload"
         />
         <game-infobox :info-payload="infoPayload" />
-        <game-graph
-          :multiverse="multiverse"
-          :active-frame="frameIndex"
-          @change-frame="handleChangeActiveFrame"
-        />
       </section>
 
       <!-- MAIN-MIDDLE -->
       <section slot="main-middle">
         <game-board
-          :particles="particles"
+          :particles="activeParticles"
           :path-particles="pathParticles"
           :fate="fateCoord"
           :display-fate="displayFate"
@@ -75,6 +70,11 @@
           @loaded-level="loadLevel($event)"
           @hover="updateInfoPayload"
           @save-level="handleSave"
+        />
+        <game-graph
+          :multiverse="multiverse"
+          :active-frame="frameIndex"
+          @change-frame="handleChangeActiveFrame"
         />
       </section>
 
@@ -116,8 +116,7 @@ import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
-import type { ActionMethod } from 'vuex';
-import { IAbsorption } from 'quantum-tensors/dist/interfaces'
+import type { ActionMethod } from 'vuex'
 const userModule = namespace('userModule')
 
 @Component({
@@ -335,7 +334,7 @@ export default class Game extends Vue {
   */
   get filteredAbsorptions(): Absorption[] {
     const absorptions: Absorption[] = []
-    this.simulation.totalAbsorptionPerTile.forEach((absorptionI: IAbsorption): void => {
+    this.simulation.totalAbsorptionPerTile.forEach((absorptionI: {x: number, y: number, probability: number}): void => {
       const coord = Coord.importCoord({x: absorptionI.x, y: absorptionI.y})
       if (!coord.outOfGrid) {
         const cell = this.level.grid.get(coord)
@@ -375,19 +374,18 @@ export default class Game extends Vue {
   }
 
   /**
+   * Current simulation frame particles
+   */
+  get activeParticles(): Particle[] {
+    return this.activeFrame.particles.map((particleI) => Particle.importParticle(particleI)
+    )
+  }
+
+  /**
    * Get the current simulation frame
    */
   get activeFrame(): Frame {
     return this.simulation.frames[this.frameIndex]
-  }
-
-  /**
-   * Current simulation frame particles
-   */
-  get particles(): Particle[] {
-    return this.activeFrame.particles.map((iparticle) => {
-      return Particle.importParticle(iparticle)
-    })
   }
 
   /**

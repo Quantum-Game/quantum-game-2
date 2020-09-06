@@ -61,9 +61,7 @@
         :y="absorption.cell.coord.y * 64"
         text-anchor="middle"
         class="probability"
-      >
-        {{ (absorption.probability * 100).toFixed(1) }}%
-      </text>
+      >{{ (absorption.probability * 100).toFixed(1) }}%</text>
     </svg>
 
     <!-- SPEECH BUBBLES -->
@@ -80,8 +78,9 @@
 <script lang="ts">
 import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
-import Coord from '@/engine/Coord'
+import Absorption from '@/engine/Absorption'
 import Cell from '@/engine/Cell'
+import Coord from '@/engine/Coord'
 import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
 import { IHint } from '@/engine/interfaces'
@@ -90,7 +89,6 @@ import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
-import Absorption from '../../engine/Absorption'
 import { IStyle } from '@/types'
 
 @Component({

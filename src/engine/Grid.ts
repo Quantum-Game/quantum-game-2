@@ -1,6 +1,6 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
-import { ICell, ISimCell, IGrid, ISimGrid, Elem } from './interfaces'
+import { ICell, ISimCell, IGrid, ISimGrid, Elem } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import Cluster from './Cluster'

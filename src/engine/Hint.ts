@@ -1,4 +1,4 @@
-import { IHint } from './interfaces'
+import { IHint } from '@/engine/interfaces'
 import Coord from './Coord'
 
 /**

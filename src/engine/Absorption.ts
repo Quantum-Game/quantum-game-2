@@ -1,5 +1,5 @@
 import { IAbsorption } from '@/engine/interfaces'
-import Cell from './Cell'
+import Cell from '@/engine/Cell'
 
 /**
  * ABSORPTION CLASS

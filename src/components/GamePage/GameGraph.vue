@@ -51,7 +51,7 @@ export default class GameGraph extends Vue {
     const { height } = this.graph.graph()
     return {
       height: `${height}px`,
-      'max-height': '500px',
+      // 'max-height': '500px',
     }
   }
 
@@ -158,7 +158,7 @@ $leaf: #5c00d3;
   }
   svg {
     width: 100%;
-    max-height: 500px;
+    // max-height: 500px;
   }
   .node {
     font-size: 10px;
