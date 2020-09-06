@@ -10,7 +10,7 @@
 
         <!-- PHOTONS -->
         <g
-          v-for="(particle, i) in selectedFrame.polarizationSuperpositions"
+          v-for="(particle, i) in frameParticles"
           :key="`particle-${i}-(${particle.coord.x},${particle.coord.y})-${particle.direction}`"
           :style="computeParticleStyle(particle)"
           class="photons"
@@ -49,7 +49,7 @@
       </span>
     </div>
     <div class="ket">
-      <ket-viewer :vector="selectedFrame.photons.vector" :initial-pol-basis="initialPolBasis" />
+      <ket-viewer :vector="selectedFrame.vector" :initial-pol-basis="initialPolBasis" />
     </div>
   </div>
 </template>
@@ -57,8 +57,9 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
+import Particle from '@/engine/Particle'
 import Grid from '@/engine/Grid'
-import { IParticle, IGrid, IIndicator } from '@/engine/interfaces'
+import { IParticle, IGrid, IIndicator, DirEnum, PolEnum } from '@/engine/interfaces'
 import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -122,11 +123,18 @@ export default class EncyclopediaBoard extends Vue {
     if (this.initialState.length === 1) {
       const d = this.initialState[0]
       // this.simulation.intializeFromXYState(d.posX, d.posY, d.vecDirPol)
+      // const polStr = d.vecDirPol.dimensions.filter((dim) => dim.name === 'polarization')[0]
+      //   .coordString
+      // const dirStr = d.vecDirPol.dimensions.filter((dim) => dim.name === 'direction')[0].coordString
+      // console.log(polStr)
+      // console.log(dirStr)
+
       this.simulation.initializeFromIndicator({
         x: d.posX,
         y: d.posY,
-        rotation: 'v',
-        polarization: 'v',
+        // Strange typescript bug: https://github.com/microsoft/TypeScript/issues/28102
+        direction: DirEnum.v,
+        polarization: PolEnum.V,
       })
     } else {
       // to be removed later
@@ -134,7 +142,7 @@ export default class EncyclopediaBoard extends Vue {
         const indicator = this.simulation.generateLaserIndicator()
         this.simulation.initializeFromIndicator(indicator)
       } else if (this.indicators.length === 1) {
-        this.simulation.initializeFromIndicator(this.indicators[0])
+        // this.simulation.initializeFromIndicator(this.indicators[0])
       } else {
         throw new Error('EncyclopediaBoard not yet prepared for more photons.')
       }
@@ -167,6 +175,10 @@ export default class EncyclopediaBoard extends Vue {
 
   get frameNumber(): number {
     return this.frames.length
+  }
+
+  get frameParticles(): Particle[] {
+    return this.selectedFrame.particles.map((particleI) => Particle.importParticle(particleI))
   }
 
   get allParticles(): IParticle[] {

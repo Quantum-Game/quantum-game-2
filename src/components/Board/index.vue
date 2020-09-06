@@ -61,7 +61,9 @@
         :y="absorption.cell.coord.y * 64"
         text-anchor="middle"
         class="probability"
-      >{{ (absorption.probability * 100).toFixed(1) }}%</text>
+      >
+        {{ (absorption.probability * 100).toFixed(1) }}%
+      </text>
     </svg>
 
     <!-- SPEECH BUBBLES -->
