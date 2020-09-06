@@ -36,9 +36,8 @@ export default class MultiverseGraph {
   public isDetectionEvent(x: number, y: number): boolean {
     const coord = Coord.importCoord({ x, y })
     const coords = this.simulation.totalAbsorptionPerTile.map(
-      (absorption): Coord => {
-        return Coord.importCoord({ x: absorption.x, y: absorption.y })
-      }
+      (absorption: { x: number; y: number; probability: number }): Coord =>
+        Coord.importCoord({ x: absorption.x, y: absorption.y })
     )
     return coords.includes(coord)
   }

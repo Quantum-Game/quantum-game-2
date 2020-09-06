@@ -178,7 +178,9 @@ export default class EncyclopediaBoard extends Vue {
   }
 
   get frameParticles(): Particle[] {
-    return this.selectedFrame.particles.map((particleI) => Particle.importParticle(particleI))
+    return this.selectedFrame.particles.map((particleI: IParticle) =>
+      Particle.importParticle(particleI)
+    )
   }
 
   get allParticles(): IParticle[] {

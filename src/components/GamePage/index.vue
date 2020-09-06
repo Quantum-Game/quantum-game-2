@@ -368,16 +368,17 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): IParticle[] {
-    return uniq(flatten(this.simulation.frames.map((frame) => {
+    return uniq(flatten(this.simulation.frames.map((frame: Frame) => {
       return frame.particles
     })))
   }
 
   /**
-   * Current simulation frame particles
+   * Current active frame particles
+   * @returns particles
    */
   get activeParticles(): Particle[] {
-    return this.activeFrame.particles.map((particleI) => Particle.importParticle(particleI)
+    return this.activeFrame.particles.map((particleI: IParticle) => Particle.importParticle(particleI)
     )
   }
 
