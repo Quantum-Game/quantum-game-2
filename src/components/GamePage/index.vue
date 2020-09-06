@@ -38,6 +38,11 @@
           @hover="updateInfoPayload"
         />
         <game-infobox :info-payload="infoPayload" />
+        <game-graph
+          :multiverse="multiverse"
+          :active-frame="frameIndex"
+          @change-frame="handleChangeActiveFrame"
+        />
       </section>
 
       <!-- MAIN-MIDDLE -->
@@ -88,13 +93,14 @@
 </template>
 
 <script lang="ts">
-import { uniq } from 'lodash'
+import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
+import MultiverseGraph from '@/engine/MultiverseGraph'
 import Toolbox from '@/engine/Toolbox'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
@@ -145,6 +151,7 @@ export default class Game extends Vue {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   frameIndex = 0
   simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
+  multiverse: MultiverseGraph = new MultiverseGraph(this.simulation)
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
@@ -276,6 +283,9 @@ export default class Game extends Vue {
     this.simulation.initializeFromIndicator(indicator)
     this.simulation.generateFrames(40)
 
+    // Update multiverse graph
+    this.multiverse = new MultiverseGraph(this.simulation)
+
     // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions
     // Reset simulation variables
@@ -359,13 +369,9 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): IParticle[] {
-    const result: IParticle[] = []
-    this.simulation.frames.forEach((frame): void => {
-      frame.particles.forEach((particle): void => {
-        result.push(particle)
-      })
-    })
-    return uniq(result)
+    return uniq(flatten(this.simulation.frames.map((frame) => {
+      return frame.particles
+    })))
   }
 
   /**

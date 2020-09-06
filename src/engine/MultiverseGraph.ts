@@ -1,20 +1,19 @@
 import * as dagre from 'dagre'
 import { Frame, Simulation } from 'quantum-tensors'
 import Particle from '@/engine/Particle'
-import { IParticle } from './interfaces'
+import Coord from '@/engine/Coord'
+import { IParticle } from '@/engine/interfaces'
 
 /**
  * MULTIVERSE GRAPH CLASS
  * Creates a graph after post processing the current simulation frames
  */
 export default class MultiverseGraph {
-  // FIXME: graph should be typed
   public graph: any // eslint-disable-line
-  // public graph: dagre.graphlib.Graph<IMultiverseNode>
-  public qs: Simulation
+  public simulation: Simulation
 
-  public constructor(qs: Simulation) {
-    this.qs = qs
+  public constructor(simulation: Simulation) {
+    this.simulation = simulation
     // https://github.com/dagrejs/dagre/wiki#a-note-on-rendering
     this.graph = new dagre.graphlib.Graph({ directed: true })
       .setGraph({
@@ -24,9 +23,24 @@ export default class MultiverseGraph {
         rankdir: 'TB',
       })
       .setDefaultEdgeLabel(() => ({}))
-    console.log(this.graph)
     this.processFrames()
     dagre.layout(this.graph)
+  }
+
+  /**
+   * Filter absorption at a specific coord
+   * @param x
+   * @param y
+   * @returns boolean
+   */
+  public isDetectionEvent(x: number, y: number): boolean {
+    const coord = Coord.importCoord({ x, y })
+    const coords = this.simulation.totalAbsorptionPerTile.map(
+      (absorption): Coord => {
+        return Coord.importCoord({ x: absorption.x, y: absorption.y })
+      }
+    )
+    return coords.includes(coord)
   }
 
   /**
@@ -34,10 +48,12 @@ export default class MultiverseGraph {
    * @returns dag
    */
   public processFrames(): void {
-    this.qs.frames.forEach((frame: Frame, fIndex: number): void => {
-      frame.particles.forEach((particle: IParticle, pIndex: number): void => {
+    this.simulation.frames.forEach((frame: Frame, fIndex: number): void => {
+      frame.particles.forEach((particleI: IParticle, pIndex: number): void => {
+        const particle = Particle.importParticle(particleI)
         const uid = MultiverseGraph.createUid(fIndex, pIndex)
-        const detectionEvent = this.qs.isDetectionEvent(particle.coord)
+        const detectionEvent = this.isDetectionEvent(particle.x, particle.y)
+
         this.graph.setNode(uid, {
           label: fIndex,
           fIndex,
@@ -73,12 +89,14 @@ export default class MultiverseGraph {
    * @param frameIndex number
    */
   private findParent(fIndex: number, pIndex: number): string[] {
-    const particle = this.qs.frames[fIndex].particles[pIndex]
+    const particleI = this.simulation.frames[fIndex].particles[pIndex]
+    const particle = Particle.importParticle(particleI)
     const parents: string[] = []
     if (fIndex > 0) {
-      const parentFrame = this.qs.frames[fIndex - 1]
-      parentFrame.particles.forEach((parentParticle: IParticle, parentIndex: number): void => {
+      const parentFrame = this.simulation.frames[fIndex - 1]
+      parentFrame.particles.forEach((parentParticleI: IParticle, parentIndex: number): void => {
         // Check for parent
+        const parentParticle = Particle.importParticle(parentParticleI)
         if (parentParticle.nextCoord().equal(particle)) {
           const parentUid = `particle_${fIndex - 1}_${parentIndex}`
           parents.push(parentUid)
@@ -105,7 +123,8 @@ export default class MultiverseGraph {
   public computePath(frameIndex: number, particleIndex: number): string {
     this.processFrames()
     let svgPath = ''
-    const root: Particle = this.qs.frames[frameIndex].particles[particleIndex]
+    const rootI: IParticle = this.simulation.frames[frameIndex].particles[particleIndex]
+    const root = Particle.importParticle(rootI)
     const originX = this.centerCoord(root.coord.x)
     const originY = this.centerCoord(root.coord.y)
     svgPath += `M ${originX} ${originY} `
@@ -150,7 +169,7 @@ export default class MultiverseGraph {
    * @param particle
    */
   public fromIndices(fIndex: number, pIndex: number): IParticle {
-    return this.qs.frames[fIndex].particles[pIndex]
+    return this.simulation.frames[fIndex].particles[pIndex]
   }
 
   /**
@@ -161,7 +180,7 @@ export default class MultiverseGraph {
   public fromUid(uid: string): IParticle {
     const fIndex = parseInt(uid.match(/\d/g)![0], 10) /* eslint-disable-line */
     const pIndex = parseInt(uid.match(/\d/g)![1], 10) /* eslint-disable-line */
-    return this.qs.frames[fIndex].particles[pIndex]
+    return this.simulation.frames[fIndex].particles[pIndex]
   }
 
   /**
