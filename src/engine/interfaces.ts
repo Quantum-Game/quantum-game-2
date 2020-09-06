@@ -230,6 +230,24 @@ export interface IIndicator {
 }
 
 /**
+ * Laser starting polarization enum
+ */
+export const enum PolEnum {
+  V = 'V',
+  H = 'H',
+}
+
+/**
+ * Laser starting direction enum
+ */
+export const enum DirEnum {
+  '>' = '>',
+  '^' = '^',
+  '<' = '<',
+  'v' = 'v',
+}
+
+/**
  * List of element names
  */
 export enum Elem {
@@ -339,24 +357,6 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.FaradayRotator,
   ],
   Phase: [Elem.Glass, Elem.VacuumJar],
-}
-
-/**
- * Laser starting polarization enum
- */
-export const enum PolEnum {
-  V = 'V',
-  H = 'H',
-}
-
-/**
- * Laser starting direction enum
- */
-export const enum DirEnum {
-  '>' = '>',
-  '^' = '^',
-  '<' = '<',
-  'v' = 'v',
 }
 
 /**

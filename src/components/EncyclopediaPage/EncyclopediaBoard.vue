@@ -59,13 +59,14 @@ import { Vue, Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import Grid from '@/engine/Grid'
-import { IParticle, IGrid, IIndicator, DirEnum, PolEnum } from '@/engine/interfaces'
+import { IParticle, IGrid, IIndicator } from '@/engine/interfaces'
 import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import AppCell from '@/components/Board/AppCell.vue'
 import { Vector, Frame, Simulation } from 'quantum-tensors'
+import { PolEnum, DirEnum } from 'quantum-tensors/dist/interfaces'
 import { IStyle } from '@/types'
 
 @Component({
@@ -122,19 +123,15 @@ export default class EncyclopediaBoard extends Vue {
     this.simulation = new Simulation(this.grid.exportSimGrid())
     if (this.initialState.length === 1) {
       const d = this.initialState[0]
-      // this.simulation.intializeFromXYState(d.posX, d.posY, d.vecDirPol)
-      // const polStr = d.vecDirPol.dimensions.filter((dim) => dim.name === 'polarization')[0]
-      //   .coordString
-      // const dirStr = d.vecDirPol.dimensions.filter((dim) => dim.name === 'direction')[0].coordString
-      // console.log(polStr)
-      // console.log(dirStr)
+      const dirStr = d.vecDirPol.toKetComponents()[0].coordStrs[0]
+      const polStr = d.vecDirPol.toKetComponents()[0].coordStrs[1]
 
+      // Strange typescript bug: https://github.com/microsoft/TypeScript/issues/28102
       this.simulation.initializeFromIndicator({
         x: d.posX,
         y: d.posY,
-        // Strange typescript bug: https://github.com/microsoft/TypeScript/issues/28102
-        direction: DirEnum.v,
-        polarization: PolEnum.V,
+        direction: dirStr as DirEnum,
+        polarization: polStr as PolEnum,
       })
     } else {
       // to be removed later
