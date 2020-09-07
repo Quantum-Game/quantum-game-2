@@ -9619,18 +9619,18 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.4.7:
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
-  integrity sha512-DLPTSzyREY3PBInKN+vrBymQw/bRu21eZW43VWKWCa3VHJHI9wTrCutuG9s4pHc8y1ENh5UblvaC0zRLYXZhfA==
+quantum-tensors@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.10.tgz#cad1ad37898380ecdca9f3368ab788180a5c95b0"
+  integrity sha512-SDZ/CvJAN8C+8YnqUBj6l5CEhmQ4uNolMDieju/7D829HfoYLOHkd2kaA0uZ12QD6R0HD/4QR8mosNVCgBxCCw==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
 
-quantum-tensors@^0.4.9:
-  version "0.4.9"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.9.tgz#2999973c06090e099bf49756b81e8d0997e7f850"
-  integrity sha512-X0VLc6HGG2W+sxf1NlkXiMLKCLYzEb34alDR+HMFqpoGK0d2FhHZJmXIytP7CxOs2wC9W4KHRErChsWWPqMGjQ==
+quantum-tensors@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
+  integrity sha512-DLPTSzyREY3PBInKN+vrBymQw/bRu21eZW43VWKWCa3VHJHI9wTrCutuG9s4pHc8y1ENh5UblvaC0zRLYXZhfA==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"

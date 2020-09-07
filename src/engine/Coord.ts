@@ -6,7 +6,7 @@ import { ICoord } from '@/engine/interfaces'
  * The grid goes from top-left to bottom right
  * Indices start at 0
  */
-export default class Coord implements ICoord {
+export default class Coord {
   public x: number
   public y: number
 

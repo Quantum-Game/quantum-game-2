@@ -71,11 +71,6 @@
           @hover="updateInfoPayload"
           @save-level="handleSave"
         />
-        <game-graph
-          :multiverse="multiverse"
-          :active-frame="frameIndex"
-          @change-frame="handleChangeActiveFrame"
-        />
       </section>
 
       <!-- MAIN-RIGHT -->
@@ -100,7 +95,6 @@ import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
-import MultiverseGraph from '@/engine/MultiverseGraph'
 import Toolbox from '@/engine/Toolbox'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
@@ -112,7 +106,6 @@ import GameControls from '@/components/GamePage/GameControls.vue'
 import GamePhotons from '@/components/GamePage/GamePhotons.vue'
 import GameLayout from '@/components/GamePage/GameLayout.vue'
 import GameBoard from '@/components/Board/index.vue'
-import GameGraph from '@/components/GamePage/GameGraph.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
@@ -127,7 +120,6 @@ const userModule = namespace('userModule')
     GameGoals,
     GameInfobox,
     GameToolbox,
-    GameGraph,
     GameControls,
     GameBoard,
     AppButton,
@@ -150,7 +142,6 @@ export default class Game extends Vue {
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   frameIndex = 0
   simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
-  multiverse: MultiverseGraph = new MultiverseGraph(this.simulation)
   error = ''
   playInterval = 0
   absorptionThreshold = 0.0001
@@ -281,9 +272,6 @@ export default class Game extends Vue {
     const indicator = this.simulation.generateLaserIndicator()
     this.simulation.initializeFromIndicator(indicator)
     this.simulation.generateFrames(40)
-
-    // Update multiverse graph
-    this.multiverse = new MultiverseGraph(this.simulation)
 
     // Set absorption events to compute gameState
     this.level.gameState.absorptions = this.filteredAbsorptions
