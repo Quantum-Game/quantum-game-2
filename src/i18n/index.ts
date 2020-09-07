@@ -2,6 +2,7 @@
 
 import VueI18n, { LocaleMessageObject } from 'vue-i18n'
 import Vue from 'vue'
+import pluralizationRules from './pluralizationRules'
 
 // Load all locales and remember context for hot reloading
 function loadMessages() {
@@ -23,8 +24,16 @@ const availableLanguages = Object.keys(messages)
 
 function getBrowserLocale() {
   const langs = navigator.languages != null ? navigator.languages : [navigator.language]
-  const countryCodes = langs.map((lang) => lang.trim().split(/-|_/)[0])
-  return countryCodes.find((c) => availableLanguages.includes(c)) || 'en'
+  for (const lang of langs) {
+    if (availableLanguages.includes(lang)) {
+      return lang
+    }
+    const countryCode = lang.trim().split(/-|_/)[0]
+    if (availableLanguages.includes(countryCode)) {
+      return countryCode
+    }
+  }
+  return 'en'
 }
 
 const LANG_STORAGE_KEY = 'lang'
@@ -49,6 +58,7 @@ function saveCurrentLocale() {
 export const i18n: VueI18n = new VueI18n({
   locale: getSavedLocale() || getBrowserLocale(),
   fallbackLocale: 'en',
+  pluralizationRules,
   messages,
 })
 
