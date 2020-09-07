@@ -80,11 +80,8 @@ export default class QuantumFrame {
       throw new Error('You cannot propagateAndInteract more times with the same frame!')
     }
 
-    console.log('BEFORE', this.photons.ketString())
     this.photons.propagatePhotons()
-    console.log('PROPAGATION', this.photons.ketString())
     this.probPropagated = this.probability
-    // TODO: Rework array into interface
     this.absorptions = operatorList
       .map(
         ({ x, y, op }): IDetection => {
@@ -102,8 +99,6 @@ export default class QuantumFrame {
       })
     }
     this.photons.actOnSinglePhotons()
-    // console.log('dU', this.photons.cachedDiffU.toString())
-    console.log('ACTION', this.photons.ketString())
     this.probAfter = this.probability
   }
 
