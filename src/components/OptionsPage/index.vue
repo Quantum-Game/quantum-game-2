@@ -1,18 +1,31 @@
 <template>
   <app-layout>
     <div slot="main" class="options-wrapper" layout="column u4">
-      <h2>Options</h2>
+      <h2>{{ $t('options.header') }}</h2>
       <form layout="column u4">
         <label layout="row u1">
-          <span flex>Speed of light: {{ gameSpeedLabel }}</span>
+          <span flex>
+            {{ $t('language') }}
+          </span>
+          <select v-model="$i18n.locale">
+            <option v-for="lang in $i18n.availableLocales" :key="lang" :value="lang">
+              {{ $t('lang_name', lang) }}
+            </option>
+          </select>
+        </label>
+        <label layout="row u1">
+          <span flex>
+            {{ $tc('options.game_speed') }}:
+            {{ $tc('options.tiles_per_second', tilesPerSecond, { n: $n(tilesPerSecond) }) }}
+          </span>
           <input v-model.number="gameSpeed" type="range" min="100" max="2000" class="reverse" />
         </label>
         <label layout="row u1">
-          <span flex>Sound volume: {{ volumeLabel }}</span>
+          <span flex>{{ $t('options.volume') }}: {{ $n(volume * 100) }}%</span>
           <input v-model.number="volume" type="range" step="0.01" min="0" max="1" />
         </label>
         <label layout="row u1">
-          <span flex>Mute all sound</span>
+          <span flex>{{ $t('options.mute_all_sound') }}</span>
           <input v-model="mute" type="checkbox" />
         </label>
       </form>
@@ -47,9 +60,8 @@ export default class OptionsPage extends Vue {
     this.setOptions({ gameSpeedInterval })
   }
 
-  get gameSpeedLabel(): string {
-    const tilesPerSecond = (1000 / this.gameSpeed).toFixed(1)
-    return tilesPerSecond === `1.0` ? '1 tile per second' : `${tilesPerSecond} tiles per second`
+  get tilesPerSecond(): number {
+    return +(1000 / this.gameSpeed).toFixed(1)
   }
 
   get volume(): number {
@@ -58,10 +70,6 @@ export default class OptionsPage extends Vue {
 
   set volume(volume: number) {
     this.setOptions({ volume })
-  }
-
-  get volumeLabel(): string {
-    return `${(this.volume * 100).toFixed(0)}%`
   }
 
   get mute(): boolean {
@@ -91,7 +99,8 @@ h2 {
   text-transform: uppercase;
 }
 
-input {
+input,
+option {
   width: 200px;
 }
 
