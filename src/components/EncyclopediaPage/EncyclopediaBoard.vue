@@ -10,7 +10,7 @@
 
         <!-- PHOTONS -->
         <g
-          v-for="(particle, i) in selectedFrame.polarizationSuperpositions"
+          v-for="(particle, i) in frameParticles"
           :key="`particle-${i}-(${particle.coord.x},${particle.coord.y})-${particle.direction}`"
           :style="computeParticleStyle(particle)"
           class="photons"
@@ -49,7 +49,7 @@
       </span>
     </div>
     <div class="ket">
-      <ket-viewer :vector="selectedFrame.photons.vector" :initial-pol-basis="initialPolBasis" />
+      <ket-viewer :vector="selectedFrame.vector" :initial-pol-basis="initialPolBasis" />
     </div>
   </div>
 </template>
@@ -57,17 +57,16 @@
 <script lang="ts">
 import { Vue, Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
-import Grid from '@/engine/Grid'
 import Particle from '@/engine/Particle'
-import { IParticle, IGrid, PolEnum, IIndicator } from '@/engine/interfaces'
+import Grid from '@/engine/Grid'
+import { IParticle, IGrid, IIndicator } from '@/engine/interfaces'
 import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import AppCell from '@/components/Board/AppCell.vue'
-import QuantumFrame from '@/engine/QuantumFrame'
-import QuantumSimulation from '@/engine/QuantumSimulation'
-import { Vector } from 'quantum-tensors'
+import { Vector, Frame, Simulation } from 'quantum-tensors'
+import { PolEnum, DirEnum } from 'quantum-tensors/dist/interfaces'
 import { IStyle } from '@/types'
 
 @Component({
@@ -94,7 +93,7 @@ export default class EncyclopediaBoard extends Vue {
   @Prop({ default: 64 }) readonly tileSize!: number
 
   grid = Grid.importGrid(this.iGrid)
-  simulation: QuantumSimulation = new QuantumSimulation(this.grid)
+  simulation: Simulation = new Simulation(this.grid.exportSimGrid())
   selectedFrameId = this.defaultStep
 
   $refs!: {
@@ -121,24 +120,34 @@ export default class EncyclopediaBoard extends Vue {
    * Set steps and selected frame
    */
   reset(): void {
-    this.simulation = new QuantumSimulation(this.grid)
+    this.simulation = new Simulation(this.grid.exportSimGrid())
     if (this.initialState.length === 1) {
       const d = this.initialState[0]
-      this.simulation.intializeFromXYState(d.posX, d.posY, d.vecDirPol)
+      const dirStr = d.vecDirPol.toKetComponents()[0].coordStrs[0]
+      const polStr = d.vecDirPol.toKetComponents()[0].coordStrs[1]
+
+      // Strange typescript bug: https://github.com/microsoft/TypeScript/issues/28102
+      this.simulation.initializeFromIndicator({
+        x: d.posX,
+        y: d.posY,
+        direction: dirStr as DirEnum,
+        polarization: polStr as PolEnum,
+      })
     } else {
       // to be removed later
       if (this.indicators.length === 0) {
-        this.simulation.initializeFromLaser(PolEnum.H)
+        const indicator = this.simulation.generateLaserIndicator()
+        this.simulation.initializeFromIndicator(indicator)
       } else if (this.indicators.length === 1) {
-        this.simulation.initializeFromIndicator(this.indicators[0])
+        // this.simulation.initializeFromIndicator(this.indicators[0])
       } else {
         throw new Error('EncyclopediaBoard not yet prepared for more photons.')
       }
     }
     if (this.exactSteps) {
-      this.simulation.computeFrames(this.maxSteps, -1)
+      this.simulation.generateFrames(this.maxSteps, -1)
     } else {
-      this.simulation.computeFrames(this.maxSteps)
+      this.simulation.generateFrames(this.maxSteps)
     }
     this.selectedFrameId = Math.min(this.selectedFrameId, this.simulation.frames.length - 1)
   }
@@ -153,11 +162,11 @@ export default class EncyclopediaBoard extends Vue {
     }
   }
 
-  get frames(): QuantumFrame[] {
+  get frames(): Frame[] {
     return this.simulation.frames
   }
 
-  get selectedFrame(): QuantumFrame {
+  get selectedFrame(): Frame {
     return this.frames[this.selectedFrameId]
   }
 
@@ -165,8 +174,20 @@ export default class EncyclopediaBoard extends Vue {
     return this.frames.length
   }
 
-  get allParticles(): Particle[] {
-    return this.simulation.allParticles
+  get frameParticles(): Particle[] {
+    return this.selectedFrame.particles.map((particleI: IParticle) =>
+      Particle.importParticle(particleI)
+    )
+  }
+
+  get allParticles(): IParticle[] {
+    const result: IParticle[] = []
+    this.frames.forEach((frame): void => {
+      frame.particles.forEach((particle: IParticle): void => {
+        result.push(particle)
+      })
+    })
+    return result
   }
 
   get nonVoidCells(): Cell[] {

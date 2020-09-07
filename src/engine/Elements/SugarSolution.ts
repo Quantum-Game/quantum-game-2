@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -19,11 +18,5 @@ export default class SugarSolution extends Element {
   public constructor(percentage = 0.125) {
     super(Elem.SugarSolution, Group.Polarization)
     this.percentage = percentage
-  }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    // return qt.sugarSolution(options.percentage);
-    return qt.Elements.sugarSolution(0.125)
   }
 }

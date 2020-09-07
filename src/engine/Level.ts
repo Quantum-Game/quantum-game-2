@@ -1,4 +1,4 @@
-import { ILevel, IGoal, IHint } from './interfaces'
+import { ILevel, IGoal, IHint } from '@/engine/interfaces'
 import Cell from './Cell'
 import Grid from './Grid'
 import Toolbox from './Toolbox'

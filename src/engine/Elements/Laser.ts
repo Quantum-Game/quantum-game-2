@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -17,10 +16,5 @@ export default class Laser extends Element {
   public constructor(polarization = 0) {
     super(Elem.Laser, Group.Source)
     this.polarization = polarization
-  }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(0)
   }
 }
