@@ -11,10 +11,13 @@ import { Vue, Component } from 'vue-property-decorator'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
 import SoundController from '@/components/SoundController.vue'
 import VueGtag from 'vue-gtag'
+import VueI18n from 'vue-i18n'
 
 Vue.use(VueGtag, {
   config: { id: 'UA-56225776-1' },
 })
+
+Vue.use(VueI18n)
 
 @Component({
   components: {

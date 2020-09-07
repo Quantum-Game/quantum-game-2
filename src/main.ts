@@ -7,6 +7,7 @@ import router from './router'
 import store from './store/store'
 import './registerServiceWorker'
 import '@/config/firebase'
+import { i18n } from './i18n'
 
 Vue.use(Donut)
 Vue.use(VueConfetti)
@@ -14,6 +15,7 @@ Vue.use(VueConfetti)
 Vue.config.productionTip = false
 new Vue({
   router,
+  i18n,
   store,
   render: (h: CreateElement): VNode => {
     return h(App)

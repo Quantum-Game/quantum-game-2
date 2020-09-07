@@ -9619,6 +9619,14 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
+quantum-tensors@^0.4.10:
+  version "0.4.10"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.10.tgz#cad1ad37898380ecdca9f3368ab788180a5c95b0"
+  integrity sha512-SDZ/CvJAN8C+8YnqUBj6l5CEhmQ4uNolMDieju/7D829HfoYLOHkd2kaA0uZ12QD6R0HD/4QR8mosNVCgBxCCw==
+  dependencies:
+    "@types/lodash" "^4.14.138"
+    lodash "^4.17.15"
+
 quantum-tensors@^0.4.7:
   version "0.4.7"
   resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
@@ -11707,6 +11715,11 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+
+vue-i18n@^8.21.0:
+  version "8.21.0"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.21.0.tgz#526450525fdbb9c877685b5ba6cb9573b73d3940"
+  integrity sha512-pKBq6Kg5hNacFHMFgPbpYsFlDIMRu4Ew/tpvTWns14CZoCxt7B3tmSNdrLruGMMivnJu1rhhRqsQqT6YwHkuQQ==
 
 vue-loader@^15.9.1:
   version "15.9.2"
