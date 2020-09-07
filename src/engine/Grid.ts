@@ -1,7 +1,6 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
-import * as qt from 'quantum-tensors'
-import { ICell, IGrid, Elem } from './interfaces'
+import { ICell, ISimCell, IGrid, ISimGrid, Elem } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
 import Cluster from './Cluster'
@@ -102,16 +101,6 @@ export default class Grid extends Cluster {
   public resetEnergized(): void {
     this.cells.forEach((cell): void => {
       cell.energized = false
-    })
-  }
-
-  /**
-   * Retrieve the list of quantum operators from the elements
-   * @returns list of operators
-   */
-  public get operatorList(): [number, number, qt.Operator][] {
-    return this.unvoid.cells.map((cell): [number, number, qt.Operator] => {
-      return cell.operator
     })
   }
 
@@ -339,6 +328,24 @@ export default class Grid extends Cluster {
       .filter((cell): boolean => !cell.isVoid)
       .forEach((cell): void => {
         cells.push(cell.exportCell())
+      })
+    return {
+      cols: this.cols,
+      rows: this.rows,
+      cells,
+    }
+  }
+
+  /**
+   * Exports the grid to an interface of primitives
+   * @returns a grid interface
+   */
+  public exportSimGrid(): ISimGrid {
+    const cells: ISimCell[] = []
+    this.cells
+      .filter((cell): boolean => !cell.isVoid)
+      .forEach((cell): void => {
+        cells.push(cell.exportSimCell())
       })
     return {
       cols: this.cols,

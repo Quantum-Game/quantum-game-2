@@ -38,7 +38,7 @@ import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { Operator, Vector, Dimension } from 'quantum-tensors'
+import { Operator, Vector, Dimension, Elements } from 'quantum-tensors'
 
 interface IXYVec {
   posX: number
@@ -156,9 +156,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   /**
    * Return the generated cell operator and select the entries
+   * @todo: figure a way to recover the operator
    */
   get operator(): Operator {
-    return this.cell.operator[2]
+    return Elements.generateOperator(this.cell.exportSimCell()).op
   }
 }
 </script>

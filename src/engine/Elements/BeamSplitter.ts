@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -19,9 +18,5 @@ export default class BeamSplitter extends Element {
   public constructor(percentage = 0.5) {
     super(Elem.BeamSplitter, Group.Direction)
     this.percentage = percentage
-  }
-
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.beamSplitter(options.rotation)
   }
 }

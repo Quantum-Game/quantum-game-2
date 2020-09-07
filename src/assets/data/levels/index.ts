@@ -7,6 +7,7 @@ import polarizationLevels from './polarizationLevels.json'
 import finalLevels from './finalLevels.json'
 import classicLevels from './classicLevels.json'
 import sandbox from './sandboxLevel.json'
+import benchmarkLevels from './benchmark.json'
 
 export {
   sandbox,
@@ -17,6 +18,7 @@ export {
   polarizationLevels,
   finalLevels,
   classicLevels,
+  benchmarkLevels,
 }
 
 const introGroup: ILevel[] = introLevels
@@ -26,6 +28,7 @@ const interferenceGroup: ILevel[] = interferenceLevels
 const polarizationGroup: ILevel[] = polarizationLevels
 const finalGroup: ILevel[] = finalLevels
 const classicGroup: ILevel[] = classicLevels
+const benchmarkGroup: ILevel[] = benchmarkLevels
 
 const levels: ILevel[] = [
   sandbox,
@@ -36,6 +39,7 @@ const levels: ILevel[] = [
   ...interferenceGroup,
   ...polarizationGroup,
   ...finalGroup,
+  ...benchmarkGroup,
 ]
 
 export default levels

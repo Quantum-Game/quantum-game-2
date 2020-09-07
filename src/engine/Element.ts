@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from './interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 
 /**
  * ELEMENT CLASS
@@ -46,13 +45,5 @@ export default class Element {
    */
   public toString(): string {
     return this.name
-  }
-
-  /**
-   * Will be overriden by child transition
-   */
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(0)
   }
 }

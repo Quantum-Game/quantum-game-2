@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -19,10 +18,5 @@ export default class Glass extends Element {
   public constructor(percentage = 0.25) {
     super(Elem.Glass, Group.Phase)
     this.percentage = percentage
-  }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.glassSlab()
   }
 }

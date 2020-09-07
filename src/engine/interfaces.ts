@@ -103,6 +103,25 @@ export interface ICluster {
 }
 
 /**
+ * CELL SIM INTERFACE (JSON format needs to be discussed)
+ * A cell interface composed of primitives
+ */
+export interface ISimGrid {
+  cols: number
+  rows: number
+  cells: ISimCell[]
+}
+export interface ISimCell {
+  x: number
+  y: number
+  element: string
+  frozen: boolean
+  rotation: number
+  polarization: number
+  percentage: number
+}
+
+/**
  * CELL INTERFACE
  * A cell interface composed of primitives
  */
@@ -208,6 +227,24 @@ export interface IIndicator {
   y: number
   direction: DirEnum
   polarization: PolEnum
+}
+
+/**
+ * Laser starting polarization enum
+ */
+export const enum PolEnum {
+  V = 'V',
+  H = 'H',
+}
+
+/**
+ * Laser starting direction enum
+ */
+export const enum DirEnum {
+  '>' = '>',
+  '^' = '^',
+  '<' = '<',
+  'v' = 'v',
 }
 
 /**
@@ -320,24 +357,6 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.FaradayRotator,
   ],
   Phase: [Elem.Glass, Elem.VacuumJar],
-}
-
-/**
- * Laser starting polarization enum
- */
-export const enum PolEnum {
-  V = 'V',
-  H = 'H',
-}
-
-/**
- * Laser starting direction enum
- */
-export const enum DirEnum {
-  '>' = '>',
-  '^' = '^',
-  '<' = '<',
-  'v' = 'v',
 }
 
 /**

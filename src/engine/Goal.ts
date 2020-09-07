@@ -1,4 +1,4 @@
-import { IGoal } from './interfaces'
+import { IGoal } from '@/engine/interfaces'
 import Coord from './Coord'
 
 /**

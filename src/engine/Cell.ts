@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { ICoord, ICell, Elem, ITransition, IIndicator } from './interfaces'
+import { ICoord, ICell, ISimCell, Elem, IIndicator } from '@/engine/interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'
@@ -201,6 +200,23 @@ export default class Cell {
   }
 
   /**
+   * Export a cell interface for qt Simulation
+   * @todo discuss json grid format
+   * @returns ICell
+   */
+  public exportSimCell(): ISimCell {
+    return {
+      x: this.coord.x,
+      y: this.coord.y,
+      element: this.element.name,
+      rotation: this.rotation,
+      polarization: this.polarization,
+      percentage: this.percentage,
+      frozen: this.frozen,
+    }
+  }
+
+  /**
    * Create a cell from a ICell
    * TODO: Polarization should be passed to cell
    * @param iCell ICell
@@ -244,20 +260,6 @@ export default class Cell {
     const cell = new Cell(coord, element)
     cell.tool = true
     return cell
-  }
-
-  /**
-   * Get operator from transition
-   * @param name
-   */
-  public get operator(): [number, number, qt.Operator] {
-    const options: ITransition = {
-      rotation: this.rotation,
-      polarization: this.polarization,
-      percentage: this.percentage,
-    }
-    const transition = this.element.transition(options)
-    return [this.coord.x, this.coord.y, transition]
   }
 
   /**

@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -15,9 +14,5 @@ export default class PolarizingBeamSplitter extends Element {
 
   public constructor() {
     super(Elem.PolarizingBeamSplitter, Group.Direction)
-  }
-
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.polarizingBeamsplitter(options.rotation)
   }
 }

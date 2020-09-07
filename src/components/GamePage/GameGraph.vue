@@ -1,62 +1,17 @@
 <template>
   <div ref="multiverseWrapper" class="multiverse">
     <svg :style="computeSvgStyle">
-      <!-- ARROWHEAD -->
-      <!-- <defs>
-        <marker
-          id="arrowhead-past"
-          viewBox="0 0 10 10"
-          refX="7"
-          refY="5"
-          markerUnits="strokeWidth"
-          markerWidth="4"
-          markerHeight="3"
-          orient="auto"
-        >
-          <path d="M 0 0 L 10 5 L 0 10 z" stroke="none" fill="darkgrey" />
-        </marker>
-        <marker
-          id="arrowhead-present"
-          viewBox="0 0 10 10"
-          refX="7"
-          refY="5"
-          markerUnits="strokeWidth"
-          markerWidth="4"
-          markerHeight="3"
-          orient="auto"
-        >
-          <path d="M 0 0 L 10 5 L 0 10 z" stroke="none" fill="red" />
-        </marker>
-        <marker
-          id="arrowhead-future"
-          viewBox="0 0 10 10"
-          refX="7"
-          refY="5"
-          markerUnits="strokeWidth"
-          markerWidth="4"
-          markerHeight="3"
-          orient="auto"
-        >
-          <path d="M 0 0 L 10 5 L 0 10 z" stroke="none" fill="purple" />
-        </marker>
-      </defs> -->
-
       <!-- NODE -->
       <g :style="computeNodeStyle">
         <g v-for="(node, i) in nodes" :key="'node' + i" :class="computeNodeClass(node)">
-          <circle :cx="node.x" :cy="node.y" r="5" @mouseover="handleMouseOver(node.fIndex)" />
-          <!-- <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">
-            {{ node.label }}
-          </text> -->
+          <circle :cx="node.x" :cy="node.y" r="5" @click="handleClick(node.fIndex)" />
+          <!-- <text class="nodeText" :x="node.x" :y="node.y + 4" text-anchor="middle">{{ node.label }}</text> -->
           <path class="bar" :d="`M -500 ${node.y} L 500 ${node.y}`" />
         </g>
+
         <!-- EDGE -->
         <g v-for="(edge, i) in edges" :key="'edge' + i" :class="computeEdgeClass(edge)">
-          <path
-            :d="computeEdgePath(edge.points)"
-            :stroke-width="1"
-            :marker-end="computeArrowHead(edge)"
-          />
+          <path :d="computeEdgePath(edge.points)" :stroke-width="1" />
         </g>
       </g>
     </svg>
@@ -73,7 +28,7 @@ import { IStyle } from '@/types'
 })
 export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph
-  @Prop() readonly activeId!: number
+  @Prop() readonly activeFrame!: number
   $refs!: {
     multiverseWrapper: HTMLElement
   }
@@ -84,19 +39,19 @@ export default class GameGraph extends Vue {
     this.rect = this.$refs.multiverseWrapper.getBoundingClientRect()
   }
 
-  handleMouseOver(activeId: number): void {
-    this.$emit('changeActiveFrame', activeId)
+  handleClick(frameId: number): void {
+    this.$emit('change-frame', frameId)
   }
 
   get totalFrames(): number {
-    return this.multiverse.qs.frames.length
+    return this.multiverse.simulation.frames.length
   }
 
   get computeSvgStyle(): IStyle {
     const { height } = this.graph.graph()
     return {
       height: `${height}px`,
-      'max-height': '500px',
+      // 'max-height': '500px',
     }
   }
 
@@ -110,9 +65,9 @@ export default class GameGraph extends Vue {
   // TODO: Node, edge and arrowhead are similar
   computeNodeClass(node: { fIndex: number; leaf: boolean; root: boolean }): string[] {
     let timeClass = ''
-    if (node.fIndex < this.activeId) {
+    if (node.fIndex < this.activeFrame) {
       timeClass = 'past'
-    } else if (node.fIndex === this.activeId) {
+    } else if (node.fIndex === this.activeFrame) {
       timeClass = 'present'
     } else {
       timeClass = 'future'
@@ -122,26 +77,14 @@ export default class GameGraph extends Vue {
 
   computeEdgeClass(edge: { fIndex: number }): string[] {
     let timeClass = ''
-    if (edge.fIndex < this.activeId) {
+    if (edge.fIndex < this.activeFrame) {
       timeClass = 'past'
-    } else if (edge.fIndex === this.activeId) {
+    } else if (edge.fIndex === this.activeFrame) {
       timeClass = 'present'
     } else {
       timeClass = 'future'
     }
     return ['edge', timeClass]
-  }
-
-  computeArrowHead(edge: { fIndex: number }): string {
-    let timeClass = ''
-    if (edge.fIndex < this.activeId) {
-      timeClass = 'past'
-    } else if (edge.fIndex === this.activeId) {
-      timeClass = 'present'
-    } else {
-      timeClass = 'future'
-    }
-    return `url(#arrowhead-${timeClass})`
   }
 
   /**
@@ -215,7 +158,7 @@ $leaf: #5c00d3;
   }
   svg {
     width: 100%;
-    max-height: 500px;
+    // max-height: 500px;
   }
   .node {
     font-size: 10px;

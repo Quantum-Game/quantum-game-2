@@ -1,5 +1,4 @@
-import * as qt from 'quantum-tensors'
-import { Elem, Group, ITransition } from '@/engine/interfaces'
+import { Elem, Group } from '@/engine/interfaces'
 import Element from '@/engine/Element'
 
 /**
@@ -14,10 +13,5 @@ export default class Void extends Element {
 
   public constructor() {
     super(Elem.Void, Group.Basic)
-  }
-
-  /* eslint-disable-next-line */
-  public transition(options: ITransition): qt.Operator {
-    return qt.Elements.attenuator(1)
   }
 }
