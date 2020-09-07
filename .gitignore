@@ -3,6 +3,9 @@ node_modules
 /dist
 .firebase/*.cache
 
+# we are using yarn.lock
+package-lock.json
+
 # local env files
 env.local
 .env.local
