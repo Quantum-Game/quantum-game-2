@@ -34,7 +34,7 @@
     "global": "^4.4.0",
     "graphlib": "^2.1.7",
     "lodash": "^4.17.19",
-    "quantum-tensors": "^0.4.7",
+    "quantum-tensors": "^0.4.10",
     "register-service-worker": "^1.6.2",
     "tone": "^13.8.25",
     "vue": "^2.6.10",
