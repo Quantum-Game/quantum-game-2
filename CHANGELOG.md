@@ -10,6 +10,23 @@ Here:
 * The minor is for major releases (kind of more subjective).
 * Each match version is any release on [quantumgame.io](https://quantumgame.io/) that might have some backward-incompatible changes.
 
+## [2.2.13] - 2020-09-07
+
+### Added
+
+* Features for localization
+* Settings: sound and speed
+
+### Fixed
+
+* Never-ending confetti error
+* Types error in Vuex and other pieces of code
+
+### Performance
+
+* The simulation is much, much faster (thanks to [quantum-tensors 0.4.10](https://github.com/Quantum-Game/quantum-tensors) updates)
+
+
 ## [2.2.12] - 2020-05-19
 
 ### Added
