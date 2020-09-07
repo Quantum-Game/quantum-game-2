@@ -8,9 +8,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
 
-@Component
 export default class AppNotifications extends Vue {
   resetErrors(): void {
     this.$store.commit('RESET_ERRORS')

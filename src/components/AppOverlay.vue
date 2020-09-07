@@ -13,14 +13,13 @@
 
 <script lang="ts">
 // FIXME: Needs to be extended for instructions overlay, rethink overlay
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
+import { Watch, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import VueConfetti from 'vue-confetti'
 import AppButton from '@/components/AppButton.vue'
 import { GameStateEnum } from '@/engine/interfaces'
 
-Vue.use(VueConfetti)
-
-@Component({
+@Options({
   components: {
     AppButton,
   },
@@ -34,11 +33,11 @@ export default class AppOverlay extends Vue {
   }
 
   explosion = false
-  explosionTimeout = 0
+  explosionTimeout = null
 
   mineExploding(): void {
     this.explosion = true
-    this.explosionTimeout = setTimeout(() => {
+    window.setTimeout(() => {
       this.explosion = false
     }, 300)
   }

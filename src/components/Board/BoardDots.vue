@@ -9,14 +9,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { defineComponent } from 'vue'
 
-@Component
-export default class BoardDots extends Vue {
-  @Prop() readonly rows!: number
-  @Prop() readonly cols!: number
-  @Prop({ default: 64 }) readonly tileSize!: number
-}
+export default defineComponent({
+  props: {
+    rows: { type: Number, required: true },
+    cols: { type: Number, required: true },
+    tileSize: { type: Number, default: 64 },
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -14,15 +14,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import AppMenu from '@/components/AppMenu.vue'
+import { defineComponent } from 'vue'
 
-@Component({
+export default defineComponent({
   components: {
     AppMenu,
   },
 })
-export default class AppLayout extends Vue {}
 </script>
 
 <style lang="scss" scoped>

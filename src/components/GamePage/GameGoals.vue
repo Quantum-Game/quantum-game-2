@@ -65,12 +65,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
 import TWEEN from '@tweenjs/tween.js'
 import GameState from '@/engine/GameState'
 import AppCell from '@/components/Board/AppCell.vue'
 
-@Component({
+@Options({
   components: {
     AppCell,
   },

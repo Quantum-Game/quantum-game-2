@@ -5,6 +5,9 @@
     :class="computeCellClass"
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
+    @click="$emit('click', $event)"
+    @mouseover="$emit('mouseover', $event)"
+    @mouseleave="$emit('mouseleave', $event)"
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
@@ -49,7 +52,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins, Watch } from 'vue-property-decorator'
+import { Options, mixins } from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
@@ -84,7 +88,7 @@ const borderColors = {
   energized: 'blue',
 }
 
-@Component({
+@Options({
   components: {
     LaserCell,
     NonLinearCrystalCell,
@@ -107,7 +111,7 @@ const borderColors = {
     VacuumJarCell,
   },
 })
-export default class AppCell extends Mixins(Position) {
+export default class AppCell extends mixins(Position) {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
   @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed

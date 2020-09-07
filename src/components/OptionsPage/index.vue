@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import { SET_OPTIONS } from '@/store/mutation-types'
 import { AppLayout } from '@/components'
@@ -43,7 +43,7 @@ import { IOptionsModule } from '@/store/optionsModule'
 // used to target namespaced vuex module:
 const options = namespace('optionsModule')
 
-@Component({
+@Options({
   components: {
     AppLayout,
   },

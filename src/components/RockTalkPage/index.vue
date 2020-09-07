@@ -12,14 +12,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { State } from 'vuex-class'
 import { IDialogue } from '@/mixins/dataInterfaces'
 import { getRockTalkById } from './loadRockTalks'
 import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
 
-@Component({
+@Options({
   components: {
     RockTalkLine,
     AppButton,
@@ -29,7 +29,7 @@ export default class InterLevelOverlay extends Vue {
   @State('currentLevelID') currentLevelID!: string
 
   get rockTalkId(): string {
-    return this.$route.params.id
+    return this.$route.params.id as string
   }
 
   get rockTalk(): IDialogue {

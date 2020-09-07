@@ -260,7 +260,7 @@ export default storeModule<IUserState>({
           },
           lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
         }
-        const levelSaved = router.currentRoute.params.id
+        const levelSaved = router.currentRoute.value.params.id as string
 
         const doc = db.collection('levels').doc(levelSaved)
 

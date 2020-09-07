@@ -10,22 +10,14 @@
 import { Vue, Component } from 'vue-property-decorator'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
 import SoundController from '@/components/SoundController.vue'
-import VueGtag from 'vue-gtag'
-import VueI18n from 'vue-i18n'
+import { defineComponent } from 'vue'
 
-Vue.use(VueGtag, {
-  config: { id: 'UA-56225776-1' },
-})
-
-Vue.use(VueI18n)
-
-@Component({
+export default defineComponent({
   components: {
     SoundController,
     LoginStatus,
   },
 })
-export default class App extends Vue {}
 </script>
 <!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
 <style lang="scss">

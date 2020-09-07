@@ -83,7 +83,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Component, Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import { IStyle } from '@/types'
@@ -92,7 +93,6 @@ import { ActionMethod } from 'vuex'
 const userModule = namespace('userModule')
 const optionsModule = namespace('optionsModule')
 
-@Component
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number

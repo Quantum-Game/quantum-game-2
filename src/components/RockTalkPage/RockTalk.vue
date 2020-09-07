@@ -19,10 +19,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 
-@Component({
+@Options({
   components: {
     SpeechBubble,
   },

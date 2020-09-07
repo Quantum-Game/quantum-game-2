@@ -90,7 +90,8 @@
 <script lang="ts">
 import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
@@ -112,7 +113,7 @@ import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 import type { ActionMethod } from 'vuex'
 const userModule = namespace('userModule')
 
-@Component({
+@Options({
   components: {
     GameLayout,
     GamePhotons,

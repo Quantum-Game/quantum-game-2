@@ -37,7 +37,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { select } from 'd3-selection'
 import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
@@ -54,7 +55,6 @@ const d3 = {
   interpolateViridis,
 }
 
-@Component
 export default class AppPhoton extends Vue {
   @Prop() readonly particle!: Particle
   @Prop({ default: 0 }) readonly animate!: number

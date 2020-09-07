@@ -8,17 +8,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Component, Prop } from 'vue-property-decorator'
 import { IEntryList } from '@/engine/interfaces'
 
-@Component
 export default class EncyclopediaLinkList extends Vue {
   @Prop({ default: 'elements' }) readonly title!: string
   @Prop() readonly entryList!: IEntryList[]
   entriesExpanded = false
 
   toggleEntries(): void {
-    this.$data.entriesExpanded = !this.$data.entriesExpanded
+    this.entriesExpanded = !this.entriesExpanded
   }
 
   spacedEntry(name: string): string {

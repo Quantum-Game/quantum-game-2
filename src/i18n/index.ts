@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
-import VueI18n, { LocaleMessageObject } from 'vue-i18n'
-import Vue from 'vue'
+import { createI18n, LocaleMessages } from 'vue-i18n'
+import { watch, VNode } from 'vue'
 import pluralizationRules from './pluralizationRules'
 
 // Load all locales and remember context for hot reloading
@@ -13,7 +13,7 @@ function loadMessages() {
       messages[locale] = context(key).default
     }
     return messages
-  }, {} as Record<string, LocaleMessageObject>)
+  }, {} as LocaleMessages<string | VNode>)
 
   return { context, messages }
 }
@@ -48,14 +48,13 @@ function getSavedLocale() {
 
 function saveCurrentLocale() {
   try {
-    console.log('saveCurrentLocale', i18n.locale)
-    localStorage.setItem(LANG_STORAGE_KEY, i18n.locale)
+    localStorage.setItem(LANG_STORAGE_KEY, i18n.global.locale.value)
   } catch (_) {
     // localStorage write failed, we can ignore that here
   }
 }
 
-export const i18n: VueI18n = new VueI18n({
+export const i18n = createI18n({
   locale: getSavedLocale() || getBrowserLocale(),
   fallbackLocale: 'en',
   pluralizationRules,
@@ -63,8 +62,7 @@ export const i18n: VueI18n = new VueI18n({
 })
 
 // in vue3, that should just be watch(..)
-const observer = new Vue()
-observer.$watch(() => i18n.locale, saveCurrentLocale)
+watch(() => i18n.global.locale, saveCurrentLocale)
 
 // in-place localization hot reloading
 if (module.hot) {
@@ -75,7 +73,7 @@ if (module.hot) {
       .filter((locale) => messages[locale] !== newMessages[locale])
       .forEach((locale) => {
         messages[locale] = newMessages[locale]
-        i18n.setLocaleMessage(locale, messages[locale])
+        i18n.global.setLocaleMessage(locale, messages[locale])
       })
   })
 }

@@ -8,18 +8,18 @@
     <transition name="fade">
       <div v-if="isMenuOpen" class="menu-overlay">
         <menu>
-          <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
+          <router-link to="/" @click.stop="closeMenu">BACK TO THE MAIN PAGE</router-link>
           <router-link
             v-if="currentLevelID > 0"
             :to="continueLink"
-            @click.stop.native="handleContinueClick"
+            @click.stop="handleContinueClick"
             >CONTINUE</router-link
           >
           <router-link
             v-for="item in menuItems"
             :key="item.name"
             :to="item.url"
-            @click.stop.native="closeMenu"
+            @click.stop="closeMenu"
             >{{ item.name }}</router-link
           >
           <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
@@ -30,12 +30,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
 import { State, namespace } from 'vuex-class'
 
 const user = namespace('userModule')
 
-@Component
 export default class AppMenu extends Vue {
   @State('currentLevelID') currentLevelID!: number
   @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean

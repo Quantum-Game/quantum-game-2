@@ -48,8 +48,8 @@
         :cell="cell"
         :tileSize="tileSize"
         @update-cell="updateCell"
-        @mouseover.native="handleMouseEnter(cell.coord)"
-        @mouseleave.native="handleMouseLeave(cell.coord)"
+        @mouseover="handleMouseEnter(cell.coord)"
+        @mouseleave="handleMouseLeave(cell.coord)"
         @play="play"
       />
 
@@ -78,7 +78,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import Absorption from '@/engine/Absorption'
 import Cell from '@/engine/Cell'
@@ -92,8 +93,9 @@ import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
+import { nextTick } from 'vue'
 
-@Component({
+@Options({
   components: {
     AppCell,
     AppPhoton,
@@ -200,7 +202,7 @@ export default class Board extends Vue {
       this.boardHeight = currentHeight
     }, 1)
     // this.tileSize = 64 // apparently, the property is hard-coded, no need to change it
-    this.$nextTick(() => {
+    nextTick(() => {
       this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
       this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
     })
@@ -239,7 +241,7 @@ export default class Board extends Vue {
    * @returns url
    */
   get url(): string {
-    return this.$route.params.id
+    return this.$route.params.id as string
   }
 }
 </script>

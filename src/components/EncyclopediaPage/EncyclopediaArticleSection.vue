@@ -11,11 +11,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Component, Prop } from 'vue-property-decorator'
 import { IEntrySection } from '@/engine/interfaces'
 import { IStyle } from '@/types'
 
-@Component
 export default class EncyclopediaArticleSection extends Vue {
   @Prop() readonly section!: IEntrySection
   @Prop() readonly shouldBeOpenOnInit!: boolean

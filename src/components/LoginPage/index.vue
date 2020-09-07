@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -62,7 +62,7 @@ import { ActionMethod } from 'vuex'
 
 const user = namespace('userModule')
 
-@Component({
+@Options({
   components: {
     AppLayout,
     AppButton,

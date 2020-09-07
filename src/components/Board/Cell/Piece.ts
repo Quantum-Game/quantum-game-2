@@ -1,7 +1,7 @@
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Prop, Component } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 
-@Component
 export default class Piece extends Vue {
   @Prop() public readonly cell!: Cell
   @Prop({ default: '' }) public readonly border!: string

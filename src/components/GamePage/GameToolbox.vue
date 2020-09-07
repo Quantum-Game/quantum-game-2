@@ -35,12 +35,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { Mutation } from 'vuex-class'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
-@Component({
+@Options({
   components: {
     AppCell,
   },

@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import { createStore } from 'vuex'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import {
@@ -20,9 +19,8 @@ import { IRootState } from './storeInterfaces'
 
 const initialCell = Cell.createDummy()
 const initialParticle = Particle.createDummy()
-Vue.use(Vuex)
 
-export default new Vuex.Store<IRootState>({
+export default createStore<IRootState>({
   state: {
     activeCell: initialCell,
     cellSelected: false,

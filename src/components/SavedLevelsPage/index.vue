@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <div slot="main">
+    <template v-slot:main>
       <h1>Saved Levels</h1>
       <div class="my-levels">
         <h3>My levels</h3>
@@ -34,12 +34,12 @@
       <div class="signOut">
         <a @click.prevent="signOut">Sign Out</a>
       </div>
-    </div>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 // import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
@@ -49,7 +49,7 @@ import { Timestamp } from '@/store/storeInterfaces'
 
 const user = namespace('userModule')
 
-@Component({
+@Options({
   components: {
     AppLayout,
     AppButton,

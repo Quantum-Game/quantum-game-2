@@ -2,12 +2,12 @@
   <div class="sound-controller" />
 </template>
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { namespace } from 'vuex-class'
 import Soundtract from '@/mixins/soundtrack'
 const options = namespace('optionsModule')
 
-@Component
 export default class SoundController extends Vue {
   @options.Getter('soundActive') soundActive!: boolean
   @options.Getter('volume') volume!: number

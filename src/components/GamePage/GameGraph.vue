@@ -19,13 +19,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import { IStyle } from '@/types'
 
-@Component({
-  components: {},
-})
 export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph
   @Prop() readonly activeFrame!: number

@@ -1,8 +1,7 @@
-import { Vue, Component } from 'vue-property-decorator'
 import { Cell } from '@/engine/classes'
 import { IHint } from '@/engine/interfaces'
+import { Vue } from 'vue-class-component'
 
-@Component
 // FIXME: Should extend coord and not cell or hint
 export default class Position extends Vue {
   public cell!: Cell
@@ -16,14 +15,14 @@ export default class Position extends Vue {
   /**
    * Will extend elements created function
    */
-  private created(): void {
+  created(): void {
     this.setCoordOrigin()
   }
 
   /**
    * Will extend elements updated function
    */
-  private updated(): void {
+  updated(): void {
     this.setCoordOrigin()
   }
 

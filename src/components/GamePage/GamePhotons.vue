@@ -20,13 +20,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import { State } from 'vuex-class'
 import Particle from '@/engine/Particle'
 import AppPhoton from '@/components/AppPhoton.vue'
 import AppButton from '@/components/AppButton.vue'
 
-@Component({
+@Options({
   components: {
     AppPhoton,
     AppButton,

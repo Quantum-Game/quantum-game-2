@@ -33,7 +33,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop, Component } from 'vue-property-decorator'
 import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
@@ -46,7 +47,7 @@ interface IXYVec {
   vecDirPol: Vector
 }
 
-@Component({
+@Options({
   components: {
     EncyclopediaBoard,
     MatrixViewer,

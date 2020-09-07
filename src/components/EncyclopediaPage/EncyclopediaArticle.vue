@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
 import { Cell } from '@/engine/classes'
 import { getEntry } from './loadData'
@@ -43,7 +44,7 @@ import EncyclopediaArticleSection from '@/components/EncyclopediaPage/Encycloped
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
 
-@Component({
+@Options({
   components: {
     AppButton,
     EncyclopediaArticleSection,
@@ -81,7 +82,7 @@ export default class EncyclopediaArticle extends Vue {
   }
 
   get entryURL(): string {
-    return this.$route.params.entry
+    return this.$route.params.entry as string
   }
 
   // FIXME: Code smell, move to element value

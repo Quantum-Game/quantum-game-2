@@ -15,7 +15,8 @@
 </template>
 
 <script lang="ts">
-import { Mixins, Component, Prop, Watch } from 'vue-property-decorator'
+import { mixins } from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
 import Hint from '@/engine/Hint'
 import Position from '@/mixins/Position'
 interface IAbsolutePosition {
@@ -23,8 +24,7 @@ interface IAbsolutePosition {
   top: string
 }
 
-@Component
-export default class SpeechBubble extends Mixins(Position) {
+export default class SpeechBubble extends mixins(Position) {
   @Prop({
     default: () => {
       return {

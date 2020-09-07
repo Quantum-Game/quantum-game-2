@@ -16,11 +16,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import Particle from '@/engine/Particle'
 import { IParticle } from '@/engine/interfaces'
 
-@Component
 export default class Board extends Vue {
   @Prop({ default: '' }) readonly pathParticles!: IParticle[]
   tileSize = 64

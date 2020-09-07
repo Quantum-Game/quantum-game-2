@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <div slot="main">
+    <template v-slot:main>
       <h1>My Account</h1>
       <h2>Hi {{ moduleGetterUserName }}!</h2>
       <p>User page is under construction. Right now, see:</p>
@@ -10,12 +10,12 @@
       <div class="signOut">
         <a @click.prevent="signOut">Sign Out</a>
       </div>
-    </div>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
@@ -23,7 +23,7 @@ import { ActionMethod } from 'vuex'
 
 const user = namespace('userModule')
 
-@Component({
+@Options({
   components: {
     AppLayout,
     AppButton,
