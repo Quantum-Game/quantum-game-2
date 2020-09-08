@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Component, Prop } from 'vue-property-decorator'
-import { IEntrySection } from '@/engine/interfaces'
+import { Prop } from 'vue-property-decorator'
+import type { IEntrySection } from '@/engine/interfaces'
 import { IStyle } from '@/types'
 
 export default class EncyclopediaArticleSection extends Vue {

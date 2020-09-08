@@ -71,11 +71,11 @@ import AppButton from '@/components/AppButton.vue'
   },
 })
 export default class HomePage extends Vue {
-  version: string = process.env.VUE_APP_VERSION!
-  commitHash: string = process.env.VUE_APP_GIT_HASH!
+  version: string = process.env.VUE_APP_VERSION || 'unknown'
+  commitHash: string = process.env.VUE_APP_GIT_HASH || 'unknown'
 
   get commitDate(): string {
-    const date = new Date(+process.env.VUE_APP_GIT_DATE! * 1000)
+    const date = new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000)
     return date.toUTCString()
   }
 

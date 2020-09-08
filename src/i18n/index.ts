@@ -2,7 +2,7 @@
 
 import { createI18n, LocaleMessages } from 'vue-i18n'
 import { watch, VNode } from 'vue'
-import pluralizationRules from './pluralizationRules'
+import pluralRules from './pluralRules'
 
 // Load all locales and remember context for hot reloading
 function loadMessages() {
@@ -57,7 +57,7 @@ function saveCurrentLocale() {
 export const i18n = createI18n({
   locale: getSavedLocale() || getBrowserLocale(),
   fallbackLocale: 'en',
-  pluralizationRules,
+  pluralRules,
   messages,
 })
 

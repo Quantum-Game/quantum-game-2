@@ -43,6 +43,7 @@ import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 @Options({
   components: {
@@ -77,12 +78,12 @@ export default class EncyclopediaArticle extends Vue {
       )
     }
     if (!this.entry.title) {
-      this.$router.push({ name: '404' })
+      useRouter().push({ name: '404' })
     }
   }
 
   get entryURL(): string {
-    return this.$route.params.entry as string
+    return useRoute().params.entry as string
   }
 
   // FIXME: Code smell, move to element value

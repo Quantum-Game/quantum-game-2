@@ -1,0 +1,33 @@
+diff --git a/node_modules/vue-property-decorator/CHANGELOG.md b/node_modules/vue-property-decorator/CHANGELOG.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/vue-property-decorator/LICENSE b/node_modules/vue-property-decorator/LICENSE
+old mode 100644
+new mode 100755
+diff --git a/node_modules/vue-property-decorator/README.md b/node_modules/vue-property-decorator/README.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/vue-property-decorator/lib/vue-property-decorator.d.ts b/node_modules/vue-property-decorator/lib/vue-property-decorator.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/vue-property-decorator/lib/vue-property-decorator.js b/node_modules/vue-property-decorator/lib/vue-property-decorator.js
+old mode 100644
+new mode 100755
+index bd20f2f..b29f447
+--- a/node_modules/vue-property-decorator/lib/vue-property-decorator.js
++++ b/node_modules/vue-property-decorator/lib/vue-property-decorator.js
+@@ -1,9 +1,8 @@
+ /** vue-property-decorator verson 8.5.1 MIT LICENSE copyright 2020 kaorun343 */
+ /// <reference types='reflect-metadata'/>
+ 'use strict';
+-import Vue from 'vue';
+-import Component, { createDecorator, mixins } from 'vue-class-component';
+-export { Component, Vue, mixins as Mixins };
++import { createDecorator, mixins } from 'vue-class-component';
++export { mixins as Mixins };
+ /** Used for keying reactive provide/inject properties */
+ var reactiveInjectKey = '__reactiveInject__';
+ /**
+diff --git a/node_modules/vue-property-decorator/lib/vue-property-decorator.umd.js b/node_modules/vue-property-decorator/lib/vue-property-decorator.umd.js
+old mode 100644
+new mode 100755

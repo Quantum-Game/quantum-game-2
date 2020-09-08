@@ -22,7 +22,7 @@
           :cell="cell"
           :available="isAvailable(cell)"
           :tool="true"
-          @updateCell="updateCell"
+          @update-cell="updateCell"
           @mouseover.native="handleMouseEnter(cell)"
         />
         <text class="counter" :x="counterX" y="80">
@@ -66,7 +66,7 @@ export default class GameToolbox extends Vue {
 
   handleCellDrop(cell: Cell): void {
     this.mutationSetHoveredCell(cell)
-    this.$emit('updateCell', cell)
+    this.$emit('update-cell', cell)
   }
 
   computeClass(cell: Cell): string {
@@ -79,7 +79,7 @@ export default class GameToolbox extends Vue {
 
   // events drilling up...
   updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell)
+    this.$emit('update-cell', cell)
   }
 
   calculateViewBox(): void {

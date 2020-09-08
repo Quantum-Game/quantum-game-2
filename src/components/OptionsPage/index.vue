@@ -1,44 +1,50 @@
 <template>
   <app-layout>
-    <div slot="main" class="options-wrapper" layout="column u4">
-      <h2>{{ $t('options.header') }}</h2>
-      <form layout="column u4">
-        <label layout="row u1">
-          <span flex>
-            {{ $t('language') }}
-          </span>
-          <select v-model="$i18n.locale">
-            <option v-for="lang in $i18n.availableLocales" :key="lang" :value="lang">
-              {{ $t('lang_name', lang) }}
-            </option>
-          </select>
-        </label>
-        <label layout="row u1">
-          <span flex>
-            {{ $tc('options.game_speed') }}:
-            {{ $tc('options.tiles_per_second', tilesPerSecond, { n: $n(tilesPerSecond) }) }}
-          </span>
-          <input v-model.number="gameSpeed" type="range" min="100" max="2000" class="reverse" />
-        </label>
-        <label layout="row u1">
-          <span flex>{{ $t('options.volume') }}: {{ $n(volume * 100) }}%</span>
-          <input v-model.number="volume" type="range" step="0.01" min="0" max="1" />
-        </label>
-        <label layout="row u1">
-          <span flex>{{ $t('options.mute_all_sound') }}</span>
-          <input v-model="mute" type="checkbox" />
-        </label>
-      </form>
-    </div>
+    <template #main>
+      <div class="options-wrapper" layout="column u4">
+        <h2>{{ i18n.t('options.header') }}</h2>
+        <form layout="column u4">
+          <label layout="row u1">
+            <span flex>
+              {{ i18n.t('language') }}
+            </span>
+            <select v-model="i18n.locale">
+              <option v-for="locale in i18n.availableLocales" :key="locale" :value="locale">
+                {{ i18n.t('lang_name', {}, { locale }) }}
+              </option>
+            </select>
+          </label>
+          <label layout="row u1">
+            <span flex>
+              {{ i18n.t('options.game_speed') }}:
+              {{
+                i18n.t('options.tiles_per_second', tilesPerSecond, { n: i18n.n(tilesPerSecond) })
+              }}
+            </span>
+            <input v-model.number="gameSpeed" type="range" min="100" max="2000" class="reverse" />
+          </label>
+          <label layout="row u1">
+            <span flex>{{ i18n.t('options.volume') }}: {{ i18n.n(volume * 100) }}%</span>
+            <input v-model.number="volume" type="range" step="0.01" min="0" max="1" />
+          </label>
+          <label layout="row u1">
+            <span flex>{{ i18n.t('options.mute_all_sound') }}</span>
+            <input v-model="mute" type="checkbox" />
+          </label>
+        </form>
+      </div>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import { SET_OPTIONS } from '@/store/mutation-types'
 import { AppLayout } from '@/components'
-import { IOptionsModule } from '@/store/optionsModule'
+import type { IOptionsModule } from '@/store/optionsModule'
+import { useI18n } from 'vue-i18n'
+
 
 // used to target namespaced vuex module:
 const options = namespace('optionsModule')
@@ -51,6 +57,8 @@ const options = namespace('optionsModule')
 export default class OptionsPage extends Vue {
   @options.Mutation(SET_OPTIONS) setOptions!: (options: Partial<IOptionsModule>) => void
   @options.Getter('allOptions') allOptions!: IOptionsModule
+  i18n = setup(useI18n)
+
 
   get gameSpeed(): number {
     return this.allOptions.gameSpeedInterval

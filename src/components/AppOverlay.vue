@@ -15,7 +15,7 @@
 // FIXME: Needs to be extended for instructions overlay, rethink overlay
 import { Watch, Prop } from 'vue-property-decorator'
 import { Vue, Options } from 'vue-class-component'
-import VueConfetti from 'vue-confetti'
+import { Confetti } from 'vue-confetti'
 import AppButton from '@/components/AppButton.vue'
 import { GameStateEnum } from '@/engine/interfaces'
 
@@ -27,10 +27,10 @@ import { GameStateEnum } from '@/engine/interfaces'
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
   @Prop() readonly victoryAlreadyShown!: boolean
-  $confetti!: {
+  $confetti: {
     start: (params: Record<string, unknown>) => void
     stop: () => void
-  }
+  } = new Confetti()
 
   explosion = false
   explosionTimeout = null
@@ -55,39 +55,39 @@ export default class AppOverlay extends Vue {
   // }
 
   destroyed(): void {
-    this.$confetti.stop()
+    // this.$confetti.stop()
   }
 
   @Watch('gameState')
   handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
     if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
-      this.$confetti.start({
-        particlesPerFrame: 3,
-        defaultSize: 8,
-        particles: [
-          {
-            dropRate: 15,
-          },
-        ],
-        defaultColors: [
-          '#ffbb3b', // Q yellow
-          '#5c00d3', // Q purple
-          '#ff0055', // Q red
-          '#ff8b00', // orange 01
-          '#ff5d15', // orange 02
-          '#ba00ff', // purple 02
-          '#ffbb3b', // Q yellow
-          '#5c00d3', // Q purple
-          '#ff0055', // Q red
-          '#ff8b00', // orange 01
-          '#ff5d15', // orange 02
-          '#ba00ff', // purple 02
-        ],
-      })
+      // this.$confetti.start({
+      //   particlesPerFrame: 3,
+      //   defaultSize: 8,
+      //   particles: [
+      //     {
+      //       dropRate: 15,
+      //     },
+      //   ],
+      //   defaultColors: [
+      //     '#ffbb3b', // Q yellow
+      //     '#5c00d3', // Q purple
+      //     '#ff0055', // Q red
+      //     '#ff8b00', // orange 01
+      //     '#ff5d15', // orange 02
+      //     '#ba00ff', // purple 02
+      //     '#ffbb3b', // Q yellow
+      //     '#5c00d3', // Q purple
+      //     '#ff0055', // Q red
+      //     '#ff8b00', // orange 01
+      //     '#ff5d15', // orange 02
+      //     '#ba00ff', // purple 02
+      //   ],
+      // })
     } else if (newGameState === GameStateEnum.MineExploded) {
       this.mineExploding()
     } else if (oldGameState === GameStateEnum.Victory) {
-      this.$confetti.stop()
+      // this.$confetti.stop()
     }
   }
 }

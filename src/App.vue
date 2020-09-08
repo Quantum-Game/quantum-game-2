@@ -2,20 +2,20 @@
   <div id="app">
     <router-view />
     <login-status />
-    <sound-controller />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
-import SoundController from '@/components/SoundController.vue'
+import { useSoundtrack } from '@/components/SoundController'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: {
-    SoundController,
     LoginStatus,
+  },
+  setup() {
+    useSoundtrack()
   },
 })
 </script>

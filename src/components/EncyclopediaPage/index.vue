@@ -1,12 +1,12 @@
 <template>
   <app-layout>
-    <template v-slot:left>
+    <template #left>
       <encyclopedia-link-list :entry-list="elementList" title="Elements" />
     </template>
-    <template v-slot:main>
+    <template #main>
       <router-view />
     </template>
-    <template v-slot:right>
+    <template #right>
       <encyclopedia-link-list :entry-list="conceptList" title="Concepts" />
     </template>
   </app-layout>

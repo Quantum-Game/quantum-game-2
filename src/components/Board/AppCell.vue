@@ -6,8 +6,6 @@
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
     @click="$emit('click', $event)"
-    @mouseover="$emit('mouseover', $event)"
-    @mouseleave="$emit('mouseleave', $event)"
   >
     <!-- BOUNDING RECTANGLE -->
     <rect

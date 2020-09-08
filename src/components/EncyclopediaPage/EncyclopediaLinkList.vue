@@ -1,5 +1,5 @@
 <template>
-  <div slot="left" class="element-list" :class="{ entriesExpanded: entriesExpanded }">
+  <div class="element-list" :class="{ entriesExpanded: entriesExpanded }">
     <h3 class="upper-border" @click="toggleEntries">{{ title }}</h3>
     <router-link v-for="entry in entryList" :key="entry.name" :to="`/info/${entry.name}`">
       <div :class="{ 'not-ready': !entry.ready }">{{ spacedEntry(entry.name) }}</div>
@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Component, Prop } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import { IEntryList } from '@/engine/interfaces'
 
 export default class EncyclopediaLinkList extends Vue {

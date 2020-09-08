@@ -19,70 +19,78 @@
     <!-- GENERAL LAYOUT -->
     <game-layout>
       <!-- HEADER-MIDDLE -->
-      <h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
-      <h1 v-else slot="header-middle" class="title">
-        <router-link :to="previousLevel">
-          <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
-        </router-link>
-        {{ level.id + ' - ' + level.name }}
-        <router-link :to="nextLevelOrOvelay">
-          <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
-        </router-link>
-      </h1>
+      <template #header-middle>
+        <h1 v-if="error" class="error">{{ error }}</h1>
+        <h1 v-else class="title">
+          <router-link :to="previousLevel">
+            <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
+          </router-link>
+          {{ level.id + ' - ' + level.name }}
+          <router-link :to="nextLevelOrOvelay">
+            <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
+          </router-link>
+        </h1>
+      </template>
 
       <!-- MAIN-LEFT -->
-      <section slot="main-left">
-        <game-toolbox
-          :toolbox="level.toolbox"
-          @update-cell="updateCell"
-          @hover="updateInfoPayload"
-        />
-        <game-infobox :info-payload="infoPayload" />
-      </section>
+      <template #main-left>
+        <section>
+          <game-toolbox
+            :toolbox="level.toolbox"
+            @update-cell="updateCell"
+            @hover="updateInfoPayload"
+          />
+          <game-infobox :info-payload="infoPayload" />
+        </section>
+      </template>
 
       <!-- MAIN-MIDDLE -->
-      <section slot="main-middle">
-        <game-board
-          :particles="activeParticles"
-          :path-particles="pathParticles"
-          :fate="fateCoord"
-          :display-fate="displayFate"
-          :hints="hints"
-          :grid="level.grid"
-          :absorptions="filteredAbsorptions"
-          :frame-index="frameIndex"
-          @update-cell="updateCell"
-          @play="play"
-          @hover="updateInfoPayload"
-        />
-        <game-controls
-          :frame-index="frameIndex"
-          :total-frames="simulation.frames.length"
-          :display-status="displayStatus"
-          @rewind="rewind"
-          @step-back="stepBack"
-          @play="play"
-          @step-forward="stepForward"
-          @fast-forward="fastForward"
-          @new-fate="computeNewFate"
-          @reload="reload"
-          @download-level="downloadLevel"
-          @loaded-level="loadLevel($event)"
-          @hover="updateInfoPayload"
-          @save-level="handleSave"
-        />
-      </section>
+      <template #main-middle>
+        <section>
+          <game-board
+            :particles="activeParticles"
+            :path-particles="pathParticles"
+            :fate="fateCoord"
+            :display-fate="displayFate"
+            :hints="hints"
+            :grid="level.grid"
+            :absorptions="filteredAbsorptions"
+            :frame-index="frameIndex"
+            @update-cell="updateCell"
+            @play="play"
+            @hover="updateInfoPayload"
+          />
+          <game-controls
+            :frame-index="frameIndex"
+            :total-frames="simulation.frames.length"
+            :display-status="displayStatus"
+            @rewind="rewind"
+            @step-back="stepBack"
+            @play="play"
+            @step-forward="stepForward"
+            @fast-forward="fastForward"
+            @new-fate="computeNewFate"
+            @reload="reload"
+            @download-level="downloadLevel"
+            @loaded-level="loadLevel($event)"
+            @hover="updateInfoPayload"
+            @save-level="handleSave"
+          />
+        </section>
+      </template>
 
       <!-- MAIN-RIGHT -->
-      <section slot="main-right">
-        <GameGoals
-          :game-state="level.gameState"
-          :percentage="level.gameState.totalAbsorptionPercentage"
-        />
-        <div class="ket-viewer-game">
-          <ket-viewer class="ket" :vector="activeFrame.vector" />
-        </div>
-      </section>
+      <template #main-right>
+        <section>
+          <GameGoals
+            :game-state="level.gameState"
+            :percentage="level.gameState.totalAbsorptionPercentage"
+          />
+          <div class="ket-viewer-game">
+            <ket-viewer class="ket" :vector="activeFrame.vector" />
+          </div>
+        </section>
+      </template>
     </game-layout>
   </div>
 </template>
@@ -110,8 +118,14 @@ import GameBoard from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
+import { useStore } from 'vuex'
 import type { ActionMethod } from 'vuex'
+import '@/store/store'
+import { useRoute } from 'vue-router'
 const userModule = namespace('userModule')
+
+console.log('GamePhotons', GamePhotons);
+console.log('KetViewer', KetViewer);
 
 @Options({
   components: {
@@ -157,7 +171,7 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
-  unsubscribe? (): void
+  unsubscribe?(): void
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -188,7 +202,7 @@ export default class Game extends Vue {
    * if missing then fallback to '0' for infinity level / sandbox
    */
   get levelId(): string {
-    return this.$route.params.id || '0'
+    return useRoute().params.id as string
   }
 
   /**
@@ -219,6 +233,7 @@ export default class Game extends Vue {
    * be loaded out of app data, or fetched from db
    */
   loadLevel(): void {
+    const store = useStore()
     this.victoryAlreadyShown = false
     this.error = ''
 
@@ -228,7 +243,7 @@ export default class Game extends Vue {
       this.actionGetLevelStoreData({ id: this.levelId })
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
-          this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
+          this.unsubscribe = store.subscribe((mutation, rootState) => {
             if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
               // 3) in case of a successful fetch,
               //    get substitute this.level with store data.
@@ -424,7 +439,7 @@ export default class Game extends Vue {
     this.level.grid.resetEnergized()
     this.computeNewFate()
     this.frameIndex = 0
-    this.playInterval = setInterval(() => {
+    this.playInterval = window.setInterval(() => {
       if (this.frameIndex < this.fateStep) {
         this.frameIndex += 1
       } else {
@@ -593,7 +608,7 @@ export default class Game extends Vue {
    */
   handleSave(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
-    const newState = { ...this.$store.state, boardState: currentStateJSONString }
+    const newState = { ...useStore().state, boardState: currentStateJSONString }
     if (!this.isCustomLevel) {
       this.actionSaveLevel(newState)
     } else {

@@ -60,7 +60,8 @@ import { Prop } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import Grid from '@/engine/Grid'
-import { IParticle, IGrid, IIndicator } from '@/engine/interfaces'
+import { IParticle, IIndicator } from '@/engine/interfaces'
+import type { IGrid } from '@/engine/interfaces'
 import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -113,7 +114,7 @@ export default class EncyclopediaBoard extends Vue {
   rotate(cell: Cell): void {
     cell.rotate()
     this.reset()
-    this.$emit('updateRotation', cell)
+    this.$emit('update-rotation', cell)
   }
 
   /**

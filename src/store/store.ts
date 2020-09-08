@@ -20,7 +20,7 @@ import { IRootState } from './storeInterfaces'
 const initialCell = Cell.createDummy()
 const initialParticle = Particle.createDummy()
 
-export default createStore<IRootState>({
+const store = createStore<IRootState>({
   state: {
     activeCell: initialCell,
     cellSelected: false,
@@ -74,3 +74,15 @@ export default createStore<IRootState>({
     userModule,
   },
 })
+
+declare module 'vue' {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  export interface ComponentCustomProperties {
+    /**
+     * Linked Vuex store
+     */
+    $store: typeof store
+  }
+}
+
+export default store

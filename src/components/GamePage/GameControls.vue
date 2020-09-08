@@ -84,11 +84,12 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Component, Prop } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import { IStyle } from '@/types'
-import { ActionMethod } from 'vuex'
+import type { ActionMethod } from 'vuex'
+import { useRouter } from 'vue-router'
 
 const userModule = namespace('userModule')
 const optionsModule = namespace('optionsModule')
@@ -260,19 +261,22 @@ export default class GameControls extends Vue {
   }
 
   handleAccount(): void {
+    const router = useRouter()
     if (!this.moduleGetterIsLoggedIn) {
-      this.$router.push('/login')
+      router.push('/login')
     } else {
-      this.$router.push('/myaccount')
+      router.push('/myaccount')
     }
   }
 
   handleOptions(): void {
-    this.$router.push('/options')
+    const router = useRouter()
+    router.push('/options')
   }
 
   handleMap(): void {
-    this.$router.push('/levels')
+    const router = useRouter()
+    router.push('/levels')
   }
 
   showSoundHint(): void {

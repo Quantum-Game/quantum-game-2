@@ -94,6 +94,7 @@ import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
 import { nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 
 @Options({
   components: {
@@ -241,7 +242,7 @@ export default class Board extends Vue {
    * @returns url
    */
   get url(): string {
-    return this.$route.params.id as string
+    return useRoute().params.id as string
   }
 }
 </script>

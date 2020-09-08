@@ -1,55 +1,57 @@
 <template>
   <app-layout>
-    <div slot="main" class="login-page-wrapper">
-      <h1>
-        User Registration
-      </h1>
-      <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
-      <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
-        <div class="col-md-6">
-          <input
-            id="name"
-            v-model="user.name"
-            type="name"
-            class="form-control"
-            name="name"
-            value
-            required
-            autofocus
-            placeholder="Name"
-          />
-        </div>
-        <div class="email-login__email">
-          <input
-            id="email"
-            v-model="user.email"
-            type="email"
-            class="form-control"
-            name="email"
-            value
-            required
-            autofocus
-            placeholder="Email"
-          />
-        </div>
-        <div class="email-login__password">
-          <input
-            id="password"
-            v-model="user.password"
-            type="password"
-            class="form-control"
-            name="password"
-            required
-            placeholder="Password"
-          />
-        </div>
-        <div class="login-button-wrapper">
-          <app-button type="special"> Sign Up </app-button>
-        </div>
-      </form>
-      <p>Forgot your password?</p>
-      <p>You have an account?<router-link to="/login"> Sign In </router-link></p>
-    </div>
+    <template #main>
+      <div class="login-page-wrapper">
+        <h1>
+          User Registration
+        </h1>
+        <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
+        <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
+          <div class="col-md-6">
+            <input
+              id="name"
+              v-model="user.name"
+              type="name"
+              class="form-control"
+              name="name"
+              value
+              required
+              autofocus
+              placeholder="Name"
+            />
+          </div>
+          <div class="email-login__email">
+            <input
+              id="email"
+              v-model="user.email"
+              type="email"
+              class="form-control"
+              name="email"
+              value
+              required
+              autofocus
+              placeholder="Email"
+            />
+          </div>
+          <div class="email-login__password">
+            <input
+              id="password"
+              v-model="user.password"
+              type="password"
+              class="form-control"
+              name="password"
+              required
+              placeholder="Password"
+            />
+          </div>
+          <div class="login-button-wrapper">
+            <app-button type="special"> Sign Up </app-button>
+          </div>
+        </form>
+        <p>Forgot your password?</p>
+        <p>You have an account?<router-link to="/login"> Sign In </router-link></p>
+      </div>
+    </template>
   </app-layout>
 </template>
 
@@ -58,7 +60,7 @@ import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import { ActionMethod } from 'vuex'
+import type { ActionMethod } from 'vuex'
 
 const userStore = namespace('userModule')
 

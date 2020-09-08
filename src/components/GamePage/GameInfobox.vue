@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-import { Component, Prop } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 

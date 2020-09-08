@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <template v-slot:main>
+    <template #main>
       <h1>My Account</h1>
       <h2>Hi {{ moduleGetterUserName }}!</h2>
       <p>User page is under construction. Right now, see:</p>
@@ -19,7 +19,7 @@ import { Vue, Options } from 'vue-class-component'
 import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import { ActionMethod } from 'vuex'
+import type { ActionMethod } from 'vuex'
 
 const user = namespace('userModule')
 

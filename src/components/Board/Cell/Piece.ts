@@ -1,5 +1,5 @@
 import { Vue } from 'vue-class-component'
-import { Prop, Component } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 
 export default class Piece extends Vue {

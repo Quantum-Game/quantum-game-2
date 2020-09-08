@@ -1,6 +1,6 @@
 <template>
   <app-layout>
-    <template v-slot:main>
+    <template #main>
       <h1>Saved Levels</h1>
       <div class="my-levels">
         <h3>My levels</h3>
@@ -44,7 +44,7 @@ import { namespace } from 'vuex-class'
 // import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import { ActionMethod } from 'vuex'
+import type { ActionMethod } from 'vuex'
 import { Timestamp } from '@/store/storeInterfaces'
 
 const user = namespace('userModule')

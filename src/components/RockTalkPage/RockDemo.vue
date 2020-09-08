@@ -1,7 +1,7 @@
 <template>
   <div class="test-page">
     <rock-talk :type="type" :dialogue="dialogue">
-      <template v-sltot:title>
+      <template #title>
         <h1>OVERLAYS DEMO</h1>
       </template>
       <app-button type="big">PLAY</app-button>

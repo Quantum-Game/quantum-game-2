@@ -18,6 +18,7 @@ import { IDialogue } from '@/mixins/dataInterfaces'
 import { getRockTalkById } from './loadRockTalks'
 import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
+import { useRoute } from 'vue-router'
 
 @Options({
   components: {
@@ -29,7 +30,8 @@ export default class InterLevelOverlay extends Vue {
   @State('currentLevelID') currentLevelID!: string
 
   get rockTalkId(): string {
-    return this.$route.params.id as string
+    const route = useRoute()
+    return route.params.id as string
   }
 
   get rockTalk(): IDialogue {

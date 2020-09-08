@@ -25,7 +25,7 @@
           :max-steps="2"
           :default-step="2"
           :exact-steps="true"
-          @updateRotation="updateRotation"
+          @update-rotation="updateRotation"
         />
       </div>
     </div>
@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import { Prop, Component } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import { Elem } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'

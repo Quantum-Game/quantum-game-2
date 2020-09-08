@@ -11,6 +11,7 @@
 import { Vue, Options } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 import { namespace } from 'vuex-class'
+import { useRoute } from 'vue-router'
 
 const user = namespace('userModule')
 
@@ -36,7 +37,7 @@ export default class LoginStatus extends Vue {
    * @returns shown boolean
    */
   get shown(): boolean {
-    const { name } = this.$route
+    const { name } = useRoute()
     return name !== 'login' && name !== 'home' && name !== 'rocks'
   }
 }
