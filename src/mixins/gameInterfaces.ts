@@ -3,7 +3,6 @@
  */
 
 import { Cell, Particle } from '@/engine/classes'
-import { has } from 'lodash'
 import { hasKey, hasKeyType, hasKeyInstance } from '@/types'
 
 /**
