@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { IInfoPayload } from '@/mixins/gameInterfaces'
+import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 
 const spacedName = (name: string): string => {

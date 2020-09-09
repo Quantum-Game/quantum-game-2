@@ -9921,14 +9921,6 @@ quantum-tensors@^0.4.10:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
 
-quantum-tensors@^0.4.7:
-  version "0.4.7"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
-  integrity sha512-DLPTSzyREY3PBInKN+vrBymQw/bRu21eZW43VWKWCa3VHJHI9wTrCutuG9s4pHc8y1ENh5UblvaC0zRLYXZhfA==
-  dependencies:
-    "@types/lodash" "^4.14.138"
-    lodash "^4.17.15"
-
 query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"

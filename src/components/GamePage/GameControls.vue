@@ -83,17 +83,26 @@
 </template>
 
 <script lang="ts">
-import { setup, Vue } from 'vue-class-component'
+import { Options, setup, Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import { IStyle } from '@/types'
 import type { ActionMethod } from 'vuex'
 import { useRouter } from 'vue-router'
+import { validateInfoPayload } from '@/mixins/gameInterfaces'
 
 const userModule = namespace('userModule')
 const optionsModule = namespace('optionsModule')
 
+@Options({
+  emits: {
+    hover: validateInfoPayload,
+    'loaded-level': null,
+    play: null,
+    'download-level': null,
+  }
+})
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number

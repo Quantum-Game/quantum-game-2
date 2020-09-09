@@ -5,7 +5,6 @@
     :class="computeCellClass"
     @mousedown="deviceTargetDown"
     @mouseup="deviceTargetUp"
-    @click="$emit('click', $event)"
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
@@ -50,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins } from 'vue-class-component'
+import { Options, mixins, setup } from 'vue-class-component'
 import { Prop, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
@@ -78,6 +77,7 @@ import {
   VacuumJarCell,
 } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
+import { ref } from 'vue'
 
 const borderColors = {
   active: 'transparent',
@@ -108,6 +108,7 @@ const borderColors = {
     GlassCell,
     VacuumJarCell,
   },
+  emits: ['update-cell', 'click'],
 })
 export default class AppCell extends mixins(Position) {
   @Prop() readonly cell!: Cell
@@ -124,9 +125,7 @@ export default class AppCell extends mixins(Position) {
   border = ''
   isRotate = false
 
-  $refs!: {
-    cellRef: HTMLElement
-  }
+  cellRef = setup(() => ref<HTMLElement>())
 
   /**
    * Compute the cell class name
@@ -181,11 +180,13 @@ export default class AppCell extends mixins(Position) {
   }
 
   mouseMove(e: { pageX: number; pageY: number }): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
+    const cell = this.cellRef
+    const hoverCell = document.querySelector<HTMLElement>('.hoverCell')
+    if (cell == null || hoverCell == null) return
+
     this.isRotate = true
-    const { cellRef } = this.$refs
-    hoverCell.innerHTML = cellRef.innerHTML
-    cellRef.style.opacity = '0'
+    hoverCell.innerHTML = cell.innerHTML
+    cell.style.opacity = '0'
     hoverCell.style.visibility = 'visible'
     document.body.style.cursor = 'grabbing'
     hoverCell.style.height = '64px' // change to tileSize, IDK why not work
@@ -204,10 +205,11 @@ export default class AppCell extends mixins(Position) {
   }
 
   dragEnd(): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
-    const { cellRef } = this.$refs
+    const cell = this.cellRef
+    const hoverCell = document.querySelector<HTMLElement>('.hoverCell')
+    if (cell == null || hoverCell == null) return
 
-    cellRef.style.opacity = '1'
+    cell.style.opacity = '1'
     hoverCell.style.visibility = 'hidden'
     document.body.style.cursor = 'default'
     window.removeEventListener('mousemove', this.mouseMove)

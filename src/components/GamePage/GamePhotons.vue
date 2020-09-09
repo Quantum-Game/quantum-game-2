@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hoveredParticles.length > 0" ref="wrapper" class="hovered-photons-wrapper">
+  <div v-if="hoveredParticles.length > 0" class="hovered-photons-wrapper">
     <div class="hoveredPhotons">
       <h3>Photon</h3>
       <div v-for="(particle, index) in hoveredParticles" :key="index" class="photon">
@@ -37,9 +37,6 @@ export default class GamePhotons extends Vue {
   @State hoveredParticles!: Particle[]
   @Prop() readonly particles!: Particle[]
   width = 180
-  $refs!: {
-    wrapper: HTMLElement
-  }
 }
 </script>
 

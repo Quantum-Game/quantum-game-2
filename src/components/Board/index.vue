@@ -93,8 +93,9 @@ import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { validateInfoPayload } from '@/mixins/gameInterfaces'
 
 @Options({
   components: {
@@ -103,6 +104,11 @@ import { useRoute } from 'vue-router'
     BoardLasers,
     BoardDots,
     SpeechBubble,
+  },
+  emits: {
+    'update-cell': null,
+    play: null,
+    hover: validateInfoPayload,
   },
 })
 export default class Board extends Vue {
@@ -129,12 +135,10 @@ export default class Board extends Vue {
     transform: `scale(1)`,
   }
 
-  $refs!: {
-    gridWrapper: HTMLElement
-    boardScaler: HTMLElement
-  }
+  gridWrapper = setup(() => ref<HTMLElement>())
+  boardScaler = setup(() => ref<HTMLElement>())
 
-  boardClientRect = {}
+  boardClientRect = new DOMRect()
 
   mounted(): void {
     window.addEventListener('resize', this.assessSize)
@@ -195,18 +199,18 @@ export default class Board extends Vue {
 
   @Watch('url')
   assessSize(): void {
-    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
+    const currentWidth = this.boardScaler?.getBoundingClientRect().width || 0
     this.scalerStyle = {
       transform: `scale(${currentWidth / 845})`,
     }
     setTimeout(() => {
-      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
+      const currentHeight = this.gridWrapper?.getBoundingClientRect().height || 0
       this.boardHeight = currentHeight
     }, 1)
     // this.tileSize = 64 // apparently, the property is hard-coded, no need to change it
     nextTick(() => {
       this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
-      this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
+      this.boardClientRect = this.gridWrapper?.getBoundingClientRect() || new DOMRect()
     })
   }
 

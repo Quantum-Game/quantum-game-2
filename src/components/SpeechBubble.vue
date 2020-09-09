@@ -15,11 +15,11 @@
 </template>
 
 <script lang="ts">
-import { mixins } from 'vue-class-component'
+import { mixins, setup } from 'vue-class-component'
 import { Prop, Watch } from 'vue-property-decorator'
-import Hint from '@/engine/Hint'
 import Position from '@/mixins/Position'
 import { ref } from 'vue'
+import type { IHint } from '@/engine/interfaces'
 interface IAbsolutePosition {
   left: string
   top: string
@@ -33,7 +33,7 @@ export default class SpeechBubble extends mixins(Position) {
       }
     },
   })
-  readonly hint!: Hint
+  readonly hint!: IHint
 
   @Prop({ default: 64 }) readonly tileSize!: number
   // default value added so the tooltip
@@ -44,7 +44,7 @@ export default class SpeechBubble extends mixins(Position) {
 
   @Prop({ default: null }) readonly overlay!: string | null
 
-  tooltip = ref<HTMLDivElement | null>(null)
+  tooltip = setup(() => ref<HTMLDivElement>())
 
   contentRect = {
     width: 0,
@@ -70,9 +70,8 @@ export default class SpeechBubble extends mixins(Position) {
   @Watch('hint', { deep: true })
   @Watch('overlay')
   assessOwnRect(): void {
-    const tooltip = this.tooltip.value
-    if (tooltip != null) {
-      this.contentRect = tooltip.getBoundingClientRect()
+    if (this.tooltip != null) {
+      this.contentRect = this.tooltip.getBoundingClientRect()
     }
   }
 

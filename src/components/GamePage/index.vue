@@ -8,7 +8,7 @@
       :game-state="overlayGameState"
       :victory-already-shown="victoryAlreadyShown"
       class="overlay"
-      @click.native="frameIndex = 0"
+      @click="frameIndex = 0"
     >
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
@@ -123,8 +123,6 @@ import type { ActionMethod } from 'vuex'
 import '@/store/store'
 import { useRoute } from 'vue-router'
 const userModule = namespace('userModule')
-
-console.log('GamePhotons', GamePhotons);
 
 @Options({
   components: {

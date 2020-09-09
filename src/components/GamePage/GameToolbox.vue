@@ -23,7 +23,7 @@
           :available="isAvailable(cell)"
           :tool="true"
           @update-cell="updateCell"
-          @mouseover.native="handleMouseEnter(cell)"
+          @mouseenter="handleMouseEnter(cell)"
         />
         <text class="counter" :x="counterX" y="80">
           × {{ toolbox.getCount(cell.element.name) }}
@@ -41,9 +41,14 @@ import { Mutation } from 'vuex-class'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
+import { validateInfoPayload } from '@/mixins/gameInterfaces'
 @Options({
   components: {
     AppCell,
+  },
+  emits: {
+    'update-cell': null,
+    hover: validateInfoPayload,
   },
 })
 export default class GameToolbox extends Vue {
@@ -51,7 +56,7 @@ export default class GameToolbox extends Vue {
   @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
   cell = {}
-  viewBox: string | boolean = '-8 0 80 80'
+  viewBox = '-8 0 80 80'
   counterX = '40%'
 
   mounted(): void {
@@ -84,7 +89,7 @@ export default class GameToolbox extends Vue {
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
-      this.viewBox = false
+      this.viewBox = '-8 0 80 80'
       this.counterX = '50%'
     } else {
       this.viewBox = '-8 0 80 80'

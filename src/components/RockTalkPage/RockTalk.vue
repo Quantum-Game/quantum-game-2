@@ -19,9 +19,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import SpeechBubble from '@/components/SpeechBubble.vue'
+import { ref } from 'vue'
 
 @Options({
   components: {
@@ -38,9 +39,7 @@ export default class RockTalk extends Vue {
 
   imageLoaded = false
 
-  $refs!: {
-    wrapper: HTMLElement
-  }
+  wrapper = setup(() => ref<HTMLElement>())
 
   /**
    * Life-cycle hooks to manage the resize event listener.
@@ -59,7 +58,9 @@ export default class RockTalk extends Vue {
    * to position against the wrapper.
    */
   assessWrapperSize(): void {
-    this.wrapperRect = this.$refs.wrapper.getBoundingClientRect()
+    if (this.wrapper != null) {
+      this.wrapperRect = this.wrapper.getBoundingClientRect()
+    }
   }
 
   /**
