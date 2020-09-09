@@ -75,14 +75,4 @@ const store = createStore<IRootState>({
   },
 })
 
-declare module 'vue' {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  export interface ComponentCustomProperties {
-    /**
-     * Linked Vuex store
-     */
-    $store: typeof store
-  }
-}
-
 export default store
