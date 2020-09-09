@@ -8,16 +8,17 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { setup, Vue } from 'vue-class-component'
 import { useStore } from 'vuex'
 
 export default class AppNotifications extends Vue {
+  store = setup(useStore)
   resetErrors(): void {
-    useStore().commit('RESET_ERRORS')
+    this.store.commit('RESET_ERRORS')
   }
 
   get errors(): string[] {
-    return useStore().state.errors
+    return this.store.state.errors
   }
 }
 </script>

@@ -152,6 +152,8 @@ export default class Game extends Vue {
   @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
   @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
   @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  store = setup(useStore)
+
   frameIndex = 0
   simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
   error = ''
@@ -162,6 +164,7 @@ export default class Game extends Vue {
     particles: [],
     text: 'Hover on a element for more information.',
   }
+
 
   fateCoord = Coord.importCoord({ x: -1, y: -1 })
   fateStep = 999
@@ -231,7 +234,6 @@ export default class Game extends Vue {
    * be loaded out of app data, or fetched from db
    */
   loadLevel(): void {
-    const store = useStore()
     this.victoryAlreadyShown = false
     this.error = ''
 
@@ -241,7 +243,7 @@ export default class Game extends Vue {
       this.actionGetLevelStoreData({ id: this.levelId })
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
-          this.unsubscribe = store.subscribe((mutation, rootState) => {
+          this.unsubscribe = this.store.subscribe((mutation, rootState) => {
             if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
               // 3) in case of a successful fetch,
               //    get substitute this.level with store data.
@@ -606,7 +608,7 @@ export default class Game extends Vue {
    */
   handleSave(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
-    const newState = { ...useStore().state, boardState: currentStateJSONString }
+    const newState = { ...this.store.state, boardState: currentStateJSONString }
     if (!this.isCustomLevel) {
       this.actionSaveLevel(newState)
     } else {
