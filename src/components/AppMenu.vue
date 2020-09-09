@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { setup, Vue } from 'vue-class-component'
 import { useRoute } from 'vue-router'
 import { State, namespace } from 'vuex-class'
 
@@ -39,6 +39,7 @@ const user = namespace('userModule')
 export default class AppMenu extends Vue {
   @State('currentLevelID') currentLevelID!: number
   @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
+  route = setup(useRoute)
 
   isMenuOpen = false
 
@@ -54,7 +55,7 @@ export default class AppMenu extends Vue {
     // if we are in the encyclopedia, the continue
     // should take us to the previous played level
     // otherwuise in case we are playing:
-    if (useRoute().name === 'level') {
+    if (this.route.name === 'level') {
       e.preventDefault()
       this.closeMenu()
     }

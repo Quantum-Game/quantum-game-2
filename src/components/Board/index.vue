@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { Prop, Watch } from 'vue-property-decorator'
 import { Mutation, State } from 'vuex-class'
 import Absorption from '@/engine/Absorption'
@@ -120,6 +120,7 @@ export default class Board extends Vue {
   @State hoveredCell!: Cell
   @State activeCell!: Cell
   @State simulationState!: boolean
+  route = setup(useRoute)
 
   tileSize = 64
   updatedTileSize = 64 // this is the actual, dynamic tile size
@@ -242,7 +243,7 @@ export default class Board extends Vue {
    * @returns url
    */
   get url(): string {
-    return useRoute().params.id as string
+    return this.route.params.id as string
   }
 }
 </script>

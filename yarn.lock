@@ -3371,8 +3371,10 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-"bra-ket-vue@file:../bra-ket-vue":
+bra-ket-vue@^0.4.0:
   version "0.4.0"
+  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.4.0.tgz#80ae3f5b5f0fac761c88657f36b61c445e61479c"
+  integrity sha512-bIM24bVWHhzinMlFWoTIfFXXxviNUCtxZ890moEE1gDDgUmCsvxW6gVtMrObAt2N0f3mrhI7jwoFauxK+qlB1w==
   dependencies:
     quantum-tensors "^0.4.10"
 
@@ -9919,6 +9921,14 @@ quantum-tensors@^0.4.10:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
 
+quantum-tensors@^0.4.7:
+  version "0.4.7"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.7.tgz#49dbc7925a3b499f23e0578982028c6e2d381085"
+  integrity sha512-DLPTSzyREY3PBInKN+vrBymQw/bRu21eZW43VWKWCa3VHJHI9wTrCutuG9s4pHc8y1ENh5UblvaC0zRLYXZhfA==
+  dependencies:
+    "@types/lodash" "^4.14.138"
+    lodash "^4.17.15"
+
 query-string@^4.1.0:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/query-string/-/query-string-4.3.4.tgz#bbb693b9ca915c232515b228b1a02b609043dbeb"
@@ -11892,13 +11902,6 @@ vue-confetti@^2.0.5:
   resolved "https://registry.yarnpkg.com/vue-confetti/-/vue-confetti-2.0.8.tgz#30026592c4dfa47d660e1b6ed1caa85584ea6a91"
   integrity sha512-WJftcoXqBqpqgbi9upb9zA943xq4evwNltz8hS/fmNjbaiga38ob3yxw3YyHnAZmlayIYGYuR+k9stVcNfiinw==
 
-vue-css-donut-chart@^1.1.6:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/vue-css-donut-chart/-/vue-css-donut-chart-1.3.0.tgz#79fc6d7ef295ba731498b452d24d38a9c7800cbb"
-  integrity sha512-mOoFoimkzywsXxKTF+xJx4E86G29r26islBWB7LYxMRf0cOkEmGXUmhvKIwz9FCFaTTY+jF7iEnr3P8Gqqyr7w==
-  dependencies:
-    vue "^2.6.11"
-
 vue-eslint-parser@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-7.0.0.tgz#a4ed2669f87179dedd06afdd8736acbb3a3864d6"
@@ -11980,11 +11983,6 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
-
-vue@^2.6.11:
-  version "2.6.11"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
-  integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
 
 vue@^3.0.0-rc.10:
   version "3.0.0-rc.10"

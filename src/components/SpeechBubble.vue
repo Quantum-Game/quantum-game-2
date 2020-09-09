@@ -19,6 +19,7 @@ import { mixins } from 'vue-class-component'
 import { Prop, Watch } from 'vue-property-decorator'
 import Hint from '@/engine/Hint'
 import Position from '@/mixins/Position'
+import { ref } from 'vue'
 interface IAbsolutePosition {
   left: string
   top: string
@@ -39,31 +40,11 @@ export default class SpeechBubble extends mixins(Position) {
   // may be displayed even though there
   // there is a wrapper issue (say, the graphic)
   // TO DO! do the type
-  @Prop({
-    default: () => {
-      return {
-        width: 100,
-        height: 100,
-        top: 0,
-        left: 0,
-      }
-    },
-  })
-  readonly wrapperRect!: {
-    width: number
-    height: number
-    y: number
-    x: number
-    top: number
-    bottom: number
-    left: number
-    right: number
-  }
+  @Prop({ default: () => new DOMRect(100, 100) }) readonly wrapperRect!: DOMRect
 
   @Prop({ default: null }) readonly overlay!: string | null
 
-  positionX!: number
-  positionY!: number
+  tooltip = ref<HTMLDivElement | null>(null)
 
   contentRect = {
     width: 0,
@@ -71,10 +52,6 @@ export default class SpeechBubble extends mixins(Position) {
   }
 
   shown = true
-
-  $refs!: {
-    tooltip: HTMLDivElement
-  }
 
   /**
    * The life-cycle method is used by the component
@@ -93,7 +70,10 @@ export default class SpeechBubble extends mixins(Position) {
   @Watch('hint', { deep: true })
   @Watch('overlay')
   assessOwnRect(): void {
-    this.contentRect = this.$refs.tooltip.getBoundingClientRect()
+    const tooltip = this.tooltip.value
+    if (tooltip != null) {
+      this.contentRect = tooltip.getBoundingClientRect()
+    }
   }
 
   /**

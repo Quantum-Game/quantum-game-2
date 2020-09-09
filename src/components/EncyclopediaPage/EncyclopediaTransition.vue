@@ -54,10 +54,10 @@ interface IXYVec {
   },
 })
 export default class EncyclopediaMatrixBoard extends Vue {
-  @Prop({ default: 'Mirror' }) readonly elementName!: string
+  @Prop({ default: 'Mirror' }) readonly elementName!: Elem
   @Prop({ default: () => 10 }) readonly maxSteps!: number
   @Prop({ default: () => 2 }) readonly defaultStep!: number
-  @Prop({ default: '0' }) defaultRotation!: number
+  @Prop({ default: 0 }) defaultRotation!: number
 
   rotation: number = this.defaultRotation
   grid: Grid = Grid.emptyGrid(3, 3)
@@ -68,10 +68,6 @@ export default class EncyclopediaMatrixBoard extends Vue {
     posX: 0,
     posY: 1,
     vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H']),
-  }
-
-  $refs!: {
-    grid: HTMLElement
   }
 
   created(): void {

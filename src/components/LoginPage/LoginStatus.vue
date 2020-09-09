@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 import { namespace } from 'vuex-class'
 import { useRoute } from 'vue-router'
@@ -23,6 +23,7 @@ const user = namespace('userModule')
 export default class LoginStatus extends Vue {
   @user.Getter('userName') moduleGetterUserName!: string
   @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
+  route = setup(useRoute)
   /**
    * Dynamic route depending on context
    * @returns a route string
@@ -37,7 +38,7 @@ export default class LoginStatus extends Vue {
    * @returns shown boolean
    */
   get shown(): boolean {
-    const { name } = useRoute()
+    const name = this.route.name
     return name !== 'login' && name !== 'home' && name !== 'rocks'
   }
 }

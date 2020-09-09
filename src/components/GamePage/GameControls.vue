@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { setup, Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import { State, namespace } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
@@ -106,6 +106,7 @@ export default class GameControls extends Vue {
   @optionsModule.Action('TOGGLE_SOUND') toggleSound!: ActionMethod
   @userModule.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
   @optionsModule.Getter('soundActive') soundActive!: boolean
+  router = setup(useRouter)
 
   loadJsonLevelFromFile(event: Event): void {
     const reader = new FileReader()
@@ -261,22 +262,19 @@ export default class GameControls extends Vue {
   }
 
   handleAccount(): void {
-    const router = useRouter()
     if (!this.moduleGetterIsLoggedIn) {
-      router.push('/login')
+      this.router.push('/login')
     } else {
-      router.push('/myaccount')
+      this.router.push('/myaccount')
     }
   }
 
   handleOptions(): void {
-    const router = useRouter()
-    router.push('/options')
+    this.router.push('/options')
   }
 
   handleMap(): void {
-    const router = useRouter()
-    router.push('/levels')
+    this.router.push('/levels')
   }
 
   showSoundHint(): void {

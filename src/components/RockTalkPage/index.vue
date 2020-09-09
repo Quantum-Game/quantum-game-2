@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { State } from 'vuex-class'
 import { IDialogue } from '@/mixins/dataInterfaces'
 import { getRockTalkById } from './loadRockTalks'
@@ -28,10 +28,10 @@ import { useRoute } from 'vue-router'
 })
 export default class InterLevelOverlay extends Vue {
   @State('currentLevelID') currentLevelID!: string
+  route = setup(useRoute)
 
   get rockTalkId(): string {
-    const route = useRoute()
-    return route.params.id as string
+    return this.route.params.id as string
   }
 
   get rockTalk(): IDialogue {

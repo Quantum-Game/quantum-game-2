@@ -98,7 +98,7 @@
 <script lang="ts">
 import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
@@ -125,7 +125,6 @@ import { useRoute } from 'vue-router'
 const userModule = namespace('userModule')
 
 console.log('GamePhotons', GamePhotons);
-console.log('KetViewer', KetViewer);
 
 @Options({
   components: {
@@ -172,6 +171,7 @@ export default class Game extends Vue {
   victoryAlreadyShown = false
   showVictory = false
   unsubscribe?(): void
+  route = setup(useRoute)
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -202,7 +202,7 @@ export default class Game extends Vue {
    * if missing then fallback to '0' for infinity level / sandbox
    */
   get levelId(): string {
-    return useRoute().params.id as string
+    return this.route.params.id as string
   }
 
   /**

@@ -9,6 +9,8 @@ import '@/config/firebase'
 import { i18n } from './i18n'
 import App from './App.vue'
 
+import 'bra-ket-vue/dist/bra-ket-vue.css'
+
 createApp(App)
   .use(router)
   // FIXME: vue3 support soon: https://github.com/MatteoGabriele/vue-gtag/issues/168#issuecomment-684498923

@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
 import { Cell } from '@/engine/classes'
@@ -62,6 +62,9 @@ export default class EncyclopediaArticle extends Vue {
     sections: [],
   }
 
+  route = setup(useRoute)
+  router = setup(useRouter)
+
   created(): void {
     this.loadEntry()
   }
@@ -78,12 +81,12 @@ export default class EncyclopediaArticle extends Vue {
       )
     }
     if (!this.entry.title) {
-      useRouter().push({ name: '404' })
+      this.router.push({ name: '404' })
     }
   }
 
   get entryURL(): string {
-    return useRoute().params.entry as string
+    return this.route.params.entry as string
   }
 
   // FIXME: Code smell, move to element value

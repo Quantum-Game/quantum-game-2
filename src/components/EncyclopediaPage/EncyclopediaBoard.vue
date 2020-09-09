@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="svg-container">
-      <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+      <svg class="grid" :width="totalWidth" :height="totalHeight">
         <!-- DOTS -->
         <board-dots :rows="grid.rows" :cols="grid.cols" />
 
@@ -97,10 +97,6 @@ export default class EncyclopediaBoard extends Vue {
   grid = Grid.importGrid(this.iGrid)
   simulation: Simulation = new Simulation(this.grid.exportSimGrid())
   selectedFrameId = this.defaultStep
-
-  $refs!: {
-    grid: HTMLElement
-  }
 
   created(): void {
     // eslint-disable-next-line no-return-assign
