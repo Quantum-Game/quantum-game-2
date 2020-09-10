@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g v-for="(particle, index) in pathParticles" :key="'laser' + index">
+    <g v-for="(particle, index) in laserParticles" :key="'laser' + index">
       <path class="laser" :d="particle.toSvg()" />
     </g>
   </g>
@@ -12,7 +12,7 @@ import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
-    pathParticles: { type: Array as PropType<Particle[]>, default: [] },
+    laserParticles: { type: Array as PropType<Particle[]>, default: [] },
   },
 })
 </script>

@@ -11,7 +11,7 @@
       <board-dots :rows="grid.rows" :cols="grid.cols" />
 
       <!-- LASER PATH -->
-      <board-lasers v-if="classicalView" :pathParticles="pathParticles" />
+      <board-lasers v-if="classicalView" :laserParticles="laserParticles" />
 
       <!-- FATE -->
       <g :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`">
@@ -121,7 +121,7 @@ export default defineComponent({
     fate: { type: Coord, required: true },
     hints: { type: Array as PropType<IHint[]>, default: [] },
     particles: { type: Array as PropType<Particle[]>, default: [] },
-    pathParticles: { type: Array as PropType<Particle[]>, default: [] },
+    laserParticles: { type: Array as PropType<Particle[]>, default: [] },
     absorptions: { type: Array as PropType<Absorption[]>, default: [] },
     frameIndex: { type: Number, default: 0 },
     displayFate: { type: Boolean, default: false },

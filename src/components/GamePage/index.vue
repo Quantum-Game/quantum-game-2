@@ -49,7 +49,7 @@
         <section>
           <game-board
             :particles="activeParticles"
-            :path-particles="pathParticles"
+            :laser-particles="laserParticles"
             :fate="fateCoord"
             :display-fate="displayFate"
             :hints="hints"
@@ -96,7 +96,6 @@
 </template>
 
 <script lang="ts">
-import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
 import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
@@ -371,17 +370,16 @@ export default class Game extends Vue {
   }
 
   /**
-   * compute paths for quantum laser paths
-   * @returns individual paths
+   * Retrieve all particles for laser paths
+   * @returns list of all particles from the sim
    */
-  get pathParticles(): Particle[] {
-    return uniq(
-      flatten(
-        this.simulation.frames.map((frame: Frame) => {
-          return frame.particles
-        })
-      )
-    ).map((particle) => Particle.importParticle(particle))
+  get laserParticles(): Particle[] {
+    return this.simulation.frames
+      .map((frame: Frame) => {
+        return frame.particles
+      })
+      .flat()
+      .map((particle) => Particle.importParticle(particle))
   }
 
   /**
