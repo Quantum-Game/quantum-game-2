@@ -6,7 +6,7 @@
         <board-dots :rows="grid.rows" :cols="grid.cols" />
 
         <!-- LASERS -->
-        <board-lasers :path-particles="allParticles" />
+        <board-lasers :laser-particles="laserParticles" />
 
         <!-- PHOTONS -->
         <g
@@ -178,15 +178,20 @@ export default class EncyclopediaBoard extends Vue {
     )
   }
 
-  get allParticles(): IParticle[] {
-    const result: IParticle[] = []
-    this.frames.forEach((frame): void => {
-      frame.particles.forEach((particle: IParticle): void => {
-        result.push(particle)
+  /**
+   * Retrieve all particles for laser paths
+   * @remark duplicate with gamePage should be moved to QT sim
+   * @returns list of all particles from the sim
+   */
+  get laserParticles(): Particle[] {
+    return this.simulation.frames
+      .map((frame: Frame) => {
+        return frame.particles
       })
-    })
-    return result
+      .flat()
+      .map((particle) => Particle.importParticle(particle))
   }
+
 
   get nonVoidCells(): Cell[] {
     return this.grid.unvoid.cells
