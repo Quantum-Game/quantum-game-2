@@ -149,10 +149,10 @@ input[type='password']:focus {
   margin-top: 25px;
 }
 
-.alert-error {
-  margin-bottom: 20px;
-  color: #ff0055;
-}
+// .alert-error {
+//   margin-bottom: 20px;
+//   color: #ff0055;
+// }
 
 @media screen and (max-width: 736px) {
   input[type='email']:focus,

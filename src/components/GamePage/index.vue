@@ -374,14 +374,14 @@ export default class Game extends Vue {
    * compute paths for quantum laser paths
    * @returns individual paths
    */
-  get pathParticles(): IParticle[] {
+  get pathParticles(): Particle[] {
     return uniq(
       flatten(
         this.simulation.frames.map((frame: Frame) => {
           return frame.particles
         })
       )
-    )
+    ).map((particle) => Particle.importParticle(particle))
   }
 
   /**
