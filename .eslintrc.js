@@ -27,9 +27,9 @@ module.exports = {
     //   }
     // ],
     'no-use-before-define': 'off',
-    "no-unused-expressions": "off",
-    "vue/require-default-prop": "off",
-    "@typescript-eslint/no-unused-expressions": "error",
+    'no-unused-expressions': 'off',
+    'vue/require-default-prop': 'off',
+    '@typescript-eslint/no-unused-expressions': 'error',
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',
