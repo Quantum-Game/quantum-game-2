@@ -2,7 +2,7 @@
   <transition name="hint">
     <div
       v-if="shown"
-      ref="tooltip"
+      ref="tooltipRef"
       class="hint"
       :class="hintClass"
       :style="absolutePositionStyle"
@@ -15,187 +15,127 @@
 </template>
 
 <script lang="ts">
-import { Mixins, Component, Prop, Watch } from 'vue-property-decorator'
-import Hint from '@/engine/Hint'
-import Position from '@/mixins/Position'
-interface IAbsolutePosition {
-  left: string
-  top: string
-}
+import { computed, defineComponent, PropType, reactive, ref } from 'vue'
+import type { IHint } from '@/engine/interfaces'
 
-@Component
-export default class SpeechBubble extends Mixins(Position) {
-  @Prop({
-    default: () => {
-      return {
-        color: 'purple',
+export default defineComponent({
+  name: 'SpeechBubble',
+  props: {
+    hint: { type: Object as PropType<IHint>, required: true },
+    tileSize: { type: Number, default: 64 },
+    wrapperRect: { type: DOMRect, default: () => new DOMRect(100, 100) },
+    overlay: { type: String },
+  },
+  setup(props) {
+    const shown = ref(true)
+    const tooltipRef = ref<HTMLDivElement>()
+    const contentRect = reactive({
+      width: 0,
+      height: 0,
+    });
+
+    const hintClass = computed(() => {
+      return `hint--${props.hint.color} ${props.overlay === 'second' ? 'second' : ''}`
+    })
+
+    /**
+     * Top and left offsets calculation for when the tooltip
+     * complements the overlay image. The outcome depends on
+     * the overlay type and whether the tooltip is the "second"
+     * one in the dual-tooltip overlay.
+     * @returns an offsets object
+     */
+    function overlayPositionStyle() {
+      let leftOffset, topOffset
+      switch (props.overlay) {
+        // single rock
+        case 'rock':
+          topOffset = props.wrapperRect.top - contentRect.height + props.wrapperRect.height * 0.25
+          leftOffset =
+            props.wrapperRect.left + props.wrapperRect.width * 0.5 - contentRect.width * 0.5
+          break
+        // the pile's first talking rock
+        case 'pile':
+        case 'pile2':
+          topOffset = props.wrapperRect.top - contentRect.height + props.wrapperRect.height / 6
+          leftOffset =
+            props.wrapperRect.left + props.wrapperRect.width * 0.35 - contentRect.width * 0.5
+          break
+        // second of the two talking rocks
+        case 'second':
+          topOffset =
+            props.wrapperRect.top - contentRect.height + (props.wrapperRect.height * 1) / 3
+          leftOffset =
+            props.wrapperRect.left + (props.wrapperRect.width * 7) / 10 - contentRect.width / 2
+          break
+
+        default:
+          topOffset = 0
+          leftOffset = 0
+          break
       }
-    },
-  })
-  readonly hint!: Hint
 
-  @Prop({ default: 64 }) readonly tileSize!: number
-  // default value added so the tooltip
-  // may be displayed even though there
-  // there is a wrapper issue (say, the graphic)
-  // TO DO! do the type
-  @Prop({
-    default: () => {
       return {
-        width: 100,
-        height: 100,
-        top: 0,
-        left: 0,
+        top: `${topOffset}px`,
+        left: `${leftOffset}px`,
       }
-    },
-  })
-  readonly wrapperRect!: {
-    width: number
-    height: number
-    y: number
-    x: number
-    top: number
-    bottom: number
-    left: number
-    right: number
-  }
-
-  @Prop({ default: null }) readonly overlay!: string | null
-
-  positionX!: number
-  positionY!: number
-
-  contentRect = {
-    width: 0,
-    height: 0,
-  }
-
-  shown = true
-
-  $refs!: {
-    tooltip: HTMLDivElement
-  }
-
-  /**
-   * The life-cycle method is used by the component
-   * to assess its own bounding client rect
-   */
-  mounted(): void {
-    this.assessOwnRect()
-  }
-
-  /**
-   * The component holds it own dimensions (and the initial position)
-   * in its state for proper positioning against the wrapper;
-   * updated when appropriate using watchers.
-   */
-  @Watch('wrapperRect')
-  @Watch('hint', { deep: true })
-  @Watch('overlay')
-  assessOwnRect(): void {
-    this.contentRect = this.$refs.tooltip.getBoundingClientRect()
-  }
-
-  /**
-   * Whether clicking onto the tooltip causes it to dissapear
-   * depends on the context; disabled for overlays
-   */
-  shouldHide(): void {
-    if (!this.overlay) {
-      this.shown = false
     }
-  }
 
-  /**
-   * Used for coloring
-   * @returns a color class name
-   */
-  get hintClass(): string {
-    return `hint--${this.hint.color} ${this.overlay === 'second' ? 'second' : ''}`
-  }
-
-  /**
-   * Positioning calculations depend on whether the tooltip
-   * appears against the board (this.hint.coord determine its position)
-   * or against an overlay image (then the position is "fixed" - relative to
-   * image/wrapper proportions)
-   * @returns an object with with the 'top' and 'left' fields -
-   * the vertical and horizonatal offsets
-   */
-  get absolutePositionStyle(): IAbsolutePosition {
-    return this.overlay ? this.overlayPositionStyle : this.boardPositionStyle
-  }
 
   /**
    * Top and left offsets calulations for then the tooltip appears on the board
    * @returns an offsets object
    */
-  get boardPositionStyle(): IAbsolutePosition {
-    const topOffset =
-      this.wrapperRect.top +
-      this.hint.coord.y * (this.tileSize - 1) +
-      this.tileSize / 2 -
-      this.contentRect.height
+    function boardPositionStyle() {
+      const topOffset =
+        props.wrapperRect.top +
+        props.hint.coord.y * (props.tileSize - 1) +
+        props.tileSize / 2 -
+        contentRect.height
 
-    const leftOffset =
-      this.wrapperRect.left +
-      this.hint.coord.x * (this.tileSize - 1) +
-      this.tileSize / 2 -
-      this.contentRect.width / 2
+      const leftOffset =
+        props.wrapperRect.left +
+        props.hint.coord.x * (props.tileSize - 1) +
+        props.tileSize / 2 -
+        contentRect.width / 2
 
-    return {
-      left: leftOffset + 'px',
-      top: topOffset + 'px',
+      return {
+        left: leftOffset + 'px',
+        top: topOffset + 'px',
+      }
     }
-  }
 
-  /**
-   * Top and left offsets calculation for when the tooltip
-   * complements the overlay image. The outcome depends on
-   * the overlay type and whether the tooltip is the "second"
-   * one in the dual-tooltip overlay.
-   * @returns an offsets object
-   */
-  get overlayPositionStyle(): IAbsolutePosition {
-    let leftOffset, topOffset
+    /**
+     * Positioning calculations depend on whether the tooltip
+     * appears against the board (this.hint.coord determine its position)
+     * or against an overlay image (then the position is "fixed" - relative to
+     * image/wrapper proportions)
+     * @returns an object with with the 'top' and 'left' fields -
+     * the vertical and horizonatal offsets
+     */
+    const absolutePositionStyle = computed(() => {
+      return props.overlay ? overlayPositionStyle() : boardPositionStyle()
+    })
 
-    switch (this.overlay) {
-      // single rock
-      case 'rock':
-        topOffset = this.wrapperRect.top - this.contentRect.height + this.wrapperRect.height * 0.25
-        leftOffset =
-          this.wrapperRect.left + this.wrapperRect.width * 0.5 - this.contentRect.width * 0.5
-        break
-
-      // the pile's first talking rock
-      case 'pile':
-      case 'pile2':
-        topOffset = this.wrapperRect.top - this.contentRect.height + this.wrapperRect.height / 6
-        leftOffset =
-          this.wrapperRect.left + this.wrapperRect.width * 0.35 - this.contentRect.width * 0.5
-        break
-
-      // second of the two talking rocks
-      case 'second':
-        topOffset =
-          this.wrapperRect.top - this.contentRect.height + (this.wrapperRect.height * 1) / 3
-
-        leftOffset =
-          this.wrapperRect.left + (this.wrapperRect.width * 7) / 10 - this.contentRect.width / 2
-        break
-
-      default:
-        topOffset = 0
-        leftOffset = 0
-        break
+    /**
+     * Whether clicking onto the tooltip causes it to dissapear
+     * depends on the context; disabled for overlays
+     */
+    function shouldHide(): void {
+      if (!props.overlay) {
+        shown.value = false
+      }
     }
 
     return {
-      top: `${topOffset}px`,
-      left: `${leftOffset}px`,
+      tooltipRef,
+      shown,
+      hintClass,
+      absolutePositionStyle,
+      shouldHide,
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

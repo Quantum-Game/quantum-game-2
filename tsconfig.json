@@ -5,6 +5,7 @@
     "strict": true,
     "jsx": "preserve",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "importHelpers": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -12,7 +13,6 @@
     "sourceMap": true,
     "baseUrl": ".",
     "resolveJsonModule": true,
-    "types": ["webpack-env"],
     "paths": {
       "@/*": ["src/*"]
     },

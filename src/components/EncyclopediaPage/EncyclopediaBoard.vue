@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="svg-container">
-      <svg ref="grid" class="grid" :width="totalWidth" :height="totalHeight">
+      <svg class="grid" :width="totalWidth" :height="totalHeight">
         <!-- DOTS -->
         <board-dots :rows="grid.rows" :cols="grid.cols" />
 
@@ -35,7 +35,7 @@
           :key="`cell-${i}-(${cell.coord.x},${cell.coord.y})-${cell.element.name})`"
           :cell="cell"
           :tileSize="tileSize"
-          @click.native="rotate(cell)"
+          @click="rotate(cell)"
         />
       </svg>
     </div>
@@ -55,11 +55,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import Grid from '@/engine/Grid'
-import { IParticle, IGrid, IIndicator } from '@/engine/interfaces'
+import { IParticle, IIndicator } from '@/engine/interfaces'
+import type { IGrid } from '@/engine/interfaces'
 import { KetViewer } from 'bra-ket-vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -69,7 +71,7 @@ import { Vector, Frame, Simulation } from 'quantum-tensors'
 import { PolEnum, DirEnum } from 'quantum-tensors/dist/interfaces'
 import { IStyle } from '@/types'
 
-@Component({
+@Options({
   components: {
     AppPhoton,
     AppCell,
@@ -96,10 +98,6 @@ export default class EncyclopediaBoard extends Vue {
   simulation: Simulation = new Simulation(this.grid.exportSimGrid())
   selectedFrameId = this.defaultStep
 
-  $refs!: {
-    grid: HTMLElement
-  }
-
   created(): void {
     // eslint-disable-next-line no-return-assign
     this.grid.cells.forEach((cell) => (cell.tool = false))
@@ -112,7 +110,7 @@ export default class EncyclopediaBoard extends Vue {
   rotate(cell: Cell): void {
     cell.rotate()
     this.reset()
-    this.$emit('updateRotation', cell)
+    this.$emit('update-rotation', cell)
   }
 
   /**

@@ -1,11 +1,11 @@
 <template>
   <app-layout>
-    <div slot="main">
+    <template #main>
       <h1>Saved Levels</h1>
       <div class="my-levels">
         <h3>My levels</h3>
         <ul class="levels-list">
-          <li v-for="(lvl, index) in moduleGetterSavedLevelsList" :key="index">
+          <li v-for="(lvl, index) in savedLevels" :key="index">
             <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
             ({{ printDate(lvl.createdAt) }})
             <a class="remove-btn" @click.prevent="removeLevel(lvl.id, lvl.public)"
@@ -25,7 +25,7 @@
       <div class="public-levels">
         <h3>All public levels</h3>
         <ul class="levels-list">
-          <li v-for="(lvl, index) in moduleGetterPublicLevels" :key="index">
+          <li v-for="(lvl, index) in publicLevels" :key="index">
             <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
             ({{ printDate(lvl.createdAt) }})
           </li>
@@ -34,63 +34,51 @@
       <div class="signOut">
         <a @click.prevent="signOut">Sign Out</a>
       </div>
-    </div>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
-// import $userStore from '@/store/userStore'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import { ActionMethod } from 'vuex'
 import { Timestamp } from '@/store/storeInterfaces'
+import { storeNamespace } from '@/store'
+import { defineComponent } from 'vue'
 
-const user = namespace('userModule')
-
-@Component({
+export default defineComponent({
   components: {
     AppLayout,
     AppButton,
   },
+  setup() {
+    const user = storeNamespace('user')
+    const makePrivate = user.useAction('MAKE_LEVEL_PRIVATE')
+    const removeLevel = user.useAction('REMOVE_LEVEL')
+
+    return {
+      makePrivate,
+      makePublic: user.useAction('MAKE_LEVEL_PUBLIC'),
+      signOut: user.useAction('SIGN_OUT'),
+      savedLevels: user.useGetter('savedLevelsList'),
+      publicLevels: user.useGetter('publicLevels'),
+
+      printDate(timestamp: Timestamp): string {
+        if (!timestamp) {
+          return ''
+        }
+        const date = timestamp.toDate()
+        return date.toUTCString()
+      },
+
+      removeLevel(id: string, isPublic: boolean): void {
+        if (isPublic) {
+          makePrivate(id)
+        }
+        removeLevel(id)
+      },
+    }
+  },
 })
-export default class SavedLevels extends Vue {
-  @user.Action('MAKE_LEVEL_PRIVATE') actionMakeLevelPrivate!: ActionMethod
-  @user.Action('MAKE_LEVEL_PUBLIC') actionMakeLevelPublic!: ActionMethod
-  @user.Action('SIGN_OUT') actionSignOut!: ActionMethod
-  @user.Action('REMOVE_LEVEL') actionRemoveLevel!: ActionMethod
-  @user.Getter('userName') moduleGetterUserName!: string
-  @user.Getter('savedLevelsList') moduleGetterSavedLevelsList!: []
-  @user.Getter('publicLevels') moduleGetterPublicLevels!: []
-
-  removeLevel(id: string, isPublic: boolean): void {
-    if (isPublic) {
-      this.actionMakeLevelPrivate(id)
-    }
-    this.actionRemoveLevel(id)
-  }
-
-  makePublic(id: string): void {
-    this.actionMakeLevelPublic(id)
-  }
-
-  makePrivate(id: string): void {
-    this.actionMakeLevelPrivate(id)
-  }
-
-  signOut(): void {
-    this.actionSignOut(this.moduleGetterUserName)
-  }
-
-  printDate(timestamp: Timestamp): string {
-    if (!timestamp) {
-      return ''
-    }
-    const date = timestamp.toDate()
-    return date.toUTCString()
-  }
-}
 </script>
 
 <style lang="scss" scoped>

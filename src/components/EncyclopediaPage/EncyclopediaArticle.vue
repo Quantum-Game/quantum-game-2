@@ -34,7 +34,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Watch } from 'vue-property-decorator'
+import { Vue, Options, setup } from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
 import { Cell } from '@/engine/classes'
 import { getEntry } from './loadData'
@@ -42,8 +43,9 @@ import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
+import { useRoute, useRouter } from 'vue-router'
 
-@Component({
+@Options({
   components: {
     AppButton,
     EncyclopediaArticleSection,
@@ -59,6 +61,9 @@ export default class EncyclopediaArticle extends Vue {
     grids: [],
     sections: [],
   }
+
+  route = setup(useRoute)
+  router = setup(useRouter)
 
   created(): void {
     this.loadEntry()
@@ -76,12 +81,12 @@ export default class EncyclopediaArticle extends Vue {
       )
     }
     if (!this.entry.title) {
-      this.$router.push({ name: '404' })
+      this.router.push({ name: '404' })
     }
   }
 
   get entryURL(): string {
-    return this.$route.params.entry
+    return this.route.params.entry as string
   }
 
   // FIXME: Code smell, move to element value

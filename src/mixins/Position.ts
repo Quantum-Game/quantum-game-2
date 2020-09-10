@@ -1,57 +1,22 @@
-import { Vue, Component } from 'vue-property-decorator'
-import { Cell } from '@/engine/classes'
-import { IHint } from '@/engine/interfaces'
+import { ICoord } from '@/engine/interfaces'
+import { computed } from 'vue'
 
-@Component
-// FIXME: Should extend coord and not cell or hint
-export default class Position extends Vue {
-  public cell!: Cell
-  public hint!: IHint
-  public tileSize!: number
-  public coord = {
-    x: 0,
-    y: 0,
-  }
-
-  /**
-   * Will extend elements created function
-   */
-  private created(): void {
-    this.setCoordOrigin()
-  }
-
-  /**
-   * Will extend elements updated function
-   */
-  private updated(): void {
-    this.setCoordOrigin()
-  }
-
-  private setCoordOrigin(): void {
-    if (this.hint) {
-      this.coord = this.hint.coord
-    } else {
-      this.coord = this.cell.coord
-    }
-  }
-
-  private centerCoord(val: number): number {
-    return (val + 0.5) * this.tileSize
-  }
-
-  public get positionX(): number {
-    return this.coord.x * this.tileSize
-  }
-
-  public get positionY(): number {
-    return this.coord.y * this.tileSize
-  }
-
-  public get transformOriginX(): number {
-    return this.centerCoord(this.coord.x)
-  }
-
-  public get transformOriginY(): number {
-    return this.centerCoord(this.coord.y)
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function usePosition(tileSize: () => number, coord: () => ICoord) {
+  return {
+    position: computed(
+      (): ICoord => {
+        const size = tileSize()
+        const { x, y } = coord()
+        return { x: x * size, y: y * size }
+      }
+    ),
+    transformOrigin: computed(
+      (): ICoord => {
+        const size = tileSize()
+        const { x, y } = coord()
+        return { x: (x + 0.5) * size, y: (y + 0.5) * size }
+      }
+    ),
   }
 }

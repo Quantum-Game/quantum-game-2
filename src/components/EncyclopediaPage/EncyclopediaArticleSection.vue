@@ -3,7 +3,7 @@
     <h2 :class="{ 'entry-title': true, active: isOpen }" @click="handleTitleClick">
       {{ section.title }}
     </h2>
-    <div ref="contentWrapper" class="content-wrapper" :style="style">
+    <div class="content-wrapper" :style="style">
       <!-- eslint-disable-next-line vue/no-v-html -->
       <div class="content" v-html="parsedContent" />
     </div>
@@ -11,18 +11,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { IEntrySection } from '@/engine/interfaces'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+import type { IEntrySection } from '@/engine/interfaces'
 import { IStyle } from '@/types'
 
-@Component
 export default class EncyclopediaArticleSection extends Vue {
   @Prop() readonly section!: IEntrySection
   @Prop() readonly shouldBeOpenOnInit!: boolean
-
-  $refs!: {
-    contentWrapper: HTMLElement
-  }
 
   isOpen = false
 
@@ -39,7 +35,7 @@ export default class EncyclopediaArticleSection extends Vue {
 
   get style(): IStyle {
     return {
-      maxHeight: this.isOpen ? undefined : '0px', //  '`${this.$refs.contentWrapper.scrollHeight}px` : null
+      maxHeight: this.isOpen ? undefined : '0px',
     }
   }
 

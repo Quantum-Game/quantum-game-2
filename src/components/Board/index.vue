@@ -48,8 +48,8 @@
         :cell="cell"
         :tileSize="tileSize"
         @update-cell="updateCell"
-        @mouseover.native="handleMouseEnter(cell.coord)"
-        @mouseleave.native="handleMouseLeave(cell.coord)"
+        @mouseover="handleMouseEnter(cell.coord)"
+        @mouseleave="handleMouseLeave(cell.coord)"
         @play="play"
       />
 
@@ -69,7 +69,7 @@
     <!-- SPEECH BUBBLES -->
     <speech-bubble
       v-for="(hint, index) in hints"
-      :key="`${url}-${index}`"
+      :key="index"
       :hint="hint"
       :tile-size="updatedTileSize"
       :wrapper-rect="boardClientRect"
@@ -78,8 +78,6 @@
 </template>
 
 <script lang="ts">
-import { Vue, Prop, Component, Watch } from 'vue-property-decorator'
-import { Mutation, State } from 'vuex-class'
 import Absorption from '@/engine/Absorption'
 import Cell from '@/engine/Cell'
 import Coord from '@/engine/Coord'
@@ -92,8 +90,25 @@ import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onMounted,
+  PropType,
+  reactive,
+  ref,
+  toRefs,
+  watch,
+} from 'vue'
+import { useRoute } from 'vue-router'
+import { validateInfoPayload } from '@/mixins/gameInterfaces'
+import { useWindowEvent } from '@/mixins/event'
+import { storeNamespace } from '@/store'
 
-@Component({
+const game = storeNamespace('game')
+
+export default defineComponent({
   components: {
     AppCell,
     AppPhoton,
@@ -101,147 +116,103 @@ import { IStyle } from '@/types'
     BoardDots,
     SpeechBubble,
   },
+  props: {
+    grid: { type: Object as PropType<Grid>, required: true },
+    fate: { type: Coord, required: true },
+    hints: { type: Array as PropType<IHint[]>, default: [] },
+    particles: { type: Array as PropType<Particle[]>, default: [] },
+    pathParticles: { type: Array as PropType<Particle[]>, default: [] },
+    absorptions: { type: Array as PropType<Absorption[]>, default: [] },
+    frameIndex: { type: Number, default: 0 },
+    displayFate: { type: Boolean, default: false },
+  },
+  emits: {
+    'update-cell': null,
+    play: null,
+    hover: validateInfoPayload,
+  },
+  setup(props, { emit }) {
+    const mutationSetHoveredParticles = game.useMutation('SET_HOVERED_PARTICLE')
+    const mutationSetHoveredCell = game.useMutation('SET_HOVERED_CELL')
+    const hoveredCell = game.useState('hoveredCell')
+    const simulationState = game.useState('simulationState')
+    const route = useRoute()
+
+    const gridWrapper = ref<HTMLElement>()
+    const boardScaler = ref<HTMLElement>()
+
+    const data = reactive({
+      tileSize: 64,
+      updatedTileSize: 64, // this is the actual, dynamic tile size
+      boardHeight: 0,
+      scalerStyle: {
+        transform: `scale(1)`,
+      },
+      boardClientRect: new DOMRect(),
+    })
+
+    function assessSize(): void {
+      const currentWidth = boardScaler.value?.getBoundingClientRect().width || 0
+      data.scalerStyle = {
+        transform: `scale(${currentWidth / 845})`,
+      }
+      nextTick(() => {
+        const currentHeight = gridWrapper.value?.getBoundingClientRect().height || 0
+        data.boardHeight = currentHeight
+      })
+      nextTick(() => {
+        data.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
+        data.boardClientRect = gridWrapper.value?.getBoundingClientRect() || new DOMRect()
+      })
+    }
+
+    onMounted(assessSize)
+    useWindowEvent('resize', assessSize)
+    watch(() => route.params, assessSize)
+
+    return {
+      ...toRefs(data),
+      boardScaler,
+      gridWrapper,
+      classicalView: computed(() => props.frameIndex === 0 && !simulationState.value),
+      totalWidth: computed(() => props.grid.cols * data.tileSize),
+      totalHeight: computed(() => props.grid.rows * data.tileSize),
+      play: () => emit('play', true),
+      updateCell: (cell: Cell) => emit('update-cell', cell),
+      handleMouseEnter(coord: Coord): void {
+        const cell = props.grid.get(coord)
+        const particles = props.particles.filter((particle) => {
+          return particle.coord.equal(coord)
+        })
+        if (cell !== hoveredCell.value && !cell.isVoid) {
+          mutationSetHoveredCell(cell)
+          emit('hover', { kind: 'element', cell, particles: [], text: '' })
+        }
+        if (particles.length > 0) {
+          mutationSetHoveredParticles(particles)
+          emit('hover', { kind: 'particles', particles, text: '' })
+        }
+      },
+      /**
+       * Handle mouse over from cell and photons
+       */
+      handleMouseLeave(coord: Coord): void {
+        const particles = props.particles.filter((particle) => {
+          return particle.coord.equal(coord)
+        })
+        if (particles.length > 0) {
+          mutationSetHoveredParticles([])
+        }
+      },
+      computeParticleStyle(particle: Particle): IStyle {
+        return {
+          transform: `translate(${particle.coord.x * data.tileSize}px, ${particle.coord.y *
+            data.tileSize}px)`,
+        }
+      },
+    }
+  },
 })
-export default class Board extends Vue {
-  @Prop() readonly grid!: Grid
-  @Prop() readonly fate!: Coord
-  @Prop({ default: [] }) readonly hints!: IHint[]
-  @Prop({ default: [] }) readonly particles!: Particle[]
-  @Prop({ default: [] }) readonly pathParticles!: Particle[]
-  @Prop({ default: [] }) readonly absorptions!: Absorption[]
-  @Prop({ default: 0 }) readonly frameIndex!: number // dirty for classical vs quantum
-  @Prop({ default: false }) readonly displayFate!: boolean
-  @Mutation('SET_HOVERED_PARTICLE') mutationSetHoveredParticles!: (particles: Particle[]) => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @State hoveredParticles!: Particle[]
-  @State hoveredCell!: Cell
-  @State activeCell!: Cell
-  @State simulationState!: boolean
-
-  tileSize = 64
-  updatedTileSize = 64 // this is the actual, dynamic tile size
-  boardHeight = 0
-  scalerStyle = {
-    transform: `scale(1)`,
-  }
-
-  $refs!: {
-    gridWrapper: HTMLElement
-    boardScaler: HTMLElement
-  }
-
-  boardClientRect = {}
-
-  mounted(): void {
-    window.addEventListener('resize', this.assessSize)
-    this.assessSize()
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('resize', this.assessSize)
-  }
-
-  get classicalView(): boolean {
-    return this.frameIndex === 0 && !this.simulationState
-  }
-
-  /**
-   * Drilling from appCell to Game to allow clicking laser to start simulation
-   */
-  play(): void {
-    this.$emit('play', true)
-  }
-
-  /**
-   * Drilling from appCell to updateCell
-   */
-  updateCell(cell: Cell): void {
-    this.$emit('update-cell', cell)
-  }
-
-  /**
-   * Handle mouse over from cell and photons
-   */
-  handleMouseEnter(coord: Coord): void {
-    const cell = this.grid.get(coord)
-    const particles = this.particles.filter((particle) => {
-      return particle.coord.equal(coord)
-    })
-    if (cell !== this.hoveredCell && !cell.isVoid) {
-      this.mutationSetHoveredCell(cell)
-      this.$emit('hover', { kind: 'element', cell, particles: [], text: '' })
-    }
-    if (particles.length > 0) {
-      this.mutationSetHoveredParticles(particles)
-      this.$emit('hover', { kind: 'particles', particles, text: '' })
-    }
-  }
-
-  /**
-   * Handle mouse over from cell and photons
-   */
-  handleMouseLeave(coord: Coord): void {
-    const particles = this.particles.filter((particle) => {
-      return particle.coord.equal(coord)
-    })
-    if (particles.length > 0) {
-      this.mutationSetHoveredParticles([])
-    }
-  }
-
-  @Watch('url')
-  assessSize(): void {
-    const currentWidth = this.$refs.boardScaler.getBoundingClientRect().width
-    this.scalerStyle = {
-      transform: `scale(${currentWidth / 845})`,
-    }
-    setTimeout(() => {
-      const currentHeight = this.$refs.gridWrapper.getBoundingClientRect().height
-      this.boardHeight = currentHeight
-    }, 1)
-    // this.tileSize = 64 // apparently, the property is hard-coded, no need to change it
-    this.$nextTick(() => {
-      this.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
-      this.boardClientRect = this.$refs.gridWrapper.getBoundingClientRect()
-    })
-  }
-
-  get totalWidth(): number {
-    return this.grid.cols * this.tileSize
-  }
-
-  get totalHeight(): number {
-    return this.grid.rows * this.tileSize
-  }
-
-  /**
-   * Compute fate cell position
-   */
-  computeFateStyle(): IStyle {
-    return {
-      transform: `translate: ${this.fate.x * this.tileSize}px ${this.fate.y * this.tileSize}px`,
-    }
-  }
-
-  /**
-   * Compute photon grid position
-   */
-  computeParticleStyle(particle: Particle): IStyle {
-    return {
-      transform: `translate(${particle.coord.x * this.tileSize}px, ${particle.coord.y *
-        this.tileSize}px)`,
-    }
-  }
-
-  /**
-   * For convenience, as is used both in template
-   * and in the size-assesing watcher
-   * @returns url
-   */
-  get url(): string {
-    return this.$route.params.id
-  }
-}
 </script>
 
 <style lang="scss" scoped>

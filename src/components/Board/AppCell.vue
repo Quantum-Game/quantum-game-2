@@ -49,11 +49,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins, Watch } from 'vue-property-decorator'
-import { Mutation, State } from 'vuex-class'
+import { Options, Vue, setup } from 'vue-class-component'
+import { Prop, Watch } from 'vue-property-decorator'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
-import Position from '@/mixins/Position'
+import { usePosition } from '@/mixins/Position'
 import {
   LaserCell,
   NonLinearCrystalCell,
@@ -76,6 +76,8 @@ import {
   VacuumJarCell,
 } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
+import { ref } from 'vue'
+import { storeNamespace } from '@/store'
 
 const borderColors = {
   active: 'transparent',
@@ -84,7 +86,9 @@ const borderColors = {
   energized: 'blue',
 }
 
-@Component({
+const game = storeNamespace('game')
+
+@Options({
   components: {
     LaserCell,
     NonLinearCrystalCell,
@@ -106,25 +110,31 @@ const borderColors = {
     GlassCell,
     VacuumJarCell,
   },
+  emits: ['update-cell', 'click'],
 })
-export default class AppCell extends Mixins(Position) {
+export default class AppCell extends Vue {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
   @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
-  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @State simulationState!: string
-  @State gameState!: GameStateEnum
-  @State activeCell!: Cell
-  @State cellSelected!: boolean
-  @State hoveredCell!: Cell
+  mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
+  mutationResetActiveCell = setup(() => game.useMutation('RESET_ACTIVE_CELL'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
+  simulationState = setup(() => game.useState('simulationState'))
+  gameState = setup(() => game.useState('gameState'))
+  activeCell = setup(() => game.useState('activeCell'))
+  cellSelected = setup(() => game.useState('cellSelected'))
+  hoveredCell = setup(() => game.useState('hoveredCell'))
   border = ''
   isRotate = false
 
-  $refs!: {
-    cellRef: HTMLElement
-  }
+  position = setup(() =>
+    usePosition(
+      () => this.tileSize,
+      () => this.cell.coord
+    )
+  )
+
+  cellRef = setup(() => ref<HTMLElement>())
 
   /**
    * Compute the cell class name
@@ -179,11 +189,13 @@ export default class AppCell extends Mixins(Position) {
   }
 
   mouseMove(e: { pageX: number; pageY: number }): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
+    const cell = this.cellRef
+    const hoverCell = document.querySelector<HTMLElement>('.portal-dragdrop')
+    if (cell == null || hoverCell == null) return
+
     this.isRotate = true
-    const { cellRef } = this.$refs
-    hoverCell.innerHTML = cellRef.innerHTML
-    cellRef.style.opacity = '0'
+    hoverCell.innerHTML = cell.innerHTML
+    cell.style.opacity = '0'
     hoverCell.style.visibility = 'visible'
     document.body.style.cursor = 'grabbing'
     hoverCell.style.height = '64px' // change to tileSize, IDK why not work
@@ -202,10 +214,11 @@ export default class AppCell extends Mixins(Position) {
   }
 
   dragEnd(): void {
-    const hoverCell = document.querySelector('.hoverCell') as HTMLElement
-    const { cellRef } = this.$refs
+    const cell = this.cellRef
+    const hoverCell = document.querySelector<HTMLElement>('.portal-dragdrop')
+    if (cell == null || hoverCell == null) return
 
-    cellRef.style.opacity = '1'
+    cell.style.opacity = '1'
     hoverCell.style.visibility = 'hidden'
     document.body.style.cursor = 'default'
     window.removeEventListener('mousemove', this.mouseMove)
@@ -320,11 +333,13 @@ export default class AppCell extends Mixins(Position) {
   get computeCellStyle(): IStyle {
     const { rotation } = this.cell
     let styleObj = {}
+    const origin = this.position.transformOrigin
+    const translate = this.position.position
     styleObj = {
-      'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
+      'transform-origin': `${origin.x}px ${origin.y}px`,
       transform: `
         rotate(-${rotation}deg)
-        translate(${this.positionX}px, ${this.positionY}px)`,
+        translate(${translate.x}px, ${translate.y}px)`,
     }
     return styleObj
   }

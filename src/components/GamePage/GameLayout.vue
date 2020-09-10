@@ -29,10 +29,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import AppMenu from '@/components/AppMenu.vue'
 
-@Component({
+@Options({
   components: {
     AppMenu,
   },

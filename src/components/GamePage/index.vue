@@ -1,14 +1,14 @@
 <template>
   <div class="game">
     <!-- DRAG AND DROP CELL -->
-    <div class="hoverCell"></div>
+    <div class="portal-dragdrop"></div>
 
     <!-- OVERLAY -->
     <app-overlay
       :game-state="overlayGameState"
       :victory-already-shown="victoryAlreadyShown"
       class="overlay"
-      @click.native="frameIndex = 0"
+      @click="frameIndex = 0"
     >
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
@@ -19,70 +19,78 @@
     <!-- GENERAL LAYOUT -->
     <game-layout>
       <!-- HEADER-MIDDLE -->
-      <h1 v-if="error" slot="header-middle" class="error">{{ error }}</h1>
-      <h1 v-else slot="header-middle" class="title">
-        <router-link :to="previousLevel">
-          <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
-        </router-link>
-        {{ level.id + ' - ' + level.name }}
-        <router-link :to="nextLevelOrOvelay">
-          <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
-        </router-link>
-      </h1>
+      <template #header-middle>
+        <h1 v-if="error" class="error">{{ error }}</h1>
+        <h1 v-else class="title">
+          <router-link :to="previousLevel">
+            <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
+          </router-link>
+          {{ level.id + ' - ' + level.name }}
+          <router-link :to="nextLevelOrOvelay">
+            <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
+          </router-link>
+        </h1>
+      </template>
 
       <!-- MAIN-LEFT -->
-      <section slot="main-left">
-        <game-toolbox
-          :toolbox="level.toolbox"
-          @update-cell="updateCell"
-          @hover="updateInfoPayload"
-        />
-        <game-infobox :info-payload="infoPayload" />
-      </section>
+      <template #main-left>
+        <section>
+          <game-toolbox
+            :toolbox="level.toolbox"
+            @update-cell="updateCell"
+            @hover="updateInfoPayload"
+          />
+          <game-infobox :info-payload="infoPayload" />
+        </section>
+      </template>
 
       <!-- MAIN-MIDDLE -->
-      <section slot="main-middle">
-        <game-board
-          :particles="activeParticles"
-          :path-particles="pathParticles"
-          :fate="fateCoord"
-          :display-fate="displayFate"
-          :hints="hints"
-          :grid="level.grid"
-          :absorptions="filteredAbsorptions"
-          :frame-index="frameIndex"
-          @update-cell="updateCell"
-          @play="play"
-          @hover="updateInfoPayload"
-        />
-        <game-controls
-          :frame-index="frameIndex"
-          :total-frames="simulation.frames.length"
-          :display-status="displayStatus"
-          @rewind="rewind"
-          @step-back="stepBack"
-          @play="play"
-          @step-forward="stepForward"
-          @fast-forward="fastForward"
-          @new-fate="computeNewFate"
-          @reload="reload"
-          @download-level="downloadLevel"
-          @loaded-level="loadLevel($event)"
-          @hover="updateInfoPayload"
-          @save-level="handleSave"
-        />
-      </section>
+      <template #main-middle>
+        <section>
+          <game-board
+            :particles="activeParticles"
+            :path-particles="pathParticles"
+            :fate="fateCoord"
+            :display-fate="displayFate"
+            :hints="hints"
+            :grid="level.grid"
+            :absorptions="filteredAbsorptions"
+            :frame-index="frameIndex"
+            @update-cell="updateCell"
+            @play="play"
+            @hover="updateInfoPayload"
+          />
+          <game-controls
+            :frame-index="frameIndex"
+            :total-frames="simulation.frames.length"
+            :display-status="displayStatus"
+            @rewind="rewind"
+            @step-back="stepBack"
+            @play="play"
+            @step-forward="stepForward"
+            @fast-forward="fastForward"
+            @new-fate="computeNewFate"
+            @reload="reload"
+            @download-level="downloadLevel"
+            @loaded-level="loadLevel($event)"
+            @hover="updateInfoPayload"
+            @save-level="handleSave"
+          />
+        </section>
+      </template>
 
       <!-- MAIN-RIGHT -->
-      <section slot="main-right">
-        <GameGoals
-          :game-state="level.gameState"
-          :percentage="level.gameState.totalAbsorptionPercentage"
-        />
-        <div class="ket-viewer-game">
-          <ket-viewer class="ket" :vector="activeFrame.vector" />
-        </div>
-      </section>
+      <template #main-right>
+        <section>
+          <GameGoals
+            :game-state="level.gameState"
+            :percentage="level.gameState.totalAbsorptionPercentage"
+          />
+          <div class="ket-viewer-game">
+            <ket-viewer class="ket" :vector="activeFrame.vector" />
+          </div>
+        </section>
+      </template>
     </game-layout>
   </div>
 </template>
@@ -90,8 +98,8 @@
 <script lang="ts">
 import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
-import { Vue, Component, Watch } from 'vue-property-decorator'
-import { State, Mutation, namespace } from 'vuex-class'
+import { Vue, Options, setup } from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
@@ -109,10 +117,15 @@ import GameBoard from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
-import type { ActionMethod } from 'vuex'
-const userModule = namespace('userModule')
+import { useStore } from 'vuex'
+import '@/store/store'
+import { useRoute } from 'vue-router'
+import { storeNamespace } from '@/store'
 
-@Component({
+const user = storeNamespace('user')
+const game = storeNamespace('game')
+
+@Options({
   components: {
     GameLayout,
     GamePhotons,
@@ -128,18 +141,20 @@ const userModule = namespace('userModule')
 })
 export default class Game extends Vue {
   level = Level.createDummy()
-  @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
-  @State('gameState') gameState!: GameStateEnum
-  @State('simulationState') simulationState!: boolean
-  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
-  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
-  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: ActionMethod
-  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: ActionMethod
-  @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
-  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: string) => void
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
-  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  activeCell = setup(() => game.useState('activeCell')) // this need to me removed ASASP - the same fate as... fate
+  gameState = setup(() => game.useState('gameState'))
+  simulationState = setup(() => game.useState('simulationState'))
+  actionSaveLevel = setup(() => user.useAction('SAVE_LEVEL'))
+  actionUpdateLevel = setup(() => user.useAction('UPDATE_LEVEL'))
+  actionGetLevelStoreData = setup(() => user.useAction('GET_LEVEL_DATA'))
+  actionClearLevelStoreData = setup(() => user.useAction('CLEAR_LEVEL_DATA'))
+  moduleGetterFetchedBoardState = setup(() => user.useGetter('fetchedLevelBoardState'))
+  mutationSetCurrentLevelID = setup(() => game.useMutation('SET_CURRENT_LEVEL_ID'))
+  mutationSetGameState = setup(() => game.useMutation('SET_GAME_STATE'))
+  mutationSetSimulationState = setup(() => game.useMutation('SET_SIMULATION_STATE'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
+  store = setup(useStore)
+
   frameIndex = 0
   simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
   error = ''
@@ -156,7 +171,8 @@ export default class Game extends Vue {
   displayFate = false
   victoryAlreadyShown = false
   showVictory = false
-  unsubscribe? (): void
+  unsubscribe?(): void
+  route = setup(useRoute)
 
   get displayStatus(): string {
     if (this.simulationState) {
@@ -186,8 +202,8 @@ export default class Game extends Vue {
    * Parse url to extract level number
    * if missing then fallback to '0' for infinity level / sandbox
    */
-  get levelId(): string {
-    return this.$route.params.id || '0'
+  get levelId(): number {
+    return +this.route.params.id || 0
   }
 
   /**
@@ -207,7 +223,7 @@ export default class Game extends Vue {
    * to determine this.
    */
   get isCustomLevel(): boolean {
-    return this.levelId.length > 4
+    return this.levelId >= 1000
   }
 
   /**
@@ -227,12 +243,14 @@ export default class Game extends Vue {
       this.actionGetLevelStoreData({ id: this.levelId })
         .then(() => {
           // 2) subscribe to mutation triggered asynchronously
-          this.unsubscribe = this.$store.subscribe((mutation, rootState) => {
+          this.unsubscribe = this.store.subscribe((mutation, rootState) => {
             if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
               // 3) in case of a successful fetch,
               //    get substitute this.level with store data.
               if (rootState.userModule.fetchedLevel) {
-                const fetchedLevelBoardObj = JSON.parse(this.moduleGetterFetchedBoardState)
+                // FIXME: This logic is clearly broken, which was revealed by strong store typing
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const fetchedLevelBoardObj = this.moduleGetterFetchedBoardState!
                 this.level = Level.importLevel(fetchedLevelBoardObj)
                 this.setFirstToolAsHovered()
                 this.updateSimulation()
@@ -245,7 +263,7 @@ export default class Game extends Vue {
           this.error = error.message
         })
     } else {
-      this.level = Level.importLevel(levels[parseInt(this.levelId)])
+      this.level = Level.importLevel(levels[this.levelId])
       this.setFirstToolAsHovered()
       this.updateSimulation()
     }
@@ -279,7 +297,7 @@ export default class Game extends Vue {
     this.frameIndex = 0
     this.displayFate = false
     this.setEnergizedCells()
-    if (this.levelId !== '0' && this.levelId.length < 5) {
+    if (this.levelId !== 0) {
       this.mutationSetGameState(this.level.gameState.gameState)
     }
     this.mutationSetSimulationState(false)
@@ -313,23 +331,24 @@ export default class Game extends Vue {
     this.level.grid.setEnergized([this.fateCoord])
   }
 
-
   /**
-  * Convert IAbsorption to Absorption class instances
-  * Filter the escaping particle absorption events
-  * @param IAbsorption[]
-  * @returns absorption instance list (cell, probability)
-  */
+   * Convert IAbsorption to Absorption class instances
+   * Filter the escaping particle absorption events
+   * @param IAbsorption[]
+   * @returns absorption instance list (cell, probability)
+   */
   get filteredAbsorptions(): Absorption[] {
     const absorptions: Absorption[] = []
-    this.simulation.totalAbsorptionPerTile.forEach((absorptionI: {x: number, y: number, probability: number}): void => {
-      const coord = Coord.importCoord({x: absorptionI.x, y: absorptionI.y})
-      if (!coord.outOfGrid) {
-        const cell = this.level.grid.get(coord)
-        cell.energized = true
-        absorptions.push(new Absorption(cell, absorptionI.probability))
+    this.simulation.totalAbsorptionPerTile.forEach(
+      (absorptionI: { x: number; y: number; probability: number }): void => {
+        const coord = Coord.importCoord({ x: absorptionI.x, y: absorptionI.y })
+        if (!coord.outOfGrid) {
+          const cell = this.level.grid.get(coord)
+          cell.energized = true
+          absorptions.push(new Absorption(cell, absorptionI.probability))
+        }
       }
-    })
+    )
     // Filter out of grid cells
     return absorptions.filter((absorption: Absorption) => {
       return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold
@@ -356,9 +375,13 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): IParticle[] {
-    return uniq(flatten(this.simulation.frames.map((frame: Frame) => {
-      return frame.particles
-    })))
+    return uniq(
+      flatten(
+        this.simulation.frames.map((frame: Frame) => {
+          return frame.particles
+        })
+      )
+    )
   }
 
   /**
@@ -366,7 +389,8 @@ export default class Game extends Vue {
    * @returns particles
    */
   get activeParticles(): Particle[] {
-    return this.activeFrame.particles.map((particleI: IParticle) => Particle.importParticle(particleI)
+    return this.activeFrame.particles.map((particleI: IParticle) =>
+      Particle.importParticle(particleI)
     )
   }
 
@@ -383,7 +407,7 @@ export default class Game extends Vue {
   computeNewFate(): void {
     const fate = this.simulation.sampleRandomRealization()
     this.displayFate = false
-    this.fateCoord = Coord.importCoord({x: fate.x, y: fate.y })
+    this.fateCoord = Coord.importCoord({ x: fate.x, y: fate.y })
     this.fateStep = fate.step
   }
 
@@ -423,7 +447,7 @@ export default class Game extends Vue {
     this.level.grid.resetEnergized()
     this.computeNewFate()
     this.frameIndex = 0
-    this.playInterval = setInterval(() => {
+    this.playInterval = window.setInterval(() => {
       if (this.frameIndex < this.fateStep) {
         this.frameIndex += 1
       } else {
@@ -592,7 +616,7 @@ export default class Game extends Vue {
    */
   handleSave(): void {
     const currentStateJSONString = JSON.stringify(this.level.exportLevel())
-    const newState = { ...this.$store.state, boardState: currentStateJSONString }
+    const newState = { ...this.store.state, boardState: currentStateJSONString }
     if (!this.isCustomLevel) {
       this.actionSaveLevel(newState)
     } else {
@@ -618,14 +642,14 @@ export default class Game extends Vue {
     if (this.isCustomLevel) {
       return `/level/${this.levelId}`
     }
-    return `/level/${parseInt(this.levelId) - 1}`
+    return `/level/${this.levelId - 1}`
   }
 
   get nextLevel(): string {
     if (this.isCustomLevel) {
       return `/level/${this.levelId}`
     }
-    return `/level/${parseInt(this.levelId) + 1}`
+    return `/level/${this.levelId + 1}`
   }
 
   /**
@@ -634,7 +658,7 @@ export default class Game extends Vue {
    * @returns an router link :to attribute string
    */
   get nextLevelOrOvelay(): string {
-    const possibleOverlay = getRockTalkIdByLevelId(parseInt(this.levelId))
+    const possibleOverlay = getRockTalkIdByLevelId(this.levelId)
     return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
   }
 
@@ -646,7 +670,7 @@ export default class Game extends Vue {
 
 <style lang="scss" scoped>
 // Drag & drop
-.hoverCell {
+.portal-dragdrop {
   pointer-events: none;
   position: absolute;
   z-index: 10;

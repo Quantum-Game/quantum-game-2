@@ -21,9 +21,9 @@
 </template>
 
 <script lang="ts">
-import { Prop, Vue, Component } from 'vue-property-decorator'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 
-@Component
 export default class RockTalkLine extends Vue {
   @Prop({ default: 'pile' }) graphics!: string
   @Prop({ default: () => [''] }) dialogue!: string[]

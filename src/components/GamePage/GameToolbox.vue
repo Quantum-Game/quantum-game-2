@@ -22,8 +22,8 @@
           :cell="cell"
           :available="isAvailable(cell)"
           :tool="true"
-          @updateCell="updateCell"
-          @mouseover.native="handleMouseEnter(cell)"
+          @update-cell="updateCell"
+          @mouseenter="handleMouseEnter(cell)"
         />
         <text class="counter" :x="counterX" y="80">
           × {{ toolbox.getCount(cell.element.name) }}
@@ -35,22 +35,31 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Mutation } from 'vuex-class'
+import { Vue, Options, setup } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
-@Component({
+import { validateInfoPayload } from '@/mixins/gameInterfaces'
+import { storeNamespace } from '@/store'
+
+const game = storeNamespace('game')
+
+@Options({
   components: {
     AppCell,
+  },
+  emits: {
+    'update-cell': null,
+    hover: validateInfoPayload,
   },
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
   cell = {}
-  viewBox: string | boolean = '-8 0 80 80'
+  viewBox = '-8 0 80 80'
   counterX = '40%'
 
   mounted(): void {
@@ -65,7 +74,7 @@ export default class GameToolbox extends Vue {
 
   handleCellDrop(cell: Cell): void {
     this.mutationSetHoveredCell(cell)
-    this.$emit('updateCell', cell)
+    this.$emit('update-cell', cell)
   }
 
   computeClass(cell: Cell): string {
@@ -78,12 +87,12 @@ export default class GameToolbox extends Vue {
 
   // events drilling up...
   updateCell(cell: Cell): void {
-    this.$emit('updateCell', cell)
+    this.$emit('update-cell', cell)
   }
 
   calculateViewBox(): void {
     if (window.innerWidth > 1000) {
-      this.viewBox = false
+      this.viewBox = '-8 0 80 80'
       this.counterX = '50%'
     } else {
       this.viewBox = '-8 0 80 80'

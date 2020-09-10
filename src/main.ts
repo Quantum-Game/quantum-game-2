@@ -1,23 +1,22 @@
-import Vue, { CreateElement, VNode } from 'vue'
-import Donut from 'vue-css-donut-chart'
-import VueConfetti from 'vue-confetti'
-import 'vue-css-donut-chart/dist/vcdonut.css'
-import App from './App.vue'
+// required for vue-property-decorator
+import 'reflect-metadata'
+
+import { createApp } from 'vue'
 import router from './router'
-import store from './store/store'
+import { store } from './store/store'
 import './registerServiceWorker'
 import '@/config/firebase'
 import { i18n } from './i18n'
+import App from './App.vue'
 
-Vue.use(Donut)
-Vue.use(VueConfetti)
+import 'bra-ket-vue/dist/bra-ket-vue.css'
 
-Vue.config.productionTip = false
-new Vue({
-  router,
-  i18n,
-  store,
-  render: (h: CreateElement): VNode => {
-    return h(App)
-  },
-}).$mount('#app')
+createApp(App)
+  .use(router)
+  // FIXME: vue3 support soon: https://github.com/MatteoGabriele/vue-gtag/issues/168#issuecomment-684498923
+  // .use(VueGtag, {
+  //   config: { id: 'UA-56225776-1' },
+  // })
+  .use(i18n)
+  .use(store)
+  .mount('#app')

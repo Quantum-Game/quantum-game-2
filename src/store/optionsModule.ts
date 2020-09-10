@@ -1,4 +1,3 @@
-import { RESET_OPTIONS, SET_OPTIONS, TOGGLE_SOUND } from './mutation-types'
 import { storeModule } from './storeInterfaces'
 import { hasKey } from '@/types'
 
@@ -49,27 +48,28 @@ function persistOptions(options: IOptionsModule) {
   }
 }
 
-export default storeModule<IOptionsModule>({
+export default storeModule({
   namespaced: true,
   state: getInitialOptions(),
   mutations: {
-    [RESET_OPTIONS](state): void {
+    RESET_OPTIONS(state: IOptionsModule): void {
       Object.assign(state, defaultOptions)
       persistOptions(state)
     },
-    [SET_OPTIONS](state, newOptionsObject: Partial<IOptionsModule>): void {
+    SET_OPTIONS(state: IOptionsModule, newOptionsObject: Partial<IOptionsModule>): void {
       Object.assign(state, newOptionsObject)
       persistOptions(state)
     },
   },
   actions: {
-    [TOGGLE_SOUND]({ commit, state }): void {
+    TOGGLE_SOUND({ state, commit }): boolean {
       if (state.volume === 0) {
         // force unmute if volume is turned down
-        commit(SET_OPTIONS, { volume: 1, mute: false })
+        commit('SET_OPTIONS', { volume: 1, mute: false })
       } else {
-        commit(SET_OPTIONS, { mute: !state.mute })
+        commit('SET_OPTIONS', { mute: !state.mute })
       }
+      return state.mute
     },
   },
   getters: {

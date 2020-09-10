@@ -8,10 +8,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 
-@Component({
+@Options({
   components: {
     AppButton,
   },

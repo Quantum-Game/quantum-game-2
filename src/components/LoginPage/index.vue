@@ -1,85 +1,89 @@
 <template>
   <app-layout>
-    <div slot="main" class="login-page-wrapper">
-      <h1>
-        User Login
-      </h1>
-      <p>Login with your social account</p>
-      <div class="social-login">
-        <div class="social-login__btn social-login__gh" @click="actionSignInGithub">Github</div>
-        <div class="social-login__btn social-login__fb " @click="actionSignInFacebook">
-          Facebook
-        </div>
-        <div class="social-login__btn social-login__g" @click="actionSignInGoogle">Google</div>
-      </div>
-      <p class="separator">or</p>
-      <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
-      <form class="email-login" action="#" @submit.prevent="actionSignIn(user)">
-        <div class="email-login__email">
-          <input
-            id="email"
-            v-model="user.email"
-            type="email"
-            class="form-control"
-            name="email"
-            value
-            required
-            autofocus
-            placeholder="email"
-          />
-        </div>
-        <div class="email-login__password">
-          <input
-            id="password"
-            v-model="user.password"
-            type="password"
-            class="form-control"
-            name="password"
-            required
-            placeholder="password"
-          />
-        </div>
-        <div class="login-button-wrapper">
-          <div class="rememberme">
-            <input v-model="user.rememberMe" type="checkbox" checked name="rememberme" />
-            <label for="rememberme">Remember Me</label>
+    <template #main>
+      <div class="login-page-wrapper">
+        <h1>
+          User Login
+        </h1>
+        <p>Login with your social account</p>
+        <div class="social-login">
+          <div class="social-login__btn social-login__gh" @click="actionSignInGithub">Github</div>
+          <div class="social-login__btn social-login__fb " @click="actionSignInFacebook">
+            Facebook
           </div>
-          <app-button type="special"> Login </app-button>
+          <div class="social-login__btn social-login__g" @click="actionSignInGoogle">Google</div>
         </div>
-      </form>
-      <p>Forgot your password?</p>
-      <p>Don't have an account? <router-link to="/register"> Sign Up </router-link></p>
-    </div>
+        <p class="separator">or</p>
+        <!-- <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div> -->
+        <form class="email-login" action="#" @submit.prevent="actionSignIn(user)">
+          <div class="email-login__email">
+            <input
+              id="email"
+              v-model="user.email"
+              type="email"
+              class="form-control"
+              name="email"
+              value
+              required
+              autofocus
+              placeholder="email"
+            />
+          </div>
+          <div class="email-login__password">
+            <input
+              id="password"
+              v-model="user.password"
+              type="password"
+              class="form-control"
+              name="password"
+              required
+              placeholder="password"
+            />
+          </div>
+          <div class="login-button-wrapper">
+            <div class="rememberme">
+              <input v-model="user.rememberMe" type="checkbox" checked name="rememberme" />
+              <label for="rememberme">Remember Me</label>
+            </div>
+            <app-button type="special"> Login </app-button>
+          </div>
+        </form>
+        <p>Forgot your password?</p>
+        <p>Don't have an account? <router-link to="/register"> Sign Up </router-link></p>
+      </div>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import { ActionMethod } from 'vuex'
+import { storeNamespace } from '@/store'
+import { defineComponent, reactive } from 'vue'
 
-const user = namespace('userModule')
-
-@Component({
+export default defineComponent({
   components: {
     AppLayout,
     AppButton,
   },
+  setup() {
+    const userModule = storeNamespace('user')
+    const actionSignIn = userModule.useAction('SIGN_IN')
+    const actionSignInGithub = userModule.useAction('SIGN_IN_GITHUB')
+    const actionSignInFacebook = userModule.useAction('SIGN_IN_FACEBOOK')
+    const actionSignInGoogle = userModule.useAction('SIGN_IN_GOOGLE')
+    // FIXME: no such getter. Were all error moved to notifications?
+    // const moduleGetterError = user.useGetter('error')
+
+    const user = reactive({
+      email: '',
+      password: '',
+      rememberMe: true,
+    })
+
+    return { actionSignIn, actionSignInGithub, actionSignInFacebook, actionSignInGoogle, user }
+  },
 })
-export default class Login extends Vue {
-  @user.Action('SIGN_IN') actionSignIn!: ActionMethod
-  @user.Action('SIGN_IN_GITHUB') actionSignInGithub!: ActionMethod
-  @user.Action('SIGN_IN_FACEBOOK') actionSignInFacebook!: ActionMethod
-  @user.Action('SIGN_IN_GOOGLE') actionSignInGoogle!: ActionMethod
-  @user.Getter('error') moduleGetterError!: string | null
-  user = {
-    email: '',
-    password: '',
-    rememberMe: true,
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -99,10 +103,10 @@ p {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.alert-error {
-  margin-bottom: 20px;
-  color: #ff0055;
-}
+// .alert-error {
+//   margin-bottom: 20px;
+//   color: #ff0055;
+// }
 
 .separator {
   position: relative;

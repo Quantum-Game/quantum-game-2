@@ -1,28 +1,30 @@
 <template>
   <app-layout>
-    <article slot="main" class="main">
-      <div class="container">
-        <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
-          <!-- <h3>{{ group[0].group }}</h3> -->
-          <ul v-for="(level, j) in group" :key="'level' + j" class="group">
-            <router-link class="levelLink" :to="`/level/${level.id}`">
-              {{ level.id }} - {{ level.name }}
-            </router-link>
-          </ul>
+    <template #main>
+      <article class="main">
+        <div class="container">
+          <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
+            <!-- <h3>{{ group[0].group }}</h3> -->
+            <ul v-for="(level, j) in group" :key="'level' + j" class="group">
+              <router-link class="levelLink" :to="`/level/${level.id}`">
+                {{ level.id }} - {{ level.name }}
+              </router-link>
+            </ul>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
 import { Dictionary, groupBy } from 'lodash'
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { ILevel } from '@/engine/interfaces'
 import AppLayout from '@/components/AppLayout.vue'
 import levels from '@/assets/data/levels/index'
 
-@Component({
+@Options({
   components: {
     AppLayout,
   },

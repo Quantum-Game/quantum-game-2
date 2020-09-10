@@ -5,18 +5,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { defineComponent } from 'vue'
 
-@Component
-export default class AppButton extends Vue {
-  @Prop({ default: 'basic' }) readonly type!: string
-  @Prop({ default: true }) readonly inline!: boolean
-  @Prop() readonly overlay!: boolean
-
-  get computeClass(): string[] {
-    return [this.type, this.inline ? 'inline' : '', this.overlay ? 'overlay-btn' : '']
-  }
-}
+export default defineComponent({
+  props: {
+    type: { type: String, default: 'basic' },
+    inline: { type: Boolean, default: true },
+    overlay: { type: Boolean, default: false },
+  },
+  computed: {
+    computeClass(): string[] {
+      return [this.type, this.inline ? 'inline' : '', this.overlay ? 'overlay-btn' : '']
+    },
+  },
+})
 </script>
 
 <style scoped lang="scss">

@@ -13,14 +13,13 @@
 
 <script lang="ts">
 // FIXME: Needs to be extended for instructions overlay, rethink overlay
-import { Vue, Component, Watch, Prop } from 'vue-property-decorator'
-import VueConfetti from 'vue-confetti'
+import { Watch, Prop } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
+import { Confetti } from 'vue-confetti'
 import AppButton from '@/components/AppButton.vue'
 import { GameStateEnum } from '@/engine/interfaces'
 
-Vue.use(VueConfetti)
-
-@Component({
+@Options({
   components: {
     AppButton,
   },
@@ -28,17 +27,14 @@ Vue.use(VueConfetti)
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
   @Prop() readonly victoryAlreadyShown!: boolean
-  $confetti!: {
-    start: (params: Record<string, unknown>) => void
-    stop: () => void
-  }
+  confetti = new Confetti()
 
   explosion = false
-  explosionTimeout = 0
+  explosionTimeout = null
 
   mineExploding(): void {
     this.explosion = true
-    this.explosionTimeout = setTimeout(() => {
+    window.setTimeout(() => {
       this.explosion = false
     }, 300)
   }
@@ -56,13 +52,13 @@ export default class AppOverlay extends Vue {
   // }
 
   destroyed(): void {
-    this.$confetti.stop()
+    this.confetti.stop()
   }
 
   @Watch('gameState')
   handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
     if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
-      this.$confetti.start({
+      this.confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
         particles: [
@@ -88,7 +84,7 @@ export default class AppOverlay extends Vue {
     } else if (newGameState === GameStateEnum.MineExploded) {
       this.mineExploding()
     } else if (oldGameState === GameStateEnum.Victory) {
-      this.$confetti.stop()
+      this.confetti.stop()
     }
   }
 }

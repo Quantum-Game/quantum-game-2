@@ -115,10 +115,8 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
-@Component
 export default class FaradayRotatorCell extends Piece {}
 </script>
 

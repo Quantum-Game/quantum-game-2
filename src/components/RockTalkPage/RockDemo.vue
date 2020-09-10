@@ -1,7 +1,9 @@
 <template>
   <div class="test-page">
     <rock-talk :type="type" :dialogue="dialogue">
-      <h1 slot="title">OVERLAYS DEMO</h1>
+      <template #title>
+        <h1>OVERLAYS DEMO</h1>
+      </template>
       <app-button type="big">PLAY</app-button>
     </rock-talk>
     <menu class="test-page__controls">
@@ -49,11 +51,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
 import AppButton from '@/components/AppButton.vue'
 
-@Component({
+@Options({
   components: {
     RockTalk,
     AppButton,

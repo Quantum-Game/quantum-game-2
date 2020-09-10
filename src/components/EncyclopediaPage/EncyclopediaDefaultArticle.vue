@@ -99,8 +99,8 @@
 </template>
 
 <script lang="ts">
+import { Vue, Options } from 'vue-class-component'
 import Grid from '@/engine/Grid'
-import { Vue, Component } from 'vue-property-decorator'
 import AppButton from '@/components/AppButton.vue'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -127,7 +127,7 @@ import {
 } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
 
-@Component({
+@Options({
   components: {
     AppButton,
     AppCell,

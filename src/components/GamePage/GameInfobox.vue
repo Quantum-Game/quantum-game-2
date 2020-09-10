@@ -23,8 +23,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { IInfoPayload } from '@/mixins/gameInterfaces'
+import { Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
+import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 
 const spacedName = (name: string): string => {
@@ -32,7 +33,6 @@ const spacedName = (name: string): string => {
   return name.replace(regexp, '$1$4 $2$3$5')
 }
 
-@Component
 export default class GameActiveCell extends Vue {
   @Prop({
     default: () => ({

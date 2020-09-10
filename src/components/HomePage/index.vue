@@ -62,20 +62,20 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 
-@Component({
+@Options({
   components: {
     AppButton,
   },
 })
 export default class HomePage extends Vue {
-  version: string = process.env.VUE_APP_VERSION
-  commitHash: string = process.env.VUE_APP_GIT_HASH
+  version: string = process.env.VUE_APP_VERSION || 'unknown'
+  commitHash: string = process.env.VUE_APP_GIT_HASH || 'unknown'
 
   get commitDate(): string {
-    const date = new Date(process.env.VUE_APP_GIT_DATE * 1000)
+    const date = new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000)
     return date.toUTCString()
   }
 

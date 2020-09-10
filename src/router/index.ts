@@ -1,11 +1,8 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-Vue.use(Router)
 /* eslint-disable */
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
+export default createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
       path: '/',
@@ -87,7 +84,7 @@ export default new Router({
       component: () => import('@/components/RockTalkPage/RockDemo.vue'),
     },
     {
-      path: '*',
+      path: '/*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue'),
     },

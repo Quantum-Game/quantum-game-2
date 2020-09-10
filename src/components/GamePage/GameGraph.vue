@@ -19,24 +19,23 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { setup, Vue } from 'vue-class-component'
+import { Prop } from 'vue-property-decorator'
 import MultiverseGraph from '@/engine/MultiverseGraph'
 import { IStyle } from '@/types'
+import { ref } from 'vue'
 
-@Component({
-  components: {},
-})
 export default class GameGraph extends Vue {
   @Prop() readonly multiverse!: MultiverseGraph
   @Prop() readonly activeFrame!: number
-  $refs!: {
-    multiverseWrapper: HTMLElement
-  }
+  multiverseWrapper = setup(() => ref<HTMLElement>())
 
   rect = { width: 0, height: 0 }
 
   mounted(): void {
-    this.rect = this.$refs.multiverseWrapper.getBoundingClientRect()
+    if (this.multiverseWrapper != null) {
+      this.rect = this.multiverseWrapper.getBoundingClientRect()
+    }
   }
 
   handleClick(frameId: number): void {

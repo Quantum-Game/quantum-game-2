@@ -1,15 +1,19 @@
 <template>
   <app-layout>
-    <encyclopedia-link-list slot="left" :entry-list="elementList" title="Elements" />
-    <div slot="main">
+    <template #left>
+      <encyclopedia-link-list :entry-list="elementList" title="Elements" />
+    </template>
+    <template #main>
       <router-view />
-    </div>
-    <encyclopedia-link-list slot="right" :entry-list="conceptList" title="Concepts" />
+    </template>
+    <template #right>
+      <encyclopedia-link-list :entry-list="conceptList" title="Concepts" />
+    </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Options } from 'vue-class-component'
 import { elementNameList, conceptNameList } from './loadData'
 import AppLayout from '@/components/AppLayout.vue'
 import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
@@ -21,7 +25,7 @@ interface IEntryList {
   ready: boolean
 }
 
-@Component({
+@Options({
   components: {
     AppLayout,
     EncyclopediaArticle,

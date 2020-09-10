@@ -60,10 +60,8 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
 import Piece from './Piece'
 
-@Component
 export default class NonLinearCrystalCell extends Piece {}
 </script>
 

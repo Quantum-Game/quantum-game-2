@@ -1,5 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const LCL = require('last-commit-log')
+const path = require('path')
 
 const lcl = new LCL()
 const commit = lcl.getLastCommitSync()
@@ -20,6 +21,14 @@ process.env.VUE_APP_TWITTER = socialMediaDesc.twitter
 process.env.VUE_APP_AUTHORS = socialMediaDesc.authors
 
 module.exports = {
+  chainWebpack: (config) => {
+    // make sure babel-loader is not confused when using "yarn link"
+    config.resolve.symlinks(false)
+
+    // Force all instances of vue to be resolved as single module.
+    // Multiple instances can be present when using "yarn link".
+    config.resolve.alias.set('vue', path.dirname(require.resolve('vue')))
+  },
   css: {
     loaderOptions: {
       scss: {

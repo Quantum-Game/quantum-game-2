@@ -2,23 +2,20 @@
   <div id="notifications">
     <ul v-if="errors.length" class="errors">
       <li v-for="error in errors" :key="error">{{ error }}</li>
-      <li @click="resetErrors"><router-link to="/">click here to get back</router-link></li>
+      <li @click="RESET_ERRORS"><router-link to="/">click here to get back</router-link></li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import { storeNamespace } from '@/store'
+import { setup, Vue } from 'vue-class-component'
 
-@Component
+const errors = storeNamespace('errors')
+
 export default class AppNotifications extends Vue {
-  resetErrors(): void {
-    this.$store.commit('RESET_ERRORS')
-  }
-
-  get errors(): string[] {
-    return this.$store.state.errors
-  }
+  RESET_ERRORS = setup(() => errors.useMutation('RESET_ERRORS'))
+  errors = setup(() => errors.useState('errors'))
 }
 </script>
 

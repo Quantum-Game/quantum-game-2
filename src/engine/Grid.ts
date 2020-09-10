@@ -57,9 +57,14 @@ export default class Grid extends Cluster {
    * @returns Cell
    */
   public get(coord: Coord): Cell {
-    return this.cells.filter((cell): boolean => {
-      return coord.equal(cell.coord)
-    })[0]
+    const found = this.cells.find((cell): boolean => coord.equal(cell.coord))
+    if (found != null) {
+      return found
+    }
+
+    const cell = Cell.createDummy(coord)
+    this.cells.push(cell)
+    return cell
   }
 
   /**
@@ -68,10 +73,7 @@ export default class Grid extends Cluster {
    * @param y Y coordinate
    */
   public cellFromXY(x: number, y: number): Cell {
-    const coord = Coord.importCoord({ x, y })
-    return this.cells.filter((cell): boolean => {
-      return coord.equal(cell.coord)
-    })[0]
+    return this.get(Coord.importCoord({ x, y }))
   }
 
   /**

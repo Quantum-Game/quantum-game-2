@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hoveredParticles.length > 0" ref="wrapper" class="hovered-photons-wrapper">
+  <div v-if="hoveredParticles.length > 0" class="hovered-photons-wrapper">
     <div class="hoveredPhotons">
       <h3>Photon</h3>
       <div v-for="(particle, index) in hoveredParticles" :key="index" class="photon">
@@ -20,26 +20,22 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { State } from 'vuex-class'
-import Particle from '@/engine/Particle'
 import AppPhoton from '@/components/AppPhoton.vue'
-import AppButton from '@/components/AppButton.vue'
+import { storeNamespace } from '@/store'
+import { defineComponent } from 'vue'
 
-@Component({
+export default defineComponent({
   components: {
     AppPhoton,
-    AppButton,
+  },
+  setup() {
+    const game = storeNamespace('game')
+    return {
+      hoveredParticles: game.useState('hoveredParticles'),
+      width: 180,
+    }
   },
 })
-export default class GamePhotons extends Vue {
-  @State hoveredParticles!: Particle[]
-  @Prop() readonly particles!: Particle[]
-  width = 180
-  $refs!: {
-    wrapper: HTMLElement
-  }
-}
 </script>
 
 <style lang="scss" scoped>

@@ -8,18 +8,18 @@
     <transition name="fade">
       <div v-if="isMenuOpen" class="menu-overlay">
         <menu>
-          <router-link to="/" @click.stop.native="closeMenu">BACK TO THE MAIN PAGE</router-link>
+          <router-link to="/" @click.stop="closeMenu">BACK TO THE MAIN PAGE</router-link>
           <router-link
             v-if="currentLevelID > 0"
             :to="continueLink"
-            @click.stop.native="handleContinueClick"
+            @click.stop="handleContinueClick"
             >CONTINUE</router-link
           >
           <router-link
             v-for="item in menuItems"
             :key="item.name"
             :to="item.url"
-            @click.stop.native="closeMenu"
+            @click.stop="closeMenu"
             >{{ item.name }}</router-link
           >
           <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
@@ -30,15 +30,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-import { State, namespace } from 'vuex-class'
+import { storeNamespace } from '@/store'
+import { setup, Vue } from 'vue-class-component'
+import { useRoute } from 'vue-router'
 
-const user = namespace('userModule')
+const user = storeNamespace('user')
+const game = storeNamespace('game')
 
-@Component
 export default class AppMenu extends Vue {
-  @State('currentLevelID') currentLevelID!: number
-  @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
+  moduleGetterIsLoggedIn = setup(() => user.useGetter('isLoggedIn'))
+  currentLevelID = setup(() => game.useState('currentLevelID'))
+
+  route = setup(useRoute)
 
   isMenuOpen = false
 
@@ -54,7 +57,7 @@ export default class AppMenu extends Vue {
     // if we are in the encyclopedia, the continue
     // should take us to the previous played level
     // otherwuise in case we are playing:
-    if (this.$route.name === 'level') {
+    if (this.route.name === 'level') {
       e.preventDefault()
       this.closeMenu()
     }
