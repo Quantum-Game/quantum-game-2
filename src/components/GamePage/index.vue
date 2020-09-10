@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- DRAG AND DROP CELL -->
-    <div class="hoverCell"></div>
+    <div class="portal-dragdrop"></div>
 
     <!-- OVERLAY -->
     <app-overlay
@@ -100,7 +100,6 @@ import { uniq, flatten } from 'lodash'
 import { Frame, Simulation } from 'quantum-tensors'
 import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { State, Mutation, namespace } from 'vuex-class'
 import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
@@ -119,10 +118,12 @@ import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 import { useStore } from 'vuex'
-import type { ActionMethod } from 'vuex'
 import '@/store/store'
 import { useRoute } from 'vue-router'
-const userModule = namespace('userModule')
+import { storeNamespace } from '@/store'
+
+const user = storeNamespace('user')
+const game = storeNamespace('game')
 
 @Options({
   components: {
@@ -140,18 +141,18 @@ const userModule = namespace('userModule')
 })
 export default class Game extends Vue {
   level = Level.createDummy()
-  @State('activeCell') activeCell!: Cell // this need to me removed ASASP - the same fate as... fate
-  @State('gameState') gameState!: GameStateEnum
-  @State('simulationState') simulationState!: boolean
-  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
-  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
-  @userModule.Action('GET_LEVEL_DATA') actionGetLevelStoreData!: ActionMethod
-  @userModule.Action('CLEAR_LEVEL_DATA') actionClearLevelStoreData!: ActionMethod
-  @userModule.Getter('fetchedLevelBoardState') moduleGetterFetchedBoardState!: string
-  @Mutation('SET_CURRENT_LEVEL_ID') mutationSetCurrentLevelID!: (id: string) => void
-  @Mutation('SET_GAME_STATE') mutationSetGameState!: (gameState: GameStateEnum) => void
-  @Mutation('SET_SIMULATION_STATE') mutationSetSimulationState!: (simulationState: boolean) => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  activeCell = setup(() => game.useState('activeCell')) // this need to me removed ASASP - the same fate as... fate
+  gameState = setup(() => game.useState('gameState'))
+  simulationState = setup(() => game.useState('simulationState'))
+  actionSaveLevel = setup(() => user.useAction('SAVE_LEVEL'))
+  actionUpdateLevel = setup(() => user.useAction('UPDATE_LEVEL'))
+  actionGetLevelStoreData = setup(() => user.useAction('GET_LEVEL_DATA'))
+  actionClearLevelStoreData = setup(() => user.useAction('CLEAR_LEVEL_DATA'))
+  moduleGetterFetchedBoardState = setup(() => user.useGetter('fetchedLevelBoardState'))
+  mutationSetCurrentLevelID = setup(() => game.useMutation('SET_CURRENT_LEVEL_ID'))
+  mutationSetGameState = setup(() => game.useMutation('SET_GAME_STATE'))
+  mutationSetSimulationState = setup(() => game.useMutation('SET_SIMULATION_STATE'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
   store = setup(useStore)
 
   frameIndex = 0
@@ -164,7 +165,6 @@ export default class Game extends Vue {
     particles: [],
     text: 'Hover on a element for more information.',
   }
-
 
   fateCoord = Coord.importCoord({ x: -1, y: -1 })
   fateStep = 999
@@ -202,8 +202,8 @@ export default class Game extends Vue {
    * Parse url to extract level number
    * if missing then fallback to '0' for infinity level / sandbox
    */
-  get levelId(): string {
-    return this.route.params.id as string
+  get levelId(): number {
+    return +this.route.params.id || 0
   }
 
   /**
@@ -223,7 +223,7 @@ export default class Game extends Vue {
    * to determine this.
    */
   get isCustomLevel(): boolean {
-    return this.levelId.length > 4
+    return this.levelId >= 1000
   }
 
   /**
@@ -248,7 +248,9 @@ export default class Game extends Vue {
               // 3) in case of a successful fetch,
               //    get substitute this.level with store data.
               if (rootState.userModule.fetchedLevel) {
-                const fetchedLevelBoardObj = JSON.parse(this.moduleGetterFetchedBoardState)
+                // FIXME: This logic is clearly broken, which was revealed by strong store typing
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const fetchedLevelBoardObj = this.moduleGetterFetchedBoardState!
                 this.level = Level.importLevel(fetchedLevelBoardObj)
                 this.setFirstToolAsHovered()
                 this.updateSimulation()
@@ -261,7 +263,7 @@ export default class Game extends Vue {
           this.error = error.message
         })
     } else {
-      this.level = Level.importLevel(levels[parseInt(this.levelId)])
+      this.level = Level.importLevel(levels[this.levelId])
       this.setFirstToolAsHovered()
       this.updateSimulation()
     }
@@ -295,7 +297,7 @@ export default class Game extends Vue {
     this.frameIndex = 0
     this.displayFate = false
     this.setEnergizedCells()
-    if (this.levelId !== '0' && this.levelId.length < 5) {
+    if (this.levelId !== 0) {
       this.mutationSetGameState(this.level.gameState.gameState)
     }
     this.mutationSetSimulationState(false)
@@ -329,23 +331,24 @@ export default class Game extends Vue {
     this.level.grid.setEnergized([this.fateCoord])
   }
 
-
   /**
-  * Convert IAbsorption to Absorption class instances
-  * Filter the escaping particle absorption events
-  * @param IAbsorption[]
-  * @returns absorption instance list (cell, probability)
-  */
+   * Convert IAbsorption to Absorption class instances
+   * Filter the escaping particle absorption events
+   * @param IAbsorption[]
+   * @returns absorption instance list (cell, probability)
+   */
   get filteredAbsorptions(): Absorption[] {
     const absorptions: Absorption[] = []
-    this.simulation.totalAbsorptionPerTile.forEach((absorptionI: {x: number, y: number, probability: number}): void => {
-      const coord = Coord.importCoord({x: absorptionI.x, y: absorptionI.y})
-      if (!coord.outOfGrid) {
-        const cell = this.level.grid.get(coord)
-        cell.energized = true
-        absorptions.push(new Absorption(cell, absorptionI.probability))
+    this.simulation.totalAbsorptionPerTile.forEach(
+      (absorptionI: { x: number; y: number; probability: number }): void => {
+        const coord = Coord.importCoord({ x: absorptionI.x, y: absorptionI.y })
+        if (!coord.outOfGrid) {
+          const cell = this.level.grid.get(coord)
+          cell.energized = true
+          absorptions.push(new Absorption(cell, absorptionI.probability))
+        }
       }
-    })
+    )
     // Filter out of grid cells
     return absorptions.filter((absorption: Absorption) => {
       return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold
@@ -372,9 +375,13 @@ export default class Game extends Vue {
    * @returns individual paths
    */
   get pathParticles(): IParticle[] {
-    return uniq(flatten(this.simulation.frames.map((frame: Frame) => {
-      return frame.particles
-    })))
+    return uniq(
+      flatten(
+        this.simulation.frames.map((frame: Frame) => {
+          return frame.particles
+        })
+      )
+    )
   }
 
   /**
@@ -382,7 +389,8 @@ export default class Game extends Vue {
    * @returns particles
    */
   get activeParticles(): Particle[] {
-    return this.activeFrame.particles.map((particleI: IParticle) => Particle.importParticle(particleI)
+    return this.activeFrame.particles.map((particleI: IParticle) =>
+      Particle.importParticle(particleI)
     )
   }
 
@@ -399,7 +407,7 @@ export default class Game extends Vue {
   computeNewFate(): void {
     const fate = this.simulation.sampleRandomRealization()
     this.displayFate = false
-    this.fateCoord = Coord.importCoord({x: fate.x, y: fate.y })
+    this.fateCoord = Coord.importCoord({ x: fate.x, y: fate.y })
     this.fateStep = fate.step
   }
 
@@ -634,14 +642,14 @@ export default class Game extends Vue {
     if (this.isCustomLevel) {
       return `/level/${this.levelId}`
     }
-    return `/level/${parseInt(this.levelId) - 1}`
+    return `/level/${this.levelId - 1}`
   }
 
   get nextLevel(): string {
     if (this.isCustomLevel) {
       return `/level/${this.levelId}`
     }
-    return `/level/${parseInt(this.levelId) + 1}`
+    return `/level/${this.levelId + 1}`
   }
 
   /**
@@ -650,7 +658,7 @@ export default class Game extends Vue {
    * @returns an router link :to attribute string
    */
   get nextLevelOrOvelay(): string {
-    const possibleOverlay = getRockTalkIdByLevelId(parseInt(this.levelId))
+    const possibleOverlay = getRockTalkIdByLevelId(this.levelId)
     return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
   }
 
@@ -662,7 +670,7 @@ export default class Game extends Vue {
 
 <style lang="scss" scoped>
 // Drag & drop
-.hoverCell {
+.portal-dragdrop {
   pointer-events: none;
   position: absolute;
   z-index: 10;

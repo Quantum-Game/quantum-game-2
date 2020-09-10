@@ -30,15 +30,17 @@
 </template>
 
 <script lang="ts">
+import { storeNamespace } from '@/store'
 import { setup, Vue } from 'vue-class-component'
 import { useRoute } from 'vue-router'
-import { State, namespace } from 'vuex-class'
 
-const user = namespace('userModule')
+const user = storeNamespace('user')
+const game = storeNamespace('game')
 
 export default class AppMenu extends Vue {
-  @State('currentLevelID') currentLevelID!: number
-  @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
+  moduleGetterIsLoggedIn = setup(() => user.useGetter('isLoggedIn'))
+  currentLevelID = setup(() => game.useState('currentLevelID'))
+
   route = setup(useRoute)
 
   isMenuOpen = false

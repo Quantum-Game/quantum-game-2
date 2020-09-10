@@ -15,28 +15,24 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import type { ActionMethod } from 'vuex'
+import { defineComponent } from 'vue'
+import { storeNamespace } from '@/store'
 
-const user = namespace('userModule')
-
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
     AppButton,
   },
-})
-export default class MyAccount extends Vue {
-  @user.Action('SIGN_OUT') actionSignOut!: ActionMethod
-  @user.Getter('userName') moduleGetterUserName!: string
+  setup() {
+    const user = storeNamespace('user')
+    const userName = user.useGetter('userName')
+    const signOut = user.useAction('SIGN_OUT')
 
-  signOut(): void {
-    this.actionSignOut(this.moduleGetterUserName)
-  }
-}
+    return { userName, signOut }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

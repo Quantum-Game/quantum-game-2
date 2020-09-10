@@ -20,24 +20,22 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
-import { State } from 'vuex-class'
-import Particle from '@/engine/Particle'
 import AppPhoton from '@/components/AppPhoton.vue'
-import AppButton from '@/components/AppButton.vue'
+import { storeNamespace } from '@/store'
+import { defineComponent } from 'vue'
 
-@Options({
+export default defineComponent({
   components: {
     AppPhoton,
-    AppButton,
+  },
+  setup() {
+    const game = storeNamespace('game')
+    return {
+      hoveredParticles: game.useState('hoveredParticles'),
+      width: 180,
+    }
   },
 })
-export default class GamePhotons extends Vue {
-  @State hoveredParticles!: Particle[]
-  @Prop() readonly particles!: Particle[]
-  width = 180
-}
 </script>
 
 <style lang="scss" scoped>

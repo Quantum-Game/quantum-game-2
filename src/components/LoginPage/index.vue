@@ -14,7 +14,7 @@
           <div class="social-login__btn social-login__g" @click="actionSignInGoogle">Google</div>
         </div>
         <p class="separator">or</p>
-        <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
+        <!-- <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div> -->
         <form class="email-login" action="#" @submit.prevent="actionSignIn(user)">
           <div class="email-login__email">
             <input
@@ -56,32 +56,34 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import type { ActionMethod } from 'vuex'
+import { storeNamespace } from '@/store'
+import { defineComponent, reactive } from 'vue'
 
-const user = namespace('userModule')
-
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
     AppButton,
   },
+  setup() {
+    const userModule = storeNamespace('user')
+    const actionSignIn = userModule.useAction('SIGN_IN')
+    const actionSignInGithub = userModule.useAction('SIGN_IN_GITHUB')
+    const actionSignInFacebook = userModule.useAction('SIGN_IN_FACEBOOK')
+    const actionSignInGoogle = userModule.useAction('SIGN_IN_GOOGLE')
+    // FIXME: no such getter. Were all error moved to notifications?
+    // const moduleGetterError = user.useGetter('error')
+
+    const user = reactive({
+      email: '',
+      password: '',
+      rememberMe: true,
+    })
+
+    return { actionSignIn, actionSignInGithub, actionSignInFacebook, actionSignInGoogle, user }
+  },
 })
-export default class Login extends Vue {
-  @user.Action('SIGN_IN') actionSignIn!: ActionMethod
-  @user.Action('SIGN_IN_GITHUB') actionSignInGithub!: ActionMethod
-  @user.Action('SIGN_IN_FACEBOOK') actionSignInFacebook!: ActionMethod
-  @user.Action('SIGN_IN_GOOGLE') actionSignInGoogle!: ActionMethod
-  @user.Getter('error') moduleGetterError!: string | null
-  user = {
-    email: '',
-    password: '',
-    rememberMe: true,
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -101,10 +103,10 @@ p {
   color: rgba(255, 255, 255, 0.7);
 }
 
-.alert-error {
-  margin-bottom: 20px;
-  color: #ff0055;
-}
+// .alert-error {
+//   margin-bottom: 20px;
+//   color: #ff0055;
+// }
 
 .separator {
   position: relative;

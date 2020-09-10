@@ -1,47 +1,41 @@
 <template>
   <div v-if="shown" class="login-status">
-    <router-link :to="to" class="login-style">
-      <p v-if="!moduleGetterIsLoggedIn">LOG IN</p>
-      <p v-else>Playing as {{ moduleGetterUserName }}</p>
+    <router-link v-if="!loggedIn" to="/login" class="login-style">
+      <p>LOG IN</p>
+    </router-link>
+    <router-link v-else to="/myaccount" class="login-style"
+      ><p>Playing as {{ userName }}</p>
     </router-link>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
-import AppButton from '@/components/AppButton.vue'
-import { namespace } from 'vuex-class'
 import { useRoute } from 'vue-router'
+import { computed, defineComponent } from 'vue'
+import { storeNamespace } from '@/store'
 
-const user = namespace('userModule')
+export default defineComponent({
+  setup() {
+    const route = useRoute()
+    const user = storeNamespace('user')
+    const moduleGetterUserName = user.useGetter('userName')
+    const moduleGetterIsLoggedIn = user.useGetter('isLoggedIn')
 
-@Options({
-  components: {
-    AppButton,
+    return {
+      userName: moduleGetterUserName,
+      loggedIn: moduleGetterIsLoggedIn,
+      /**
+       * The button should not be displayed on a login page
+       * nor the home page
+       * @returns shown boolean
+       */
+      shown: computed(() => {
+        const name = route.name
+        return name !== 'login' && name !== 'home' && name !== 'rocks'
+      }),
+    }
   },
 })
-export default class LoginStatus extends Vue {
-  @user.Getter('userName') moduleGetterUserName!: string
-  @user.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
-  route = setup(useRoute)
-  /**
-   * Dynamic route depending on context
-   * @returns a route string
-   */
-  get to(): string {
-    return this.moduleGetterIsLoggedIn ? '/myaccount' : '/login'
-  }
-
-  /**
-   * The button should not be displayed on a login page
-   * nor the home page
-   * @returns shown boolean
-   */
-  get shown(): boolean {
-    const name = this.route.name
-    return name !== 'login' && name !== 'home' && name !== 'rocks'
-  }
-}
 </script>
 
 <style lang="scss" scoped>

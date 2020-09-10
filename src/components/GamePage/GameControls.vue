@@ -85,15 +85,14 @@
 <script lang="ts">
 import { Options, setup, Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { State, namespace } from 'vuex-class'
-import { GameStateEnum } from '@/engine/interfaces'
 import { IStyle } from '@/types'
-import type { ActionMethod } from 'vuex'
 import { useRouter } from 'vue-router'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
+import { storeNamespace } from '@/store'
 
-const userModule = namespace('userModule')
-const optionsModule = namespace('optionsModule')
+const game = storeNamespace('game')
+const user = storeNamespace('user')
+const options = storeNamespace('options')
 
 @Options({
   emits: {
@@ -101,20 +100,20 @@ const optionsModule = namespace('optionsModule')
     'loaded-level': null,
     play: null,
     'download-level': null,
-  }
+  },
 })
 export default class GameControls extends Vue {
   // FIXME: Can somehow accelerate photon speed by spamming play
   @Prop() readonly frameIndex!: number
   @Prop() readonly totalFrames!: number
   @Prop({ default: '' }) readonly displayStatus!: string
-  @State('gameState') gameState!: GameStateEnum
-  @State('simulationState') simulationState!: boolean
-  @userModule.Action('SAVE_LEVEL') actionSaveLevel!: ActionMethod
-  @userModule.Action('UPDATE_LEVEL') actionUpdateLevel!: ActionMethod
-  @optionsModule.Action('TOGGLE_SOUND') toggleSound!: ActionMethod
-  @userModule.Getter('isLoggedIn') moduleGetterIsLoggedIn!: boolean
-  @optionsModule.Getter('soundActive') soundActive!: boolean
+  gameState = setup(() => game.useState('gameState'))
+  simulationState = setup(() => game.useState('simulationState'))
+  actionSaveLevel = setup(() => user.useAction('SAVE_LEVEL'))
+  actionUpdateLevel = setup(() => user.useAction('UPDATE_LEVEL'))
+  toggleSound = setup(() => options.useAction('TOGGLE_SOUND'))
+  moduleGetterIsLoggedIn = setup(() => user.useGetter('isLoggedIn'))
+  soundActive = setup(() => options.useGetter('soundActive'))
   router = setup(useRouter)
 
   loadJsonLevelFromFile(event: Event): void {

@@ -49,12 +49,11 @@
 </template>
 
 <script lang="ts">
-import { Options, mixins, setup } from 'vue-class-component'
+import { Options, Vue, setup } from 'vue-class-component'
 import { Prop, Watch } from 'vue-property-decorator'
-import { Mutation, State } from 'vuex-class'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
-import Position from '@/mixins/Position'
+import { usePosition } from '@/mixins/Position'
 import {
   LaserCell,
   NonLinearCrystalCell,
@@ -78,6 +77,7 @@ import {
 } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
 import { ref } from 'vue'
+import { storeNamespace } from '@/store'
 
 const borderColors = {
   active: 'transparent',
@@ -85,6 +85,8 @@ const borderColors = {
   rotable: 'white',
   energized: 'blue',
 }
+
+const game = storeNamespace('game')
 
 @Options({
   components: {
@@ -110,20 +112,27 @@ const borderColors = {
   },
   emits: ['update-cell', 'click'],
 })
-export default class AppCell extends mixins(Position) {
+export default class AppCell extends Vue {
   @Prop() readonly cell!: Cell
   @Prop() readonly tileSize!: number
   @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
-  @Mutation('RESET_ACTIVE_CELL') mutationResetActiveCell!: () => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
-  @State simulationState!: string
-  @State gameState!: GameStateEnum
-  @State activeCell!: Cell
-  @State cellSelected!: boolean
-  @State hoveredCell!: Cell
+  mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
+  mutationResetActiveCell = setup(() => game.useMutation('RESET_ACTIVE_CELL'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
+  simulationState = setup(() => game.useState('simulationState'))
+  gameState = setup(() => game.useState('gameState'))
+  activeCell = setup(() => game.useState('activeCell'))
+  cellSelected = setup(() => game.useState('cellSelected'))
+  hoveredCell = setup(() => game.useState('hoveredCell'))
   border = ''
   isRotate = false
+
+  position = setup(() =>
+    usePosition(
+      () => this.tileSize,
+      () => this.cell.coord
+    )
+  )
 
   cellRef = setup(() => ref<HTMLElement>())
 
@@ -181,7 +190,7 @@ export default class AppCell extends mixins(Position) {
 
   mouseMove(e: { pageX: number; pageY: number }): void {
     const cell = this.cellRef
-    const hoverCell = document.querySelector<HTMLElement>('.hoverCell')
+    const hoverCell = document.querySelector<HTMLElement>('.portal-dragdrop')
     if (cell == null || hoverCell == null) return
 
     this.isRotate = true
@@ -206,7 +215,7 @@ export default class AppCell extends mixins(Position) {
 
   dragEnd(): void {
     const cell = this.cellRef
-    const hoverCell = document.querySelector<HTMLElement>('.hoverCell')
+    const hoverCell = document.querySelector<HTMLElement>('.portal-dragdrop')
     if (cell == null || hoverCell == null) return
 
     cell.style.opacity = '1'
@@ -324,11 +333,13 @@ export default class AppCell extends mixins(Position) {
   get computeCellStyle(): IStyle {
     const { rotation } = this.cell
     let styleObj = {}
+    const origin = this.position.transformOrigin
+    const translate = this.position.position
     styleObj = {
-      'transform-origin': `${this.transformOriginX}px ${this.transformOriginY}px`,
+      'transform-origin': `${origin.x}px ${origin.y}px`,
       transform: `
         rotate(-${rotation}deg)
-        translate(${this.positionX}px, ${this.positionY}px)`,
+        translate(${translate.x}px, ${translate.y}px)`,
     }
     return styleObj
   }

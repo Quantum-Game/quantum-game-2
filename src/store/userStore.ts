@@ -1,5 +1,4 @@
 import {
-  IUserState,
   IUser,
   IProgressObj,
   ISavedLevel,
@@ -10,7 +9,15 @@ import { ILevel } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
 
-export default storeModule<IUserState>({
+interface UserState {
+  user: IUser
+  progressArr: IProgressObj[]
+  savedLevelsList: ISavedLevelMetadata[]
+  publicLevels: ISavedLevelMetadata[]
+  fetchedLevel?: ILevel
+}
+
+export default storeModule({
   namespaced: true,
   state: {
     user: {
@@ -25,7 +32,7 @@ export default storeModule<IUserState>({
     savedLevelsList: [],
     publicLevels: [],
     fetchedLevel: undefined,
-  },
+  } as UserState,
   getters: {
     user(state): IUser {
       return state.user
@@ -50,33 +57,33 @@ export default storeModule<IUserState>({
     },
   },
   mutations: {
-    SET_LOGGED_IN(state, payload): void {
+    SET_LOGGED_IN(state, payload: boolean): void {
       state.user.loggedIn = payload
     },
-    SET_REMEMBER_ME(state, payload): void {
+    SET_REMEMBER_ME(state, payload: boolean): void {
       state.user.rememberMe = payload
     },
-    SET_USER(state, payload): void {
+    SET_USER(state, payload: IUser['data']): void {
       state.user.data = payload
     },
-    SET_PROGRESS(state, payload): void {
+    SET_PROGRESS(state, payload: IProgressObj[]): void {
       state.progressArr = payload
     },
-    SET_SAVED_LEVELS_LIST(state, payload): void {
+    SET_SAVED_LEVELS_LIST(state, payload: ISavedLevelMetadata[]): void {
       state.savedLevelsList = payload
     },
-    SET_PUBLIC_LEVELS(state, payload): void {
+    SET_PUBLIC_LEVELS(state, payload: ISavedLevelMetadata[]): void {
       state.publicLevels = payload
     },
-    SET_PUBLIC(state, payload): void {
+    SET_PUBLIC(state, payload: string): void {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       state.savedLevelsList.find((x) => x.id === payload)!.public = true
     },
-    SET_PRIVATE(state, payload): void {
+    SET_PRIVATE(state, payload: string): void {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       state.savedLevelsList.find((x) => x.id === payload)!.public = false
     },
-    REMOVE_LEVEL(state, payload): void {
+    REMOVE_LEVEL(state, payload: string): void {
       state.savedLevelsList = state.savedLevelsList.filter(function(obj) {
         return obj.id !== payload
       })
@@ -90,17 +97,18 @@ export default storeModule<IUserState>({
   },
   actions: {
     SET_INITIAL_PROGRESS({ commit }): void {
-      commit('SET_PROGRESS', [
+      const payload: IProgressObj[] = [
         { id: 0, status: 'won', timeOpened: firebase.firestore.Timestamp.fromDate(new Date()) },
-      ])
+      ]
+      commit('SET_PROGRESS', payload)
     },
-    FETCH_USER({ commit, dispatch }, user): void {
-      commit('SET_LOGGED_IN', user !== null)
-      if (user) {
+    FETCH_USER({ commit, dispatch }, user: IUser['data'] | null): void {
+      commit('SET_LOGGED_IN', user != null)
+      if (user != null) {
         dispatch('GET_PROGRESS')
         dispatch('FETCH_MY_LEVELS')
         dispatch('FETCH_PUBLIC_LEVELS')
-        commit('RESET_ERRORS', null, { root: true })
+        commit('errors/RESET_ERRORS', null, { root: true })
         commit('SET_USER', {
           displayName: user.displayName,
           email: user.email,
@@ -126,7 +134,7 @@ export default storeModule<IUserState>({
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_IN_GITHUB({ dispatch }): void {
@@ -148,7 +156,7 @@ export default storeModule<IUserState>({
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_UP({ commit }, user): void {
@@ -165,7 +173,7 @@ export default storeModule<IUserState>({
           router.replace({ name: 'myaccount' })
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
     SIGN_OUT({ commit }): void {
@@ -188,7 +196,7 @@ export default storeModule<IUserState>({
             console.debug('Data stored: ', data)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       }
     },
@@ -211,7 +219,7 @@ export default storeModule<IUserState>({
             }
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       }
     },
@@ -243,7 +251,7 @@ export default storeModule<IUserState>({
             dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
@@ -265,7 +273,7 @@ export default storeModule<IUserState>({
         const doc = db.collection('levels').doc(levelSaved)
 
         doc.update(customLevel).catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
       } else {
         console.log('You are not logged in!')
@@ -293,7 +301,7 @@ export default storeModule<IUserState>({
             commit('SET_SAVED_LEVELS_LIST', myLevels)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
@@ -321,13 +329,13 @@ export default storeModule<IUserState>({
             commit('SET_PUBLIC_LEVELS', publicLevels)
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PUBLIC({ commit, dispatch }, levelID): void {
+    MAKE_LEVEL_PUBLIC({ commit, dispatch }, levelID: string): void {
       if (auth.currentUser) {
         const docs = db
           .collection('levels')
@@ -347,13 +355,13 @@ export default storeModule<IUserState>({
             dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID): void {
+    MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID: string): void {
       if (auth.currentUser) {
         const doc = db.collection('levels').doc(levelID)
 
@@ -363,13 +371,13 @@ export default storeModule<IUserState>({
             dispatch('UPDATE_LEVEL_LISTS')
           })
           .catch((err) => {
-            commit('SET_ERROR', err.message, { root: true })
+            commit('errors/SET_ERROR', err.message, { root: true })
           })
       } else {
         console.log('You are not logged in!')
       }
     },
-    REMOVE_LEVEL({ commit }, levelID): void {
+    REMOVE_LEVEL({ commit }, levelID: string): void {
       const dbRef = db.collection('levels')
 
       dbRef
@@ -380,7 +388,7 @@ export default storeModule<IUserState>({
           console.log('Level removed', levelID)
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
     GET_LEVEL_DATA({ commit }, { id }): void {
@@ -397,7 +405,7 @@ export default storeModule<IUserState>({
           }
         })
         .catch((err) => {
-          commit('SET_ERROR', err.message, { root: true })
+          commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
     CLEAR_LEVEL_DATA({ commit }): void {

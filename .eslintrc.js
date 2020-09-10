@@ -14,15 +14,22 @@ module.exports = {
   ],
   rules: {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    '@typescript-eslint/naming-convention': [
-      'error',
-      {
-        selector: 'interface',
-        format: ['PascalCase'],
-        prefix: ['I'],
-      },
-    ],
+    // TODO: once we are ready to start force-migrating away from `I` prefix, enable this rule
+    // '@typescript-eslint/naming-convention': [
+    //   'warn',
+    //   {
+    //     selector: 'interface',
+    //     format: ['PascalCase'],
+    //     custom: {
+    //       regex: "^I[A-Z]",
+    //       match: false
+    //     }
+    //   }
+    // ],
     'no-use-before-define': 'off',
+    "no-unused-expressions": "off",
+    "vue/require-default-prop": "off",
+    "@typescript-eslint/no-unused-expressions": "error",
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

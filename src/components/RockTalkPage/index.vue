@@ -13,12 +13,14 @@
 
 <script lang="ts">
 import { Vue, Options, setup } from 'vue-class-component'
-import { State } from 'vuex-class'
 import { IDialogue } from '@/mixins/dataInterfaces'
 import { getRockTalkById } from './loadRockTalks'
 import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
 import { useRoute } from 'vue-router'
+import { storeNamespace } from '@/store'
+
+const game = storeNamespace('game')
 
 @Options({
   components: {
@@ -27,7 +29,7 @@ import { useRoute } from 'vue-router'
   },
 })
 export default class InterLevelOverlay extends Vue {
-  @State('currentLevelID') currentLevelID!: string
+  currentLevelID = setup(() => game.useState('currentLevelID'))
   route = setup(useRoute)
 
   get rockTalkId(): string {
@@ -43,7 +45,7 @@ export default class InterLevelOverlay extends Vue {
    * @returns a router link :to string parameter
    */
   get nextLevel(): string {
-    return `/level/${parseInt(this.currentLevelID) + 1}`
+    return `/level/${this.currentLevelID + 1}`
   }
 }
 </script>

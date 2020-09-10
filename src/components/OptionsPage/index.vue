@@ -39,15 +39,11 @@
 
 <script lang="ts">
 import { Vue, Options, setup } from 'vue-class-component'
-import { namespace } from 'vuex-class'
-import { SET_OPTIONS } from '@/store/mutation-types'
 import { AppLayout } from '@/components'
-import type { IOptionsModule } from '@/store/optionsModule'
 import { useI18n } from 'vue-i18n'
+import { storeNamespace } from '@/store'
 
-
-// used to target namespaced vuex module:
-const options = namespace('optionsModule')
+const options = storeNamespace('options')
 
 @Options({
   components: {
@@ -55,10 +51,9 @@ const options = namespace('optionsModule')
   },
 })
 export default class OptionsPage extends Vue {
-  @options.Mutation(SET_OPTIONS) setOptions!: (options: Partial<IOptionsModule>) => void
-  @options.Getter('allOptions') allOptions!: IOptionsModule
+  setOptions = setup(() => options.useMutation('SET_OPTIONS'))
+  allOptions = setup(() => options.useGetter('allOptions'))
   i18n = setup(useI18n)
-
 
   get gameSpeed(): number {
     return this.allOptions.gameSpeedInterval

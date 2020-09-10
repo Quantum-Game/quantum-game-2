@@ -35,13 +35,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { Mutation } from 'vuex-class'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
+import { storeNamespace } from '@/store'
+
+const game = storeNamespace('game')
+
 @Options({
   components: {
     AppCell,
@@ -53,8 +56,8 @@ import { validateInfoPayload } from '@/mixins/gameInterfaces'
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox
-  @Mutation('SET_ACTIVE_CELL') mutationSetActiveCell!: (cell: Cell) => void
-  @Mutation('SET_HOVERED_CELL') mutationSetHoveredCell!: (cell: Cell) => void
+  mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
+  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
   cell = {}
   viewBox = '-8 0 80 80'
   counterX = '40%'

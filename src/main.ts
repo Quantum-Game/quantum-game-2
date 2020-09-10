@@ -3,7 +3,7 @@ import 'reflect-metadata'
 
 import { createApp } from 'vue'
 import router from './router'
-import store from './store/store'
+import { store } from './store/store'
 import './registerServiceWorker'
 import '@/config/firebase'
 import { i18n } from './i18n'

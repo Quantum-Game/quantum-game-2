@@ -5,7 +5,7 @@
         <h1>
           User Registration
         </h1>
-        <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div>
+        <!-- <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div> -->
         <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
           <div class="col-md-6">
             <input
@@ -56,30 +56,30 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { namespace } from 'vuex-class'
 import AppLayout from '@/components/AppLayout.vue'
 import AppButton from '@/components/AppButton.vue'
-import type { ActionMethod } from 'vuex'
+import { defineComponent, reactive } from 'vue'
+import { storeNamespace } from '@/store'
 
-const userStore = namespace('userModule')
-
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
     AppButton,
   },
-})
-export default class Register extends Vue {
-  @userStore.Getter('error') moduleGetterError!: Error | null
-  @userStore.Action('SIGN_UP') actionSignUp!: ActionMethod
+  setup() {
+    const userStore = storeNamespace('user')
+    const actionSignUp = userStore.useAction('SIGN_UP')
+    // FIXME: missing getter
+    // const moduleGetterError = userStore.useGetter('error')
+    const user = reactive({
+      email: '',
+      password: '',
+      name: '',
+    })
 
-  user = {
-    email: '',
-    password: '',
-    name: '',
-  }
-}
+    return { actionSignUp, user }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
