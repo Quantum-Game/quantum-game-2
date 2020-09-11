@@ -77,5 +77,3 @@ export function storeNamespace<Ns extends keyof StoreModules>(namespace: Ns) {
     },
   }
 }
-
-// const errors = storeNamespace('errors')

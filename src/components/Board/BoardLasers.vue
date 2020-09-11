@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g v-for="(particle, index) in laserParticles" :key="'laser' + index">
+    <g v-for="(particle, index) in laserParticles" :key="index">
       <path class="laser" :d="particle.toSvg()" />
     </g>
   </g>
