@@ -1,64 +1,34 @@
 <template>
-  <!-- LASER PATH -->
-  <g class="lasers">
-    <g v-for="(particle, index) in pathParticles" :key="'laser' + index">
-      <path
-        :d="computePath(particle)"
-        stroke-dasharray="8 8"
-        fill="transparent"
-        stroke="#FF0055"
-        stroke-width="3"
-        class="laserPath"
-        :stroke-opacity="computeSize(particle)"
-      />
+  <g>
+    <g v-for="(particle, index) in laserParticles" :key="index">
+      <path class="laser" :d="particle.toSvg()" />
     </g>
   </g>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
 import Particle from '@/engine/Particle'
-import { IParticle } from '@/engine/interfaces'
+import { defineComponent, PropType } from 'vue'
 
-export default class Board extends Vue {
-  @Prop({ default: '' }) readonly pathParticles!: IParticle[]
-  tileSize = 64
-
-  /**
-   * Compute the laser path
-   * @returns SVG path
-   */
-  computePath(particle: IParticle): string {
-    return Particle.importParticle(particle).toSvg()
-  }
-
-  /**
-   * Compute laser path width according to probability
-   * @returns laser path width
-   */
-  computeSize(particle: Particle): number {
-    return particle.probability * 1.5
-  }
-}
+export default defineComponent({
+  props: {
+    laserParticles: { type: Array as PropType<Particle[]>, default: [] },
+  },
+})
 </script>
 
 <style lang="scss" scoped>
-.lasers {
-  width: 100%;
-  height: 100%;
-  .laserPath {
-    stroke-dasharray: 4 12;
-    animation-name: dash;
-    animation-duration: 4s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: reverse;
-  }
-  @keyframes dash {
-    to {
-      stroke-dashoffset: 64;
-    }
+$red: #ff0055;
+.laser {
+  fill: transparent;
+  stroke: $red;
+  stroke-width: 4; // Use particle.probability * x for scaling
+  stroke-dasharray: 4 12;
+  animation: dash 3s linear 0s infinite reverse forwards;
+}
+@keyframes dash {
+  to {
+    stroke-dashoffset: 64;
   }
 }
 </style>
