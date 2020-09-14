@@ -149,7 +149,7 @@ $leaf: #5c00d3;
   text-align: center;
   color: white;
   padding-top: 20px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     border-bottom: 1px solid white;
     min-height: 0px;
     margin-bottom: 64px;

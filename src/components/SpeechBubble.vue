@@ -146,11 +146,11 @@ export default defineComponent({
   position: absolute;
   color: #fff;
   font-size: 8px;
-  @media screen and (min-width: $small) {
+  @include media('>=small') {
     font-size: 12px;
     padding: 8px;
   }
-  @media screen and (min-width: $medium) {
+  @include media('>=medium') {
     font-size: 16px;
     padding: 4px 12px 12px 12px;
   }

@@ -116,7 +116,7 @@ body {
   width: 100%;
   text-align: center;
   border-top: solid 2px #fff;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: none;
   }
 }
@@ -129,7 +129,7 @@ body {
   padding-top: 10px;
   padding-bottom: 10px;
   padding: 5px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     justify-content: space-evenly;
     border-top: none;
     &::after {
@@ -146,7 +146,7 @@ body {
     min-width: 64px;
     padding: 0.5rem 0rem;
     height: 90px;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       width: 64px;
       padding: 0;
       width: auto;

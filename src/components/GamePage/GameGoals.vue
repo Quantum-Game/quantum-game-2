@@ -164,7 +164,7 @@ export default class GameGoals extends Vue {
   text-transform: uppercase;
   width: 100%;
   text-align: center;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: none;
   }
 }
@@ -172,7 +172,7 @@ p {
   font-size: 0.7rem;
   margin: 0rem;
   color: rgba(255, 255, 255, 0.6);
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     font-size: 0.5rem;
     margin-bottom: 0.5rem;
   }
@@ -183,7 +183,7 @@ p {
   width: 100%;
   display: flex;
   flex-direction: column;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: top;
@@ -201,7 +201,7 @@ p {
   & .bottom-icons {
     line-height: 150%;
     padding: 10px;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       line-height: 75%;
       padding: 0;
       // div {
@@ -252,7 +252,7 @@ p {
     // z-index: 1;
     background-color: rgba(0, 0, 0, 0.1);
     // border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       margin-top: 0;
     }
   }
@@ -294,14 +294,14 @@ p {
 }
 
 .cdc-container {
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: none;
   }
 }
 
 .results_simple {
   display: none;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: flex;
     align-items: center;
   }

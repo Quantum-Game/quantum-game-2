@@ -117,7 +117,7 @@ export default class AppMenu extends Vue {
 <style scoped lang="scss">
 .q-menu-wrapper {
   min-height: 42px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     width: 6vw;
     min-height: 0px;
   }
@@ -129,7 +129,7 @@ export default class AppMenu extends Vue {
   left: 20px;
   cursor: pointer;
   z-index: 4;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     position: static;
     top: 2vw;
     left: 5vw;
@@ -145,7 +145,7 @@ export default class AppMenu extends Vue {
     background-color: rgb(255, 255, 255);
     margin: 8px 0;
     transition: 0.4s;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       width: 6vw;
       height: 0.5vw;
       margin: 1vw 0;
@@ -154,7 +154,7 @@ export default class AppMenu extends Vue {
   /* Rotate first bar */
   &.open .bar1 {
     transform: rotate(-45deg) translate(-7px, 3px);
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
     }
   }
@@ -165,7 +165,7 @@ export default class AppMenu extends Vue {
   /* Rotate last bar */
   &.open .bar3 {
     transform: rotate(45deg) translate(-11px, -11px);
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       transform: rotate(45deg) translate(-1vw, -1vw);
     }
   }

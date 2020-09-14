@@ -166,7 +166,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: column;
   }
 }
@@ -182,7 +182,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
     font-weight: bold;
     text-align: justify;
     text-transform: uppercase;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       text-align: center;
       width: 90%;
     }
@@ -203,7 +203,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
       transition: 0.2s;
     }
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     padding-left: 20px;
   }
 }

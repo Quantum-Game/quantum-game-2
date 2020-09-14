@@ -593,7 +593,7 @@ h1.title {
   margin-bottom: 30;
   margin-top: 0;
   text-transform: uppercase;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     a img {
       width: 6vw !important;
     }

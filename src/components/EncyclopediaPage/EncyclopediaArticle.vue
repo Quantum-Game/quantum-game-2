@@ -127,7 +127,7 @@ article {
     line-height: 1.5rem;
     letter-spacing: 0.5px;
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     width: 100vw;
     article {
       width: 90vw;
@@ -145,7 +145,7 @@ h1 {
   justify-content: space-around;
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: column;
   }
 }
