@@ -38,13 +38,17 @@ type MapMutation<T> = T extends (store: any) => void
   ? (payload: P) => void
   : never
 
+export type MutationPayload<T> = T extends (store: any, payload: infer P) => void ? P : never
+
+type ShallowPromise<T> = T extends Promise<any> ? T : Promise<T>
+
 /**
  * Map an action function declared in the store module to the signature used in components
  */
 type MapAction<T> = T extends (ctx: any) => infer R
-  ? () => Promise<R>
+  ? () => ShallowPromise<R>
   : T extends (ctx: any, payload: infer P) => infer R
-  ? (payload: P) => Promise<R>
+  ? (payload: P) => ShallowPromise<R>
   : never
 
 export type MapGetters<G> = G extends GetterTree<any, any> & infer T

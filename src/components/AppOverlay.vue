@@ -26,18 +26,7 @@ import { GameStateEnum } from '@/engine/interfaces'
 })
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
-  @Prop() readonly victoryAlreadyShown!: boolean
   confetti = new Confetti()
-
-  explosion = false
-  explosionTimeout = null
-
-  mineExploding(): void {
-    this.explosion = true
-    window.setTimeout(() => {
-      this.explosion = false
-    }, 300)
-  }
 
   get computeClass(): string[] {
     return [this.gameState.toString(), 'wrapper']
@@ -47,17 +36,13 @@ export default class AppOverlay extends Vue {
     return this.gameState === GameStateEnum.Victory
   }
 
-  // get mineExploded(): boolean {
-  //   return this.gameState === GameStateEnum.MineExploded
-  // }
-
   destroyed(): void {
     this.confetti.stop()
   }
 
-  @Watch('gameState')
-  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
-    if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
+  @Watch('victory')
+  handleGameStateChange(victory: boolean): void {
+    if (victory) {
       this.confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
@@ -81,9 +66,7 @@ export default class AppOverlay extends Vue {
           '#ba00ff', // purple 02
         ],
       })
-    } else if (newGameState === GameStateEnum.MineExploded) {
-      this.mineExploding()
-    } else if (oldGameState === GameStateEnum.Victory) {
+    } else {
       this.confetti.stop()
     }
   }
