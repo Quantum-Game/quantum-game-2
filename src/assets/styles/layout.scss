@@ -1,6 +1,13 @@
+$unit: 4px;
+
 [layout] {
     display: flex;
     align-items: stretch;
+    
+    > * + * {
+        margin-left: calc(var(--layout-spacing) * var(--is-row-child));
+        margin-top: calc(var(--layout-spacing) * var(--is-column-child));
+    }
 }
 
 [layout] > * {
@@ -9,21 +16,59 @@
 
 [flex] { flex: 1; }
 
-[layout~=column] { flex-direction: column; }
-[layout~=row] { flex-direction: row; }
-
-[layout~=start] { align-items: flex-start; }
-[layout~=end] { align-items: flex-end; }
-[layout~=center] { align-items: center; }
-[layout~=middle] { justify-content: middle; }
-[layout~=around] { justify-content: space-around; }
-[layout~=between] { justify-content: space-between; }
-
-@mixin  define-spacing($name, $size) {
-    [layout~="#{$name}"][layout~=row] > * + * { margin-left: $size; }
-    [layout~="#{$name}"][layout~=column] > * + * { margin-top: $size; }
+@mixin define-spacing($attr, $name, $size) {
+    [#{$attr}~="#{$name}"] {
+        --layout-spacing: #{$size}
+    }
 }
 
-@include define-spacing(u1, 4px);
-@include define-spacing(u2, 8px);
-@include define-spacing(u4, 16px);
+@mixin maybe-media($media) {
+    @if $media == "" {
+        @content
+    } @else {
+        @include media($media) {
+            @content
+        }
+    }
+}
+
+@mixin define-layout($attr, $media) {
+    @include maybe-media($media) {
+        [#{$attr}~=column] {
+            flex-direction: column;
+            > * {
+                --is-row-child: 0;
+                --is-column-child: 1;
+            }
+        }
+        [#{$attr}~=row] {
+            flex-direction: row;
+            > * {
+                --is-row-child: 1;
+                --is-column-child: 0;
+            }
+        }
+
+        [#{$attr}~=start] { align-items: flex-start; }
+        [#{$attr}~=end] { align-items: flex-end; }
+        [#{$attr}~=center] { align-items: center; }
+        [#{$attr}~=middle] { justify-content: center; }
+        [#{$attr}~=around] { justify-content: space-around; }
+        [#{$attr}~=between] { justify-content: space-between; }
+        
+        @include define-spacing($attr, u1, $unit * 1);
+        @include define-spacing($attr, u2, $unit * 2);
+        @include define-spacing($attr, u4, $unit * 4);
+        @include define-spacing($attr, u5, $unit * 5);
+    }
+}
+
+// Layouts are defined as mobile-first,
+// that means `layout` is the default one for all screens,
+// and overrides are made for progressively bigger screen sizes,
+// e.g. layout-md defining layout for medium up.
+ 
+@include define-layout("layout", "");
+@include define-layout("layout-md", ">=medium");
+@include define-layout("layout-lg", ">=large");
+@include define-layout("layout-xl", ">=xlarge");

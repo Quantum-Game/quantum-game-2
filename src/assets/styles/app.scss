@@ -1,5 +1,8 @@
 // Global css included once for the whole application, without any scoping.
 // Those styles are allowed to emit css rules.
 
+// globals imported to have access to the variables and mixins
+@import "./global.scss";
+
 @import './icons.scss';
 @import './layout.scss';
