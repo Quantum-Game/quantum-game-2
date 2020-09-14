@@ -1,11 +1,10 @@
 <template>
-  <div ref="boardScaler" class="board_scaler" :style="{ height: boardHeight + 'px' }">
+  <div ref="boardScaler" class="board_scaler">
     <svg
       ref="gridWrapper"
-      :style="scalerStyle"
       class="grid"
-      :width="totalWidth"
-      :height="totalHeight"
+      :viewBox="`0 0 ${totalWidth} ${totalHeight}`"
+      :style="{ maxWidth: `${totalWidth}px`, maxHeight: `${totalHeight}px` }"
     >
       <!-- DOTS -->
       <board-dots :rows="grid.rows" :cols="grid.cols" />
@@ -90,20 +89,9 @@ import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
-import {
-  computed,
-  defineComponent,
-  nextTick,
-  onMounted,
-  PropType,
-  reactive,
-  ref,
-  toRefs,
-  watch,
-} from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
-import { useWindowEvent } from '@/mixins/event'
+import { useDOMRect } from '@/mixins/event'
 import { storeNamespace } from '@/store'
 
 const game = storeNamespace('game')
@@ -136,39 +124,22 @@ export default defineComponent({
     const mutationSetHoveredCell = game.useMutation('SET_HOVERED_CELL')
     const hoveredCell = game.useState('hoveredCell')
     const simulationState = game.useState('simulationState')
-    const route = useRoute()
 
     const gridWrapper = ref<HTMLElement>()
     const boardScaler = ref<HTMLElement>()
+    const boardRect = useDOMRect(boardScaler)
 
     const data = reactive({
       tileSize: 64,
       updatedTileSize: 64, // this is the actual, dynamic tile size
-      boardHeight: 0,
-      scalerStyle: {
-        transform: `scale(1)`,
-      },
       boardClientRect: new DOMRect(),
     })
 
-    function assessSize(): void {
-      const currentWidth = boardScaler.value?.getBoundingClientRect().width || 0
-      data.scalerStyle = {
-        transform: `scale(${currentWidth / 845})`,
-      }
-      nextTick(() => {
-        const currentHeight = gridWrapper.value?.getBoundingClientRect().height || 0
-        data.boardHeight = currentHeight
-      })
-      nextTick(() => {
-        data.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
-        data.boardClientRect = gridWrapper.value?.getBoundingClientRect() || new DOMRect()
-      })
-    }
-
-    onMounted(assessSize)
-    useWindowEvent('resize', assessSize)
-    watch(() => route.params, assessSize)
+    watch(boardRect, (size) => {
+      const currentWidth = size.width
+      data.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
+      data.boardClientRect = gridWrapper.value?.getBoundingClientRect() || new DOMRect()
+    })
 
     return {
       ...toRefs(data),
@@ -229,7 +200,7 @@ export default defineComponent({
 }
 .grid {
   transform-origin: 0 0%;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     transform-origin: 0 0;
   }
 }

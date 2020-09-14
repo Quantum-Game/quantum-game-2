@@ -4,7 +4,7 @@
     <div class="portal-dragdrop"></div>
 
     <!-- OVERLAY -->
-    <app-overlay :game-state="overlayGameState" class="overlay" @click="frameIndex = 0">
+    <app-overlay :game-state="overlayGameState" class="overlay" @click="rewind">
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -16,15 +16,15 @@
       <!-- HEADER-MIDDLE -->
       <template #header-middle>
         <h1 v-if="error" class="error">{{ error }}</h1>
-        <h1 v-else class="title">
+        <div v-else layout="row u2 middle center">
           <router-link :to="previousLevel">
             <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
           </router-link>
-          {{ level.id + ' - ' + level.name }}
+          <h1 class="title">{{ level.id + ' - ' + level.name }}</h1>
           <router-link :to="nextLevelOrOvelay">
             <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
           </router-link>
-        </h1>
+        </div>
       </template>
 
       <!-- MAIN-LEFT -->
@@ -42,7 +42,7 @@
       <!-- MAIN-MIDDLE -->
       <template #main-middle>
         <section>
-          <game-board
+          <board
             :particles="activeParticles"
             :laser-particles="laserParticles"
             :fate="fateCoord"
@@ -57,17 +57,16 @@
           />
           <game-controls
             :frame-index="frameIndex"
-            :total-frames="simulation.frames.length"
+            :total-frames="totalFrames"
             :display-status="displayStatus"
             @rewind="rewind"
             @step-back="stepBack"
             @play="play"
             @step-forward="stepForward"
             @fast-forward="fastForward"
-            @new-fate="computeNewFate"
             @reload="reload"
             @download-level="downloadLevel"
-            @loaded-level="loadLevel($event)"
+            @loaded-level="loadLevel"
             @hover="updateInfoPayload"
             @save-level="handleSave"
           />
@@ -82,7 +81,7 @@
             :percentage="level.gameState.totalAbsorptionPercentage"
           />
           <div class="ket-viewer-game">
-            <ket-viewer class="ket" :vector="activeFrame.vector" />
+            <ket-viewer v-if="activeFrame" class="ket" :vector="activeFrame.vector" />
           </div>
         </section>
       </template>
@@ -91,13 +90,11 @@
 </template>
 
 <script lang="ts">
-import { Frame, Simulation } from 'quantum-tensors'
-import { Vue, Options, setup } from 'vue-class-component'
-import { Watch } from 'vue-property-decorator'
-import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
+import { Simulation, Vector } from 'quantum-tensors'
+import { IAbsorption } from 'quantum-tensors/dist/interfaces'
+import { IHint, GameStateEnum, ISimGrid } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
-import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
-import Toolbox from '@/engine/Toolbox'
+import { Cell, Level, Particle, Coord } from '@/engine/classes'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
@@ -105,9 +102,8 @@ import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
-import GamePhotons from '@/components/GamePage/GamePhotons.vue'
 import GameLayout from '@/components/GamePage/GameLayout.vue'
-import GameBoard from '@/components/Board/index.vue'
+import Board from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
@@ -115,20 +111,27 @@ import { useStore } from 'vuex'
 import '@/store/store'
 import { useRoute } from 'vue-router'
 import { storeNamespace } from '@/store'
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineComponent, onMounted, ref, shallowRef, watch } from 'vue'
 import { useWindowEvent } from '@/mixins/event'
 import { useTimer } from '@/mixins/timer'
+
+/**
+ * View data extracted from simulation
+ */
+interface SimFrame {
+  particles: Particle[]
+  vector: Vector
+}
 
 export default defineComponent({
   components: {
     GameLayout,
-    GamePhotons,
     KetViewer,
     GameGoals,
     GameInfobox,
     GameToolbox,
     GameControls,
-    GameBoard,
+    Board,
     AppButton,
     AppOverlay,
   },
@@ -154,7 +157,46 @@ export default defineComponent({
     const level = ref(Level.createDummy())
 
     const frameIndex = ref(0)
-    let simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
+    // sim derived state (separate to avoid proxying Simulation object)
+    const simFrames = shallowRef<SimFrame[]>([])
+    const filteredAbsorptions = ref([] as Absorption[])
+
+    function runSimulation(simGrid: ISimGrid): Simulation {
+      const newSim = new Simulation(simGrid)
+      newSim.initializeFromIndicator(newSim.generateLaserIndicator())
+      newSim.generateFrames(40)
+      return newSim
+    }
+
+    function updateSimulation(): void {
+      console.log('updateSimulation')
+      // Compute simulation frames
+      const simulation = runSimulation(level.value.grid.exportSimGrid())
+
+      computeNewFate(simulation)
+
+      simFrames.value = simulation.frames.map((frame) => {
+        return {
+          particles: frame.particles.map(Particle.importParticle),
+          vector: frame.vector,
+        }
+      })
+
+      filteredAbsorptions.value = filterAbsorptions(simulation.totalAbsorptionPerTile)
+
+      // Set absorption events to compute gameState
+      level.value.gameState.absorptions = filteredAbsorptions.value
+      // Reset simulation variables
+      frameIndex.value = 0
+      displayFate.value = false
+      setEnergizedCells()
+      if (routeLevelId() !== 0) {
+        mutationSetGameState(level.value.gameState.gameState)
+      }
+      mutationSetSimulationState(false)
+      console.debug(level.value.gameState.toString())
+    }
+
     let error: string | null = null
 
     const frameAdvanceTimer = useTimer(() => {
@@ -163,9 +205,6 @@ export default defineComponent({
       } else {
         mutationSetSimulationState(false)
         setEnergizedCellAtTheEnd()
-        setTimeout(() => {
-          updateSimulation()
-        }, 1000)
       }
     })
 
@@ -187,7 +226,6 @@ export default defineComponent({
     const fateCoord = ref(Coord.importCoord({ x: -1, y: -1 }))
     const fateStep = ref(999)
     const displayFate = ref(false)
-    const showVictory = ref(false)
 
     /**
      * Step back one frame
@@ -207,7 +245,7 @@ export default defineComponent({
         return
       }
       level.value.grid.resetEnergized()
-      computeNewFate()
+      // computeNewFate()
       frameIndex.value = 0
       mutationSetSimulationState(true)
     }
@@ -217,7 +255,7 @@ export default defineComponent({
      */
     function stepForward() {
       mutationSetSimulationState(false)
-      frameIndex.value = Math.max(0, Math.min(simulation.frames.length, frameIndex.value + 1))
+      frameIndex.value = Math.max(0, Math.min(totalFrames.value, frameIndex.value + 1))
       level.value.grid.resetEnergized()
     }
 
@@ -225,7 +263,7 @@ export default defineComponent({
      * Reload the current page
      */
     function fastForward(): void {
-      frameIndex.value = Math.max(0, simulation.frames.length - 1)
+      frameIndex.value = Math.max(0, totalFrames.value - 1)
     }
 
     /**
@@ -266,38 +304,14 @@ export default defineComponent({
      * Left and right keys to see frames
      * TODO: Implement dev mode
      */
-    useWindowEvent('keypress', (e) => {
-      // console.log(e.keyCode);
+    useWindowEvent('keydown', (e) => {
       switch (e.keyCode) {
-        // case 81:
-        //   level.value.grid.moveAll(180);
-        //   break;
-        // case 68:
-        //   level.value.grid.moveAll(0);
-        //   break;
-        // case 90:
-        //   level.value.grid.moveAll(90);
-        //   break;
-        // case 83:
-        //   level.value.grid.moveAll(270);
-        //   break;
-        // case 65:
-        //   level.value.grid.rotateAll();
-        //   break;
-        // case 69:
-        //   level.value.grid.reflectAll();
-        //   break;
         case 32:
-          play()
-          break
+          return play()
         case 37:
-          stepBack()
-          break
+          return stepBack()
         case 39:
-          stepForward()
-          break
-        default:
-          break
+          return stepForward()
       }
     })
 
@@ -349,31 +363,6 @@ export default defineComponent({
     }
 
     /**
-     * Level loading and initialization
-     * @returns boolean
-     */
-    function updateSimulation(): void {
-      console.log('updateSimulation')
-      // Compute simulation frames
-      simulation = new Simulation(level.value.grid.exportSimGrid())
-      const indicator = simulation.generateLaserIndicator()
-      simulation.initializeFromIndicator(indicator)
-      simulation.generateFrames(40)
-
-      // Set absorption events to compute gameState
-      level.value.gameState.absorptions = filteredAbsorptions.value
-      // Reset simulation variables
-      frameIndex.value = 0
-      displayFate.value = false
-      setEnergizedCells()
-      if (routeLevelId() !== 0) {
-        mutationSetGameState(level.value.gameState.gameState)
-      }
-      mutationSetSimulationState(false)
-      console.debug(level.value.gameState.toString())
-    }
-
-    /**
      * Set the energized cells from the simulation
      */
     function setEnergizedCells(): void {
@@ -396,35 +385,32 @@ export default defineComponent({
      * @param IAbsorption[]
      * @returns absorption instance list (cell, probability)
      */
-    const filteredAbsorptions = computed((): Absorption[] => {
+    function filterAbsorptions(totalAbsorptionPerTile: IAbsorption[]): Absorption[] {
       const absorptions: Absorption[] = []
-      simulation.totalAbsorptionPerTile.forEach(
-        (absorptionI: { x: number; y: number; probability: number }): void => {
-          const coord = Coord.importCoord({ x: absorptionI.x, y: absorptionI.y })
-          if (!coord.outOfGrid) {
-            const cell = level.value.grid.get(coord)
-            cell.energized = true
-            absorptions.push(new Absorption(cell, absorptionI.probability))
+      totalAbsorptionPerTile.forEach((absorption): void => {
+        const coord = Coord.importCoord({ x: absorption.x, y: absorption.y })
+        if (!coord.outOfGrid) {
+          const cell = level.value.grid.get(coord)
+          cell.energized = true
+
+          // Filter out of grid cells
+          if (cell.coord.x !== -1 && absorption.probability > absorptionThreshold) {
+            absorptions.push(new Absorption(cell, absorption.probability))
           }
         }
-      )
-      // Filter out of grid cells
-      return absorptions.filter((absorption: Absorption) => {
-        return absorption.cell.coord.x !== -1 && absorption.probability > absorptionThreshold
       })
-    })
+      return absorptions
+    }
 
     /**
      * Retrieve all particles for laser paths
      * @returns list of all particles from the sim
      */
     const laserParticles = computed((): Particle[] => {
-      return simulation.frames
-        .map((frame: Frame) => {
-          return frame.particles
-        })
-        .flat()
-        .map((particle) => Particle.importParticle(particle))
+      return simFrames.value.reduce(
+        (frames, frame) => [...frames, ...frame.particles],
+        [] as Particle[]
+      )
     })
 
     /**
@@ -432,22 +418,20 @@ export default defineComponent({
      * @returns particles
      */
     const activeParticles = computed((): Particle[] => {
-      return activeFrame.value.particles.map(Particle.importParticle)
+      return activeFrame.value?.particles.map(Particle.importParticle) || []
     })
 
     /**
      * Get the current simulation frame
      */
-    const activeFrame = computed(
-      (): Frame => {
-        return simulation.frames[frameIndex.value]
-      }
-    )
+    const activeFrame = computed((): SimFrame | undefined => {
+      return simFrames.value[frameIndex.value] as SimFrame | undefined
+    })
 
     /**
      * Compute another fate for the simulation
      */
-    function computeNewFate() {
+    function computeNewFate(simulation: Simulation) {
       const fate = simulation.sampleRandomRealization()
       displayFate.value = false
       fateCoord.value = Coord.importCoord({ x: fate.x, y: fate.y })
@@ -482,87 +466,109 @@ export default defineComponent({
       return `/level/${isCustomLevel() ? routeLevelId() : routeLevelId() + 1}`
     })
 
+    const displayStatus = computed(() => {
+      if (simulationState.value) {
+        // (each time a random outcome)
+        return 'Quantum simulation (live)'
+      } else if (frameIndex.value > 0) {
+        return 'Quantum simulation (step-by-step)'
+      } else {
+        // (still with polarization & interference)
+        return 'Classical laser beam'
+      }
+    })
+    const overlayGameState = computed(
+      (): GameStateEnum => {
+        if (frameIndex === fateStep) {
+          return gameState.value
+        }
+        return GameStateEnum.InProgress
+      }
+    )
+    const hints = computed((): IHint[] => {
+      return level.value.hints.map((hint) => hint.exportHint())
+    })
+    /**
+     * Should an overlay be shown when progressing
+     * to the next level?
+     * @returns an router link :to attribute string
+     */
+    const nextLevelOrOvelay = computed((): string => {
+      const possibleOverlay = getRockTalkIdByLevelId(routeLevelId())
+      return possibleOverlay ? `/rocks/${possibleOverlay}` : nextLevel.value
+    })
+
+    function updateInfoPayload(payload: IInfoPayload): void {
+      infoPayload.value = payload
+    }
+
+    function rewind(): void {
+      frameIndex.value = 0
+    }
+    /**
+     * the main level grid state updating method
+     * checks the updated cell details, compares them
+     * with the active cell and proceeds accordingly
+     * @param cell
+     * @returns void
+     */
+    function updateCell(cell: Cell): void {
+      const sourceCell = activeCell.value
+      const targetCell = cell
+      if (
+        // handle moving from toolbox to grid
+        activeCell.value.isFromToolbox &&
+        cell.isFromGrid &&
+        cell.isVoid
+      ) {
+        level.value.toolbox.removeTool(activeCell.value)
+      } else if (
+        // handle moving from grid to toolbox
+        activeCell.value.isFromGrid &&
+        cell.isFromToolbox &&
+        !activeCell.value.isVoid &&
+        !cell.isVoid
+      ) {
+        level.value.toolbox.addTool(cell, activeCell.value)
+        level.value.grid.set(activeCell.value.reset())
+      }
+      // FIXME: unify moving logic
+      level.value.grid.move(sourceCell, targetCell)
+
+      saveLevelToStore()
+      updateSimulation()
+    }
+
+    const totalFrames = computed(() => simFrames.value.length)
+
     return {
-      displayStatus: computed(() => {
-        if (simulationState.value) {
-          // (each time a random outcome)
-          return 'Quantum simulation (live)'
-        } else if (frameIndex.value > 0) {
-          return 'Quantum simulation (step-by-step)'
-        } else {
-          // (still with polarization & interference)
-          return 'Classical laser beam'
-        }
-      }),
-      overlayGameState: computed(
-        (): GameStateEnum => {
-          if (frameIndex === fateStep) {
-            return gameState.value
-          }
-          return GameStateEnum.InProgress
-        }
-      ),
-      hints: computed((): IHint[] => {
-        return level.value.hints.map((hint) => hint.exportHint())
-      }),
-      /**
-       * Should an overlay be shown when progressing
-       * to the next level?
-       * @returns an router link :to attribute string
-       */
-      nextLevelOrOvelay: computed((): string => {
-        const possibleOverlay = getRockTalkIdByLevelId(routeLevelId())
-        return possibleOverlay ? `/rocks/${possibleOverlay}` : nextLevel.value
-      }),
-      /**
-       * The next/previous level url getters
-       * They get blocked in case it is a custom level
-       * with its hashed ID.
-       */
-
-      updateInfoPayload(payload: IInfoPayload): void {
-        infoPayload.value = payload
-      },
-      rewind(): void {
-        frameIndex.value = 0
-      },
-      /**
-       * the main level grid state updating method
-       * checks the updated cell details, compares them
-       * with the active cell and proceeds accordingly
-       * @param cell
-       * @returns void
-       */
-      updateCell(cell: Cell): void {
-        const sourceCell = activeCell.value
-        const targetCell = cell
-        if (
-          // handle moving from toolbox to grid
-          activeCell.value.isFromToolbox &&
-          cell.isFromGrid &&
-          cell.isVoid
-        ) {
-          level.value.toolbox.removeTool(activeCell.value)
-        } else if (
-          // handle moving from grid to toolbox
-          activeCell.value.isFromGrid &&
-          cell.isFromToolbox &&
-          !activeCell.value.isVoid &&
-          !cell.isVoid
-        ) {
-          level.value.toolbox.addTool(cell, activeCell.value)
-          level.value.grid.set(activeCell.value.reset())
-        }
-        // FIXME: unify moving logic
-        level.value.grid.move(sourceCell, targetCell)
-
-        saveLevelToStore()
-        updateSimulation()
-      },
       error,
       previousLevel,
       nextLevel,
       level,
+      handleSave,
+      downloadLevel,
+      loadLevel,
+      fastForward,
+      reload,
+      updateCell,
+      rewind,
+      stepBack,
+      stepForward,
+      updateInfoPayload,
+      nextLevelOrOvelay,
+      hints,
+      overlayGameState,
+      displayStatus,
+      activeParticles,
+      laserParticles,
+      totalFrames,
+      fateCoord,
+      displayFate,
+      play,
+      infoPayload,
+      activeFrame,
+      frameIndex,
     }
   },
 })
@@ -586,12 +592,9 @@ export default defineComponent({
 
 // Title
 h1.title {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   font-size: 1.5rem;
-  margin-bottom: 30;
-  margin-top: 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
   text-transform: uppercase;
   @include media('<large') {
     a img {
@@ -602,7 +605,6 @@ h1.title {
 
 .game {
   width: 100%;
-  min-height: 100vh;
   &.goals {
     height: 600px;
   }
