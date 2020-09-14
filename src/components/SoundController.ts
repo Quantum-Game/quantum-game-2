@@ -1,12 +1,19 @@
-import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import Soundtrack from '@/mixins/soundtrack'
 import { computed, watch, onMounted } from 'vue'
+import { storeNamespace } from '@/store'
+
+const options = storeNamespace('options')
+
+// global to avoid multiple tracks running at the same time,
+// as there is no way to clean one up now
+const soundtrack = new Soundtrack()
 
 export function useSoundtrack(): void {
-  const store = useStore()
+  const soundActive = options.useGetter('soundActive')
+  const volume = options.useGetter('volume')
+
   const route = useRoute()
-  const soundtrack = new Soundtrack()
   soundtrack.init()
 
   function onVolumeChange(volume: number) {
@@ -16,11 +23,8 @@ export function useSoundtrack(): void {
   }
 
   const effectiveVolume = computed(() => {
-    const soundActive = store.getters['optionsModule/soundActive'] as boolean
-    const volume = store.getters['optionsModule/volume'] as number
-
     const routeAllowsSound = route.name != null && route.meta.preventSound !== true
-    return soundActive && routeAllowsSound ? volume : 0
+    return soundActive.value && routeAllowsSound ? volume.value : 0
   })
 
   watch(effectiveVolume, onVolumeChange)
