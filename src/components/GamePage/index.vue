@@ -161,6 +161,8 @@ export default defineComponent({
     const simFrames = shallowRef<SimFrame[]>([])
     const filteredAbsorptions = ref([] as Absorption[])
 
+    let lastSimulation: Simulation | null = null
+
     function runSimulation(simGrid: ISimGrid): Simulation {
       const newSim = new Simulation(simGrid)
       newSim.initializeFromIndicator(newSim.generateLaserIndicator())
@@ -171,7 +173,7 @@ export default defineComponent({
     function updateSimulation(): void {
       // Compute simulation frames
       const simulation = runSimulation(level.value.grid.exportSimGrid())
-
+      lastSimulation = simulation
       computeNewFate(simulation)
 
       simFrames.value = simulation.frames.map((frame) => {
@@ -244,9 +246,11 @@ export default defineComponent({
         return
       }
       level.value.grid.resetEnergized()
-      // computeNewFate()
       frameIndex.value = 0
       mutationSetSimulationState(true)
+      if (lastSimulation != null) {
+        computeNewFate(lastSimulation)
+      }
     }
 
     /**
