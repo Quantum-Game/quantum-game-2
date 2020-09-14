@@ -171,9 +171,11 @@ export default defineComponent({
       return newSim
     }
 
+    const simGrid = computed(() => level.value.grid.exportSimGrid())
+
     function updateSimulation(): void {
       // Compute simulation frames
-      const simulation = runSimulation(level.value.grid.exportSimGrid())
+      const simulation = runSimulation(simGrid.value)
       lastSimulation = simulation
       computeNewFate(simulation)
 
@@ -198,6 +200,8 @@ export default defineComponent({
       mutationSetSimulationState(false)
       console.debug(level.value.gameState.toString())
     }
+
+    watch(simGrid, updateSimulation)
 
     let error: string | null = null
 
@@ -348,14 +352,12 @@ export default defineComponent({
           if (fetchedLevelBoardObj != null) {
             level.value = Level.importLevel(fetchedLevelBoardObj)
             setFirstToolAsHovered()
-            updateSimulation()
             actionClearLevelStoreData()
           }
         })
       } else {
         level.value = Level.importLevel(levels[routeLevelId()])
         setFirstToolAsHovered()
-        updateSimulation()
       }
     }
 
@@ -547,7 +549,6 @@ export default defineComponent({
       level.value.grid.move(sourceCell, targetCell)
 
       saveLevelToStore()
-      updateSimulation()
     }
 
     const totalFrames = computed(() => simFrames.value.length)
