@@ -33,6 +33,7 @@ interface ResizeObserverEntryBoxSize {
   inlineSize: number
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface Window {
   ResizeObserver: typeof ResizeObserver
 }

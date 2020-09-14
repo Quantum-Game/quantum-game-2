@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { store, StoreModules } from './store'
 import { useStore, SubscribeOptions } from 'vuex'
 import { toRef, ComputedRef, onMounted, onUnmounted } from 'vue'
@@ -102,9 +103,7 @@ export function useStoreSubsription<
   mutation: M,
   handler: (payload: MutationPayload<ModuleMutations<Ns>[M]>) => void,
   options?: SubscribeOptions
-) {
-  type Payload = MutationPayload<MutationPayload<ModuleMutations<Ns>[M]>>
-
+): void {
   const store = useStore()
   let unsubscribe: (() => void) | null = null
   const mutationType = `${namespace}/${mutation}`

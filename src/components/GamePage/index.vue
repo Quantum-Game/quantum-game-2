@@ -169,7 +169,6 @@ export default defineComponent({
     }
 
     function updateSimulation(): void {
-      console.log('updateSimulation')
       // Compute simulation frames
       const simulation = runSimulation(level.value.grid.exportSimGrid())
 

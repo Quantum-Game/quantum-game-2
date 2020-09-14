@@ -28,6 +28,7 @@ module.exports = {
     // ],
     'no-use-before-define': 'off',
     'no-unused-expressions': 'off',
+    'no-useless-constructor': 'off', // better covered by @typescript-eslint/no-useless-constructor
     'vue/require-default-prop': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
   },
