@@ -4,7 +4,7 @@
     <div class="portal-dragdrop"></div>
 
     <!-- OVERLAY -->
-    <app-overlay :game-state="overlayGameState" class="overlay" @click="rewind">
+    <app-overlay :game-state="overlayGameState" class="overlay" @click="continueAfterWin">
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -157,6 +157,7 @@ export default defineComponent({
     const level = ref(Level.createDummy())
 
     const frameIndex = ref(0)
+    const acceptedWin = ref<number | null>(null)
     // sim derived state (separate to avoid proxying Simulation object)
     const simFrames = shallowRef<SimFrame[]>([])
     const filteredAbsorptions = ref([] as Absorption[])
@@ -201,7 +202,7 @@ export default defineComponent({
     let error: string | null = null
 
     const frameAdvanceTimer = useTimer(() => {
-      if (frameIndex.value < fateStep.value) {
+      if (frameIndex.value < totalFrames.value - 1) {
         frameIndex.value += 1
       } else {
         mutationSetSimulationState(false)
@@ -482,7 +483,8 @@ export default defineComponent({
     })
     const overlayGameState = computed(
       (): GameStateEnum => {
-        if (frameIndex === fateStep) {
+        const ignoreWin = acceptedWin.value === routeLevelId()
+        if (!ignoreWin && frameIndex.value === totalFrames.value - 1) {
           return gameState.value
         }
         return GameStateEnum.InProgress
@@ -508,6 +510,12 @@ export default defineComponent({
     function rewind(): void {
       frameIndex.value = 0
     }
+
+    function continueAfterWin(): void {
+      acceptedWin.value = routeLevelId()
+      rewind()
+    }
+
     /**
      * the main level grid state updating method
      * checks the updated cell details, compares them
@@ -556,6 +564,7 @@ export default defineComponent({
       reload,
       updateCell,
       rewind,
+      continueAfterWin,
       stepBack,
       stepForward,
       updateInfoPayload,
