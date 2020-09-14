@@ -1,11 +1,10 @@
 <template>
-  <div ref="boardScaler" class="board_scaler">
-    <svg
-      ref="gridWrapper"
-      class="grid"
-      :viewBox="`0 0 ${totalWidth} ${totalHeight}`"
-      :style="{ maxWidth: `${totalWidth}px`, maxHeight: `${totalHeight}px` }"
-    >
+  <div
+    ref="boardScaler"
+    class="board_scaler"
+    :style="{ maxWidth: `${totalWidth}px`, maxHeight: `${totalHeight}px` }"
+  >
+    <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`">
       <!-- DOTS -->
       <board-dots :rows="grid.rows" :cols="grid.cols" />
 
@@ -71,7 +70,6 @@
       :key="index"
       :hint="hint"
       :tile-size="updatedTileSize"
-      :wrapper-rect="boardClientRect"
     />
   </div>
 </template>
@@ -91,7 +89,7 @@ import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
 import { computed, defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
-import { useDOMRect } from '@/mixins/event'
+import { useDOMNodeSize } from '@/mixins/event'
 import { storeNamespace } from '@/store'
 
 const game = storeNamespace('game')
@@ -125,26 +123,22 @@ export default defineComponent({
     const hoveredCell = game.useState('hoveredCell')
     const simulationState = game.useState('simulationState')
 
-    const gridWrapper = ref<HTMLElement>()
     const boardScaler = ref<HTMLElement>()
-    const boardRect = useDOMRect(boardScaler)
+    const boardRect = useDOMNodeSize(boardScaler)
 
     const data = reactive({
       tileSize: 64,
       updatedTileSize: 64, // this is the actual, dynamic tile size
-      boardClientRect: new DOMRect(),
     })
 
     watch(boardRect, (size) => {
       const currentWidth = size.width
       data.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
-      data.boardClientRect = gridWrapper.value?.getBoundingClientRect() || new DOMRect()
     })
 
     return {
       ...toRefs(data),
       boardScaler,
-      gridWrapper,
       classicalView: computed(() => props.frameIndex === 0 && !simulationState.value),
       totalWidth: computed(() => props.grid.cols * data.tileSize),
       totalHeight: computed(() => props.grid.rows * data.tileSize),
@@ -193,7 +187,9 @@ export default defineComponent({
 }
 
 .board_scaler {
+  position: relative;
   max-width: 1400px;
+  margin: 0 auto;
   @media screen and (min-width: 1001px) {
     // margin-bottom: 100px;
   }

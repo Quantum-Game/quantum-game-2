@@ -2,7 +2,6 @@
   <transition name="hint">
     <div
       v-if="shown"
-      ref="tooltipRef"
       class="hint"
       :class="hintClass"
       :style="absolutePositionStyle"
@@ -15,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, PropType, reactive, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import type { IHint } from '@/engine/interfaces'
 
 export default defineComponent({
@@ -23,16 +22,11 @@ export default defineComponent({
   props: {
     hint: { type: Object as PropType<IHint>, required: true },
     tileSize: { type: Number, default: 64 },
-    wrapperRect: { type: DOMRect, default: () => new DOMRect(100, 100) },
     overlay: { type: String },
   },
   setup(props) {
     const shown = ref(true)
-    const tooltipRef = ref<HTMLDivElement>()
-    const contentRect = reactive({
-      width: 0,
-      height: 0,
-    });
+
 
     const hintClass = computed(() => {
       return `hint--${props.hint.color} ${props.overlay === 'second' ? 'second' : ''}`
@@ -46,38 +40,31 @@ export default defineComponent({
      * @returns an offsets object
      */
     function overlayPositionStyle() {
-      let leftOffset, topOffset
       switch (props.overlay) {
         // single rock
         case 'rock':
-          topOffset = props.wrapperRect.top - contentRect.height + props.wrapperRect.height * 0.25
-          leftOffset =
-            props.wrapperRect.left + props.wrapperRect.width * 0.5 - contentRect.width * 0.5
-          break
+          return {
+            top: `30%`,
+            left: `50%`,
+          }
         // the pile's first talking rock
         case 'pile':
         case 'pile2':
-          topOffset = props.wrapperRect.top - contentRect.height + props.wrapperRect.height / 6
-          leftOffset =
-            props.wrapperRect.left + props.wrapperRect.width * 0.35 - contentRect.width * 0.5
-          break
+          return {
+            top: `0%`,
+            left: `30%`,
+          }
         // second of the two talking rocks
         case 'second':
-          topOffset =
-            props.wrapperRect.top - contentRect.height + (props.wrapperRect.height * 1) / 3
-          leftOffset =
-            props.wrapperRect.left + (props.wrapperRect.width * 7) / 10 - contentRect.width / 2
-          break
-
+          return {
+            top: `30%`,
+            left: `80%`,
+          }
         default:
-          topOffset = 0
-          leftOffset = 0
-          break
-      }
-
-      return {
-        top: `${topOffset}px`,
-        left: `${leftOffset}px`,
+          return {
+            top: `1%`,
+            left: `44%`,
+          }
       }
     }
 
@@ -87,17 +74,9 @@ export default defineComponent({
    * @returns an offsets object
    */
     function boardPositionStyle() {
-      const topOffset =
-        props.wrapperRect.top +
-        props.hint.coord.y * (props.tileSize - 1) +
-        props.tileSize / 2 -
-        contentRect.height
 
-      const leftOffset =
-        props.wrapperRect.left +
-        props.hint.coord.x * (props.tileSize - 1) +
-        props.tileSize / 2 -
-        contentRect.width / 2
+      const leftOffset = (props.hint.coord.x + 0.5) * props.tileSize;
+      const topOffset = (props.hint.coord.y + 0.5) * props.tileSize;
 
       return {
         left: leftOffset + 'px',
@@ -114,7 +93,7 @@ export default defineComponent({
      * the vertical and horizonatal offsets
      */
     const absolutePositionStyle = computed(() => {
-      return props.overlay ? overlayPositionStyle() : boardPositionStyle()
+      return props.overlay != null ? overlayPositionStyle() : boardPositionStyle()
     })
 
     /**
@@ -128,7 +107,6 @@ export default defineComponent({
     }
 
     return {
-      tooltipRef,
       shown,
       hintClass,
       absolutePositionStyle,
@@ -141,6 +119,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .hint {
   padding: 2px 6px 6px 6px;
+  transform: translate(-50%, -100%);
   z-index: 2;
   max-width: 500px;
   position: absolute;

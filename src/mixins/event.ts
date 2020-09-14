@@ -17,6 +17,11 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
   })
 }
 
+interface Size {
+  width: number
+  height: number
+}
+
 /**
  * Get DOM node size and keep it up to date.
  *
@@ -27,8 +32,8 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
  * @param elementRef Ref obejct the DOM node to observe.
  * @returns ref containing always up-to-date content DOMRect of the target DOM node.
  */
-export function useDOMRect(elementRef: Ref<HTMLElement | undefined>): Ref<DOMRectReadOnly> {
-  const sizeRef = ref(new DOMRect())
+export function useDOMNodeSize(elementRef: Ref<HTMLElement | undefined>): Ref<Size> {
+  const sizeRef = ref({ width: 0, height: 0 })
   const observer = new ResizeObserver((entries) => {
     let rect = null
     for (const entry of entries) {
@@ -37,7 +42,10 @@ export function useDOMRect(elementRef: Ref<HTMLElement | undefined>): Ref<DOMRec
       }
     }
     if (rect != null) {
-      sizeRef.value = rect
+      sizeRef.value = {
+        width: rect.width,
+        height: rect.height,
+      }
     }
   })
 

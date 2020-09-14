@@ -1,28 +1,19 @@
 <template>
   <div class="rock-talk">
     <slot name="title"></slot>
-    <img ref="wrapper" class="rock-talk__graphic-wrapper" :src="url" @load="onLoad" />
-    <speech-bubble
-      v-if="showFirst"
-      :hint="dialogue[0]"
-      :wrapper-rect="wrapperRect"
-      :overlay="type"
-    />
-    <speech-bubble
-      v-if="showSecond"
-      :hint="dialogue[1]"
-      :wrapper-rect="wrapperRect"
-      :overlay="'second'"
-    />
+    <div class="wrapper">
+      <img :src="url" @load="onLoad" />
+      <speech-bubble v-if="showFirst" :hint="dialogue[0]" :overlay="type" />
+      <speech-bubble v-if="showSecond" :hint="dialogue[1]" :overlay="'second'" />
+    </div>
     <div class="slot"><slot></slot></div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import SpeechBubble from '@/components/SpeechBubble.vue'
-import { ref } from 'vue'
 
 @Options({
   components: {
@@ -33,44 +24,9 @@ export default class RockTalk extends Vue {
   @Prop({ default: 'rock' }) readonly type!: string | undefined
   @Prop() readonly dialogue!: { content: string }[]
 
-  wrapperRect: {
-    top: number
-  } = { top: 0 }
-
   imageLoaded = false
-
-  wrapper = setup(() => ref<HTMLElement>())
-
-  /**
-   * Life-cycle hooks to manage the resize event listener.
-   */
-  mounted(): void {
-    window.addEventListener('resize', this.assessWrapperSize)
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('resize', this.assessWrapperSize)
-  }
-
-  /**
-   * Fired on resize event, used to update the reactive
-   * property sent as props, which is used by the Tooltip
-   * to position against the wrapper.
-   */
-  assessWrapperSize(): void {
-    if (this.wrapper != null) {
-      this.wrapperRect = this.wrapper.getBoundingClientRect()
-    }
-  }
-
-  /**
-   * Assess the size only if the wrapper
-   * has assumed its full dimensions, namely:
-   * the picture has been loaded.
-   */
   onLoad(): void {
     this.imageLoaded = true
-    this.assessWrapperSize()
   }
 
   /**
@@ -110,13 +66,18 @@ export default class RockTalk extends Vue {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  & .rock-talk__graphic-wrapper {
-    min-height: 100px;
-    width: 30vw;
-    max-width: 500px;
-  }
-  & .slot {
+  .slot {
     padding-bottom: 20vh;
   }
+}
+
+img {
+  min-height: 100px;
+  width: 30vw;
+  max-width: 500px;
+}
+
+.wrapper {
+  position: relative;
 }
 </style>
