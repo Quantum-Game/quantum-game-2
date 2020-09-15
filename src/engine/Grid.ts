@@ -1,70 +1,85 @@
 // FIXME: Figure a way to have uid and coord access to cells
 // FIXME: Void cells
-import { ICell, ISimCell, IGrid, ISimGrid, Elem } from '@/engine/interfaces'
+import { ICell, IGrid, ISimGrid, Elem, ICoord } from '@/engine/interfaces'
 import Coord from './Coord'
 import Cell from './Cell'
-import Cluster from './Cluster'
 
 /**
  * GRID CLASS
  * Includes the grid instance that holds the cells
  */
-export default class Grid extends Cluster {
-  public cols: number
-  public rows: number
+export default class Grid {
+  public readonly cols: number
+  public readonly rows: number
+  public readonly cells: Map<number, Cell>
 
   public constructor(rows: number, cols: number, cells?: Cell[]) {
-    super(cells)
     this.rows = rows
     this.cols = cols
+    this.cells = new Map()
+
+    if (cells != null) {
+      for (const cell of cells) {
+        this.cells.set(this.index(cell.coord), cell)
+      }
+    }
 
     // Populate with blank tiles
     for (let y = 0; y < rows; y += 1) {
       for (let x = 0; x < cols; x += 1) {
         const coord = Coord.importCoord({ y, x })
-        const element = Cell.fromName(Elem.Void)
-        const cell = new Cell(coord, element)
-        this.cells.push(cell)
+        const key = this.index(coord)
+        if (!this.cells.has(key)) {
+          this.cells.set(key, new Cell(coord, Cell.fromElem(Elem.Void)))
+        }
       }
     }
+  }
+
+  private index(coord: ICoord): number {
+    if (!this.includes(coord)) {
+      throw new Error(`Coordinate out of bounds. Cell: [${coord.x}, ${coord.y}]`)
+    }
+    return coord.y * this.cols + coord.x
   }
 
   /**
    * Set a cell at a specific coordinate
    * TODO: Replace with deepClone?
    * @param cell Cell to set at a grid coordinate
-   * @returns boolean if operation is successfull
    */
-  public set(cell: Cell): boolean {
-    if (this.includes(cell.coord)) {
-      const currentCell = this.get(cell.coord)
-      currentCell.element = cell.element
-      currentCell.rotation = cell.rotation
-      currentCell.polarization = cell.polarization
-      currentCell.percentage = cell.percentage
-      currentCell.frozen = cell.frozen
-      currentCell.active = cell.active
-      currentCell.energized = cell.energized
-      currentCell.tool = cell.tool
-      return true
-    }
-    throw new Error(`Coordinate out of bounds. Cell: [${cell.coord.x}, ${cell.coord.y}]`)
+  public set(cell: Cell): void {
+    const key = this.index(cell.coord)
+    this.cells.set(key, cell)
+  }
+
+  public remove(coord: ICoord): void {
+    this.set(new Cell(Coord.importCoord(coord), Cell.fromElem(Elem.Void)))
+  }
+
+  /**
+   * Swap two grid squares on board
+   */
+  public swap(coordA: ICoord, coordB: ICoord): void {
+    const newSource = Cell.importCell({ ...this.get(coordA).exportCell(), coord: coordB })
+    const newTarget = Cell.importCell({ ...this.get(coordB).exportCell(), coord: coordA })
+    this.set(newSource)
+    this.set(newTarget)
   }
 
   /**
    * Retrieve the cell at a specified coordinate
    * @param coord Coordinate to get
+   * @throws if coord is out of bounds
    * @returns Cell
    */
-  public get(coord: Coord): Cell {
-    const found = this.cells.find((cell): boolean => coord.equal(cell.coord))
-    if (found != null) {
-      return found
+  public get(coord: ICoord): Cell {
+    const key = this.index(coord)
+    const found = this.cells.get(key)
+    if (found == null) {
+      throw new Error(`Internal error: cell missing at [${coord.x}, ${coord.y}]`)
     }
-
-    const cell = Cell.createDummy(coord)
-    this.cells.push(cell)
-    return cell
+    return found
   }
 
   /**
@@ -73,14 +88,14 @@ export default class Grid extends Cluster {
    * @param y Y coordinate
    */
   public cellFromXY(x: number, y: number): Cell {
-    return this.get(Coord.importCoord({ x, y }))
+    return this.get({ x, y })
   }
 
   /**
    * Remove unfrozen cells once they are moved to the toolbox
    */
   public resetUnfrozen(): void {
-    this.unfrozen.cells.forEach((cell): void => {
+    this.unfrozen().forEach((cell): void => {
       cell.reset()
     })
   }
@@ -89,12 +104,10 @@ export default class Grid extends Cluster {
    * Energize the following list of cells
    */
   public setEnergized(coords: Coord[]): void {
-    coords
-      .filter((coord) => coord.x !== -1 && coord.y !== -1)
-      .forEach((coord): void => {
-        const cell = this.get(coord)
-        cell.energized = true
-      })
+    coords.forEach((coord): void => {
+      const cell = this.get(coord)
+      cell.energized = true
+    })
   }
 
   /**
@@ -106,152 +119,62 @@ export default class Grid extends Cluster {
     })
   }
 
+  public cellsArray(): Cell[] {
+    return Array.from(this.cells.values())
+  }
+
+  /**
+   * Filters cells by element kind
+   * @param name Name of the element to look for
+   * @returns list of cells of a specific type
+   */
+  public filteredBy(kind: Elem): Cell[] {
+    return this.cellsArray().filter((cell) => cell.element.name === kind)
+  }
+
+  /**
+   * Filter cells that are not of a specific type
+   * @param name Name of the element to avoid
+   */
+  public filteredByNot(kind: Elem): Cell[] {
+    return this.cellsArray().filter((cell) => cell.element.name !== kind)
+  }
+
+  public energized(): Cell[] {
+    return this.cellsArray().filter((cell) => cell.energized)
+  }
+
+  public inactive(): Cell[] {
+    return this.cellsArray().filter((cell) => !cell.active)
+  }
+
+  public unfrozen(): Cell[] {
+    return this.cellsArray().filter((cell) => !cell.frozen)
+  }
+
+  public detectors(): Cell[] {
+    return this.filteredBy(Elem.Detector)
+  }
+
+  public mines(): Cell[] {
+    return this.filteredBy(Elem.Mine)
+  }
+
+  public unvoid(): Cell[] {
+    return this.filteredByNot(Elem.Void)
+  }
+
+  public unvoidUnfrozen(): Cell[] {
+    return this.cellsArray().filter((cell) => !cell.frozen && cell.element.name !== Elem.Void)
+  }
+
   /**
    * Is a coordinate inside the grid
    * @param coord Coordiante to test
    * @returns boolean if included
    */
-  public includes(coord: Coord): boolean {
+  public includes(coord: ICoord): boolean {
     return coord.y >= 0 && coord.y < this.rows && coord.x >= 0 && coord.x < this.cols
-  }
-
-  /**
-   * Move a cell to another coord
-   * @param sourceCell source cell
-   * @param targetCell target cell
-   * @returns boolean move was successfull
-   * FIXME: Error when moving from grid to grid
-   */
-  public move(sourceCell: Cell, targetCell: Cell): Cell[] {
-    const source = sourceCell
-    const target = targetCell
-
-    // MOVE GRID TOOL TO VOID
-    if (source.isFromGrid && source.tool && target.isFromGrid && target.isVoid) {
-      const tempCoord = source.coord
-      source.coord = target.coord
-      target.coord = tempCoord
-      target.tool = false
-      source.tool = true
-      // console.log('GRID TOOL TO GRID VOID')
-      // console.log('SOURCE: ' + source.toString())
-      // console.log('TARGET: ' + target.toString())
-      this.set(source)
-      this.set(target)
-      return [source, target]
-    }
-
-    // SWAP GRID TOOL TO GRID TOOL
-    if (source.isFromGrid && source.tool && target.isFromGrid && target.tool) {
-      const tempCoord = source.coord
-      source.coord = target.coord
-      target.coord = tempCoord
-      target.tool = true
-      source.tool = true
-      // console.log('GRID TOOL TO GRID TOOL')
-      // console.log('SOURCE: ' + source.toString())
-      // console.log('TARGET: ' + target.toString())
-      this.set(source)
-      this.set(target)
-      return [source, target]
-    }
-
-    // MOVE TOOLBOX TOOL TO GRID VOID
-    if (source.isFromToolbox && source.tool && target.isFromGrid && target.isVoid) {
-      target.element = source.element
-      target.tool = true
-      this.set(target)
-      return [target]
-    }
-    return []
-  }
-
-  /**
-   * Move all elements to a common direction
-   * @param direction direction string
-   */
-  public moveAll(direction: number): void {
-    console.debug(`Moving all in direction: ${direction}`)
-    this.unvoid.cells.forEach((cell): void => {
-      cell.coord = cell.coord.fromAngle(direction)
-    })
-  }
-
-  /**
-   * Move all elements to a common direction
-   * @param direction direction string
-   */
-  public rotateAll(): void {
-    console.debug(`Rotating grid`)
-    this.unvoid.cells.forEach((cell): void => {
-      cell.coord = new Coord(cell.coord.x, cell.coord.y)
-      cell.rotation += (((cell.rotation - cell.element.rotationAngle) % 360) + 360) % 360
-    })
-  }
-
-  public reflectAll(): void {
-    console.debug(`Vertical reflecting grid`)
-    this.unvoid.cells.forEach((cell): void => {
-      cell.coord = new Coord(cell.coord.y, 12 - cell.coord.x)
-      if (cell.rotation % 180 === 0) {
-        cell.rotation = (cell.rotation + 180) % 360
-      }
-    })
-  }
-
-  /**
-   * Return adjacent cells to a coordinate
-   * @param coord Coordinate
-   * @returns a list of adjacent cells
-   */
-  public adjacentCells(coord: Coord): Cell[] {
-    const adjacents: Cell[] = []
-    coord.adjacent.forEach((adjacent): void => {
-      if (this.includes(adjacent)) {
-        adjacents.push(this.get(adjacent))
-      }
-    })
-    return adjacents
-  }
-
-  /**
-   * List of cells at the border of the grid
-   * Used to find the exit route of particles
-   * @returns
-   */
-  public get borderCells(): Cell[] {
-    const borders: Cell[] = []
-    this.cells.forEach((cell: Cell): void => {
-      if (
-        cell.coord.x === 0 ||
-        cell.coord.x === this.cols ||
-        cell.coord.y === 0 ||
-        cell.coord.y === this.rows
-      ) {
-        borders.push(cell)
-      }
-    })
-    return borders
-  }
-
-  /**
-   * An escaping particle should be one coord away from its escaping position
-   * @param coord espaced coordinate
-   * @returns escape cell
-   */
-  public lastCellBeforeEscape(coord: Coord): Cell {
-    console.log(`Particle escaping @: ${coord.toString()}`)
-    if (this.includes(coord)) {
-      throw new Error(`Not an escaping particle coordinate: ${coord}`)
-    }
-    const lastCoord = coord.adjacent.find((adjacent): boolean => {
-      return this.includes(adjacent)
-    })
-    if (lastCoord !== undefined) {
-      return this.get(lastCoord)
-    } else {
-      throw new Error(`Couldn't compute the escaping particle last coordinate.`)
-    }
   }
 
   /**
@@ -294,7 +217,7 @@ export default class Grid extends Cluster {
       cells: [
         {
           coord: { x: 0, y: 1 },
-          element: Elem.Laser,
+          element: Elem[Elem.Laser],
           rotation: 0,
           active: true,
           frozen: true,
@@ -325,12 +248,9 @@ export default class Grid extends Cluster {
    * @returns a grid interface
    */
   public exportGrid(): IGrid {
-    const cells: ICell[] = []
-    this.cells
+    const cells = this.cellsArray()
       .filter((cell): boolean => !cell.isVoid)
-      .forEach((cell): void => {
-        cells.push(cell.exportCell())
-      })
+      .map((cell) => cell.exportCell())
     return {
       cols: this.cols,
       rows: this.rows,
@@ -343,12 +263,9 @@ export default class Grid extends Cluster {
    * @returns a grid interface
    */
   public exportSimGrid(): ISimGrid {
-    const cells: ISimCell[] = []
-    this.cells
+    const cells = this.cellsArray()
       .filter((cell): boolean => !cell.isVoid)
-      .forEach((cell): void => {
-        cells.push(cell.exportSimCell())
-      })
+      .map((cell) => cell.exportSimCell())
     return {
       cols: this.cols,
       rows: this.rows,
@@ -361,7 +278,7 @@ export default class Grid extends Cluster {
    * @returns a grid interface
    */
   public exportGridForDownload(): IGrid {
-    const cells: ICell[] = this.cells
+    const cells: ICell[] = this.cellsArray()
       .filter((cell): boolean => !cell.isVoid)
       .map(
         (cell): ICell => {

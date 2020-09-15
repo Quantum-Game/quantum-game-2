@@ -27,3 +27,11 @@ export function hasKeyInstance<O>(
 ): boolean {
   return hasKey(obj, key) && obj[key] instanceof klass
 }
+
+export function isDef<T>(val: T | null | undefined): val is T {
+  return val !== null
+}
+
+export function isNotString<T>(val: T | string): val is T {
+  return typeof val !== 'string'
+}

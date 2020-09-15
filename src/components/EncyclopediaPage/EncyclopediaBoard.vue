@@ -194,7 +194,7 @@ export default class EncyclopediaBoard extends Vue {
 
 
   get nonVoidCells(): Cell[] {
-    return this.grid.unvoid.cells
+    return this.grid.unvoid()
   }
 
   get totalWidth(): number {

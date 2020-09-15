@@ -7,40 +7,41 @@ import { ICoord } from '@/engine/interfaces'
  * Indices start at 0
  */
 export default class Coord {
-  public x: number
-  public y: number
+  public readonly x: number
+  public readonly y: number
 
   public constructor(y: number, x: number) {
     this.y = y
     this.x = x
+    Object.freeze(this)
   }
 
   /**
    * @returns coordinate at the top
    */
   public get up(): Coord {
-    return Coord.importCoord({ y: this.y - 1, x: this.x })
+    return new Coord(this.y - 1, this.x)
   }
 
   /**
    * @returns coordinate at the bottom
    */
   public get down(): Coord {
-    return Coord.importCoord({ y: this.y + 1, x: this.x })
+    return new Coord(this.y + 1, this.x)
   }
 
   /**
    * @returns coordinate at the left
    */
   public get left(): Coord {
-    return Coord.importCoord({ y: this.y, x: this.x - 1 })
+    return new Coord(this.y, this.x - 1)
   }
 
   /**
    * @returns coordinate at the right
    */
   public get right(): Coord {
-    return Coord.importCoord({ y: this.y, x: this.x + 1 })
+    return new Coord(this.y, this.x + 1)
   }
 
   /**
@@ -183,6 +184,6 @@ export default class Coord {
   public static fromId(index: number, cols: number): Coord {
     const x = index % cols
     const y = Math.floor(index / cols)
-    return Coord.importCoord({ y, x })
+    return new Coord(y, x)
   }
 }

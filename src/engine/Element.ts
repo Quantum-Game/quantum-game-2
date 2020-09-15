@@ -44,6 +44,6 @@ export default class Element {
    * @returns string describing element
    */
   public toString(): string {
-    return this.name
+    return Elem[this.name]
   }
 }

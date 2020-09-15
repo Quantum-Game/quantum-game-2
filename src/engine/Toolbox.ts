@@ -1,65 +1,84 @@
-import { countBy, cloneDeep } from 'lodash'
-import Coord from '@/engine/Coord'
-import Cell from '@/engine/Cell'
+import { countBy } from 'lodash'
+import { Elem, elemFromString } from './interfaces'
+import { isDef, isNotString } from '@/types'
 /**
  * TOOL INTERFACE
  * Contains number of available elements to the player
  */
-export interface ITool {
-  [symbol: string]: number
-}
+type ToolMap = Map<Elem, number>
 
 /**
  * TOOLBOX CLASS
  * Inventory contains the list of elements available to the player.
  */
 export default class Toolbox {
-  public tools: Cell[] = []
-  public toolbox: ITool = {}
-  private originalToolbox: ITool = {}
+  public toolbox: ToolMap = new Map()
+  private originalToolbox: ToolMap = new Map()
 
-  public constructor(tools: Cell[]) {
-    const elements = tools.map((cell): string => cell.element.name)
-    this.toolbox = countBy(elements)
-    this.originalToolbox = cloneDeep(this.toolbox)
+  public constructor(elements: Elem[]) {
+    const elems = Object.values(Elem).filter(isNotString)
+    const counts = countBy(elements)
+
+    for (const elem of elems) {
+      this.toolbox.set(elem, counts[elem] || 0)
+      this.originalToolbox.set(elem, counts[elem] || 0)
+    }
   }
 
   /**
    * @returns names of present elements
    */
-  public get names(): string[] {
-    return Object.keys(this.toolbox)
+  public get present(): Elem[] {
+    const present: Elem[] = []
+    for (const [k, v] of this.toolbox.entries()) {
+      if (v > 0) present.push(k)
+    }
+    return present
+  }
+
+  /**
+   * @returns names of originally elements
+   */
+  public originallyPresent(): Elem[] {
+    const present: Elem[] = []
+    for (const [k, v] of this.originalToolbox.entries()) {
+      if (v > 0) present.push(k)
+    }
+    return present
   }
 
   /**
    * Reset toolbox to original state
    */
   public reset(): void {
-    this.toolbox = this.originalToolbox
+    this.toolbox = new Map()
+    for (const [k, v] of this.originalToolbox.entries()) {
+      this.toolbox.set(k, v)
+    }
   }
 
   /**
    * @params name
    * @returns count of available elements in toolbox
    */
-  public getCount(name: string): number {
-    return this.toolbox[name]
+  public getCount(elem: Elem): number {
+    return this.toolbox.get(elem) || 0
   }
 
   /**
    * @params name
    * @returns count of available elements in toolbox
    */
-  public getCountOriginal(name: string): number {
-    return this.originalToolbox[name]
+  public getCountOriginal(elem: Elem): number {
+    return this.originalToolbox.get(elem) || 0
   }
 
   /**
    * Returns the available elements
-   * @param name elements available
+   * @param elem elements available
    */
-  public available(name: string): number {
-    return this.getCount(name)
+  public available(elem: Elem): number {
+    return this.getCount(elem)
   }
 
   /**
@@ -67,47 +86,23 @@ export default class Toolbox {
    * TODO: Check if need to compare to original toolbox
    * @param cell cell holding element to remove
    */
-  public addTool(cell: Cell, activeCell: Cell): void {
-    const { name } = activeCell.element
-    this.toolbox[name] += 1
+  public addTool(elem: Elem): void {
+    this.toolbox.set(elem, this.getCount(elem) + 1)
   }
 
   /**
    * Remove element from toolbox
    * @param cell cell holdeing element to remove
    */
-  public removeTool(cell: Cell): void {
-    const { name } = cell.element
-    if (this.toolbox[name] > 0) {
-      this.toolbox[name] -= 1
-    }
+  public removeTool(elem: Elem): void {
+    this.toolbox.set(elem, Math.max(0, this.getCount(elem) - 1))
   }
 
   /**
-   * Create cell cluster from tools
-   * @returns cell[]
+   * Create list of available tools
    */
-  public get uniqueCellList(): Cell[] {
-    return this.names.map(
-      (name): Cell => {
-        return Cell.createToolboxCell(name)
-      }
-    )
-  }
-
-  /**
-   * Create cell cluster from tools
-   * @returns cell[]
-   */
-  public get fullCellList(): Cell[] {
-    const fullList: Cell[] = []
-    this.names.forEach((name): void => {
-      const cellCount = this.toolbox[name]
-      for (let i = 0; i < cellCount; i += 1) {
-        fullList.push(Cell.createToolboxCell(name))
-      }
-    })
-    return fullList
+  public fullElemList(): Elem[] {
+    return this.present.flatMap((name) => Array(this.getCount(name)).fill(name))
   }
 
   /**
@@ -117,24 +112,17 @@ export default class Toolbox {
    */
   public toString(): string {
     let resultStr = 'Toolbox contains:\n'
-    this.names.forEach((name: string): void => {
-      resultStr += `Tool: ${name} x ${this.toolbox[name]}`
+    this.present.forEach((elem) => {
+      resultStr += ` - ${Elem[elem]} x ${this.getCount(elem)}\n`
     })
     return resultStr
   }
 
-  public exportToolbox(): ITool {
-    return this.toolbox
+  public exportToolbox(): string[] {
+    return this.fullElemList().map((elem: Elem) => Elem[elem] as string)
   }
 
   public static importToolbox(tools: string[]): Toolbox {
-    const coord = new Coord(-1, -1)
-    const toolCells = tools.map(
-      (tool): Cell => {
-        const element = Cell.fromName(tool)
-        return new Cell(coord, element)
-      }
-    )
-    return new Toolbox(toolCells)
+    return new Toolbox(tools.map(elemFromString).filter(isDef))
   }
 }

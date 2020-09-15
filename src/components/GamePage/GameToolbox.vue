@@ -4,12 +4,12 @@
       TOOLBOX
     </p> -->
     <svg
-      v-for="(cell, index) in toolbox.uniqueCellList"
+      v-for="(cell, index) in uniqueCellList"
       :key="index"
       class="tool"
       :viewBox="viewBox"
       preserveAspectRatio="xMidYMid meet"
-      @mouseup="handleCellDrop(toolbox.uniqueCellList[0])"
+      @mouseup="handleCellDrop(cell)"
     >
       <g :class="computeClass(cell)">
         <g>
@@ -35,15 +35,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
 import Cell from '@/engine/Cell'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
-import { storeNamespace } from '@/store'
+import Coord from '@/engine/Coord'
 
-const game = storeNamespace('game')
+const TOOLBOX_COORD: Coord = new Coord(-1, -1)
 
 @Options({
   components: {
@@ -56,8 +56,6 @@ const game = storeNamespace('game')
 })
 export default class GameToolbox extends Vue {
   @Prop() readonly toolbox!: Toolbox
-  mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
-  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
   cell = {}
   viewBox = '-8 0 80 80'
   counterX = '40%'
@@ -67,13 +65,21 @@ export default class GameToolbox extends Vue {
     this.calculateViewBox()
   }
 
+  /**
+   * A list of cells generated from toolbox.
+   * FIXME: remove the unnecessary conversion to cell
+   * @deprecated
+   */
+  private get uniqueCellList(): Cell[] {
+    const elems = this.toolbox.originallyPresent()
+    return elems.map((elem) => new Cell(TOOLBOX_COORD, Cell.fromElem(elem)))
+  }
+
   handleMouseEnter(cell: Cell): void {
-    this.mutationSetHoveredCell(cell)
     this.$emit('hover', { kind: 'element', cell, particles: [], text: 'Drag&drop on board.' })
   }
 
   handleCellDrop(cell: Cell): void {
-    this.mutationSetHoveredCell(cell)
     this.$emit('update-cell', cell)
   }
 

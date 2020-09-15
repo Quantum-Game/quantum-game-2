@@ -1,6 +1,5 @@
 export { default as Level } from './Level'
 export { default as Grid } from './Grid'
-export { default as Cluster } from './Cluster'
 export { default as Cell } from './Cell'
 export { default as Element } from './Element'
 export { default as Coord } from './Coord'

@@ -8,17 +8,17 @@
   >
     <!-- BOUNDING RECTANGLE -->
     <rect
-      :width="tileSize || 64"
-      :height="tileSize || 64"
+      :width="tileSize"
+      :height="tileSize"
       :class="computeRectClass"
       :style="computeRectStyle"
     />
 
     <!-- ELEMENT SVG -->
     <component
-      :is="computeCellName"
+      :is="cellComponent"
+      v-if="cellComponent != null"
       :cell="cell"
-      :class="computeCellName"
       :cell-size="tileSize"
       :border="computeBorder"
     />
@@ -54,27 +54,7 @@ import { Prop, Watch } from 'vue-property-decorator'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import { usePosition } from '@/mixins/Position'
-import {
-  LaserCell,
-  NonLinearCrystalCell,
-  MirrorCell,
-  BeamSplitterCell,
-  PolarizingBeamSplitterCell,
-  CoatedBeamSplitterCell,
-  CornerCubeCell,
-  DetectorCell,
-  RockCell,
-  MineCell,
-  AbsorberCell,
-  DetectorFourCell,
-  PolarizerCell,
-  QuarterWavePlateCell,
-  HalfWavePlateCell,
-  SugarSolutionCell,
-  FaradayRotatorCell,
-  GlassCell,
-  VacuumJarCell,
-} from '@/components/Board/Cell/index'
+import { cellComponentsList } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
 import { ref } from 'vue'
 import { storeNamespace } from '@/store'
@@ -89,27 +69,6 @@ const borderColors = {
 const game = storeNamespace('game')
 
 @Options({
-  components: {
-    LaserCell,
-    NonLinearCrystalCell,
-    MirrorCell,
-    BeamSplitterCell,
-    PolarizingBeamSplitterCell,
-    CoatedBeamSplitterCell,
-    CornerCubeCell,
-    DetectorCell,
-    RockCell,
-    MineCell,
-    AbsorberCell,
-    DetectorFourCell,
-    PolarizerCell,
-    QuarterWavePlateCell,
-    HalfWavePlateCell,
-    SugarSolutionCell,
-    FaradayRotatorCell,
-    GlassCell,
-    VacuumJarCell,
-  },
   emits: ['update-cell', 'click'],
 })
 export default class AppCell extends Vue {
@@ -118,12 +77,10 @@ export default class AppCell extends Vue {
   @Prop({ default: true }) readonly available!: boolean // looks like this is NOT needed
   mutationSetActiveCell = setup(() => game.useMutation('SET_ACTIVE_CELL'))
   mutationResetActiveCell = setup(() => game.useMutation('RESET_ACTIVE_CELL'))
-  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
   simulationState = setup(() => game.useState('simulationState'))
   gameState = setup(() => game.useState('gameState'))
   activeCell = setup(() => game.useState('activeCell'))
   cellSelected = setup(() => game.useState('cellSelected'))
-  hoveredCell = setup(() => game.useState('hoveredCell'))
   border = ''
   isRotate = false
 
@@ -140,8 +97,8 @@ export default class AppCell extends Vue {
    * Compute the cell class name
    * @returns Compute cell name string
    */
-  get computeCellName(): string {
-    return `${this.cell.element.name}Cell`
+  get cellComponent(): unknown {
+    return cellComponentsList[this.cell.element.name]
   }
 
   /**
@@ -277,7 +234,7 @@ export default class AppCell extends Vue {
    * Is current cell the active cell
    */
   get isActiveCell(): boolean {
-    return this.activeCell.equal(this.cell)
+    return this.activeCell?.equal(this.cell) ?? false
   }
 
   /**
@@ -315,7 +272,6 @@ export default class AppCell extends Vue {
    */
   get computeCellClass(): string[] {
     return [
-      this.computeCellName,
       this.cell.tool && !this.cell.isVoid && this.available ? 'active' : '',
       (this.cell.frozen && !this.cell.isVoid) || (this.cell.tool && !this.available)
         ? 'frozen'

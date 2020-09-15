@@ -27,6 +27,7 @@ import { Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
+import { Elem } from '@/engine/interfaces'
 
 const spacedName = (name: string): string => {
   const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
@@ -48,9 +49,10 @@ export default class GameActiveCell extends Vue {
   */
   get name(): string {
     switch (this.infoPayload.kind) {
-      case 'element':
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return spacedName(this.infoPayload.cell!.element.name)
+      case 'element': {
+        const elem = this.infoPayload.cell?.element.name ?? Elem.Void
+        return spacedName(Elem[elem])
+      }
       case 'particles':
         return 'photon state'
       case 'ui':

@@ -12,9 +12,12 @@
       <board-lasers v-if="classicalView" :laserParticles="laserParticles" />
 
       <!-- FATE -->
-      <g :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`">
+      <g
+        v-if="fate != null"
+        :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`"
+      >
         <transition name="fate-blink">
-          <circle v-if="displayFate" class="fate" fill="purple" r="30" />
+          <circle class="fate" fill="purple" r="30" />
         </transition>
       </g>
 
@@ -41,7 +44,7 @@
 
       <!-- CELLS -->
       <app-cell
-        v-for="(cell, i) in grid.cells"
+        v-for="(cell, i) in grid.cells.values()"
         :key="'cell' + i"
         :cell="cell"
         :tileSize="tileSize"
@@ -95,6 +98,7 @@ import { storeNamespace } from '@/store'
 const game = storeNamespace('game')
 
 export default defineComponent({
+  name: 'Board',
   components: {
     AppCell,
     AppPhoton,
@@ -104,13 +108,12 @@ export default defineComponent({
   },
   props: {
     grid: { type: Object as PropType<Grid>, required: true },
-    fate: { type: Coord, required: true },
+    fate: { type: Coord },
     hints: { type: Array as PropType<IHint[]>, default: [] },
     particles: { type: Array as PropType<Particle[]>, default: [] },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
     absorptions: { type: Array as PropType<Absorption[]>, default: [] },
     frameIndex: { type: Number, default: 0 },
-    displayFate: { type: Boolean, default: false },
   },
   emits: {
     'update-cell': null,
@@ -119,8 +122,6 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     const mutationSetHoveredParticles = game.useMutation('SET_HOVERED_PARTICLE')
-    const mutationSetHoveredCell = game.useMutation('SET_HOVERED_CELL')
-    const hoveredCell = game.useState('hoveredCell')
     const simulationState = game.useState('simulationState')
 
     const boardScaler = ref<HTMLElement>()
@@ -149,8 +150,7 @@ export default defineComponent({
         const particles = props.particles.filter((particle) => {
           return particle.coord.equal(coord)
         })
-        if (cell !== hoveredCell.value && !cell.isVoid) {
-          mutationSetHoveredCell(cell)
+        if (!cell.isVoid) {
           emit('hover', { kind: 'element', cell, particles: [], text: '' })
         }
         if (particles.length > 0) {

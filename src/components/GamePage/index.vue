@@ -45,8 +45,7 @@
           <board
             :particles="activeParticles"
             :laser-particles="laserParticles"
-            :fate="fateCoord"
-            :display-fate="displayFate"
+            :fate="displayFate ? fateCoord : undefined"
             :hints="hints"
             :grid="level.grid"
             :absorptions="level.gameState.absorptions"
@@ -150,7 +149,6 @@ export default defineComponent({
     const mutationSetCurrentLevelID = game.useMutation('SET_CURRENT_LEVEL_ID')
     const mutationSetGameState = game.useMutation('SET_GAME_STATE')
     const mutationSetSimulationState = game.useMutation('SET_SIMULATION_STATE')
-    const mutationSetHoveredCell = game.useMutation('SET_HOVERED_CELL')
     const store = useStore()
     const route = useRoute()
 
@@ -229,7 +227,7 @@ export default defineComponent({
       text: 'Hover on a element for more information.',
     } as IInfoPayload)
 
-    const fateCoord = ref(Coord.importCoord({ x: -1, y: -1 }))
+    const fateCoord = ref<Coord>()
     const fateStep = ref(999)
     const displayFate = ref(false)
 
@@ -351,20 +349,11 @@ export default defineComponent({
           const fetchedLevelBoardObj = fetchedLevel.value
           if (fetchedLevelBoardObj != null) {
             level.value = Level.importLevel(fetchedLevelBoardObj)
-            setFirstToolAsHovered()
             actionClearLevelStoreData()
           }
         })
       } else {
         level.value = Level.importLevel(levels[routeLevelId()])
-        setFirstToolAsHovered()
-      }
-    }
-
-    // Set hovered cell as first element of toolbox
-    function setFirstToolAsHovered(): void {
-      if (level.value.toolbox.uniqueCellList.length > 0) {
-        mutationSetHoveredCell(level.value.toolbox.uniqueCellList[0])
       }
     }
 
@@ -381,8 +370,11 @@ export default defineComponent({
      * Set the energized cells from the simulation
      */
     function setEnergizedCellAtTheEnd(): void {
-      displayFate.value = true
-      level.value.grid.setEnergized([fateCoord.value])
+      const coord = fateCoord.value
+      if (coord != null) {
+        displayFate.value = true
+        level.value.grid.setEnergized([coord])
+      }
     }
 
     /**
@@ -424,7 +416,7 @@ export default defineComponent({
      * @returns particles
      */
     const activeParticles = computed((): Particle[] => {
-      return activeFrame.value?.particles.map(Particle.importParticle) || []
+      return activeFrame.value?.particles || []
     })
 
     /**
@@ -526,27 +518,39 @@ export default defineComponent({
      * @returns void
      */
     function updateCell(cell: Cell): void {
+      const grid = level.value.grid
+      const toolbox = level.value.toolbox
+
       const sourceCell = activeCell.value
       const targetCell = cell
+
+      if (sourceCell == null || sourceCell.frozen || targetCell.frozen) {
+        return
+      }
+
       if (
         // handle moving from toolbox to grid
-        activeCell.value.isFromToolbox &&
-        cell.isFromGrid &&
-        cell.isVoid
+        sourceCell.isFromToolbox &&
+        targetCell.isFromGrid &&
+        targetCell.isVoid
       ) {
-        level.value.toolbox.removeTool(activeCell.value)
+        toolbox.removeTool(sourceCell.element.name)
+        const newCell = sourceCell.exportCell()
+        newCell.coord = targetCell.coord
+        grid.set(Cell.importCell(newCell))
       } else if (
         // handle moving from grid to toolbox
-        activeCell.value.isFromGrid &&
-        cell.isFromToolbox &&
-        !activeCell.value.isVoid &&
+        sourceCell.isFromGrid &&
+        targetCell.isFromToolbox &&
+        !sourceCell.isVoid &&
         !cell.isVoid
       ) {
-        level.value.toolbox.addTool(cell, activeCell.value)
-        level.value.grid.set(activeCell.value.reset())
+        toolbox.addTool(sourceCell.element.name)
+        level.value.grid.remove(sourceCell.coord)
+      } else if (sourceCell.isFromGrid && targetCell.isFromGrid) {
+        // handle swapping grids on board
+        grid.swap(sourceCell.coord, targetCell.coord)
       }
-      // FIXME: unify moving logic
-      level.value.grid.move(sourceCell, targetCell)
 
       saveLevelToStore()
     }
@@ -582,6 +586,7 @@ export default defineComponent({
       infoPayload,
       activeFrame,
       frameIndex,
+      simGrid,
     }
   },
 })

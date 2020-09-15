@@ -1,5 +1,5 @@
 <template>
-  <transition :name="gameState">
+  <transition :name="stateTransition">
     <div v-if="victory" :class="computeClass">
       <div class="victory-circle">
         <h2>
@@ -29,7 +29,17 @@ export default class AppOverlay extends Vue {
   confetti = new Confetti()
 
   get computeClass(): string[] {
-    return [this.gameState.toString(), 'wrapper']
+    return [this.stateTransition, 'wrapper']
+  }
+
+  get stateTransition(): string {
+    switch (this.gameState) {
+      case GameStateEnum.Victory:
+        return 'Victory'
+      case GameStateEnum.MineExploded:
+        return 'MineExploded'
+    }
+    return ''
   }
 
   get victory(): boolean {

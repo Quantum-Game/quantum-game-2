@@ -196,7 +196,7 @@ export function toPercentString(value: number): string {
  * @param classic name used in Quantum Game 1
  * @returns v2 name
  */
-export function convertFromClassicNames(classic: string): string {
+export function convertFromClassicNames(classic: string): Elem {
   switch (classic) {
     // Source
     case 'Source':
