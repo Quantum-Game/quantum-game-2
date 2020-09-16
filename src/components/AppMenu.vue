@@ -8,20 +8,17 @@
     <transition name="fade">
       <div v-if="isMenuOpen" class="menu-overlay">
         <menu>
-          <router-link to="/" @click.stop="closeMenu">BACK TO THE MAIN PAGE</router-link>
-          <router-link
-            v-if="currentLevelID > 0"
-            :to="continueLink"
-            @click.stop="handleContinueClick"
-            >CONTINUE</router-link
-          >
-          <router-link
-            v-for="item in menuItems"
-            :key="item.name"
-            :to="item.url"
-            @click.stop="closeMenu"
-            >{{ item.name }}</router-link
-          >
+          <router-link to="/">BACK TO THE MAIN PAGE</router-link>
+          <router-link v-if="currentLevel != null" :to="`/level/${currentLevel}`">
+            CONTINUE
+          </router-link>
+          <router-link to="/levels">LEVELS</router-link>
+          <router-link v-if="isLoggedIn" to="/myaccount">MY ACCOUNT</router-link>
+          <router-link v-else to="/login">LOG IN</router-link>
+          <router-link to="/sandbox">SANDBOX</router-link>
+          <router-link to="/levels">LEVELS</router-link>
+          <router-link to="/info">ENCYCLOPEDIA</router-link>
+          <router-link to="/options">OPTIONS</router-link>
           <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
         </menu>
       </div>
@@ -30,94 +27,47 @@
 </template>
 
 <script lang="ts">
+import { useWindowEvent } from '@/mixins/event'
 import { storeNamespace } from '@/store'
-import { setup, Vue } from 'vue-class-component'
-import { useRoute } from 'vue-router'
+import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const user = storeNamespace('user')
 const game = storeNamespace('game')
 
-export default class AppMenu extends Vue {
-  moduleGetterIsLoggedIn = setup(() => user.useGetter('isLoggedIn'))
-  currentLevelID = setup(() => game.useState('currentLevelID'))
+export default defineComponent(() => {
+  const isLoggedIn = user.useGetter('isLoggedIn')
+  const currentLevel = game.useState('currentLevelID')
+  const router = useRouter()
+  const isMenuOpen = ref(false)
 
-  route = setup(useRoute)
-
-  isMenuOpen = false
-
-  created(): void {
-    window.addEventListener('keyup', this.handleEscPress)
-  }
-
-  closeMenu(): void {
-    this.isMenuOpen = false
-  }
-
-  handleContinueClick(e: MouseEvent): void {
-    // if we are in the encyclopedia, the continue
-    // should take us to the previous played level
-    // otherwuise in case we are playing:
-    if (this.route.name === 'level') {
-      e.preventDefault()
-      this.closeMenu()
+  useWindowEvent('keydown', (e) => {
+    if (e.key === 'Escape') {
+      toggleMenu()
     }
+  })
+
+  router.afterEach(() => {
+    isMenuOpen.value = false
+  })
+
+  function toggleMenu(): void {
+    isMenuOpen.value = !isMenuOpen.value
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen
+  return {
+    toggleMenu,
+    isLoggedIn,
+    currentLevel,
+    isMenuOpen,
   }
-
-  handleEscPress(e: { which: number }): void {
-    if (e.which === 27) {
-      this.toggleMenu()
-    }
-  }
-
-  beforeDestroy(): void {
-    window.removeEventListener('keyup', this.handleEscPress)
-  }
-
-  get continueLink(): string {
-    return `/level/${this.currentLevelID}`
-  }
-
-  /**
-   * Created to iterate over in template;
-   * the second element depends on whether
-   * the user is logged in.
-   * @remarks showing link to login page
-   * for users logged in seemed silly.
-   */
-  get menuItems(): { name: string; url: string }[] {
-    return [
-      {
-        name: 'LEVELS',
-        url: '/levels',
-      },
-      this.moduleGetterIsLoggedIn
-        ? { name: 'MY ACCOUNT', url: '/myaccount' }
-        : { name: 'LOGIN', url: '/login' },
-      {
-        name: 'SANDBOX',
-        url: '/sandbox',
-      },
-      {
-        name: 'ENCYCLOPEDIA',
-        url: '/info',
-      },
-      {
-        name: 'OPTIONS',
-        url: '/options',
-      },
-    ]
-  }
-}
+})
 </script>
 
 <style scoped lang="scss">
 .q-menu-wrapper {
   min-height: 42px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     width: 6vw;
     min-height: 0px;
   }
@@ -129,14 +79,12 @@ export default class AppMenu extends Vue {
   left: 20px;
   cursor: pointer;
   z-index: 4;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     position: static;
     top: 2vw;
     left: 5vw;
   }
-  &.open {
-    position: fixed;
-  }
+
   .bar1,
   .bar2,
   .bar3 {
@@ -145,28 +93,29 @@ export default class AppMenu extends Vue {
     background-color: rgb(255, 255, 255);
     margin: 8px 0;
     transition: 0.4s;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       width: 6vw;
       height: 0.5vw;
       margin: 1vw 0;
     }
   }
-  /* Rotate first bar */
-  &.open .bar1 {
-    transform: rotate(-45deg) translate(-7px, 3px);
-    @media screen and (max-width: 1000px) {
-      transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
+
+  &.open {
+    position: fixed;
+    .bar1 {
+      transform: rotate(-45deg) translate(-7px, 3px);
+      @include media('<large') {
+        transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
+      }
     }
-  }
-  /* Fade out the second bar */
-  &.open .bar2 {
-    opacity: 0;
-  }
-  /* Rotate last bar */
-  &.open .bar3 {
-    transform: rotate(45deg) translate(-11px, -11px);
-    @media screen and (max-width: 1000px) {
-      transform: rotate(45deg) translate(-1vw, -1vw);
+    .bar2 {
+      opacity: 0;
+    }
+    .bar3 {
+      transform: rotate(45deg) translate(-11px, -11px);
+      @include media('<large') {
+        transform: rotate(45deg) translate(-1vw, -1vw);
+      }
     }
   }
 }

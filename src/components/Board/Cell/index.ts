@@ -17,6 +17,8 @@ import QuarterWavePlateCell from './QuarterWavePlateCell.vue'
 import HalfWavePlateCell from './HalfWavePlateCell.vue'
 import FaradayRotatorCell from './FaradayRotatorCell.vue'
 import NonLinearCrystalCell from './NonLinearCrystalCell.vue'
+import { Elem } from '@/engine/interfaces'
+import { defineComponent } from 'vue'
 
 export { AbsorberCell }
 export { BeamSplitterCell }
@@ -38,32 +40,27 @@ export { HalfWavePlateCell }
 export { FaradayRotatorCell }
 export { NonLinearCrystalCell }
 
-// FIXME: Code smell move to interfaces
-interface ICellList {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [index: string]: Record<string, any>
+export const cellComponentsList: Record<Elem, unknown> = {
+  [Elem.Void]: undefined,
+  [Elem.Wall]: undefined,
+  [Elem.Gate]: undefined,
+  [Elem.Laser]: LaserCell,
+  [Elem.NonLinearCrystal]: NonLinearCrystalCell,
+  [Elem.Mirror]: MirrorCell,
+  [Elem.BeamSplitter]: BeamSplitterCell,
+  [Elem.PolarizingBeamSplitter]: PolarizingBeamSplitterCell,
+  [Elem.CoatedBeamSplitter]: CoatedBeamSplitterCell,
+  [Elem.CornerCube]: CornerCubeCell,
+  [Elem.Detector]: DetectorCell,
+  [Elem.Rock]: RockCell,
+  [Elem.Mine]: MineCell,
+  [Elem.Absorber]: AbsorberCell,
+  [Elem.DetectorFour]: DetectorFourCell,
+  [Elem.Polarizer]: PolarizerCell,
+  [Elem.QuarterWavePlate]: QuarterWavePlateCell,
+  [Elem.HalfWavePlate]: HalfWavePlateCell,
+  [Elem.SugarSolution]: SugarSolutionCell,
+  [Elem.FaradayRotator]: FaradayRotatorCell,
+  [Elem.Glass]: GlassCell,
+  [Elem.VacuumJar]: VacuumJarCell,
 }
-
-const CellList: ICellList = {
-  LaserCell,
-  MirrorCell,
-  BeamSplitterCell,
-  PolarizingBeamSplitterCell,
-  CoatedBeamSplitterCell,
-  CornerCubeCell,
-  DetectorCell,
-  RockCell,
-  MineCell,
-  AbsorberCell,
-  DetectorFourCell,
-  PolarizerCell,
-  QuarterWavePlateCell,
-  HalfWavePlateCell,
-  SugarSolutionCell,
-  GlassCell,
-  VacuumJarCell,
-  FaradayRotatorCell,
-  NonLinearCrystalCell,
-}
-
-export default CellList

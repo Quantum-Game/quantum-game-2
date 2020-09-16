@@ -36,8 +36,7 @@
 <script lang="ts">
 import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { IEntry } from '@/engine/interfaces'
-import { Cell } from '@/engine/classes'
+import { elemFromString, IEntry } from '@/engine/interfaces'
 import { getEntry } from './loadData'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
@@ -89,16 +88,12 @@ export default class EncyclopediaArticle extends Vue {
     return this.route.params.entry as string
   }
 
-  // FIXME: Code smell, move to element value
   get showMatrix(): boolean {
     const dontShowMatrix = ['Laser']
-    let elementExists: boolean
-    try {
-      elementExists = !!Cell.fromName(this.entry.elementName)
-    } catch (error) {
-      elementExists = false
-    }
-    return dontShowMatrix.indexOf(this.entry.elementName) < 0 && elementExists
+    return (
+      dontShowMatrix.indexOf(this.entry.elementName) < 0 &&
+      elemFromString(this.entry.elementName) != null
+    )
   }
 }
 </script>
@@ -127,7 +122,7 @@ article {
     line-height: 1.5rem;
     letter-spacing: 0.5px;
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     width: 100vw;
     article {
       width: 90vw;
@@ -145,7 +140,7 @@ h1 {
   justify-content: space-around;
   width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: column;
   }
 }

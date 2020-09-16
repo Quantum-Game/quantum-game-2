@@ -1,7 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { store, StoreModules } from './store'
-import { useStore } from 'vuex'
-import { toRef, ComputedRef } from 'vue'
-import { MapGetters, MapActions, MapMutations, TypedModule } from './storeInterfaces'
+import { useStore, SubscribeOptions } from 'vuex'
+import { toRef, ComputedRef, onMounted, onUnmounted } from 'vue'
+import {
+  MapGetters,
+  MapActions,
+  MapMutations,
+  TypedModule,
+  MutationPayload,
+} from './storeInterfaces'
 
 export { store }
 
@@ -76,4 +83,41 @@ export function storeNamespace<Ns extends keyof StoreModules>(namespace: Ns) {
         s.dispatch(`${namespace}/${action}`, payload)) as unknown) as MappedActions[A]
     },
   }
+}
+
+type ModuleMutations<Ns extends keyof StoreModules> = StoreModules[Ns] extends TypedModule<
+  any,
+  any,
+  infer M,
+  any
+>
+  ? M
+  : never
+
+/** Subscribe to specific mutation in the store for the lifetime of a component */
+export function useStoreSubsription<
+  Ns extends keyof StoreModules,
+  M extends keyof ModuleMutations<Ns>
+>(
+  namespace: Ns,
+  mutation: M,
+  handler: (payload: MutationPayload<ModuleMutations<Ns>[M]>) => void,
+  options?: SubscribeOptions
+): void {
+  const store = useStore()
+  let unsubscribe: (() => void) | null = null
+  const mutationType = `${namespace}/${mutation}`
+  onMounted(() => {
+    unsubscribe = store.subscribe((mutation) => {
+      if (mutation.type === mutationType) {
+        handler(mutation.payload)
+      }
+    }, options)
+  })
+
+  onUnmounted(() => {
+    if (unsubscribe != null) {
+      unsubscribe()
+    }
+  })
 }

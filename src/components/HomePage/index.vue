@@ -101,7 +101,7 @@ export default class HomePage extends Vue {
 }
 .gameVersion {
   font-size: 0.8rem;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     font-size: 1rem;
     width: 80%;
   }
@@ -136,7 +136,7 @@ p {
   height: 100px;
   margin-bottom: 8rem;
   align-items: center;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     margin-bottom: 6rem;
   }
 }

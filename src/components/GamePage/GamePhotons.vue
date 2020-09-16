@@ -47,7 +47,7 @@ export default defineComponent({
   text-align: left;
   padding-top: 10px;
   padding-bottom: 10px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: none;
   }
   h3 {

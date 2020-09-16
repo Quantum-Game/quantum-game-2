@@ -35,7 +35,7 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { Elem } from '@/engine/interfaces'
+import { Elem, elemFromString } from '@/engine/interfaces'
 import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
@@ -54,7 +54,7 @@ interface IXYVec {
   },
 })
 export default class EncyclopediaMatrixBoard extends Vue {
-  @Prop({ default: 'Mirror' }) readonly elementName!: Elem
+  @Prop({ default: 'Mirror' }) readonly elementName!: string
   @Prop({ default: () => 10 }) readonly maxSteps!: number
   @Prop({ default: () => 2 }) readonly defaultStep!: number
   @Prop({ default: 0 }) defaultRotation!: number
@@ -109,10 +109,8 @@ export default class EncyclopediaMatrixBoard extends Vue {
 
   get cell(): Cell {
     const coord = new Coord(1, 1)
-    if (this.elementName in Elem) {
-      return new Cell(coord, Cell.fromName(this.elementName), this.rotation)
-    }
-    return new Cell(coord, Cell.fromName(Elem.Rock))
+    const elem = elemFromString(this.elementName) ?? Elem.Rock
+    return new Cell(coord, Cell.fromElem(elem), this.rotation)
   }
 
   /**
@@ -166,7 +164,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   display: flex;
   justify-content: space-around;
   width: 100%;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: column;
   }
 }
@@ -182,7 +180,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
     font-weight: bold;
     text-align: justify;
     text-transform: uppercase;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       text-align: center;
       width: 90%;
     }
@@ -203,7 +201,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
       transition: 0.2s;
     }
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     padding-left: 20px;
   }
 }

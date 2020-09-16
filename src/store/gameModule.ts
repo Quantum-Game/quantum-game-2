@@ -3,21 +3,27 @@ import Cell from '@/engine/Cell'
 import Particle from '@/engine/Particle'
 import { GameStateEnum } from '@/engine/interfaces'
 
-const initialCell = Cell.createDummy()
-const initialParticle = Particle.createDummy()
+interface GameState {
+  activeCell: Cell | null
+  cellSelected: boolean
+  hoveredParticles: Particle[]
+  gameState: GameStateEnum
+  simulationState: boolean
+  currentLevelID: number
+  errors: string[]
+}
 
 export default storeModule({
   namespaced: true,
   state: {
-    activeCell: initialCell,
+    activeCell: null,
     cellSelected: false,
-    hoveredCell: initialCell,
-    hoveredParticles: [initialParticle],
+    hoveredParticles: [],
     gameState: GameStateEnum.InProgress,
     simulationState: false,
     currentLevelID: 0,
-    errors: [] as string[],
-  },
+    errors: [],
+  } as GameState,
   mutations: {
     // set active level
     SET_GAME_STATE(state, gameState: GameStateEnum) {
@@ -34,12 +40,8 @@ export default storeModule({
     },
     // reset active cell
     RESET_ACTIVE_CELL(state) {
-      state.activeCell = initialCell
+      state.activeCell = null
       state.cellSelected = false
-    },
-    // hovered cell functional
-    SET_HOVERED_CELL(state, cell: Cell) {
-      state.hoveredCell = cell
     },
     // hovered cell functional
     SET_HOVERED_PARTICLE(state, particles: Particle[]) {

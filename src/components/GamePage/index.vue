@@ -4,12 +4,7 @@
     <div class="portal-dragdrop"></div>
 
     <!-- OVERLAY -->
-    <app-overlay
-      :game-state="overlayGameState"
-      :victory-already-shown="victoryAlreadyShown"
-      class="overlay"
-      @click="frameIndex = 0"
-    >
+    <app-overlay :game-state="overlayGameState" class="overlay" @click="continueAfterWin">
       <p class="backButton">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
@@ -21,15 +16,15 @@
       <!-- HEADER-MIDDLE -->
       <template #header-middle>
         <h1 v-if="error" class="error">{{ error }}</h1>
-        <h1 v-else class="title">
+        <div v-else layout="row u2 middle center">
           <router-link :to="previousLevel">
             <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
           </router-link>
-          {{ level.id + ' - ' + level.name }}
+          <h1 class="title">{{ level.id + ' - ' + level.name }}</h1>
           <router-link :to="nextLevelOrOvelay">
             <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
           </router-link>
-        </h1>
+        </div>
       </template>
 
       <!-- MAIN-LEFT -->
@@ -47,14 +42,13 @@
       <!-- MAIN-MIDDLE -->
       <template #main-middle>
         <section>
-          <game-board
+          <board
             :particles="activeParticles"
             :laser-particles="laserParticles"
-            :fate="fateCoord"
-            :display-fate="displayFate"
+            :fate="displayFate ? fateCoord : undefined"
             :hints="hints"
             :grid="level.grid"
-            :absorptions="filteredAbsorptions"
+            :absorptions="level.gameState.absorptions"
             :frame-index="frameIndex"
             @update-cell="updateCell"
             @play="play"
@@ -62,17 +56,16 @@
           />
           <game-controls
             :frame-index="frameIndex"
-            :total-frames="simulation.frames.length"
+            :total-frames="totalFrames"
             :display-status="displayStatus"
             @rewind="rewind"
             @step-back="stepBack"
             @play="play"
             @step-forward="stepForward"
             @fast-forward="fastForward"
-            @new-fate="computeNewFate"
             @reload="reload"
             @download-level="downloadLevel"
-            @loaded-level="loadLevel($event)"
+            @loaded-level="loadLevel"
             @hover="updateInfoPayload"
             @save-level="handleSave"
           />
@@ -87,7 +80,7 @@
             :percentage="level.gameState.totalAbsorptionPercentage"
           />
           <div class="ket-viewer-game">
-            <ket-viewer class="ket" :vector="activeFrame.vector" />
+            <ket-viewer v-if="activeFrame" class="ket" :vector="activeFrame.vector" />
           </div>
         </section>
       </template>
@@ -96,13 +89,11 @@
 </template>
 
 <script lang="ts">
-import { Frame, Simulation } from 'quantum-tensors'
-import { Vue, Options, setup } from 'vue-class-component'
-import { Watch } from 'vue-property-decorator'
-import { IHint, GameStateEnum, IParticle } from '@/engine/interfaces'
+import { Simulation, Vector } from 'quantum-tensors'
+import { IAbsorption } from 'quantum-tensors/dist/interfaces'
+import { IHint, GameStateEnum, ISimGrid } from '@/engine/interfaces'
 import { IInfoPayload } from '@/mixins/gameInterfaces'
-import { Cell, Grid, Level, Particle, Coord } from '@/engine/classes'
-import Toolbox from '@/engine/Toolbox'
+import { Cell, Level, Particle, Coord } from '@/engine/classes'
 import Absorption from '@/engine/Absorption'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
@@ -110,560 +101,499 @@ import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
-import GamePhotons from '@/components/GamePage/GamePhotons.vue'
 import GameLayout from '@/components/GamePage/GameLayout.vue'
-import GameBoard from '@/components/Board/index.vue'
+import Board from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 import { useStore } from 'vuex'
 import '@/store/store'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeNamespace } from '@/store'
+import { computed, defineComponent, onMounted, ref, shallowRef, watch } from 'vue'
+import { useWindowEvent } from '@/mixins/event'
+import { useTimer } from '@/mixins/timer'
 
-const user = storeNamespace('user')
-const game = storeNamespace('game')
+/**
+ * View data extracted from simulation
+ */
+interface SimFrame {
+  particles: Particle[]
+  vector: Vector
+}
 
-@Options({
+export default defineComponent({
   components: {
     GameLayout,
-    GamePhotons,
     KetViewer,
     GameGoals,
     GameInfobox,
     GameToolbox,
     GameControls,
-    GameBoard,
+    Board,
     AppButton,
     AppOverlay,
   },
-})
-export default class Game extends Vue {
-  level = Level.createDummy()
-  activeCell = setup(() => game.useState('activeCell')) // this need to me removed ASASP - the same fate as... fate
-  gameState = setup(() => game.useState('gameState'))
-  simulationState = setup(() => game.useState('simulationState'))
-  actionSaveLevel = setup(() => user.useAction('SAVE_LEVEL'))
-  actionUpdateLevel = setup(() => user.useAction('UPDATE_LEVEL'))
-  actionGetLevelStoreData = setup(() => user.useAction('GET_LEVEL_DATA'))
-  actionClearLevelStoreData = setup(() => user.useAction('CLEAR_LEVEL_DATA'))
-  moduleGetterFetchedBoardState = setup(() => user.useGetter('fetchedLevelBoardState'))
-  mutationSetCurrentLevelID = setup(() => game.useMutation('SET_CURRENT_LEVEL_ID'))
-  mutationSetGameState = setup(() => game.useMutation('SET_GAME_STATE'))
-  mutationSetSimulationState = setup(() => game.useMutation('SET_SIMULATION_STATE'))
-  mutationSetHoveredCell = setup(() => game.useMutation('SET_HOVERED_CELL'))
-  store = setup(useStore)
+  setup() {
+    const user = storeNamespace('user')
+    const game = storeNamespace('game')
 
-  frameIndex = 0
-  simulation: Simulation = new Simulation(Grid.emptyGrid().exportSimGrid())
-  error = ''
-  playInterval = 0
-  absorptionThreshold = 0.0001
-  infoPayload: IInfoPayload = {
-    kind: 'ui',
-    particles: [],
-    text: 'Hover on a element for more information.',
-  }
+    const activeCell = game.useState('activeCell') // this need to me removed ASASP - the same fate as... fate
+    const gameState = game.useState('gameState')
+    const simulationState = game.useState('simulationState')
+    const actionSaveLevel = user.useAction('SAVE_LEVEL')
+    const actionUpdateLevel = user.useAction('UPDATE_LEVEL')
+    const actionGetLevelStoreData = user.useAction('GET_LEVEL_DATA')
+    const actionClearLevelStoreData = user.useAction('CLEAR_LEVEL_DATA')
+    const fetchedLevel = user.useGetter('fetchedLevelBoardState')
+    const mutationSetCurrentLevelID = game.useMutation('SET_CURRENT_LEVEL_ID')
+    const mutationSetGameState = game.useMutation('SET_GAME_STATE')
+    const mutationSetSimulationState = game.useMutation('SET_SIMULATION_STATE')
+    const store = useStore()
+    const route = useRoute()
+    const router = useRouter()
 
-  fateCoord = Coord.importCoord({ x: -1, y: -1 })
-  fateStep = 999
-  displayFate = false
-  victoryAlreadyShown = false
-  showVictory = false
-  unsubscribe?(): void
-  route = setup(useRoute)
+    const level = ref(Level.createDummy())
 
-  get displayStatus(): string {
-    if (this.simulationState) {
-      return 'Quantum simulation (live)' // (each time a random outcome)
-    } else if (this.frameIndex > 0) {
-      return 'Quantum simulation (step-by-step)'
-    } else {
-      return 'Classical laser beam' // (still with polarization & interference)
-    }
-  }
+    const frameIndex = ref(0)
+    const alreadyWon = ref(false)
+    // sim derived state (separate to avoid proxying Simulation object)
+    const simFrames = shallowRef<SimFrame[]>([])
+    const filteredAbsorptions = ref([] as Absorption[])
 
-  // LIFECYCLE
-  created(): void {
-    this.loadLevel()
-    this.mutationSetCurrentLevelID(this.levelId)
-    window.addEventListener('keyup', this.handleArrowPress)
-  }
+    let lastSimulation: Simulation | null = null
 
-  beforeDestroy(): void {
-    window.removeEventListener('keyup', this.handleArrowPress)
-    if (this.unsubscribe) {
-      this.unsubscribe()
-    }
-  }
-
-  /**
-   * Parse url to extract level number
-   * if missing then fallback to '0' for infinity level / sandbox
-   */
-  get levelId(): number {
-    return +this.route.params.id || 0
-  }
-
-  /**
-   * Watch the current route and update level accordingly
-   */
-  @Watch('levelId')
-  changeLevel(): void {
-    this.mutationSetCurrentLevelID(this.levelId)
-    this.loadLevel()
-  }
-
-  /**
-   * Depending on whether the level at hand is a custom
-   * or a default one, appropriate level loading logic is applied.
-   * @returns an answear to whether the level is a custom one
-   * @remarks In the future we need a more flexible way
-   * to determine this.
-   */
-  get isCustomLevel(): boolean {
-    return this.levelId >= 1000
-  }
-
-  /**
-   * Level Loading Logic
-   * @params none, the function evaluates which level should be loaded
-   * @returns nothing, function substitures this.level
-   * @remarks the 'saved' variable determines whether the level should
-   * be loaded out of app data, or fetched from db
-   */
-  loadLevel(): void {
-    this.victoryAlreadyShown = false
-    this.error = ''
-
-    if (this.isCustomLevel) {
-      // 1) dispatch action for vuex to get the level, the "shared" parameter
-      //    handles which db we target
-      this.actionGetLevelStoreData({ id: this.levelId })
-        .then(() => {
-          // 2) subscribe to mutation triggered asynchronously
-          this.unsubscribe = this.store.subscribe((mutation, rootState) => {
-            if (mutation.type === 'userModule/SET_FETCHED_LEVEL') {
-              // 3) in case of a successful fetch,
-              //    get substitute this.level with store data.
-              if (rootState.userModule.fetchedLevel) {
-                // FIXME: This logic is clearly broken, which was revealed by strong store typing
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                const fetchedLevelBoardObj = this.moduleGetterFetchedBoardState!
-                this.level = Level.importLevel(fetchedLevelBoardObj)
-                this.setFirstToolAsHovered()
-                this.updateSimulation()
-                this.actionClearLevelStoreData()
-              }
-            }
-          })
-        })
-        .catch((error: Error) => {
-          this.error = error.message
-        })
-    } else {
-      this.level = Level.importLevel(levels[this.levelId])
-      this.setFirstToolAsHovered()
-      this.updateSimulation()
-    }
-  }
-
-  // Set hovered cell as first element of toolbox
-  setFirstToolAsHovered(): void {
-    if (this.level.toolbox.uniqueCellList.length > 0) {
-      this.mutationSetHoveredCell(this.level.toolbox.uniqueCellList[0])
-    }
-  }
-
-  updateInfoPayload(infoPayload: IInfoPayload): void {
-    this.infoPayload = infoPayload
-  }
-
-  /**
-   * Level loading and initialization
-   * @returns boolean
-   */
-  updateSimulation(): void {
-    // Compute simulation frames
-    this.simulation = new Simulation(this.level.grid.exportSimGrid())
-    const indicator = this.simulation.generateLaserIndicator()
-    this.simulation.initializeFromIndicator(indicator)
-    this.simulation.generateFrames(40)
-
-    // Set absorption events to compute gameState
-    this.level.gameState.absorptions = this.filteredAbsorptions
-    // Reset simulation variables
-    this.frameIndex = 0
-    this.displayFate = false
-    this.setEnergizedCells()
-    if (this.levelId !== 0) {
-      this.mutationSetGameState(this.level.gameState.gameState)
-    }
-    this.mutationSetSimulationState(false)
-    console.debug(this.level.gameState.toString())
-  }
-
-  /**
-   * Launch overlay if it's the last frame and the player has a game state set
-   */
-  get overlayGameState(): string {
-    if (this.frameIndex === this.fateStep) {
-      return this.gameState
-    }
-    return 'InProgress'
-  }
-
-  /**
-   * Set the energized cells from the simulation
-   */
-  setEnergizedCells(): void {
-    this.level.grid.resetEnergized()
-    const coords = this.filteredAbsorptions.map((absorption) => absorption.coord)
-    this.level.grid.setEnergized(coords)
-  }
-
-  /**
-   * Set the energized cells from the simulation
-   */
-  setEnergizedCellAtTheEnd(): void {
-    this.displayFate = true
-    this.level.grid.setEnergized([this.fateCoord])
-  }
-
-  /**
-   * Convert IAbsorption to Absorption class instances
-   * Filter the escaping particle absorption events
-   * @param IAbsorption[]
-   * @returns absorption instance list (cell, probability)
-   */
-  get filteredAbsorptions(): Absorption[] {
-    const absorptions: Absorption[] = []
-    this.simulation.totalAbsorptionPerTile.forEach(
-      (absorptionI: { x: number; y: number; probability: number }): void => {
-        const coord = Coord.importCoord({ x: absorptionI.x, y: absorptionI.y })
-        if (!coord.outOfGrid) {
-          const cell = this.level.grid.get(coord)
-          cell.energized = true
-          absorptions.push(new Absorption(cell, absorptionI.probability))
-        }
-      }
-    )
-    // Filter out of grid cells
-    return absorptions.filter((absorption: Absorption) => {
-      return absorption.cell.coord.x !== -1 && absorption.probability > this.absorptionThreshold
+    router.afterEach(() => {
+      alreadyWon.value = false
     })
-  }
 
-  /**
-   * Change active frame with provided Id
-   */
-  handleChangeActiveFrame(activeId: number): void {
-    this.frameIndex = activeId
-  }
-
-  /**
-   * Process the goals from level with the results of the quantum simulation
-   *  @returns goals
-   */
-  get framePercentage(): number {
-    return this.activeFrame.probability * 100
-  }
-
-  /**
-   * Retrieve all particles for laser paths
-   * @returns list of all particles from the sim
-   */
-  get laserParticles(): Particle[] {
-    return this.simulation.frames
-      .map((frame: Frame) => {
-        return frame.particles
-      })
-      .flat()
-      .map((particle) => Particle.importParticle(particle))
-  }
-
-  /**
-   * Current active frame particles
-   * @returns particles
-   */
-  get activeParticles(): Particle[] {
-    return this.activeFrame.particles.map((particleI: IParticle) =>
-      Particle.importParticle(particleI)
-    )
-  }
-
-  /**
-   * Get the current simulation frame
-   */
-  get activeFrame(): Frame {
-    return this.simulation.frames[this.frameIndex]
-  }
-
-  /**
-   * Compute another fate for the simulation
-   */
-  computeNewFate(): void {
-    const fate = this.simulation.sampleRandomRealization()
-    this.displayFate = false
-    this.fateCoord = Coord.importCoord({ x: fate.x, y: fate.y })
-    this.fateStep = fate.step
-  }
-
-  /**
-   * Show previous frame and check it exists
-   *  @returns frameIndex
-   */
-  rewind(): void {
-    this.frameIndex = 0
-  }
-
-  /**
-   * Show previous frame and check it exists
-   *  @returns frameIndex
-   */
-  stepBack(): number {
-    const newframeIndex = this.frameIndex - 1
-    if (newframeIndex < 0) {
-      console.error("Can't access frames before simulation...")
-      return 0
+    function runSimulation(simGrid: ISimGrid): Simulation {
+      const newSim = new Simulation(simGrid)
+      newSim.initializeFromIndicator(newSim.generateLaserIndicator())
+      newSim.generateFrames(40)
+      return newSim
     }
-    this.frameIndex = newframeIndex
-    return this.frameIndex
-  }
 
-  /**
-   *  Reset frameIndex, flip it up for every frame,
-   *  then clear the interval
-   * @returns void
-   */
-  play(): void {
-    if (this.simulationState) {
-      clearInterval(this.playInterval)
-      this.mutationSetSimulationState(false)
-      return
-    }
-    this.level.grid.resetEnergized()
-    this.computeNewFate()
-    this.frameIndex = 0
-    this.playInterval = window.setInterval(() => {
-      if (this.frameIndex < this.fateStep) {
-        this.frameIndex += 1
-      } else {
-        this.mutationSetSimulationState(false)
-        this.setEnergizedCellAtTheEnd()
-        clearInterval(this.playInterval)
-        if (!this.victoryAlreadyShown && this.gameState === GameStateEnum.Victory) {
-          setTimeout(() => {
-            // dirty hack
-            this.victoryAlreadyShown = true
-          }, 200)
-        } else {
-          setTimeout(() => {
-            this.updateSimulation()
-          }, 1000)
+    const simGrid = computed(() => level.value.grid.exportSimGrid())
+
+    function updateSimulation(): void {
+      // Compute simulation frames
+      const simulation = runSimulation(simGrid.value)
+      lastSimulation = simulation
+      computeNewFate(simulation)
+
+      simFrames.value = simulation.frames.map((frame) => {
+        return {
+          particles: frame.particles.map(Particle.importParticle),
+          vector: frame.vector,
         }
+      })
+
+      filteredAbsorptions.value = filterAbsorptions(simulation.totalAbsorptionPerTile)
+
+      // Set absorption events to compute gameState
+      level.value.gameState.absorptions = filteredAbsorptions.value
+      // Reset simulation variables
+      frameIndex.value = 0
+      displayFate.value = false
+      setEnergizedCells()
+      if (routeLevelId() !== 0) {
+        mutationSetGameState(level.value.gameState.gameState)
       }
-    }, 200)
-    this.mutationSetSimulationState(true)
-  }
-
-  /**
-   * Show next frame and check it exists
-   *  @returns frameIndex
-   */
-  stepForward(): number {
-    this.level.grid.resetEnergized()
-    const newframeIndex = this.frameIndex + 1
-    if (newframeIndex > this.simulation.frames.length - 1) {
-      console.error("Can't access frames that are not computed yet...")
-      return this.simulation.frames.length - 1
+      mutationSetSimulationState(false)
+      console.debug(level.value.gameState.toString())
     }
-    this.frameIndex = newframeIndex
-    return this.frameIndex
-  }
 
-  /**
-   * Reload the current page
-   */
-  fastForward(): void {
-    this.frameIndex = this.simulation.frames.length - 1
-  }
+    watch(simGrid, updateSimulation)
 
-  /**
-   * Reload the current page
-   */
-  reload(): void {
-    window.location.reload(false)
-  }
+    let error: string | null = null
 
-  /**
-   * Export the level in JSON format and uploads it
-   * @returns level in JSON format
-   */
-  downloadLevel(): void {
-    const json = JSON.stringify(this.level.exportLevelForDownload(), null, 2)
-    const blob = new Blob([json], { type: 'octet/stream' })
-    const link = document.createElement('a')
-    link.href = window.URL.createObjectURL(blob)
-    link.download = 'level.json'
-    link.click()
-  }
+    const frameAdvanceTimer = useTimer(() => {
+      if (frameIndex.value < totalFrames.value - 1) {
+        frameIndex.value += 1
+      } else {
+        mutationSetSimulationState(false)
+        setEnergizedCellAtTheEnd()
+      }
+    })
 
-  /**
-   * Left and right keys to see frames
-   * TODO: Implement dev mode
-   */
-  handleArrowPress(e: { keyCode: number }): void {
-    // console.log(e.keyCode);
-    switch (e.keyCode) {
-      // case 81:
-      //   this.level.grid.moveAll(180);
-      //   break;
-      // case 68:
-      //   this.level.grid.moveAll(0);
-      //   break;
-      // case 90:
-      //   this.level.grid.moveAll(90);
-      //   break;
-      // case 83:
-      //   this.level.grid.moveAll(270);
-      //   break;
-      // case 65:
-      //   this.level.grid.rotateAll();
-      //   break;
-      // case 69:
-      //   this.level.grid.reflectAll();
-      //   break;
-      case 32:
-        this.play()
-        break
-      case 37:
-        this.stepBack()
-        break
-      case 39:
-        this.stepForward()
-        break
-      default:
-        break
+    watch(simulationState, (simulate) => {
+      if (simulate) {
+        frameAdvanceTimer.restart(200)
+      } else {
+        frameAdvanceTimer.cancel()
+      }
+    })
+
+    const absorptionThreshold = 0.0001
+    const infoPayload = ref({
+      kind: 'ui',
+      particles: [],
+      text: 'Hover on a element for more information.',
+    } as IInfoPayload)
+
+    const fateCoord = ref<Coord>()
+    const fateStep = ref(999)
+    const displayFate = ref(false)
+
+    /**
+     * Step back one frame
+     */
+    function stepBack(): void {
+      mutationSetSimulationState(false)
+      frameIndex.value = Math.max(0, frameIndex.value - 1)
     }
-  }
 
-  removeFromCurrentTools(cell: Cell): void {
-    this.level.toolbox.removeTool(cell)
-  }
-
-  addToCurrentTools(cell: Cell): void {
-    this.level.toolbox.addTool(cell, this.activeCell)
-  }
-
-  setCurrentTools(cells: Cell[]): void {
-    this.level.toolbox = new Toolbox(cells)
-  }
-
-  resetCurrentTools(): void {
-    this.level.toolbox.reset()
-  }
-
-  /**
-   * the main level grid state updating method
-   * checks the updated cell details, compares them
-   * with the active cell and proceeds accordingly
-   * @param cell
-   * @returns void
-   */
-  updateCell(cell: Cell): void {
-    const sourceCell = this.activeCell
-    const targetCell = cell
-    if (
-      // handle moving from toolbox to grid
-      this.activeCell.isFromToolbox &&
-      cell.isFromGrid &&
-      cell.isVoid
-    ) {
-      this.removeFromCurrentTools(this.activeCell)
-    } else if (
-      // handle moving from grid to toolbox
-      this.activeCell.isFromGrid &&
-      cell.isFromToolbox &&
-      !this.activeCell.isVoid &&
-      !cell.isVoid
-    ) {
-      this.addToCurrentTools(cell)
-      this.level.grid.set(this.activeCell.reset())
+    /**
+     *  Rewind and play or pause simulation state
+     * @returns void
+     */
+    function play(): void {
+      if (simulationState.value) {
+        mutationSetSimulationState(false)
+        return
+      }
+      level.value.grid.resetEnergized()
+      frameIndex.value = 0
+      mutationSetSimulationState(true)
+      if (lastSimulation != null) {
+        computeNewFate(lastSimulation)
+      }
     }
-    // FIXME: unify moving logic
-    this.level.grid.move(sourceCell, targetCell)
-    // const mutatedCells = this.level.grid.move(sourceCell, targetCell)
-    // mutatedCells.forEach((mutatedCell: Cell) => {
-    //   this.level.grid.set(mutatedCell)
-    // })
-    this.saveLevelToStore()
-    this.updateSimulation()
-  }
 
-  /**
-   * Utilized by updateCell to keep level in localStorage
-   */
-  saveLevelToStore(): void {
-    const currentStateJSONString = JSON.stringify(this.level.exportLevel())
-    localStorage.setItem(this.currentLevelName, currentStateJSONString)
-  }
-
-  /**
-   * Actual 'save' button handling
-   */
-  handleSave(): void {
-    const currentStateJSONString = JSON.stringify(this.level.exportLevel())
-    const newState = { ...this.store.state, boardState: currentStateJSONString }
-    if (!this.isCustomLevel) {
-      this.actionSaveLevel(newState)
-    } else {
-      this.actionUpdateLevel(newState)
+    /**
+     * Show next frame and check it exists
+     */
+    function stepForward() {
+      mutationSetSimulationState(false)
+      frameIndex.value = Math.max(0, Math.min(totalFrames.value, frameIndex.value + 1))
+      level.value.grid.resetEnergized()
     }
-  }
 
-  clearLS(): void {
-    localStorage.removeItem(this.currentLevelName)
-  }
-
-  // GETTERS
-  get currentLevelName(): string {
-    return `level${this.levelId}`
-  }
-
-  /**
-   * The next/previous level url getters
-   * They get blocked in case it is a custom level
-   * with its hashed ID.
-   */
-  get previousLevel(): string {
-    if (this.isCustomLevel) {
-      return `/level/${this.levelId}`
+    /**
+     * Reload the current page
+     */
+    function fastForward(): void {
+      frameIndex.value = Math.max(0, totalFrames.value - 1)
     }
-    return `/level/${this.levelId - 1}`
-  }
 
-  get nextLevel(): string {
-    if (this.isCustomLevel) {
-      return `/level/${this.levelId}`
+    /**
+     * Reload the current page
+     */
+    function reload(): void {
+      window.location.reload(false)
     }
-    return `/level/${this.levelId + 1}`
-  }
 
-  /**
-   * Should an overlay be shown when progressing
-   * to the next level?
-   * @returns an router link :to attribute string
-   */
-  get nextLevelOrOvelay(): string {
-    const possibleOverlay = getRockTalkIdByLevelId(this.levelId)
-    return possibleOverlay ? `/rocks/${possibleOverlay}` : this.nextLevel
-  }
+    /**
+     * Export the level in JSON format and uploads it
+     * @returns level in JSON format
+     */
+    function downloadLevel(): void {
+      const json = JSON.stringify(level.value.exportLevelForDownload(), null, 2)
+      const blob = new Blob([json], { type: 'octet/stream' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'level.json'
+      link.click()
+    }
 
-  get hints(): IHint[] {
-    return this.level.hints.map((hint) => hint.exportHint())
-  }
-}
+    function routeLevelId(): number {
+      return +route.params.id || 0
+    }
+
+    onMounted(() => {
+      loadLevel()
+      mutationSetCurrentLevelID(routeLevelId())
+    })
+
+    watch(routeLevelId, () => {
+      mutationSetCurrentLevelID(routeLevelId())
+      loadLevel()
+    })
+
+    /**
+     * Left and right keys to see frames
+     * TODO: Implement dev mode
+     */
+    useWindowEvent('keydown', (e) => {
+      switch (e.keyCode) {
+        case 32:
+          return play()
+        case 37:
+          return stepBack()
+        case 39:
+          return stepForward()
+      }
+    })
+
+    /**
+     * Depending on whether the level at hand is a custom
+     * or a default one, appropriate level loading logic is applied.
+     * @returns an answear to whether the level is a custom one
+     * @remarks In the future we need a more flexible way
+     * to determine this.
+     */
+    function isCustomLevel(): boolean {
+      return routeLevelId() >= 1000
+    }
+
+    /**
+     * Level Loading Logic
+     * @params none, the function evaluates which level should be loaded
+     * @returns nothing, function substitures this.level
+     * @remarks the 'saved' variable determines whether the level should
+     * be loaded out of app data, or fetched from db
+     */
+    function loadLevel(): void {
+      error = null
+
+      if (isCustomLevel()) {
+        // 1) dispatch action for vuex to get the level, the "shared" parameter
+        //    handles which db we target
+        actionGetLevelStoreData({ id: routeLevelId() }).then(() => {
+          const fetchedLevelBoardObj = fetchedLevel.value
+          if (fetchedLevelBoardObj != null) {
+            level.value = Level.importLevel(fetchedLevelBoardObj)
+            actionClearLevelStoreData()
+          }
+        })
+      } else {
+        level.value = Level.importLevel(levels[routeLevelId()])
+      }
+    }
+
+    /**
+     * Set the energized cells from the simulation
+     */
+    function setEnergizedCells(): void {
+      level.value.grid.resetEnergized()
+      const coords = filteredAbsorptions.value.map((absorption) => absorption.coord)
+      level.value.grid.setEnergized(coords)
+    }
+
+    /**
+     * Set the energized cells from the simulation
+     */
+    function setEnergizedCellAtTheEnd(): void {
+      const coord = fateCoord.value
+      if (coord != null) {
+        displayFate.value = true
+        level.value.grid.setEnergized([coord])
+      }
+    }
+
+    /**
+     * Convert IAbsorption to Absorption class instances
+     * Filter the escaping particle absorption events
+     * @param IAbsorption[]
+     * @returns absorption instance list (cell, probability)
+     */
+    function filterAbsorptions(totalAbsorptionPerTile: IAbsorption[]): Absorption[] {
+      const absorptions: Absorption[] = []
+      totalAbsorptionPerTile.forEach((absorption): void => {
+        const coord = Coord.importCoord({ x: absorption.x, y: absorption.y })
+        if (!coord.outOfGrid) {
+          const cell = level.value.grid.get(coord)
+          cell.energized = true
+
+          // Filter out of grid cells
+          if (cell.coord.x !== -1 && absorption.probability > absorptionThreshold) {
+            absorptions.push(new Absorption(cell, absorption.probability))
+          }
+        }
+      })
+      return absorptions
+    }
+
+    /**
+     * Retrieve all particles for laser paths
+     * @returns list of all particles from the sim
+     */
+    const laserParticles = computed((): Particle[] => {
+      return simFrames.value.reduce(
+        (frames, frame) => [...frames, ...frame.particles],
+        [] as Particle[]
+      )
+    })
+
+    /**
+     * Current active frame particles
+     * @returns particles
+     */
+    const activeParticles = computed((): Particle[] => {
+      return activeFrame.value?.particles || []
+    })
+
+    /**
+     * Get the current simulation frame
+     */
+    const activeFrame = computed((): SimFrame | undefined => {
+      return simFrames.value[frameIndex.value] as SimFrame | undefined
+    })
+
+    /**
+     * Compute another fate for the simulation
+     */
+    function computeNewFate(simulation: Simulation) {
+      const fate = simulation.sampleRandomRealization()
+      displayFate.value = false
+      fateCoord.value = Coord.importCoord({ x: fate.x, y: fate.y })
+      fateStep.value = fate.step
+    }
+
+    /**
+     * Utilized by updateCell to keep level in localStorage
+     */
+    function saveLevelToStore(): void {
+      const currentStateJSONString = JSON.stringify(level.value.exportLevel())
+      localStorage.setItem(`level${routeLevelId()}`, currentStateJSONString)
+    }
+
+    /**
+     * Actual 'save' button handling
+     */
+    function handleSave(): void {
+      const currentStateJSONString = JSON.stringify(level.value.exportLevel())
+      const newState = { ...store.state, boardState: currentStateJSONString }
+      if (isCustomLevel()) {
+        actionUpdateLevel(newState)
+      } else {
+        actionSaveLevel(newState)
+      }
+    }
+
+    const previousLevel = computed(() => {
+      return `/level/${isCustomLevel() ? routeLevelId() : routeLevelId() - 1}`
+    })
+    const nextLevel = computed(() => {
+      return `/level/${isCustomLevel() ? routeLevelId() : routeLevelId() + 1}`
+    })
+
+    const displayStatus = computed(() => {
+      if (simulationState.value) {
+        // (each time a random outcome)
+        return 'Quantum simulation (live)'
+      } else if (frameIndex.value > 0) {
+        return 'Quantum simulation (step-by-step)'
+      } else {
+        // (still with polarization & interference)
+        return 'Classical laser beam'
+      }
+    })
+    const overlayGameState = computed(
+      (): GameStateEnum => {
+        if (!alreadyWon.value && frameIndex.value === totalFrames.value - 1) {
+          return gameState.value
+        }
+        return GameStateEnum.InProgress
+      }
+    )
+    const hints = computed((): IHint[] => {
+      return level.value.hints.map((hint) => hint.exportHint())
+    })
+    /**
+     * Should an overlay be shown when progressing
+     * to the next level?
+     * @returns an router link :to attribute string
+     */
+    const nextLevelOrOvelay = computed((): string => {
+      const possibleOverlay = getRockTalkIdByLevelId(routeLevelId())
+      return possibleOverlay ? `/rocks/${possibleOverlay}` : nextLevel.value
+    })
+
+    function updateInfoPayload(payload: IInfoPayload): void {
+      infoPayload.value = payload
+    }
+
+    function rewind(): void {
+      frameIndex.value = 0
+    }
+
+    function continueAfterWin(): void {
+      alreadyWon.value = true
+      rewind()
+    }
+
+    /**
+     * the main level grid state updating method
+     * checks the updated cell details, compares them
+     * with the active cell and proceeds accordingly
+     * @param cell
+     * @returns void
+     */
+    function updateCell(cell: Cell): void {
+      const grid = level.value.grid
+      const toolbox = level.value.toolbox
+
+      const sourceCell = activeCell.value
+      const targetCell = cell
+
+      if (sourceCell == null || sourceCell.frozen || targetCell.frozen) {
+        return
+      }
+
+      if (
+        // handle moving from toolbox to grid
+        sourceCell.isFromToolbox &&
+        targetCell.isFromGrid &&
+        targetCell.isVoid
+      ) {
+        toolbox.removeTool(sourceCell.element.name)
+        const newCell = sourceCell.exportCell()
+        newCell.coord = targetCell.coord
+        grid.set(Cell.importCell(newCell))
+      } else if (
+        // handle moving from grid to toolbox
+        sourceCell.isFromGrid &&
+        targetCell.isFromToolbox &&
+        !sourceCell.isVoid &&
+        !cell.isVoid
+      ) {
+        toolbox.addTool(sourceCell.element.name)
+        level.value.grid.remove(sourceCell.coord)
+      } else if (sourceCell.isFromGrid && targetCell.isFromGrid) {
+        // handle swapping grids on board
+        grid.swap(sourceCell.coord, targetCell.coord)
+      }
+
+      saveLevelToStore()
+    }
+
+    const totalFrames = computed(() => simFrames.value.length)
+
+    return {
+      error,
+      previousLevel,
+      nextLevel,
+      level,
+      handleSave,
+      downloadLevel,
+      loadLevel,
+      fastForward,
+      reload,
+      updateCell,
+      rewind,
+      continueAfterWin,
+      stepBack,
+      stepForward,
+      updateInfoPayload,
+      nextLevelOrOvelay,
+      hints,
+      overlayGameState,
+      displayStatus,
+      activeParticles,
+      laserParticles,
+      totalFrames,
+      fateCoord,
+      displayFate,
+      play,
+      infoPayload,
+      activeFrame,
+      frameIndex,
+      simGrid,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
@@ -684,14 +614,11 @@ export default class Game extends Vue {
 
 // Title
 h1.title {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   font-size: 1.5rem;
-  margin-bottom: 30;
-  margin-top: 0;
+  margin-top: 30px;
+  margin-bottom: 30px;
   text-transform: uppercase;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     a img {
       width: 6vw !important;
     }
@@ -700,7 +627,6 @@ h1.title {
 
 .game {
   width: 100%;
-  min-height: 100vh;
   &.goals {
     height: 600px;
   }

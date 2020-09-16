@@ -37,7 +37,7 @@ export default class EncyclopediaLinkList extends Vue {
   & .not-ready {
     opacity: 0.5;
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     height: 40px;
     border-top: none;
     margin-left: -20px;
@@ -52,7 +52,7 @@ export default class EncyclopediaLinkList extends Vue {
   }
   h3 {
     margin-top: 0;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       &::after {
         margin-top: 1em;
         display: inline-block;

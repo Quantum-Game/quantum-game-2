@@ -48,13 +48,13 @@ export default class Level {
 
     // Populate toolbox
     if (Object.keys(toolbox).length === 0) {
-      this.toolbox = new Toolbox(this.grid.unvoid.unfrozen.cells)
+      this.toolbox = new Toolbox(this.grid.unvoidUnfrozen().map((cell) => cell.element.name))
     } else {
       this.toolbox = toolbox
     }
 
     // Initiate game state
-    this.gameState = new GameState(this.goals, this.grid.mines.cells, [], this.safetyThreshold)
+    this.gameState = new GameState(this.goals, this.grid.mines(), [], this.safetyThreshold)
 
     // Remove toolbox cells from grid
     // this.grid.resetUnfrozen()
@@ -97,7 +97,7 @@ export default class Level {
       grid: this.grid.exportGrid(),
       hints: this.hints.map((hint): IHint => hint.exportHint()),
       goals: this.goals.map((goal): IGoal => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name),
+      tools: this.toolbox.exportToolbox(),
     }
   }
 
@@ -108,7 +108,7 @@ export default class Level {
    * @returns a level interface of the current level
    */
   public exportLevelForDownload(): ILevel {
-    const goals = this.grid.detectors.cells.map((detector: Cell) => {
+    const goals = this.grid.detectors().map((detector: Cell) => {
       return new Goal(detector.coord, 0.001)
     })
     return {
@@ -119,7 +119,7 @@ export default class Level {
       grid: this.grid.exportGridForDownload(),
       hints: this.hints.map((hint): IHint => hint.exportHint()),
       goals: goals.map((goal): IGoal => goal.exportGoal()),
-      tools: this.toolbox.fullCellList.map((cell: Cell): string => cell.element.name),
+      tools: this.toolbox.exportToolbox(),
     }
   }
 
@@ -156,7 +156,7 @@ export default class Level {
       name: 'Dummy',
       group: 'Dummy',
       description: 'Dummy level created for placeholders...',
-      grid: new Grid(2, 2).exportGrid(),
+      grid: { rows: 2, cols: 2, cells: [] },
       goals: [],
       hints: [],
       tools: [],

@@ -1,5 +1,5 @@
 <template>
-  <transition :name="gameState">
+  <transition :name="stateTransition">
     <div v-if="victory" :class="computeClass">
       <div class="victory-circle">
         <h2>
@@ -26,38 +26,33 @@ import { GameStateEnum } from '@/engine/interfaces'
 })
 export default class AppOverlay extends Vue {
   @Prop() readonly gameState!: GameStateEnum
-  @Prop() readonly victoryAlreadyShown!: boolean
   confetti = new Confetti()
 
-  explosion = false
-  explosionTimeout = null
-
-  mineExploding(): void {
-    this.explosion = true
-    window.setTimeout(() => {
-      this.explosion = false
-    }, 300)
+  get computeClass(): string[] {
+    return [this.stateTransition, 'wrapper']
   }
 
-  get computeClass(): string[] {
-    return [this.gameState.toString(), 'wrapper']
+  get stateTransition(): string {
+    switch (this.gameState) {
+      case GameStateEnum.Victory:
+        return 'Victory'
+      case GameStateEnum.MineExploded:
+        return 'MineExploded'
+    }
+    return ''
   }
 
   get victory(): boolean {
     return this.gameState === GameStateEnum.Victory
   }
 
-  // get mineExploded(): boolean {
-  //   return this.gameState === GameStateEnum.MineExploded
-  // }
-
   destroyed(): void {
     this.confetti.stop()
   }
 
-  @Watch('gameState')
-  handleGameStateChange(newGameState: GameStateEnum, oldGameState: GameStateEnum): void {
-    if (newGameState === GameStateEnum.Victory && !this.victoryAlreadyShown) {
+  @Watch('victory')
+  handleGameStateChange(victory: boolean): void {
+    if (victory) {
       this.confetti.start({
         particlesPerFrame: 3,
         defaultSize: 8,
@@ -81,9 +76,7 @@ export default class AppOverlay extends Vue {
           '#ba00ff', // purple 02
         ],
       })
-    } else if (newGameState === GameStateEnum.MineExploded) {
-      this.mineExploding()
-    } else if (oldGameState === GameStateEnum.Victory) {
+    } else {
       this.confetti.stop()
     }
   }

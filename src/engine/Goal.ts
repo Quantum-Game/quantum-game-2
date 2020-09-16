@@ -5,12 +5,11 @@ import Coord from './Coord'
  * GOAL CLASS
  * The goals to be achieved by the player
  */
-export default class Goal extends Coord {
+export default class Goal {
   public coord: Coord
   public threshold: number
 
   public constructor(coord: Coord, threshold: number) {
-    super(coord.x, coord.y)
     this.coord = coord
     this.threshold = threshold
   }

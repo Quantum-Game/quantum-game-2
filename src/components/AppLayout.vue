@@ -32,7 +32,7 @@ export default defineComponent({
   color: white;
   width: 1400px;
   justify-content: center;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     flex-direction: column;
     justify-content: flex-start;
   }
@@ -44,7 +44,7 @@ export default defineComponent({
     margin: 0;
     padding: 0;
 
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       width: 100%;
       padding: 0;
     }
@@ -57,7 +57,7 @@ export default defineComponent({
       text-transform: uppercase;
       text-align: left;
       color: white;
-      @media screen and (max-width: 1000px) {
+      @include media('<large') {
         padding: 0 20px;
         min-height: 41px;
         width: 100%;
@@ -70,7 +70,7 @@ export default defineComponent({
       text-transform: uppercase;
       text-align: left;
       color: white;
-      @media screen and (max-width: 1000px) {
+      @include media('<large') {
         width: 100%;
         padding: 0px !important;
       }

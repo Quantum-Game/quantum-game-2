@@ -95,14 +95,6 @@ export interface IGrid {
 }
 
 /**
- * CLUSTER INTERFACE
- * Cluster of cells in primitives
- */
-export interface ICluster {
-  cells: ICell[]
-}
-
-/**
  * CELL SIM INTERFACE (JSON format needs to be discussed)
  * A cell interface composed of primitives
  */
@@ -252,95 +244,65 @@ export const enum DirEnum {
  */
 export enum Elem {
   // Basic
-  Void = 'Void',
-  Wall = 'Wall',
-  Gate = 'Gate',
+  Void,
+  Wall,
+  Gate,
   // Source
-  Laser = 'Laser',
-  NonLinearCrystal = 'NonLinearCrystal',
+  Laser,
+  NonLinearCrystal,
   // Direction
-  Mirror = 'Mirror',
-  BeamSplitter = 'BeamSplitter',
-  PolarizingBeamSplitter = 'PolarizingBeamSplitter',
-  CoatedBeamSplitter = 'CoatedBeamSplitter',
-  CornerCube = 'CornerCube',
+  Mirror,
+  BeamSplitter,
+  PolarizingBeamSplitter,
+  CoatedBeamSplitter,
+  CornerCube,
   // Absorption
-  Detector = 'Detector',
-  Rock = 'Rock',
-  Mine = 'Mine',
-  Absorber = 'Absorber',
-  DetectorFour = 'DetectorFour',
+  Detector,
+  Rock,
+  Mine,
+  Absorber,
+  DetectorFour,
   // Polarization
-  Polarizer = 'Polarizer',
-  QuarterWavePlate = 'QuarterWavePlate',
-  HalfWavePlate = 'HalfWavePlate',
-  SugarSolution = 'SugarSolution',
-  FaradayRotator = 'FaradayRotator',
+  Polarizer,
+  QuarterWavePlate,
+  HalfWavePlate,
+  SugarSolution,
+  FaradayRotator,
   // Phase
-  Glass = 'Glass',
-  VacuumJar = 'VacuumJar',
+  Glass,
+  VacuumJar,
 }
 
-/**
- * List of element names in url compatible format
- */
-export const enum ElemLower {
-  // Basic
-  Void = 'void',
-  Wall = 'wall',
-  Gate = 'gate',
-  // Source
-  Laser = 'laser',
-  NonLinearCrystal = 'non-linear-crystal',
-  // Direction
-  Mirror = 'mirror',
-  BeamSplitter = 'beam-splitter',
-  PolarizingBeamSplitter = 'polarizing-beam-splitter',
-  CoatedBeamSplitter = 'coated-beam-splitter',
-  CornerCube = 'corner-cube',
-  // Absorption
-  Detector = 'detector',
-  Rock = 'rock',
-  Mine = 'mine',
-  Absorber = 'absorber',
-  DetectorFour = 'detector-four',
-  // Polarization
-  Polarizer = 'polarizer',
-  QuarterWavePlate = 'quarter-wave-plate',
-  HalfWavePlate = 'half-wave-plate',
-  SugarSolution = 'sugar-solution',
-  FaradayRotator = 'faraday-rotator',
-  // Phase
-  Glass = 'glass',
-  VacuumJar = 'vacuum-jar',
+export function elemFromString(name: string): Elem | undefined {
+  return Elem[name as keyof typeof Elem]
 }
 
 /**
  * List of group names
  */
 export const enum Group {
-  Basic = 'Basic',
-  Source = 'Source',
-  Direction = 'Direction',
-  Absorption = 'Absorption',
-  Polarization = 'Polarization',
-  Phase = 'Phase',
+  Basic,
+  Source,
+  Direction,
+  Absorption,
+  Polarization,
+  Phase,
 }
 
 /**
  * Element groups
  */
-export const ElemGroups: { [symbol: string]: Elem[] } = {
-  Basic: [Elem.Void],
-  Source: [Elem.Laser, Elem.NonLinearCrystal],
-  Direction: [
+export const ElemGroups: Record<Group, Elem[]> = {
+  [Group.Basic]: [Elem.Void],
+  [Group.Source]: [Elem.Laser, Elem.NonLinearCrystal],
+  [Group.Direction]: [
     Elem.Mirror,
     Elem.BeamSplitter,
     Elem.PolarizingBeamSplitter,
     Elem.CoatedBeamSplitter,
     Elem.CornerCube,
   ],
-  Absorption: [
+  [Group.Absorption]: [
     Elem.Gate,
     Elem.Detector,
     Elem.Rock,
@@ -349,27 +311,24 @@ export const ElemGroups: { [symbol: string]: Elem[] } = {
     Elem.DetectorFour,
     Elem.Wall,
   ],
-  Polarization: [
+  [Group.Polarization]: [
     Elem.Polarizer,
     Elem.QuarterWavePlate,
     Elem.HalfWavePlate,
     Elem.SugarSolution,
     Elem.FaradayRotator,
   ],
-  Phase: [Elem.Glass, Elem.VacuumJar],
+  [Group.Phase]: [Elem.Glass, Elem.VacuumJar],
 }
 
 /**
  * Game state enum
  */
 export const enum GameStateEnum {
-  // Initial
-  Initial = 'Initial',
-  InProgress = 'InProgress',
-  // Victory
-  Victory = 'Victory',
+  InProgress,
+  Victory,
   // Defeat
-  MineExploded = 'MineExploded',
-  GoalsNotCompleted = 'GoalsNotCompleted',
-  ProbabilityTooLow = 'ProbabilityTooLow',
+  MineExploded,
+  GoalsNotCompleted,
+  ProbabilityTooLow,
 }

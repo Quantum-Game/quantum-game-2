@@ -34,6 +34,7 @@
     "firebase": "^7.5.0",
     "global": "^4.4.0",
     "graphlib": "^2.1.7",
+    "include-media": "^1.4.9",
     "lodash": "^4.17.19",
     "quantum-tensors": "^0.4.10",
     "reflect-metadata": "^0.1.13",

@@ -72,7 +72,7 @@ section.entry-section {
     font-weight: bold;
     text-align: justify;
     text-transform: uppercase;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       text-align: center;
       width: 90%;
     }
@@ -104,7 +104,7 @@ section.entry-section {
     text-align: left;
     line-height: 1.5em;
   }
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     padding-left: 20px;
   }
 }

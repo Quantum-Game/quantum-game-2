@@ -227,57 +227,58 @@ export default storeModule({
      * @todo Does not match level structure from levels in JSON.
      */
     SAVE_LEVEL({ commit, dispatch }, level: ISavedLevel['level']): void {
-      if (auth.currentUser) {
-        const customLevel: ISavedLevel = {
-          userId: auth.currentUser.uid,
-          level: {
-            currentLevelID: level.currentLevelID,
-            gameState: level.gameState,
-            boardState: level.boardState,
-          },
-          public: false,
-          createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
-          lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
-        }
-
-        const dbRef = db.collection('levels')
-
-        dbRef
-          .add(customLevel)
-          .then((data) => {
-            console.log('Level saved: ', data.id)
-            router.replace({ path: `/level/${data.id}` })
-            commit('SET_PUBLIC', data.id)
-            dispatch('UPDATE_LEVEL_LISTS')
-          })
-          .catch((err) => {
-            commit('errors/SET_ERROR', err.message, { root: true })
-          })
-      } else {
+      if (auth.currentUser == null) {
         console.log('You are not logged in!')
+        return
       }
-    },
-    UPDATE_LEVEL({ commit }, level): void {
-      if (auth.currentUser) {
-        const customLevel: Partial<ISavedLevel> = {
-          userId: auth.currentUser.uid,
-          level: {
-            currentLevelID: level.currentLevelID,
-            gameState: level.gameState,
-            boardState: level.boardState,
-          },
-          lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
-        }
-        const levelSaved = router.currentRoute.value.params.id as string
+      const customLevel: ISavedLevel = {
+        userId: auth.currentUser.uid,
+        level: {
+          currentLevelID: level.currentLevelID,
+          gameState: level.gameState,
+          boardState: level.boardState,
+        },
+        public: false,
+        createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+        lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
+      }
 
-        const doc = db.collection('levels').doc(levelSaved)
+      const dbRef = db.collection('levels')
 
-        doc.update(customLevel).catch((err) => {
+      dbRef
+        .add(customLevel)
+        .then((data) => {
+          console.log('Level saved: ', data.id)
+          router.replace({ path: `/level/${data.id}` })
+          commit('SET_PUBLIC', data.id)
+          dispatch('UPDATE_LEVEL_LISTS')
+        })
+        .catch((err) => {
           commit('errors/SET_ERROR', err.message, { root: true })
         })
-      } else {
+    },
+    UPDATE_LEVEL({ commit }, level): void {
+      if (auth.currentUser == null) {
         console.log('You are not logged in!')
+        return
       }
+
+      const customLevel: Partial<ISavedLevel> = {
+        userId: auth.currentUser.uid,
+        level: {
+          currentLevelID: level.currentLevelID,
+          gameState: level.gameState,
+          boardState: level.boardState,
+        },
+        lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
+      }
+      const levelSaved = router.currentRoute.value.params.id as string
+
+      const doc = db.collection('levels').doc(levelSaved)
+
+      doc.update(customLevel).catch((err) => {
+        commit('errors/SET_ERROR', err.message, { root: true })
+      })
     },
     FETCH_MY_LEVELS({ commit }): void {
       if (auth.currentUser) {
@@ -391,8 +392,9 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    GET_LEVEL_DATA({ commit }, { id }): void {
-      db.collection('levels')
+    GET_LEVEL_DATA({ commit }, { id }): Promise<void> {
+      return db
+        .collection('levels')
         .doc(id)
         .get()
         .then((response) => {

@@ -8,14 +8,13 @@ import { toPercentString } from './Helpers'
  * PARTICLE CLASS
  * Describes a vector with an origin, a direction and two complex numbers.
  */
-export default class Particle extends Coord {
+export default class Particle {
   public coord: Coord
   public direction: number
   public a: Complex
   public b: Complex
 
   public constructor(coord: Coord, direction: number, are = 1, aim = 0, bre = 0, bim = 0) {
-    super(coord.y, coord.x)
     this.coord = coord
     this.direction = direction
     this.a = new Complex(are, aim)
@@ -85,13 +84,13 @@ export default class Particle extends Coord {
   public stepsToExit(cols: number, rows: number): number {
     switch (this.direction % 360) {
       case 0: // TOP
-        return this.y
+        return this.coord.y
       case 90: // RIGHT
-        return cols - this.x - 1
+        return cols - this.coord.x - 1
       case 180: // BOTTOM
-        return rows - this.y - 1
+        return rows - this.coord.y - 1
       case 270: // LEFT
-        return this.x
+        return this.coord.x
       default:
         throw new Error('Something went wrong with directions...')
     }

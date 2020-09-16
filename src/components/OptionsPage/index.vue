@@ -88,7 +88,7 @@ export default class OptionsPage extends Vue {
 <style lang="scss" scoped>
 .options-wrapper {
   margin-top: 30px;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     padding: 20px;
   }
 }

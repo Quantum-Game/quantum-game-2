@@ -1,4 +1,4 @@
-import { ICoord, ICell, ISimCell, Elem, IIndicator } from '@/engine/interfaces'
+import { ICoord, ICell, ISimCell, Elem, IIndicator, elemFromString } from '@/engine/interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
 import Element from './Element'
@@ -30,7 +30,6 @@ import {
  * CELL CLASS
  * A cell is a rotated element at a coordinate
  */
-// export default class Cell extends Coord {
 export default class Cell {
   public coord: Coord
   public element: Element
@@ -189,7 +188,7 @@ export default class Cell {
   public exportCell(): ICell {
     return {
       coord: this.coord.exportCoord(),
-      element: this.element.name,
+      element: Elem[this.element.name],
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage,
@@ -208,7 +207,7 @@ export default class Cell {
     return {
       x: this.coord.x,
       y: this.coord.y,
-      element: this.element.name,
+      element: Elem[this.element.name],
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage,
@@ -223,7 +222,7 @@ export default class Cell {
    */
   public static importCell(iCell: ICell): Cell {
     const coord = Coord.importCoord(iCell.coord)
-    const element = Cell.fromName(iCell.element)
+    const element = Cell.fromElem(elemFromString(iCell.element) || Elem.Void)
     const cell = new Cell(
       coord,
       element,
@@ -245,21 +244,8 @@ export default class Cell {
    */
   public static createDummy(coordI: ICoord = { x: 0, y: 0 }): Cell {
     const coord = Coord.importCoord(coordI)
-    const element = Cell.fromName(Elem.Void)
+    const element = Cell.fromElem(Elem.Void)
     return new Cell(coord, element)
-  }
-
-  /**
-   * Create a void cell from a Coord
-   * @param name string
-   * @returns a toolbox cell
-   */
-  public static createToolboxCell(name: string): Cell {
-    const element = Cell.fromName(name)
-    const coord = new Coord(-1, -1)
-    const cell = new Cell(coord, element)
-    cell.tool = true
-    return cell
   }
 
   /**
@@ -267,8 +253,8 @@ export default class Cell {
    * @param name element name
    * @returns element class instance
    */
-  public static fromName(name: string): Element {
-    switch (name) {
+  public static fromElem(elem: Elem): Element {
+    switch (elem) {
       case Elem.Absorber:
         return new Absorber()
       case Elem.BeamSplitter:

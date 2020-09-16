@@ -100,6 +100,8 @@ const options = storeNamespace('options')
     'loaded-level': null,
     play: null,
     'download-level': null,
+    'step-back': null,
+    'step-forward': null,
   },
 })
 export default class GameControls extends Vue {
@@ -309,7 +311,7 @@ button {
   height: 30px;
   width: 30px;
   margin: 0 0.2rem;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     width: 4.5vw;
     height: 4.5vw;
     margin: 0.2rem 0.4rem;
@@ -331,7 +333,7 @@ input[type='file'] {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     display: none;
   }
 }
@@ -342,7 +344,7 @@ input[type='file'] {
   padding-bottom: 1rem;
   justify-content: space-between;
   align-items: center;
-  @media screen and (max-width: 1000px) {
+  @include media('<large') {
     button {
       display: none;
     }
@@ -354,7 +356,7 @@ input[type='file'] {
   }
   .playback {
     display: flex !important;
-    @media screen and (max-width: 1000px) {
+    @include media('<large') {
       button {
         background-repeat: no-repeat;
         background-size: contain;
