@@ -108,7 +108,7 @@ import AppOverlay from '@/components/AppOverlay.vue'
 import { getRockTalkIdByLevelId } from '@/components/RockTalkPage/loadRockTalks'
 import { useStore } from 'vuex'
 import '@/store/store'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { storeNamespace } from '@/store'
 import { computed, defineComponent, onMounted, ref, shallowRef, watch } from 'vue'
 import { useWindowEvent } from '@/mixins/event'
@@ -151,16 +151,21 @@ export default defineComponent({
     const mutationSetSimulationState = game.useMutation('SET_SIMULATION_STATE')
     const store = useStore()
     const route = useRoute()
+    const router = useRouter()
 
     const level = ref(Level.createDummy())
 
     const frameIndex = ref(0)
-    const acceptedWin = ref<number | null>(null)
+    const alreadyWon = ref(false)
     // sim derived state (separate to avoid proxying Simulation object)
     const simFrames = shallowRef<SimFrame[]>([])
     const filteredAbsorptions = ref([] as Absorption[])
 
     let lastSimulation: Simulation | null = null
+
+    router.afterEach(() => {
+      alreadyWon.value = false
+    })
 
     function runSimulation(simGrid: ISimGrid): Simulation {
       const newSim = new Simulation(simGrid)
@@ -477,8 +482,7 @@ export default defineComponent({
     })
     const overlayGameState = computed(
       (): GameStateEnum => {
-        const ignoreWin = acceptedWin.value === routeLevelId()
-        if (!ignoreWin && frameIndex.value === totalFrames.value - 1) {
+        if (!alreadyWon.value && frameIndex.value === totalFrames.value - 1) {
           return gameState.value
         }
         return GameStateEnum.InProgress
@@ -506,7 +510,7 @@ export default defineComponent({
     }
 
     function continueAfterWin(): void {
-      acceptedWin.value = routeLevelId()
+      alreadyWon.value = true
       rewind()
     }
 
