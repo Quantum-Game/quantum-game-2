@@ -42,7 +42,7 @@ export {
   NonLinearCrystalCell,
 }
 
-export const cellComponentsList: Record<Elem, unknown> = {
+export const elementComponents: Record<Elem, unknown> = {
   [Elem.Void]: undefined,
   [Elem.Wall]: undefined,
   [Elem.Gate]: undefined,

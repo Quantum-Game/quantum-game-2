@@ -45,7 +45,7 @@
           <board
             :particles="activeParticles"
             :laser-particles="laserParticles"
-            :fate="displayFate ? fateCoord : undefined"
+            :fate="displayedFate"
             :hints="hints"
             :grid="level.grid"
             :absorptions="level.gameState.absorptions"
@@ -538,7 +538,7 @@ export default defineComponent({
         targetCell.isFromGrid &&
         targetCell.isVoid
       ) {
-        toolbox.removeTool(sourceCell.element.name)
+        toolbox.removeTool(sourceCell.element)
         const newCell = sourceCell.exportCell()
         newCell.coord = targetCell.coord
         grid.set(Cell.importCell(newCell))
@@ -549,7 +549,7 @@ export default defineComponent({
         !sourceCell.isVoid &&
         !cell.isVoid
       ) {
-        toolbox.addTool(sourceCell.element.name)
+        toolbox.addTool(sourceCell.element)
         level.value.grid.remove(sourceCell.coord)
       } else if (sourceCell.isFromGrid && targetCell.isFromGrid) {
         // handle swapping grids on board
@@ -559,6 +559,7 @@ export default defineComponent({
       saveLevelToStore()
     }
 
+    const displayedFate = computed(() => (displayFate.value ? fateCoord.value : undefined))
     const totalFrames = computed(() => simFrames.value.length)
 
     return {
@@ -584,8 +585,7 @@ export default defineComponent({
       activeParticles,
       laserParticles,
       totalFrames,
-      fateCoord,
-      displayFate,
+      displayedFate,
       play,
       infoPayload,
       activeFrame,

@@ -20,7 +20,7 @@
 import { Elem } from '@/engine/interfaces'
 import { isDef } from '@/types'
 import { computed, defineComponent, Ref, ref } from 'vue'
-import { cellComponentsList } from '../Board/Cell'
+import { elementComponents } from '../Board/Cell'
 import { PieceState } from '../Board/Cell/Piece'
 export default defineComponent({
   setup() {
@@ -32,7 +32,7 @@ export default defineComponent({
 
     return {
       cells: computed(() =>
-        Object.entries(cellComponentsList)
+        Object.entries(elementComponents)
           .filter((entry) => isDef(entry[1]))
           .map(([elem, component]) => ({ component, name: Elem[+elem] }))
       ),

@@ -40,6 +40,7 @@ import { Coord, Grid, Cell } from '@/engine/classes'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import { Operator, Vector, Dimension, Elements } from 'quantum-tensors'
+import { elementsData } from '@/engine/elements'
 
 interface IXYVec {
   posX: number
@@ -79,7 +80,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   }
 
   get rotationText(): string {
-    return this.cell.element.angles.length > 1 ? ` at ${this.rotation}°` : ''
+    return elementsData[this.cell.element].angles.length > 1 ? ` at ${this.rotation}°` : ''
   }
 
   get operatorProperties(): { name: string; is: boolean }[] {
@@ -110,7 +111,7 @@ export default class EncyclopediaMatrixBoard extends Vue {
   get cell(): Cell {
     const coord = new Coord(1, 1)
     const elem = elemFromString(this.elementName) ?? Elem.Rock
-    return new Cell(coord, Cell.fromElem(elem), this.rotation)
+    return new Cell(coord, elem, this.rotation)
   }
 
   /**

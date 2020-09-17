@@ -30,7 +30,7 @@ export default class Grid {
         const coord = Coord.importCoord({ y, x })
         const key = this.index(coord)
         if (!this.cells.has(key)) {
-          this.cells.set(key, new Cell(coord, Cell.fromElem(Elem.Void)))
+          this.cells.set(key, new Cell(coord, Elem.Void))
         }
       }
     }
@@ -54,7 +54,7 @@ export default class Grid {
   }
 
   public remove(coord: ICoord): void {
-    this.set(new Cell(Coord.importCoord(coord), Cell.fromElem(Elem.Void)))
+    this.set(new Cell(Coord.importCoord(coord), Elem.Void))
   }
 
   /**
@@ -129,7 +129,7 @@ export default class Grid {
    * @returns list of cells of a specific type
    */
   public filteredBy(kind: Elem): Cell[] {
-    return this.cellsArray().filter((cell) => cell.element.name === kind)
+    return this.cellsArray().filter((cell) => cell.element === kind)
   }
 
   /**
@@ -137,7 +137,7 @@ export default class Grid {
    * @param name Name of the element to avoid
    */
   public filteredByNot(kind: Elem): Cell[] {
-    return this.cellsArray().filter((cell) => cell.element.name !== kind)
+    return this.cellsArray().filter((cell) => cell.element !== kind)
   }
 
   public energized(): Cell[] {
@@ -165,7 +165,7 @@ export default class Grid {
   }
 
   public unvoidUnfrozen(): Cell[] {
-    return this.cellsArray().filter((cell) => !cell.frozen && cell.element.name !== Elem.Void)
+    return this.cellsArray().filter((cell) => !cell.frozen && cell.element !== Elem.Void)
   }
 
   /**

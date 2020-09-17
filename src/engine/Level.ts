@@ -48,7 +48,7 @@ export default class Level {
 
     // Populate toolbox
     if (Object.keys(toolbox).length === 0) {
-      this.toolbox = new Toolbox(this.grid.unvoidUnfrozen().map((cell) => cell.element.name))
+      this.toolbox = new Toolbox(this.grid.unvoidUnfrozen().map((cell) => cell.element))
     } else {
       this.toolbox = toolbox
     }
@@ -66,7 +66,7 @@ export default class Level {
    * @returns number of available elements in the toolbox
    */
   public isAvailable(cell: Cell): boolean {
-    return this.toolbox.available(cell.element.name) > 0
+    return this.toolbox.available(cell.element) > 0
   }
 
   /**

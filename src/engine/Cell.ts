@@ -1,38 +1,14 @@
 import { ICoord, ICell, ISimCell, Elem, IIndicator, elemFromString } from '@/engine/interfaces'
 import { startingPolarization, startingDirection, toPercentString } from './Helpers'
 import Coord from './Coord'
-import Element from './Element'
-import {
-  Absorber,
-  BeamSplitter,
-  CoatedBeamSplitter,
-  CornerCube,
-  Detector,
-  DetectorFour,
-  FaradayRotator,
-  Gate,
-  Glass,
-  Laser,
-  Mine,
-  Mirror,
-  NonLinearCrystal,
-  Polarizer,
-  QuarterWavePlate,
-  HalfWavePlate,
-  Rock,
-  SugarSolution,
-  VacuumJar,
-  Wall,
-  Void,
-  PolarizingBeamSplitter,
-} from '@/engine/Elements/index'
+import { elementsData } from '@/engine/elements'
 /**
  * CELL CLASS
  * A cell is a rotated element at a coordinate
  */
 export default class Cell {
   public coord: Coord
-  public element: Element
+  public element: Elem
   public rotation: number
   public polarization: number
   public percentage: number
@@ -43,7 +19,7 @@ export default class Cell {
 
   public constructor(
     coord: Coord,
-    element: Element,
+    element: Elem,
     rotation = 0,
     polarization = 0,
     percentage = 0,
@@ -52,13 +28,11 @@ export default class Cell {
     energized = false,
     tool = true // dangerous, interferes with frozen
   ) {
-    // super(coord.y, coord.x)
     this.coord = coord
     this.element = element
     this.rotation = rotation
     this.polarization = polarization
     this.percentage = percentage
-    this.rotation = rotation
     this.frozen = frozen
     this.active = active
     this.energized = energized
@@ -70,7 +44,12 @@ export default class Cell {
    * @returns ascii representation of rotated element
    */
   public get ascii(): string {
-    return this.element.ascii[this.rotation / this.element.rotationAngle]
+    const data = elementsData[this.element]
+    return data.ascii[this.rotation / this.rotationAngle]
+  }
+
+  private get rotationAngle(): number {
+    return 360 / elementsData[this.element].angles.length
   }
 
   /**
@@ -78,7 +57,7 @@ export default class Cell {
    * @returns true if blank
    */
   public get isVoid(): boolean {
-    return this.element.name === Elem.Void
+    return this.element === Elem.Void
   }
 
   /**
@@ -86,7 +65,7 @@ export default class Cell {
    * @returns true if laser
    */
   public get isLaser(): boolean {
-    return this.element.name === Elem.Laser
+    return this.element === Elem.Laser
   }
 
   /**
@@ -94,7 +73,7 @@ export default class Cell {
    * @returns true if mine
    */
   public get isMine(): boolean {
-    return this.element.name === Elem.Mine
+    return this.element === Elem.Mine
   }
 
   /**
@@ -110,7 +89,7 @@ export default class Cell {
         polarization: startingPolarization(this.polarization),
       }
     }
-    throw new Error(`Cannot create photon indicator from ${this.element.name}`)
+    throw new Error(`Cannot create photon indicator from ${Elem[this.element]}`)
   }
 
   /**
@@ -131,7 +110,7 @@ export default class Cell {
    * Reset a cell to a void passive, unfrozen, unergized cell
    */
   public reset(): Cell {
-    this.element.name = Elem.Void
+    this.element = Elem.Void
     this.rotation = 0
     this.polarization = 0
     this.percentage = 0
@@ -155,9 +134,9 @@ export default class Cell {
    * Correcting the javascript modulo bug for negative values: https://web.archive.org/web/20090717035140if_/javascript.about.com/od/problemsolving/a/modulobug.htm
    * @param angle rotation angle in degrees
    */
-  public rotate(angle: number = this.element.rotationAngle): void {
+  public rotate(angle: number = this.rotationAngle): void {
     if (!this.frozen) {
-      if (Math.abs(angle) % this.element.rotationAngle !== 0) {
+      if (Math.abs(angle) % this.rotationAngle !== 0) {
         throw new Error('Error in the supplied angle compared to the element rotation angle.')
       } else {
         this.rotation = (((this.rotation + angle) % 360) + 360) % 360
@@ -172,13 +151,18 @@ export default class Cell {
    * @returns string describing the cell status
    */
   public toString(): string {
-    return `${this.isFromToolbox ? 'TOOLBOX' : 'GRID'} ${
-      this.tool ? 'Tool' : 'Nothing'
-    } Cell @ ${this.coord.toString()} is ${this.frozen ? 'frozen' : 'unfrozen'} ${
-      this.active ? 'active' : 'inactive'
-    } and ${this.energized ? 'powered' : 'unpowered'} ${this.element.name} rotated ${
-      this.rotation
-    }° with polarization: ${this.polarization}° and percentage: ${toPercentString(this.percentage)}`
+    const from = this.isFromToolbox ? 'TOOLBOX' : 'GRID'
+    const coord = this.coord.toString()
+    const tool = this.tool ? 'Tool' : 'Nothing'
+    const frozen = this.frozen ? 'frozen' : 'unfrozen'
+    const active = this.active ? 'active' : 'inactive'
+    const power = this.energized ? 'powered' : 'unpowered'
+    const percentage = toPercentString(this.percentage)
+
+    const mainName = `${from} ${tool} ${Elem[this.element]}`
+    const flags = `${frozen} ${active} and ${power}`
+
+    return `${mainName} @ ${coord} is ${flags} rotated ${this.rotation}° with polarization: ${this.polarization}° and percentage: ${percentage}`
   }
 
   /**
@@ -188,7 +172,7 @@ export default class Cell {
   public exportCell(): ICell {
     return {
       coord: this.coord.exportCoord(),
-      element: Elem[this.element.name],
+      element: Elem[this.element],
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage,
@@ -207,7 +191,7 @@ export default class Cell {
     return {
       x: this.coord.x,
       y: this.coord.y,
-      element: Elem[this.element.name],
+      element: Elem[this.element],
       rotation: this.rotation,
       polarization: this.polarization,
       percentage: this.percentage,
@@ -221,11 +205,9 @@ export default class Cell {
    * @param iCell ICell
    */
   public static importCell(iCell: ICell): Cell {
-    const coord = Coord.importCoord(iCell.coord)
-    const element = Cell.fromElem(elemFromString(iCell.element) || Elem.Void)
-    const cell = new Cell(
-      coord,
-      element,
+    return new Cell(
+      Coord.importCoord(iCell.coord),
+      elemFromString(iCell.element) || Elem.Void,
       iCell.rotation,
       iCell.polarization,
       iCell.percentage,
@@ -234,7 +216,6 @@ export default class Cell {
       iCell.energized,
       !iCell.frozen
     )
-    return cell
   }
 
   /**
@@ -243,64 +224,6 @@ export default class Cell {
    * @returns a blank cell
    */
   public static createDummy(coordI: ICoord = { x: 0, y: 0 }): Cell {
-    const coord = Coord.importCoord(coordI)
-    const element = Cell.fromElem(Elem.Void)
-    return new Cell(coord, element)
-  }
-
-  /**
-   * Create a instance of the descendant class from Element
-   * @param name element name
-   * @returns element class instance
-   */
-  public static fromElem(elem: Elem): Element {
-    switch (elem) {
-      case Elem.Absorber:
-        return new Absorber()
-      case Elem.BeamSplitter:
-        return new BeamSplitter()
-      case Elem.CoatedBeamSplitter:
-        return new CoatedBeamSplitter()
-      case Elem.CornerCube:
-        return new CornerCube()
-      case Elem.Detector:
-        return new Detector()
-      case Elem.DetectorFour:
-        return new DetectorFour()
-      case Elem.FaradayRotator:
-        return new FaradayRotator()
-      case Elem.Gate:
-        return new Gate()
-      case Elem.Glass:
-        return new Glass()
-      case Elem.Laser:
-        return new Laser()
-      case Elem.Mine:
-        return new Mine()
-      case Elem.Mirror:
-        return new Mirror()
-      case Elem.NonLinearCrystal:
-        return new NonLinearCrystal()
-      case Elem.Polarizer:
-        return new Polarizer()
-      case Elem.PolarizingBeamSplitter:
-        return new PolarizingBeamSplitter()
-      case Elem.QuarterWavePlate:
-        return new QuarterWavePlate()
-      case Elem.HalfWavePlate:
-        return new HalfWavePlate()
-      case Elem.Rock:
-        return new Rock()
-      case Elem.SugarSolution:
-        return new SugarSolution()
-      case Elem.VacuumJar:
-        return new VacuumJar()
-      case Elem.Void:
-        return new Void()
-      case Elem.Wall:
-        return new Wall()
-      default:
-        throw new Error(`Element ${this.name} not included in quantum-tensors operators..`)
-    }
+    return new Cell(Coord.importCoord(coordI), Elem.Void)
   }
 }

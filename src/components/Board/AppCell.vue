@@ -25,7 +25,7 @@ import { Prop } from 'vue-property-decorator'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import { usePosition } from '@/mixins/Position'
-import { cellComponentsList } from '@/components/Board/Cell/index'
+import { elementComponents } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
 import { ref } from 'vue'
 import { storeNamespace } from '@/store'
@@ -34,7 +34,7 @@ import { PieceState } from './Cell/Piece'
 const game = storeNamespace('game')
 
 @Options({
-  emits: ['update-cell', 'click'],
+  emits: ['update-cell', 'play'],
 })
 export default class AppCell extends Vue {
   @Prop() readonly cell!: Cell
@@ -70,7 +70,7 @@ export default class AppCell extends Vue {
    * @returns Compute cell name string
    */
   get cellComponent(): unknown {
-    return cellComponentsList[this.cell.element.name]
+    return elementComponents[this.cell.element]
   }
 
   /**

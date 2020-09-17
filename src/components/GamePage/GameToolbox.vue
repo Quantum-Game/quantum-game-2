@@ -25,9 +25,7 @@
           @update-cell="updateCell"
           @mouseenter="handleMouseEnter(cell)"
         />
-        <text class="counter" :x="counterX" y="80">
-          × {{ toolbox.getCount(cell.element.name) }}
-        </text>
+        <text class="counter" :x="counterX" y="80">× {{ toolbox.getCount(cell.element) }}</text>
       </g>
     </svg>
     <slot></slot>
@@ -72,7 +70,7 @@ export default class GameToolbox extends Vue {
    */
   private get uniqueCellList(): Cell[] {
     const elems = this.toolbox.originallyPresent()
-    return elems.map((elem) => new Cell(TOOLBOX_COORD, Cell.fromElem(elem)))
+    return elems.map((elem) => new Cell(TOOLBOX_COORD, elem))
   }
 
   handleMouseEnter(cell: Cell): void {
@@ -88,7 +86,7 @@ export default class GameToolbox extends Vue {
   }
 
   isAvailable(cell: Cell): boolean {
-    return this.toolbox.getCount(cell.element.name) > 0
+    return this.toolbox.getCount(cell.element) > 0
   }
 
   // events drilling up...
