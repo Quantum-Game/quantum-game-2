@@ -1,28 +1,11 @@
-import { Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
-import Cell from '@/engine/Cell'
+import { PropType } from 'vue'
 
-export default class Piece extends Vue {
-  @Prop() public readonly cell!: Cell
-  @Prop({ default: '' }) public readonly border!: string
-  @Prop({ default: 64 }) public readonly tileSize!: number
+export interface PieceState {
+  hover: boolean
+  interacting: boolean
+  energized: boolean
+}
 
-  /**
-   * Getters for cell instance properties
-   */
-  public get energized(): boolean {
-    return this.cell.energized
-  }
-
-  public get active(): boolean {
-    return this.cell.active
-  }
-
-  public get polarization(): number {
-    return this.cell.polarization
-  }
-
-  public get percentage(): number {
-    return this.cell.percentage
-  }
+export const props = {
+  state: { type: Object as PropType<PieceState>, required: true },
 }

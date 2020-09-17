@@ -1,89 +1,26 @@
 <template>
-  <svg>
-    <g>
-      <circle class="st0" cx="32" cy="32" r="30" />
-      <polygon class="st1" points="55.7,32 18.7,11 18.7,53   " />
-      <g>
-        <rect x="21.4" y="31.5" class="st0" width="20.5" height="1" />
-        <rect x="31.1" y="21.8" class="st0" width="1" height="20.5" />
-
-        <rect
-          x="31.1"
-          y="20.6"
-          transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3855 31.7159)"
-          class="st0"
-          width="1"
-          height="22.8"
-        />
-
-        <rect
-          x="20.2"
-          y="31.5"
-          transform="matrix(0.7071 -0.7071 0.7071 0.7071 -13.3821 31.7086)"
-          class="st0"
-          width="22.8"
-          height="1"
-        />
-        <rect
-          x="24"
-          y="31.5"
-          transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8522 14.5299)"
-          class="st0"
-          width="15.1"
-          height="1"
-        />
-        <rect
-          x="31.1"
-          y="24.4"
-          transform="matrix(0.9238 -0.3828 0.3828 0.9238 -9.8488 14.5307)"
-          class="st0"
-          width="1"
-          height="15.1"
-        />
-
-        <rect
-          x="31.1"
-          y="24.4"
-          transform="matrix(0.3827 -0.9239 0.9239 0.3827 -10.0805 48.9449)"
-          class="st0"
-          width="1"
-          height="15.2"
-        />
-        <rect
-          x="24"
-          y="31.5"
-          transform="matrix(0.3828 -0.9238 0.9238 0.3828 -10.0904 48.9465)"
-          class="st0"
-          width="15.1"
-          height="1"
-        />
-      </g>
-    </g>
-    <!-- OUTLINE FOR ROTATION (ONLY IN SANDBOX MODE) -->
-    <g class="st3">
-      <path
-        class="st0"
-        d="M31.9,2c16.6,0,30,13.4,30,30s-13.4,30-30,30s-30-13.4-30-30S15.3,2,31.9,2 M31.9,1c-17.1,0-31,13.9-31,31
-        s13.9,31,31,31s31-13.9,31-31S49,1,31.9,1L31.9,1z"
-      />
-    </g>
+  <svg :class="state">
+    <path
+      fill="#F0F"
+      d="M32.1 1c-17.12 0-31 13.88-31 31 0 17.12 13.88 31 31 31 17.12 0 31-13.88 31-31 0-17.12-13.88-31-31-31z"
+      class="outline"
+    />
+    <path
+      fill="#F05"
+      d="M32.1 62c16.569 0 30-13.431 30-30 0-16.569-13.431-30-30-30-16.569 0-30 13.431-30 30 0 16.569 13.431 30 30 30z"
+      class="bg"
+    />
+    <path
+      fill="#fff"
+      d="M18.8 11l37 21-37 21V11zm13.4 10.8h-1v7.7l-1.954-4.716-.924.382 1.953 4.715-6.296-6.297-.707.707 6.285 6.285-4.71-1.95-.382.923 4.709 1.951H21.5v1h7.665l-4.688 1.942.383.924 4.692-1.944-6.277 6.277.707.707 6.255-6.255-1.94 4.682.923.383 1.98-4.777V42.3h1v-7.774l1.902 4.59.924-.383-1.902-4.589 6.27 6.27.706-.708-6.282-6.282 4.69 1.943.383-.924L34.2 32.5H42v-1h-7.81l4.62-1.914-.383-.924-4.612 1.911 6.289-6.289-.707-.707-6.311 6.311L35 25.267l-.924-.383-1.877 4.53V21.8z"
+      class="icon"
+      clip-rule="evenodd"
+    />
   </svg>
 </template>
 
 <script lang="ts">
-import Piece from './Piece'
-
-export default class LaserCell extends Piece {}
+import { defineComponent } from 'vue'
+import { props } from './Piece'
+export default defineComponent({ props })
 </script>
-
-<style lang="scss" scoped>
-.st0 {
-  fill: #ff0055;
-}
-.st1 {
-  fill: #ffffff;
-}
-.st3 {
-  display: none;
-}
-</style>

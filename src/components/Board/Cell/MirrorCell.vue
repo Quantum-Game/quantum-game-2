@@ -1,31 +1,13 @@
 <template>
-  <svg>
-    <g>
-      <rect x="2" y="25" class="st0" width="60" height="14" />
-      <polygon class="st1" points="29.1,39 16,25 3.1,25 16.2,39   " />
-      <polygon class="st1" points="34.9,39 21.8,25 19.2,25 32.3,39   " />
-    </g>
-    <g v-if="border">
-      <path
-        class="st2"
-        :style="{ fill: border }"
-        d="M62,25v14H2V25H62 M63,24h-1H2H1v1v14v1h1h60h1v-1V25V24L63,24z"
-      />
-    </g>
+  <svg :class="state">
+    <path fill="#F0F" d="M1 24h62v16H1V24zm61 1v14H2V25h60z" />
+    <path fill="#8468A5" d="M62 25H2v14h60V25z" />
+    <path fill="#E5D9F7" d="M29.1 39L16 25H3.1l13.1 14h12.9zM34.9 39L21.8 25h-2.6l13.1 14h2.6z" />
   </svg>
 </template>
 
 <script lang="ts">
-import Piece from './Piece'
-
-export default class MirrorCell extends Piece {}
+import { defineComponent } from 'vue'
+import { props } from './Piece'
+export default defineComponent({ props })
 </script>
-
-<style lang="scss" scoped>
-.st0 {
-  fill: #8468a5;
-}
-.st1 {
-  fill: #e5d9f7;
-}
-</style>

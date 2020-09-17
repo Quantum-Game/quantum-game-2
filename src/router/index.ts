@@ -84,6 +84,10 @@ export default createRouter({
       component: () => import('@/components/RockTalkPage/RockDemo.vue'),
     },
     {
+      path: '/dev/cells',
+      component: () => import('@/components/RockTalkPage/CellsDemo.vue'),
+    },
+    {
       path: '/*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue'),

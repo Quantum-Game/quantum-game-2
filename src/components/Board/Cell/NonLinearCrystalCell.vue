@@ -1,107 +1,36 @@
 <template>
-  <svg>
-    <g>
-      <g>
-        <defs>
-          <polygon id="bboSVGID_1_" points="32,14.8 33,1.6 63,15.9 63,16" />
-        </defs>
-        <use xlink:href="#bboSVGID_1_" style="overflow:visible;fill:#B3EEF7;" />
-        <clipPath id="bboSVGID_2_">
-          <use xlink:href="#bboSVGID_1_" style="overflow:visible;" />
-        </clipPath>
-        <g class="st0">
-          <polygon class="st1" points="20.3,17.7 14.4,15.7 66.5,-1.6 72.3,0.3" />
-          <polygon class="st1" points="21.4,21.4 17.6,20.1 69.7,2.8 73.5,4.1" />
-        </g>
-      </g>
-      <g>
-        <defs>
-          <polygon
-            id="bboSVGID_3_"
-            points="1,43.5 1,30.1 31.5,14.7 32,14.8 32,51.9 31.9,51.9 31.8,51.9"
-          />
-        </defs>
-        <use xlink:href="#bboSVGID_3_" style="overflow:visible;fill:#61AAB5;" />
-        <clipPath id="bboSVGID_4_">
-          <use xlink:href="#bboSVGID_3_" style="overflow:visible;" />
-        </clipPath>
-        <g class="st2">
-          <polygon class="st3" points="-8.7,41.7 -11.3,39.1 58.5,31.3 61.1,33.9" />
-          <polygon class="st3" points="-6.1,49.1 -9.5,43.5 60.3,35.7 63.7,41.4" />
-        </g>
-      </g>
-      <g>
-        <polygon class="st4" points="1,30.1 1,15.9 32,1 33,1.6 32,14.8 31.5,14.7 1.5,16" />
-        <polygon class="st5" points="32,51.9 32,14.8 63,16 63,50.7" />
-        <polygon class="st5" points="1.1,50.7 31.9,51.9 32,51.9 33,62.4 32,63" />
-        <polygon class="st6" points="33,62.4 32,51.9 63,50.7 63,51.1" />
-        <polygon class="st3" points="1,50.7 1,43.5 31.8,51.9 1.1,50.7" />
-        <polygon class="st7" points="1,30.1 1,15.9 31.5,14.7" />
-      </g>
-      <polyline class="st8" points="57.2,50.4 32,51.9 32,32.3" />
-      <line class="st8" x1="57.2" y1="15.5" x2="32" y2="14.8" />
-      <line class="st8" x1="18.4" y1="21.3" x2="2.9" y2="29.1" />
-      <path class="st8" d="M18.2,21.4" />
-      <path class="st8" d="M21.6,18.4" />
-      <line class="st8" x1="31.5" y1="14.7" x2="23.3" y2="19.1" />
-      <line class="st8" x1="2.9" y1="43.6" x2="24.2" y2="49.8" />
-      <line class="st8" x1="24.9" y1="52" x2="4.8" y2="50.7" />
-    </g>
-    <!-- OUTLINE FOR ROTATION (ONLY IN SANDBOX MODE) -->
-    <g class="st9">
-      <path
-        class="st10"
-        d="M32,1l1,0.6L63,16v34.7v0.3L33,62.4L32,63L1.1,50.8l-0.1,0v-7.3v-2.7V30.1V15.9L32,1 M32.1-0.1l-0.5,0.2
-        L0.6,15L0,15.2v0.6v14.2v10.6v2.7v7.3v0.8l0.8,0.2l0.1,0l30.8,12.2l0.5,0.2l0.4-0.3l0.9-0.6L63.4,52l0.6-0.2v-0.7v-0.3V16v-0.6
-        l-0.6-0.3l-30-14.3l-0.9-0.6L32.1-0.1L32.1-0.1z"
-      />
-    </g>
+  <svg :class="state">
+    <path
+      fill="#F0F"
+      d="M32.052 0L0 15.406v36.429h.908L32.09 64.247l1.347-.808L64 51.927V15.404L33.474.853 32.052 0z"
+    />
+    <path fill="#61AAB5" d="M1 30.235v-14.2l31-14.9 1 .6-1 13.2-.5-.1-30 1.3-.5 14.1z" />
+    <path
+      fill="#61DBEF"
+      d="M32 52.035v-37.1l31 1.2v34.7l-31 1.2zM1.1 50.835l30.8 1.2h.1l1 10.5-1 .6-30.9-12.3z"
+    />
+    <path fill="#B3EEF7" d="M33 62.535l-1-10.5 31-1.2v.4l-30 11.3z" />
+    <path fill="#9AE8F5" d="M1 50.835v-7.2l30.8 8.4-30.7-1.2H1z" />
+    <path fill="#417179" d="M1 30.235v-14.2l30.5-1.2L1 30.235z" />
+    <path fill="#61AAB5" d="M1 43.635v-13.4l30.5-15.4.5.1v37.1h-.2L1 43.635z" />
+    <path fill="#B3EEF7" d="M32 14.935l1-13.2 30 14.3v.1l-31-1.2z" />
+    <path
+      fill="#fff"
+      d="M32.384 9.863l-.305 4.03 15.528-5.196-4.81-2.292-10.413 3.458zm17.169-.238l-16.155 5.364 6.91.267 12.412-4.121-3.167-1.51z"
+    />
+    <path
+      fill="#9AE8F5"
+      d="M1 42.461v1.174l12.575 3.43L32 45.031v-6.035L1 42.461zm0-1.71l31-3.465v-2.89L1 37.86v2.89z"
+    />
+    <path
+      fill="#fff"
+      d="M31.67 15.879l-7.897 4.237a1 1 0 01-.946-1.762l8.2-4.4a.998.998 0 01.913-.018.995.995 0 01.088 0l25.2.7a1 1 0 11-.056 1.998l-25.2-.7a.998.998 0 01-.303-.055zM33 32.435a1 1 0 10-2 0v20.661l1.06-.063 25.2-1.5a1 1 0 10-.12-1.997L33 50.973V32.435zm-13.707-11.45a1 1 0 01-.444 1.343l-15.5 7.8a1 1 0 01-.899-1.787l15.5-7.8a1 1 0 011.343.444zM1.94 43.455a1 1 0 011.24-.68l21.3 6.2a1 1 0 01-.56 1.92l-21.3-6.2a1 1 0 01-.68-1.24zm2.925 6.382a1 1 0 00-.13 1.996l20.1 1.3a1 1 0 10.13-1.996l-20.1-1.3z"
+    />
   </svg>
 </template>
 
 <script lang="ts">
-import Piece from './Piece'
-
-export default class NonLinearCrystalCell extends Piece {}
+import { defineComponent } from 'vue'
+import { props } from './Piece'
+export default defineComponent({ props })
 </script>
-
-<style lang="scss" scoped>
-.st0 {
-  clip-path: url(#bboSVGID_2_);
-}
-.st1 {
-  fill: #ffffff;
-}
-.st2 {
-  clip-path: url(#bboSVGID_4_);
-}
-.st3 {
-  fill: #9ae8f5;
-}
-.st4 {
-  fill: #61aab5;
-}
-.st5 {
-  fill: #61dbef;
-}
-.st6 {
-  fill: #b3eef7;
-}
-.st7 {
-  fill: #417179;
-}
-.st8 {
-  fill: none;
-  stroke: #ffffff;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-miterlimit: 10;
-}
-.st9 {
-  display: none;
-}
-.st10 {
-  display: inline;
-  fill: #ff0055;
-}
-</style>
