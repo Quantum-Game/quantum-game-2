@@ -1,8 +1,9 @@
 use crate::complex::Complex;
-use crate::util::MapExt as _;
+use crate::util::{DebugHlist, HlistPrint, MapExt as _};
 use frunk::hlist::{HList, HZippable, Sculptor};
 use std::{
     collections::HashMap,
+    fmt,
     fmt::Debug,
     hash::Hash,
     iter::{once, FromIterator},
@@ -12,18 +13,58 @@ use std::{
 pub trait Dims: HList + Eq + Hash + Clone + Copy + Debug {}
 impl<T: HList + Eq + Hash + Clone + Copy + Debug> Dims for T {}
 
-#[derive(PartialEq, Debug, Default)]
-pub struct Tensor<D: Dims> {
+pub struct Tensor<D> {
     values: HashMap<D, Complex>,
 }
 
-impl<D: Dims> Tensor<D> {
-    pub fn zeros() -> Self {
+impl<D> fmt::Debug for Tensor<D>
+where
+    D: DebugHlist,
+{
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        struct DebugTensorMap<'a, D>(&'a HashMap<D, Complex>);
+        impl<'a, D> fmt::Debug for DebugTensorMap<'a, D>
+        where
+            D: DebugHlist,
+        {
+            fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                f.debug_map()
+                    .entries(self.0.iter().map(|(k, v)| (HlistPrint(k), v)))
+                    .finish()
+            }
+        }
+
+        f.debug_tuple("Tensor")
+            .field(&DebugTensorMap(&self.values))
+            .finish()
+    }
+}
+
+impl<D> PartialEq for Tensor<D>
+where
+    HashMap<D, Complex>: PartialEq,
+{
+    fn eq(&self, other: &Self) -> bool {
+        self.values.eq(&other.values)
+    }
+}
+
+impl<D> Default for Tensor<D> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<D> Tensor<D> {
+    /// Create tensor full of zeros.
+    pub fn new() -> Self {
         Tensor {
-            values: Default::default(),
+            values: HashMap::new(),
         }
     }
+}
 
+impl<D: Dims> Tensor<D> {
     pub fn scalar(z: Complex) -> Tensor<Hlist![]> {
         Tensor::from_values(once((hlist![], z)))
     }
@@ -35,6 +76,10 @@ impl<D: Dims> Tensor<D> {
                 .filter(|(_, v)| !v.almost_zero())
                 .collect(),
         }
+    }
+
+    pub fn values(&self) -> &HashMap<D, Complex> {
+        &self.values
     }
 
     pub fn insert(&mut self, key: D, value: Complex) {
@@ -96,7 +141,7 @@ impl<D: Dims> Tensor<D> {
 
     #[inline]
     pub fn map_values(&self, f: impl FnMut(&Complex) -> Complex) -> Self {
-        Tensor {
+        Self {
             values: self.values.map_values(f).collect(),
         }
     }
@@ -207,12 +252,10 @@ impl<D: Dims> Sub<&Tensor<D>> for &Tensor<D> {
         }
     }
 }
-impl<'a, 'b, D: Dims> Mul<Complex> for &'b Tensor<D> {
+impl<D: Dims> Mul<Complex> for &Tensor<D> {
     type Output = Tensor<D>;
     fn mul(self, rhs: Complex) -> Self::Output {
-        Tensor {
-            values: self.values.iter().map(|(k, v)| (*k, *v * rhs)).collect(),
-        }
+        self.values.map_values(|&v| v * rhs).collect()
     }
 }
 
@@ -225,76 +268,56 @@ impl<D: Dims> MulAssign<Complex> for Tensor<D> {
     }
 }
 
-// #[derive(Clone, Copy, Eq, PartialEq, Hash)]
-// enum Direction {
-//     Right,
-//     Up,
-//     Left,
-//     Bottom,
-// }
-
-// #[derive(Clone, Copy, Eq, PartialEq, Hash)]
-// struct Position2(u32, u32);
-
 #[cfg(test)]
 mod tests {
-    use super::*;
-    // use approx::ulps_eq;
-    // use std::f32::consts::PI;
+    use crate::{cx, tensor, Polarization, PositionX, Spin, Tensor};
 
-    #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
-    enum Polarization {
-        H,
-        V,
+    const U_0: Hlist![Spin, PositionX] = hlist![Spin::U, PositionX(0)];
+    const D_0: Hlist![Spin, PositionX] = hlist![Spin::D, PositionX(0)];
+    const U_1: Hlist![Spin, PositionX] = hlist![Spin::U, PositionX(1)];
+    const D_1: Hlist![Spin, PositionX] = hlist![Spin::D, PositionX(1)];
+    const D_H: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::H];
+    const U_H: Hlist![Spin, Polarization] = hlist![Spin::U, Polarization::H];
+    const D_V: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::V];
+
+    fn vector() -> Tensor<Hlist![Spin, PositionX]> {
+        tensor![
+            U_0 => cx(1.0, -1.0),
+            D_0 => cx(2.0, -2.0),
+            U_1 => cx(3.0, -3.0),
+            D_1 => cx(0.0, 0.0),
+        ]
     }
 
-    #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
-    enum Spin {
-        U,
-        D,
-    }
-
-    #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
-    struct Position(u32);
-
-    fn vector() -> Tensor<Hlist![Spin, Position]> {
-        Tensor::from_values(vec![
-            (hlist![Spin::U, Position(0)], Complex::new(1.0, -1.0)),
-            (hlist![Spin::D, Position(0)], Complex::new(2.0, -2.0)),
-            (hlist![Spin::U, Position(1)], Complex::new(3.0, -3.0)),
-            (hlist![Spin::D, Position(1)], Complex::new(0.0, 0.0)),
-        ])
-    }
-
-    fn vector2() -> Tensor<Hlist![Spin, Position]> {
-        Tensor::from_values(vec![
-            (hlist![Spin::U, Position(0)], Complex::new(0.0, 0.0)),
-            (hlist![Spin::D, Position(0)], Complex::new(-2.0, 1.0)),
-            (hlist![Spin::U, Position(1)], Complex::new(0.0, 0.5)),
-            (hlist![Spin::D, Position(1)], Complex::new(0.0, 0.0)),
-        ])
+    fn vector2() -> Tensor<Hlist![Spin, PositionX]> {
+        tensor![
+            U_0 => cx(0.0, 0.0),
+            D_0 => cx(-2.0, 1.0),
+            U_1 => cx(0.0, 0.5),
+            D_1 => cx(0.0, 0.0),
+        ]
     }
 
     #[test]
     fn should_compute_the_dot_product_of_two_tensors() {
         let t = vector();
         let t2 = vector2();
-        assert_eq!(t.dot(&t), Complex::new(0.0, -28.0));
-        assert_eq!(t.dot(&t2), Complex::new(-0.5, 7.5));
+        assert_eq!(t.dot(&t), cx(0.0, -28.0));
+        assert_eq!(t.dot(&t2), cx(-0.5, 7.5));
     }
 
     #[test]
     fn should_map_values() {
-        let t = Tensor::from_values(vec![
-            (hlist![Spin::D, Polarization::H], Complex::new(0.0, 2.0)),
-            (hlist![Spin::U, Polarization::H], Complex::new(-1.0, -1.0)),
-            (hlist![Spin::D, Polarization::V], Complex::new(0.5, 2.5)),
-        ]);
-        let t2 = Tensor::from_values(vec![
-            (hlist![Spin::D, Polarization::H], Complex::new(4.0, 0.0)),
-            (hlist![Spin::U, Polarization::H], Complex::new(2.0, 0.0)),
-            (hlist![Spin::D, Polarization::V], Complex::new(6.5, 0.0)),
-        ]);
+        let t = tensor![
+            D_H => cx(0.0, 2.0),
+            U_H => cx(-1.0, -1.0),
+            D_V => cx(0.5, 2.5),
+        ];
+        let t2 = tensor![
+            D_H => cx(4.0, 0.0),
+            U_H => cx(2.0, 0.0),
+            D_V => cx(6.5, 0.0),
+        ];
         assert_eq!(t.map_values(|z| *z * z.conj()), t2);
     }
 
@@ -302,174 +325,140 @@ mod tests {
     fn should_substract_a_vector_from_another_one() {
         let t = vector();
         let t2 = vector2();
-        let sub = Tensor::from_values(vec![
-            (hlist![Spin::U, Position(0)], Complex::new(1.0, -1.0)),
-            (hlist![Spin::D, Position(0)], Complex::new(4.0, -3.0)),
-            (hlist![Spin::U, Position(1)], Complex::new(3.0, -3.5)),
-            (hlist![Spin::D, Position(1)], Complex::new(0.0, 0.0)),
-        ]);
+        let sub = tensor![
+            U_0 => cx(1.0, -1.0),
+            D_0 => cx(4.0, -3.0),
+            U_1 => cx(3.0, -3.5),
+            D_1 => cx(0.0, 0.0),
+        ];
 
-        assert_eq!(&t - &t, Tensor::zeros());
+        assert_eq!(&t - &t, Tensor::new());
         assert_eq!(&t - &t2, sub);
     }
 
     #[test]
     fn should_permute_a_vector() {
-        let reverse: Tensor<Hlist![Position, Spin]> = vector().permute();
-        let expected = Tensor::from_values(vec![
-            (hlist![Position(0), Spin::U], Complex::new(1.0, -1.0)),
-            (hlist![Position(0), Spin::D], Complex::new(2.0, -2.0)),
-            (hlist![Position(1), Spin::U], Complex::new(3.0, -3.0)),
-            (hlist![Position(1), Spin::D], Complex::new(0.0, 0.0)),
-        ]);
+        let reverse: Tensor<Hlist![PositionX, Spin]> = vector().permute();
+        let expected = tensor![
+            hlist![PositionX(0), Spin::U] => cx(1.0, -1.0),
+            hlist![PositionX(0), Spin::D] => cx(2.0, -2.0),
+            hlist![PositionX(1), Spin::U] => cx(3.0, -3.0),
+            hlist![PositionX(1), Spin::D] => cx(0.0, 0.0),
+        ];
 
         assert_eq!(reverse, expected);
     }
 
     #[test]
     fn should_compute_the_outer_product_of_two_vectors() {
-        use Complex as C;
-        use Position as P;
+        use PositionX as P;
         use Spin::{D, U};
-        let v1 = Tensor::from_values(vec![
-            (hlist![U, P(0)], C::new(0.0, 0.0)),
-            (hlist![D, P(0)], C::new(1.0, 0.0)),
-            (hlist![U, P(1)], C::new(2.0, 0.0)),
-            (hlist![D, P(1)], C::new(3.0, 0.0)),
-        ]);
-        let v2 = Tensor::from_values(vec![
-            (hlist![U, P(0)], C::new(1.0, 0.0)),
-            (hlist![D, P(0)], C::new(0.0, 1.0)),
-            (hlist![U, P(1)], C::new(-1.0, 0.0)),
-            (hlist![D, P(1)], C::new(0.0, -1.0)),
-        ]);
-        let outer = Tensor::from_values(vec![
-            (hlist![U, P(0), U, P(0)], C::new(0.0, 0.0)),
-            (hlist![U, P(0), D, P(0)], C::new(0.0, 0.0)),
-            (hlist![U, P(0), U, P(1)], C::new(0.0, 0.0)),
-            (hlist![U, P(0), D, P(1)], C::new(0.0, 0.0)),
-            (hlist![D, P(0), U, P(0)], C::new(1.0, 0.0)),
-            (hlist![D, P(0), D, P(0)], C::new(0.0, 1.0)),
-            (hlist![D, P(0), U, P(1)], C::new(-1.0, 0.0)),
-            (hlist![D, P(0), D, P(1)], C::new(0.0, -1.0)),
-            (hlist![U, P(1), U, P(0)], C::new(2.0, 0.0)),
-            (hlist![U, P(1), D, P(0)], C::new(0.0, 2.0)),
-            (hlist![U, P(1), U, P(1)], C::new(-2.0, 0.0)),
-            (hlist![U, P(1), D, P(1)], C::new(0.0, -2.0)),
-            (hlist![D, P(1), U, P(0)], C::new(3.0, 0.0)),
-            (hlist![D, P(1), D, P(0)], C::new(0.0, 3.0)),
-            (hlist![D, P(1), U, P(1)], C::new(-3.0, 0.0)),
-            (hlist![D, P(1), D, P(1)], C::new(0.0, -3.0)),
-        ]);
+
+        let v1 = tensor![
+            U_0 => cx(0.0, 0.0),
+            D_0 => cx(1.0, 0.0),
+            U_1 => cx(2.0, 0.0),
+            D_1 => cx(3.0, 0.0),
+        ];
+        let v2 = tensor![
+            U_0 => cx(1.0, 0.0),
+            D_0 => cx(0.0, 1.0),
+            U_1 => cx(-1.0, 0.0),
+            D_1 => cx(0.0, -1.0),
+        ];
+        let outer = tensor![
+            hlist![U, P(0), U, P(0)] => cx(0.0, 0.0),
+            hlist![U, P(0), D, P(0)] => cx(0.0, 0.0),
+            hlist![U, P(0), U, P(1)] => cx(0.0, 0.0),
+            hlist![U, P(0), D, P(1)] => cx(0.0, 0.0),
+            hlist![D, P(0), U, P(0)] => cx(1.0, 0.0),
+            hlist![D, P(0), D, P(0)] => cx(0.0, 1.0),
+            hlist![D, P(0), U, P(1)] => cx(-1.0, 0.0),
+            hlist![D, P(0), D, P(1)] => cx(0.0, -1.0),
+            hlist![U, P(1), U, P(0)] => cx(2.0, 0.0),
+            hlist![U, P(1), D, P(0)] => cx(0.0, 2.0),
+            hlist![U, P(1), U, P(1)] => cx(-2.0, 0.0),
+            hlist![U, P(1), D, P(1)] => cx(0.0, -2.0),
+            hlist![D, P(1), U, P(0)] => cx(3.0, 0.0),
+            hlist![D, P(1), D, P(0)] => cx(0.0, 3.0),
+            hlist![D, P(1), U, P(1)] => cx(-3.0, 0.0),
+            hlist![D, P(1), D, P(1)] => cx(0.0, -3.0),
+        ];
         assert_eq!(v1.outer(&v2), outer);
     }
 
     #[test]
     fn should_group_by_dims() {
-        let t = Tensor::from_values(vec![
-            (
-                hlist![Spin::D, Polarization::H, Position(0)],
-                Complex::new(1.0, 0.0),
-            ),
-            (
-                hlist![Spin::D, Polarization::V, Position(1)],
-                Complex::new(-1.0, 0.0),
-            ),
-            (
-                hlist![Spin::D, Polarization::V, Position(2)],
-                Complex::new(0.0, 1.0),
-            ),
-        ]);
+        let t = tensor![
+            hlist![Spin::D, Polarization::H, PositionX(0)] => cx(1.0, 0.0),
+            hlist![Spin::D, Polarization::V, PositionX(1)] => cx(-1.0, 0.0),
+            hlist![Spin::D, Polarization::V, PositionX(2)] => cx(0.0, 1.0),
+        ];
 
-        let group_pos = t.group_by_dims::<Hlist![Position], _>();
+        let group_pos = t.group_by_dims::<Hlist![PositionX], _>();
         assert_eq!(group_pos.len(), 2);
         assert_eq!(
             group_pos.get(&hlist![Spin::D, Polarization::H]),
-            Some(&Tensor::from_values(vec![(
-                hlist![Position(0)],
-                Complex::new(1.0, 0.0)
-            )]))
+            Some(&tensor![hlist![PositionX(0)] => cx(1.0, 0.0)])
         );
         assert_eq!(
             group_pos.get(&hlist![Spin::D, Polarization::V]),
-            Some(&Tensor::from_values(vec![
-                (hlist![Position(1)], Complex::new(-1.0, 0.0)),
-                (hlist![Position(2)], Complex::new(0.0, 1.0))
-            ]))
+            Some(&tensor![
+                hlist![PositionX(1)] => cx(-1.0, 0.0),
+                hlist![PositionX(2)] => cx(0.0, 1.0),
+            ])
         );
 
         let group_other = t.group_by_dims::<Hlist![Spin, Polarization], _>();
         assert_eq!(group_other.len(), 3);
         assert_eq!(
-            group_other.get(&hlist![Position(0)]),
-            Some(&Tensor::from_values(vec![(
-                hlist![Spin::D, Polarization::H],
-                Complex::new(1.0, 0.0)
-            )]))
+            group_other.get(&hlist![PositionX(0)]),
+            Some(&tensor![D_H => cx(1.0, 0.0)])
         );
         assert_eq!(
-            group_other.get(&hlist![Position(1)]),
-            Some(&Tensor::from_values(vec![(
-                hlist![Spin::D, Polarization::V],
-                Complex::new(-1.0, 0.0)
-            )]))
+            group_other.get(&hlist![PositionX(1)]),
+            Some(&tensor![D_V => cx(-1.0, 0.0)])
         );
         assert_eq!(
-            group_other.get(&hlist![Position(2)]),
-            Some(&Tensor::from_values(vec![(
-                hlist![Spin::D, Polarization::V],
-                Complex::new(0.0, 1.0)
-            )]))
+            group_other.get(&hlist![PositionX(2)]),
+            Some(&tensor![D_V => cx(0.0, 1.0)])
         );
     }
 
     #[test]
     fn should_compute_partial_dot_and_inner() {
-        let main = Tensor::from_values(vec![
-            (
-                hlist![Spin::D, Polarization::H, Position(0)],
-                Complex::new(1.0, 0.0),
-            ),
-            (
-                hlist![Spin::D, Polarization::V, Position(1)],
-                Complex::new(-1.0, 0.0),
-            ),
-            (
-                hlist![Spin::D, Polarization::V, Position(2)],
-                Complex::new(0.0, 1.0),
-            ),
-        ]);
+        let main = tensor![
+            hlist![Spin::D, Polarization::H, PositionX(0)] => cx(1.0, 0.0),
+            hlist![Spin::D, Polarization::V, PositionX(1)] => cx(-1.0, 0.0),
+            hlist![Spin::D, Polarization::V, PositionX(2)] => cx(0.0, 1.0),
+        ];
 
-        let small = Tensor::from_values(vec![
-            (hlist![Position(0)], Complex::new(10.0, 0.0)),
-            (hlist![Position(2)], Complex::new(0.0, 3.0)),
-        ]);
-        let res1 = Tensor::from_values(vec![
-            (hlist![Spin::D, Polarization::H], Complex::new(10.0, 0.0)),
-            (hlist![Spin::D, Polarization::V], Complex::new(-3.0, 0.0)),
-        ]);
+        let small = tensor![
+            hlist![PositionX(0)] => cx(10.0, 0.0),
+            hlist![PositionX(2)] => cx(0.0, 3.0),
+        ];
+        let res1 = tensor![
+            D_H => cx(10.0, 0.0),
+            D_V => cx(-3.0, 0.0),
+        ];
 
         assert_eq!(small.dot_partial(&main), res1);
 
-        let small2 = Tensor::from_values(vec![(hlist![Polarization::H], Complex::new(0.0, 1.0))]);
-        let res2inner = Tensor::from_values(vec![(
-            hlist![Spin::D, Position(0)],
-            Complex::new(0.0, -1.0),
-        )]);
+        let small2 = tensor![hlist![Polarization::H] => cx(0.0, 1.0)];
+        let res2inner = tensor![hlist![Spin::D, PositionX(0)] => cx(0.0, -1.0)];
 
         assert_eq!(small2.inner_partial(&main), res2inner);
 
-        let small3 = Tensor::from_values(vec![(hlist![Spin::U], Complex::new(0.0, 1.0))]);
+        let small3 = tensor![hlist![Spin::U] => cx(0.0, 1.0)];
 
         assert_eq!(small3.inner_partial(&main).norm_squared(), 0.0);
 
-        let small4 = Tensor::from_values(vec![
-            (hlist![Spin::D, Position(1)], Complex::new(0.0, 1.0)),
-            (hlist![Spin::D, Position(2)], Complex::new(0.0, 1.0)),
-        ]);
+        let small4 = tensor![
+            hlist![Spin::D, PositionX(1)] => cx(0.0, 1.0),
+            hlist![Spin::D, PositionX(2)] => cx(0.0, 1.0),
+        ];
 
-        let res4inner =
-            Tensor::from_values(vec![(hlist![Polarization::V], Complex::new(1.0, 1.0))]);
+        let res4inner = tensor![hlist![Polarization::V] => cx(1.0, 1.0)];
 
         assert_eq!(small4.inner_partial(&main), res4inner);
     }
