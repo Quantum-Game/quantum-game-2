@@ -1,6 +1,6 @@
 use crate::{
     util::{DebugHlist, HlistPrint, Joiner, MapExt},
-    Complex, Dims, Tensor,
+    Complex, Dims, Enumerable, Tensor,
 };
 use frunk::hlist::Sculptor;
 use std::{
@@ -55,6 +55,28 @@ where
 {
     fn eq(&self, other: &Self) -> bool {
         self.values.eq(&other.values)
+    }
+}
+
+impl<D> Operator<D, D> {
+    /// An operator with specified keys across diagonal being set to one.
+    ///
+    /// When all possible values are specified, it's an identity operator.
+    pub fn select(keys: impl IntoIterator<Item = D>) -> Self
+    where
+        D: Dims,
+    {
+        Operator {
+            values: keys.into_iter().map(|k| ((k, k), Complex::ONE)).collect(),
+        }
+    }
+
+    /// Operator with ones across diagonal
+    pub fn identity() -> Self
+    where
+        D: Dims + Enumerable,
+    {
+        Self::select(D::enumerate())
     }
 }
 
@@ -265,12 +287,27 @@ where
 
 #[cfg(test)]
 mod tests {
-    use crate::{complex::cx, map, operator, tensor, Polarization, PositionX, PositionY, Spin};
+    use crate::{
+        complex::cx, map, operator, tensor, Operator, Polarization, PositionX, PositionY, Spin,
+    };
 
     const D_H: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::H];
     const U_H: Hlist![Spin, Polarization] = hlist![Spin::U, Polarization::H];
     const D_V: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::V];
     const U_V: Hlist![Spin, Polarization] = hlist![Spin::U, Polarization::V];
+
+    #[test]
+    fn should_create_identity() {
+        assert_eq!(
+            Operator::identity(),
+            operator![
+                (D_H, D_H) => cx(1.0, 0.0),
+                (D_V, D_V) => cx(1.0, 0.0),
+                (U_H, U_H) => cx(1.0, 0.0),
+                (U_V, U_V) => cx(1.0, 0.0),
+            ]
+        );
+    }
 
     #[test]
     fn should_compute_complex_and_hermitian_conjugation() {
@@ -357,13 +394,7 @@ mod tests {
 
     #[test]
     fn should_operate_on_vectors() {
-        // TODO: implement operator identity method
-        let id = operator![
-            (D_H, D_H) => cx(1.0, 0.0),
-            (D_V, D_V) => cx(1.0, 0.0),
-            (U_H, U_H) => cx(1.0, 0.0),
-            (U_V, U_V) => cx(1.0, 0.0),
-        ];
+        let id = Operator::identity();
 
         let op = operator![
             (D_H, D_H) => cx(0.0, 2.0),
