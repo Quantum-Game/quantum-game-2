@@ -346,7 +346,7 @@ where
 mod tests {
     use super::Element;
     use crate::photons::dimensions::*;
-    use crate::{cx, tensor, Angle, Complex, Direction, PhotonDims, PosX, PosY, Tensor};
+    use crate::{cx, vector, Angle, Complex, Direction, PhotonDims, PosX, PosY, Vector};
     use approx::assert_ulps_eq;
     use std::f32::consts::{FRAC_1_SQRT_2, SQRT_2};
 
@@ -359,60 +359,60 @@ mod tests {
         dir: Direction,
         pol: Polarization,
         cx: Complex,
-    ) -> Tensor<PhotonDims> {
-        tensor![
+    ) -> Vector<PhotonDims> {
+        vector![
             hlist![PosX(x), PosY(y), dir, pol] => cx
         ]
     }
 
-    fn origin_photon(dir: Direction, pol: Polarization, cx: Complex) -> Tensor<PhotonDims> {
+    fn origin_photon(dir: Direction, pol: Polarization, cx: Complex) -> Vector<PhotonDims> {
         photon(0, 0, dir, pol, cx)
     }
 
-    fn directed_photon(dir: Direction) -> Tensor<PhotonDims> {
+    fn directed_photon(dir: Direction) -> Vector<PhotonDims> {
         photon(0, 0, dir, H, Complex::ONE)
     }
 
-    fn default_photon() -> Tensor<PhotonDims> {
+    fn default_photon() -> Vector<PhotonDims> {
         photon(0, 0, Direction::Right, H, Complex::ONE)
     }
 
-    fn default_mul(element: Element) -> Tensor<PhotonDims> {
+    fn default_mul(element: Element) -> Vector<PhotonDims> {
         photon_mul(element, &default_photon())
     }
 
-    fn photon_mul(element: Element, photon: &Tensor<PhotonDims>) -> Tensor<PhotonDims> {
+    fn photon_mul(element: Element, photon: &Vector<PhotonDims>) -> Vector<PhotonDims> {
         element.operator().mul_vec_partial(photon)
     }
 
     #[test]
     fn test_wall() {
-        assert_eq!(default_mul(Element::Wall), tensor![])
+        assert_eq!(default_mul(Element::Wall), vector![])
     }
 
     #[test]
     fn test_gate() {
-        assert_eq!(default_mul(Element::Gate), tensor![])
+        assert_eq!(default_mul(Element::Gate), vector![])
     }
 
     #[test]
     fn test_laser() {
-        assert_eq!(default_mul(Element::Laser), tensor![])
+        assert_eq!(default_mul(Element::Laser), vector![])
     }
 
     // #[test]
     // fn test_non_linear_crystal() {
-    //     assert_eq!(test_partial_mul(Element::NonLinearCrystal), tensor![])
+    //     assert_eq!(test_partial_mul(Element::NonLinearCrystal), vector![])
     // }
 
     #[test]
     fn test_mirror() {
-        assert_eq!(default_mul(Element::Mirror(Angle::Right)), tensor![])
+        assert_eq!(default_mul(Element::Mirror(Angle::Right)), vector![])
     }
 
     #[test]
     fn test_beam_splitter() {
-        assert_eq!(default_mul(Element::BeamSplitter(Angle::Right)), tensor![]);
+        assert_eq!(default_mul(Element::BeamSplitter(Angle::Right)), vector![]);
         assert_ulps_eq!(
             default_mul(Element::BeamSplitter(Angle::Up)),
             origin_photon(Direction::Left, H, cx(-SQRT_2, 0.0))
@@ -461,7 +461,7 @@ mod tests {
     // fn test_coated_beam_splitter() {
     //     assert_eq!(
     //         default_mul(Element::CoatedBeamSplitter(Angle::Right)),
-    //         tensor![]
+    //         vector![]
     //     )
     // }
 
@@ -487,17 +487,17 @@ mod tests {
 
     #[test]
     fn test_detector() {
-        assert_eq!(default_mul(Element::Detector(Direction::Right)), tensor![])
+        assert_eq!(default_mul(Element::Detector(Direction::Right)), vector![])
     }
 
     #[test]
     fn test_rock() {
-        assert_eq!(default_mul(Element::Rock), tensor![])
+        assert_eq!(default_mul(Element::Rock), vector![])
     }
 
     #[test]
     fn test_mine() {
-        assert_eq!(default_mul(Element::Mine), tensor![])
+        assert_eq!(default_mul(Element::Mine), vector![])
     }
 
     #[test]
@@ -510,7 +510,7 @@ mod tests {
 
     #[test]
     fn test_detector_four() {
-        assert_eq!(default_mul(Element::DetectorFour), tensor![])
+        assert_eq!(default_mul(Element::DetectorFour), vector![])
     }
 
     #[test]
@@ -521,8 +521,8 @@ mod tests {
         dbg!(&photon_45deg);
         dbg!(default_mul(Element::Polarizer(Angle::UpRight)));
 
-        assert_eq!(default_mul(Element::Polarizer(Angle::Up)), tensor![]);
-        assert_eq!(default_mul(Element::Polarizer(Angle::Down)), tensor![]);
+        assert_eq!(default_mul(Element::Polarizer(Angle::Up)), vector![]);
+        assert_eq!(default_mul(Element::Polarizer(Angle::Down)), vector![]);
         assert_eq!(
             default_mul(Element::Polarizer(Angle::Right)),
             default_photon()
@@ -583,7 +583,7 @@ mod tests {
         );
         assert_eq!(
             default_mul(Element::FaradayRotator(Direction::Up)),
-            tensor![],
+            vector![],
         );
     }
 

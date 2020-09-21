@@ -19,10 +19,10 @@ macro_rules! operator {
 }
 
 #[macro_export]
-macro_rules! tensor {
-    {} => { crate::Tensor::new() };
+macro_rules! vector {
+    {} => { crate::Vector::new() };
     { $($key:expr => $value:expr),*$(,)? } => {{
-        let mut t = crate::Tensor::new();
+        let mut t = crate::Vector::new();
         $(t.insert($key, $value);)*
         t
     }};

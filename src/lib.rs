@@ -7,8 +7,8 @@ mod complex;
 mod enumerable;
 mod operator;
 mod photons;
-mod tensor;
 mod util;
+mod vector;
 
 pub mod dimensions;
 
@@ -16,4 +16,4 @@ pub use complex::{cx, Complex};
 pub use enumerable::Enumerable;
 pub use operator::{Operator, PartialOperator};
 pub use photons::*;
-pub use tensor::{Dims, Tensor};
+pub use vector::{Dims, Vector};

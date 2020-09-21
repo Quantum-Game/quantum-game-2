@@ -14,17 +14,17 @@ use std::{
 pub trait Dims: HList + Eq + Hash + Clone + Copy + Debug {}
 impl<T: HList + Eq + Hash + Clone + Copy + Debug> Dims for T {}
 
-pub struct Tensor<D> {
+pub struct Vector<D> {
     values: HashMap<D, Complex>,
 }
 
-impl<D> fmt::Debug for Tensor<D>
+impl<D> fmt::Debug for Vector<D>
 where
     D: DebugHlist,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        struct DebugTensorMap<'a, D>(&'a HashMap<D, Complex>);
-        impl<'a, D> fmt::Debug for DebugTensorMap<'a, D>
+        struct DebugVectorMap<'a, D>(&'a HashMap<D, Complex>);
+        impl<'a, D> fmt::Debug for DebugVectorMap<'a, D>
         where
             D: DebugHlist,
         {
@@ -35,13 +35,13 @@ where
             }
         }
 
-        f.debug_tuple("Tensor")
-            .field(&DebugTensorMap(&self.values))
+        f.debug_tuple("Vector")
+            .field(&DebugVectorMap(&self.values))
             .finish()
     }
 }
 
-impl<D> PartialEq for Tensor<D>
+impl<D> PartialEq for Vector<D>
 where
     HashMap<D, Complex>: PartialEq,
 {
@@ -50,28 +50,28 @@ where
     }
 }
 
-impl<D> Default for Tensor<D> {
+impl<D> Default for Vector<D> {
     fn default() -> Self {
         Self::new()
     }
 }
 
-impl<D> Tensor<D> {
-    /// Create tensor full of zeros.
+impl<D> Vector<D> {
+    /// Create vector full of zeros.
     pub fn new() -> Self {
-        Tensor {
+        Vector {
             values: HashMap::new(),
         }
     }
 }
 
-impl<D: Dims> Tensor<D> {
-    pub fn scalar(z: Complex) -> Tensor<Hlist![]> {
-        Tensor::from_values(once((hlist![], z)))
+impl<D: Dims> Vector<D> {
+    pub fn scalar(z: Complex) -> Vector<Hlist![]> {
+        Vector::from_values(once((hlist![], z)))
     }
 
     pub fn from_values(values: impl IntoIterator<Item = (D, Complex)>) -> Self {
-        Tensor {
+        Vector {
             values: values
                 .into_iter()
                 .filter(|(_, v)| !v.almost_zero())
@@ -104,35 +104,35 @@ impl<D: Dims> Tensor<D> {
         self.norm_squared().sqrt()
     }
 
-    pub fn group_by_dims<E: Dims, Indices>(&self) -> HashMap<D::Remainder, Tensor<E>>
+    pub fn group_by_dims<E: Dims, Indices>(&self) -> HashMap<D::Remainder, Vector<E>>
     where
         D: Sculptor<E, Indices>,
         D::Remainder: Dims,
     {
-        let mut map: HashMap<D::Remainder, Tensor<E>> = HashMap::new();
+        let mut map: HashMap<D::Remainder, Vector<E>> = HashMap::new();
         for (&k, &v) in &self.values {
-            let (selected, key) = Sculptor::sculpt(k);
+            let (selected, key) = k.sculpt();
             map.entry(key)
                 .and_modify(|t| t.insert(selected, v))
-                .or_insert_with(|| Tensor::from_values(once((selected, v))));
+                .or_insert_with(|| Vector::from_values(once((selected, v))));
         }
         map
     }
 
-    pub fn dot_partial<E: Dims, Indices>(&self, rhs: &Tensor<E>) -> Tensor<E::Remainder>
+    pub fn dot_partial<E: Dims, Indices>(&self, rhs: &Vector<E>) -> Vector<E::Remainder>
     where
         E: Sculptor<D, Indices>,
         E::Remainder: Dims,
     {
         let grouped = rhs.group_by_dims::<D, _>();
-        Tensor::from_values(
+        Vector::from_values(
             grouped
                 .into_iter()
                 .map(|(coords, vector)| (coords, self.dot(&vector))),
         )
     }
 
-    pub fn inner_partial<E: Dims, Indices>(&self, rhs: &Tensor<E>) -> Tensor<E::Remainder>
+    pub fn inner_partial<E: Dims, Indices>(&self, rhs: &Vector<E>) -> Vector<E::Remainder>
     where
         E: Sculptor<D, Indices>,
         E::Remainder: Dims,
@@ -149,16 +149,16 @@ impl<D: Dims> Tensor<D> {
 
     /// ```compile_fail
     /// use frunk::Hlist;
-    /// use quanta::Tensor;
-    /// let t: Tensor<Hlist![u8, u16]> = Tensor::zeros();
-    /// let impossible_permute: Tensor<Hlist![u8]> = t.permute(); // should not compile
+    /// use quanta::Vector;
+    /// let t: Vector<Hlist![u8, u16]> = Vector::zeros();
+    /// let impossible_permute: Vector<Hlist![u8]> = t.permute(); // should not compile
     /// ```
-    pub fn permute<E: Dims, Indices>(&self) -> Tensor<E>
+    pub fn permute<E: Dims, Indices>(&self) -> Vector<E>
     where
         // HZippable used for hlist length equality
         D: Sculptor<E, Indices> + HZippable<E>,
     {
-        Tensor {
+        Vector {
             values: self
                 .values
                 .iter()
@@ -171,14 +171,14 @@ impl<D: Dims> Tensor<D> {
         self.map_values(Complex::conj)
     }
 
-    pub fn outer<E: Dims>(&self, other: &Tensor<E>) -> Tensor<<D as Add<E>>::Output>
+    pub fn outer<E: Dims>(&self, other: &Vector<E>) -> Vector<<D as Add<E>>::Output>
     where
         D: Add<E>,
         <D as Add<E>>::Output: Dims,
     {
         let a = &self.values;
         let b = &other.values;
-        Tensor {
+        Vector {
             values: a
                 .iter()
                 .flat_map(|(&k1, &v1)| b.iter().map(move |(&k2, &v2)| (k1 + k2, v1 * v2)))
@@ -187,14 +187,14 @@ impl<D: Dims> Tensor<D> {
     }
 }
 
-impl<D: Dims> FromIterator<(D, Complex)> for Tensor<D> {
+impl<D: Dims> FromIterator<(D, Complex)> for Vector<D> {
     fn from_iter<T: IntoIterator<Item = (D, Complex)>>(iter: T) -> Self {
-        Tensor::from_values(iter)
+        Vector::from_values(iter)
     }
 }
 
-impl<D: Dims> AddAssign<&Tensor<D>> for Tensor<D> {
-    fn add_assign(&mut self, rhs: &Tensor<D>) {
+impl<D: Dims> AddAssign<&Vector<D>> for Vector<D> {
+    fn add_assign(&mut self, rhs: &Vector<D>) {
         // add to existing values
         self.values.retain(|key, value| {
             if let Some(value2) = rhs.values.get(key) {
@@ -211,34 +211,34 @@ impl<D: Dims> AddAssign<&Tensor<D>> for Tensor<D> {
     }
 }
 
-impl<D: Dims> Add<&Tensor<D>> for Tensor<D> {
-    type Output = Tensor<D>;
-    fn add(mut self, rhs: &Tensor<D>) -> Self::Output {
+impl<D: Dims> Add<&Vector<D>> for Vector<D> {
+    type Output = Vector<D>;
+    fn add(mut self, rhs: &Vector<D>) -> Self::Output {
         self += rhs;
         self
     }
 }
 
-impl<D: Dims> Add<Tensor<D>> for Tensor<D> {
-    type Output = Tensor<D>;
-    fn add(mut self, rhs: Tensor<D>) -> Self::Output {
+impl<D: Dims> Add<Vector<D>> for Vector<D> {
+    type Output = Vector<D>;
+    fn add(mut self, rhs: Vector<D>) -> Self::Output {
         self += &rhs;
         self
     }
 }
 
-impl<D: Dims> Add<Tensor<D>> for &Tensor<D> {
-    type Output = Tensor<D>;
-    fn add(self, mut rhs: Tensor<D>) -> Self::Output {
+impl<D: Dims> Add<Vector<D>> for &Vector<D> {
+    type Output = Vector<D>;
+    fn add(self, mut rhs: Vector<D>) -> Self::Output {
         rhs += self;
         rhs
     }
 }
 
-impl<D: Dims> Add<&Tensor<D>> for &Tensor<D> {
-    type Output = Tensor<D>;
-    fn add(self, rhs: &Tensor<D>) -> Self::Output {
-        Tensor {
+impl<D: Dims> Add<&Vector<D>> for &Vector<D> {
+    type Output = Vector<D>;
+    fn add(self, rhs: &Vector<D>) -> Self::Output {
+        Vector {
             values: self
                 .values
                 .iter_either(&rhs.values)
@@ -252,8 +252,8 @@ impl<D: Dims> Add<&Tensor<D>> for &Tensor<D> {
     }
 }
 
-impl<D: Dims> SubAssign<&Tensor<D>> for Tensor<D> {
-    fn sub_assign(&mut self, rhs: &Tensor<D>) {
+impl<D: Dims> SubAssign<&Vector<D>> for Vector<D> {
+    fn sub_assign(&mut self, rhs: &Vector<D>) {
         self.values.retain(|key, value| {
             if let Some(value2) = rhs.values.get(key) {
                 *value -= *value2;
@@ -265,10 +265,10 @@ impl<D: Dims> SubAssign<&Tensor<D>> for Tensor<D> {
     }
 }
 
-impl<D: Dims> Sub<&Tensor<D>> for &Tensor<D> {
-    type Output = Tensor<D>;
-    fn sub(self, rhs: &Tensor<D>) -> Self::Output {
-        Tensor {
+impl<D: Dims> Sub<&Vector<D>> for &Vector<D> {
+    type Output = Vector<D>;
+    fn sub(self, rhs: &Vector<D>) -> Self::Output {
+        Vector {
             values: self
                 .values
                 .iter_either(&rhs.values)
@@ -282,8 +282,8 @@ impl<D: Dims> Sub<&Tensor<D>> for &Tensor<D> {
         }
     }
 }
-impl<D: Dims> Mul<Complex> for &Tensor<D> {
-    type Output = Tensor<D>;
+impl<D: Dims> Mul<Complex> for &Vector<D> {
+    type Output = Vector<D>;
     fn mul(self, rhs: Complex) -> Self::Output {
         self.values
             .map_values(|&v| v * rhs)
@@ -292,23 +292,23 @@ impl<D: Dims> Mul<Complex> for &Tensor<D> {
     }
 }
 
-impl<D: Dims> Mul<Complex> for Tensor<D> {
-    type Output = Tensor<D>;
+impl<D: Dims> Mul<Complex> for Vector<D> {
+    type Output = Vector<D>;
     fn mul(mut self, rhs: Complex) -> Self::Output {
         self *= rhs;
         self
     }
 }
 
-impl<D: Dims> Mul<&Complex> for Tensor<D> {
-    type Output = Tensor<D>;
+impl<D: Dims> Mul<&Complex> for Vector<D> {
+    type Output = Vector<D>;
     fn mul(mut self, rhs: &Complex) -> Self::Output {
         self *= *rhs;
         self
     }
 }
 
-impl<D: Dims> MulAssign<Complex> for Tensor<D> {
+impl<D: Dims> MulAssign<Complex> for Vector<D> {
     fn mul_assign(&mut self, rhs: Complex) {
         self.values.retain(|_, value| {
             *value *= rhs;
@@ -317,7 +317,7 @@ impl<D: Dims> MulAssign<Complex> for Tensor<D> {
     }
 }
 
-impl<D: Dims> AbsDiffEq for Tensor<D> {
+impl<D: Dims> AbsDiffEq for Vector<D> {
     type Epsilon = f32;
     fn default_epsilon() -> Self::Epsilon {
         f32::default_epsilon()
@@ -335,7 +335,7 @@ impl<D: Dims> AbsDiffEq for Tensor<D> {
     }
 }
 
-impl<D: Dims> UlpsEq for Tensor<D> {
+impl<D: Dims> UlpsEq for Vector<D> {
     fn default_max_ulps() -> u32 {
         f32::default_max_ulps()
     }
@@ -358,7 +358,7 @@ mod tests {
     use crate::{
         cx,
         dimensions::{Polarization, PositionX, Spin},
-        tensor, Tensor,
+        vector, Vector,
     };
 
     const U_0: Hlist![Spin, PositionX] = hlist![Spin::U, PositionX(0)];
@@ -369,8 +369,8 @@ mod tests {
     const U_H: Hlist![Spin, Polarization] = hlist![Spin::U, Polarization::H];
     const D_V: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::V];
 
-    fn vector() -> Tensor<Hlist![Spin, PositionX]> {
-        tensor![
+    fn vector() -> Vector<Hlist![Spin, PositionX]> {
+        vector![
             U_0 => cx(1.0, -1.0),
             D_0 => cx(2.0, -2.0),
             U_1 => cx(3.0, -3.0),
@@ -378,8 +378,8 @@ mod tests {
         ]
     }
 
-    fn vector2() -> Tensor<Hlist![Spin, PositionX]> {
-        tensor![
+    fn vector2() -> Vector<Hlist![Spin, PositionX]> {
+        vector![
             U_0 => cx(0.0, 0.0),
             D_0 => cx(-2.0, 1.0),
             U_1 => cx(0.0, 0.5),
@@ -388,7 +388,7 @@ mod tests {
     }
 
     #[test]
-    fn should_compute_the_dot_product_of_two_tensors() {
+    fn should_compute_the_dot_product_of_two_vectors() {
         let t = vector();
         let t2 = vector2();
         assert_eq!(t.dot(&t), cx(0.0, -28.0));
@@ -397,12 +397,12 @@ mod tests {
 
     #[test]
     fn should_map_values() {
-        let t = tensor![
+        let t = vector![
             D_H => cx(0.0, 2.0),
             U_H => cx(-1.0, -1.0),
             D_V => cx(0.5, 2.5),
         ];
-        let t2 = tensor![
+        let t2 = vector![
             D_H => cx(4.0, 0.0),
             U_H => cx(2.0, 0.0),
             D_V => cx(6.5, 0.0),
@@ -414,21 +414,21 @@ mod tests {
     fn should_substract_a_vector_from_another_one() {
         let t = vector();
         let t2 = vector2();
-        let sub = tensor![
+        let sub = vector![
             U_0 => cx(1.0, -1.0),
             D_0 => cx(4.0, -3.0),
             U_1 => cx(3.0, -3.5),
             D_1 => cx(0.0, 0.0),
         ];
 
-        assert_eq!(&t - &t, Tensor::new());
+        assert_eq!(&t - &t, Vector::new());
         assert_eq!(&t - &t2, sub);
     }
 
     #[test]
     fn should_permute_a_vector() {
-        let reverse: Tensor<Hlist![PositionX, Spin]> = vector().permute();
-        let expected = tensor![
+        let reverse: Vector<Hlist![PositionX, Spin]> = vector().permute();
+        let expected = vector![
             hlist![PositionX(0), Spin::U] => cx(1.0, -1.0),
             hlist![PositionX(0), Spin::D] => cx(2.0, -2.0),
             hlist![PositionX(1), Spin::U] => cx(3.0, -3.0),
@@ -443,19 +443,19 @@ mod tests {
         use PositionX as P;
         use Spin::{D, U};
 
-        let v1 = tensor![
+        let v1 = vector![
             U_0 => cx(0.0, 0.0),
             D_0 => cx(1.0, 0.0),
             U_1 => cx(2.0, 0.0),
             D_1 => cx(3.0, 0.0),
         ];
-        let v2 = tensor![
+        let v2 = vector![
             U_0 => cx(1.0, 0.0),
             D_0 => cx(0.0, 1.0),
             U_1 => cx(-1.0, 0.0),
             D_1 => cx(0.0, -1.0),
         ];
-        let outer = tensor![
+        let outer = vector![
             hlist![U, P(0), U, P(0)] => cx(0.0, 0.0),
             hlist![U, P(0), D, P(0)] => cx(0.0, 0.0),
             hlist![U, P(0), U, P(1)] => cx(0.0, 0.0),
@@ -478,7 +478,7 @@ mod tests {
 
     #[test]
     fn should_group_by_dims() {
-        let t = tensor![
+        let t = vector![
             hlist![Spin::D, Polarization::H, PositionX(0)] => cx(1.0, 0.0),
             hlist![Spin::D, Polarization::V, PositionX(1)] => cx(-1.0, 0.0),
             hlist![Spin::D, Polarization::V, PositionX(2)] => cx(0.0, 1.0),
@@ -488,11 +488,11 @@ mod tests {
         assert_eq!(group_pos.len(), 2);
         assert_eq!(
             group_pos.get(&hlist![Spin::D, Polarization::H]),
-            Some(&tensor![hlist![PositionX(0)] => cx(1.0, 0.0)])
+            Some(&vector![hlist![PositionX(0)] => cx(1.0, 0.0)])
         );
         assert_eq!(
             group_pos.get(&hlist![Spin::D, Polarization::V]),
-            Some(&tensor![
+            Some(&vector![
                 hlist![PositionX(1)] => cx(-1.0, 0.0),
                 hlist![PositionX(2)] => cx(0.0, 1.0),
             ])
@@ -502,52 +502,52 @@ mod tests {
         assert_eq!(group_other.len(), 3);
         assert_eq!(
             group_other.get(&hlist![PositionX(0)]),
-            Some(&tensor![D_H => cx(1.0, 0.0)])
+            Some(&vector![D_H => cx(1.0, 0.0)])
         );
         assert_eq!(
             group_other.get(&hlist![PositionX(1)]),
-            Some(&tensor![D_V => cx(-1.0, 0.0)])
+            Some(&vector![D_V => cx(-1.0, 0.0)])
         );
         assert_eq!(
             group_other.get(&hlist![PositionX(2)]),
-            Some(&tensor![D_V => cx(0.0, 1.0)])
+            Some(&vector![D_V => cx(0.0, 1.0)])
         );
     }
 
     #[test]
     fn should_compute_partial_dot_and_inner() {
-        let main = tensor![
+        let main = vector![
             hlist![Spin::D, Polarization::H, PositionX(0)] => cx(1.0, 0.0),
             hlist![Spin::D, Polarization::V, PositionX(1)] => cx(-1.0, 0.0),
             hlist![Spin::D, Polarization::V, PositionX(2)] => cx(0.0, 1.0),
         ];
 
-        let small = tensor![
+        let small = vector![
             hlist![PositionX(0)] => cx(10.0, 0.0),
             hlist![PositionX(2)] => cx(0.0, 3.0),
         ];
-        let res1 = tensor![
+        let res1 = vector![
             D_H => cx(10.0, 0.0),
             D_V => cx(-3.0, 0.0),
         ];
 
         assert_eq!(small.dot_partial(&main), res1);
 
-        let small2 = tensor![hlist![Polarization::H] => cx(0.0, 1.0)];
-        let res2inner = tensor![hlist![Spin::D, PositionX(0)] => cx(0.0, -1.0)];
+        let small2 = vector![hlist![Polarization::H] => cx(0.0, 1.0)];
+        let res2inner = vector![hlist![Spin::D, PositionX(0)] => cx(0.0, -1.0)];
 
         assert_eq!(small2.inner_partial(&main), res2inner);
 
-        let small3 = tensor![hlist![Spin::U] => cx(0.0, 1.0)];
+        let small3 = vector![hlist![Spin::U] => cx(0.0, 1.0)];
 
         assert_eq!(small3.inner_partial(&main).norm_squared(), 0.0);
 
-        let small4 = tensor![
+        let small4 = vector![
             hlist![Spin::D, PositionX(1)] => cx(0.0, 1.0),
             hlist![Spin::D, PositionX(2)] => cx(0.0, 1.0),
         ];
 
-        let res4inner = tensor![hlist![Polarization::V] => cx(1.0, 1.0)];
+        let res4inner = vector![hlist![Polarization::V] => cx(1.0, 1.0)];
 
         assert_eq!(small4.inner_partial(&main), res4inner);
     }
