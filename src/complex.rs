@@ -252,7 +252,7 @@ impl UlpsEq for Complex {
 #[cfg(test)]
 mod tests {
     use super::{cx, Complex};
-    use approx::ulps_eq;
+    use approx::{assert_ulps_eq, ulps_eq};
     use std::f32::consts::PI;
 
     #[test]
@@ -287,8 +287,8 @@ mod tests {
     fn should_give_non_negative_arg() {
         let z1 = cx(1.0, -1.0);
         let z2 = cx(0.0, -1.0);
-        assert_eq!(z1.arg(), 1.75 * PI);
-        assert_eq!(z2.arg(), 1.5 * PI);
+        assert_ulps_eq!(z1.arg(), 1.75 * PI);
+        assert_ulps_eq!(z2.arg(), 1.5 * PI);
     }
 
     #[test]
@@ -296,45 +296,45 @@ mod tests {
         let z1 = cx(1.0, -1.0);
         let z2 = cx(-1.0, 0.0);
         let z3 = cx(0.0, -1.0);
-        assert_eq!(z1.phi_tau(), 0.875);
-        assert_eq!(z2.phi_tau(), 0.5);
-        assert_eq!(z3.phi_tau(), 0.75);
+        assert_ulps_eq!(z1.phi_tau(), 0.875);
+        assert_ulps_eq!(z2.phi_tau(), 0.5);
+        assert_ulps_eq!(z3.phi_tau(), 0.75);
     }
 
     #[test]
     fn should_add_two_complex_numbers() {
         let z1 = cx(4.0, -1.0);
         let z2 = cx(2.0, 3.0);
-        assert_eq!(z1 + z2, cx(6.0, 2.0));
-        assert_eq!(z2 + z1, cx(6.0, 2.0));
+        assert_ulps_eq!(z1 + z2, cx(6.0, 2.0));
+        assert_ulps_eq!(z2 + z1, cx(6.0, 2.0));
     }
 
     #[test]
     fn should_subtract_two_complex_numbers() {
         let z1 = cx(4.0, -1.0);
         let z2 = cx(2.0, 3.0);
-        assert_eq!(z1 - z2, cx(2.0, -4.0));
-        assert_eq!(z2 - z1, cx(-2.0, 4.0));
+        assert_ulps_eq!(z1 - z2, cx(2.0, -4.0));
+        assert_ulps_eq!(z2 - z1, cx(-2.0, 4.0));
     }
 
     #[test]
     fn should_multiply_two_complex_numbers() {
         let z1 = cx(3.0, 2.0);
         let z2 = cx(1.0, 7.0);
-        assert_eq!(z1 * z2, cx(-11.0, 23.0));
-        assert_eq!(z2 * z1, cx(-11.0, 23.0));
+        assert_ulps_eq!(z1 * z2, cx(-11.0, 23.0));
+        assert_ulps_eq!(z2 * z1, cx(-11.0, 23.0));
     }
 
     #[test]
     fn should_normalize() {
         let z = cx(3.0, 4.0);
-        assert_eq!(z.normalized(), cx(0.6, 0.8))
+        assert_ulps_eq!(z.normalized(), cx(0.6, 0.8))
     }
 
     #[test]
     fn should_create_a_complex_number_from_polar_coordinates() {
         let z = Complex::from_polar(2.0, 1.0);
-        assert_eq!(z, cx(1.0806046117362795, 1.682941969615793));
+        assert_ulps_eq!(z, cx(1.0806046117362795, 1.682941969615793));
         ulps_eq!(z.abs(), 2.0);
         ulps_eq!(z.arg(), 1.0);
     }
@@ -343,8 +343,8 @@ mod tests {
     fn should_divide_numbers() {
         let z1 = cx(10.0, -5.0);
         let z2 = cx(-3.0, 4.0);
-        assert_eq!(z1 / z2, cx(-2.0, -1.0));
-        assert_eq!(z2 / z1, cx(-0.4, 0.2));
+        assert_ulps_eq!(z1 / z2, cx(-2.0, -1.0));
+        assert_ulps_eq!(z2 / z1, cx(-0.4, 0.2));
     }
 
     #[test]
