@@ -1,3 +1,4 @@
+use approx::{AbsDiffEq, UlpsEq};
 use std::f32::consts::PI;
 use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 const TAU: f32 = 2.0 * PI;
@@ -9,7 +10,7 @@ pub struct Complex {
 }
 
 /// Alias for Complex::new
-pub fn cx(re: f32, im: f32) -> Complex {
+pub const fn cx(re: f32, im: f32) -> Complex {
     Complex::new(re, im)
 }
 
@@ -218,6 +219,33 @@ impl Div for Complex {
 impl std::iter::Sum for Complex {
     fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
         iter.fold(Complex::ZERO, Add::add)
+    }
+}
+
+impl AbsDiffEq for Complex {
+    type Epsilon = f32;
+    fn default_epsilon() -> Self::Epsilon {
+        f32::default_epsilon()
+    }
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.re.abs_diff_eq(&other.re, epsilon) && self.im.abs_diff_eq(&other.im, epsilon)
+    }
+    fn abs_diff_ne(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        self.re.abs_diff_ne(&other.re, epsilon) || self.im.abs_diff_ne(&other.im, epsilon)
+    }
+}
+
+impl UlpsEq for Complex {
+    fn default_max_ulps() -> u32 {
+        f32::default_max_ulps()
+    }
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.re.ulps_eq(&other.re, epsilon, max_ulps)
+            && self.im.ulps_eq(&other.im, epsilon, max_ulps)
+    }
+    fn ulps_ne(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        self.re.ulps_ne(&other.re, epsilon, max_ulps)
+            || self.im.ulps_ne(&other.im, epsilon, max_ulps)
     }
 }
 

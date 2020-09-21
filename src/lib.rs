@@ -1,14 +1,19 @@
 #[macro_use] // for the hlist macro
 extern crate frunk;
 
-mod util;
+mod macros;
 
 mod complex;
-mod dimensions;
+mod enumerable;
 mod operator;
+mod photons;
 mod tensor;
+mod util;
+
+pub mod dimensions;
 
 pub use complex::{cx, Complex};
-pub use dimensions::*;
-pub use operator::Operator;
+pub use enumerable::Enumerable;
+pub use operator::{Operator, PartialOperator};
+pub use photons::*;
 pub use tensor::{Dims, Tensor};

@@ -1,4 +1,3 @@
-use itertools::{structs::Unique, Itertools};
 use std::{
     collections::hash_map::{HashMap, Iter, Keys},
     fmt,
@@ -38,7 +37,8 @@ where
 pub struct EitherMapIter<'a, K, V1, V2> {
     a: &'a HashMap<K, V1>,
     b: &'a HashMap<K, V2>,
-    keys: Unique<Chain<Keys<'a, K, V1>, Keys<'a, K, V2>>>,
+    visited: HashMap<K, ()>,
+    keys: Chain<Keys<'a, K, V1>, Keys<'a, K, V2>>,
 }
 impl<'a, K, V1, V2> EitherMapIter<'a, K, V1, V2>
 where
@@ -48,19 +48,24 @@ where
         Self {
             a,
             b,
-            keys: a.keys().chain(b.keys()).unique(),
+            visited: HashMap::new(),
+            keys: a.keys().chain(b.keys()),
         }
     }
 }
 
 impl<'a, K, V1, V2> Iterator for EitherMapIter<'a, K, V1, V2>
 where
-    K: Eq + Hash,
+    K: Eq + Hash + Clone,
 {
     type Item = (&'a K, Option<&'a V1>, Option<&'a V2>);
     fn next(&mut self) -> Option<Self::Item> {
-        let key = self.keys.next()?;
-        Some((key, self.a.get(key), self.b.get(key)))
+        while let Some(key) = self.keys.next() {
+            if self.visited.insert(key.clone(), ()).is_none() {
+                return Some((key, self.a.get(key), self.b.get(key)));
+            }
+        }
+        None
     }
 }
 
@@ -243,33 +248,6 @@ where
         self.0.add_debug_entry(&mut list);
         list.finish()
     }
-}
-
-#[macro_export]
-macro_rules! map {
-    { $($key:expr => $value:expr),*$(,)? } => {{
-        let mut m = ::std::collections::HashMap::new();
-        $(m.insert($key, $value);)*
-        m
-    }};
-}
-
-#[macro_export]
-macro_rules! operator {
-    { $($key:expr => $value:expr),*$(,)? } => {{
-        let mut op = crate::Operator::new();
-        $(op.insert($key, $value);)*
-        op
-    }};
-}
-
-#[macro_export]
-macro_rules! tensor {
-    { $($key:expr => $value:expr),*$(,)? } => {{
-        let mut t = crate::Tensor::new();
-        $(t.insert($key, $value);)*
-        t
-    }};
 }
 
 #[cfg(test)]

@@ -1,5 +1,6 @@
 use crate::complex::Complex;
 use crate::util::{DebugHlist, HlistPrint, MapExt as _};
+use approx::{AbsDiffEq, UlpsEq};
 use frunk::hlist::{HList, HZippable, Sculptor};
 use std::{
     collections::HashMap,
@@ -194,6 +195,7 @@ impl<D: Dims> FromIterator<(D, Complex)> for Tensor<D> {
 
 impl<D: Dims> AddAssign<&Tensor<D>> for Tensor<D> {
     fn add_assign(&mut self, rhs: &Tensor<D>) {
+        // add to existing values
         self.values.retain(|key, value| {
             if let Some(value2) = rhs.values.get(key) {
                 *value += *value2;
@@ -201,7 +203,35 @@ impl<D: Dims> AddAssign<&Tensor<D>> for Tensor<D> {
             } else {
                 true
             }
-        })
+        });
+        // add new values
+        for (&k, v) in &rhs.values {
+            self.values.entry(k).or_insert(*v);
+        }
+    }
+}
+
+impl<D: Dims> Add<&Tensor<D>> for Tensor<D> {
+    type Output = Tensor<D>;
+    fn add(mut self, rhs: &Tensor<D>) -> Self::Output {
+        self += rhs;
+        self
+    }
+}
+
+impl<D: Dims> Add<Tensor<D>> for Tensor<D> {
+    type Output = Tensor<D>;
+    fn add(mut self, rhs: Tensor<D>) -> Self::Output {
+        self += &rhs;
+        self
+    }
+}
+
+impl<D: Dims> Add<Tensor<D>> for &Tensor<D> {
+    type Output = Tensor<D>;
+    fn add(self, mut rhs: Tensor<D>) -> Self::Output {
+        rhs += self;
+        rhs
     }
 }
 
@@ -255,7 +285,26 @@ impl<D: Dims> Sub<&Tensor<D>> for &Tensor<D> {
 impl<D: Dims> Mul<Complex> for &Tensor<D> {
     type Output = Tensor<D>;
     fn mul(self, rhs: Complex) -> Self::Output {
-        self.values.map_values(|&v| v * rhs).collect()
+        self.values
+            .map_values(|&v| v * rhs)
+            .filter(|(_, v)| !v.almost_zero())
+            .collect()
+    }
+}
+
+impl<D: Dims> Mul<Complex> for Tensor<D> {
+    type Output = Tensor<D>;
+    fn mul(mut self, rhs: Complex) -> Self::Output {
+        self *= rhs;
+        self
+    }
+}
+
+impl<D: Dims> Mul<&Complex> for Tensor<D> {
+    type Output = Tensor<D>;
+    fn mul(mut self, rhs: &Complex) -> Self::Output {
+        self *= *rhs;
+        self
     }
 }
 
@@ -268,9 +317,49 @@ impl<D: Dims> MulAssign<Complex> for Tensor<D> {
     }
 }
 
+impl<D: Dims> AbsDiffEq for Tensor<D> {
+    type Epsilon = f32;
+    fn default_epsilon() -> Self::Epsilon {
+        f32::default_epsilon()
+    }
+    fn abs_diff_eq(&self, other: &Self, epsilon: Self::Epsilon) -> bool {
+        if self.values.len() != other.values.len() {
+            return false;
+        }
+        self.values.iter().all(|(key, value)| {
+            other
+                .values
+                .get(key)
+                .map_or(false, |v| value.abs_diff_eq(v, epsilon))
+        })
+    }
+}
+
+impl<D: Dims> UlpsEq for Tensor<D> {
+    fn default_max_ulps() -> u32 {
+        f32::default_max_ulps()
+    }
+    fn ulps_eq(&self, other: &Self, epsilon: Self::Epsilon, max_ulps: u32) -> bool {
+        if self.values.len() != other.values.len() {
+            return false;
+        }
+
+        self.values.iter().all(|(key, value)| {
+            other
+                .values
+                .get(key)
+                .map_or(false, |v| value.ulps_eq(v, epsilon, max_ulps))
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use crate::{cx, tensor, Polarization, PositionX, Spin, Tensor};
+    use crate::{
+        cx,
+        dimensions::{Polarization, PositionX, Spin},
+        tensor, Tensor,
+    };
 
     const U_0: Hlist![Spin, PositionX] = hlist![Spin::U, PositionX(0)];
     const D_0: Hlist![Spin, PositionX] = hlist![Spin::D, PositionX(0)];

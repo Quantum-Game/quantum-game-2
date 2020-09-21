@@ -1,4 +1,5 @@
 use crate::{
+    operator,
     util::{DebugHlist, HlistPrint, Joiner, MapExt},
     Complex, Dims, Enumerable, Tensor,
 };
@@ -7,12 +8,45 @@ use std::{
     collections::HashMap,
     fmt,
     iter::{once, FromIterator},
-    ops::{Add, Mul, MulAssign},
+    marker::PhantomData,
+    ops::{Add, AddAssign, Mul, MulAssign, SubAssign},
 };
 
-pub struct Operator<I, O> {
+pub struct Operator<I, O = I> {
     values: HashMap<(I, O), Complex>,
 }
+
+struct ConcretePartialOperator<I, O, E, Indices> {
+    inner: Operator<I, O>,
+    marker: PhantomData<(E, Indices)>,
+}
+
+pub trait PartialOperator<T: Dims> {
+    fn mul_vec_partial(&self, rhs: &Tensor<T>) -> Tensor<T>;
+}
+
+impl<I, O, E: Dims, Indices> PartialOperator<E> for ConcretePartialOperator<I, O, E, Indices>
+where
+    I: Dims,
+    O: Dims,
+    E: Sculptor<I, Indices>,
+    E::Remainder: Joiner<O, Indices, Joined = E> + Dims,
+{
+    fn mul_vec_partial(&self, rhs: &Tensor<E>) -> Tensor<E> {
+        self.inner.mul_vec_partial(rhs)
+    }
+}
+
+// impl<F, T: Dims> PartialOperator<T> for F
+// where
+//     F: for<'a> Fn(&'a Tensor<T>) -> Tensor<T>,
+// {
+//     fn mul_vec_partial(&self, rhs: &Tensor<T>) -> Tensor<T> {
+//         self(rhs)
+//     }
+// }
+
+// impl<Head, Tail> PartialOperator<HCons<Head, Tail>> for Operator<I, O> {}
 
 impl<I, O> Default for Operator<I, O> {
     fn default() -> Self {
@@ -59,24 +93,42 @@ where
 }
 
 impl<D> Operator<D, D> {
-    /// An operator with specified keys across diagonal being set to one.
+    /// An operator with specified keys across diagonal being set to desired value.
     ///
     /// When all possible values are specified, it's an identity operator.
-    pub fn select(keys: impl IntoIterator<Item = D>) -> Self
+    pub fn diagonal(keys: impl IntoIterator<Item = D>, cx: Complex) -> Self
     where
         D: Dims,
     {
         Operator {
-            values: keys.into_iter().map(|k| ((k, k), Complex::ONE)).collect(),
+            values: keys.into_iter().map(|k| ((k, k), cx)).collect(),
         }
     }
 
-    /// Operator with ones across diagonal
+    /// Operator with ones across whole diagonal
     pub fn identity() -> Self
     where
         D: Dims + Enumerable,
+        D::Iter: Iterator<Item = D>,
     {
-        Self::select(D::enumerate())
+        Self::diagonal(D::enumerate(), Complex::ONE)
+    }
+
+    /// Operator with specified value across whole diagonal
+    pub fn uniform_scale(cx: Complex) -> Self
+    where
+        D: Dims + Enumerable,
+        D::Iter: Iterator<Item = D>,
+    {
+        Self::diagonal(D::enumerate(), cx)
+    }
+
+    #[inline]
+    pub fn indicator(coord: D) -> Self
+    where
+        D: Dims,
+    {
+        operator![(coord, coord) => Complex::ONE]
     }
 }
 
@@ -147,6 +199,21 @@ impl<I: Dims, O: Dims> Operator<I, O> {
             .collect()
     }
 
+    pub fn into_dyn<E: Dims, Indices>(self) -> Box<dyn PartialOperator<E>>
+    where
+        I: 'static,
+        O: 'static,
+        E: 'static,
+        Indices: 'static,
+        E: Sculptor<I, Indices>,
+        E::Remainder: Joiner<O, Indices, Joined = E> + Dims,
+    {
+        Box::new(ConcretePartialOperator {
+            inner: self,
+            marker: PhantomData,
+        })
+    }
+
     pub fn mul_vec_partial<E: Dims, Indices>(&self, rhs: &Tensor<E>) -> Tensor<E>
     where
         E: Sculptor<I, Indices>,
@@ -163,26 +230,6 @@ impl<I: Dims, O: Dims> Operator<I, O> {
     }
 
     // pub fn contract_left<E: Dims, Indices>(&self, rhs: Tensor<E>) -> Operator<I, E> {}
-
-    pub fn mul_op<I2: Dims>(&self, rhs: &Operator<I2, I>) -> Operator<I2, O> {
-        let rows = self.tensor_per_output();
-        let cols = rhs.tensor_per_input();
-
-        Operator {
-            values: rows
-                .into_iter()
-                .flat_map(|(out_coords, col)| {
-                    cols.iter().flat_map(move |(&in_coords, row)| {
-                        let dot = row.dot(&col);
-                        if dot.almost_zero() {
-                            return None;
-                        }
-                        Some(((in_coords, out_coords), dot))
-                    })
-                })
-                .collect(),
-        }
-    }
 
     pub fn transpose(&self) -> Operator<O, I> {
         Operator {
@@ -268,10 +315,34 @@ impl<I: Dims, O: Dims> MulAssign<Complex> for Operator<I, O> {
     }
 }
 
+impl<I: Dims, O: Dims> Mul<Complex> for Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn mul(mut self, rhs: Complex) -> Self::Output {
+        self *= rhs;
+        self
+    }
+}
+
 impl<A: Dims, B: Dims, C: Dims> Mul<&Operator<A, B>> for &Operator<B, C> {
     type Output = Operator<A, C>;
     fn mul(self, rhs: &Operator<A, B>) -> Self::Output {
-        self.mul_op(rhs)
+        let rows = self.tensor_per_output();
+        let cols = rhs.tensor_per_input();
+
+        Operator {
+            values: rows
+                .into_iter()
+                .flat_map(|(out_coords, col)| {
+                    cols.iter().flat_map(move |(&in_coords, row)| {
+                        let dot = row.dot(&col);
+                        if dot.almost_zero() {
+                            return None;
+                        }
+                        Some(((in_coords, out_coords), dot))
+                    })
+                })
+                .collect(),
+        }
     }
 }
 
@@ -285,11 +356,107 @@ where
     }
 }
 
+impl<I: Dims, O: Dims> Mul<Tensor<I>> for &Operator<I, O>
+where
+    HashMap<O, Tensor<I>>: fmt::Debug,
+{
+    type Output = Tensor<O>;
+    fn mul(self, rhs: Tensor<I>) -> Self::Output {
+        self.mul_vec(&rhs)
+    }
+}
+
+impl<I: Dims, O: Dims> Mul<Tensor<I>> for Operator<I, O>
+where
+    HashMap<O, Tensor<I>>: fmt::Debug,
+{
+    type Output = Tensor<O>;
+    fn mul(self, rhs: Tensor<I>) -> Self::Output {
+        self.mul_vec(&rhs)
+    }
+}
+
+impl<I: Dims, O: Dims> Mul<&Tensor<I>> for Operator<I, O>
+where
+    HashMap<O, Tensor<I>>: fmt::Debug,
+{
+    type Output = Tensor<O>;
+    fn mul(self, rhs: &Tensor<I>) -> Self::Output {
+        self.mul_vec(&rhs)
+    }
+}
+
+impl<I: Dims, O: Dims> AddAssign<&Operator<I, O>> for Operator<I, O> {
+    fn add_assign(&mut self, rhs: &Operator<I, O>) {
+        // add to existing values
+        self.values.retain(|key, value| {
+            if let Some(value2) = rhs.values.get(key) {
+                *value += *value2;
+                !value.almost_zero()
+            } else {
+                true
+            }
+        });
+        // add new values
+        for (&k, v) in &rhs.values {
+            self.values.entry(k).or_insert(*v);
+        }
+    }
+}
+
+impl<I: Dims, O: Dims> Add<&Operator<I, O>> for Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn add(mut self, rhs: &Operator<I, O>) -> Self::Output {
+        self += rhs;
+        self
+    }
+}
+
+impl<I: Dims, O: Dims> Add<Operator<I, O>> for Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn add(mut self, rhs: Operator<I, O>) -> Self::Output {
+        self + &rhs
+    }
+}
+
+impl<I: Dims, O: Dims> Add<&Operator<I, O>> for &Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn add(self, rhs: &Operator<I, O>) -> Self::Output {
+        Operator {
+            values: self
+                .values
+                .iter_either(&rhs.values)
+                .filter_map(|(k, v1, v2)| match (v1, v2) {
+                    (None, None) => None,
+                    (Some(v), None) | (None, Some(v)) => Some((*k, *v)),
+                    (Some(v1), Some(v2)) => Some((*k, *v1 + *v2)).filter(|(_, v)| !v.almost_zero()),
+                })
+                .collect(),
+        }
+    }
+}
+
+impl<I: Dims, O: Dims> SubAssign<&Operator<I, O>> for Operator<I, O> {
+    fn sub_assign(&mut self, rhs: &Operator<I, O>) {
+        self.values.retain(|key, value| {
+            if let Some(value2) = rhs.values.get(key) {
+                *value -= *value2;
+                !value.almost_zero()
+            } else {
+                true
+            }
+        })
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{
-        complex::cx, map, operator, tensor, Operator, Polarization, PositionX, PositionY, Spin,
+        complex::cx,
+        dimensions::{Polarization, PositionX, PositionY, Spin},
+        map, operator, tensor, Operator,
     };
+    use operator::PartialOperator;
 
     const D_H: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::H];
     const U_H: Hlist![Spin, Polarization] = hlist![Spin::U, Polarization::H];
@@ -505,10 +672,68 @@ mod tests {
 
         assert_eq!(spin_identity.mul_vec_partial(&vec), vec);
         assert_eq!(op1.mul_vec_partial(&vec), res1);
-        assert_eq!(op1.mul_vec_partial(&vec), res1);
         assert_eq!(op2b.mul_vec_partial(&op2a.mul_vec_partial(&vec)), res2);
     }
 
+    #[test]
+    fn should_compute_partial_multiply_dynamically() {
+        let op_x = operator![
+            (hlist![Polarization::H], hlist![Polarization::V]) => cx(1.0, 0.0),
+            (hlist![Polarization::V], hlist![Polarization::H]) => cx(1.0, 0.0),
+        ];
+        let op_y = operator![
+            (hlist![Spin::U], hlist![Spin::D]) => cx(0.0, 1.0),
+            (hlist![Spin::D], hlist![Spin::U]) => cx(0.0, -1.0),
+        ];
+        let op_z = operator![
+            (hlist![PositionX(0)], hlist![PositionX(1)]) => cx(-1.0, 0.0),
+            (hlist![PositionX(1)], hlist![PositionX(2)]) => cx(1.0, 0.0),
+        ];
+
+        let vec = tensor![
+            D_H + hlist![PositionX(0)] => cx(1.0, 0.0),
+            D_V + hlist![PositionX(0)] => cx(2.0, 0.0),
+            U_H + hlist![PositionX(1)] => cx(3.0, 0.0),
+            U_V + hlist![PositionX(1)] => cx(4.0, 0.0),
+        ];
+
+        let dyns: Vec<Box<dyn PartialOperator<Hlist![Spin, Polarization, PositionX]>>> =
+            vec![op_x.into_dyn(), op_y.into_dyn(), op_z.into_dyn()];
+
+        let multiplied = dyns
+            .iter()
+            .map(|op| op.mul_vec_partial(&vec))
+            .collect::<Vec<_>>();
+
+        assert_eq!(
+            multiplied[0],
+            tensor![
+                D_V + hlist![PositionX(0)] => cx(1.0, 0.0),
+                D_H + hlist![PositionX(0)] => cx(2.0, 0.0),
+                U_V + hlist![PositionX(1)] => cx(3.0, 0.0),
+                U_H + hlist![PositionX(1)] => cx(4.0, 0.0),
+            ]
+        );
+        assert_eq!(
+            multiplied[1],
+            tensor![
+                U_H + hlist![PositionX(0)] => cx(0.0, -1.0),
+                U_V + hlist![PositionX(0)] => cx(0.0, -2.0),
+                D_H + hlist![PositionX(1)] => cx(0.0, 3.0),
+                D_V + hlist![PositionX(1)] => cx(0.0, 4.0),
+            ]
+        );
+
+        assert_eq!(
+            multiplied[2],
+            tensor![
+                D_H + hlist![PositionX(1)] => cx(-1.0, 0.0),
+                D_V + hlist![PositionX(1)] => cx(-2.0, 0.0),
+                U_H + hlist![PositionX(2)] => cx(3.0, 0.0),
+                U_V + hlist![PositionX(2)] => cx(4.0, 0.0),
+            ]
+        );
+    }
     #[test]
     fn should_compute_outer_product() {
         let op_x = operator![
@@ -531,7 +756,11 @@ mod tests {
             (hlist![Polarization::V, PositionX(1)], hlist![Polarization::H, PositionX(1)]) => cx(-1.0, 0.0),
         ];
 
-        assert_eq!(op_x.outer(&op_z), op_res);
+        let id_pol: Operator<Hlist![Polarization]> = Operator::identity();
+        let id_spin: Operator<Hlist![Spin]> = Operator::identity();
+        let id: Operator<Hlist![Polarization, Spin]> = Operator::identity();
+
+        assert_eq!(id_pol.outer(&id_spin), id);
         assert_eq!(op_x.outer(&op_z).outer(&op_y), op_res.outer(&op_y));
         assert_eq!(op_y.outer(&op_x).outer(&op_z), op_y.outer(&op_res));
     }
