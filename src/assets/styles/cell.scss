@@ -1,0 +1,41 @@
+// Shared css for all board pieces.
+
+// special svg colors:
+// - #F0F - consistent stroke color based on cell state
+
+svg {
+    [stroke='#F0F'] {
+        stroke: none;
+    }
+    .interacting [stroke='#F0F'] {
+        stroke: white;
+    }
+    .energized [stroke='#F0F'] {
+        stroke: #ff0055;
+    }
+    
+    [fill='#F0F'] {
+        fill: none;
+    }
+    .interacting [fill='#F0F'] {
+        fill: white;
+    }
+    .energized [fill='#F0F'] {
+        fill: #ff0055;
+    }
+    
+    .show-energized,
+    .show-hover,
+    .interacting-hover,
+    .hover .hide-hover,
+    .interacting .hide-interacting,
+    .energized .hide-energized {
+        display: none;
+    }
+    
+    .energized .show-energized,
+    .hover .show-hover,
+    .interacting .show-interacting {
+        display: initial;
+    }
+}

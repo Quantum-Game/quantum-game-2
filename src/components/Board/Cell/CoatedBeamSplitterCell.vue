@@ -1,38 +1,18 @@
 <template>
-  <svg>
-    <g>
-      <rect x="2" y="24" class="st0" width="60" height="16" />
-      <path class="st1" d="M36.4,24h16c-9.5,7.8-18.3,11.9-24.2,14h-16C18,35.9,26.9,31.8,36.4,24z" />
-      <path class="st2" d="M52.4,24H62v14H28.2C34,35.9,42.9,31.8,52.4,24z" />
-      <rect x="2" y="38" class="st3" width="60" height="2" />
-    </g>
-    <g v-if="border">
-      <path
-        class="st4"
-        :style="{ fill: border }"
-        d="M62,24v16H2V24H62 M63,23h-1H2H1v1v16v1h1h60h1v-1V24V23L63,23z"
-      />
-    </g>
+  <svg :class="state">
+    <path d="M63 23V41H1V23H63Z" fill="#F0F" />
+    <path d="M62 24H2V40H62V24Z" fill="#61DBEF" />
+    <path
+      d="M36.4 24H52.4C42.9 31.8 34.1 35.9 28.2 38H12.2C18 35.9 26.9 31.8 36.4 24Z"
+      fill="#4AD1D8"
+    />
+    <path d="M52.4 24H62V38H28.2C34 35.9 42.9 31.8 52.4 24Z" fill="#4AC4D1" />
+    <path d="M62 38H2V40H62V38Z" fill="#5A4278" />
   </svg>
 </template>
 
 <script lang="ts">
-import Piece from './Piece'
-
-export default class CoatedBeamSplitterCell extends Piece {}
+import { defineComponent } from 'vue'
+import { props } from './Piece'
+export default defineComponent({ props })
 </script>
-
-<style lang="scss" scoped>
-.st0 {
-  fill: #61dbef;
-}
-.st1 {
-  fill: #4ad1d8;
-}
-.st2 {
-  fill: #4ac4d1;
-}
-.st3 {
-  fill: #5a4278;
-}
-</style>

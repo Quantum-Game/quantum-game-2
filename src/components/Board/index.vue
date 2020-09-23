@@ -12,14 +12,17 @@
       <board-lasers v-if="classicalView" :laserParticles="laserParticles" />
 
       <!-- FATE -->
-      <g
-        v-if="fate != null"
-        :transform="`translate(${(fate.x + 0.5) * tileSize}, ${(fate.y + 0.5) * tileSize})`"
-      >
-        <transition name="fate-blink">
-          <circle class="fate" fill="purple" r="30" />
-        </transition>
-      </g>
+      <transition name="fate-blink">
+        <circle
+          v-if="fate != null"
+          class="fate"
+          fill="purple"
+          :cx="fatePos.x"
+          :cy="fatePos.y"
+          :style="{ transformOrigin: `${fatePos.x}px ${fatePos.y}px` }"
+          r="30"
+        />
+      </transition>
 
       <!-- PHOTONS -->
       <g
@@ -143,6 +146,13 @@ export default defineComponent({
       classicalView: computed(() => props.frameIndex === 0 && !simulationState.value),
       totalWidth: computed(() => props.grid.cols * data.tileSize),
       totalHeight: computed(() => props.grid.rows * data.tileSize),
+      fatePos: computed(() => {
+        if (props.fate == null) return null
+        return {
+          x: (props.fate.x + 0.5) * data.tileSize,
+          y: (props.fate.y + 0.5) * data.tileSize,
+        }
+      }),
       play: () => emit('play', true),
       updateCell: (cell: Cell) => emit('update-cell', cell),
       handleMouseEnter(coord: Coord): void {

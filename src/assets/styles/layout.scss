@@ -1,9 +1,7 @@
 $unit: 4px;
 
 [layout] {
-    display: flex;
-    align-items: stretch;
-    
+    > * { --layout-spacing: 0px; }
     > * + * {
         margin-left: calc(var(--layout-spacing) * var(--is-row-child));
         margin-top: calc(var(--layout-spacing) * var(--is-column-child));
@@ -17,7 +15,7 @@ $unit: 4px;
 [flex] { flex: 1; }
 
 @mixin define-spacing($attr, $name, $size) {
-    [#{$attr}~="#{$name}"] {
+    [#{$attr}~="#{$name}"] > * {
         --layout-spacing: #{$size}
     }
 }
@@ -49,17 +47,22 @@ $unit: 4px;
             }
         }
 
+        [#{$attr}] { display: flex; align-items: stretch; }
+        [#{$attr}~=inline] { display: inline-flex; }
+
         [#{$attr}~=start] { align-items: flex-start; }
         [#{$attr}~=end] { align-items: flex-end; }
         [#{$attr}~=center] { align-items: center; }
         [#{$attr}~=middle] { justify-content: center; }
         [#{$attr}~=around] { justify-content: space-around; }
         [#{$attr}~=between] { justify-content: space-between; }
+        [#{$attr}~=wrap] { flex-wrap: wrap; }
         
         @include define-spacing($attr, u1, $unit * 1);
         @include define-spacing($attr, u2, $unit * 2);
         @include define-spacing($attr, u4, $unit * 4);
         @include define-spacing($attr, u5, $unit * 5);
+        @include define-spacing($attr, u10, $unit * 10);
     }
 }
 

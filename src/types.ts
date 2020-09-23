@@ -29,7 +29,7 @@ export function hasKeyInstance<O>(
 }
 
 export function isDef<T>(val: T | null | undefined): val is T {
-  return val !== null
+  return val != null
 }
 
 export function isNotString<T>(val: T | string): val is T {

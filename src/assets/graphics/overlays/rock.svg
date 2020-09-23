@@ -1,51 +1,28 @@
-<svg version="1.1" id="prefix__Layer_1" 
-  xmlns="http://www.w3.org/2000/svg" 
-  xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" viewBox="0 0 500 500" xml:space="preserve">
-  <style>
-        .prefix__st1{fill:#615777}.prefix__st3{fill:#120223}.prefix__st5{fill:#fff}.prefix__st6{fill:#5c00d3}
-  </style>
-  <defs>
-    <path id="prefix__SVGID_1_" d="M177.9 327l-25.2-43.3c-1.8-2.5-2.3-5.7-1.6-8.7l20.6-71c5.5-22.7 25.8-31.7 49.2-31.7l48.8 2.9c5.6.3 10.9 2.4 15.2 6l49.1 40.9c4.4 3.6 7.4 8.6 8.6 14.1l11.3 50.5c.3 2.2 0 4.4-1 6.4L340 325.6c-1.8 3.7-5.6 6-9.7 6H186.8c-3.6 0-6.9-1.7-8.9-4.6z"/>
-  </defs>
-  <use xlink:href="#prefix__SVGID_1_" overflow="visible" fill="#44375e"/>
-  <clipPath id="prefix__SVGID_2_">
-    <use xlink:href="#prefix__SVGID_1_" overflow="visible"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <clipPath id="clip-rock">
+    <path d="M178 327l-25.2-43.3a10.7 10.7 0 01-1.6-8.7l20.6-71c5.5-22.7 25.8-31.7 49.2-31.7l48.8 2.9c5.6.3 10.9 2.4 15.2 6l49.1 40.9c4.4 3.6 7.4 8.6 8.6 14.1l11.3 50.5c.3 2.2 0 4.4-1 6.4L340 325.6c-1.8 3.7-5.6 6-9.7 6H186.8c-3.6 0-6.9-1.7-8.9-4.6z"/>
   </clipPath>
-  <g clip-path="url(#prefix__SVGID_2_)">
-    <path class="prefix__st1" d="M299.1 186.1c-15.4-1.8-75.9-8.4-88.5 1.7-14.6 11.6-26 81.4-26 88.4 0 5.8 9.6 37.9 12.8 48.5l-12.7 6.9c-3.5 0-18.8-4-20.8-6.9L143.1 290c-1.8-2.5-4.2-10.9-3.5-13.9l24.3-76.2c5.5-22.7 28.6-34.7 52-34.7H254c3.4 0 18.8-2.8 20.8 0l24.3 20.9z"/>
-    <path d="M358 293.5l-10.4 27.7c-1.8 3.6-6.3 10.4-10.4 10.4l-102-6.9c27.3-3.9 60.4-6.9 72.4-8.7 17.2-2.5 22.7-12.1 22.5-22.5-.1-6.9 0-24.3-6.9-31.2-6.9-6.9-19.1-5.2-36.4-8.7-17.3-3.5-24.3-38.1-20.8-45.1 2.3-4.6 25.3-24.8 29.6-29.5l41.6 38.1c8.9 2.8 7.7 23.2 9 32.4l15.2 33.4c.4 2.4-2.4 8.6-3.4 10.6z" fill="#2f2549"/>
-    <path class="prefix__st3" d="M174.3 335.1h169.8l3.5-10.4H163.9z"/>
+  <clipPath id="clip-rock-eyes">
+    <path d="M180 207h120v30H180z"/>
+  </clipPath>
+
+  <g clip-path="url(#clip-rock)">
+    <path fill="#44375e" d="M140 150h220v200h-220z"/>
+    <path fill="#615777" d="M299 186c-15-2-76-8.4-88.5 1.7-15 11.6-26 81.4-26 88 0 5 9 38 13 49h-50v-160h150z"/>
+    <path fill="#2f2549" d="M235.2 324.7 c27-4 60-7 72.4-8.7 17-3 23-13 22-22 0-7 0-24-7-31-7-6.9-19.1-5-36.4-8.7-17-4-25-38-21-45 2-5 25-25 30-30h60v155z"/>
+    <path fill="#120223" d="M160 325h190v10h-190z"/>
   </g>
-  <g>
-    <defs>
-      <path id="prefix__SVGID_3_" d="M302.4 234.6H177.6l4.2 31h120.6z"/>
-    </defs>
-    <clipPath id="prefix__SVGID_4_">
-      <use xlink:href="#prefix__SVGID_3_" overflow="visible"/>
-    </clipPath>
-    <g clip-path="url(#prefix__SVGID_4_)">
-      <circle class="prefix__st5" cx="208.2" cy="239.2" r="22.6"/>
-      <circle class="prefix__st3" cx="208.2" cy="239.2" r="11.3"/>
-      <circle class="prefix__st5" cx="272.3" cy="239.2" r="22.6"/>
-      <circle class="prefix__st3" cx="272.3" cy="239.2" r="11.3"/>
-      <circle class="prefix__st6" cx="208.2" cy="239.2" r="4.4"/>
-      <circle class="prefix__st6" cx="272.3" cy="239.2" r="4.4"/>
-    </g>
+
+  <circle cx="208" cy="239" r="22.5" fill="#fff"/>
+  <circle cx="272" cy="239" r="22.5" fill="#fff"/>
+  <circle cx="208" cy="239" r="11.3" fill="#120223"/>
+  <circle cx="272" cy="239" r="11.3" fill="#120223"/>
+  <circle cx="208" cy="239" r="4.4" fill="#5c00d3"/>
+  <circle cx="272" cy="239" r="4.4" fill="#5c00d3"/>
+  <g clip-path="url(#clip-rock-eyes)" fill="#615777">
+    <circle cx="208" cy="239" r="22.6"/>
+    <circle cx="272" cy="239" r="22.6"/>
   </g>
-  <g>
-    <defs>
-      <path id="prefix__SVGID_5_" d="M173.9 206.8h124.8v30H173.9z"/>
-    </defs>
-    <clipPath id="prefix__SVGID_6_">
-      <use xlink:href="#prefix__SVGID_5_" overflow="visible"/>
-    </clipPath>
-    <g clip-path="url(#prefix__SVGID_6_)">
-      <circle class="prefix__st1" cx="208.2" cy="239.2" r="22.6"/>
-      <circle class="prefix__st1" cx="272.3" cy="239.2" r="22.6"/>
-    </g>
-  </g>
-  <path d="M182.5 204.2c-.3 0-.6-.1-1-.2-1.3-.5-2-2-1.4-3.4.3-.8 7.7-18.7 26.2-22.4 1.4-.3 2.8.6 3.1 2 .3 1.4-.6 2.8-2 3.1-15.8 3.2-22.3 19.1-22.4 19.2-.5 1.1-1.4 1.7-2.5 1.7z" opacity=".35" fill="#fff"/>
-  <g opacity=".15">
-    <path d="M341.3 337H175.7c-2.6 0-4.7-2.1-4.7-4.7v-1.7c0-2.6 2.1-4.7 4.7-4.7h165.7c2.6 0 4.7 2.1 4.7 4.7v1.7c-.1 2.6-2.2 4.7-4.8 4.7z"/>
-  </g>
+  <path fill="#ffffff59" d="M182.5 204.2c-.3 0-.6-.1-1-.2-1.3-.5-2-2-1.4-3.4.3-.8 7.7-18.7 26.2-22.4 1.4-.3 2.8.6 3.1 2 .3 1.4-.6 2.8-2 3.1-15.8 3.2-22.3 19.1-22.4 19.2-.5 1.1-1.4 1.7-2.5 1.7z"/>
+  <path opacity=".15" d="M341.3 337H175.7a4.7 4.7 0 01-4.7-4.7v-1.7c0-2.6 2.1-4.7 4.7-4.7h165.7c2.6 0 4.7 2.1 4.7 4.7v1.7c-.1 2.6-2.2 4.7-4.8 4.7z"/>
 </svg>

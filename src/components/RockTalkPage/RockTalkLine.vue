@@ -52,7 +52,7 @@ export default class RockTalkLine extends Vue {
   width: 95%;
 }
 .rock-img {
-  margin: 0px 5rem 2rem 5rem;
+  margin: auto;
   height: 100%;
   min-height: 100px;
   width: 30vw;

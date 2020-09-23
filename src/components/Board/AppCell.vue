@@ -15,61 +15,26 @@
     />
 
     <!-- ELEMENT SVG -->
-    <component
-      :is="cellComponent"
-      v-if="cellComponent != null"
-      :cell="cell"
-      :cell-size="tileSize"
-      :border="computeBorder"
-    />
-
-    <!-- PULSATING CIRCLE -->
-    <!-- <g v-if="displayPulsation">
-      <circle cx="32" cy="32" fill="none" r="32" stroke="#ff0055" stroke-width="3">
-        <animate
-          attributeName="opacity"
-          from="1"
-          to="0"
-          dur="1.5s"
-          begin="0s"
-          repeatCount="indefinite"
-        />
-        <animate
-          attributeName="r"
-          from="32"
-          to="64"
-          dur="1.5s"
-          begin="0s"
-          repeatCount="indefinite"
-        />
-      </circle>
-    </g> -->
-    <!-- eslint-enable -->
+    <component :is="cellComponent" v-if="cellComponent != null" :state="pieceState" />
   </g>
 </template>
 
 <script lang="ts">
 import { Options, Vue, setup } from 'vue-class-component'
-import { Prop, Watch } from 'vue-property-decorator'
+import { Prop } from 'vue-property-decorator'
 import { GameStateEnum } from '@/engine/interfaces'
 import Cell from '@/engine/Cell'
 import { usePosition } from '@/mixins/Position'
-import { cellComponentsList } from '@/components/Board/Cell/index'
+import { elementComponents } from '@/components/Board/Cell/index'
 import { IStyle } from '@/types'
 import { ref } from 'vue'
 import { storeNamespace } from '@/store'
-
-const borderColors = {
-  active: 'transparent',
-  frozen: 'turquoise',
-  rotable: 'white',
-  energized: 'blue',
-}
+import { PieceState } from './Cell/Piece'
 
 const game = storeNamespace('game')
 
 @Options({
-  emits: ['update-cell', 'click'],
+  emits: ['update-cell', 'play'],
 })
 export default class AppCell extends Vue {
   @Prop() readonly cell!: Cell
@@ -81,8 +46,15 @@ export default class AppCell extends Vue {
   gameState = setup(() => game.useState('gameState'))
   activeCell = setup(() => game.useState('activeCell'))
   cellSelected = setup(() => game.useState('cellSelected'))
-  border = ''
   isRotate = false
+
+  get pieceState(): PieceState {
+    return {
+      hover: false,
+      interacting: this.activeCell === this.cell,
+      energized: this.cell.energized,
+    }
+  }
 
   position = setup(() =>
     usePosition(
@@ -98,7 +70,7 @@ export default class AppCell extends Vue {
    * @returns Compute cell name string
    */
   get cellComponent(): unknown {
-    return cellComponentsList[this.cell.element.name]
+    return elementComponents[this.cell.element]
   }
 
   /**
@@ -129,11 +101,9 @@ export default class AppCell extends Vue {
     } else {
       if (!this.cellSelected) {
         if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
-          this.border = 'white'
           this.mutationSetActiveCell(this.cell)
           return
         }
-        this.border = ''
         this.mutationResetActiveCell()
         return
       }
@@ -164,7 +134,6 @@ export default class AppCell extends Vue {
   }
 
   dragStart(): void {
-    this.border = 'white'
     this.mutationSetActiveCell(this.cell)
     window.addEventListener('mousemove', this.mouseMove)
     window.addEventListener('mouseup', this.dragEnd)
@@ -179,7 +148,6 @@ export default class AppCell extends Vue {
     hoverCell.style.visibility = 'hidden'
     document.body.style.cursor = 'default'
     window.removeEventListener('mousemove', this.mouseMove)
-    this.border = ''
 
     this.mutationResetActiveCell()
     window.removeEventListener('mouseup', this.dragEnd)
@@ -214,10 +182,7 @@ export default class AppCell extends Vue {
         // If from toolbox needs to have available elements
         if (this.cell.tool && (this.cell.isFromGrid || this.cell.isFromToolbox)) {
           this.dragStart()
-          return
         }
-
-        this.border = ''
       }
     }
   }
@@ -246,24 +211,6 @@ export default class AppCell extends Vue {
       return true
     }
     return false
-  }
-
-  /**
-   * Change the displayed SVG according to cell energized status and fate
-   * @returns color
-   */
-  get computeBorder(): string {
-    if (this.border !== '') {
-      return this.border
-    }
-    if (this.cell.energized) {
-      return '#ff0055'
-    }
-    return ''
-  }
-
-  indicateTool(): void {
-    this.border = borderColors.rotable
   }
 
   /**
@@ -329,19 +276,6 @@ export default class AppCell extends Vue {
    */
   get shouldTileChangeColor(): boolean {
     return this.cellSelected && this.cell.isVoid
-  }
-
-  /**
-   * watches active cell changes and resets border
-   * in case the cell is not the new active cell
-   * @params previous and current active cell
-   * @returns void
-   */
-  @Watch('activeCell')
-  stopIndicatingMovability(newActiveCell: Cell, oldActiveCell: Cell): void {
-    if (newActiveCell !== oldActiveCell && this.cell !== newActiveCell) {
-      this.border = ''
-    }
   }
 }
 </script>

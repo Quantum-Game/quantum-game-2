@@ -28,6 +28,7 @@ import { Prop } from 'vue-property-decorator'
 import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 import { Elem } from '@/engine/interfaces'
+import { elementsData } from '@/engine/elements'
 
 const spacedName = (name: string): string => {
   const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
@@ -50,7 +51,7 @@ export default class GameActiveCell extends Vue {
   get name(): string {
     switch (this.infoPayload.kind) {
       case 'element': {
-        const elem = this.infoPayload.cell?.element.name ?? Elem.Void
+        const elem = this.infoPayload.cell?.element ?? Elem.Void
         return spacedName(Elem[elem])
       }
       case 'particles':
@@ -66,7 +67,7 @@ export default class GameActiveCell extends Vue {
     switch (this.infoPayload.kind) {
       case 'element':
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return this.infoPayload.cell!.element.description
+        return elementsData[this.infoPayload.cell!.element].description
       case 'particles':
         return ''
       case 'ui':

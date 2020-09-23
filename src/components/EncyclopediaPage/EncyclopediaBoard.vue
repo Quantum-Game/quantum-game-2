@@ -11,7 +11,7 @@
         <!-- PHOTONS -->
         <g
           v-for="(particle, i) in frameParticles"
-          :key="`particle-${i}-(${particle.coord.x},${particle.coord.y})-${particle.direction}`"
+          :key="`particle-${i}`"
           :style="computeParticleStyle(particle)"
           class="photons"
         >
@@ -31,8 +31,8 @@
 
         <!-- CELLS -->
         <app-cell
-          v-for="(cell, i) in nonVoidCells"
-          :key="`cell-${i}-(${cell.coord.x},${cell.coord.y})-${cell.element.name})`"
+          v-for="cell in nonVoidCells"
+          :key="`element-${cell.coord.x}-${cell.coord.y}`"
           :cell="cell"
           :tileSize="tileSize"
           @click="rotate(cell)"

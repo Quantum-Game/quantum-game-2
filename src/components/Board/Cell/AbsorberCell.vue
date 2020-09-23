@@ -1,104 +1,22 @@
 <template>
-  <svg>
-    <g>
-      <!-- BACKGROUND -->
-      <path
-        id="background"
-        class="st0"
-        d="M47.6,6H16.4C10.7,6,6,10.7,6,16.4v31.2C6,53.3,10.7,58,16.4,58h31.2
-      C53.3,58,58,53.3,58,47.6V16.4C58,10.7,53.3,6,47.6,6z"
-      />
-      <!-- DOTS -->
-      <g id="dots">
-        <rect x="52.8" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="52.8" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="46.6" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="40.3" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="34.1" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="27.8" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="21.6" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="15.4" y="9.1" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="52.8" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="46.6" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="40.3" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="34.1" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="27.8" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="21.6" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="15.4" class="st1" width="2.1" height="2.1" />
-        <rect x="9.1" y="9.1" class="st1" width="2.1" height="2.1" />
-      </g>
-    </g>
-    <g v-if="border">
-      <path
-        class="st2"
-        :style="{ fill: border }"
-        d="M47.6,6C53.3,6,58,10.7,58,16.4v31.2C58,53.3,53.3,58,47.6,58H16.4C10.7,58,6,53.3,6,47.6V16.4
-      C6,10.7,10.7,6,16.4,6H47.6 M47.6,5H16.4C10.1,5,5,10.1,5,16.4v31.2C5,53.9,10.1,59,16.4,59h31.2C53.9,59,59,53.9,59,47.6V16.4
-      C59,10.1,53.9,5,47.6,5L47.6,5z"
-      />
-    </g>
+  <svg :class="state">
+    <path
+      fill="#F0F"
+      d="M5 16.4C5 10.1 10.1 5 16.4 5h31.2C53.9 5 59 10.1 59 16.4v31.2C59 53.9 53.9 59 47.6 59H16.4C10.1 59 5 53.9 5 47.6V16.4z"
+    />
+    <path
+      fill="#5A4278"
+      d="M47.6 6H16.4C10.7 6 6 10.7 6 16.4v31.2C6 53.3 10.7 58 16.4 58h31.2C53.3 58 58 53.3 58 47.6V16.4C58 10.7 53.3 6 47.6 6z"
+    />
+    <path
+      fill="#3C2C50"
+      d="M52.8 9.1h2.1v2.1h-2.1V9.1zM54.9 15.4h-2.1v2.1h2.1v-2.1zM52.8 21.6h2.1v2.1h-2.1v-2.1zM54.9 27.8h-2.1v2.1h2.1v-2.1zM52.8 34.1h2.1v2.1h-2.1v-2.1zM54.9 40.3h-2.1v2.1h2.1v-2.1zM52.8 46.6h2.1v2.1h-2.1v-2.1zM52.8 52.8h2.1v2.1h-2.1v-2.1zM48.7 52.8h-2.1v2.1h2.1v-2.1zM46.6 46.6h2.1v2.1h-2.1v-2.1zM48.7 40.3h-2.1v2.1h2.1v-2.1zM46.6 34.1h2.1v2.1h-2.1v-2.1zM48.7 27.8h-2.1v2.1h2.1v-2.1zM46.6 21.6h2.1v2.1h-2.1v-2.1zM48.7 15.4h-2.1v2.1h2.1v-2.1zM46.6 9.1h2.1v2.1h-2.1V9.1zM42.4 52.8h-2.1v2.1h2.1v-2.1zM40.3 46.6h2.1v2.1h-2.1v-2.1zM42.4 40.3h-2.1v2.1h2.1v-2.1zM40.3 34.1h2.1v2.1h-2.1v-2.1zM42.4 27.8h-2.1v2.1h2.1v-2.1zM40.3 21.6h2.1v2.1h-2.1v-2.1zM42.4 15.4h-2.1v2.1h2.1v-2.1zM40.3 9.1h2.1v2.1h-2.1V9.1zM36.2 52.8h-2.1v2.1h2.1v-2.1zM34.1 46.6h2.1v2.1h-2.1v-2.1zM36.2 40.3h-2.1v2.1h2.1v-2.1zM34.1 34.1h2.1v2.1h-2.1v-2.1zM36.2 27.8h-2.1v2.1h2.1v-2.1zM34.1 21.6h2.1v2.1h-2.1v-2.1zM36.2 15.4h-2.1v2.1h2.1v-2.1zM34.1 9.1h2.1v2.1h-2.1V9.1zM29.9 52.8h-2.1v2.1h2.1v-2.1zM27.8 46.6h2.1v2.1h-2.1v-2.1zM29.9 40.3h-2.1v2.1h2.1v-2.1zM27.8 34.1h2.1v2.1h-2.1v-2.1zM29.9 27.8h-2.1v2.1h2.1v-2.1zM27.8 21.6h2.1v2.1h-2.1v-2.1zM29.9 15.4h-2.1v2.1h2.1v-2.1zM27.8 9.1h2.1v2.1h-2.1V9.1zM23.7 52.8h-2.1v2.1h2.1v-2.1zM21.6 46.6h2.1v2.1h-2.1v-2.1zM23.7 40.3h-2.1v2.1h2.1v-2.1zM21.6 34.1h2.1v2.1h-2.1v-2.1zM23.7 27.8h-2.1v2.1h2.1v-2.1zM21.6 21.6h2.1v2.1h-2.1v-2.1zM23.7 15.4h-2.1v2.1h2.1v-2.1zM21.6 9.1h2.1v2.1h-2.1V9.1zM17.5 52.8h-2.1v2.1h2.1v-2.1zM15.4 46.6h2.1v2.1h-2.1v-2.1zM17.5 40.3h-2.1v2.1h2.1v-2.1zM15.4 34.1h2.1v2.1h-2.1v-2.1zM17.5 27.8h-2.1v2.1h2.1v-2.1zM15.4 21.6h2.1v2.1h-2.1v-2.1zM17.5 15.4h-2.1v2.1h2.1v-2.1zM15.4 9.1h2.1v2.1h-2.1V9.1zM11.2 52.8H9.1v2.1h2.1v-2.1zM9.1 46.6h2.1v2.1H9.1v-2.1zM11.2 40.3H9.1v2.1h2.1v-2.1zM9.1 34.1h2.1v2.1H9.1v-2.1zM11.2 27.8H9.1v2.1h2.1v-2.1zM9.1 21.6h2.1v2.1H9.1v-2.1zM11.2 15.4H9.1v2.1h2.1v-2.1zM9.1 9.1h2.1v2.1H9.1V9.1z"
+    />
   </svg>
 </template>
 
 <script lang="ts">
-import Piece from './Piece'
-
-export default class AbsorberCell extends Piece {}
+import { defineComponent } from 'vue'
+import { props } from './Piece'
+export default defineComponent({ props })
 </script>
-
-<style lang="scss" scoped>
-.st0 {
-  fill: #5a4278;
-}
-.st1 {
-  fill: #3c2c50;
-}
-</style>

@@ -1,3 +1,5 @@
+import { Elem } from '@/engine/interfaces'
+
 import AbsorberCell from './AbsorberCell.vue'
 import BeamSplitterCell from './BeamSplitterCell.vue'
 import MineCell from './MineCell.vue'
@@ -17,30 +19,30 @@ import QuarterWavePlateCell from './QuarterWavePlateCell.vue'
 import HalfWavePlateCell from './HalfWavePlateCell.vue'
 import FaradayRotatorCell from './FaradayRotatorCell.vue'
 import NonLinearCrystalCell from './NonLinearCrystalCell.vue'
-import { Elem } from '@/engine/interfaces'
-import { defineComponent } from 'vue'
 
-export { AbsorberCell }
-export { BeamSplitterCell }
-export { MineCell }
-export { CoatedBeamSplitterCell }
-export { CornerCubeCell }
-export { DetectorCell }
-export { LaserCell }
-export { GlassCell }
-export { MirrorCell }
-export { DetectorFourCell }
-export { PolarizerCell }
-export { PolarizingBeamSplitterCell }
-export { RockCell }
-export { SugarSolutionCell }
-export { VacuumJarCell }
-export { QuarterWavePlateCell }
-export { HalfWavePlateCell }
-export { FaradayRotatorCell }
-export { NonLinearCrystalCell }
+export {
+  AbsorberCell,
+  BeamSplitterCell,
+  MineCell,
+  CoatedBeamSplitterCell,
+  CornerCubeCell,
+  DetectorCell,
+  LaserCell,
+  GlassCell,
+  MirrorCell,
+  DetectorFourCell,
+  PolarizerCell,
+  PolarizingBeamSplitterCell,
+  RockCell,
+  SugarSolutionCell,
+  VacuumJarCell,
+  QuarterWavePlateCell,
+  HalfWavePlateCell,
+  FaradayRotatorCell,
+  NonLinearCrystalCell,
+}
 
-export const cellComponentsList: Record<Elem, unknown> = {
+export const elementComponents: Record<Elem, unknown> = {
   [Elem.Void]: undefined,
   [Elem.Wall]: undefined,
   [Elem.Gate]: undefined,

@@ -290,38 +290,6 @@ export const enum Group {
 }
 
 /**
- * Element groups
- */
-export const ElemGroups: Record<Group, Elem[]> = {
-  [Group.Basic]: [Elem.Void],
-  [Group.Source]: [Elem.Laser, Elem.NonLinearCrystal],
-  [Group.Direction]: [
-    Elem.Mirror,
-    Elem.BeamSplitter,
-    Elem.PolarizingBeamSplitter,
-    Elem.CoatedBeamSplitter,
-    Elem.CornerCube,
-  ],
-  [Group.Absorption]: [
-    Elem.Gate,
-    Elem.Detector,
-    Elem.Rock,
-    Elem.Mine,
-    Elem.Absorber,
-    Elem.DetectorFour,
-    Elem.Wall,
-  ],
-  [Group.Polarization]: [
-    Elem.Polarizer,
-    Elem.QuarterWavePlate,
-    Elem.HalfWavePlate,
-    Elem.SugarSolution,
-    Elem.FaradayRotator,
-  ],
-  [Group.Phase]: [Elem.Glass, Elem.VacuumJar],
-}
-
-/**
  * Game state enum
  */
 export const enum GameStateEnum {
