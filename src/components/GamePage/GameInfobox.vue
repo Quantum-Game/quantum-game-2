@@ -16,7 +16,7 @@
     >
       Intensity {{ (100 * particle.probability).toFixed(1) }}% at {{ particle.direction }}°
     </p>
-    <router-link v-if="infoPayload.kind === 'element'" :to="hyphenedElementEntryURL" class="link">
+    <router-link v-if="infoPayload.piece" :to="hyphenedElementEntryURL" class="link">
       LEARN MORE
     </router-link>
   </div>
@@ -27,8 +27,9 @@ import { Vue } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
 import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
-import { Elem } from '@/engine/interfaces'
 import { elementsData } from '@/engine/elements'
+import { assertUnreachable } from '@/types'
+import { Elem } from '@/engine/model'
 
 const spacedName = (name: string): string => {
   const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
@@ -50,30 +51,27 @@ export default class GameActiveCell extends Vue {
   */
   get name(): string {
     switch (this.infoPayload.kind) {
-      case 'element': {
-        const elem = this.infoPayload.cell?.element ?? Elem.Void
-        return spacedName(Elem[elem])
-      }
+      case 'piece':
+        return spacedName(Elem[this.infoPayload.piece.type])
       case 'particles':
         return 'photon state'
       case 'ui':
         return 'HINT'
       default:
-        return ''
+        assertUnreachable(this.infoPayload)
     }
   }
 
   get description(): string {
     switch (this.infoPayload.kind) {
-      case 'element':
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        return elementsData[this.infoPayload.cell!.element].description
+      case 'piece':
+        return elementsData[this.infoPayload.piece.type].description
       case 'particles':
         return ''
       case 'ui':
         return ''
       default:
-        return ''
+        assertUnreachable(this.infoPayload)
     }
   }
 

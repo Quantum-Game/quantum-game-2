@@ -18,8 +18,8 @@
           v-for="(z, index) in zs"
           :key="`electricPath-${index}`"
           :d="computeElectricPath(z)"
-          :stroke-width="eScale(gaussianComplex(bre, bim, z, sigma))"
-          :stroke="eColor(gaussianComplex(bre, bim, z, sigma))"
+          :stroke-width="eScale(gaussianComplex(b, z, sigma))"
+          :stroke="eColor(gaussianComplex(b, z, sigma))"
         />
       </g>
 
@@ -28,8 +28,8 @@
           v-for="(z, index) in zs"
           :key="`magneticPath-${index}`"
           :d="computeMagneticPath(z)"
-          :stroke-width="mScale(gaussianComplex(are, aim, z, sigma))"
-          :stroke="mColor(gaussianComplex(bre, bim, z, sigma))"
+          :stroke-width="mScale(gaussianComplex(a, z, sigma))"
+          :stroke="mColor(gaussianComplex(b, z, sigma))"
         />
       </g>
     </g>
@@ -43,7 +43,8 @@ import { select } from 'd3-selection'
 import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
-import Particle from '@/engine/Particle'
+import { Complex, directionToDegrees } from '@/engine/model'
+import type { Particle } from '@/engine/model'
 import { IStyle } from '@/types'
 
 const d3 = {
@@ -81,46 +82,40 @@ export default class AppPhoton extends Vue {
 
   get normalization(): number {
     if (this.normalize) {
-      const { are, aim, bre, bim } = this.particle
-      return Math.sqrt(are ** 2 + aim ** 2 + bre ** 2 + bim ** 2)
+      return Math.sqrt(this.intensity)
     }
     return 1
   }
 
   get intensity(): number {
-    return this.particle.probability
+    return this.particle.a.abs2() + this.particle.b.abs2()
   }
 
   get direction(): number {
     return this.particle.direction
   }
 
-  get are(): number {
-    return this.particle.are / this.normalization
+  get a(): Complex {
+    const { re, im } = this.particle.a
+    const norm = this.normalization
+    return new Complex(re / norm, im / norm)
   }
 
-  get aim(): number {
-    return this.particle.aim / this.normalization
-  }
-
-  get bre(): number {
-    return this.particle.bre / this.normalization
-  }
-
-  get bim(): number {
-    return this.particle.bim / this.normalization
+  get b(): Complex {
+    const { re, im } = this.particle.b
+    const norm = this.normalization
+    return new Complex(re / norm, im / norm)
   }
 
   get opacity(): number {
-    const scalingPow = 0.5
-    return this.particle.probability ** scalingPow
+    return Math.sqrt(this.intensity)
   }
 
   get computeStyle(): IStyle {
     return {
       opacity: `${this.displayOpacity ? this.opacity : 1}`,
       'transform-origin': `${this.width / 2}px ${this.height / 2}px`,
-      transform: `rotate(${this.displayDirection ? this.particle.direction : 0}deg)`,
+      transform: `rotate(${this.displayDirection ? directionToDegrees(this.particle.direction) : 0}deg)`,
     }
   }
 
@@ -130,9 +125,9 @@ export default class AppPhoton extends Vue {
   computeElectricPath(z: number): string {
     let path = ''
     const ox = this.xScale(z - this.step)
-    const oy = this.yScale(this.gaussianComplex(this.are, this.aim, z - this.step, this.sigma))
+    const oy = this.yScale(this.gaussianComplex(this.a, z - this.step, this.sigma))
     const tx = this.xScale(z)
-    const ty = this.yScale(this.gaussianComplex(this.are, this.aim, z, this.sigma))
+    const ty = this.yScale(this.gaussianComplex(this.a, z, this.sigma))
     path += `M ${ox} ${oy} `
     path += `L ${tx} ${ty} `
     return path
@@ -144,9 +139,9 @@ export default class AppPhoton extends Vue {
   computeMagneticPath(z: number): string {
     let path = ''
     const ox = this.xScale(z - this.step)
-    const oy = this.yScale(this.gaussianComplex(this.bre, this.bim, z - this.step, this.sigma))
+    const oy = this.yScale(this.gaussianComplex(this.b, z - this.step, this.sigma))
     const tx = this.xScale(z)
-    const ty = this.yScale(this.gaussianComplex(this.bre, this.bim, z, this.sigma))
+    const ty = this.yScale(this.gaussianComplex(this.b, z, this.sigma))
     path += `M ${ox} ${oy} `
     path += `L ${tx} ${ty}`
     return path
@@ -223,17 +218,6 @@ export default class AppPhoton extends Vue {
   }
 
   /**
-   * Get SVG coordinates of particle animation
-   * @returns string
-   */
-  get toCoord(): string {
-    const tileSize = 64
-    const x = this.particle.relativeTarget.x * tileSize
-    const y = this.particle.relativeTarget.y * tileSize
-    return `${x} ${y}`
-  }
-
-  /**
    * Numbers of points to render, should scale with the width
    * @returns a range of steps
    */
@@ -257,13 +241,6 @@ export default class AppPhoton extends Vue {
     .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
 
   /**
-   * Compute graph properties from complex values
-   */
-  computeComplex(re: number, im: number, z: number, k = 20): number {
-    return re * Math.cos(k * z) + im * Math.sin(k * z)
-  }
-
-  /**
    * Gaussian scaling
    */
   gaussian(z: number, sigma = 0.3): number {
@@ -273,9 +250,17 @@ export default class AppPhoton extends Vue {
   /**
    * Gaussian scaling of the graph
    */
-  gaussianComplex(re: number, im: number, z: number, sigma = 0.3): number {
-    return this.computeComplex(re, im, z) * Math.exp((-z * z) / (2 * sigma * sigma))
+  gaussianComplex(c: Complex, z: number, sigma = 0.3): number {
+    return computeComplex(c, z) * Math.exp((-z * z) / (2 * sigma * sigma))
   }
+
+}
+
+/**
+ * Compute graph properties from complex values
+ */
+function computeComplex(c: Complex, z: number, k = 20): number {
+  return c.re * Math.cos(k * z) + c.im * Math.sin(k * z)
 }
 </script>
 

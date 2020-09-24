@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, Ref, watch, ref } from 'vue'
+import { onMounted, onUnmounted, Ref, watch, ref, reactive } from 'vue'
 
 /**
  * Add an event listener on window for the duration of component lifetime.
@@ -15,6 +15,15 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
   onUnmounted(() => {
     window.removeEventListener(event, handler)
   })
+}
+
+export function useMouseCoords(): { x: number; y: number } {
+  const coords = reactive({ x: 0, y: 0 })
+  useWindowEvent('mousemove', (e) => {
+    coords.x = e.pageX
+    coords.y = e.pageY
+  })
+  return coords
 }
 
 interface Size {

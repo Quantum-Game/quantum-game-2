@@ -9,23 +9,21 @@
     <div v-show="isOpen" class="grids">
       <div class="matrix">
         <matrix-viewer
-          :key="`matrix-${matrixIter}`"
+          :key="operator"
           class="matrix-viewer"
           :operator-raw="operator"
           :size="30"
-          @columnMouseover="updateIndicators($event)"
+          @column-mouseover="updateIndicators($event)"
         />
       </div>
-      <div class="eboard">
+      <div v-if="vector" class="eboard">
         <encyclopedia-board
-          :key="`board-${boardIter}`"
           class="board"
-          :i-grid="grid.exportGrid()"
-          :initial-state="[initialState]"
+          :grid="grid"
+          :vector="vector"
           :max-steps="2"
           :default-step="2"
-          :exact-steps="true"
-          @update-rotation="updateRotation"
+          @rotated="rotation = $event"
         />
       </div>
     </div>
@@ -35,18 +33,12 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 import { Prop } from 'vue-property-decorator'
-import { Elem, elemFromString } from '@/engine/interfaces'
-import { Coord, Grid, Cell } from '@/engine/classes'
+import { IGrid } from '@/engine/interfaces'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
-import { Operator, Vector, Dimension, Elements } from 'quantum-tensors'
+import { Operator, Vector, Elements, Dimension } from 'quantum-tensors'
 import { elementsData } from '@/engine/elements'
-
-interface IXYVec {
-  posX: number
-  posY: number
-  vecDirPol: Vector
-}
+import { importElem, Rotation, rotationFromDegrees, rotationToDegrees } from '@/engine/model'
 
 @Options({
   components: {
@@ -56,31 +48,38 @@ interface IXYVec {
 })
 export default class EncyclopediaMatrixBoard extends Vue {
   @Prop({ default: 'Mirror' }) readonly elementName!: string
-  @Prop({ default: () => 10 }) readonly maxSteps!: number
-  @Prop({ default: () => 2 }) readonly defaultStep!: number
   @Prop({ default: 0 }) defaultRotation!: number
 
-  rotation: number = this.defaultRotation
-  grid: Grid = Grid.emptyGrid(3, 3)
-  matrixIter = 0
-  boardIter = 0
+  rotation: Rotation = rotationFromDegrees(this.defaultRotation) ?? Rotation.Right
   isOpen = true
-  initialState: IXYVec = {
-    posX: 0,
-    posY: 1,
-    vecDirPol: Vector.indicator([Dimension.direction(), Dimension.polarization()], ['>', 'H']),
-  }
-
-  created(): void {
-    this.grid.set(this.cell)
-  }
+  vector = Vector.indicator(
+    [...this.xyDimensions, Dimension.direction(), Dimension.polarization()],
+    ['0', '1', '>', 'H']
+  )
 
   handleTitleClick(): void {
     this.isOpen = !this.isOpen
   }
 
+  get grid(): IGrid {
+    return {
+      rows: 3,
+      cols: 3,
+      cells: [
+        {
+          coord: { x: 1, y: 1 },
+          element: this.elementName,
+          rotation: rotationToDegrees(this.rotation),
+          frozen: false,
+        },
+      ],
+    }
+  }
+
   get rotationText(): string {
-    return elementsData[this.cell.element].angles.length > 1 ? ` at ${this.rotation}°` : ''
+    const elem = importElem(this.elementName)
+    if (elem == null) return ''
+    return elementsData[elem].ascii.length > 1 ? ` at ${this.rotation}°` : ''
   }
 
   get operatorProperties(): { name: string; is: boolean }[] {
@@ -108,46 +107,42 @@ export default class EncyclopediaMatrixBoard extends Vue {
       .join(', ')
   }
 
-  get cell(): Cell {
-    const coord = new Coord(1, 1)
-    const elem = elemFromString(this.elementName) ?? Elem.Rock
-    return new Cell(coord, elem, this.rotation)
-  }
-
-  /**
-   * Updates rotation from the cell event
-   */
-  updateRotation(cell: Cell): void {
-    this.rotation = cell.rotation
-    this.matrixIter += 1
+  get xyDimensions(): [Dimension, Dimension] {
+    return [Dimension.position(this.grid.cols, 'x'), Dimension.position(this.grid.rows, 'y')]
   }
 
   /**
    */
   updateIndicators(vector: Vector): void {
-    this.grid.set(this.cell)
+    const coord = vector.entries[0]?.coord
+    const dirIdx = vector.dimensions.findIndex((d) => d.name === 'direction')
+    const dirDim = vector.dimensions[dirIdx]
 
-    // how to get direction?
-    const str = vector.toKetString()
-    let move: { x: number; y: number }
-    if (str.indexOf('>') > -1) {
-      move = { x: 1, y: 0 }
-    } else if (str.indexOf('^') > -1) {
-      move = { x: 0, y: -1 }
-    } else if (str.indexOf('<') > -1) {
-      move = { x: -1, y: 0 }
-    } else if (str.indexOf('v') > -1) {
-      move = { x: 0, y: 1 }
-    } else {
-      throw new Error('No direction detected')
+    if (coord == null || dirDim == null) {
+      return
     }
 
-    this.initialState = {
-      posX: 1 - move.x,
-      posY: 1 - move.y,
-      vecDirPol: vector,
+    const maxX = this.grid.cols - 1
+    const maxY = this.grid.rows - 1
+    let x = Math.floor(maxX / 2)
+    let y = Math.floor(maxY / 2)
+
+    switch (dirDim.coordNames[coord[dirIdx]]) {
+      case '>':
+        x = 0
+        break
+      case '<':
+        x = maxX
+        break
+      case '^':
+        y = maxY
+        break
+      case 'v':
+        y = 0
+        break
     }
-    this.boardIter += 1
+
+    this.vector = Vector.indicator(this.xyDimensions, [x.toString(), y.toString()]).outer(vector)
   }
 
   /**
@@ -155,7 +150,14 @@ export default class EncyclopediaMatrixBoard extends Vue {
    * @todo: figure a way to recover the operator
    */
   get operator(): Operator {
-    return Elements.generateOperator(this.cell.exportSimCell()).op
+    const cell = this.grid.cells[0]
+    return Elements.generateOperator({
+      x: cell.coord.x,
+      y: cell.coord.y,
+      element: cell.element,
+      rotation: cell.rotation ?? 0,
+      polarization: cell.polarization ?? 0,
+    }).op
   }
 }
 </script>
@@ -168,6 +170,10 @@ export default class EncyclopediaMatrixBoard extends Vue {
   @include media('<large') {
     flex-direction: column;
   }
+}
+
+.matrix-viewer {
+  padding-bottom: 100px;
 }
 
 .container {

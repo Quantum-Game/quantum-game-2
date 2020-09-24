@@ -2,31 +2,27 @@
   <div class="controls">
     <!-- SIMULATION CONTROLS -->
     <span class="playback">
-      <!-- <button type="button" :style="computeRewindStyle" @click="$emit('rewind')" /> -->
+      <!-- <button type="button" :style="styles.rewind" @click="$emit('rewind')" /> -->
       <button
         type="button"
-        :style="computeBackStyle"
-        @click="$emit('step-back')"
-        @mouseenter="
-          $emit('hover', { kind: 'ui', particles: [], text: 'Simulation: one step back.' })
-        "
+        :style="styles.back"
+        @click="scrubber.stepBack()"
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: one step back.' })"
       />
       <button
         id="play"
         type="button"
-        :style="computePlayStyle"
-        @click="$emit('play')"
-        @mouseenter="$emit('hover', { kind: 'ui', particles: [], text: 'Run the simulation.' })"
+        :style="styles.play"
+        @click="scrubber.toggle()"
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Run the simulation.' })"
       />
       <button
         type="button"
-        :style="computeForwardStyle"
-        @click="$emit('step-forward')"
-        @mouseenter="
-          $emit('hover', { kind: 'ui', particles: [], text: 'Simulation: the next step.' })
-        "
+        :style="styles.forward"
+        @click="scrubber.stepForward()"
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: the next step.' })"
       />
-      <!-- <button type="button" :style="computeFastForwardStyle" @click="$emit('fast-forward')" /> -->
+      <!-- <button type="button" :style="styles.fastForward" @click="$emit('fast-forward')" /> -->
     </span>
     <!-- FRAME INFO -->
     <span class="frameInfo">
@@ -36,265 +32,152 @@
     <span class="view-mode">
       <button
         type="button"
-        :style="computeReloadStyle"
+        :style="styles.reload"
         @click="$emit('reload')"
-        @mouseenter="$emit('hover', { kind: 'ui', particles: [], text: 'Reset the level.' })"
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Reset the level.' })"
       />
       <button
         type="button"
-        :style="computeSoundStyle"
+        :style="styles.sound"
         @click="toggleSound(), showSoundHint()"
         @mouseenter="showSoundHint"
       />
       <button
         type="button"
-        :style="computeDownloadStyle"
-        @click="$emit('download-level')"
-        @mouseenter="
-          $emit('hover', { kind: 'ui', particles: [], text: 'Download level as a JSON file.' })
-        "
+        :style="styles.download"
+        @click="$emit('download')"
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Download level as a JSON file.' })"
       />
 
       <label
         for="fileUpload"
-        :style="computeUploadStyle"
+        :style="styles.upload"
         class="upload"
-        @mouseenter="
-          $emit('hover', { kind: 'ui', particles: [], text: 'Load level from a JSON file.' })
-        "
+        @mouseenter="$emit('hover', { kind: 'ui', text: 'Load level from a JSON file.' })"
       >
       </label>
-      <input id="fileUpload" type="file" @change="loadJsonLevelFromFile" />
+      <input id="fileUpload" type="file" @change="$emit('upload', $event)" />
 
       <button
         type="button"
-        :style="computeSaveStyle"
-        @click="handleSave"
-        @mouseenter="
-          $emit('hover', {
-            kind: 'ui',
-            particles: [],
-            text: 'Save level to the cloud (you need to be logged in).',
-          })
-        "
+        :style="styles.save"
+        @click="$emit('save')"
+        @mouseenter="showSaveHint()"
       />
     </span>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, setup, Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
 import { IStyle } from '@/types'
-import { useRouter } from 'vue-router'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { storeNamespace } from '@/store'
+import { computed, defineComponent, PropType, proxyRefs } from 'vue'
+import { ScrubberController } from '@/engine/controller'
 
-const game = storeNamespace('game')
 const user = storeNamespace('user')
 const options = storeNamespace('options')
 
-@Options({
+const icons = {
+  pause: require(`@/assets/graphics/icons/pause.svg`),
+  play: require(`@/assets/graphics/icons/play.svg`),
+  reload: require(`@/assets/graphics/icons/reload.svg`),
+  rewind: require(`@/assets/graphics/icons/rewind.svg`),
+  origStepBack: require(`@/assets/graphics/icons/orig_step_back.svg`),
+  origStepForward: require(`@/assets/graphics/icons/orig_step_forward.svg`),
+  fastForward: require(`@/assets/graphics/icons/fast_forward.svg`),
+  soundOff: require(`@/assets/graphics/icons/sound_off.svg`),
+  soundOn: require(`@/assets/graphics/icons/sound_on.svg`),
+  download: require(`@/assets/graphics/icons/download.svg`),
+  upload: require(`@/assets/graphics/icons/upload.svg`),
+  save: require(`@/assets/graphics/icons/save.svg`),
+  account: require(`@/assets/graphics/icons/account.svg`),
+  accountRegister: require(`@/assets/graphics/icons/account_register.svg`),
+  options: require(`@/assets/graphics/icons/options.svg`),
+  map: require(`@/assets/graphics/icons/map.svg`),
+}
+
+export default defineComponent({
+  props: {
+    scrubber: { type: Object as PropType<ScrubberController>, required: true },
+  },
   emits: {
     hover: validateInfoPayload,
-    'loaded-level': null,
-    play: null,
-    'download-level': null,
-    'step-back': null,
-    'step-forward': null,
+    download: null,
+    upload: (_: Event) => true,
+    save: null,
+    reload: null,
+  },
+  setup(props, { emit }) {
+    const toggleSound = options.useAction('TOGGLE_SOUND')
+    const soundActive = options.useGetter('soundActive')
+    const isLoggedIn = user.useGetter('isLoggedIn')
+
+    const displayStatus = computed(() => {
+      if (props.scrubber.isPlaying) {
+        // (each time a random outcome)
+        return 'Quantum simulation (live)'
+      } else if (props.scrubber.frameIndex > 0) {
+        return 'Quantum simulation (step-by-step)'
+      } else {
+        // (still with polarization & interference)
+        return 'Classical laser beam'
+      }
+    })
+
+    function iconStyle(icon: keyof typeof icons, active: boolean): IStyle {
+      return {
+        backgroundImage: `url(${icons[icon]})`,
+        opacity: `${active ? 1 : 0.16}`,
+      }
+    }
+
+    const styles = proxyRefs({
+      rewind: computed(() =>
+        iconStyle('rewind', !props.scrubber.isPlaying && !props.scrubber.isFirstFrame)
+      ),
+      back: computed(() =>
+        iconStyle('origStepBack', !props.scrubber.isPlaying && !props.scrubber.isFirstFrame)
+      ),
+      play: computed(() => iconStyle(props.scrubber.isPlaying ? 'pause' : 'play', true)),
+      forward: computed(() =>
+        iconStyle('origStepForward', !props.scrubber.isPlaying && !props.scrubber.isLastFrame)
+      ),
+      fastForward: computed(() =>
+        iconStyle('fastForward', !props.scrubber.isPlaying && !props.scrubber.isLastFrame)
+      ),
+      reload: computed(() => iconStyle('reload', !props.scrubber.isPlaying)),
+      sound: computed(() =>
+        iconStyle(soundActive.value ? 'soundOff' : 'soundOn', !props.scrubber.isPlaying)
+      ),
+      download: computed(() => iconStyle('download', !props.scrubber.isPlaying)),
+      upload: computed(() => iconStyle('upload', !props.scrubber.isPlaying)),
+      save: computed(() => iconStyle('save', isLoggedIn.value && !props.scrubber.isPlaying)),
+    })
+
+    function showSoundHint() {
+      emit('hover', {
+        kind: 'ui',
+        text: `Sound is ${soundActive.value ? 'ON' : 'OFF'}`,
+      })
+    }
+
+    function showSaveHint() {
+      emit('hover', {
+        kind: 'ui',
+        text: 'Save level to the cloud (you need to be logged in).',
+      })
+    }
+
+    return {
+      styles,
+      displayStatus,
+      toggleSound,
+      showSoundHint,
+      showSaveHint,
+    }
   },
 })
-export default class GameControls extends Vue {
-  // FIXME: Can somehow accelerate photon speed by spamming play
-  @Prop() readonly frameIndex!: number
-  @Prop() readonly totalFrames!: number
-  @Prop({ default: '' }) readonly displayStatus!: string
-  gameState = setup(() => game.useState('gameState'))
-  simulationState = setup(() => game.useState('simulationState'))
-  actionSaveLevel = setup(() => user.useAction('SAVE_LEVEL'))
-  actionUpdateLevel = setup(() => user.useAction('UPDATE_LEVEL'))
-  toggleSound = setup(() => options.useAction('TOGGLE_SOUND'))
-  moduleGetterIsLoggedIn = setup(() => user.useGetter('isLoggedIn'))
-  soundActive = setup(() => options.useGetter('soundActive'))
-  router = setup(useRouter)
-
-  loadJsonLevelFromFile(event: Event): void {
-    const reader = new FileReader()
-    const target = event.target as HTMLInputElement
-    const file: File = (target.files as FileList)[0]
-
-    reader.onload = (): void => {
-      if (reader.result !== undefined && reader.result !== null) {
-        const result: string = reader.result.toString()
-        const iLevel = JSON.parse(result)
-        this.$emit('loaded-level', iLevel)
-      }
-    }
-    reader.readAsText(file)
-  }
-
-  get playFlag(): boolean {
-    return !this.simulationState
-  }
-
-  get stepForwardFlag(): boolean {
-    return this.frameIndex + 1 !== this.totalFrames
-  }
-
-  get stepBackFlag(): boolean {
-    return this.frameIndex > 0
-  }
-
-  get computeFateStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: `1`,
-    }
-  }
-
-  get computeRewindStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/rewind.svg`)})`,
-      opacity: `${this.playFlag && this.stepBackFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeBackStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_back.svg`)})`,
-      opacity: `${this.playFlag && this.stepBackFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computePlayStyle(): IStyle {
-    if (this.simulationState) {
-      return {
-        backgroundImage: `url(${require(`@/assets/graphics/icons/pause.svg`)})`,
-        opacity: `1`,
-      }
-    }
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/play.svg`)})`,
-      opacity: `1`,
-    }
-  }
-
-  get computeForwardStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/orig_step_forward.svg`)})`,
-      opacity: `${this.playFlag && this.stepForwardFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeFastForwardStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/fast_forward.svg`)})`,
-      opacity: `${this.playFlag && this.stepForwardFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeReloadStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/reload.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeSoundStyle(): IStyle {
-    if (this.soundActive) {
-      return {
-        backgroundImage: `url(${require(`@/assets/graphics/icons/sound_off.svg`)})`,
-        opacity: `${this.playFlag ? 1 : 0.16}`,
-      }
-    }
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/sound_on.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeDownloadStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/download.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeUploadStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/upload.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeSaveStyle(): IStyle {
-    if (this.moduleGetterIsLoggedIn) {
-      return {
-        backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-        opacity: `${this.playFlag ? 1 : 0.16}`,
-      }
-    }
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/save.svg`)})`,
-      opacity: `0.16`,
-    }
-  }
-
-  get computeAccountStyle(): IStyle {
-    if (this.moduleGetterIsLoggedIn) {
-      return {
-        backgroundImage: `url(${require(`@/assets/graphics/icons/account.svg`)})`,
-        opacity: `${this.playFlag ? 1 : 0.16}`,
-      }
-    }
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/account_register.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeOptionsStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/options.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  get computeMapStyle(): IStyle {
-    return {
-      backgroundImage: `url(${require(`@/assets/graphics/icons/map.svg`)})`,
-      opacity: `${this.playFlag ? 1 : 0.16}`,
-    }
-  }
-
-  handleSave(): void {
-    this.$emit('save-level')
-  }
-
-  handleAccount(): void {
-    if (!this.moduleGetterIsLoggedIn) {
-      this.router.push('/login')
-    } else {
-      this.router.push('/myaccount')
-    }
-  }
-
-  handleOptions(): void {
-    this.router.push('/options')
-  }
-
-  handleMap(): void {
-    this.router.push('/levels')
-  }
-
-  showSoundHint(): void {
-    this.$emit('hover', {
-      kind: 'ui',
-      particles: [],
-      text: `Sound is ${this.soundActive ? 'ON' : 'OFF'}`,
-    })
-  }
-}
 </script>
 
 <style lang="scss" scoped>

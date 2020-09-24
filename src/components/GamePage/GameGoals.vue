@@ -1,63 +1,53 @@
 <template>
-  <div ref="goals" class="goals-wrapper">
-    <!-- <p class="title">
-      GOALS
-    </p> -->
+  <div class="goals-wrapper">
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div :class="computeProbabilityClass">
         <!-- <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div> -->
         <div class="mobile_progressBarText">
-          <p>You need {{ gameState.totalGoalPercentage }}% detection</p>
+          <p>You need {{ (goals.totalGoalThreshold * 100).toFixed(1) }}% detection</p>
         </div>
       </div>
       <div class="mobile_progressBar">
         <div
           class="mobile_progressBarFillGoal"
-          :style="{ width: gameState.totalGoalPercentage + '%' }"
+          :style="{ width: goals.totalGoalThreshold * 100 + '%' }"
         ></div>
-        <div
-          class="mobile_progressBarFill"
-          :style="{ width: tweenedPercent.toFixed(1) + '%' }"
-        ></div>
+        <div class="mobile_progressBarFill" :style="{ width: tweenedPercent * 100 + '%' }"></div>
       </div>
       <!-- <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
         Goal: {{ gameState.totalGoalPercentage }} %
       </div> -->
     </div>
     <!-- DETECTORS -->
-    <div v-if="gameState.goals.length > 0" :class="computeGoalClass">
+    <div v-if="goals.goalsMet + goals.goalsUnmet > 0" :class="computeGoalClass">
       <div>
         <span>
           <p>DETECTORS</p>
         </span>
       </div>
-      <span
-        v-for="(goal, index) in gameState.goalsHit.length"
-        :key="'detectorh' + index"
-        class="hit"
-      >
+      <span v-for="index in goals.goalsMet" :key="'detectorh' + index" class="hit">
         <img src="@/assets/graphics/icons/detectorFull-2.svg" width="28" />
       </span>
-      <span v-for="(goal, index) in gameState.goalsUnhit" :key="'detectoru' + index" class="unhit">
+      <span v-for="index in goals.goalsUnmet" :key="'detectoru' + index" class="unhit">
         <img src="@/assets/graphics/icons/detectorEmpty-2.svg" width="28" />
       </span>
     </div>
 
     <!-- MINES -->
-    <div v-if="gameState.mines.length > 0" :class="computeSafeClass">
+    <div v-if="goals.minesHit + goals.minesUnhit > 0" :class="computeSafeClass">
       <div>
-        <span v-if="gameState.safeFlag" class="success">
+        <span v-if="goals.allMinesSafe" class="success">
           <p>{{ textRiskSafe }}</p>
         </span>
         <span v-else class="defeat">
           <p>{{ textRiskDanger }}</p>
         </span>
       </div>
-      <span v-for="(mine, index) in gameState.minesHit.length" :key="'mineh' + index" class="hit">
+      <span v-for="(mine, index) in goals.minesHit" :key="'mineh' + index" class="hit">
         <img src="@/assets/graphics/icons/mineFull-2.svg" width="34" />
       </span>
-      <span v-for="(mine, index) in gameState.minesUnhit" :key="'mineu' + index" class="unhit">
+      <span v-for="(mine, index) in goals.minesUnhit" :key="'mineu' + index" class="unhit">
         <img src="@/assets/graphics/icons/mineEmpty-2.svg" width="34" />
       </span>
     </div>
@@ -65,93 +55,56 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { Prop, Watch } from 'vue-property-decorator'
-import TWEEN from '@tweenjs/tween.js'
-import GameState from '@/engine/GameState'
-import AppCell from '@/components/Board/AppCell.vue'
+import { GoalsController } from '@/engine/controller'
+import { computed, defineComponent, PropType } from 'vue'
+import { useTween } from '@/mixins'
 
-@Options({
-  components: {
-    AppCell,
+export default defineComponent({
+  name: 'GameGoals',
+  props: {
+    goals: { type: Object as PropType<GoalsController>, required: true },
+  },
+  setup(props) {
+    const tweenedPercent = useTween(() => props.goals.totalAbsorption)
+
+    const computeProbabilityClass = computed((): string => {
+      return props.goals.probabilityGoalMet ? 'success' : 'defeat'
+    })
+
+    const computeGoalClass = computed((): string[] => {
+      return [props.goals.allGoalsMet ? 'success' : 'defeat', 'bottom-icons']
+    })
+
+    const computeSafeClass = computed((): string[] => {
+      return [props.goals.allMinesSafe ? 'success' : 'defeat', 'bottom-icons']
+    })
+
+    const textRiskSafe = computed((): string => {
+      if (props.goals.safetyThreshold < 1e-6) {
+        return 'SAFE'
+      } else {
+        return `SAFEISH  (<${(100 * props.goals.safetyThreshold).toFixed(1)}%)`
+      }
+    })
+
+    const textRiskDanger = computed((): string => {
+      if (props.goals.safetyThreshold < 1e-6) {
+        return 'DANGER!'
+      } else {
+        return `PUT DANGER BELOW ${(100 * props.goals.safetyThreshold).toFixed(1)}%`
+      }
+    })
+
+    return {
+      tweenedPercent,
+      computeProbabilityClass,
+      computeGoalClass,
+      computeSafeClass,
+      textRiskSafe,
+      textRiskDanger,
+    }
   },
 })
-export default class GameGoals extends Vue {
-  @Prop() readonly gameState!: GameState
-  @Prop() readonly percentage!: number
-  tweenedPercent: number = this.gameState.totalAbsorptionPercentage
-  width = 100
-
-  /**
-   * Compute success or failure class from the gameState flags
-   */
-  get computeProbabilityClass(): string {
-    return this.gameState.probabilityFlag ? 'success' : 'defeat'
-  }
-
-  get computeGoalClass(): string[] {
-    return [this.gameState.goalFlag ? 'success' : 'defeat', 'bottom-icons']
-  }
-
-  get computeSafeClass(): string[] {
-    return [this.gameState.safeFlag ? 'success' : 'defeat', 'bottom-icons']
-  }
-
-  get textRiskSafe(): string {
-    if (this.gameState.safetyThreshold < 1e-6) {
-      return 'SAFE'
-    } else {
-      return `SAFEISH  (<${(100 * this.gameState.safetyThreshold).toFixed(1)}%)`
-    }
-  }
-
-  get textRiskDanger(): string {
-    if (this.gameState.safetyThreshold < 1e-6) {
-      return 'DANGER!'
-    } else {
-      return `PUT DANGER BELOW ${(100 * this.gameState.safetyThreshold).toFixed(1)}%`
-    }
-  }
-
-  /**
-   * Computes donut slices
-   * @returns list of slices with colors
-   */
-  get sections(): { value: number; color: string }[] {
-    return [
-      { value: 100 - this.gameState.totalGoalPercentage, color: '#210235' },
-      {
-        value: this.gameState.totalGoalPercentage - this.tweenedPercent,
-        color: 'rgba(255, 255, 255, 0.1)',
-      },
-      { value: this.tweenedPercent, color: '#5D00D5' },
-    ]
-  }
-
-  /**
-   * Create the donut animation tween
-   * @param time tween time
-   */
-  animateTween(time: number): void {
-    const id = requestAnimationFrame(this.animateTween)
-    const result = TWEEN.update(time)
-    if (!result) cancelAnimationFrame(id)
-  }
-
-  /**
-   * Animate donut increase / decrease on gameState change
-   */
-  @Watch('percentage')
-  onPercentChanged(val: number, oldVal: number): void {
-    new TWEEN.Tween({ value: oldVal })
-      .to({ value: val }, 500)
-      .onUpdate(({ value }) => {
-        this.tweenedPercent = value
-      })
-      .start(0)
-    requestAnimationFrame(this.animateTween)
-  }
-}
 </script>
 
 <style lang="scss" scoped>

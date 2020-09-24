@@ -1,31 +1,22 @@
 <template>
-  <div class="toolbox" :cell="cell">
-    <!-- <p class="title">
-      TOOLBOX
-    </p> -->
+  <div class="toolbox" @mouseup="onRelease">
     <svg
-      v-for="(cell, index) in uniqueCellList"
-      :key="index"
+      v-for="[piece, count] in tools"
+      :key="piece.type"
       class="tool"
-      :viewBox="viewBox"
+      viewBox="0 0 80 80"
       preserveAspectRatio="xMidYMid meet"
-      @mouseup="handleCellDrop(cell)"
+      @mouseenter="showPieceHint(piece)"
     >
-      <g :class="computeClass(cell)">
+      <g :class="count > 0 ? 'active' : 'inactive'">
         <g>
           <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
           <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
           <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
           <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
         </g>
-        <app-cell
-          :cell="cell"
-          :available="isAvailable(cell)"
-          :tool="true"
-          @update-cell="updateCell"
-          @mouseenter="handleMouseEnter(cell)"
-        />
-        <text class="counter" :x="counterX" y="80">× {{ toolbox.getCount(cell.element) }}</text>
+        <app-cell :piece="piece" :available="count > 0" @grab="onGrab(piece.type)" />
+        <text class="counter" x="40%" y="80">× {{ count }}</text>
       </g>
     </svg>
     <slot></slot>
@@ -33,77 +24,55 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
 import Toolbox from '@/engine/Toolbox'
 import AppCell from '@/components/Board/AppCell.vue'
-import Cell from '@/engine/Cell'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
-import Coord from '@/engine/Coord'
+import { computed, defineComponent, reactive, watchEffect } from 'vue'
+import { iMap } from '@/itertools'
+import { Elem, Piece, pieceFromTool } from '@/engine/model'
 
-const TOOLBOX_COORD: Coord = new Coord(-1, -1)
-
-@Options({
+export default defineComponent({
   components: {
     AppCell,
   },
+  props: {
+    toolbox: { type: Toolbox, required: true },
+  },
   emits: {
-    'update-cell': null,
     hover: validateInfoPayload,
+    grab: Number,
+    release: Number,
+  },
+  setup(props, { emit }) {
+    const toolsVisited = reactive(new Set<Elem>())
+
+    watchEffect(() => {
+      for (const [tool, count] of props.toolbox.tools) {
+        if (count > 0) {
+          toolsVisited.add(tool)
+        }
+      }
+    })
+
+    const tools = computed(() =>
+      Array.from(iMap(toolsVisited, (tool) => [pieceFromTool(tool), props.toolbox.getCount(tool)]))
+    )
+
+    function showPieceHint(piece: Piece) {
+      emit('hover', { kind: 'piece', piece, text: 'Drag&drop on board.' })
+    }
+
+    function onGrab(elem: Elem) {
+      emit('grab', elem)
+    }
+
+    function onRelease() {
+      emit('release')
+    }
+
+    return { tools, showPieceHint, onGrab, onRelease }
   },
 })
-export default class GameToolbox extends Vue {
-  @Prop() readonly toolbox!: Toolbox
-  cell = {}
-  viewBox = '-8 0 80 80'
-  counterX = '40%'
-
-  mounted(): void {
-    window.addEventListener('resize', this.calculateViewBox)
-    this.calculateViewBox()
-  }
-
-  /**
-   * A list of cells generated from toolbox.
-   * FIXME: remove the unnecessary conversion to cell
-   * @deprecated
-   */
-  private get uniqueCellList(): Cell[] {
-    const elems = this.toolbox.originallyPresent()
-    return elems.map((elem) => new Cell(TOOLBOX_COORD, elem))
-  }
-
-  handleMouseEnter(cell: Cell): void {
-    this.$emit('hover', { kind: 'element', cell, particles: [], text: 'Drag&drop on board.' })
-  }
-
-  handleCellDrop(cell: Cell): void {
-    this.$emit('update-cell', cell)
-  }
-
-  computeClass(cell: Cell): string {
-    return this.isAvailable(cell) ? 'active' : 'inactive'
-  }
-
-  isAvailable(cell: Cell): boolean {
-    return this.toolbox.getCount(cell.element) > 0
-  }
-
-  // events drilling up...
-  updateCell(cell: Cell): void {
-    this.$emit('update-cell', cell)
-  }
-
-  calculateViewBox(): void {
-    if (window.innerWidth > 1000) {
-      this.viewBox = '-8 0 80 80'
-      this.counterX = '50%'
-    } else {
-      this.viewBox = '-8 0 80 80'
-      this.counterX = '40%'
-    }
-  }
-}
 </script>
 
 <style lang="scss" scoped>
