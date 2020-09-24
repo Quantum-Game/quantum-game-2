@@ -301,14 +301,12 @@ export default defineComponent({
      * @returns level in JSON format
      */
     function downloadLevel(): void {
-      // TODO
-      console.warn('not yet implemented')
-      // const json = JSON.stringify(level.value.exportLevelForDownload(), null, 2)
-      // const blob = new Blob([json], { type: 'octet/stream' })
-      // const link = document.createElement('a')
-      // link.href = window.URL.createObjectURL(blob)
-      // link.download = 'level.json'
-      // link.click()
+      const json = JSON.stringify(gameCtl.exportLevel(), null, 2)
+      const blob = new Blob([json], { type: 'octet/stream' })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = 'level.json'
+      link.click()
     }
 
     function loadJsonLevelFromFile(event: Event): void {
@@ -319,7 +317,7 @@ export default defineComponent({
       reader.onload = (): void => {
         if (reader.result !== undefined && reader.result !== null) {
           const result: string = reader.result.toString()
-          gameCtl.loadLevel(JSON.parse(result))
+          gameCtl.importLevel(JSON.parse(result))
         }
       }
     }
