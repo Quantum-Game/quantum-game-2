@@ -1,11 +1,13 @@
 import rockTalkData from '@/assets/data/rock_talk/rock_talk.json'
-import levelData from '@/assets/data/levels'
-import { IDialogue } from '@/mixins/dataInterfaces'
 
-export const rockTalks: IDialogue[] = [...rockTalkData]
-export const levelIdToRockTalkId: (string | undefined)[] = levelData.map(
-  (level) => level.rockTalkId
-)
+export interface RockTalk {
+  id: string
+  graphics: string
+  dialogue: string[]
+  link: string
+}
+
+export const rockTalks: RockTalk[] = rockTalkData
 
 /**
  * Used by GamePage. Takes a current level ID and
@@ -15,9 +17,6 @@ export const levelIdToRockTalkId: (string | undefined)[] = levelData.map(
  * @returns a rocktalk entry or null, if there isn't any
  * with given ID.
  */
-export function getRockTalkIdByLevelId(id: number): string | null {
-  return levelIdToRockTalkId[id] || null
-}
 
 /**
  * Used by InterLevelOverlay to establish rock dialogues.
@@ -25,9 +24,9 @@ export function getRockTalkIdByLevelId(id: number): string | null {
  * @returns a rocktalk entry or null, if there isn't any
  * with given ID.
  */
-export function getRockTalkById(id: string): IDialogue {
+export function getRockTalkById(id: string): RockTalk {
   const rockTalk = rockTalks.find((rockTalk) => rockTalk.id === id)
-  const defaultRockTalk: IDialogue = {
+  const defaultRockTalk: RockTalk = {
     id: 'default',
     graphics: 'weasel',
     dialogue: ['There is...', '..not rock.'],

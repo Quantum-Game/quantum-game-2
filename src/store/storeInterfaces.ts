@@ -11,9 +11,6 @@ import {
   ActionHandler,
 } from 'vuex'
 import firebase from '@/config/firebase'
-import GameState from '@/engine/GameState'
-import { S } from 'quantum-tensors/dist/Gates'
-import StateBlock from 'markdown-it/lib/rules_block/state_block'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IRootState {}
@@ -92,11 +89,10 @@ export function strongStoreOptions<S extends StoreOptions<IRootState>>(def: S): 
 /**
  * @todo Right now really bad, as level does not match the ILevel format
  */
-export interface ISavedLevel {
+export interface SavedLevel {
   userId: string
   level: {
     currentLevelID: string
-    gameState: GameState
     boardState: string // JSON.stringify format
   }
   public: boolean
@@ -104,7 +100,7 @@ export interface ISavedLevel {
   lastModified: Timestamp
 }
 
-export interface IUser {
+export interface User {
   loggedIn: boolean
   rememberMe: boolean
   data: {
@@ -113,14 +109,14 @@ export interface IUser {
   }
 }
 
-export interface IProgressObj {
+export interface ProgressObj {
   id: number
   status: string
   timeOpened: Timestamp
   timeWon?: Timestamp
 }
 
-export interface ISavedLevelMetadata {
+export interface SavedLevelMetadata {
   id: string
   link: string
   createdAt: Timestamp

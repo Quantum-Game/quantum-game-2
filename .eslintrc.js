@@ -4,12 +4,12 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:vue/recommended',
+    'plugin:vue/vue3-recommended',
     'prettier/@typescript-eslint',
     '@vue/standard',
     '@vue/typescript',
     '@vue/prettier',
+    'plugin:@typescript-eslint/recommended',
     'plugin:vue-scoped-css/recommended',
   ],
   rules: {
@@ -26,12 +26,14 @@ module.exports = {
     //     }
     //   }
     // ],
+    'no-undef': 'off', // interferes with typescript `as const`
     'no-use-before-define': 'off',
     'no-unused-expressions': 'off',
     'no-useless-constructor': 'off', // better covered by @typescript-eslint/no-useless-constructor
     'vue/require-default-prop': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-extra-semi': 'off', // sometimes in conflict with prettier
+    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

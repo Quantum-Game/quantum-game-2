@@ -1,4 +1,4 @@
-import { Elem } from '@/engine/interfaces'
+import { Elem } from '@/engine/model'
 
 import AbsorberCell from './AbsorberCell.vue'
 import BeamSplitterCell from './BeamSplitterCell.vue'
@@ -43,7 +43,6 @@ export {
 }
 
 export const elementComponents: Record<Elem, unknown> = {
-  [Elem.Void]: undefined,
   [Elem.Wall]: undefined,
   [Elem.Gate]: undefined,
   [Elem.Laser]: LaserCell,

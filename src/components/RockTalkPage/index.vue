@@ -5,49 +5,38 @@
       :dialogue="rockTalk.dialogue"
       :link="rockTalk.link"
     />
-    <router-link v-if="currentLevelID != '31'" class="button-next" :to="nextLevel">
+    <router-link
+      v-if="currentLevelID != '31'"
+      class="button-next"
+      :to="`/level/${currentLevelID + 1}`"
+    >
       <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
     </router-link>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
-import { IDialogue } from '@/mixins/dataInterfaces'
 import { getRockTalkById } from './loadRockTalks'
 import RockTalkLine from '@/components/RockTalkPage/RockTalkLine.vue'
 import AppButton from '@/components/AppButton.vue'
 import { useRoute } from 'vue-router'
 import { storeNamespace } from '@/store'
+import { computed, defineComponent } from 'vue'
 
 const game = storeNamespace('game')
 
-@Options({
+export default defineComponent({
   components: {
     RockTalkLine,
     AppButton,
   },
+  setup() {
+    const currentLevelID = game.useState('currentLevelID')
+    const route = useRoute()
+    const rockTalk = computed(() => getRockTalkById(route.params.id as string))
+    return { currentLevelID, rockTalk }
+  },
 })
-export default class InterLevelOverlay extends Vue {
-  currentLevelID = setup(() => game.useState('currentLevelID'))
-  route = setup(useRoute)
-
-  get rockTalkId(): string {
-    return this.route.params.id as string
-  }
-
-  get rockTalk(): IDialogue {
-    return getRockTalkById(this.rockTalkId)
-  }
-
-  /**
-   * Used to traverse to the next level
-   * @returns a router link :to string parameter
-   */
-  get nextLevel(): string {
-    return `/level/${this.currentLevelID + 1}`
-  }
-}
 </script>
 
 <style lang="scss" scoped>

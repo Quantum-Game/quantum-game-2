@@ -1,5 +1,5 @@
 import { storeModule } from './storeInterfaces'
-import { hasKey } from '@/types'
+import { isObject, tryGetProp } from '@/types'
 
 export interface IOptionsModule {
   /** Delay in ms between game ticks. */
@@ -26,11 +26,12 @@ function getInitialOptions(): IOptionsModule {
   try {
     const parsed: unknown = JSON.parse(persistedString)
     // validate data types on stored json object
-    if (typeof parsed !== 'object' || parsed == null) return options
+    if (!isObject(parsed)) return options
 
     for (const key of Object.keys(defaultOptions) as (keyof IOptionsModule)[]) {
-      if (hasKey(parsed, key) && typeof parsed[key] === typeof defaultOptions[key]) {
-        options[key] = parsed[key]
+      const val = tryGetProp(parsed, key)
+      if (typeof val === typeof defaultOptions[key]) {
+        ;(options[key] as typeof options[typeof key]) = val as typeof defaultOptions[typeof key]
       }
     }
   } catch (_) {

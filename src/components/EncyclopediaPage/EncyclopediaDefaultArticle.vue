@@ -100,7 +100,6 @@
 
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
-import Grid from '@/engine/Grid'
 import AppButton from '@/components/AppButton.vue'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -154,7 +153,7 @@ import { IStyle } from '@/types'
   },
 })
 export default class EncyclopediaDefaultArticle extends Vue {
-  grid = Grid.dummyGrid(8, 13)
+  grid = { rows: 8, cols: 13, cells: [] }
   tileSize = 64
   boardHeight = 0
 

@@ -4,12 +4,12 @@
     class="board_scaler"
     :style="{ maxWidth: `${totalWidth}px`, maxHeight: `${totalHeight}px` }"
   >
-    <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`">
+    <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`" @mouseup="handleBoardRelease">
       <!-- DOTS -->
-      <board-dots :rows="grid.rows" :cols="grid.cols" />
+      <board-dots :rows="board.height" :cols="board.width" />
 
       <!-- LASER PATH -->
-      <board-lasers v-if="classicalView" :laserParticles="laserParticles" />
+      <board-lasers v-if="laserParticles.length > 0" :laserParticles="laserParticles" />
 
       <!-- FATE -->
       <transition name="fate-blink">
@@ -28,7 +28,6 @@
       <g
         v-for="(particle, index) in particles"
         :key="'particle' + index"
-        :v-if="particles.length > 0"
         :style="computeParticleStyle(particle)"
         class="photons"
         @mouseenter="handleMouseEnter(particle.coord)"
@@ -47,26 +46,40 @@
 
       <!-- CELLS -->
       <app-cell
-        v-for="(cell, i) in grid.cells.values()"
-        :key="'cell' + i"
-        :cell="cell"
-        :tileSize="tileSize"
-        @update-cell="updateCell"
-        @mouseover="handleMouseEnter(cell.coord)"
-        @mouseleave="handleMouseLeave(cell.coord)"
-        @play="play"
+        v-for="{ coord, piece, energized } in cells"
+        :key="`cell-${coord.x}-${coord.y}`"
+        :coord="coord"
+        :piece="piece"
+        :energized="energized"
+        @touch="$emit('touch', coord)"
+        @grab="$emit('grab', coord)"
+        @release="$emit('release', coord)"
+        @mouseover="handleMouseEnter(coord)"
       />
+
+      <!-- EMPTY CELLS -->
+      <template v-if="highlightEmpty">
+        <rect
+          v-for="{ x, y } in empties"
+          :key="`empty-${x}-${y}`"
+          class="empty"
+          :x="x"
+          :y="y"
+          :width="tileSize"
+          :height="tileSize"
+        />
+      </template>
 
       <!-- PROBABILITY -->
       <text
-        v-for="(absorption, i) in absorptions"
-        :key="'probability' + i"
-        :x="(absorption.cell.coord.x + 0.5) * 64"
-        :y="absorption.cell.coord.y * 64"
+        v-for="[coord, probability] in absorptions"
+        :key="`probability-${coord.x}-${coord.y}`"
+        :x="(coord.x + 0.5) * 64"
+        :y="coord.y * 64"
         text-anchor="middle"
         class="probability"
       >
-        {{ (absorption.probability * 100).toFixed(1) }}%
+        {{ (probability * 100).toFixed(1) }}%
       </text>
     </svg>
 
@@ -75,30 +88,23 @@
       v-for="(hint, index) in hints"
       :key="index"
       :hint="hint"
-      :tile-size="updatedTileSize"
+      :tile-size="scaledTileSize"
     />
   </div>
 </template>
 
 <script lang="ts">
-import Absorption from '@/engine/Absorption'
-import Cell from '@/engine/Cell'
-import Coord from '@/engine/Coord'
-import Grid from '@/engine/Grid'
-import Particle from '@/engine/Particle'
-import { IHint } from '@/engine/interfaces'
+import { Coord, Particle, Hint, Board } from '@/engine/model'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { IStyle } from '@/types'
-import { computed, defineComponent, PropType, reactive, ref, toRefs, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
-import { storeNamespace } from '@/store'
-
-const game = storeNamespace('game')
+import { iFilterMap, iMap } from '@/itertools'
 
 export default defineComponent({
   name: 'Board',
@@ -110,79 +116,83 @@ export default defineComponent({
     SpeechBubble,
   },
   props: {
-    grid: { type: Object as PropType<Grid>, required: true },
-    fate: { type: Coord },
-    hints: { type: Array as PropType<IHint[]>, default: [] },
-    particles: { type: Array as PropType<Particle[]>, default: [] },
+    board: { type: Object as PropType<Board>, required: true },
+    hints: { type: Array as PropType<Hint[]>, default: [] },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
-    absorptions: { type: Array as PropType<Absorption[]>, default: [] },
-    frameIndex: { type: Number, default: 0 },
+    particles: { type: Array as PropType<Particle[]>, required: true },
+    absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
+    fate: { type: Object as PropType<Coord>, required: false },
+    highlightEmpty: { type: Boolean, default: false },
   },
   emits: {
-    'update-cell': null,
-    play: null,
+    grab: Coord.validate,
+    release: Coord.validate,
+    touch: Coord.validate,
     hover: validateInfoPayload,
   },
   setup(props, { emit }) {
-    const mutationSetHoveredParticles = game.useMutation('SET_HOVERED_PARTICLE')
-    const simulationState = game.useState('simulationState')
-
     const boardScaler = ref<HTMLElement>()
     const boardRect = useDOMNodeSize(boardScaler)
 
-    const data = reactive({
-      tileSize: 64,
-      updatedTileSize: 64, // this is the actual, dynamic tile size
-    })
+    const tileSize = 64
+    const scaledTileSize = ref(64)
 
     watch(boardRect, (size) => {
       const currentWidth = size.width
-      data.updatedTileSize = 64 * (currentWidth / 845) // the dynamic one, used for tooltip positioning
+      scaledTileSize.value = tileSize * (currentWidth / 845)
+    })
+
+    const cells = computed(() => {
+      const absorptions = props.absorptions
+      return Array.from(
+        iMap(props.board.pieces, ([coord, piece]) => ({
+          coord,
+          piece,
+          energized: absorptions.has(coord),
+        }))
+      )
+    })
+
+    function handleBoardRelease(e: MouseEvent) {
+      const x = (e.offsetX / boardRect.value.width) * props.board.width
+      const y = (e.offsetY / boardRect.value.height) * props.board.height
+      const coord = Coord.new(Math.floor(x), Math.floor(y))
+      emit('release', coord)
+    }
+
+    const empties = computed(() => {
+      const pieces = props.board.pieces
+      return Array.from(
+        iFilterMap(Coord.enumerate(props.board.width, props.board.height), (c) =>
+          !pieces.has(c) ? c.gridTopLeft(tileSize) : null
+        )
+      )
     })
 
     return {
-      ...toRefs(data),
+      tileSize,
+      scaledTileSize,
       boardScaler,
-      classicalView: computed(() => props.frameIndex === 0 && !simulationState.value),
-      totalWidth: computed(() => props.grid.cols * data.tileSize),
-      totalHeight: computed(() => props.grid.rows * data.tileSize),
-      fatePos: computed(() => {
-        if (props.fate == null) return null
-        return {
-          x: (props.fate.x + 0.5) * data.tileSize,
-          y: (props.fate.y + 0.5) * data.tileSize,
-        }
-      }),
-      play: () => emit('play', true),
-      updateCell: (cell: Cell) => emit('update-cell', cell),
+      totalWidth: computed(() => props.board.width * tileSize),
+      totalHeight: computed(() => props.board.height * tileSize),
+      fatePos: computed(() => props.fate?.gridCenter(tileSize)),
+      handleBoardRelease,
+      cells,
+      empties,
       handleMouseEnter(coord: Coord): void {
-        const cell = props.grid.get(coord)
-        const particles = props.particles.filter((particle) => {
-          return particle.coord.equal(coord)
-        })
-        if (!cell.isVoid) {
-          emit('hover', { kind: 'element', cell, particles: [], text: '' })
-        }
+        const piece = props.board.pieces.get(coord)
+        const particles = props.particles.filter((particle) => particle.coord === coord)
         if (particles.length > 0) {
-          mutationSetHoveredParticles(particles)
-          emit('hover', { kind: 'particles', particles, text: '' })
+          emit('hover', { kind: 'particles', particles })
         }
-      },
-      /**
-       * Handle mouse over from cell and photons
-       */
-      handleMouseLeave(coord: Coord): void {
-        const particles = props.particles.filter((particle) => {
-          return particle.coord.equal(coord)
-        })
-        if (particles.length > 0) {
-          mutationSetHoveredParticles([])
+        if (piece != null) {
+          emit('hover', { kind: 'piece', piece })
         }
       },
       computeParticleStyle(particle: Particle): IStyle {
         return {
-          transform: `translate(${particle.coord.x * data.tileSize}px, ${particle.coord.y *
-            data.tileSize}px)`,
+          transform: `translate(${particle.coord.x * tileSize}px, ${particle.coord.y *
+            tileSize}px)`,
         }
       },
     }
@@ -213,6 +223,17 @@ export default defineComponent({
 
 .fate {
   opacity: 0;
+}
+
+.empty {
+  fill: white;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.empty:hover {
+  transition: opacity 0.3s;
+  opacity: 0.1;
 }
 
 .fate-blink-enter-active {

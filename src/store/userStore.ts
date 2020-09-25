@@ -1,20 +1,18 @@
 import {
-  IUser,
-  IProgressObj,
-  ISavedLevel,
-  ISavedLevelMetadata,
+  User,
+  ProgressObj,
+  SavedLevel,
+  SavedLevelMetadata,
   storeModule,
 } from '@/store/storeInterfaces'
-import { ILevel } from '@/engine/interfaces'
 import router from '@/router'
 import firebase, { db, auth } from '@/config/firebase'
 
 interface UserState {
-  user: IUser
-  progressArr: IProgressObj[]
-  savedLevelsList: ISavedLevelMetadata[]
-  publicLevels: ISavedLevelMetadata[]
-  fetchedLevel?: ILevel
+  user: User
+  progressArr: ProgressObj[]
+  savedLevelsList: SavedLevelMetadata[]
+  publicLevels: SavedLevelMetadata[]
 }
 
 export default storeModule({
@@ -34,26 +32,23 @@ export default storeModule({
     fetchedLevel: undefined,
   } as UserState,
   getters: {
-    user(state): IUser {
+    user(state): User {
       return state.user
     },
     userName(state): string {
       return state.user.data.displayName
     },
-    progressArr(state): IProgressObj[] {
+    progressArr(state): ProgressObj[] {
       return state.progressArr
     },
-    savedLevelsList(state): ISavedLevelMetadata[] {
+    savedLevelsList(state): SavedLevelMetadata[] {
       return state.savedLevelsList
     },
-    publicLevels(state): ISavedLevelMetadata[] {
+    publicLevels(state): SavedLevelMetadata[] {
       return state.publicLevels
     },
     isLoggedIn(state): boolean {
       return state.user.loggedIn
-    },
-    fetchedLevelBoardState(state): ILevel | undefined {
-      return state.fetchedLevel
     },
   },
   mutations: {
@@ -63,16 +58,16 @@ export default storeModule({
     SET_REMEMBER_ME(state, payload: boolean): void {
       state.user.rememberMe = payload
     },
-    SET_USER(state, payload: IUser['data']): void {
+    SET_USER(state, payload: User['data']): void {
       state.user.data = payload
     },
-    SET_PROGRESS(state, payload: IProgressObj[]): void {
+    SET_PROGRESS(state, payload: ProgressObj[]): void {
       state.progressArr = payload
     },
-    SET_SAVED_LEVELS_LIST(state, payload: ISavedLevelMetadata[]): void {
+    SET_SAVED_LEVELS_LIST(state, payload: SavedLevelMetadata[]): void {
       state.savedLevelsList = payload
     },
-    SET_PUBLIC_LEVELS(state, payload: ISavedLevelMetadata[]): void {
+    SET_PUBLIC_LEVELS(state, payload: SavedLevelMetadata[]): void {
       state.publicLevels = payload
     },
     SET_PUBLIC(state, payload: string): void {
@@ -88,21 +83,15 @@ export default storeModule({
         return obj.id !== payload
       })
     },
-    SET_FETCHED_LEVEL(state, payload: ILevel): void {
-      state.fetchedLevel = payload
-    },
-    RESET_FETCHED_LEVEL(state): void {
-      state.fetchedLevel = undefined
-    },
   },
   actions: {
     SET_INITIAL_PROGRESS({ commit }): void {
-      const payload: IProgressObj[] = [
+      const payload: ProgressObj[] = [
         { id: 0, status: 'won', timeOpened: firebase.firestore.Timestamp.fromDate(new Date()) },
       ]
       commit('SET_PROGRESS', payload)
     },
-    FETCH_USER({ commit, dispatch }, user: IUser['data'] | null): void {
+    FETCH_USER({ commit, dispatch }, user: User['data'] | null): void {
       commit('SET_LOGGED_IN', user != null)
       if (user != null) {
         dispatch('GET_PROGRESS')
@@ -186,7 +175,7 @@ export default storeModule({
     },
     SAVE_PROGRESS({ commit, getters }): void {
       if (auth.currentUser) {
-        const { progressArr }: { progressArr: IProgressObj } = getters
+        const { progressArr }: { progressArr: ProgressObj } = getters
         const dbRef = db.collection('users').doc(auth.currentUser.uid)
         const data = { uid: auth.currentUser.uid, progress: progressArr }
 
@@ -226,18 +215,14 @@ export default storeModule({
     /**
      * @todo Does not match level structure from levels in JSON.
      */
-    SAVE_LEVEL({ commit, dispatch }, level: ISavedLevel['level']): void {
+    SAVE_LEVEL({ commit, dispatch }, level: SavedLevel['level']): void {
       if (auth.currentUser == null) {
         console.log('You are not logged in!')
         return
       }
-      const customLevel: ISavedLevel = {
+      const customLevel: SavedLevel = {
         userId: auth.currentUser.uid,
-        level: {
-          currentLevelID: level.currentLevelID,
-          gameState: level.gameState,
-          boardState: level.boardState,
-        },
+        level,
         public: false,
         createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
         lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
@@ -257,19 +242,15 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    UPDATE_LEVEL({ commit }, level): void {
+    UPDATE_LEVEL({ commit }, level: SavedLevel['level']): void {
       if (auth.currentUser == null) {
         console.log('You are not logged in!')
         return
       }
 
-      const customLevel: Partial<ISavedLevel> = {
+      const customLevel: Partial<SavedLevel> = {
         userId: auth.currentUser.uid,
-        level: {
-          currentLevelID: level.currentLevelID,
-          gameState: level.gameState,
-          boardState: level.boardState,
-        },
+        level,
         lastModified: firebase.firestore.Timestamp.fromDate(new Date()),
       }
       const levelSaved = router.currentRoute.value.params.id as string
@@ -282,7 +263,7 @@ export default storeModule({
     },
     FETCH_MY_LEVELS({ commit }): void {
       if (auth.currentUser) {
-        const myLevels: ISavedLevelMetadata[] = []
+        const myLevels: SavedLevelMetadata[] = []
         const docs = db.collection('levels').where('userId', '==', auth.currentUser.uid)
 
         docs
@@ -310,7 +291,7 @@ export default storeModule({
     },
     FETCH_PUBLIC_LEVELS({ commit }): void {
       if (auth.currentUser) {
-        const publicLevels: ISavedLevelMetadata[] = []
+        const publicLevels: SavedLevelMetadata[] = []
         const docs = db.collection('levels').where('public', '==', true)
 
         docs
@@ -392,27 +373,24 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    GET_LEVEL_DATA({ commit }, { id }): Promise<void> {
-      return db
-        .collection('levels')
-        .doc(id)
-        .get()
-        .then((response) => {
-          const levelData = response.data()
-          console.log(levelData)
-          if (levelData) {
-            commit('SET_FETCHED_LEVEL', levelData.level.boardState)
-          } else {
-            console.log('No Level Data Found!')
-          }
-        })
-        .catch((err) => {
-          commit('errors/SET_ERROR', err.message, { root: true })
-        })
-    },
-    CLEAR_LEVEL_DATA({ commit }): void {
-      commit('RESET_FETCHED_LEVEL')
-    },
+    // GET_LEVEL_DATA({ commit }, { id }): Promise<void> {
+    //   return db
+    //     .collection('levels')
+    //     .doc(id)
+    //     .get()
+    //     .then((response) => {
+    //       const levelData = response.data()
+    //       console.log(levelData)
+    //       if (levelData) {
+    //         commit('SET_FETCHED_LEVEL', levelData.level.boardState)
+    //       } else {
+    //         console.log('No Level Data Found!')
+    //       }
+    //     })
+    //     .catch((err) => {
+    //       commit('errors/SET_ERROR', err.message, { root: true })
+    //     })
+    // },
     UPDATE_LEVEL_LISTS({ dispatch }): void {
       dispatch('FETCH_MY_LEVELS')
       dispatch('FETCH_PUBLIC_LEVELS')

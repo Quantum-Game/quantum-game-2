@@ -9,7 +9,7 @@
       <!-- GRIDS -->
       <div class="grids">
         <div v-for="(iGrid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
-          <encyclopedia-board :i-grid="iGrid" :step="5" class="grid" />
+          <encyclopedia-board :grid="iGrid" :step="5" class="grid" :default-step="2" />
         </div>
       </div>
 
@@ -26,7 +26,7 @@
         v-if="showMatrix"
         :key="`transition-${entry.elementName}`"
         :element-name="entry.elementName"
-        :rotation="entry.defaultRotation"
+        :default-rotation="entry.defaultRotation"
         step="3"
       />
     </article>
@@ -36,13 +36,14 @@
 <script lang="ts">
 import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { elemFromString, IEntry } from '@/engine/interfaces'
+import { IEntry } from '@/engine/interfaces'
 import { getEntry } from './loadData'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { importElem } from '@/engine/model'
 
 @Options({
   components: {
@@ -92,7 +93,7 @@ export default class EncyclopediaArticle extends Vue {
     const dontShowMatrix = ['Laser']
     return (
       dontShowMatrix.indexOf(this.entry.elementName) < 0 &&
-      elemFromString(this.entry.elementName) != null
+      importElem(this.entry.elementName) != null
     )
   }
 }

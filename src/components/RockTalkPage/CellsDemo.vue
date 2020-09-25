@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { Elem } from '@/engine/interfaces'
+import { Elem } from '@/engine/model'
 import { isDef } from '@/types'
 import { computed, defineComponent, Ref, ref } from 'vue'
 import { elementComponents } from '../Board/Cell'

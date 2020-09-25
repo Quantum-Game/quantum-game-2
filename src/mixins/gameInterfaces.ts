@@ -2,24 +2,26 @@
  * File for game UI interfaces.
  */
 
-import { Cell, Particle } from '@/engine/classes'
-import { hasKey, hasKeyType, hasKeyInstance } from '@/types'
+import { Piece, Particle } from '@/engine/model'
+import { tryGetString, tryGetInstance, isObject, tryGetObject } from '@/types'
 
 /**
  * For hover infobox
  */
-export interface IInfoPayload {
-  kind: string
-  cell?: Cell
-  particles: Particle[]
-  text: string
-}
+export type IInfoPayload =
+  | { kind: 'piece'; piece: Piece; text?: string }
+  | { kind: 'particles'; particles: Particle[]; text?: string }
+  | { kind: 'ui'; text: string }
 
-export function validateInfoPayload(payload: unknown): payload is IInfoPayload {
-  return (
-    hasKeyType(payload, 'kind', 'string') &&
-    (hasKey(payload, 'cell') ? hasKeyInstance(payload, 'cell', Cell) : true) &&
-    hasKeyInstance(payload, 'particles', Array) &&
-    hasKeyType(payload, 'text', 'string')
-  )
+export function validateInfoPayload(payload: IInfoPayload): payload is IInfoPayload {
+  if (!isObject(payload)) return false
+  switch (tryGetString(payload, 'kind')) {
+    case 'piece':
+      return tryGetObject(payload, 'piece') !== null
+    case 'particles':
+      return tryGetInstance(payload, 'particles', Array) !== null
+    case 'text':
+      return tryGetString(payload, 'text') !== null
+  }
+  return false
 }

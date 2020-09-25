@@ -20,7 +20,6 @@
 <script lang="ts">
 import { Dictionary, groupBy } from 'lodash'
 import { Vue, Options } from 'vue-class-component'
-import { ILevel } from '@/engine/interfaces'
 import AppLayout from '@/components/AppLayout.vue'
 import levels from '@/assets/data/levels/index'
 
@@ -30,10 +29,8 @@ import levels from '@/assets/data/levels/index'
   },
 })
 export default class LevelMapPage extends Vue {
-  get groups(): Dictionary<ILevel[]> {
-    return groupBy(levels, (level: ILevel) => {
-      return level.group
-    })
+  get groups(): Dictionary<{ id: number; name: string }[]> {
+    return groupBy(levels, (level) => level.group)
   }
 }
 </script>

@@ -14,19 +14,19 @@
 </template>
 
 <script lang="ts">
+import { Coord, Hint } from '@/engine/model'
 import { computed, defineComponent, PropType, ref } from 'vue'
-import type { IHint } from '@/engine/interfaces'
 
 export default defineComponent({
   name: 'SpeechBubble',
   props: {
-    hint: { type: Object as PropType<IHint>, required: true },
+    coord: { type: Object as PropType<Coord>, required: true },
+    hint: { type: Object as PropType<Hint>, required: true },
     tileSize: { type: Number, default: 64 },
     overlay: { type: String },
   },
   setup(props) {
     const shown = ref(true)
-
 
     const hintClass = computed(() => {
       return `hint--${props.hint.color} ${props.overlay === 'second' ? 'second' : ''}`
@@ -68,19 +68,16 @@ export default defineComponent({
       }
     }
 
-
-  /**
-   * Top and left offsets calulations for then the tooltip appears on the board
-   * @returns an offsets object
-   */
+    /**
+     * Top and left offsets calulations for then the tooltip appears on the board
+     * @returns an offsets object
+     */
     function boardPositionStyle() {
-
-      const leftOffset = (props.hint.coord.x + 0.5) * props.tileSize;
-      const topOffset = (props.hint.coord.y + 0.5) * props.tileSize;
+      const offset = props.coord.gridCenter(props.tileSize)
 
       return {
-        left: leftOffset + 'px',
-        top: topOffset + 'px',
+        left: offset.x + 'px',
+        top: offset.y + 'px',
       }
     }
 
@@ -112,7 +109,7 @@ export default defineComponent({
       absolutePositionStyle,
       shouldHide,
     }
-  }
+  },
 })
 </script>
 

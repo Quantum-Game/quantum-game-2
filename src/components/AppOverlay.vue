@@ -1,6 +1,6 @@
 <template>
-  <transition :name="stateTransition">
-    <div v-if="victory" :class="computeClass">
+  <transition :name="state">
+    <div v-if="victory" :class="`wrapper ${state}`">
       <div class="victory-circle">
         <h2>
           You won!
@@ -12,75 +12,53 @@
 </template>
 
 <script lang="ts">
-// FIXME: Needs to be extended for instructions overlay, rethink overlay
-import { Watch, Prop } from 'vue-property-decorator'
-import { Vue, Options } from 'vue-class-component'
 import { Confetti } from 'vue-confetti'
-import AppButton from '@/components/AppButton.vue'
-import { GameStateEnum } from '@/engine/interfaces'
+import { computed, defineComponent, onUnmounted, watch } from 'vue'
 
-@Options({
-  components: {
-    AppButton,
+const confettiConfig = {
+  particlesPerFrame: 3,
+  defaultSize: 8,
+  particles: [
+    {
+      dropRate: 15,
+    },
+  ],
+  defaultColors: [
+    '#ffbb3b', // Q yellow
+    '#5c00d3', // Q purple
+    '#ff0055', // Q red
+    '#ff8b00', // orange 01
+    '#ff5d15', // orange 02
+    '#ba00ff', // purple 02
+    '#ffbb3b', // Q yellow
+    '#5c00d3', // Q purple
+    '#ff0055', // Q red
+    '#ff8b00', // orange 01
+    '#ff5d15', // orange 02
+    '#ba00ff', // purple 02
+  ],
+}
+
+export default defineComponent({
+  props: {
+    state: { type: String, required: false },
+  },
+  setup(props) {
+    const confetti = new Confetti()
+    onUnmounted(() => confetti.stop())
+
+    const victory = computed(() => props.state === 'Victory')
+    watch(victory, (victory) => {
+      if (victory) {
+        confetti.start(confettiConfig)
+      } else {
+        confetti.stop()
+      }
+    })
+
+    return { victory }
   },
 })
-export default class AppOverlay extends Vue {
-  @Prop() readonly gameState!: GameStateEnum
-  confetti = new Confetti()
-
-  get computeClass(): string[] {
-    return [this.stateTransition, 'wrapper']
-  }
-
-  get stateTransition(): string {
-    switch (this.gameState) {
-      case GameStateEnum.Victory:
-        return 'Victory'
-      case GameStateEnum.MineExploded:
-        return 'MineExploded'
-    }
-    return ''
-  }
-
-  get victory(): boolean {
-    return this.gameState === GameStateEnum.Victory
-  }
-
-  destroyed(): void {
-    this.confetti.stop()
-  }
-
-  @Watch('victory')
-  handleGameStateChange(victory: boolean): void {
-    if (victory) {
-      this.confetti.start({
-        particlesPerFrame: 3,
-        defaultSize: 8,
-        particles: [
-          {
-            dropRate: 15,
-          },
-        ],
-        defaultColors: [
-          '#ffbb3b', // Q yellow
-          '#5c00d3', // Q purple
-          '#ff0055', // Q red
-          '#ff8b00', // orange 01
-          '#ff5d15', // orange 02
-          '#ba00ff', // purple 02
-          '#ffbb3b', // Q yellow
-          '#5c00d3', // Q purple
-          '#ff0055', // Q red
-          '#ff8b00', // orange 01
-          '#ff5d15', // orange 02
-          '#ba00ff', // purple 02
-        ],
-      })
-    } else {
-      this.confetti.stop()
-    }
-  }
-}
 </script>
 
 <style lang="scss" scoped>
