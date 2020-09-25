@@ -5,14 +5,14 @@
       :absorptions="gameCtl.sim.absorptions"
       :board="gameCtl.level.board"
       :laser-particles="laserParticles"
-      :particles="scrubberCtl.activeFrame.particles"
+      :particles="playheadCtl.activeFrame.particles"
       @touch="updateRotation"
     />
-    <board-frame-picker :scrubber="scrubberCtl" />
+    <board-frame-picker :playhead="playheadCtl" />
     <div class="ket">
       <ket-viewer
         :key="polBasis"
-        :vector="scrubberCtl.activeFrame.vector"
+        :vector="playheadCtl.activeFrame.vector"
         :initial-pol-basis="polBasis"
       />
     </div>
@@ -24,7 +24,7 @@ import { KetViewer } from 'bra-ket-vue'
 import Board from '@/components/Board/index.vue'
 import BoardFramePicker from './BoardFramePicker.vue'
 import { computed, defineComponent, PropType } from 'vue'
-import { gameController, scrubberController } from '@/engine/controller'
+import { gameController, playheadController } from '@/engine/controller'
 import { IGrid } from '@/engine/interfaces'
 import { Coord, Rotation, Vector } from '@/engine/model'
 
@@ -51,11 +51,11 @@ export default defineComponent({
 
     gameCtl.importLevel({ grid: props.grid })
 
-    const scrubberCtl = scrubberController({
+    const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames.filter((f) => f.vector.entries.length > 0) ?? [],
       rewindOnUpdate: false,
     })
-    scrubberCtl.seek(props.defaultStep ?? 0)
+    playheadCtl.seek(props.defaultStep ?? 0)
 
     const laserParticles = computed(() => {
       return gameCtl.sim?.frames.flatMap((f) => f.particles) ?? []
@@ -73,7 +73,7 @@ export default defineComponent({
       }
     }
 
-    return { gameCtl, scrubberCtl, laserParticles, polBasis, updateRotation }
+    return { gameCtl, playheadCtl, laserParticles, polBasis, updateRotation }
   },
 })
 </script>

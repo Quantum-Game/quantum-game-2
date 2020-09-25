@@ -6,20 +6,20 @@
       <button
         type="button"
         :style="styles.back"
-        @click="scrubber.stepBack()"
+        @click="playhead.stepBack()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: one step back.' })"
       />
       <button
         id="play"
         type="button"
         :style="styles.play"
-        @click="scrubber.toggle()"
+        @click="playhead.toggle()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Run the simulation.' })"
       />
       <button
         type="button"
         :style="styles.forward"
-        @click="scrubber.stepForward()"
+        @click="playhead.stepForward()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: the next step.' })"
       />
       <!-- <button type="button" :style="styles.fastForward" @click="$emit('fast-forward')" /> -->
@@ -73,7 +73,7 @@ import { IStyle } from '@/types'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { storeNamespace } from '@/store'
 import { computed, defineComponent, PropType, proxyRefs } from 'vue'
-import { ScrubberController } from '@/engine/controller'
+import { PlayheadController } from '@/engine/controller'
 
 const user = storeNamespace('user')
 const options = storeNamespace('options')
@@ -99,7 +99,7 @@ const icons = {
 
 export default defineComponent({
   props: {
-    scrubber: { type: Object as PropType<ScrubberController>, required: true },
+    playhead: { type: Object as PropType<PlayheadController>, required: true },
   },
   emits: {
     hover: validateInfoPayload,
@@ -114,10 +114,10 @@ export default defineComponent({
     const isLoggedIn = user.useGetter('isLoggedIn')
 
     const displayStatus = computed(() => {
-      if (props.scrubber.isPlaying) {
+      if (props.playhead.isPlaying) {
         // (each time a random outcome)
         return 'Quantum simulation (live)'
-      } else if (props.scrubber.frameIndex > 0) {
+      } else if (props.playhead.frameIndex > 0) {
         return 'Quantum simulation (step-by-step)'
       } else {
         // (still with polarization & interference)
@@ -134,25 +134,25 @@ export default defineComponent({
 
     const styles = proxyRefs({
       rewind: computed(() =>
-        iconStyle('rewind', !props.scrubber.isPlaying && !props.scrubber.isFirstFrame)
+        iconStyle('rewind', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
       ),
       back: computed(() =>
-        iconStyle('origStepBack', !props.scrubber.isPlaying && !props.scrubber.isFirstFrame)
+        iconStyle('origStepBack', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
       ),
-      play: computed(() => iconStyle(props.scrubber.isPlaying ? 'pause' : 'play', true)),
+      play: computed(() => iconStyle(props.playhead.isPlaying ? 'pause' : 'play', true)),
       forward: computed(() =>
-        iconStyle('origStepForward', !props.scrubber.isPlaying && !props.scrubber.isLastFrame)
+        iconStyle('origStepForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
       ),
       fastForward: computed(() =>
-        iconStyle('fastForward', !props.scrubber.isPlaying && !props.scrubber.isLastFrame)
+        iconStyle('fastForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
       ),
-      reload: computed(() => iconStyle('reload', !props.scrubber.isPlaying)),
+      reload: computed(() => iconStyle('reload', !props.playhead.isPlaying)),
       sound: computed(() =>
-        iconStyle(soundActive.value ? 'soundOff' : 'soundOn', !props.scrubber.isPlaying)
+        iconStyle(soundActive.value ? 'soundOff' : 'soundOn', !props.playhead.isPlaying)
       ),
-      download: computed(() => iconStyle('download', !props.scrubber.isPlaying)),
-      upload: computed(() => iconStyle('upload', !props.scrubber.isPlaying)),
-      save: computed(() => iconStyle('save', isLoggedIn.value && !props.scrubber.isPlaying)),
+      download: computed(() => iconStyle('download', !props.playhead.isPlaying)),
+      upload: computed(() => iconStyle('upload', !props.playhead.isPlaying)),
+      save: computed(() => iconStyle('save', isLoggedIn.value && !props.playhead.isPlaying)),
     })
 
     function showSoundHint() {

@@ -2,10 +2,10 @@ import { useTimer } from '@/mixins/timer'
 import { computed, proxyRefs, ref, watch } from 'vue'
 import { Frame } from '../model'
 
-export function scrubberController(options: {
+export function playheadController(options: {
   rewindOnUpdate: boolean
   frames: () => Frame[]
-}): ScrubberController {
+}): PlayheadController {
   const targetFrameIndex = ref(0)
   const isPlaying = ref(false)
 
@@ -86,7 +86,7 @@ export function scrubberController(options: {
   })
 }
 
-export interface ScrubberController {
+export interface PlayheadController {
   readonly isPlaying: boolean
   readonly isFirstFrame: boolean
   readonly isLastFrame: boolean

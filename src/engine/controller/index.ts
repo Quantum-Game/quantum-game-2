@@ -1,2 +1,2 @@
 export * from './game'
-export * from './scrubber'
+export * from './playhead'
