@@ -163,9 +163,24 @@ impl MulAssign for Complex {
     }
 }
 
+impl MulAssign<f32> for Complex {
+    fn mul_assign(&mut self, rhs: f32) {
+        self.re *= rhs;
+        self.im *= rhs;
+    }
+}
+
 impl Mul for Complex {
     type Output = Complex;
     fn mul(mut self, rhs: Complex) -> Complex {
+        self *= rhs;
+        self
+    }
+}
+
+impl Mul<f32> for Complex {
+    type Output = Complex;
+    fn mul(mut self, rhs: f32) -> Complex {
         self *= rhs;
         self
     }

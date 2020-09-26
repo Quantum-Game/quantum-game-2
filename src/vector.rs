@@ -8,12 +8,13 @@ use std::{
     fmt::Debug,
     hash::Hash,
     iter::{once, FromIterator},
-    ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
+    ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
-pub trait Dims: HList + Eq + Hash + Clone + Copy + Debug {}
-impl<T: HList + Eq + Hash + Clone + Copy + Debug> Dims for T {}
+pub trait Dims: HList + Eq + Hash + Clone + Copy + Debug + DebugHlist {}
+impl<T: HList + Eq + Hash + Clone + Copy + Debug + DebugHlist> Dims for T {}
 
+#[derive(Clone)]
 pub struct Vector<D> {
     values: HashMap<D, Complex>,
 }
@@ -102,6 +103,21 @@ impl<D: Dims> Vector<D> {
 
     pub fn norm(&self) -> f32 {
         self.norm_squared().sqrt()
+    }
+
+    pub fn normalize(mut self) -> Self {
+        let norm_repr = 1.0 / self.norm();
+        for (_, v) in self.values.iter_mut() {
+            *v *= norm_repr;
+        }
+        self
+    }
+
+    pub fn normalized(&self) -> Self {
+        let norm_repr = 1.0 / self.norm();
+        Self {
+            values: self.values.map_values(|v| *v * norm_repr).collect(),
+        }
     }
 
     pub fn group_by_dims<E: Dims, Indices>(&self) -> HashMap<D::Remainder, Vector<E>>
@@ -196,18 +212,16 @@ impl<D: Dims> FromIterator<(D, Complex)> for Vector<D> {
 impl<D: Dims> AddAssign<&Vector<D>> for Vector<D> {
     fn add_assign(&mut self, rhs: &Vector<D>) {
         // add to existing values
-        self.values.retain(|key, value| {
+        for (key, value) in &mut self.values {
             if let Some(value2) = rhs.values.get(key) {
                 *value += *value2;
-                !value.almost_zero()
-            } else {
-                true
             }
-        });
+        }
         // add new values
         for (&k, v) in &rhs.values {
             self.values.entry(k).or_insert(*v);
         }
+        self.values.retain(|_, v| !v.almost_zero())
     }
 }
 
@@ -254,14 +268,17 @@ impl<D: Dims> Add<&Vector<D>> for &Vector<D> {
 
 impl<D: Dims> SubAssign<&Vector<D>> for Vector<D> {
     fn sub_assign(&mut self, rhs: &Vector<D>) {
-        self.values.retain(|key, value| {
+        // sub from existing values
+        for (key, value) in &mut self.values {
             if let Some(value2) = rhs.values.get(key) {
                 *value -= *value2;
-                !value.almost_zero()
-            } else {
-                true
             }
-        })
+        }
+        // sub new values
+        for (&k, v) in &rhs.values {
+            self.values.entry(k).or_insert(-v);
+        }
+        self.values.retain(|_, v| !v.almost_zero())
     }
 }
 
@@ -350,6 +367,23 @@ impl<D: Dims> UlpsEq for Vector<D> {
                 .get(key)
                 .map_or(false, |v| value.ulps_eq(v, epsilon, max_ulps))
         })
+    }
+}
+
+impl<D> Neg for Vector<D> {
+    type Output = Vector<D>;
+    fn neg(mut self) -> Self::Output {
+        for val in self.values.values_mut() {
+            *val = -*val;
+        }
+        self
+    }
+}
+
+impl<D: Dims> Neg for &Vector<D> {
+    type Output = Vector<D>;
+    fn neg(self) -> Self::Output {
+        self.map_values(|v| -v)
     }
 }
 

@@ -6,7 +6,7 @@ pub use super::dimensions::*;
 const TAU: f32 = PI * 2.0;
 const I_SQRT_2: Complex = cx(0.0, SQRT_2);
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Angle {
     Right,
     UpRight,
@@ -114,6 +114,7 @@ impl Angle {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Element {
     Wall,
     Gate,
@@ -273,8 +274,6 @@ fn reflect_from_plane_direction(angle: Angle) -> Operator<DimDir> {
 fn reflect_phase_from_denser() -> Operator<DimPol> {
     operator![
         (H, H) => cx(1.0, 0.0),
-        (V, H) => cx(0.0, 0.0),
-        (H, V) => cx(0.0, 0.0),
         (V, V) => cx(-1.0, 0.0),
     ]
 }
@@ -346,7 +345,7 @@ where
 mod tests {
     use super::Element;
     use crate::photons::dimensions::*;
-    use crate::{cx, vector, Angle, Complex, Direction, PhotonDims, PosX, PosY, Vector};
+    use crate::{cx, vector, Angle, Complex, Direction, PosX, PosY, SinglePhotonDims, Vector};
     use approx::assert_ulps_eq;
     use std::f32::consts::{FRAC_1_SQRT_2, SQRT_2};
 
@@ -359,29 +358,29 @@ mod tests {
         dir: Direction,
         pol: Polarization,
         cx: Complex,
-    ) -> Vector<PhotonDims> {
+    ) -> Vector<SinglePhotonDims> {
         vector![
             hlist![PosX(x), PosY(y), dir, pol] => cx
         ]
     }
 
-    fn origin_photon(dir: Direction, pol: Polarization, cx: Complex) -> Vector<PhotonDims> {
+    fn origin_photon(dir: Direction, pol: Polarization, cx: Complex) -> Vector<SinglePhotonDims> {
         photon(0, 0, dir, pol, cx)
     }
 
-    fn directed_photon(dir: Direction) -> Vector<PhotonDims> {
+    fn directed_photon(dir: Direction) -> Vector<SinglePhotonDims> {
         photon(0, 0, dir, H, Complex::ONE)
     }
 
-    fn default_photon() -> Vector<PhotonDims> {
+    fn default_photon() -> Vector<SinglePhotonDims> {
         photon(0, 0, Direction::Right, H, Complex::ONE)
     }
 
-    fn default_mul(element: Element) -> Vector<PhotonDims> {
+    fn default_mul(element: Element) -> Vector<SinglePhotonDims> {
         photon_mul(element, &default_photon())
     }
 
-    fn photon_mul(element: Element, photon: &Vector<PhotonDims>) -> Vector<PhotonDims> {
+    fn photon_mul(element: Element, photon: &Vector<SinglePhotonDims>) -> Vector<SinglePhotonDims> {
         element.operator().mul_vec_partial(photon)
     }
 
@@ -407,7 +406,19 @@ mod tests {
 
     #[test]
     fn test_mirror() {
-        assert_eq!(default_mul(Element::Mirror(Angle::Right)), vector![])
+        assert_eq!(default_mul(Element::Mirror(Angle::Right)), vector![]);
+        assert_eq!(
+            default_mul(Element::Mirror(Angle::Up)),
+            origin_photon(Direction::Left, H, Complex::ONE)
+        );
+        assert_eq!(
+            default_mul(Element::Mirror(Angle::UpRight)),
+            origin_photon(Direction::Down, H, Complex::ONE)
+        );
+        assert_eq!(
+            default_mul(Element::Mirror(Angle::UpLeft)),
+            origin_photon(Direction::Up, H, Complex::ONE)
+        );
     }
 
     #[test]

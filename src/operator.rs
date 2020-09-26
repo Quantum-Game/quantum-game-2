@@ -9,9 +9,10 @@ use std::{
     fmt,
     iter::{once, FromIterator},
     marker::PhantomData,
-    ops::{Add, AddAssign, Mul, MulAssign, SubAssign},
+    ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
 };
 
+#[derive(Clone)]
 pub struct Operator<I, O = I> {
     values: HashMap<(I, O), Complex>,
 }
@@ -215,7 +216,8 @@ impl<I: Dims, O: Dims> Operator<I, O> {
                 .iter()
                 .map(move |(&o, row)| (r.join(o), row.dot(&vector)))
         });
-        Vector::from_values(entries)
+        let out = Vector::from_values(entries);
+        out
     }
 
     // pub fn contract_left<E: Dims, Indices>(&self, rhs: Vector<E>) -> Operator<I, E> {}
@@ -378,18 +380,16 @@ where
 impl<I: Dims, O: Dims> AddAssign<&Operator<I, O>> for Operator<I, O> {
     fn add_assign(&mut self, rhs: &Operator<I, O>) {
         // add to existing values
-        self.values.retain(|key, value| {
+        for (key, value) in &mut self.values {
             if let Some(value2) = rhs.values.get(key) {
                 *value += *value2;
-                !value.almost_zero()
-            } else {
-                true
             }
-        });
+        }
         // add new values
         for (&k, v) in &rhs.values {
             self.values.entry(k).or_insert(*v);
         }
+        self.values.retain(|_, v| !v.almost_zero())
     }
 }
 
@@ -426,16 +426,40 @@ impl<I: Dims, O: Dims> Add<&Operator<I, O>> for &Operator<I, O> {
     }
 }
 
+impl<I: Dims, O: Dims> std::iter::Sum for Operator<I, O> {
+    fn sum<T: Iterator<Item = Self>>(iter: T) -> Self {
+        iter.fold(Operator::new(), Add::add)
+    }
+}
+
 impl<I: Dims, O: Dims> SubAssign<&Operator<I, O>> for Operator<I, O> {
     fn sub_assign(&mut self, rhs: &Operator<I, O>) {
-        self.values.retain(|key, value| {
+        // sub from existing values
+        for (key, value) in &mut self.values {
             if let Some(value2) = rhs.values.get(key) {
                 *value -= *value2;
-                !value.almost_zero()
-            } else {
-                true
             }
-        })
+        }
+        // sub new values
+        for (&k, v) in &rhs.values {
+            self.values.entry(k).or_insert(-v);
+        }
+        self.values.retain(|_, v| !v.almost_zero())
+    }
+}
+
+impl<I: Dims, O: Dims> Sub<&Operator<I, O>> for Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn sub(mut self, rhs: &Operator<I, O>) -> Self::Output {
+        self -= rhs;
+        self
+    }
+}
+
+impl<I: Dims, O: Dims> Sub<Operator<I, O>> for Operator<I, O> {
+    type Output = Operator<I, O>;
+    fn sub(self, rhs: Operator<I, O>) -> Self::Output {
+        self - &rhs
     }
 }
 
@@ -572,6 +596,41 @@ mod tests {
 
         assert_eq!(&id * &t1, t1);
         assert_eq!(&op * &t1, t2);
+    }
+
+    #[test]
+    fn should_subtract_operators() {
+        let id = operator![
+            (D_H, D_H) => cx(1.0, 0.0),
+            (D_V, D_V) => cx(1.0, 0.0),
+            (U_H, U_H) => cx(1.0, 0.0),
+            (U_V, U_V) => cx(1.0, 0.0),
+        ];
+
+        let op = operator![
+            (D_H, D_H) => cx(1.0, 0.0),
+            (D_V, D_V) => cx(-1.0, 0.0),
+            (U_H, D_V) => cx(0.5, 0.5),
+        ];
+
+        let sub1 = operator![
+            (D_V, D_V) => cx(2.0, 0.0),
+            (U_H, U_H) => cx(1.0, 0.0),
+            (U_V, U_V) => cx(1.0, 0.0),
+            (U_H, D_V) => cx(-0.5, -0.5),
+        ];
+
+        let sub2 = operator![
+            (D_V, D_V) => cx(-2.0, 0.0),
+            (U_H, U_H) => cx(-1.0, 0.0),
+            (U_V, U_V) => cx(-1.0, 0.0),
+            (U_H, D_V) => cx(0.5, 0.5),
+        ];
+
+        assert_eq!(id.clone() - &op, sub1);
+        assert_eq!(id.clone() - op.clone(), sub1);
+        assert_eq!(op.clone() - &id, sub2);
+        assert_eq!(op - id, sub2);
     }
 
     #[test]

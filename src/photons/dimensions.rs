@@ -13,8 +13,9 @@ pub(crate) const RIGHT: Hlist![Direction] = hlist![Direction::Right];
 pub(crate) const DOWN: Hlist![Direction] = hlist![Direction::Down];
 pub(crate) const LEFT: Hlist![Direction] = hlist![Direction::Left];
 
-pub type PhotonDims = Hlist![PosX, PosY, Direction, Polarization];
-pub type PhotonOperator = Box<dyn PartialOperator<PhotonDims>>;
+pub type SinglePhotonDims = Hlist![PosX, PosY, Direction, Polarization];
+
+pub type SinglePhotonOperator = Box<dyn PartialOperator<SinglePhotonDims>>;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct PosX(pub u16);
