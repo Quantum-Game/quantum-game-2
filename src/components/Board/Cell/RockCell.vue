@@ -1,5 +1,5 @@
 <template>
-  <svg :class="state">
+  <svg ref="root" :class="state" :style="rockStyle">
     <path
       stroke="#F0F"
       stroke-width="2"
@@ -42,11 +42,27 @@
         d="M20.753 29.265c0 .712-.582 1.29-1.3 1.29a1.295 1.295 0 01-1.298-1.29c0-.713.581-1.29 1.299-1.29.717 0 1.299.577 1.299 1.29zm18.895 0c0 .712-.582 1.29-1.3 1.29-.717 0-1.298-.578-1.298-1.29 0-.713.581-1.29 1.299-1.29.717 0 1.299.577 1.299 1.29z"
         class="pupil"
       />
-      <path
-        fill="#615777"
-        d="M26.1 28.678H12.807c.299-3.385 3.16-6.04 6.647-6.04 3.486 0 6.347 2.655 6.646 6.04zm18.895 0H31.702c.299-3.385 3.16-6.04 6.647-6.04 3.486 0 6.347 2.655 6.646 6.04z"
-        class="eyelids"
-      />
+      <g class="eyelids">
+        <mask
+          :id="`eyelid-mask-${uid}`"
+          width="34"
+          height="15"
+          x="12"
+          y="14"
+          class="mask0"
+          maskUnits="userSpaceOnUse"
+        >
+          <path fill="#fff" d="M12.629 14.985h32.475v13.781H12.63V14.985z" class="eyelid-mask" />
+        </mask>
+        <g :mask="`url(#eyelid-mask-${uid})`">
+          <path
+            fill="#615777"
+            d="M26.21 29.352c0 3.725-3.04 6.744-6.791 6.744-3.75 0-6.79-3.019-6.79-6.743 0-3.725 3.04-6.745 6.79-6.745s6.79 3.02 6.79 6.744zm18.894 0c0 3.725-3.04 6.744-6.79 6.744s-6.79-3.019-6.79-6.743c0-3.725 3.04-6.745 6.79-6.745s6.79 3.02 6.79 6.744z"
+            class="eyelids_2"
+            clip-rule="evenodd"
+          />
+        </g>
+      </g>
     </g>
     <path
       fill="#fff"
@@ -58,17 +74,96 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { useMouseCoords, useTimer } from '@/mixins'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import { props } from './Piece'
-export default defineComponent({ props })
+let uid = 0
+export default defineComponent({
+  props,
+  setup(props) {
+    const mouse = useMouseCoords()
+    const root = ref<HTMLElement>()
+
+    const restEyePos = reactive({ x: 0, y: 0 })
+
+    const eyeMovement = useTimer(moveEyesRandom)
+
+    function moveEyesRandom() {
+      restEyePos.x = Math.random() - 0.5
+      restEyePos.y = Math.random() - 0.5
+      if (Math.random() > 0.5) {
+        eyeMovement.restart(300 + Math.random() * 1000, moveEyesCenter)
+      } else {
+        eyeMovement.restart(300 + Math.random() * 500, moveEyesRandom)
+      }
+    }
+
+    function moveEyesCenter() {
+      restEyePos.x = 0
+      restEyePos.y = 0
+      eyeMovement.restart(3000 + Math.random() * 2000, moveEyesRandom)
+    }
+
+    moveEyesCenter()
+
+    const eyePos = computed(() => {
+      // prevent too much activity on mouse move, only respond to mouse when hovered
+      if (props.state?.hover && root.value != null) {
+        const bounds = root.value.getBoundingClientRect()
+        const x = (mouse.x - bounds.x) / bounds.width - 0.5
+        const y = (mouse.y - bounds.y) / bounds.height - 0.4
+        return { x, y }
+      } else {
+        return restEyePos
+      }
+    })
+
+    return {
+      rockStyle: computed(() => {
+        const { x, y } = eyePos.value
+        return `--eye-x: ${x}; --eye-y: ${y};`
+      }),
+      root,
+      uid: uid++,
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
-svg.hover,
+.eyelid-mask {
+  transform: translateY(calc(var(--eye-y) * 8px - 1px));
+  transition: transform 0.3s;
+}
+
+.pupil,
+.iris {
+  transform: translate(0px, 0px);
+  transition: transform 0.5s ease;
+}
+
+.pupil {
+  transform: translate(calc(var(--eye-x) * 4.8px), calc(var(--eye-y) * 4.8px));
+}
+.iris {
+  transform: translate(calc(var(--eye-x) * 3.8px), calc(var(--eye-y) * 3.8px));
+}
+
+svg.hover {
+  .eyelid-mask {
+    transition: transform 0s;
+  }
+  .pupil,
+  .iris {
+    transition: transform 0s;
+  }
+}
+
 svg.interacting,
 svg.energized {
-  .eyelids {
-    display: none;
+  .eyelid-mask {
+    transform: translateY(-6px);
+    transition: transform 0.2s;
   }
 }
 
