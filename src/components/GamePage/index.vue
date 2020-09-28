@@ -56,7 +56,7 @@
             @hover="updateInfoPayload"
           />
           <game-controls
-            :scrubber="scrubberCtl"
+            :playhead="playheadCtl"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -72,9 +72,9 @@
           <GameGoals :goals="gameCtl.goals" />
           <div class="ket-viewer-game">
             <ket-viewer
-              v-if="scrubberCtl.activeFrame"
+              v-if="playheadCtl.activeFrame"
               class="ket"
-              :vector="scrubberCtl.activeFrame.vector"
+              :vector="playheadCtl.activeFrame.vector"
             />
           </div>
         </section>
@@ -110,7 +110,7 @@ import { useWindowEvent, usePerRouteFlag, useMouseCoords } from '@/mixins'
 import {
   GameOutcome,
   gameController,
-  scrubberController,
+  playheadController,
   GrabSource,
   GrabState,
 } from '@/engine/controller'
@@ -141,7 +141,7 @@ export default defineComponent({
     const alreadyWon = usePerRouteFlag()
 
     const gameCtl = gameController()
-    const scrubberCtl = scrubberController({
+    const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: true,
     })
@@ -177,11 +177,11 @@ export default defineComponent({
       switch (e.key) {
         case ' ':
           e.preventDefault()
-          return scrubberCtl.toggle()
+          return playheadCtl.toggle()
         case 'ArrowLeft':
-          return scrubberCtl.stepBack()
+          return playheadCtl.stepBack()
         case 'ArrowRight':
-          return scrubberCtl.stepForward()
+          return playheadCtl.stepForward()
       }
     })
 
@@ -244,7 +244,7 @@ export default defineComponent({
      * @returns particles
      */
     const activeParticles = computed((): Particle[] => {
-      return scrubberCtl.activeFrame?.particles ?? []
+      return playheadCtl.activeFrame?.particles ?? []
     })
 
     /**
@@ -263,7 +263,7 @@ export default defineComponent({
     })
 
     const overlayGameState = computed(() => {
-      if (!alreadyWon.flag && scrubberCtl.isLastFrame) {
+      if (!alreadyWon.flag && playheadCtl.isLastFrame) {
         switch (gameCtl.goals.gameOutcome) {
           case GameOutcome.Victory:
             return 'Victory'
@@ -293,7 +293,7 @@ export default defineComponent({
 
     function continueAfterWin(): void {
       alreadyWon.set()
-      scrubberCtl.rewind()
+      playheadCtl.rewind()
     }
 
     /**
@@ -326,7 +326,7 @@ export default defineComponent({
       const piece = gameCtl.level?.board.pieces.get(coord)
       if (piece == null) return
       if (piece.type === Elem.Laser) {
-        scrubberCtl.toggle()
+        playheadCtl.toggle()
       } else {
         gameCtl.rotateCcw(coord)
       }
@@ -334,7 +334,7 @@ export default defineComponent({
 
     return {
       gameCtl,
-      scrubberCtl,
+      playheadCtl,
       dragState,
       previousLevel,
       nextLevel,

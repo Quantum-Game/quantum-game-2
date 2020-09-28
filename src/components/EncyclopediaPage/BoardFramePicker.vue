@@ -1,16 +1,16 @@
 <template>
   <div class="btn-group">
-    <span v-for="index in scrubber.totalFrames" :key="index" @mouseover="scrubber.seek(index - 1)">
-      <button :class="{ selected: scrubber.frameIndex === index - 1 }"></button>
+    <span v-for="index in playhead.totalFrames" :key="index" @mouseover="playhead.seek(index - 1)">
+      <button :class="{ selected: playhead.frameIndex === index - 1 }"></button>
     </span>
   </div>
 </template>
 <script lang="ts">
-import { ScrubberController } from '@/engine/controller'
+import { PlayheadController } from '@/engine/controller'
 import { defineComponent, PropType } from 'vue'
 
 export default defineComponent({
-  props: { scrubber: { type: Object as PropType<ScrubberController>, required: true } },
+  props: { playhead: { type: Object as PropType<PlayheadController>, required: true } },
 })
 </script>
 <style lang="scss" scoped>
