@@ -157,7 +157,7 @@ export default defineComponent({
         case GrabSource.Board:
           return state.piece
         case GrabSource.Toolbox:
-          return pieceFromTool(state.type)
+          return pieceFromTool(state.type, null)
       }
     }
 

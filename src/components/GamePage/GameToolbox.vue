@@ -55,7 +55,9 @@ export default defineComponent({
     })
 
     const tools = computed(() =>
-      Array.from(iMap(toolsVisited, (tool) => [pieceFromTool(tool), props.toolbox.getCount(tool)]))
+      Array.from(
+        iMap(toolsVisited, (tool) => [pieceFromTool(tool, null), props.toolbox.getCount(tool)])
+      )
     )
 
     function showPieceHint(piece: Piece) {

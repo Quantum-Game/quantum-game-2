@@ -1,12 +1,16 @@
-import { isRef, ref, Ref, watch, WatchSource } from 'vue'
+import { computed, isRef, ref, Ref, triggerRef, watch, watchEffect, WatchSource } from 'vue'
 
 import TWEEN from '@tweenjs/tween.js'
+import { cloneDeep } from 'lodash'
+import { isObject } from '@/types'
 
 export type EasingFunction = (t: number) => number
 
 export const Easing = TWEEN.Easing
 
-interface TweenSettings {
+interface TweenSettings<T> {
+  from?: WatchSource<T | null>
+  to: WatchSource<T>
   /**
    * Tween easing function
    * @default Easing.Cubic.InOut
@@ -19,30 +23,48 @@ interface TweenSettings {
   duration?: number
 }
 
-function createTween(
-  source: WatchSource<number>,
-  settings?: TweenSettings,
-  preprocessStart?: (current: number, next: number) => number,
-  postprocess?: (out: number) => number
+function evalWatchSource<T>(src: WatchSource<T>): T {
+  return isRef(src) ? src.value : src()
+}
+
+function createTween<T extends number | Record<string, number>>(
+  settings: TweenSettings<T>,
+  preprocessStart?: (start: T, next: T) => T,
+  postprocess?: (out: T) => T
 ) {
-  const initialValue = isRef(source) ? source.value : source()
-  const tweened = ref(initialValue)
-  const tween = new TWEEN.Tween({ value: initialValue }).onUpdate(({ value }) => {
-    tweened.value = postprocess ? postprocess(value) : value
-  })
+  const from = computed(() => (settings.from != null ? evalWatchSource(settings.from) : null))
+  const to = computed(() => evalWatchSource(settings.to))
+  const initialValue = from.value ?? to.value
+  const tweened = ref<T>(cloneDeep(initialValue)) as Ref<T>
 
-  settings = settings ?? {}
-  tween.easing(settings.easing ?? Easing.Cubic.InOut)
-  const duration = settings.duration ?? 250
+  let tween: InstanceType<typeof TWEEN.Tween> | null = null
 
-  watch(source, (next) => {
-    const start = preprocessStart ? preprocessStart(tweened.value, next) : tweened.value
-    tween.stop()
-    // eslint-disable-next-line dot-notation
-    tween['_valuesStart'] = { value: start }
-    tween.to({ value: next }, duration).start(TWEEN.now())
-    kickstartTweens()
-  })
+  watch(
+    () => ({ from: from.value, to: to.value }),
+    ({ from, to }) => {
+      const initial = from ?? tweened.value
+      const start = preprocessStart ? preprocessStart(initial, to) : initial
+      if (tween != null) {
+        tween.stop()
+      }
+
+      const isWrapped = !isObject(to)
+      const wrappedStart = isObject(start) ? start : { value: start }
+      const wrappedTarget = isObject(to) ? to : { value: to }
+      tween = new TWEEN.Tween(wrappedStart)
+        .onUpdate((tween) => {
+          const value = isWrapped ? (tween.value as T) : (tween as T)
+          tweened.value = postprocess ? postprocess(value) : value
+          triggerRef(tweened)
+        })
+        .easing(settings.easing ?? Easing.Cubic.InOut)
+        .to(wrappedTarget, settings.duration ?? 250)
+        .start(TWEEN.now())
+
+      kickstartTweens()
+    },
+    { immediate: true }
+  )
 
   return tweened
 }
@@ -67,13 +89,14 @@ function updateTweens(time: number) {
 /**
  * Tween reactive data
  */
-export function useTween(source: WatchSource<number>, settings?: TweenSettings): Ref<number> {
-  return createTween(source, settings)
+export function useTween<T extends number | Record<string, number>>(
+  settings: TweenSettings<T>
+): Ref<T> {
+  return createTween(settings)
 }
 
-export function useAngleTween(source: WatchSource<number>, settings?: TweenSettings): Ref<number> {
+export function useAngleTween(settings: TweenSettings<number>): Ref<number> {
   return createTween(
-    source,
     settings,
     (current, next) => next - shortestAngleDifference(current, next),
     (out) => (out + 360) % 360

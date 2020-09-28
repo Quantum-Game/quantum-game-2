@@ -79,3 +79,7 @@ export function isNotString<T>(val: T | string): val is T {
 export function assertUnreachable(_: never): never {
   throw new Error('Unreachable')
 }
+
+export function emitType<T>(): (_: T) => true {
+  return () => true
+}
