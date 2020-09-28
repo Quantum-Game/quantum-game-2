@@ -129,6 +129,7 @@ export default defineComponent({
     release: emitType<ReleaseEvent>(),
     touch: Coord.validate,
     hover: validateInfoPayload,
+    'scale-changed': emitType<number>(),
   },
   setup(props, { emit }) {
     const boardScaler = ref<HTMLElement>()
@@ -137,10 +138,15 @@ export default defineComponent({
     const tileSize = 64
     const scaledTileSize = ref(64)
 
-    watch(boardRect, (size) => {
-      const currentWidth = size.width
-      scaledTileSize.value = tileSize * (currentWidth / 845)
-    })
+    watch(
+      boardRect,
+      (size) => {
+        const currentWidth = size.width
+        scaledTileSize.value = tileSize * (currentWidth / 845)
+        emit('scale-changed', scaledTileSize.value)
+      },
+      { immediate: true }
+    )
 
     const cells = computed(() => {
       const absorptions = props.absorptions

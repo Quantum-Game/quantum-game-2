@@ -80,6 +80,11 @@ export function assertUnreachable(_: never): never {
   throw new Error('Unreachable')
 }
 
+/**
+ * Declare the event type in `emits` declaration.
+ *
+ * warning: Only for static typing, doesn't actually provide any runtime validation.
+ */
 export function emitType<T>(): (_: T) => true {
   return () => true
 }
