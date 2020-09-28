@@ -180,7 +180,7 @@ export default defineComponent({
         piece: grabbedPiece(grab),
         style: {
           transformOrigin: `50% 50%`,
-          transform: `translate(${mouse.x - halfTile}px, ${mouse.y - halfTile}px)`,
+          transform: `translate(${mouse.pageX - halfTile}px, ${mouse.pageY - halfTile}px)`,
         },
       }
     })

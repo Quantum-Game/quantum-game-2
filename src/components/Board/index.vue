@@ -160,8 +160,10 @@ export default defineComponent({
     })
 
     function handleBoardRelease(e: MouseEvent) {
-      const x = (e.offsetX / boardRect.value.width) * props.board.width
-      const y = (e.offsetY / boardRect.value.height) * props.board.height
+      const rect = boardScaler.value?.getBoundingClientRect()
+      if (rect == null) return
+      const x = ((e.clientX - rect.x) / rect.width) * props.board.width
+      const y = ((e.clientY - rect.y) / rect.height) * props.board.height
       const coord = Coord.new(Math.floor(x), Math.floor(y))
       emit('release', { coord, releasePoint: { x, y } })
     }

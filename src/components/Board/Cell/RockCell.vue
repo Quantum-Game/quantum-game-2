@@ -110,8 +110,8 @@ export default defineComponent({
       // prevent too much activity on mouse move, only respond to mouse when hovered
       if (props.state?.hover && root.value != null) {
         const bounds = root.value.getBoundingClientRect()
-        const x = (mouse.x - bounds.x) / bounds.width - 0.5
-        const y = (mouse.y - bounds.y) / bounds.height - 0.4
+        const x = (mouse.clientX - bounds.x) / bounds.width - 0.5
+        const y = (mouse.clientY - bounds.y) / bounds.height - 0.4
         return { x, y }
       } else {
         return restEyePos

@@ -17,11 +17,23 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
   })
 }
 
-export function useMouseCoords(): { x: number; y: number } {
-  const coords = reactive({ x: 0, y: 0 })
+export function useMouseCoords(): {
+  pageX: number
+  pageY: number
+  clientX: number
+  clientY: number
+} {
+  const coords = reactive({
+    pageX: 0,
+    pageY: 0,
+    clientX: 0,
+    clientY: 0,
+  })
   useWindowEvent('mousemove', (e) => {
-    coords.x = e.pageX
-    coords.y = e.pageY
+    coords.pageX = e.pageX
+    coords.pageY = e.pageY
+    coords.clientX = e.clientX
+    coords.clientY = e.clientY
   })
   return coords
 }
