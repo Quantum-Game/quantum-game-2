@@ -30,6 +30,7 @@
         <section>
           <game-toolbox
             v-if="gameCtl.level"
+            :key="gameCtl.level.id"
             :toolbox="gameCtl.level.toolbox"
             :tile-size="scaledTileSize"
             @grab="gameCtl.grab.grabTool"
@@ -45,6 +46,7 @@
         <section>
           <board
             v-if="gameCtl.level"
+            :key="gameCtl.level.id"
             :board="gameCtl.level.board"
             :hints="gameCtl.level.hints"
             :laser-particles="laserParticles"
