@@ -30,12 +30,12 @@ svg {
     .hover .hide-hover,
     .interacting .hide-interacting,
     .energized .hide-energized {
-        display: none;
+        opacity: 0;
     }
     
     .energized .show-energized,
     .hover .show-hover,
     .interacting .show-interacting {
-        display: initial;
+        opacity: initial;
     }
 }

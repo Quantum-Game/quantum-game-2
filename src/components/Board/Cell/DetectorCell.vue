@@ -109,3 +109,9 @@ import { defineComponent } from 'vue'
 import { props } from './Piece'
 export default defineComponent({ props })
 </script>
+
+<style lang="scss" scoped>
+.show-energized {
+  transition: opacity 0.3s;
+}
+</style>
