@@ -21,6 +21,7 @@ import { computed, defineComponent, PropType, ref } from 'vue'
 import { PieceState } from './Cell/Piece'
 import { Coord, Elem, Piece, rotationToDegrees } from '@/engine/model'
 import { IStyle } from '@/types'
+import { Easing, useAngleTween } from '@/mixins'
 
 const tileSize = 64
 
@@ -36,6 +37,11 @@ export default defineComponent({
   setup(props, { emit }) {
     const hover = ref(false)
 
+    const tweenRotation = useAngleTween(() => rotationToDegrees(props.piece.rotation), {
+      easing: Easing.Exponential.Out,
+      duration: 200,
+    })
+
     const pieceState = computed(
       (): PieceState => {
         return {
@@ -47,17 +53,17 @@ export default defineComponent({
     )
 
     const rectStyle = computed(() => {
-      const rotation = rotationToDegrees(props.piece.rotation)
+      const rotation = tweenRotation.value
       const halfTile = tileSize / 2
       return {
         transformOrigin: `${halfTile}px ${halfTile}px`,
-        transform: `rotate(${-rotation}deg)`,
+        transform: `rotate(${rotation}deg)`,
       }
     })
 
     const cellStyle = computed(
       (): IStyle => {
-        const rotation = rotationToDegrees(props.piece.rotation)
+        const rotation = tweenRotation.value
         const coord = props.coord ?? Coord.new(0, 0)
         const origin = coord.gridCenter()
         const translate = coord.gridTopLeft()
