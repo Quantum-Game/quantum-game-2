@@ -1,5 +1,5 @@
 <template>
-  <svg :class="state">
+  <svg :class="state" width="64" height="64">
     <path
       fill="#F0F"
       d="M5 16.4C5 10.1 10.1 5 16.4 5h31.2C53.9 5 59 10.1 59 16.4v31.2C59 53.9 53.9 59 47.6 59H16.4C10.1 59 5 53.9 5 47.6V16.4z"

@@ -1,5 +1,5 @@
 <template>
-  <svg :class="state">
+  <svg :class="state" width="64" height="64">
     <path
       fill-rule="evenodd"
       d="M54.0155 8L56 9.99334V56H9.99725L8 54.0162V8H54.0155ZM9 53.6V9H53.6L55 10.4062V55H10.4095L9 53.6Z"

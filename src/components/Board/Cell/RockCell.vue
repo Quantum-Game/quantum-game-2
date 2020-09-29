@@ -1,5 +1,5 @@
 <template>
-  <svg ref="root" :class="state" :style="rockStyle">
+  <svg ref="root" :class="state" :style="rockStyle" width="64" height="64">
     <path
       stroke="#F0F"
       stroke-width="2"
