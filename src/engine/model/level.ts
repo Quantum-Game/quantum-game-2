@@ -36,6 +36,15 @@ export interface Board {
   readonly hints: Map<Coord, Hint>
 }
 
+/**
+ * Exact board coordinates at last interaction, if any.
+ * The coordinates are non-floored version of coord.
+ */
+export type ReleasePoint = null | {
+  x: number
+  y: number
+}
+
 export interface Piece {
   readonly type: Elem
   readonly rotation: Rotation
@@ -43,6 +52,7 @@ export interface Piece {
   readonly goalThreshold: number
   readonly draggable: boolean
   readonly rotateable: boolean
+  readonly releasePoint: ReleasePoint
 }
 
 export interface Hint {
@@ -75,6 +85,7 @@ function importPiece(
     goalThreshold: importedGoals.get(coord) ?? 0,
     draggable: !frozen && active,
     rotateable: !frozen,
+    releasePoint: null,
   }
 
   return { coord, piece }
@@ -84,7 +95,7 @@ function importPiece(
  * Import toolbox piece from unknown value
  * @param value parsed JSON object
  */
-export function pieceFromTool(type: Elem): Piece & { draggable: true } {
+export function pieceFromTool(type: Elem, releasePoint: ReleasePoint): Piece & { draggable: true } {
   return {
     type,
     rotation: Rotation.Right,
@@ -92,6 +103,7 @@ export function pieceFromTool(type: Elem): Piece & { draggable: true } {
     goalThreshold: type === Elem.Detector || type === Elem.DetectorFour ? 1 : 0,
     draggable: true,
     rotateable: true,
+    releasePoint,
   }
 }
 

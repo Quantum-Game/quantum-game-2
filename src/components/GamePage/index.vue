@@ -30,7 +30,9 @@
         <section>
           <game-toolbox
             v-if="gameCtl.level"
+            :key="gameCtl.level.id"
             :toolbox="gameCtl.level.toolbox"
+            :tile-size="scaledTileSize"
             @grab="gameCtl.grab.grabTool"
             @release="gameCtl.grab.releaseTool"
             @hover="updateInfoPayload"
@@ -44,6 +46,7 @@
         <section>
           <board
             v-if="gameCtl.level"
+            :key="gameCtl.level.id"
             :board="gameCtl.level.board"
             :hints="gameCtl.level.hints"
             :laser-particles="laserParticles"
@@ -54,6 +57,7 @@
             @grab="gameCtl.grab.grabPiece"
             @release="gameCtl.grab.releasePiece"
             @hover="updateInfoPayload"
+            @scale-changed="scaledTileSize = $event"
           />
           <game-controls
             :playhead="playheadCtl"
@@ -83,7 +87,13 @@
 
     <!-- DRAG AND DROP CELL -->
     <div class="drag-container">
-      <svg v-if="dragState" viewBox="0 0 64 64" width="64" height="64" :style="dragState.style">
+      <svg
+        v-if="dragState"
+        viewBox="0 0 64 64"
+        :width="scaledTileSize"
+        :height="scaledTileSize"
+        :style="dragState.style"
+      >
         <app-cell :piece="dragState.piece" :interacting="true" />
       </svg>
     </div>
@@ -145,6 +155,7 @@ export default defineComponent({
       frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: true,
     })
+    const scaledTileSize = ref(64)
 
     const mouse = useMouseCoords()
 
@@ -157,18 +168,19 @@ export default defineComponent({
         case GrabSource.Board:
           return state.piece
         case GrabSource.Toolbox:
-          return pieceFromTool(state.type)
+          return pieceFromTool(state.type, null)
       }
     }
 
     const dragState = computed(() => {
       const grab = gameCtl.grab.grabState
+      const halfTile = scaledTileSize.value / 2
       if (grab == null) return null
       return {
         piece: grabbedPiece(grab),
         style: {
           transformOrigin: `50% 50%`,
-          transform: `translate(${mouse.x - 32}px, ${mouse.y - 32}px)`,
+          transform: `translate(${mouse.pageX - halfTile}px, ${mouse.pageY - halfTile}px)`,
         },
       }
     })
@@ -351,6 +363,7 @@ export default defineComponent({
       infoPayload,
       loadJsonLevelFromFile,
       handleTouch,
+      scaledTileSize,
     }
   },
 })

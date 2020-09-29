@@ -1,4 +1,4 @@
-import { Coord, Elem, Piece, pieceFromTool } from '@/engine/model'
+import { Coord, Elem, Piece, pieceFromTool, ReleasePoint } from '@/engine/model'
 import Toolbox from '@/engine/Toolbox'
 import { assertUnreachable } from '@/types'
 import { proxyRefs, ref } from 'vue'
@@ -8,9 +8,18 @@ export const enum GrabSource {
   Board,
 }
 
+export interface ReleaseEvent {
+  coord: Coord
+  releasePoint: ReleasePoint
+}
+
 export type GrabState =
   | { source: GrabSource.Toolbox; type: Elem }
-  | { source: GrabSource.Board; coord: Coord; piece: Piece & { draggable: true } }
+  | {
+      source: GrabSource.Board
+      coord: Coord
+      piece: Piece & { draggable: true; releasePoint: null }
+    }
 
 export function grabController(data: {
   pieces: () => Map<Coord, Piece> | null
@@ -29,7 +38,11 @@ export function grabController(data: {
     const pieces = data.pieces()
     const piece = pieces?.get(coord)
     if (pieces == null || piece == null || piece.draggable !== true) return
-    grabState.value = { source: GrabSource.Board, coord, piece: { ...piece, draggable: true } }
+    grabState.value = {
+      source: GrabSource.Board,
+      coord,
+      piece: { ...piece, draggable: true, releasePoint: null },
+    }
     pieces.delete(coord)
   }
 
@@ -59,7 +72,7 @@ export function grabController(data: {
     }
   }
 
-  function releasePiece(coord: Coord) {
+  function releasePiece({ coord, releasePoint }: ReleaseEvent) {
     const pieces = data.pieces()
     if (grabState.value != null && pieces != null) {
       const atBoard = pieces.get(coord)
@@ -67,22 +80,22 @@ export function grabController(data: {
       switch (grabState.value.source) {
         case GrabSource.Board:
           if (atBoard == null) {
-            pieces.set(coord, grabState.value.piece)
+            pieces.set(coord, { ...grabState.value.piece, releasePoint })
           } else if (atBoard.draggable) {
             // swap two pieces together
             pieces.set(grabState.value.coord, atBoard)
-            pieces.set(coord, grabState.value.piece)
+            pieces.set(coord, { ...grabState.value.piece, releasePoint })
           } else {
             putBack()
           }
           break
         case GrabSource.Toolbox:
           if (atBoard == null) {
-            pieces.set(coord, pieceFromTool(grabState.value.type))
+            pieces.set(coord, pieceFromTool(grabState.value.type, releasePoint))
           } else if (atBoard.draggable && atBoard.rotateable) {
             // swap toolbox and board
             data.toolbox()?.addTool(atBoard.type)
-            pieces.set(coord, pieceFromTool(grabState.value.type))
+            pieces.set(coord, pieceFromTool(grabState.value.type, releasePoint))
           } else {
             putBack()
           }
@@ -140,6 +153,6 @@ export interface GrabController {
   grabPiece(coord: Coord): void
   grabTool(type: Elem): void
   releaseTool(): void
-  releasePiece(coord: Coord): void
+  releasePiece(event: ReleaseEvent): void
   putBack(): void
 }

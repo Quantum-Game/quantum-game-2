@@ -1,25 +1,26 @@
 <template>
-  <div class="toolbox" @mouseup="onRelease">
-    <svg
+  <div class="toolbox" layout="row wrap" @mouseup="onRelease">
+    <div
       v-for="[piece, count] in tools"
       :key="piece.type"
-      class="tool"
-      viewBox="0 0 80 80"
-      preserveAspectRatio="xMidYMid meet"
+      :class="{ tool: true, inactive: count === 0 }"
+      layout="column middle u1"
       @mouseenter="showPieceHint(piece)"
     >
-      <g :class="count > 0 ? 'active' : 'inactive'">
-        <g>
-          <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
-          <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
-          <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
-          <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
-        </g>
+      <svg
+        viewBox="0 0 64 64"
+        :width="tileSize"
+        :height="tileSize"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <circle :cx="0" :cy="0" r="1" fill="#edeaf4" />
+        <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
+        <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
+        <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
         <app-cell :piece="piece" :available="count > 0" @grab="onGrab(piece.type)" />
-        <text class="counter" x="40%" y="80">× {{ count }}</text>
-      </g>
-    </svg>
-    <slot></slot>
+      </svg>
+      <span class="counter">× {{ count }}</span>
+    </div>
   </div>
 </template>
 
@@ -37,6 +38,7 @@ export default defineComponent({
   },
   props: {
     toolbox: { type: Toolbox, required: true },
+    tileSize: { type: Number, default: 64 },
   },
   emits: {
     hover: validateInfoPayload,
@@ -55,7 +57,9 @@ export default defineComponent({
     })
 
     const tools = computed(() =>
-      Array.from(iMap(toolsVisited, (tool) => [pieceFromTool(tool), props.toolbox.getCount(tool)]))
+      Array.from(
+        iMap(toolsVisited, (tool) => [pieceFromTool(tool, null), props.toolbox.getCount(tool)])
+      )
     )
 
     function showPieceHint(piece: Piece) {
@@ -76,73 +80,23 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-body {
-  overflow-y: hidden;
-}
-.title {
-  color: rgba($color: #fff, $alpha: 1);
-  font-weight: 900;
-  margin-top: 0px;
-  padding-bottom: 15px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  width: 100%;
-  text-align: center;
-  border-top: solid 2px #fff;
-  @include media('<large') {
-    display: none;
-  }
-}
 .toolbox {
   display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  padding: 5px;
-  @include media('<large') {
-    justify-content: space-evenly;
-    border-top: none;
-    &::after {
-      content: '';
-      flex-grow: 99999999;
-    }
+}
+
+.tool {
+  padding: 8px 0;
+  &.inactive {
+    opacity: 0.4;
   }
-  .tool-rect {
-    fill: #2e006a;
-    opacity: 0.5;
-  }
-  .tool {
-    width: 30%;
-    min-width: 64px;
-    padding: 0.5rem 0rem;
-    height: 90px;
-    @include media('<large') {
-      width: 64px;
-      padding: 0;
-      width: auto;
-      min-width: 35px;
-      min-height: 0;
-      flex-grow: 1;
-      flex-basis: 20%;
-      height: 15vw;
-    }
-    .counter {
-      transform-origin: 50% 100%;
-      fill: white;
-      text-anchor: middle;
-      margin: 0;
-      font-size: 0.8rem;
-    }
-    .inactive {
-      opacity: 0.4;
-    }
-    .active {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
+}
+
+.counter {
+  fill: white;
+  text-anchor: middle;
+  margin: 0;
+  font-size: 0.8rem;
 }
 </style>

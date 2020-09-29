@@ -65,7 +65,7 @@ export default defineComponent({
     goals: { type: Object as PropType<GoalsController>, required: true },
   },
   setup(props) {
-    const tweenedPercent = useTween(() => props.goals.totalAbsorption)
+    const tweenedPercent = useTween({ to: () => props.goals.totalAbsorption })
 
     const computeProbabilityClass = computed((): string => {
       return props.goals.probabilityGoalMet ? 'success' : 'defeat'

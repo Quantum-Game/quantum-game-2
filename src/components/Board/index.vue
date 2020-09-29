@@ -53,7 +53,6 @@
         :energized="energized"
         @touch="$emit('touch', coord)"
         @grab="$emit('grab', coord)"
-        @release="$emit('release', coord)"
         @mouseover="handleMouseEnter(coord)"
       />
 
@@ -100,11 +99,12 @@ import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
-import { IStyle } from '@/types'
+import { emitType, IStyle } from '@/types'
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
+import { ReleaseEvent } from '@/engine/controller'
 
 export default defineComponent({
   name: 'Board',
@@ -126,9 +126,10 @@ export default defineComponent({
   },
   emits: {
     grab: Coord.validate,
-    release: Coord.validate,
+    release: emitType<ReleaseEvent>(),
     touch: Coord.validate,
     hover: validateInfoPayload,
+    'scale-changed': emitType<number>(),
   },
   setup(props, { emit }) {
     const boardScaler = ref<HTMLElement>()
@@ -137,10 +138,15 @@ export default defineComponent({
     const tileSize = 64
     const scaledTileSize = ref(64)
 
-    watch(boardRect, (size) => {
-      const currentWidth = size.width
-      scaledTileSize.value = tileSize * (currentWidth / 845)
-    })
+    watch(
+      boardRect,
+      (size) => {
+        const currentWidth = size.width
+        scaledTileSize.value = tileSize * (currentWidth / 845)
+        emit('scale-changed', scaledTileSize.value)
+      },
+      { immediate: true }
+    )
 
     const cells = computed(() => {
       const absorptions = props.absorptions
@@ -148,16 +154,18 @@ export default defineComponent({
         iMap(props.board.pieces, ([coord, piece]) => ({
           coord,
           piece,
-          energized: absorptions.has(coord),
+          energized: absorptions.get(coord) ?? 0,
         }))
       )
     })
 
     function handleBoardRelease(e: MouseEvent) {
-      const x = (e.offsetX / boardRect.value.width) * props.board.width
-      const y = (e.offsetY / boardRect.value.height) * props.board.height
+      const rect = boardScaler.value?.getBoundingClientRect()
+      if (rect == null) return
+      const x = ((e.clientX - rect.x) / rect.width) * props.board.width
+      const y = ((e.clientY - rect.y) / rect.height) * props.board.height
       const coord = Coord.new(Math.floor(x), Math.floor(y))
-      emit('release', coord)
+      emit('release', { coord, releasePoint: { x, y } })
     }
 
     const empties = computed(() => {

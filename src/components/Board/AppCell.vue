@@ -21,6 +21,7 @@ import { computed, defineComponent, PropType, ref } from 'vue'
 import { PieceState } from './Cell/Piece'
 import { Coord, Elem, Piece, rotationToDegrees } from '@/engine/model'
 import { IStyle } from '@/types'
+import { Easing, useAngleTween, useTween } from '@/mixins'
 
 const tileSize = 64
 
@@ -29,42 +30,69 @@ export default defineComponent({
     piece: { type: Object as PropType<Piece>, required: true },
     coord: { type: Object as PropType<Coord>, required: false },
     interacting: { type: Boolean, default: false },
-    energized: { type: Boolean, default: false },
+    energized: { type: Number, default: 0 },
     available: { type: Boolean, default: true },
   },
   emits: ['grab', 'touch'],
   setup(props, { emit }) {
     const hover = ref(false)
 
+    const releaseDiff = (() => {
+      const releasePoint = props.piece.releasePoint
+      if (releasePoint == null) return { x: 0, y: 0 }
+      const coord = props.coord ?? Coord.new(0, 0)
+      const dx = coord.x - releasePoint.x + 0.5
+      const dy = coord.y - releasePoint.y + 0.5
+      return { x: dx * 64, y: dy * 64 }
+    })()
+
+    const releaseOffset = useTween({
+      from: () => releaseDiff,
+      to: () => ({ x: 0, y: 0 }),
+      easing: Easing.Exponential.Out,
+      duration: 100,
+    })
+
+    const tweenRotation = useAngleTween({
+      to: () => rotationToDegrees(props.piece.rotation),
+      easing: Easing.Exponential.Out,
+      duration: 200,
+    })
+
+    // const tweenRotation = computed(() => rotationToDegrees(props.piece.rotation))
+
     const pieceState = computed(
       (): PieceState => {
         return {
           hover: hover.value,
           interacting: props.interacting,
-          energized: props.energized,
+          energized: props.energized > 0,
         }
       }
     )
 
     const rectStyle = computed(() => {
-      const rotation = rotationToDegrees(props.piece.rotation)
+      const rotation = tweenRotation.value
       const halfTile = tileSize / 2
+      const { x, y } = releaseOffset.value
       return {
         transformOrigin: `${halfTile}px ${halfTile}px`,
-        transform: `rotate(${-rotation}deg)`,
+        transform: `rotate(${rotation}deg)  translate(${x}px, ${y}px)`,
       }
     })
 
     const cellStyle = computed(
       (): IStyle => {
-        const rotation = rotationToDegrees(props.piece.rotation)
+        const rotation = tweenRotation.value
         const coord = props.coord ?? Coord.new(0, 0)
         const origin = coord.gridCenter()
         const translate = coord.gridTopLeft()
+        const { x, y } = releaseOffset.value
 
         return {
-          transformOrigin: `${origin.x}px ${origin.y}px`,
-          transform: `rotate(-${rotation}deg) translate(${translate.x}px, ${translate.y}px)`,
+          transformOrigin: `${origin.x - x}px ${origin.y - y}px`,
+          transform: `rotate(-${rotation}deg) translate(${translate.x - x}px, ${translate.y -
+            y}px)`,
         }
       }
     )
