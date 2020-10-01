@@ -35,12 +35,9 @@
         <app-photon
           name
           :particle="particle"
-          :animate="2"
-          :margin="2"
           :display-magnetic="false"
           :display-electric="true"
           :display-gaussian="true"
-          :sigma="0.3"
         />
       </g>
 

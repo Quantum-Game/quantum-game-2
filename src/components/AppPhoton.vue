@@ -1,45 +1,39 @@
 <template>
-  <svg :width="width + 2 * margin" :height="height + 2 * margin">
-    <g class="photon" :style="computeStyle">
+  <svg :width="64" :height="64" viewBox="-1.2 -1.2 2.4 2.4">
+    <g class="photon" :style="photonStyle">
       <g>
         <radialGradient
           :id="`photon-gradient-${uid}`"
-          cx="32"
-          cy="32"
-          r="32"
+          cx="0"
+          cy="0"
+          r="1"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset="0" style="stop-color:#5C00D3" />
           <stop offset="1" style="stop-color:#5C00D3;stop-opacity:0" />
         </radialGradient>
-        <circle :fill="`url(#photon-gradient-${uid})`" cx="32" cy="32" r="32" />
+        <circle :fill="`url(#photon-gradient-${uid})`" cx="0" cy="0" r="1" />
       </g>
-      <g v-if="displayGaussian" class="gaussian">
-        <path class="gaussian" :d="computeGaussianPath.pathUp" />
-        <path class="gaussian" :d="computeGaussianPath.pathDown" />
-      </g>
+      <path v-if="displayGaussian" class="gaussian" :d="gaussianPath" />
 
-      <g v-if="displayElectric" class="electric">
+      <!-- <template v-if="displayElectric"> -->
+      <!-- <circle v-for="(props, index) in wavePath" :key="index" v-bind="props" /> -->
+      <!-- <circle v-for="(props, index) in wavePath" :key="index" v-bind="props" /> -->
+      <!-- <path v-if="displayElectric" :d="electricPath" fill="#0f0" /> -->
+      <!-- </template> -->
+      <g fill="none" stroke-linecap="round">
         <path
-          v-for="(z, index) in zs"
+          v-for="(p, index) in wavePaths"
           :key="index"
-          :d="computeElectricPath(z)"
-          stroke-linecap="round"
-          :stroke-width="eScale(gaussianComplex(b, z, sigma))"
-          :stroke="eColor(gaussianComplex(b, z, sigma))"
+          :d="p.path"
+          :stroke="p.color"
+          :stroke-width="p.width"
         />
       </g>
 
-      <g v-if="displayMagnetic" class="magnetic">
-        <path
-          v-for="(z, index) in zs"
-          :key="index"
-          :d="computeMagneticPath(z)"
-          stroke-linecap="round"
-          :stroke-width="mScale(gaussianComplex(a, z, sigma))"
-          :stroke="mColor(gaussianComplex(a, z, sigma))"
-        />
-      </g>
+      <!-- <template v-if="displayMagnetic">
+        <circle v-for="(props, index) in magneticPath" :key="index" v-bind="props" />
+      </template> -->
     </g>
   </svg>
 </template>
@@ -60,228 +54,238 @@ const d3 = {
   interpolateInferno,
   interpolateViridis,
 }
+/**
+ * Magnetic field color scheme.
+ */
+const mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1])
+
+/**
+ * Electric field color scheme.
+ * See also: https://github.com/d3/d3-scale-chromatic/
+ *
+ */
+const eColor = d3
+  .scaleLinear<string>()
+  .domain([-1, 0, 1])
+  // .range(['#f00', '#000', '#0f0'])
+  .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
+
+
+/**
+ * Gaussian distribution curve
+ */
+function gaussian(z: number, sigma = 0.3): number {
+  return Math.exp((-z * z) / (2 * sigma * sigma))
+}
+
+/**
+ * Gaussian derivative
+ */
+function gaussianDz(z: number, sigma = 0.3): number {
+  const c = 1 / (2 * sigma * sigma);
+  return - (2 * z * Math.exp((-z * z) * c)) * c
+}
+
 
 let uid = 0;
+
+const numSteps = 128;
+const step = 2 / numSteps;
+const zs = d3.range(-1, 1, step);
+
+function upToFixed(num: number, digits: number): string {
+  return num.toFixed(digits).replace(/\.?0+$/,'')
+}
+
+let pathUp = ''
+let pathDown = ''
+zs.forEach((z, index) => {
+  const x = upToFixed(z, 3)
+  const y = upToFixed(gaussian(z), 3)
+  if (index === 0) {
+    pathUp += `M${x} ${y}`
+  } else {
+    pathUp += `L${x} ${y}`
+    pathDown = `L${x} ${- y}` + pathDown
+  }
+})
+
+const gaussianPath = `${pathUp} ${pathDown}z`;
+
+const k = 20;
+
+function computeWavelet(z: number) {
+  const gauss = gaussian(z);
+  const gaussDz = gaussianDz(z);
+
+  const sin = Math.sin(k * z);
+  const cos = Math.cos(k * z);
+
+  const sinDz = k * cos
+  const cosDz = k * -sin
+
+  const a = cos * gauss;
+  const b = sin * gauss;
+
+  const aDz = cosDz * gauss + cos * gaussDz;
+  const bDz = sinDz * gauss + sin * gaussDz;
+
+  return [a, b, aDz, bDz] as const
+}
+
+const wavelet = zs.map(computeWavelet)
+
+
 
 export default defineComponent({
   name: 'AppPhoton',
   props: {
     particle: { type: Object as PropType<Particle>, required:  true },
-    width: { type: Number, default: 64 },
-    height: { type: Number, default: 64 },
-    margin: { type: Number, default: 20 },
     k: { type: Number, default: 20 },
-    sigma: { type: Number, default: 0.3 },
-    range: { type: Number, default: 0.001 },
     displayMagnetic: { type: Boolean, default: false },
     displayElectric: { type: Boolean, default: true },
     displayGaussian: { type: Boolean, default: true },
     displayOpacity: { type: Boolean, default: true },
     displayDirection: { type: Boolean, default: true },
-    normalize: { type: Boolean, default: true },
-    squeezeFactor: { type: Number, default: 1.3 },
   },
   setup(props) {
-
-      const step = computed((): number => {
-        return 1 / props.width
-      })
-
-      const normalization = computed((): number => {
-        if (props.normalize) {
-          return Math.sqrt(intensity.value)
-        }
-        return 1
-      })
-
       const intensity = computed((): number => {
         return props.particle.a.abs2() + props.particle.b.abs2()
       })
-
+      const normalization = computed((): number => {
+        return Math.sqrt(intensity.value)
+      })
       const a = computed((): Complex => {
         const { re, im } = props.particle.a
         const norm = normalization.value
         return new Complex(re / norm, im / norm)
       })
-
       const b = computed((): Complex => {
         const { re, im } = props.particle.b
         const norm = normalization.value
         return new Complex(re / norm, im / norm)
       })
-
-      const opacity = computed((): number => {
-        return Math.sqrt(intensity.value)
-      })
-
-      const computeStyle = computed((): IStyle => {
+      const photonStyle = computed((): IStyle => {
         return {
-          opacity: `${props.displayOpacity ? opacity.value : 1}`,
-          'transform-origin': `${props.width / 2}px ${props.height / 2}px`,
+          opacity: `${props.displayOpacity ? intensity.value : 1}`,
+          transformOrigin: `$0px 0px`,
           transform: `rotate(${props.displayDirection ? directionToDegrees(props.particle.direction) : 0}deg)`,
         }
       })
 
-
-      const availableHeight = computed((): number => {
-        return props.height - props.margin
+      const waves = computed(() => {
+        const { re: aRe, im: aIm } = a.value;
+        const { re: bRe, im: bIm } = b.value;
+        return wavelet.map(([a, b, aDz, bDz]) => [
+          aRe * a + aIm * b,
+          bRe * a + bIm * b,
+          aRe * aDz + aIm * bDz,
+          bRe * aDz + bIm * bDz,
+        ] as const)
       })
 
-      /**
-       * Get horizontal scaling
-       */
-      /* eslint-disable-next-line */
-      const xScale = computed(() => {
-        return d3
-          .scaleLinear()
-          .domain([-1, 1])
-          .range([props.margin, props.width - props.margin])
-      })
-
-      /**
-       * Get vertical scaling
-       * FIXME: squeezeFactor
-       */
-      /* eslint-disable-next-line */
-      const yScale = computed(() => {
-        return d3
-          .scaleLinear()
-          .domain([-props.squeezeFactor, props.squeezeFactor])
-          .range([0, availableHeight.value])
-      })
-
-      /**
-       * Get magnetic scaling
-       */
-      /* eslint-disable-next-line */
-      const mScale = computed(() => {
-        return d3
-          .scaleLinear()
-          .domain([-1, 1])
-          .range([0.5, 6])
-      })
-
-      /**
-       * Get electric scaling
-       */
-      /* eslint-disable-next-line */
-      const eScale = computed(() => {
-        return d3
-          .scaleLinear()
-          .domain([-1, 1])
-          .range([1, 4])
-      })
-
-      /**
-       * Numbers of points to render, should scale with the width
-       * @returns a range of steps
-       */
-      const zs = computed((): number[] => {
-        return d3.range(-1, 1, step.value)
-      })
-
-
-
-      /**
-       * Compute electric path from points
-       */
-      function computeElectricPath(z: number): string {
-        let path = ''
-        const ox = xScale.value(z - step.value)
-        const oy = yScale.value(gaussianComplex(a.value, z - step.value, props.sigma))
-        const tx = xScale.value(z)
-        const ty = yScale.value(gaussianComplex(a.value, z, props.sigma))
-        path += `M ${ox} ${oy} `
-        path += `L ${tx} ${ty} `
-        return path
-      }
-
-      /**
-       * Compute electric path from points
-       */
-      function computeMagneticPath(z: number): string {
-        let path = ''
-        const ox = xScale.value(z - step.value)
-        const oy = yScale.value(gaussianComplex(b.value, z - step.value, props.sigma))
-        const tx = xScale.value(z)
-        const ty = yScale.value(gaussianComplex(b.value, z, props.sigma))
-        path += `M ${ox} ${oy} `
-        path += `L ${tx} ${ty}`
-        return path
-      }
-
-      /**
-       * Compute electric path from points
-       * @return bots svg paths as strings
-       */
-      const computeGaussianPath = computed((): { pathUp: string; pathDown: string } => {
-        let pathUp = ''
-        let pathDown = ''
-        zs.value.forEach((z, index) => {
-          const x = xScale.value(z)
-          const y = yScale.value(gaussian(z))
-          if (index === 0) {
-            pathUp += `M ${x} ${y} `
-            pathDown += `M ${x} ${availableHeight.value - y} `
+      const segmentBatches = computed(() => {
+        const yBatches: Record<string, number[]> = {};
+        const xBatches: Record<string, number[]> = {};
+        const w = waves.value;
+        for (let i = 0; i < zs.length - 1; i++) {
+          const [x1, y1] = w[i];
+          const [x2, y2] = w[i + 1];
+          const xBatch = (x1 + x2).toFixed(2);
+          const yBatch = (y1 + y2).toFixed(2);
+          const xArr = xBatches[xBatch];
+          const yArr = yBatches[yBatch];
+          if(xArr == null) {
+            xBatches[xBatch] = [i];
           } else {
-            pathUp += `L ${x} ${y} `
-            pathDown += `L ${x} ${availableHeight.value - y} `
+            xArr.push(i);
+          }
+          if(yArr == null) {
+            yBatches[yBatch] = [i];
+          } else {
+            yArr.push(i);
+          }
+        }
+        return { xBatches: Object.values(xBatches), yBatches: Object.values(yBatches) }
+      })
+
+      const dxStep = step * 0.5;
+      function pathSegment(x1: number, x2: number, y1: number, y2: number, y1Dx: number, y2Dx: number) {
+        const c1b = x1 + dxStep;
+        const c1y = y1 + y1Dx * dxStep;
+        const c2b = x2 - dxStep;
+        const c2y = y2 - y2Dx * dxStep;
+        return `M${x1.toFixed(3)} ${y1.toFixed(3)}C${c1b.toFixed(3)} ${c1y.toFixed(3)} ${c2b.toFixed(3)} ${c2y.toFixed(3)} ${x2.toFixed(3)} ${y2.toFixed(3)}`;
+      }
+
+      const electricPaths = computed(() => {
+        const batches = segmentBatches.value.yBatches;
+        const w = waves.value;
+        return batches.map(batch => {
+          const [_x1, y1] = w[batch[0]];
+          const [_x2, y2] = w[batch[0] + 1];
+          const yAvg = +((y1 + y2) * 0.5).toFixed(2);
+
+          let path = '';
+          for (const i of batch) {
+            const [x1, _y1, x1Dz] = w[i];
+            const [x2, _y2, x2Dz] = w[i + 1];
+            path += pathSegment(zs[i], zs[i + 1], x1, x2, x1Dz, x2Dz)
+          }
+
+          return {
+            path,
+            color: eColor(yAvg),
+            width: 0.07 + yAvg * 0.06,
           }
         })
-        return { pathUp, pathDown }
       })
 
 
-      /**
-       * Magnetic field color scheme.
-       */
-      const mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1])
+      const magneticPaths = computed(() => {
+        const batches = segmentBatches.value.xBatches;
+        const w = waves.value;
+        return batches.map(batch => {
+          const [x1] = w[batch[0]];
+          const [x2] = w[batch[0] + 1];
+          const xAvg = +((x1 + x2) * 0.5).toFixed(2);
 
-      /**
-       * Electric field color scheme.
-       * See also: https://github.com/d3/d3-scale-chromatic/
-       *
-       */
-      const eColor = d3
-        .scaleLinear<string>()
-        .domain([-1, 0, 1])
-        .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
+          let path = '';
+          for (const i of batch) {
+            const [_x1, y1, _x1Dz, y1Dz] = w[i];
+            const [_x2, y2, _x2Dz, y2Dz] = w[i + 1];
+            path += pathSegment(zs[i], zs[i + 1], -y1, -y2, -y1Dz, -y2Dz)
+          }
 
-      /**
-       * Gaussian scaling
-       */
-      function gaussian(z: number, sigma = 0.3): number {
-        return Math.exp((-z * z) / (2 * sigma * sigma))
-      }
+          return {
+            path,
+            color: mColor(xAvg),
+            width: 0.07 + xAvg * 0.06,
+          }
+        })
+      })
 
-      /**
-       * Gaussian scaling of the graph
-       */
-      function gaussianComplex(c: Complex, z: number, sigma = 0.3): number {
-        return computeComplex(c, z) * Math.exp((-z * z) / (2 * sigma * sigma))
-      }
+      const wavePaths = computed(() => {
+        if (props.displayElectric && props.displayMagnetic) {
+          return electricPaths.value.concat(magneticPaths.value).sort((a, b) => a.width - b.width)
+        } else if (props.displayElectric) {
+          return electricPaths.value
+        } else if (props.displayMagnetic) {
+          return magneticPaths.value
+        }
+        return []
+      })
 
-      /**
-       * Compute graph properties from complex values
-       */
-      function computeComplex(c: Complex, z: number, k = 20): number {
-        return c.re * Math.cos(k * z) + c.im * Math.sin(k * z)
-      }
+
 
       return {
         uid: uid++,
         zs,
-        computeStyle,
-        computeGaussianPath,
-        computeElectricPath,
-        computeMagneticPath,
-        eScale,
-        mScale,
-        eColor,
-        mColor,
-        gaussianComplex,
-        b,
-        a,
+        photonStyle,
+        gaussianPath,
+        // wavePath,
+        // electricPath,
+        wavePaths,
       }
   }
 })
@@ -292,17 +296,8 @@ export default defineComponent({
   padding: 0px;
   position: relative;
   perspective: 100px;
-
-  .electric {
-    fill: transparent;
-    transform-origin: 32px;
-  }
-  .magnetic {
-    fill: transparent;
-    transform-origin: 32px;
-  }
   .gaussian {
-    stroke-width: 3px;
+    stroke-width: 0.1px;
     fill: rgba(92, 0, 211, 1);
     stroke: rgba(92, 0, 211, 0.5);
     stroke-linecap: round;
