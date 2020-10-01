@@ -70,7 +70,7 @@ export const elementsData: Record<Elem | typeof ElemVoid, ElementData> = {
   },
   [Elem.PolarizingBeamSplitter]: {
     description: 'Reflects vertical polarization (↕), transmits horizonal polarization (↔).',
-    ascii: ['⬲', '⟴'],
+    ascii: ['⬲', '⟴', '⬲', '⟴'],
   },
   [Elem.CoatedBeamSplitter]: {
     description:

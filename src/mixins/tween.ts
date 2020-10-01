@@ -1,4 +1,4 @@
-import { computed, isRef, ref, Ref, triggerRef, watch, watchEffect, WatchSource } from 'vue'
+import { computed, isRef, ref, Ref, triggerRef, watch, WatchSource } from 'vue'
 
 import TWEEN from '@tweenjs/tween.js'
 import { cloneDeep } from 'lodash'
