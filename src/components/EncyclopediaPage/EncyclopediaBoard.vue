@@ -10,11 +10,7 @@
     />
     <board-frame-picker :playhead="playheadCtl" />
     <div class="ket">
-      <ket-viewer
-        :key="polBasis"
-        :vector="playheadCtl.activeFrame.vector"
-        :initial-pol-basis="polBasis"
-      />
+      <ket-viewer :key="polBasis" :vector="playheadCtl.activeFrame.vector" :pol-basis="polBasis" />
     </div>
   </div>
 </template>
