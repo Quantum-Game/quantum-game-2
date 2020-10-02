@@ -102,28 +102,21 @@ export function playheadController(options: {
     }
   })
 
-  const particleHistories = computed((): (readonly [
-    Particle | null,
-    Particle,
-    Particle | null
-  ])[] => {
+  const particleHistories = computed((): [Particle[], Particle, Particle[]][] => {
     const frames = interpolateFrames.value
     if (frames == null) return []
     const { prev, curr, next } = frames
     const prevParticles = prev?.particles ?? null
     const currParticles = curr.particles
     const nextParticles = next?.particles ?? null
-    return currParticles.flatMap((p1) => {
-      const coord = p1.coord
-      const nextCoord = p1.coord.neighbour(p1.direction)
-      const prev: (Particle | null)[] =
+    return currParticles.map((p) => {
+      const coord = p.coord
+      const nextCoord = p.coord.neighbour(p.direction)
+      const prev: Particle[] =
         prevParticles?.filter((prev) => prev.coord.neighbour(prev.direction) === coord) ?? []
-      const next: (Particle | null)[] =
-        nextParticles?.filter((next) => next.coord === nextCoord) ?? []
-      if (prev.length === 0) prev.push(null)
-      if (next.length === 0) prev.push(null)
+      const next: Particle[] = nextParticles?.filter((next) => next.coord === nextCoord) ?? []
 
-      return prev.flatMap((p0) => next.map((p2) => [p0, p1, p2] as const))
+      return [prev, p, next]
     })
   })
 
@@ -132,79 +125,107 @@ export function playheadController(options: {
     return Complex.fromPolar(a.r * revt + b.r * t, a.phi * revt + b.phi * t)
   }
 
-  const interpolatedParticles = computed((): InterpolatedParticle[] => {
-    const tbFract = particlesTime.value - Math.floor(particlesTime.value)
-    const taFract = 1 - tbFract
+  function lerpCoord(a: Coord, b: Coord, t: number): { x: number; y: number } {
+    const revt = 1 - t
+    return {
+      x: a.x * revt + b.x * t,
+      y: a.y * revt + b.y * t,
+    }
+  }
 
-    return particleHistories.value.flatMap(([pPrev, p, pNext]) => {
-      const particles = []
+  const interpolatedParticles = computed((): InterpolatedParticle[] => {
+    const t = particlesTime.value - Math.floor(particlesTime.value)
+
+    const histories = particleHistories.value
+
+    return histories.flatMap(([prevs, p, nexts]) => {
+      const particles: InterpolatedParticle[] = []
       const masks = []
-      if (pPrev != null) {
+
+      const fromPrevPropagation = prevs.find((pPrev) => p.direction === pPrev.direction)
+      const forwardPropagation = nexts.find((n) => n.direction === p.direction)
+
+      // emit reflection particles back
+      for (const pPrev of prevs) {
         const rotation = directionChangeMask(pPrev.direction, p.direction)
         if (rotation != null) {
-          masks.push({
+          const mask = {
             origin: p.coord,
             rotation,
-          })
+          }
+          const coord1 = pPrev.coord.neighbour(pPrev.direction)
+          const coord2 = coord1.neighbour(pPrev.direction)
+
+          // if there already is a particle with the same propagation in the current list,
+          // ignore, as it would be drawn twice
+          const fromForwardPropagation = histories.some(
+            ([_, p]) => p.coord === coord1 && p.direction === pPrev.direction
+          )
+
+          if (fromPrevPropagation == null) {
+            masks.push(mask)
+          }
+
+          if (!fromForwardPropagation) {
+            particles.push({
+              coord: null,
+              a: pPrev.a,
+              b: pPrev.b,
+              direction: pPrev.direction,
+              maskRotation: [mask],
+              position: lerpCoord(coord1, coord2, t),
+            })
+          }
         }
       }
-      if (pNext != null) {
+      if (forwardPropagation == null) {
+        for (const pNext of nexts) {
+          const rotation = directionChangeMask(p.direction, pNext.direction)
+          if (rotation != null) {
+            masks.push({
+              origin: pNext.coord,
+              rotation,
+            })
+          }
+        }
+      }
+
+      let a = p.a
+      let b = p.b
+      // If the particle is not reflected, interpolate wave function
+      if (forwardPropagation != null) {
+        a = complexPolarLerp(p.a, forwardPropagation.a, t)
+        b = complexPolarLerp(p.b, forwardPropagation.b, t)
+      }
+
+      particles.push({
+        coord: p.coord,
+        a,
+        b,
+        direction: p.direction,
+        maskRotation: masks,
+        position: lerpCoord(p.coord, p.coord.neighbour(p.direction), t),
+      })
+
+      for (const pNext of nexts) {
         const rotation = directionChangeMask(p.direction, pNext.direction)
         if (rotation != null) {
-          masks.push({
-            origin: pNext.coord,
-            rotation,
+          const coord1 = pNext.coord.neighbour(reverseDirection(pNext.direction))
+          const coord2 = pNext.coord
+          particles.push({
+            coord: null,
+            a: pNext.a,
+            b: pNext.b,
+            direction: pNext.direction,
+            maskRotation: [
+              {
+                origin: pNext.coord,
+                rotation,
+              },
+            ],
+            position: lerpCoord(coord1, coord2, t),
           })
         }
-      }
-
-      const a = pNext == null ? p.a : complexPolarLerp(p.a, pNext.a, tbFract)
-      const b = pNext == null ? p.b : complexPolarLerp(p.b, pNext.b, tbFract)
-
-      // particle comes from a different direction, emit extra copy
-      if (pPrev != null && p.direction !== pPrev.direction) {
-        const coord1 = pPrev.coord.neighbour(pPrev.direction)
-        const coord2 = coord1.neighbour(pPrev.direction)
-        const x = coord1.x * taFract + coord2.x * tbFract
-        const y = coord1.y * taFract + coord2.y * tbFract
-        particles.push({
-          coord: null,
-          a,
-          b,
-          direction: pPrev.direction,
-          maskRotation: masks,
-          position: { x, y },
-        })
-      }
-
-      // same direction or particle is being destroyed - just propagate
-      {
-        const coord2 = p.coord.neighbour(p.direction)
-        const x = p.coord.x * taFract + coord2.x * tbFract
-        const y = p.coord.y * taFract + coord2.y * tbFract
-        particles.push({
-          coord: p.coord,
-          a,
-          b,
-          direction: p.direction,
-          maskRotation: masks,
-          position: { x, y },
-        })
-      }
-
-      if (pNext != null && p.direction !== pNext.direction) {
-        // emit two particles with different directions
-        const coord0 = pNext.coord.neighbour(reverseDirection(pNext.direction))
-        const x = coord0.x * taFract + pNext.coord.x * tbFract
-        const y = coord0.y * taFract + pNext.coord.y * tbFract
-        particles.push({
-          coord: null,
-          a,
-          b,
-          direction: pNext.direction,
-          maskRotation: masks,
-          position: { x, y },
-        })
       }
 
       return particles
