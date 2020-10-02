@@ -48,7 +48,7 @@ export default defineComponent({
     gameCtl.importLevel({ grid: props.grid })
 
     const playheadCtl = playheadController({
-      frames: () => gameCtl.sim?.frames.filter((f) => f.vector.entries.length > 0) ?? [],
+      frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: false,
     })
     playheadCtl.seek(props.defaultStep ?? 0)
