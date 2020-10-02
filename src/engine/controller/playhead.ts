@@ -36,7 +36,7 @@ export function playheadController(options: {
       const newTime = particlesTime.value + dt / frameInterval.value
       const t = Math.max(0, Math.min(newTime, totalFrames.value))
       particlesTime.value = t
-      targetFrameIndex.value = Math.round(t)
+      targetFrameIndex.value = Math.floor(t)
     } else {
       lastTime = null
       const f = 0.4
@@ -155,6 +155,7 @@ export function playheadController(options: {
     isPlaying.value = play
     if (play && isLastFrame.value) {
       targetFrameIndex.value = 0
+      particlesTime.value = 0
     }
   }
 
