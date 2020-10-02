@@ -1,4 +1,4 @@
-import { useRaf } from '@/mixins'
+import { Easing, useRaf } from '@/mixins'
 import { useTimer } from '@/mixins/timer'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
@@ -192,10 +192,28 @@ export function playheadController(options: {
 
       let a = p.a
       let b = p.b
-      // If the particle is not reflected, interpolate wave function
-      if (forwardPropagation != null) {
-        a = complexPolarLerp(p.a, forwardPropagation.a, t)
-        b = complexPolarLerp(p.b, forwardPropagation.b, t)
+      const zero = new Complex(0, 0)
+
+      if (t < 0.5) {
+        // interpolate from half of previous frame towards current frame
+        const subt = t + 0.5
+        if (fromPrevPropagation != null || prevs.length === 0) {
+          const fromA = fromPrevPropagation?.a ?? zero
+          const fromB = fromPrevPropagation?.b ?? zero
+          const ease = Easing.Quartic.InOut(subt)
+          a = complexPolarLerp(fromA, p.a, ease)
+          b = complexPolarLerp(fromB, p.b, ease)
+        }
+      } else {
+        // interpolate from current frame towards half of the next frame
+        const subt = t - 0.5
+        if (forwardPropagation != null || nexts.length === 0) {
+          const toA = forwardPropagation?.a ?? zero
+          const toB = forwardPropagation?.b ?? zero
+          const ease = Easing.Quartic.InOut(subt)
+          a = complexPolarLerp(p.a, toA, ease)
+          b = complexPolarLerp(p.b, toB, ease)
+        }
       }
 
       particles.push({
