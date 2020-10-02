@@ -1,43 +1,11 @@
-import { Easing, useRaf } from '@/mixins'
+import { useRaf } from '@/mixins'
 import { useTimer } from '@/mixins/timer'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
-import {
-  Complex,
-  Coord,
-  Direction,
-  directionChangeMask,
-  Frame,
-  Particle,
-  reverseDirection,
-  Rotation,
-} from '../model'
+import { InterpolatedParticle, interpolateParticle } from '../interpolation'
+import { Frame, Particle } from '../model'
 
 const storeOptions = storeNamespace('options')
-
-// function rotate(cx: Complex, a: number): Complex {
-//   const sin = Math.sin(a)
-//   const cos = Math.cos(a)
-//   return new Complex(cx.re * cos + cx.im * sin, cx.re * -sin + cx.im * cos)
-// }
-
-export interface InterpolatedParticle {
-  // Source particle coord, null for purely visual particles
-  readonly coord: Coord | null
-  // visually accurate particle coordinate
-  readonly position: { x: number; y: number }
-  readonly direction: Direction
-  readonly a: Complex
-  readonly b: Complex
-  // Angle for mask through cell center.
-  // Used for masking out
-  readonly maskRotation: ClipPlane[]
-}
-
-export interface ClipPlane {
-  origin: Coord
-  rotation: Rotation
-}
 
 export function playheadController(options: {
   rewindOnUpdate: boolean
@@ -120,134 +88,11 @@ export function playheadController(options: {
     })
   })
 
-  function complexPolarLerp(a: Complex, b: Complex, t: number): Complex {
-    const revt = 1 - t
-    return Complex.fromPolar(a.r * revt + b.r * t, a.phi * revt + b.phi * t)
-  }
-
-  function lerpCoord(a: Coord, b: Coord, t: number): { x: number; y: number } {
-    const revt = 1 - t
-    return {
-      x: a.x * revt + b.x * t,
-      y: a.y * revt + b.y * t,
-    }
-  }
-
   const interpolatedParticles = computed((): InterpolatedParticle[] => {
     const t = particlesTime.value - Math.floor(particlesTime.value)
-
     const histories = particleHistories.value
-
-    return histories.flatMap(([prevs, p, nexts]) => {
-      const particles: InterpolatedParticle[] = []
-      const masks = []
-
-      const fromPrevPropagation = prevs.find((pPrev) => p.direction === pPrev.direction)
-      const forwardPropagation = nexts.find((n) => n.direction === p.direction)
-
-      // emit reflection particles back
-      for (const pPrev of prevs) {
-        const rotation = directionChangeMask(pPrev.direction, p.direction)
-        if (rotation != null) {
-          const mask = {
-            origin: p.coord,
-            rotation,
-          }
-          const coord1 = pPrev.coord.neighbour(pPrev.direction)
-          const coord2 = coord1.neighbour(pPrev.direction)
-
-          // if there already is a particle with the same propagation in the current list,
-          // ignore, as it would be drawn twice
-          const fromForwardPropagation = histories.some(
-            ([_, p]) => p.coord === coord1 && p.direction === pPrev.direction
-          )
-
-          if (fromPrevPropagation == null) {
-            masks.push(mask)
-          }
-
-          if (!fromForwardPropagation) {
-            particles.push({
-              coord: null,
-              a: pPrev.a,
-              b: pPrev.b,
-              direction: pPrev.direction,
-              maskRotation: [mask],
-              position: lerpCoord(coord1, coord2, t),
-            })
-          }
-        }
-      }
-      if (forwardPropagation == null) {
-        for (const pNext of nexts) {
-          const rotation = directionChangeMask(p.direction, pNext.direction)
-          if (rotation != null) {
-            masks.push({
-              origin: pNext.coord,
-              rotation,
-            })
-          }
-        }
-      }
-
-      let a = p.a
-      let b = p.b
-      const zero = new Complex(0, 0)
-
-      if (t < 0.5) {
-        // interpolate from half of previous frame towards current frame
-        const subt = t + 0.5
-        if (fromPrevPropagation != null || prevs.length === 0) {
-          const fromA = fromPrevPropagation?.a ?? zero
-          const fromB = fromPrevPropagation?.b ?? zero
-          const ease = Easing.Quartic.InOut(subt)
-          a = complexPolarLerp(fromA, p.a, ease)
-          b = complexPolarLerp(fromB, p.b, ease)
-        }
-      } else {
-        // interpolate from current frame towards half of the next frame
-        const subt = t - 0.5
-        if (forwardPropagation != null || nexts.length === 0) {
-          const toA = forwardPropagation?.a ?? zero
-          const toB = forwardPropagation?.b ?? zero
-          const ease = Easing.Quartic.InOut(subt)
-          a = complexPolarLerp(p.a, toA, ease)
-          b = complexPolarLerp(p.b, toB, ease)
-        }
-      }
-
-      particles.push({
-        coord: p.coord,
-        a,
-        b,
-        direction: p.direction,
-        maskRotation: masks,
-        position: lerpCoord(p.coord, p.coord.neighbour(p.direction), t),
-      })
-
-      for (const pNext of nexts) {
-        const rotation = directionChangeMask(p.direction, pNext.direction)
-        if (rotation != null) {
-          const coord1 = pNext.coord.neighbour(reverseDirection(pNext.direction))
-          const coord2 = pNext.coord
-          particles.push({
-            coord: null,
-            a: pNext.a,
-            b: pNext.b,
-            direction: pNext.direction,
-            maskRotation: [
-              {
-                origin: pNext.coord,
-                rotation,
-              },
-            ],
-            position: lerpCoord(coord1, coord2, t),
-          })
-        }
-      }
-
-      return particles
-    })
+    const all = interpolateFrames.value?.curr.particles ?? []
+    return histories.flatMap(([prevs, p, nexts]) => interpolateParticle(t, prevs, p, nexts, all))
   })
 
   const frameAdvanceTimer = useTimer(() => {

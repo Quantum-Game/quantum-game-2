@@ -95,7 +95,8 @@ import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
-import { InterpolatedParticle, ReleaseEvent } from '@/engine/controller'
+import { ReleaseEvent } from '@/engine/controller'
+import { InterpolatedParticle } from '@/engine/interpolation'
 
 export default defineComponent({
   name: 'Board',

@@ -32,10 +32,10 @@
 import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
 import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
-import { Complex, directionToDegrees, unitVector } from '@/engine/model'
+import { Complex, directionToDegrees } from '@/engine/model'
 import { IStyle } from '@/types'
 import { computed, defineComponent, PropType } from 'vue'
-import { ClipPlane, InterpolatedParticle } from '@/engine/controller'
+import { clipPlanePath, InterpolatedParticle } from '@/engine/interpolation'
 
 const d3 = {
   range,
@@ -157,57 +157,6 @@ export default defineComponent({
       }
     )
 
-    /**
-     * Generate half-plane clip path, visible area in the provided rotation direction.
-     * Path is in the board svg space.
-     */
-    function calcMask(clips: ClipPlane[], offset: { x: number; y: number }): string | null {
-      if (clips.length === 0) return null
-
-      const x = offset.x
-      const y = offset.y
-
-      return (
-        clips
-          .map(({ rotation, origin }) => {
-            const v = unitVector(rotation)
-            const cx = (origin.x - x) * 2.4 // viewbox size
-            const cy = (origin.y - y) * 2.4
-
-            if (v.x === 0 || v.y === 0) {
-              // head on, just draw a minimal box around 1.5 cells
-              const vx = -v.x * 1.2
-              const vy = -v.y * 1.2
-              const x1 = cx + vy
-              const y1 = cy - vx
-              const x2 = cx - vy
-              const y2 = cy + vx
-              const x3 = cx - vy + vx * 3
-              const y3 = cy + vx + vy * 3
-              const x4 = cx + vy + vx * 3
-              const y4 = cy - vx + vy * 3
-              return `M${x1} ${y1} ${x2} ${y2} ${x3} ${y3} ${x4} ${y4}`
-            } else {
-              // diagonal, draw a wide 3.5 cell box with cut corner
-              const vx = -v.x * 1.7
-              const vy = -v.y * 1.7
-              const x1 = cx + vy
-              const y1 = cy - vx
-              const x2 = cx - vy
-              const y2 = cy + vx
-              const x3 = cx - vy - vy + vx
-              const y3 = cy + vx + vx + vy
-              const x4 = cx + vx * 3
-              const y4 = cy + vy * 3
-              const x5 = cx + vy + vy + vx
-              const y5 = cy - vx - vx + vy
-              return `M${x1} ${y1} ${x2} ${y2} ${x3} ${y3} ${x4} ${y4} ${x5} ${y5}`
-            }
-          })
-          .join(' ') + `M${-1.2} ${-1.2} ${-1.2} ${+1.2} ${+1.2} ${+1.2} ${+1.2} ${-1.2}`
-      )
-    }
-
     const photonInnerStyle = computed(
       (): IStyle => {
         return {
@@ -231,7 +180,7 @@ export default defineComponent({
 
     const clipPath = computed(() => {
       const p = props.particle
-      return calcMask(p.maskRotation, p.position)
+      return clipPlanePath(p.maskRotation, p.position)
     })
 
     const waves = computed(() => {
