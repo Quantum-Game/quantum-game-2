@@ -256,8 +256,8 @@ export default defineComponent({
      * Current active frame particles
      * @returns particles
      */
-    const activeParticles = computed((): Particle[] => {
-      return playheadCtl.activeFrame?.particles ?? []
+    const activeParticles = computed(() => {
+      return playheadCtl.interpolatedParticles
     })
 
     /**

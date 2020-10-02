@@ -5,7 +5,7 @@
       :absorptions="gameCtl.sim.absorptions"
       :board="gameCtl.level.board"
       :laser-particles="laserParticles"
-      :particles="playheadCtl.activeFrame.particles"
+      :particles="playheadCtl.interpolatedParticles"
       @touch="updateRotation"
     />
     <board-frame-picker :playhead="playheadCtl" />

@@ -1,3 +1,5 @@
+import { assertUnreachable } from '@/types'
+
 export const enum Rotation {
   Right,
   UpRight,
@@ -7,6 +9,31 @@ export const enum Rotation {
   DownLeft,
   Down,
   DownRight,
+}
+
+// Generate unit vector with given rotation.
+// X points right, Y points up.
+export function unitVector(rot: Rotation): { x: number; y: number } {
+  switch (rot) {
+    case Rotation.Right:
+      return { x: 1, y: 0 }
+    case Rotation.UpRight:
+      return { x: Math.SQRT2, y: -Math.SQRT2 }
+    case Rotation.Up:
+      return { x: 0, y: -1 }
+    case Rotation.UpLeft:
+      return { x: -Math.SQRT2, y: -Math.SQRT2 }
+    case Rotation.Left:
+      return { x: -1, y: 0 }
+    case Rotation.DownLeft:
+      return { x: -Math.SQRT2, y: Math.SQRT2 }
+    case Rotation.Down:
+      return { x: 0, y: 1 }
+    case Rotation.DownRight:
+      return { x: Math.SQRT2, y: Math.SQRT2 }
+    default:
+      assertUnreachable(rot)
+  }
 }
 
 export function rotationFromDegrees(rot: number): Rotation {

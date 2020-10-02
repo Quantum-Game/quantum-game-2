@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <svg-global-defs />
     <router-view />
     <login-status />
   </div>
 </template>
 
 <script lang="ts">
+import SvgGlobalDefs from '@/components/SvgGlobalDefs.vue'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
 import { useSoundtrack } from '@/components/SoundController'
 import { defineComponent } from 'vue'
@@ -13,6 +15,7 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   components: {
     LoginStatus,
+    SvgGlobalDefs,
   },
   setup() {
     useSoundtrack()
