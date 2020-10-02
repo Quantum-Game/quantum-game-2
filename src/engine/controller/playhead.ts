@@ -49,6 +49,10 @@ export function playheadController(options: {
     }
   })
 
+  if (options.rewindOnUpdate) {
+    watch(frames, rewind)
+  }
+
   const baseId = computed((): number => {
     const framesArray = frames.value
     const t = Math.max(0, Math.min(particlesTime.value, framesArray.length))
@@ -93,26 +97,6 @@ export function playheadController(options: {
     const histories = particleHistories.value
     const all = interpolateFrames.value?.curr.particles ?? []
     return histories.flatMap(([prevs, p, nexts]) => interpolateParticle(t, prevs, p, nexts, all))
-  })
-
-  const frameAdvanceTimer = useTimer(() => {
-    if (frameIndex.value < totalFrames.value - 1) {
-      targetFrameIndex.value += 1
-    } else {
-      isPlaying.value = false
-    }
-  })
-
-  if (options.rewindOnUpdate) {
-    watch(frames, rewind)
-  }
-
-  watch(isPlaying, (playing) => {
-    if (playing) {
-      frameAdvanceTimer.restart(frameInterval.value)
-    } else {
-      frameAdvanceTimer.cancel()
-    }
   })
 
   function stepForward() {
