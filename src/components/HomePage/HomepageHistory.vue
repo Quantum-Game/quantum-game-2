@@ -1,7 +1,7 @@
 <template>
   <div class="history">
     <p>
-      This version of the game was funded by the
+      Previous funding include
       <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
       of the National University of Singapore. Read a CQT post on the game:
       <a

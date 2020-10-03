@@ -21,6 +21,8 @@
     <div class="hello">
       <h1>{{ i18n.t('homepage.main') }}</h1>
       <p>{{ i18n.t('homepage.desc') }}</p>
+      <homepage-interactive />
+      <homepage-testimonials />
       <homepage-social />
       <homepage-authors />
       <homepage-history />
@@ -33,6 +35,8 @@ import { Vue, Options, setup } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 import HomepageAuthors from '@/components/HomePage/HomepageAuthors.vue'
 import HomepageSocial from '@/components/HomePage/HomepageSocial.vue'
+import HomepageTestimonials from '@/components/HomePage/HomepageTestimonials.vue'
+import HomepageInteractive from '@/components/HomePage/HomepageInteractive.vue'
 import HomepageHistory from '@/components/HomePage/HomepageHistory.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -42,6 +46,8 @@ import { useI18n } from 'vue-i18n'
     HomepageAuthors,
     HomepageSocial,
     HomepageHistory,
+    HomepageTestimonials,
+    HomepageInteractive,
   },
 })
 export default class HomePage extends Vue {
