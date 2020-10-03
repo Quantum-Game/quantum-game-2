@@ -12,7 +12,10 @@
     </div>
     <div>
       <router-link to="/level/1">
-        <app-button class="button" type="big">PLAY</app-button>
+        <app-button class="button" type="big">PLAY GAME</app-button>
+      </router-link>
+      <router-link to="/sandbox">
+        <app-button class="button" type="big">VIRTUAL LAB</app-button>
       </router-link>
     </div>
     <div class="hello">
@@ -101,6 +104,11 @@ p {
     width: 80%;
   }
 }
+.button {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+}
+
 .row-full {
   width: 100vw;
   min-width: 1300px;
