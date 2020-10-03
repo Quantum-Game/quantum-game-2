@@ -10,69 +10,41 @@
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
-    <router-link to="/level/1">
-      <app-button type="big">PLAY</app-button>
-    </router-link>
+    <div>
+      <router-link to="/level/1">
+        <app-button class="button" type="big">PLAY</app-button>
+      </router-link>
+    </div>
     <div class="hello">
-      <h1>
-        A puzzle game with photons, superposition and quantum measurement, right in your browser.
-        With true quantum mechanics underneath!
-        <br />
-      </h1>
-      <p>
-        Visit us on
-        <a href="https://twitter.com/quantumgameio" target="_blank">Twitter</a>,
-        <a href="https://www.facebook.com/quantumgameio/" target="_blank">Facebook</a>,
-        <a href="https://github.com/Quantum-Game" target="_blank">GitHub</a>, and
-        <a href="https://medium.com/quantum-photons" target="_blank">Medium</a>. If you have any
-        comments, @ us at Twitter, create a GitHub Issue or simply
-        <a href="mailto:pmigdal+qg@gmail.com">email us</a>! :)
-      </p>
-      <p>
-        Quantum Game is currently being developed by
-        <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a>,
-        <a href="https://fr.linkedin.com/in/philippe-cochin-b4978231" target="_blank"
-          >Philippe Cochin</a
-        >, <a href="https://maperseguirvirtute.wordpress.com/" target="_blank">Chiara Decaroli</a>,
-        <a href="http://jankiewiczstudio.com/" target="_blank">Klem Jankiewicz</a>,
-        <a href="https://www.linkedin.com/in/strebeyko/" target="_blank">Kuba Strebeyko</a>.
-        Generative soundtrack by
-        <a href="https://www.paweljanicki.jp/" target="_blank">Pawel Janicki</a>.
-      </p>
-      <p>
-        This version of the game was funded by the
-        <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
-        of the National University of Singapore. Read a CQT post on the game:
-        <a
-          href="https://www.quantumlah.org/about/highlight/2020-04-play-new-quantum-game"
-          target="_blank"
-          >Ready to play the Quantum Game with Photons 2?</a
-        >
-      </p>
-      <img src="@/assets/graphics/CQT_NUS_Logo_mono.svg" alt="CQT logo" class="CQTlogo" />
-      <p>
-        You can play the old version (2014-2016)
-        <a href="http://play.quantumgame.io/" target="_blank">here</a>.
-      </p>
-      <div class="image">
-        <img src="@/assets/graphics/Rock.svg" alt="Rock" />
-      </div>
+      <h1>{{ i18n.t('homepage.main') }}</h1>
+      <p>{{ i18n.t('homepage.desc') }}</p>
+      <homepage-social />
+      <homepage-authors />
+      <homepage-history />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { Vue, Options, setup } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
+import HomepageAuthors from '@/components/HomePage/HomepageAuthors.vue'
+import HomepageSocial from '@/components/HomePage/HomepageSocial.vue'
+import HomepageHistory from '@/components/HomePage/HomepageHistory.vue'
+import { useI18n } from 'vue-i18n'
 
 @Options({
   components: {
     AppButton,
+    HomepageAuthors,
+    HomepageSocial,
+    HomepageHistory,
   },
 })
 export default class HomePage extends Vue {
   version: string = process.env.VUE_APP_VERSION || 'unknown'
   commitHash: string = process.env.VUE_APP_GIT_HASH || 'unknown'
+  i18n = setup(useI18n)
 
   get commitDate(): string {
     const date = new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000)
@@ -139,11 +111,6 @@ p {
   @include media('<large') {
     margin-bottom: 6rem;
   }
-}
-.CQTlogo {
-  width: 40%;
-  padding-bottom: 10px;
-  min-width: 250px;
 }
 
 a {
