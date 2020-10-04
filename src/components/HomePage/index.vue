@@ -71,7 +71,7 @@ export default class HomePage extends Vue {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(#5c00d3, #ff0055, #fbb03b);
+  background: linear-gradient(to right, #210235 16%, #2e006a 30%, #2e006a 70%, #210235 84%);
   width: 100%;
   & a {
     width: 100%;
