@@ -14,7 +14,8 @@
       :key="`info-particle-${index}`"
       class="description"
     >
-      Intensity {{ (100 * particle.probability).toFixed(1) }}% at {{ particle.direction }}°
+      Intensity {{ (100 * particleProbability(particle)).toFixed(1) }}% at
+      {{ directionToDegrees(particle.direction) }}°
     </p>
     <router-link v-if="infoPayload.piece" :to="hyphenedElementEntryURL" class="link">
       LEARN MORE
@@ -29,7 +30,7 @@ import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 import { elementsData } from '@/engine/elements'
 import { assertUnreachable } from '@/types'
-import { Elem } from '@/engine/model'
+import { Elem, particleProbability, directionToDegrees } from '@/engine/model'
 
 const spacedName = (name: string): string => {
   const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
@@ -46,6 +47,8 @@ export default class GameActiveCell extends Vue {
   })
   readonly infoPayload!: IInfoPayload
 
+  particleProbability = particleProbability
+  directionToDegrees = directionToDegrees
   /*
     used at least twice, getter for convenience
   */
@@ -74,6 +77,7 @@ export default class GameActiveCell extends Vue {
         assertUnreachable(this.infoPayload)
     }
   }
+
 
   /*
     Get entry url and use helper to convert it to dash

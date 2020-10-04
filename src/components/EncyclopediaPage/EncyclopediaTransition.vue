@@ -9,9 +9,8 @@
     <div v-show="isOpen" class="grids">
       <div class="matrix">
         <matrix-viewer
-          :key="operator"
           class="matrix-viewer"
-          :operator-raw="operator"
+          :operator="operator"
           :size="30"
           @column-mouseover="updateIndicators($event)"
         />

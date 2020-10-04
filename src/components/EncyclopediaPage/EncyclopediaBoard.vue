@@ -5,16 +5,12 @@
       :absorptions="gameCtl.sim.absorptions"
       :board="gameCtl.level.board"
       :laser-particles="laserParticles"
-      :particles="playheadCtl.activeFrame.particles"
+      :particles="playheadCtl.interpolatedParticles"
       @touch="updateRotation"
     />
     <board-frame-picker :playhead="playheadCtl" />
     <div class="ket">
-      <ket-viewer
-        :key="polBasis"
-        :vector="playheadCtl.activeFrame.vector"
-        :initial-pol-basis="polBasis"
-      />
+      <ket-viewer :key="polBasis" :vector="playheadCtl.activeFrame.vector" :pol-basis="polBasis" />
     </div>
   </div>
 </template>
@@ -52,7 +48,7 @@ export default defineComponent({
     gameCtl.importLevel({ grid: props.grid })
 
     const playheadCtl = playheadController({
-      frames: () => gameCtl.sim?.frames.filter((f) => f.vector.entries.length > 0) ?? [],
+      frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: false,
     })
     playheadCtl.seek(props.defaultStep ?? 0)

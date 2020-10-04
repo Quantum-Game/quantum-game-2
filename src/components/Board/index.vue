@@ -25,24 +25,15 @@
       </transition>
 
       <!-- PHOTONS -->
-      <g
+      <app-photon
         v-for="(particle, index) in particles"
-        :key="'particle' + index"
-        :style="computeParticleStyle(particle)"
-        class="photons"
+        :key="'photon-' + index"
+        :particle="particle"
+        :display-magnetic="false"
+        :display-electric="true"
+        :display-gaussian="true"
         @mouseenter="handleMouseEnter(particle.coord)"
-      >
-        <app-photon
-          name
-          :particle="particle"
-          :animate="2"
-          :margin="2"
-          :display-magnetic="false"
-          :display-electric="true"
-          :display-gaussian="true"
-          :sigma="0.3"
-        />
-      </g>
+      />
 
       <!-- CELLS -->
       <app-cell
@@ -99,12 +90,13 @@ import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
-import { emitType, IStyle } from '@/types'
+import { emitType } from '@/types'
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
 import { ReleaseEvent } from '@/engine/controller'
+import { InterpolatedParticle } from '@/engine/interpolation'
 
 export default defineComponent({
   name: 'Board',
@@ -119,7 +111,7 @@ export default defineComponent({
     board: { type: Object as PropType<Board>, required: true },
     hints: { type: Array as PropType<Hint[]>, default: [] },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
-    particles: { type: Array as PropType<Particle[]>, required: true },
+    particles: { type: Array as PropType<InterpolatedParticle[]>, required: true },
     absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
     fate: { type: Object as PropType<Coord>, required: false },
     highlightEmpty: { type: Boolean, default: false },
@@ -189,18 +181,15 @@ export default defineComponent({
       empties,
       handleMouseEnter(coord: Coord): void {
         const piece = props.board.pieces.get(coord)
-        const particles = props.particles.filter((particle) => particle.coord === coord)
+        const particles = props.particles.filter(
+          (particle) => particle.coord === coord
+        ) as Particle[]
+
         if (particles.length > 0) {
           emit('hover', { kind: 'particles', particles })
         }
         if (piece != null) {
           emit('hover', { kind: 'piece', piece })
-        }
-      },
-      computeParticleStyle(particle: Particle): IStyle {
-        return {
-          transform: `translate(${particle.coord.x * tileSize}px, ${particle.coord.y *
-            tileSize}px)`,
         }
       },
     }

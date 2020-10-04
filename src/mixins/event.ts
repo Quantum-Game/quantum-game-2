@@ -17,6 +17,32 @@ export function useWindowEvent<K extends keyof WindowEventMap>(
   })
 }
 
+const animTime = ref(0)
+
+export function useAnimTime(): Ref<number> {
+  return animTime
+}
+
+const rafCallbacks: ((t: number) => void)[] = []
+
+export function useRaf(fn: (t: number) => void): void {
+  onMounted(() => {
+    rafCallbacks.push(fn)
+  })
+  onUnmounted(() => {
+    const i = rafCallbacks.indexOf(fn)
+    if (i >= 0) {
+      rafCallbacks.splice(i, 1)
+    }
+  })
+}
+
+requestAnimationFrame(function tick(time) {
+  animTime.value = time
+  requestAnimationFrame(tick)
+  rafCallbacks.forEach((f) => f(time))
+})
+
 export function useMouseCoords(): {
   pageX: number
   pageY: number

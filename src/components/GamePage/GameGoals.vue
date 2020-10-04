@@ -3,7 +3,6 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div :class="computeProbabilityClass">
-        <!-- <div class="inner-circle">{{ tweenedPercent.toFixed(1) }}%</div> -->
         <div class="mobile_progressBarText">
           <p>You need {{ (goals.totalGoalThreshold * 100).toFixed(1) }}% detection</p>
         </div>
@@ -13,7 +12,10 @@
           class="mobile_progressBarFillGoal"
           :style="{ width: goals.totalGoalThreshold * 100 + '%' }"
         ></div>
-        <div class="mobile_progressBarFill" :style="{ width: tweenedPercent * 100 + '%' }"></div>
+        <div
+          class="mobile_progressBarFill"
+          :style="{ width: goals.totalAbsorption * 100 + '%' }"
+        ></div>
       </div>
       <!-- <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
         Goal: {{ gameState.totalGoalPercentage }} %
@@ -65,8 +67,6 @@ export default defineComponent({
     goals: { type: Object as PropType<GoalsController>, required: true },
   },
   setup(props) {
-    const tweenedPercent = useTween({ to: () => props.goals.totalAbsorption })
-
     const computeProbabilityClass = computed((): string => {
       return props.goals.probabilityGoalMet ? 'success' : 'defeat'
     })
@@ -96,7 +96,6 @@ export default defineComponent({
     })
 
     return {
-      tweenedPercent,
       computeProbabilityClass,
       computeGoalClass,
       computeSafeClass,

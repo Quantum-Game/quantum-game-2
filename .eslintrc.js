@@ -33,7 +33,7 @@ module.exports = {
     'vue/require-default-prop': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-extra-semi': 'off', // sometimes in conflict with prettier
-    '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

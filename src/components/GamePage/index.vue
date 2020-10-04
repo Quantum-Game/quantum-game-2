@@ -227,8 +227,9 @@ export default defineComponent({
     const levelData = computed(() => {
       if (routeLevelId.value != null) {
         return levels[routeLevelId.value]
+      } else {
+        return levels[0] // sandbox
       }
-      return null
     })
 
     watch(
@@ -255,8 +256,8 @@ export default defineComponent({
      * Current active frame particles
      * @returns particles
      */
-    const activeParticles = computed((): Particle[] => {
-      return playheadCtl.activeFrame?.particles ?? []
+    const activeParticles = computed(() => {
+      return playheadCtl.interpolatedParticles
     })
 
     /**
@@ -275,7 +276,7 @@ export default defineComponent({
     })
 
     const overlayGameState = computed(() => {
-      if (!alreadyWon.flag && playheadCtl.isLastFrame) {
+      if (!alreadyWon.flag && playheadCtl.isLastFrame && routeLevelId.value != null) {
         switch (gameCtl.goals.gameOutcome) {
           case GameOutcome.Victory:
             return 'Victory'

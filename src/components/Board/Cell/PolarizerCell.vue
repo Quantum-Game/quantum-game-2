@@ -1,5 +1,5 @@
 <template>
-  <svg :class="state">
+  <svg :class="state" width="64" height="64">
     <path
       fill="#F0F"
       fill-rule="evenodd"
