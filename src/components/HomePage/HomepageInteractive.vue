@@ -1,26 +1,32 @@
 <template>
   <div class="interactive">
-    <p>
-      <a href="https://quantumgame.io/info/mach-zehnder-interferometer" target="_blank"
-        >Mach-Zehnder Interferometer</a
-      >
-      - a virtual optical table
-    </p>
-    <p>
-      <a href="https://quantumgame.io/info/beam-splitter" target="_blank">Faraday rotator</a> - an
-      explorable explanation
-    </p>
-    <p>
-      <a href="https://github.com/Quantum-Game/bra-ket-vue" target="_blank">⟨𝜑|𝜓⟩.vue</a> -
-      visualizer for quantum states and matrices
-    </p>
+    <p></p>
+    <encyclopedia-board :grid="boardMZ" :step="5" class="grid" :default-step="2" />
   </div>
+  <p>
+    For more interactive, educational materials, see
+    <a href="https://quantumgame.io/info/beam-splitter" target="_blank">Faraday Rotator</a>
+    explorable explanation and
+    <a href="https://github.com/Quantum-Game/bra-ket-vue" target="_blank"
+      >⟨𝜑|𝜓⟩.vue visualizer for quantum states and matrices</a
+    >, which can be used for quantum computing, quantum chemistry or any other discrete quantum
+    system.
+  </p>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { Vue, Options } from 'vue-class-component'
+import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
+import { getEntry } from '@/components/EncyclopediaPage/loadData'
 
-export default class HomepageInteractive extends Vue {}
+@Options({
+  components: {
+    EncyclopediaBoard,
+  },
+})
+export default class HomepageInteractive extends Vue {
+  boardMZ = getEntry('mach-zehnder-interferometer').grids[0]
+}
 </script>
 
 <style lang="scss" scoped>
