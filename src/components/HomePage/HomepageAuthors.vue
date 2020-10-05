@@ -12,11 +12,7 @@
   </p>
 </template>
 
-<script lang="ts">
-import { Vue } from 'vue-class-component'
-
-export default class HomepageAuthors extends Vue {}
-</script>
+<script lang="ts"></script>
 
 <style lang="scss" scoped>
 a {

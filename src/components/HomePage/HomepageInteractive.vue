@@ -15,18 +15,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
+import { defineComponent } from 'vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import { getEntry } from '@/components/EncyclopediaPage/loadData'
 
-@Options({
+export default defineComponent({
   components: {
     EncyclopediaBoard,
   },
+  setup() {
+    const boardMZ = getEntry('mach-zehnder-interferometer').grids[0]
+    return { boardMZ }
+  },
 })
-export default class HomepageInteractive extends Vue {
-  boardMZ = getEntry('mach-zehnder-interferometer').grids[0]
-}
 </script>
 
 <style lang="scss" scoped>

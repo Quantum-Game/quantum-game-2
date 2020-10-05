@@ -2,8 +2,6 @@
   <div></div>
 </template>
 
-<script lang="ts">
-export default class HomePageLayout {}
-</script>
+<script lang="ts"></script>
 
 <style lang="scss" scoped></style>
