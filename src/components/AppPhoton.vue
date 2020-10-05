@@ -3,25 +3,21 @@
     <clipPath v-if="clipPath" :id="`photonClip-${uid}`" clip-path-units="userSpaceOnUse">
       <path :d="clipPath" clip-rule="evenodd" />
     </clipPath>
-    <svg
-      :width="64"
-      :height="64"
-      viewBox="-1.2 -1.2 2.4 2.4"
-      style="overflow: visible"
-      :clip-path="clipPath ? `url(#photonClip-${uid})` : undefined"
-    >
-      <g class="photon" :style="photonInnerStyle">
-        <!-- <circle cx="0" cy="0" r="5.2" fill="white" opacity="0.5" /> -->
-        <circle fill="url(#photon-bg-gradient)" cx="0" cy="0" r="1" />
-        <path v-if="displayGaussian" class="gaussian" :d="gaussianPath" />
-        <g fill="none" stroke-linecap="round">
-          <path
-            v-for="(p, index) in wavePaths"
-            :key="index"
-            :d="p.path"
-            :stroke="p.color"
-            :stroke-width="p.width"
-          />
+    <svg :width="64" :height="64" viewBox="-1.2 -1.2 2.4 2.4" style="overflow: visible">
+      <g :clip-path="clipPath ? `url(#photonClip-${uid})` : undefined">
+        <g class="photon" :style="photonInnerStyle">
+          <!-- <circle cx="0" cy="0" r="5.2" fill="white" opacity="0.5" /> -->
+          <circle fill="url(#photon-bg-gradient)" cx="0" cy="0" r="1" />
+          <path v-if="displayGaussian" class="gaussian" :d="gaussianPath" />
+          <g fill="none" stroke-linecap="round">
+            <path
+              v-for="(p, index) in wavePaths"
+              :key="index"
+              :d="p.path"
+              :stroke="p.color"
+              :stroke-width="p.width"
+            />
+          </g>
         </g>
       </g>
     </svg>
@@ -60,7 +56,6 @@ const mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1])
 const eColor = d3
   .scaleLinear<string>()
   .domain([-1, 0, 1])
-  // .range(['#f00', '#000', '#0f0'])
   .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
 
 /**
