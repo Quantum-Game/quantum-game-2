@@ -48,7 +48,6 @@
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :board="gameCtl.level.board"
-            :hints="gameCtl.level.hints"
             :laser-particles="laserParticles"
             :particles="activeParticles"
             :absorptions="gameCtl.sim.absorptions"

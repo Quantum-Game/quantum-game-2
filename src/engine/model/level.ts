@@ -138,13 +138,13 @@ export function importLevel(value: unknown): Level | null {
   const grid = tryGetObject(value, 'grid')
   const goals = tryGetInstance(value, 'goals', Array) ?? []
   const tools = tryGetInstance(value, 'tools', Array) ?? []
+  const rawHints = tryGetInstance(value, 'hints', Array) ?? []
 
   if (grid == null) return null
 
   const width = tryGetNumber(grid, 'cols')
   const height = tryGetNumber(grid, 'rows')
   const cells = tryGetInstance(grid, 'cells', Array) ?? []
-  const rawHints = tryGetInstance(grid, 'hints', Array) ?? []
 
   if (width == null || height == null) {
     console.error('grid width or height missing')
