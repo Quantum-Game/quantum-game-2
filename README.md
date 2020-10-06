@@ -9,9 +9,9 @@ A puzzle game with photons, superposition and quantum measurement, right in your
 
 Follow updates on Twitter [@QuantumGameIO](https://twitter.com/QuantumGameIO), [Faceboook](https://www.facebook.com/quantumgameio/) and read our blog posts on [Medium](https://medium.com/quantum-photons).
 
-Quantum Game is currently being developed by dr [Piotr Migdał](https://p.migdal.pl/), [Philippe Cochin](https://github.com/sneakyweasel), [Chiara Decaroli](https://maperseguirvirtute.wordpress.com/), [Klem Jankiewicz](http://jankiewiczstudio.com/), [Kuba Strebeyko](https://www.linkedin.com/in/strebeyko/), [Pawel Janicki](https://www.paweljanicki.jp/) and others.
+Quantum Game is currently being developed by dr [Piotr Migdał](https://p.migdal.pl/), [Klem Jankiewicz](http://jankiewiczstudio.com/), [Paweł Grabarz](https://github.com/frizi) and [Philippe Cochin](https://github.com/sneakyweasel). Concept art by [Chiara Decaroli](https://maperseguirvirtute.wordpress.com/) and generative music by [Pawel Janicki](https://www.paweljanicki.jp/) and others. [The full list of contributors](https://github.com/Quantum-Game/quantum-game-2/graphs/contributors).
 
-This version of the game was funded by the [Center for Quantum Technologies of the National University of Singapore](https://www.quantumlah.org/).
+This version of the game was funded by the [Center for Quantum Technologies of the National University of Singapore](https://www.quantumlah.org/) and now being developed by the **Quantum Flytrap**.
 
 ![Quantum Game 2 logo](public/img/qg2_logo.png)
 
