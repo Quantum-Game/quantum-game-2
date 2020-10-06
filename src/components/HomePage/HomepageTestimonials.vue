@@ -85,10 +85,18 @@ a:hover {
 
 .testimonial {
   box-sizing: border-box;
-  width: 50%;
-  // TODO: this could be handled by a wrapping layout with gutter once it's in master.
-  padding: 20px 40px;
   text-align: left;
+  width: 100%;
+
+  padding: 20px 40px;
+  @include media('>=medium') {
+    padding: 20px 20px;
+    width: 50%;
+  }
+
+  @include media('>=large') {
+    padding: 20px 40px;
+  }
 }
 
 .testimonial-img {
