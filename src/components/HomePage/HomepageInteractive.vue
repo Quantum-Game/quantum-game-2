@@ -5,8 +5,7 @@
   </div>
   <p>
     For more interactive, educational materials, see
-    <a href="https://quantumgame.io/info/beam-splitter" target="_blank">Faraday Rotator</a>
-    explorable explanation and
+    <router-link to="/info/faraday-rotator">Faraday Rotator explorable explanation</router-link> and
     <a href="https://github.com/Quantum-Game/bra-ket-vue" target="_blank"
       >⟨𝜑|𝜓⟩.vue visualizer for quantum states and matrices</a
     >, which can be used for quantum computing, quantum chemistry or any other discrete quantum
