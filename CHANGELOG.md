@@ -10,6 +10,18 @@ Here:
 * The minor is for major releases (kind of more subjective).
 * Each match version is any release on [quantumgame.io](https://quantumgame.io/) that might have some backward-incompatible changes.
 
+## [2.2.14] - 2020-10-06
+
+### Added
+
+* Smooth movement for photons
+* An interactive demostration on the frontpage
+
+### Changed
+
+* Major board refactoring (internals, frontend)
+* Homepage changes to a landing page
+
 ## [2.2.13] - 2020-09-07
 
 ### Added
