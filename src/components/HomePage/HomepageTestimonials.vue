@@ -20,10 +20,10 @@
     <p>
       Cited in
       <a
-        href="https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22quantum+game+with+photons%22&btnG="
+        href="https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=%22quantumgame.io%22+OR+%22Quantum+Game+with+Photons%22&btnG="
         target="_blank"
-        >4 academic publications</a
-      >.
+        >numerous academic publications</a
+      >, the Top Pick for Education in Gamyfing Quantum Theory, mentioned in VICE and Boing Boing.
     </p>
   </div>
 </template>
