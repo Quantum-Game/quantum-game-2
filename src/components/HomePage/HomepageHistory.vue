@@ -18,8 +18,6 @@
   </div>
 </template>
 
-<script lang="ts"></script>
-
 <style lang="scss" scoped>
 a {
   color: rgb(255, 181, 209);

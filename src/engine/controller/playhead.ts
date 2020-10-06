@@ -1,5 +1,4 @@
 import { useRaf } from '@/mixins'
-import { useTimer } from '@/mixins/timer'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
 import { InterpolatedParticle, interpolateParticle } from '../interpolation'
