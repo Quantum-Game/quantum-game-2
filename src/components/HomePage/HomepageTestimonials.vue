@@ -1,9 +1,15 @@
 <template>
   <div class="testimonials">
-    <p v-for="t in testimonials" :key="t.name">
-      <i>“{{ t.text }}”</i><br />
-      — <b>{{ t.name }}</b> ({{ t.institute }})
-    </p>
+    <div layout="column u4">
+      <div v-for="t in testimonials" :key="t.name" layout="row u1">
+        <span flex
+          ><i>“{{ t.text }}”</i></span
+        >
+        <span flex
+          ><b>{{ t.name }}</b> ({{ t.institute }})</span
+        >
+      </div>
+    </div>
     <p>
       Cited in
       <a
