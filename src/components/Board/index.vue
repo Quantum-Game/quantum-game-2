@@ -75,16 +75,17 @@
 
     <!-- SPEECH BUBBLES -->
     <speech-bubble
-      v-for="(hint, index) in hints"
-      :key="index"
+      v-for="[coord, hint] in board.hints"
+      :key="coord"
       :hint="hint"
+      :coord="coord"
       :tile-size="scaledTileSize"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Coord, Particle, Hint, Board } from '@/engine/model'
+import { Coord, Particle, Board } from '@/engine/model'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
@@ -109,7 +110,6 @@ export default defineComponent({
   },
   props: {
     board: { type: Object as PropType<Board>, required: true },
-    hints: { type: Array as PropType<Hint[]>, default: [] },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
     particles: { type: Array as PropType<InterpolatedParticle[]>, required: true },
     absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
