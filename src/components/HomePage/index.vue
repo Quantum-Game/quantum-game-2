@@ -18,11 +18,11 @@
         <app-button class="button" type="big">VIRTUAL LAB</app-button>
       </router-link>
     </div>
-    <div class="hello">
+    <div class="hello" layout="column u10">
       <h1>{{ i18n.t('homepage.main') }}</h1>
       <p>{{ i18n.t('homepage.desc') }}</p>
       <homepage-interactive />
-      <homepage-testimonials />
+      <homepage-testimonials class="testimonials" />
       <homepage-social />
       <homepage-authors />
       <homepage-history />
@@ -125,6 +125,11 @@ p {
   @include media('<large') {
     margin-bottom: 6rem;
   }
+}
+
+.testimonials {
+  max-width: 1300px;
+  width: 100vw;
 }
 
 a {
