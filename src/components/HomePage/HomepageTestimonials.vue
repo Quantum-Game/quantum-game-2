@@ -45,7 +45,7 @@ export default defineComponent({
       {
         name: 'Scott Aaronson',
         institute: 'University of Texas at Austin',
-        photo: 'https://via.placeholder.com/100',
+        photo: '/faces/scott_aaronson.jpg',
         link: {
           text: 'Shtetl-Optimized Blog - scottaaronson.com',
           url: 'https://www.scottaaronson.com/blog/?p=3597',
@@ -56,7 +56,7 @@ export default defineComponent({
       {
         name: 'James Wootton',
         institute: 'IBM Research',
-        photo: 'https://via.placeholder.com/100',
+        photo: '/faces/james_wootton.jpg',
         link: { text: 'Twitter', url: 'https://twitter.com/decodoku/status/1287758921654992899' },
         text:
           'I”ve been playing around with the new “Quantum Game with Photons”. So far it feels like all the fun parts of doing undergraduate physics experiments, while also being a really nice puzzle game!',
@@ -64,7 +64,7 @@ export default defineComponent({
       {
         name: 'Monika Schleier-Smith',
         institute: 'Stanford University',
-        photo: 'https://via.placeholder.com/100',
+        photo: '/faces/monika_schleier_smith.jpg',
         text:
           'Even when it becomes possible to teach my class in person again, your website could help me scale to a larger class size than is possible when I require equipment for hands-on demonstrations.',
       },
