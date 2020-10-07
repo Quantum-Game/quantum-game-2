@@ -10,7 +10,7 @@
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
-    <div>
+    <div layout="row wrap middle u5">
       <router-link to="/level/1">
         <app-button class="button" type="big">PLAY GAME</app-button>
       </router-link>
@@ -123,10 +123,6 @@ p {
   @media screen and (max-width: 560px) {
     width: 80%;
   }
-}
-.button {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
 }
 
 .row-full {
