@@ -1,5 +1,5 @@
 <template>
-  <div v-if="gameCtl.level" class="container">
+  <div v-if="gameCtl.level" class="container" layout="column center u1">
     <board
       class="board"
       :absorptions="gameCtl.sim.absorptions"
@@ -9,9 +9,7 @@
       @touch="updateRotation"
     />
     <board-frame-picker :playhead="playheadCtl" />
-    <div class="ket">
-      <ket-viewer :key="polBasis" :vector="playheadCtl.activeFrame.vector" :pol-basis="polBasis" />
-    </div>
+    <ket-viewer class="ket" :vector="playheadCtl.activeFrame.vector" :pol-basis="polBasis" />
   </div>
 </template>
 
@@ -19,7 +17,7 @@
 import { KetViewer } from 'bra-ket-vue'
 import Board from '@/components/Board/index.vue'
 import BoardFramePicker from './BoardFramePicker.vue'
-import { computed, defineComponent, PropType } from 'vue'
+import { computed, defineComponent, PropType, watchEffect } from 'vue'
 import { gameController, playheadController } from '@/engine/controller'
 import { IGrid } from '@/engine/interfaces'
 import { Coord, Rotation, Vector } from '@/engine/model'
@@ -45,7 +43,9 @@ export default defineComponent({
       maxSteps: () => props.maxSteps,
     })
 
-    gameCtl.importLevel({ grid: props.grid })
+    watchEffect(() => {
+      gameCtl.importLevel({ grid: props.grid })
+    })
 
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
@@ -75,17 +75,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.container {
-  display: inline-block;
-  margin-bottom: 30px;
-
-  .board {
-    padding: 20px;
-  }
+.board {
+  width: 360px;
 }
 
 .ket {
-  width: 360px;
   padding: 5px 10px;
   margin-top: 5px;
   background-color: rgba(0, 0, 0, 0.1);

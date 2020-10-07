@@ -1,77 +1,93 @@
 $unit: 4px;
 
-[layout] {
-    > * { --layout-spacing: 0px; }
-    > * + * {
-        margin-left: calc(var(--layout-spacing) * var(--is-row-child));
-        margin-top: calc(var(--layout-spacing) * var(--is-column-child));
-    }
+* {
+    --layout-margin-parent: 0px;
+    --layout-margin-self: 0px;
 }
 
 [layout] > * {
+    pointer-events: initial;
     flex-shrink: 0;
 }
 
+[layout] {
+    pointer-events: none;
+    &, > * {
+        margin: calc(var(--layout-margin-parent) - var(--layout-margin-self));
+    }
+}
+
+
+
 [flex] { flex: 1; }
 
-@mixin define-spacing($attr, $name, $size) {
-    [#{$attr}~="#{$name}"] > * {
-        --layout-spacing: #{$size}
+@mixin define-spacing($attr, $name) {
+    $size: $name * $unit * 0.5;
+    [#{$attr}~="u#{$name}"] {
+        --layout-margin-self: #{$size};
+        > * { --layout-margin-parent: #{$size}; }
     }
 }
 
-@mixin maybe-media($media) {
-    @if $media == "" {
-        @content
-    } @else {
-        @include media($media) {
-            @content
-        }
+@mixin define-layout($attr) {
+    [#{$attr}~=column] {
+        flex-direction: column;
     }
-}
 
-@mixin define-layout($attr, $media) {
-    @include maybe-media($media) {
-        [#{$attr}~=column] {
-            flex-direction: column;
-            > * {
-                --is-row-child: 0;
-                --is-column-child: 1;
-            }
-        }
-        [#{$attr}~=row] {
-            flex-direction: row;
-            > * {
-                --is-row-child: 1;
-                --is-column-child: 0;
-            }
-        }
-
-        [#{$attr}] { display: flex; align-items: stretch; }
-        [#{$attr}~=inline] { display: inline-flex; }
-
-        [#{$attr}~=start] { align-items: flex-start; }
-        [#{$attr}~=end] { align-items: flex-end; }
-        [#{$attr}~=center] { align-items: center; }
-        [#{$attr}~=middle] { justify-content: center; }
-        [#{$attr}~=around] { justify-content: space-around; }
-        [#{$attr}~=between] { justify-content: space-between; }
-        [#{$attr}~=wrap] { flex-wrap: wrap; }
-        
-        @include define-spacing($attr, u1, $unit * 1);
-        @include define-spacing($attr, u2, $unit * 2);
-        @include define-spacing($attr, u4, $unit * 4);
-        @include define-spacing($attr, u5, $unit * 5);
-        @include define-spacing($attr, u10, $unit * 10);
+    [#{$attr}~=row] {
+        flex-direction: row;
     }
+
+    [#{$attr}] { display: flex; align-items: stretch; }
+    [#{$attr}~=inline] { display: inline-flex; }
+
+    [#{$attr}~=start] { align-items: flex-start; }
+    [#{$attr}~=end] { align-items: flex-end; }
+    [#{$attr}~=center] { align-items: center; }
+    [#{$attr}~=middle] { justify-content: center; }
+    [#{$attr}~=around] { justify-content: space-around; }
+    [#{$attr}~=between] { justify-content: space-between; }
+    [#{$attr}~=wrap] { flex-wrap: wrap; }
+    [#{$attr}~=nowrap] { flex-wrap: nowrap; }
+    
+    @include define-spacing($attr, 1);
+    @include define-spacing($attr, 2);
+    @include define-spacing($attr, 3);
+    @include define-spacing($attr, 4);
+    @include define-spacing($attr, 5);
+    @include define-spacing($attr, 10);
 }
 
 // Layouts are defined as mobile-first,
 // that means `layout` is the default one for all screens,
 // and overrides are made for progressively bigger screen sizes,
 // e.g. layout-md defining layout for medium up.
- 
-@include define-layout("layout", "");
-@include define-layout("layout-md", ">=medium");
-@include define-layout("layout-lg", ">=large");
-@include define-layout("layout-xl", ">=xlarge");
+@include define-layout("layout");
+@include media(">=small") { @include define-layout("layout-sm"); }
+@include media(">=medium") { @include define-layout("layout-md"); }
+@include media(">=large") { @include define-layout("layout-lg"); }
+@include media(">=xlarge") { @include define-layout("layout-xl"); }
+
+.hide {
+    display: none;
+}
+
+@include media(">=small") {
+    .hide-sm { display: none; }
+    .show-sm { display: initial; }
+}
+
+@include media(">=medium") {
+    .hide-md { display: none; }
+    .show-md { display: initial; }
+}
+
+@include media(">=large") {
+    .hide-lg { display: none; }
+    .show-lg { display: initial; }
+}
+
+@include media(">=xlarge") {
+    .hide-xl { display: none; }
+    .show-xl { display: initial; }
+}

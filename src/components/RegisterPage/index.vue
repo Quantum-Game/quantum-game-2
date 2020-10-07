@@ -126,7 +126,6 @@ input[type='email']:focus,
 input[type='name']:focus,
 input[type='password']:focus {
   color: #000;
-  font-family: Montserrat, Arial, Helvetica, sans-serif;
   font-size: 1rem;
   font-weight: normal;
   border-top: none;
@@ -138,7 +137,6 @@ input[type='password']:focus {
 
 ::placeholder {
   color: rgba(0, 0, 0, 0.4);
-  font-family: Montserrat, Arial, Helvetica, sans-serif;
   text-align: center;
 }
 .login-button-wrapper {

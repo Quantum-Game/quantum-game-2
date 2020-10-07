@@ -9,14 +9,13 @@
     </app-overlay>
 
     <!-- GENERAL LAYOUT -->
-    <game-layout>
-      <!-- HEADER-MIDDLE -->
-      <template #header-middle>
+    <app-layout>
+      <template #header>
         <div layout="row u2 middle center">
           <router-link :to="previousLevel">
             <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
           </router-link>
-          <h1 class="title">
+          <h1 class="title" :title="'I am &amp;#10; happy to have a newline entity.'">
             {{ gameCtl.level ? gameCtl.level.id + ' - ' + gameCtl.level.name : 'loading' }}
           </h1>
           <router-link :to="nextLevelOrOvelay">
@@ -26,8 +25,8 @@
       </template>
 
       <!-- MAIN-LEFT -->
-      <template #main-left>
-        <section>
+      <template #left>
+        <section layout="column u10">
           <game-toolbox
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
@@ -41,8 +40,7 @@
         </section>
       </template>
 
-      <!-- MAIN-MIDDLE -->
-      <template #main-middle>
+      <template #main>
         <section>
           <board
             v-if="gameCtl.level"
@@ -69,8 +67,7 @@
         </section>
       </template>
 
-      <!-- MAIN-RIGHT -->
-      <template #main-right>
+      <template #right>
         <section>
           <GameGoals :goals="gameCtl.goals" />
           <div class="ket-viewer-game">
@@ -82,7 +79,7 @@
           </div>
         </section>
       </template>
-    </game-layout>
+    </app-layout>
 
     <!-- DRAG AND DROP CELL -->
     <div class="drag-container">
@@ -107,7 +104,7 @@ import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
-import GameLayout from '@/components/GamePage/GameLayout.vue'
+import AppLayout from '@/components/AppLayout.vue'
 import Board from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
 import AppCell from '@/components/Board/AppCell.vue'
@@ -130,7 +127,7 @@ import { storeNamespace } from '@/store'
 export default defineComponent({
   name: 'GamePage',
   components: {
-    GameLayout,
+    AppLayout,
     KetViewer,
     GameGoals,
     GameInfobox,
@@ -407,6 +404,7 @@ h1.title {
   }
 }
 .ket-viewer-game {
+  text-align: center;
   margin-top: 10px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.1);

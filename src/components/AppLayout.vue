@@ -1,15 +1,23 @@
 <template>
-  <div class="layout-container">
-    <aside class="left">
-      <app-menu />
-      <slot name="left"></slot>
-    </aside>
-    <main class="main">
-      <slot name="main"></slot>
+  <div class="main-layout" layout="column" flex>
+    <app-menu />
+    <header layout="row between u5">
+      <div flex>
+        <slot name="header"></slot>
+      </div>
+    </header>
+
+    <main layout="column u1" layout-lg="row u5">
+      <aside v-if="$slots.left" :class="`left ${leftClass}`">
+        <slot name="left"></slot>
+      </aside>
+      <article flex>
+        <slot name="main"></slot>
+      </article>
+      <aside v-if="$slots.right" class="right">
+        <slot name="right"></slot>
+      </aside>
     </main>
-    <aside class="right">
-      <slot name="right"></slot>
-    </aside>
   </div>
 </template>
 
@@ -21,60 +29,29 @@ export default defineComponent({
   components: {
     AppMenu,
   },
+  props: {
+    leftClass: { type: String, default: '' },
+  },
 })
 </script>
 
 <style lang="scss" scoped>
-.layout-container {
-  height: 100%;
+.main-layout {
+  max-width: 1400px;
+  margin: 0 auto;
   min-height: 100vh;
-  display: flex;
   color: white;
-  width: 1400px;
-  justify-content: center;
-  @include media('<large') {
-    flex-direction: column;
-    justify-content: flex-start;
-  }
-  & aside,
-  & main {
-    padding: 20px;
-    align-content: center;
-    width: 65%;
-    margin: 0;
-    padding: 0;
+}
 
-    @include media('<large') {
-      width: 100%;
-      padding: 0;
-    }
+@include media('>=large') {
+  .left,
+  .right {
+    width: 200px;
   }
+}
 
-  & aside {
-    &.left {
-      width: 16%;
-      padding: 50px 20px 0 0;
-      text-transform: uppercase;
-      text-align: left;
-      color: white;
-      @include media('<large') {
-        padding: 0 20px;
-        min-height: 41px;
-        width: 100%;
-      }
-    }
-    &.right {
-      width: 16%;
-      padding: 50px 0 0 20px;
-      margin-top: 42px;
-      text-transform: uppercase;
-      text-align: left;
-      color: white;
-      @include media('<large') {
-        width: 100%;
-        padding: 0px !important;
-      }
-    }
-  }
+main,
+header {
+  padding: 0 20px;
 }
 </style>

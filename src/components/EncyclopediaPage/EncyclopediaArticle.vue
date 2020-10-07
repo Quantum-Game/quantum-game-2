@@ -1,35 +1,35 @@
 <template>
-  <div v-if="entry" class="entry">
-    <article>
-      <!-- TITLE -->
-      <h1 class="title">{{ entry.title }}</h1>
-      <!-- eslint-disable-next-line vue/no-v-html -->
-      <h2 class="short" v-html="entry.short" />
-
-      <!-- GRIDS -->
-      <div class="grids">
-        <div v-for="(iGrid, i) in entry.grids" :key="`board-${i}-${entry.elementName}`">
-          <encyclopedia-board :grid="iGrid" :step="5" class="grid" :default-step="2" />
-        </div>
+  <div layout="column">
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <h2 class="short" v-html="entry.short" />
+    <!-- GRIDS -->
+    <div class="grids">
+      <div layout="row wrap around u5">
+        <encyclopedia-board
+          v-for="(iGrid, i) in entry.grids"
+          :key="i"
+          :grid="iGrid"
+          :step="5"
+          :default-step="2"
+        />
       </div>
+    </div>
 
-      <!-- SECTIONS -->
-      <encyclopedia-article-section
-        v-for="section in entry.sections"
-        :key="section.title"
-        :section="section"
-        :should-be-open-on-init="true"
-      />
+    <!-- SECTIONS -->
+    <encyclopedia-article-section
+      v-for="section in entry.sections"
+      :key="section.title"
+      :section="section"
+    />
 
-      <!-- EQUATION GRID -->
-      <encyclopedia-transition
-        v-if="showMatrix"
-        :key="`transition-${entry.elementName}`"
-        :element-name="entry.elementName"
-        :default-rotation="entry.defaultRotation"
-        step="3"
-      />
-    </article>
+    <!-- EQUATION GRID -->
+    <encyclopedia-transition
+      v-if="showMatrix"
+      :key="`transition-${entry.elementName}`"
+      :element-name="entry.elementName"
+      :default-rotation="entry.defaultRotation"
+      step="3"
+    />
   </div>
 </template>
 
@@ -37,7 +37,7 @@
 import { Vue, Options, setup } from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { IEntry } from '@/engine/interfaces'
-import { getEntry } from './loadData'
+import { conceptNameList, elementNameList, getEntry } from './loadData'
 import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
@@ -62,6 +62,8 @@ export default class EncyclopediaArticle extends Vue {
     sections: [],
   }
 
+  elementNameList = elementNameList
+  conceptNameList = conceptNameList
   route = setup(useRoute)
   router = setup(useRouter)
 
@@ -100,49 +102,18 @@ export default class EncyclopediaArticle extends Vue {
 </script>
 
 <style lang="scss" scoped>
-article {
-  width: 95%;
-}
-.entry {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  & .title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding-top: 30px;
-    text-transform: uppercase;
-  }
-  & .short {
-    font-size: 1rem;
-    padding-right: 20%;
-    padding-left: 20%;
-    padding-bottom: 20px;
-    font-weight: 300;
-    line-height: 1.5rem;
-    letter-spacing: 0.5px;
-  }
-  @include media('<large') {
-    width: 100vw;
-    article {
-      width: 90vw;
-    }
-  }
-}
-
-h1 {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+.short {
+  font-size: 1rem;
+  padding-right: 20%;
+  padding-left: 20%;
+  padding-bottom: 20px;
+  font-weight: 300;
+  line-height: 1.5rem;
+  letter-spacing: 0.5px;
   text-align: center;
 }
+
 .grids {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  @include media('<large') {
-    flex-direction: column;
-  }
 }
 </style>

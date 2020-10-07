@@ -4,7 +4,7 @@
       v-for="[piece, count] in tools"
       :key="piece.type"
       :class="{ tool: true, inactive: count === 0 }"
-      layout="column middle u1"
+      layout="column middle"
       @mouseenter="showPieceHint(piece)"
     >
       <svg
@@ -80,14 +80,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.toolbox {
-  display: flex;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .tool {
   padding: 8px 0;
+  text-align: center;
   &.inactive {
     opacity: 0.4;
   }
@@ -96,7 +91,6 @@ export default defineComponent({
 .counter {
   fill: white;
   text-anchor: middle;
-  margin: 0;
   font-size: 0.8rem;
 }
 </style>

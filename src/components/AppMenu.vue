@@ -1,29 +1,27 @@
 <template>
-  <div class="q-menu-wrapper">
-    <div :class="{ open: isMenuOpen, 'menu-icon': true }" @click="toggleMenu">
-      <div class="bar1"></div>
-      <div class="bar2"></div>
-      <div class="bar3"></div>
-    </div>
-    <transition name="fade">
-      <div v-if="isMenuOpen" class="menu-overlay">
-        <menu>
-          <router-link to="/">BACK TO THE MAIN PAGE</router-link>
-          <router-link v-if="currentLevel != null" :to="`/level/${currentLevel}`">
-            CONTINUE
-          </router-link>
-          <router-link to="/levels">LEVELS</router-link>
-          <router-link v-if="isLoggedIn" to="/myaccount">MY ACCOUNT</router-link>
-          <router-link v-else to="/login">LOG IN</router-link>
-          <router-link to="/sandbox">SANDBOX</router-link>
-          <router-link to="/levels">LEVELS</router-link>
-          <router-link to="/info">ENCYCLOPEDIA</router-link>
-          <router-link to="/options">OPTIONS</router-link>
-          <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
-        </menu>
-      </div>
-    </transition>
+  <div :class="{ open: isMenuOpen, 'menu-icon': true }" @click="toggleMenu">
+    <div class="bar1"></div>
+    <div class="bar2"></div>
+    <div class="bar3"></div>
   </div>
+  <transition name="fade">
+    <div v-if="isMenuOpen" class="menu-overlay" flex layout="column">
+      <menu layout="column around u1">
+        <router-link to="/">BACK TO THE MAIN PAGE</router-link>
+        <router-link v-if="currentLevel != null" :to="`/level/${currentLevel}`">
+          CONTINUE
+        </router-link>
+        <router-link to="/levels">LEVELS</router-link>
+        <router-link v-if="isLoggedIn" to="/myaccount">MY ACCOUNT</router-link>
+        <router-link v-else to="/login">LOG IN</router-link>
+        <router-link to="/sandbox">SANDBOX</router-link>
+        <router-link to="/levels">LEVELS</router-link>
+        <router-link to="/info">ENCYCLOPEDIA</router-link>
+        <router-link to="/options">OPTIONS</router-link>
+        <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>
+      </menu>
+    </div>
+  </transition>
 </template>
 
 <script lang="ts">
@@ -65,13 +63,6 @@ export default defineComponent(() => {
 </script>
 
 <style scoped lang="scss">
-.q-menu-wrapper {
-  min-height: 42px;
-  @include media('<large') {
-    width: 6vw;
-    min-height: 0px;
-  }
-}
 .menu-icon {
   display: block;
   position: absolute;
@@ -79,11 +70,6 @@ export default defineComponent(() => {
   left: 20px;
   cursor: pointer;
   z-index: 4;
-  @include media('<large') {
-    position: static;
-    top: 2vw;
-    left: 5vw;
-  }
 
   .bar1,
   .bar2,
@@ -122,37 +108,41 @@ export default defineComponent(() => {
 .menu-overlay {
   z-index: 3;
   position: fixed;
+  overflow-y: auto;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
   background-color: rgba(33, 2, 53, 0.9);
+  cursor: unset;
+}
+menu {
+  padding: 25px 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  cursor: unset;
-  & menu {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 50%;
-    margin: 0;
-    font-size: 2rem;
-    padding-inline-start: 0;
-    a {
-      color: white;
-      text-decoration: none;
-      text-align: center;
-      &:hover {
-        color: white;
-        font-weight: bold;
-        // text-shadow: 1px 1px 2px white, -1px -1px 2px white;
-      }
-    }
+  min-height: 60%;
+  margin: auto;
+  font-size: 2rem;
+  padding-inline-start: 0;
+}
+
+@include media('<large', 'landscape') {
+  menu {
+    font-size: 1.5rem;
   }
 }
+
+a {
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  &:hover {
+    color: white;
+    font-weight: bold;
+    // text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+  }
+}
+
 // Animation:
 .fade-enter-active,
 .fade-leave-active {
