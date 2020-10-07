@@ -1,6 +1,5 @@
 <template>
   <div class="interactive">
-    <p></p>
     <encyclopedia-board :grid="boardMZ" :step="5" class="grid" :default-step="2" />
   </div>
   <p>

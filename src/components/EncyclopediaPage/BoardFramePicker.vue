@@ -1,16 +1,33 @@
 <template>
-  <div class="btn-group">
-    <span v-for="index in playhead.totalFrames" :key="index" @mouseover="playhead.seek(index - 1)">
-      <button :class="{ selected: playhead.frameIndex === index - 1 }"></button>
-    </span>
+  <div class="btn-group" layout="column center">
+    <div ref="buttons" @pointerdown="onPointer" @pointermove="onPointer">
+      <span v-for="index in playhead.totalFrames" :key="index">
+        <button :class="{ selected: playhead.frameIndex === index - 1 }"></button>
+      </span>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { PlayheadController } from '@/engine/controller'
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref } from 'vue'
 
 export default defineComponent({
   props: { playhead: { type: Object as PropType<PlayheadController>, required: true } },
+  setup(props) {
+    const buttons = ref<HTMLElement>()
+
+    return {
+      buttons,
+      onPointer(e: PointerEvent) {
+        const box = buttons.value?.getBoundingClientRect()
+        if (box == null) return
+
+        const localX = (e.clientX - box.x) / box.width
+        const index = localX * props.playhead.totalFrames
+        props.playhead.seek(Math.floor(index))
+      },
+    }
+  },
 })
 </script>
 <style lang="scss" scoped>
@@ -33,10 +50,6 @@ export default defineComponent({
     content: '';
     clear: both;
     display: table;
-  }
-
-  button:hover {
-    background-color: white;
   }
 
   .selected {

@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page-wrapper">
+  <div class="home-page-wrapper" layout="column center">
     <div class="row-full">
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
@@ -10,7 +10,7 @@
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
-    <div>
+    <div layout="row wrap middle u5">
       <router-link to="/level/1">
         <app-button class="button" type="big">PLAY GAME</app-button>
       </router-link>
@@ -27,6 +27,9 @@
       <homepage-authors />
       <homepage-history />
     </div>
+    <svg viewBox="0 0 64 64" width="200" height="200">
+      <app-cell :piece="piece" class="rock" />
+    </svg>
   </div>
 </template>
 
@@ -39,6 +42,8 @@ import HomepageTestimonials from '@/components/HomePage/HomepageTestimonials.vue
 import HomepageInteractive from '@/components/HomePage/HomepageInteractive.vue'
 import HomepageHistory from '@/components/HomePage/HomepageHistory.vue'
 import { useI18n } from 'vue-i18n'
+import AppCell from '@/components/Board/AppCell.vue'
+import { Elem, Piece, Rotation } from '@/engine/model'
 
 @Options({
   components: {
@@ -48,12 +53,22 @@ import { useI18n } from 'vue-i18n'
     HomepageHistory,
     HomepageTestimonials,
     HomepageInteractive,
+    AppCell,
   },
 })
 export default class HomePage extends Vue {
   version: string = process.env.VUE_APP_VERSION || 'unknown'
   commitHash: string = process.env.VUE_APP_GIT_HASH || 'unknown'
   i18n = setup(useI18n)
+  piece: Piece = {
+    type: Elem.Rock,
+    rotation: Rotation.Right,
+    polarization: Rotation.Right,
+    goalThreshold: 0.0,
+    draggable: false,
+    rotateable: false,
+    releasePoint: null,
+  }
 
   get commitDate(): string {
     const date = new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000)
@@ -74,7 +89,6 @@ export default class HomePage extends Vue {
   background: linear-gradient(to right, #210235 16%, #2e006a 30%, #2e006a 70%, #210235 84%);
   width: 100%;
   & a {
-    width: 100%;
     & img {
       max-width: 250px;
     }
@@ -110,10 +124,6 @@ p {
     width: 80%;
   }
 }
-.button {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-}
 
 .row-full {
   width: 100vw;
@@ -144,8 +154,11 @@ a:hover {
   transition: all 0.6s;
 }
 
+.rock {
+  cursor: default !important;
+}
+
 ::placeholder {
   color: white;
-  font-family: Montserrat, Arial, Helvetica, sans-serif;
 }
 </style>

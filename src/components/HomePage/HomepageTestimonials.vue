@@ -1,5 +1,5 @@
 <template>
-  <div class="testimonials">
+  <div class="testimonials" layout="column center u4">
     <div layout="row wrap">
       <div v-for="t in testimonials" :key="t.name" layout="column u4" class="testimonial">
         <div flex class="testimonial-text">
@@ -45,7 +45,7 @@ export default defineComponent({
       {
         name: 'Scott Aaronson',
         institute: 'University of Texas at Austin',
-        photo: '/faces/scott_aaronson.jpg',
+        photo: require('@/assets/faces/scott_aaronson.jpg'),
         link: {
           text: 'Shtetl-Optimized Blog - scottaaronson.com',
           url: 'https://www.scottaaronson.com/blog/?p=3597',
@@ -56,7 +56,7 @@ export default defineComponent({
       {
         name: 'James Wootton',
         institute: 'IBM Research',
-        photo: '/faces/james_wootton.jpg',
+        photo: require('@/assets/faces/james_wootton.jpg'),
         link: { text: 'Twitter', url: 'https://twitter.com/decodoku/status/1287758921654992899' },
         text:
           'I”ve been playing around with the new “Quantum Game with Photons”. So far it feels like all the fun parts of doing undergraduate physics experiments, while also being a really nice puzzle game!',
@@ -64,7 +64,7 @@ export default defineComponent({
       {
         name: 'Monika Schleier-Smith',
         institute: 'Stanford University',
-        photo: '/faces/monika_schleier_smith.jpg',
+        photo: require('@/assets/faces/monika_schleier_smith.jpg'),
         text:
           'Even when it becomes possible to teach my class in person again, your website could help me scale to a larger class size than is possible when I require equipment for hands-on demonstrations.',
       },
@@ -91,7 +91,7 @@ a:hover {
   padding: 20px 40px;
   @include media('>=medium') {
     padding: 20px 20px;
-    width: 50%;
+    width: 33.3%;
   }
 
   @include media('>=large') {

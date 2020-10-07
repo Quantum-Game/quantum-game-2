@@ -41,7 +41,7 @@ export default createRouter({
       children: [
         {
           path: '',
-          component: () => import('@/components/EncyclopediaPage/EncyclopediaDefaultArticle.vue'),
+          component: () => import('@/components/EncyclopediaPage/EncyclopediaMainPage.vue'),
         },
         {
           path: '/info/:entry',

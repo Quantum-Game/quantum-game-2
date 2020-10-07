@@ -3,19 +3,16 @@
     <!-- GOAL PERCENTAGE -->
     <div class="goalPercentage">
       <div :class="computeProbabilityClass">
-        <div class="mobile_progressBarText">
+        <div class="progressBarText">
           <p>You need {{ (goals.totalGoalThreshold * 100).toFixed(1) }}% detection</p>
         </div>
       </div>
-      <div class="mobile_progressBar">
+      <div class="progressBar">
         <div
-          class="mobile_progressBarFillGoal"
+          class="progressBarFillGoal"
           :style="{ width: goals.totalGoalThreshold * 100 + '%' }"
         ></div>
-        <div
-          class="mobile_progressBarFill"
-          :style="{ width: goals.totalAbsorption * 100 + '%' }"
-        ></div>
+        <div class="progressBarFill" :style="{ width: goals.totalAbsorption * 100 + '%' }"></div>
       </div>
       <!-- <div v-if="gameState.totalGoalPercentage < 100" class="goal-text">
         Goal: {{ gameState.totalGoalPercentage }} %
@@ -59,7 +56,6 @@
 <script lang="ts">
 import { GoalsController } from '@/engine/controller'
 import { computed, defineComponent, PropType } from 'vue'
-import { useTween } from '@/mixins'
 
 export default defineComponent({
   name: 'GameGoals',
@@ -134,6 +130,7 @@ p {
   padding-bottom: 20px;
   width: 100%;
   display: flex;
+  text-align: center;
   flex-direction: column;
   @include media('<large') {
     flex-direction: row;
@@ -176,25 +173,16 @@ p {
 .inner-circle {
   font-size: 1.2rem;
 }
-.mobile_progressBarText {
+.progressBarText {
   margin-top: 5px;
   font-size: 0.7rem;
   color: rgba(255, 255, 255, 0.6);
 }
 
-.detection {
-  width: 100%;
-  max-height: 64px;
-  .counter {
-    fill: white;
-    stroke: white;
-    text-anchor: middle;
-  }
-}
 .goalPercentage {
   position: relative;
   margin-bottom: 2rem;
-  .mobile_progressBar {
+  .progressBar {
     margin-top: 10px;
     margin-bottom: 1rem;
     position: absolute;
@@ -208,7 +196,7 @@ p {
       margin-top: 0;
     }
   }
-  .mobile_progressBarFill {
+  .progressBarFill {
     // position: absolute;
     height: 10px;
     // background-color: #5c00d3;
@@ -219,7 +207,7 @@ p {
     // z-index: 1;
     margin-top: 4px;
   }
-  .mobile_progressBarFillGoal {
+  .progressBarFillGoal {
     position: absolute;
     width: 0%;
     height: 18px;

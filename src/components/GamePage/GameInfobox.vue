@@ -30,12 +30,7 @@ import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 import { elementsData } from '@/engine/elements'
 import { assertUnreachable } from '@/types'
-import { Elem, particleProbability, directionToDegrees } from '@/engine/model'
-
-const spacedName = (name: string): string => {
-  const regexp = /([A-Z])([A-Z])([a-z])|([a-z])([A-Z])/g
-  return name.replace(regexp, '$1$4 $2$3$5')
-}
+import { particleProbability, directionToDegrees, elemName } from '@/engine/model'
 
 export default class GameActiveCell extends Vue {
   @Prop({
@@ -55,7 +50,7 @@ export default class GameActiveCell extends Vue {
   get name(): string {
     switch (this.infoPayload.kind) {
       case 'piece':
-        return spacedName(Elem[this.infoPayload.piece.type])
+        return elemName(this.infoPayload.piece.type)
       case 'particles':
         return 'photon state'
       case 'ui':
@@ -92,33 +87,29 @@ export default class GameActiveCell extends Vue {
 <style lang="scss" scoped>
 .explanation {
   background-color: rgba(0, 0, 0, 0.1);
-  width: 100%;
-  text-align: left;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px;
+  font-size: 0.8rem;
+
   @include media('<large') {
     display: none;
   }
-  & .title {
-    padding: 0px 10px;
-    text-transform: uppercase;
-    margin-top: 8px;
-    font-size: 0.8rem;
-    font-weight: 500;
-  }
-  & .description {
-    padding: 0px 10px;
-    text-align: left;
-    font-size: 0.8rem;
-    line-height: 150%;
-    color: rgba(255, 255, 255, 0.6);
-  }
-  & .link {
-    padding: 0px 10px;
-    color: rgba(255, 255, 255, 0.6);
-    font-weight: 500;
-    font-size: 0.8rem;
-    text-decoration: none;
-  }
+}
+
+.title {
+  text-transform: uppercase;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.description {
+  text-align: left;
+  line-height: 150%;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.link {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 500;
+  text-decoration: none;
 }
 </style>

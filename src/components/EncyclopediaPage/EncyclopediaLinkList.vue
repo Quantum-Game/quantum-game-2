@@ -1,73 +1,45 @@
 <template>
-  <div class="element-list" :class="{ entriesExpanded: entriesExpanded }">
-    <h3 class="upper-border" @click="toggleEntries">{{ title }}</h3>
-    <router-link v-for="entry in entryList" :key="entry.name" :to="`/info/${entry.name}`">
-      <div :class="{ 'not-ready': !entry.ready }">{{ spacedEntry(entry.name) }}</div>
+  <div class="element-list" :class="{ entriesExpanded }" layout="column">
+    <h3 v-if="title" @click="toggleEntries">{{ title }}</h3>
+    <router-link v-for="entry in entryList" :key="entry.name" :to="`/info/${entry}`">
+      {{ entryTitle(entry) }}
     </router-link>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
-import { IEntryList } from '@/engine/interfaces'
+import { defineComponent, PropType, ref } from 'vue'
+import { getEntry } from './loadData'
 
-export default class EncyclopediaLinkList extends Vue {
-  @Prop({ default: 'elements' }) readonly title!: string
-  @Prop() readonly entryList!: IEntryList[]
-  entriesExpanded = false
-
-  toggleEntries(): void {
-    this.entriesExpanded = !this.entriesExpanded
-  }
-
-  spacedEntry(name: string): string {
-    const nameCopy = name
-    return nameCopy.replace(/-/g, ' ')
-  }
-}
+export default defineComponent({
+  props: {
+    title: { type: String, required: false },
+    entryList: { type: Array as PropType<string[]>, required: true },
+  },
+  setup() {
+    const entriesExpanded = ref(false)
+    return {
+      entriesExpanded,
+      toggleEntries(): void {
+        entriesExpanded.value = !entriesExpanded.value
+      },
+      entryTitle(name: string): string {
+        return getEntry(name).title
+      },
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>
 .element-list {
   overflow: hidden;
   transition: 0.5s;
-  user-select: none;
   line-height: 150%;
-  & .not-ready {
-    opacity: 0.5;
-  }
-  @include media('<large') {
-    height: 40px;
-    border-top: none;
-    margin-left: -20px;
-    padding-left: 20px;
-    cursor: pointer;
-    &.entriesExpanded {
-      height: 600px;
-      h3::after {
-        transform: rotate(90deg);
-      }
-    }
-  }
   h3 {
     margin-top: 0;
-    @include media('<large') {
-      &::after {
-        margin-top: 1em;
-        display: inline-block;
-        position: relative;
-        content: '';
-        left: 12px;
-        height: 0;
-        border-left: 6px solid rgb(232, 232, 232);
-        border-bottom: 6px solid rgba(0, 0, 0, 0);
-        border-top: 6px solid rgba(0, 0, 0, 0);
-        clear: both;
-        -webkit-transition: 0.2s;
-        transition: 0.2s;
-      }
-    }
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 5px;
   }
 }
 </style>

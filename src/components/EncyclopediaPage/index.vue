@@ -1,51 +1,114 @@
 <template>
-  <app-layout>
-    <template #left>
-      <encyclopedia-link-list :entry-list="elementList" title="Elements" />
+  <app-layout class="encyclopedia" left-class="hide show-lg">
+    <template #header>
+      <h1>
+        <template v-for="crumb in crumbs" :key="crumb.url">
+          <span class="crumb">
+            <router-link :to="crumb.to">{{ crumb.text }}</router-link>
+          </span>
+        </template>
+      </h1>
     </template>
     <template #main>
       <router-view />
     </template>
-    <template #right>
-      <encyclopedia-link-list :entry-list="conceptList" title="Concepts" />
+    <template v-if="showAside" #left>
+      <div layout="column u4">
+        <encyclopedia-link-list :entry-list="elementNameList" title="Elements" />
+        <encyclopedia-link-list :entry-list="conceptNameList" title="Concepts" />
+      </div>
     </template>
   </app-layout>
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
-import { elementNameList, conceptNameList } from './loadData'
 import AppLayout from '@/components/AppLayout.vue'
-import EncyclopediaArticle from '@/components/EncyclopediaPage/EncyclopediaArticle.vue'
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
+import { computed, defineComponent } from 'vue'
+import { useRoute } from 'vue-router'
+import { elementNameList, conceptNameList, getEntry } from './loadData'
 
-// FIXME: Code smell move to interfaces
-interface IEntryList {
-  name: string
-  ready: boolean
+const rootCrumb = {
+  text: 'encyclopedia',
+  to: '/info',
 }
 
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
-    EncyclopediaArticle,
     EncyclopediaLinkList,
   },
-})
-export default class Info extends Vue {
-  elementList: IEntryList[] = []
-  conceptList: IEntryList[] = []
-  sections: IEntryList[] = []
+  setup() {
+    const route = useRoute()
 
-  created(): void {
-    this.elementList = elementNameList.map((entryName: string) => ({
-      name: entryName,
-      ready: true,
-    }))
-    this.conceptList = conceptNameList.map((entryName: string) => ({
-      name: entryName,
-      ready: true,
-    }))
+    const entryId = computed(() => {
+      const id = route.params.entry
+      if (typeof id === 'string' && id !== '') return id
+      return null
+    })
+
+    const entry = computed(() => {
+      if (entryId.value != null) {
+        return getEntry(entryId.value)
+      } else {
+        return null
+      }
+    })
+
+    const showAside = computed(() => {
+      return entry.value != null
+    })
+
+    const crumbs = computed(() => {
+      const crumbs = [rootCrumb]
+      if (entry.value != null) {
+        crumbs.push({
+          text: entry.value.title,
+          to: `/info/${entryId.value}`,
+        })
+      }
+      return crumbs
+    })
+
+    return {
+      showAside,
+      crumbs,
+      entry,
+      elementNameList,
+      conceptNameList,
+    }
+  },
+})
+</script>
+<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
+<style lang="scss">
+.encyclopedia {
+  img {
+    max-width: 100%;
   }
 }
-</script>
+</style>
+<style lang="scss" scoped>
+h1 {
+  padding-top: 30px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  text-align: center;
+  display: block;
+}
+
+// eslint-disable-next-line vue-scoped-css/no-unused-selector
+.crumb > a {
+  color: white;
+  text-transform: uppercase;
+}
+
+// eslint-disable-next-line vue-scoped-css/no-unused-selector
+.crumb + .crumb:before {
+  content: ' / ';
+  font-weight: normal;
+}
+</style>

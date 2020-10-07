@@ -1,9 +1,7 @@
 <template>
-  <div id="app">
-    <svg-global-defs />
-    <router-view />
-    <login-status />
-  </div>
+  <svg-global-defs />
+  <router-view />
+  <login-status />
 </template>
 
 <script lang="ts">
@@ -26,10 +24,14 @@ export default defineComponent({
 <style lang="scss">
 @import '~@/assets/styles/app.scss';
 
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+}
+
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   overflow-x: hidden;
   @media screen and (max-width: 800px) {
     // overflow-y: hidden;
@@ -37,15 +39,12 @@ body {
 }
 #app {
   display: flex;
-  justify-content: center;
-  font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+  justify-content: stretch;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: white;
   padding: 0;
-  width: 100%;
-  height: 100%;
   min-height: 100vh;
   background: #2e006a; /* Old browsers */
   //TO DO - change first two gradients

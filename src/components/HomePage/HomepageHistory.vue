@@ -1,5 +1,5 @@
 <template>
-  <div class="history">
+  <div class="history" layout="column center">
     <p>
       Previous funding include
       <a href="https://www.quantumlah.org/" target="_blank">Center for Quantum Technologies</a>
