@@ -17,14 +17,16 @@
         </div>
       </div>
     </div>
-    <p>
-      Cited in
-      <a
-        href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22quantumgame.io%22+OR+%22Quantum+Game+with+Photons%22&amp;btnG="
-        target="_blank"
-        >numerous academic publications</a
-      >, the Top Pick for Education in Gamyfing Quantum Theory, mentioned in VICE and Boing Boing.
-    </p>
+    <div class="extra-text">
+      <p>
+        Cited in
+        <a
+          href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22quantumgame.io%22+OR+%22Quantum+Game+with+Photons%22&amp;btnG="
+          target="_blank"
+          >numerous academic publications</a
+        >, the Top Pick for Education in Gamyfing Quantum Theory, mentioned in VICE and Boing Boing.
+      </p>
+    </div>
   </div>
 </template>
 
@@ -76,7 +78,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
@@ -84,14 +86,16 @@ a:hover {
 }
 
 .testimonial {
+  // background: rgba(255, 255, 255, 0.479);
   box-sizing: border-box;
   text-align: left;
   width: 100%;
-
   padding: 20px 40px;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
   @include media('>=medium') {
     padding: 20px 20px;
-    width: 33.3%;
+    width: 33.33%;
   }
 
   @include media('>=large') {
@@ -121,5 +125,10 @@ a.testimonial-link {
   color: white;
   text-decoration: underline;
   font-size: 0.8rem;
+}
+
+.extra-text {
+  width: 35%;
+  line-height: 1.5;
 }
 </style>
