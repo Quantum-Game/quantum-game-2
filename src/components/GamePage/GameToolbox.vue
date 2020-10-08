@@ -43,7 +43,7 @@ export default defineComponent({
   emits: {
     hover: validateInfoPayload,
     grab: Number,
-    release: Number,
+    release: null,
   },
   setup(props, { emit }) {
     const toolsVisited = reactive(new Set<Elem>())

@@ -20,7 +20,7 @@ export function validateInfoPayload(payload: IInfoPayload): payload is IInfoPayl
       return tryGetObject(payload, 'piece') !== null
     case 'particles':
       return tryGetInstance(payload, 'particles', Array) !== null
-    case 'text':
+    case 'ui':
       return tryGetString(payload, 'text') !== null
   }
   return false

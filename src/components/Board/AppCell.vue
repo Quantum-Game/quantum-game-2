@@ -2,7 +2,7 @@
   <g
     :class="cellClass"
     :style="cellStyle"
-    @mousedown="onMouseDown"
+    @mousedown.prevent="onMouseDown"
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
     @mouseout="hover = false"

@@ -7,7 +7,7 @@
 <script lang="ts">
 import SvgGlobalDefs from '@/components/SvgGlobalDefs.vue'
 import LoginStatus from '@/components/LoginPage/LoginStatus.vue'
-import { useSoundtrack } from '@/components/SoundController'
+import { useSoundtrack } from '@/mixins/soundtrack'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
