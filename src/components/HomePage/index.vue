@@ -3,6 +3,18 @@
     <div class="row-full">
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
+    <div layout="row wrap middle u5">
+      <router-link to="/level/1">
+        <app-button class="button" type="big">PLAY GAME</app-button>
+      </router-link>
+      <router-link to="/sandbox">
+        <app-button class="button" type="big">VIRTUAL LAB</app-button>
+      </router-link>
+    </div>
+    <div class="hello" layout="column u10">
+      <h2>{{ i18n.t('homepage.main') }}</h2>
+      <h1>{{ i18n.t('homepage.desc') }}</h1>
+    </div>
     <div class="gameVersion">
       <p>
         Version {{ version }} (beta), based on a
@@ -19,17 +31,7 @@
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
-    <div layout="row wrap middle u5">
-      <router-link to="/level/1">
-        <app-button class="button" type="big">PLAY GAME</app-button>
-      </router-link>
-      <router-link to="/sandbox">
-        <app-button class="button" type="big">VIRTUAL LAB</app-button>
-      </router-link>
-    </div>
     <div class="hello" layout="column u10">
-      <h1>{{ i18n.t('homepage.main') }}</h1>
-      <p>{{ i18n.t('homepage.desc') }}</p>
       <homepage-interactive />
       <homepage-testimonials class="testimonials" />
       <homepage-social />
@@ -81,7 +83,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(to right, #210235 16%, #2e006a 30%, #2e006a 70%, #210235 84%);
+  text-align: center;
+  background: linear-gradient(#5c00d3, #f05, #5c00d3, #210235);
   width: 100%;
   & a {
     & img {
@@ -91,6 +94,7 @@ export default defineComponent({
 }
 .gameVersion {
   font-size: 0.8rem;
+  margin: 10px 10px;
   @include media('<large') {
     font-size: 1rem;
     width: 80%;
@@ -101,6 +105,13 @@ h1 {
   font-size: 1.4rem;
   font-weight: normal;
   line-height: 150%;
+}
+h2 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 900;
+  line-height: 150%;
+  margin-top: 50px;
 }
 p {
   color: white;
@@ -138,7 +149,7 @@ p {
 }
 
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
