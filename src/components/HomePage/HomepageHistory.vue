@@ -21,10 +21,15 @@
 <style lang="scss" scoped>
 a {
   color: #eab5ff;
-  //text-decoration: none;
+  text-decoration: none;
 }
 a:hover {
   color: white;
+}
+.history {
+  border-top: 2px solid white;
+  padding-top: 30px;
+  line-height: 1.5;
 }
 .CQTlogo {
   width: 40%;

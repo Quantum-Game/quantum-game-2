@@ -18,4 +18,8 @@ a {
 a:hover {
   color: white;
 }
+.social {
+  border-top: 2px solid white;
+  padding-top: 30px;
+}
 </style>
