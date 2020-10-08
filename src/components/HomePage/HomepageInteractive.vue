@@ -38,6 +38,6 @@ a:hover {
 }
 .interactive {
   background: #2e006a;
-  padding: 10px;
+  padding: 30px;
 }
 </style>
