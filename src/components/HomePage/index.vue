@@ -6,7 +6,16 @@
     <div class="gameVersion">
       <p>
         Version {{ version }} (beta), based on a
-        <a :href="commitPath" target="_blank">{{ commitDate }}</a> commit.<br />
+        <template v-if="commitHash">
+          <a
+            :href="`https://github.com/Quantum-Game/quantum-game-2/commit/${commitHash}`"
+            target="_blank"
+            >{{ commitDate }}</a
+          >
+          commit.
+        </template>
+        <template v-else>{{ commitDate }} snapshot.</template>
+        <br />
         For optimal experience, play PC (mobile version coming soon).
       </p>
     </div>
@@ -34,18 +43,18 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
 import HomepageAuthors from '@/components/HomePage/HomepageAuthors.vue'
 import HomepageSocial from '@/components/HomePage/HomepageSocial.vue'
 import HomepageTestimonials from '@/components/HomePage/HomepageTestimonials.vue'
 import HomepageInteractive from '@/components/HomePage/HomepageInteractive.vue'
 import HomepageHistory from '@/components/HomePage/HomepageHistory.vue'
-import { useI18n } from 'vue-i18n'
 import AppCell from '@/components/Board/AppCell.vue'
-import { Elem, Piece, Rotation } from '@/engine/model'
+import { Elem, staticPiece } from '@/engine/model'
+import { defineComponent } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-@Options({
+export default defineComponent({
   components: {
     AppButton,
     HomepageAuthors,
@@ -55,30 +64,16 @@ import { Elem, Piece, Rotation } from '@/engine/model'
     HomepageInteractive,
     AppCell,
   },
+  setup() {
+    return {
+      i18n: useI18n(),
+      version: process.env.VUE_APP_VERSION || 'unknown',
+      commitHash: process.env.VUE_APP_GIT_HASH,
+      commitDate: new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000).toUTCString(),
+      piece: staticPiece(Elem.Rock),
+    }
+  },
 })
-export default class HomePage extends Vue {
-  version: string = process.env.VUE_APP_VERSION || 'unknown'
-  commitHash: string = process.env.VUE_APP_GIT_HASH || 'unknown'
-  i18n = setup(useI18n)
-  piece: Piece = {
-    type: Elem.Rock,
-    rotation: Rotation.Right,
-    polarization: Rotation.Right,
-    goalThreshold: 0.0,
-    draggable: false,
-    rotateable: false,
-    releasePoint: null,
-  }
-
-  get commitDate(): string {
-    const date = new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000)
-    return date.toUTCString()
-  }
-
-  get commitPath(): string {
-    return `https://github.com/Quantum-Game/quantum-game-2/commit/${this.commitHash}`
-  }
-}
 </script>
 
 <style lang="scss" scoped>

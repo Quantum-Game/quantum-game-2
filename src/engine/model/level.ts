@@ -107,6 +107,18 @@ export function pieceFromTool(type: Elem, releasePoint: ReleasePoint): Piece & {
   }
 }
 
+export function staticPiece(type: Elem): Piece {
+  return {
+    type,
+    rotation: Rotation.Right,
+    polarization: Rotation.Right,
+    goalThreshold: 0,
+    draggable: false,
+    rotateable: false,
+    releasePoint: null,
+  }
+}
+
 /**
  * Import Hint from unknown value
  * @param value parsed JSON object
