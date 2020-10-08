@@ -27,34 +27,25 @@
 <script lang="ts">
 import { range } from 'd3-array'
 import { scaleLinear, scaleSequential } from 'd3-scale'
-import { interpolateViridis, interpolateInferno } from 'd3-scale-chromatic'
+import { interpolateViridis } from 'd3-scale-chromatic'
 import { Complex, directionToDegrees } from '@/engine/model'
 import { IStyle } from '@/types'
 import { computed, defineComponent, PropType } from 'vue'
 import { clipPlanePath, InterpolatedParticle } from '@/engine/interpolation'
-
-const d3 = {
-  range,
-  scaleLinear,
-  scaleSequential,
-  interpolateInferno,
-  interpolateViridis,
-}
 
 let uid = 0
 
 /**
  * Magnetic field color scheme.
  */
-const mColor = d3.scaleSequential(d3.interpolateViridis).domain([-1, 1])
+const mColor = scaleSequential(interpolateViridis).domain([-1, 1])
 
 /**
  * Electric field color scheme.
  * See also: https://github.com/d3/d3-scale-chromatic/
  *
  */
-const eColor = d3
-  .scaleLinear<string>()
+const eColor = scaleLinear<string>()
   .domain([-1, 0, 1])
   .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
 
@@ -75,7 +66,7 @@ function gaussianDz(z: number, sigma = 0.3): number {
 
 const numSteps = 128
 const step = 2 / numSteps
-const zs = d3.range(-1, 1, step)
+const zs = range(-1, 1, step)
 
 function upToFixed(num: number, digits: number): string {
   return num.toFixed(digits).replace(/\.?0+$/, '')
