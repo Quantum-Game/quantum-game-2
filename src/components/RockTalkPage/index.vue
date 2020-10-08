@@ -1,5 +1,5 @@
 <template>
-  <div class="inter-level-overlay">
+  <div class="inter-level-overlay" flex layout="column center">
     <rock-talk-line
       :graphics="rockTalk.graphics"
       :dialogue="rockTalk.dialogue"
@@ -43,9 +43,6 @@ export default defineComponent({
 .inter-level-overlay {
   width: 40vw;
   color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .button-next {

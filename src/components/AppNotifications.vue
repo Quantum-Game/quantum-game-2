@@ -9,14 +9,15 @@
 
 <script lang="ts">
 import { storeNamespace } from '@/store'
-import { setup, Vue } from 'vue-class-component'
+import { defineComponent } from 'vue'
 
-const errors = storeNamespace('errors')
-
-export default class AppNotifications extends Vue {
-  RESET_ERRORS = setup(() => errors.useMutation('RESET_ERRORS'))
-  errors = setup(() => errors.useState('errors'))
-}
+export default defineComponent(() => {
+  const errors = storeNamespace('errors')
+  return {
+    RESET_ERRORS: errors.useMutation('RESET_ERRORS'),
+    errors: errors.useState('errors'),
+  }
+})
 </script>
 
 <style lang="scss" scoped>

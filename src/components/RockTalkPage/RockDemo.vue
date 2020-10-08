@@ -51,41 +51,41 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
 import RockTalk from '@/components/RockTalkPage/RockTalk.vue'
 import AppButton from '@/components/AppButton.vue'
+import { computed, defineComponent, ref } from 'vue'
 
-@Options({
+export default defineComponent({
   components: {
     RockTalk,
     AppButton,
   },
+  setup() {
+    const type = ref('rock')
+    return {
+      type,
+      dialogue: ref([
+        {
+          coord: {
+            x: 4,
+            y: 4,
+          },
+          content: 'Well, hello there',
+          color: 'purple',
+        },
+        {
+          coord: {
+            x: 4,
+            y: 4,
+          },
+          content: '',
+          color: 'fuchsia',
+        },
+      ]),
+      isSecondDisabled: computed(() => type.value !== 'pile2'),
+    }
+  },
 })
-export default class TestPage extends Vue {
-  type = 'rock'
-  dialogue = [
-    {
-      coord: {
-        x: 4,
-        y: 4,
-      },
-      content: 'Well, hello there',
-      color: 'purple',
-    },
-    {
-      coord: {
-        x: 4,
-        y: 4,
-      },
-      content: '',
-      color: 'fuchsia',
-    },
-  ]
-
-  get isSecondDisabled(): boolean {
-    return this.type !== 'pile2'
-  }
-}
 </script>
 
 <style lang="scss" scoped>

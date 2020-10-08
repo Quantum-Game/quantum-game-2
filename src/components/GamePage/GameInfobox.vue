@@ -24,64 +24,62 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
 import type { IInfoPayload } from '@/mixins/gameInterfaces'
 import { camelCaseToDash } from '@/engine/Helpers'
 import { elementsData } from '@/engine/elements'
 import { assertUnreachable } from '@/types'
 import { particleProbability, directionToDegrees, elemName } from '@/engine/model'
+import { computed, defineComponent, PropType } from 'vue'
 
-export default class GameActiveCell extends Vue {
-  @Prop({
-    default: () => ({
+export default defineComponent({
+  props: {
+    infoPayload: { type: Object as PropType<IInfoPayload>, default: () => ({
       kind: 'ui',
       particles: [],
       text: '',
-    }),
-  })
-  readonly infoPayload!: IInfoPayload
+    })}
+  },
+  setup(props) {
+    const name = computed((): string => {
+      switch (props.infoPayload.kind) {
+        case 'piece':
+          return elemName(props.infoPayload.piece.type)
+        case 'particles':
+          return 'photon state'
+        case 'ui':
+          return 'HINT'
+        default:
+          assertUnreachable(props.infoPayload)
+      }
+    })
 
-  particleProbability = particleProbability
-  directionToDegrees = directionToDegrees
-  /*
-    used at least twice, getter for convenience
-  */
-  get name(): string {
-    switch (this.infoPayload.kind) {
-      case 'piece':
-        return elemName(this.infoPayload.piece.type)
-      case 'particles':
-        return 'photon state'
-      case 'ui':
-        return 'HINT'
-      default:
-        assertUnreachable(this.infoPayload)
+    const description = computed((): string => {
+      switch (props.infoPayload.kind) {
+        case 'piece':
+          return elementsData[props.infoPayload.piece.type].description
+        case 'particles':
+          return ''
+        case 'ui':
+          return ''
+        default:
+          assertUnreachable(props.infoPayload)
+      }
+    })
+
+    const hyphenedElementEntryURL = computed((): string => {
+      const addressName = camelCaseToDash(name.value)
+      return `/info/${addressName}`
+    })
+
+    return {
+      particleProbability,
+      directionToDegrees,
+      name,
+      description,
+      hyphenedElementEntryURL,
     }
   }
-
-  get description(): string {
-    switch (this.infoPayload.kind) {
-      case 'piece':
-        return elementsData[this.infoPayload.piece.type].description
-      case 'particles':
-        return ''
-      case 'ui':
-        return ''
-      default:
-        assertUnreachable(this.infoPayload)
-    }
-  }
-
-
-  /*
-    Get entry url and use helper to convert it to dash
-  */
-  get hyphenedElementEntryURL(): string {
-    const addressName = camelCaseToDash(this.name)
-    return `/info/${addressName}`
-  }
-}
+})
 </script>
 
 <style lang="scss" scoped>

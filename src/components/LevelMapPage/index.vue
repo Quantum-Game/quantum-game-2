@@ -18,21 +18,21 @@
 </template>
 
 <script lang="ts">
-import { Dictionary, groupBy } from 'lodash'
-import { Vue, Options } from 'vue-class-component'
+import { groupBy } from 'lodash'
 import AppLayout from '@/components/AppLayout.vue'
 import levels from '@/assets/data/levels/index'
+import { defineComponent } from 'vue'
 
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
   },
+  setup() {
+    return {
+      groups: groupBy(levels, (level) => level.group),
+    }
+  },
 })
-export default class LevelMapPage extends Vue {
-  get groups(): Dictionary<{ id: number; name: string }[]> {
-    return groupBy(levels, (level) => level.group)
-  }
-}
 </script>
 
 <style lang="scss" scoped>
