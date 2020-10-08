@@ -14,6 +14,7 @@
     <div class="hello" layout="column u10">
       <h2>{{ i18n.t('homepage.main') }}</h2>
       <h1>{{ i18n.t('homepage.desc') }}</h1>
+      <homepage-interactive />
     </div>
     <div class="gameVersion">
       <p>
@@ -32,7 +33,6 @@
       </p>
     </div>
     <div class="hello" layout="column u10">
-      <homepage-interactive />
       <homepage-testimonials class="testimonials" />
       <homepage-social />
       <homepage-authors />
@@ -94,7 +94,7 @@ export default defineComponent({
 }
 .gameVersion {
   font-size: 0.8rem;
-  margin: 10px 10px;
+  margin: 20px 10px;
   @include media('<large') {
     font-size: 1rem;
     width: 80%;
