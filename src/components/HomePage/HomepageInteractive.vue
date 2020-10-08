@@ -30,10 +30,14 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
   color: white;
+}
+.interactive {
+  background: #2e006a;
+  padding: 10px;
 }
 </style>
