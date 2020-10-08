@@ -12,7 +12,7 @@
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {

@@ -20,8 +20,8 @@
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
-  text-decoration: none;
+  color: #eab5ff;
+  //text-decoration: none;
 }
 a:hover {
   color: white;

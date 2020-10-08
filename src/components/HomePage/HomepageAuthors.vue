@@ -2,7 +2,7 @@
   <p class="authors">
     Quantum Game is being developed by Quantum Flytrap, founded by
     <a href="https://p.migdal.pl/" target="_blank">Piotr Migdał</a> and
-    <a href="http://jankiewiczstudio.com/" target="_blank">Klem Jankiewicz</a>. Key employees: Paweł
+    <a href="http://jankiewiczstudio.com/" target="_blank">Klem Jankiewicz</a>. The current team includes: Paweł
     Grabarz, Natalia H. Wileńska, Philippe Cochin, Chiara Decaroli. Generative soundtrack by
     <a href="https://www.paweljanicki.jp/" target="_blank">Pawel Janicki</a>.
     <br />
@@ -14,7 +14,7 @@
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
