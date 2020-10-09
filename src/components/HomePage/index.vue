@@ -12,8 +12,8 @@
       </router-link>
     </div>
     <div class="hello" layout="column u10">
-      <h2>{{ i18n.t('homepage.main') }}</h2>
-      <h1>{{ i18n.t('homepage.desc') }}</h1>
+      <h1>{{ i18n.t('homepage.main') }}</h1>
+      <p class="main-description">{{ i18n.t('homepage.desc') }}</p>
       <homepage-interactive />
     </div>
     <div class="gameVersion">
@@ -103,12 +103,6 @@ export default defineComponent({
 h1 {
   color: white;
   font-size: 1.4rem;
-  font-weight: normal;
-  line-height: 150%;
-}
-h2 {
-  color: white;
-  font-size: 1.4rem;
   font-weight: 900;
   line-height: 150%;
   margin-top: 50px;
@@ -116,6 +110,9 @@ h2 {
 p {
   color: white;
   line-height: 150%;
+}
+.main-description {
+  font-size: 1.4rem;
 }
 .hello {
   width: 35%;
