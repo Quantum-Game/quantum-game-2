@@ -1,5 +1,5 @@
 <template>
-  <div class="main-layout" layout="column" flex>
+  <div class="main-layout" layout="column center" flex>
     <div class="main-layout-inner" layout="column" flex>
       <app-menu />
       <header layout="row between u5">
@@ -40,7 +40,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .main-layout-inner {
   max-width: 1400px;
-  margin: 0 auto;
+  width: 100vw;
   min-height: 100vh;
   color: white;
 }
