@@ -21,22 +21,26 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
-import { Prop } from 'vue-property-decorator'
+import { computed, defineComponent } from 'vue'
 
-export default class RockTalkLine extends Vue {
-  @Prop({ default: 'pile' }) graphics!: string
-  @Prop({ default: () => [''] }) dialogue!: string[]
-  @Prop({ default: '' }) link!: string
+export default defineComponent({
+  props: {
+    graphics: { type: String, default: 'pile' },
+    dialogue: { type: Array, default: () => [''] },
+    link: { type: String, default: '' },
+  },
+  setup(props) {
+    return {
+      isLinkEncyclopedia: computed(() => {
+        return props.link && props.link.indexOf('://') === -1
+      }),
 
-  get isLinkEncyclopedia(): boolean {
-    return this.link.length > 0 && this.link.indexOf('://') === -1
-  }
-
-  get isLinkExternal(): boolean {
-    return this.link.length > 0 && this.link.indexOf('://') !== -1
-  }
-}
+      isLinkExternal: computed(() => {
+        return props.link && props.link.indexOf('://') !== -1
+      }),
+    }
+  },
+})
 </script>
 
 <style lang="scss" scoped>

@@ -38,51 +38,60 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
 import { AppLayout } from '@/components'
 import { useI18n } from 'vue-i18n'
 import { storeNamespace } from '@/store'
+import { computed, defineComponent } from 'vue'
 
-const options = storeNamespace('options')
-
-@Options({
+export default defineComponent({
   components: {
     AppLayout,
   },
+  setup() {
+    const options = storeNamespace('options')
+    const setOptions = options.useMutation('SET_OPTIONS')
+    const allOptions = options.useGetter('allOptions')
+
+    const gameSpeed = computed({
+      get() {
+        return allOptions.value.gameSpeedInterval
+      },
+      set(gameSpeedInterval: number) {
+        setOptions({ gameSpeedInterval })
+      },
+    })
+
+    const volume = computed({
+      get() {
+        return allOptions.value.volume
+      },
+      set(volume: number) {
+        setOptions({ volume })
+      },
+    })
+
+    const mute = computed({
+      get() {
+        return allOptions.value.mute
+      },
+      set(mute: boolean) {
+        setOptions({ mute })
+      },
+    })
+
+    const tilesPerSecond = computed((): number => {
+      return +(1000 / gameSpeed.value).toFixed(1)
+    })
+
+    return {
+      i18n: useI18n(),
+      gameSpeed,
+      volume,
+      mute,
+      tilesPerSecond,
+    }
+  },
 })
-export default class OptionsPage extends Vue {
-  setOptions = setup(() => options.useMutation('SET_OPTIONS'))
-  allOptions = setup(() => options.useGetter('allOptions'))
-  i18n = setup(useI18n)
-
-  get gameSpeed(): number {
-    return this.allOptions.gameSpeedInterval
-  }
-
-  set gameSpeed(gameSpeedInterval: number) {
-    this.setOptions({ gameSpeedInterval })
-  }
-
-  get tilesPerSecond(): number {
-    return +(1000 / this.gameSpeed).toFixed(1)
-  }
-
-  get volume(): number {
-    return this.allOptions.volume
-  }
-
-  set volume(volume: number) {
-    this.setOptions({ volume })
-  }
-
-  get mute(): boolean {
-    return this.allOptions.mute
-  }
-
-  set mute(mute: boolean) {
-    this.setOptions({ mute })
-  }
-}
 </script>
 
 <style lang="scss" scoped>

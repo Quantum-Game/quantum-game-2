@@ -8,15 +8,14 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options } from 'vue-class-component'
 import AppButton from '@/components/AppButton.vue'
+import { defineComponent } from 'vue'
 
-@Options({
+export default defineComponent({
   components: {
     AppButton,
   },
 })
-export default class NotFoundPage extends Vue {}
 </script>
 
 <style lang="scss" scoped>

@@ -34,71 +34,56 @@
 </template>
 
 <script lang="ts">
-import { Vue, Options, setup } from 'vue-class-component'
-import { Watch } from 'vue-property-decorator'
-import { IEntry } from '@/engine/interfaces'
 import { conceptNameList, elementNameList, getEntry } from './loadData'
-import AppButton from '@/components/AppButton.vue'
 import EncyclopediaArticleSection from '@/components/EncyclopediaPage/EncyclopediaArticleSection.vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaTransition from '@/components/EncyclopediaPage/EncyclopediaTransition.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { importElem } from '@/engine/model'
+import { Elem, importElem } from '@/engine/model'
+import { computed, defineComponent, watchEffect } from 'vue'
 
-@Options({
+export default defineComponent({
   components: {
-    AppButton,
     EncyclopediaArticleSection,
     EncyclopediaBoard,
     EncyclopediaTransition,
   },
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+
+    const entryURL = computed(() => {
+      return route.params.entry as string
+    })
+
+    const entry = computed(() => {
+      if (entryURL.value) {
+        const entry = getEntry(entryURL.value)
+        return entry
+      }
+      return null
+    })
+
+    watchEffect(() => {
+      if (!entry.value?.title) {
+        router.push({ name: '404' })
+      }
+    })
+
+    const showMatrix = computed(() => {
+      const elem = importElem(entry.value?.elementName)
+      const dontShowMatrix = [Elem.Laser]
+      return elem != null && dontShowMatrix.indexOf(elem) < 0
+    })
+
+    return {
+      elementNameList,
+      conceptNameList,
+      entry,
+      showMatrix,
+    }
+  },
 })
-export default class EncyclopediaArticle extends Vue {
-  entry: IEntry = {
-    title: '',
-    short: '',
-    elementName: 'Mirror',
-    grids: [],
-    sections: [],
-  }
-
-  elementNameList = elementNameList
-  conceptNameList = conceptNameList
-  route = setup(useRoute)
-  router = setup(useRouter)
-
-  created(): void {
-    this.loadEntry()
-  }
-
-  @Watch('$route')
-  loadEntry(): void {
-    if (this.entryURL) {
-      this.entry = getEntry(this.entryURL)
-      // dirty, for current 'active' parameter
-      this.entry.grids.forEach((grid) =>
-        grid.cells.forEach((cell) => {
-          cell.active = cell.element === 'Laser'
-        })
-      )
-    }
-    if (!this.entry.title) {
-      this.router.push({ name: '404' })
-    }
-  }
-
-  get entryURL(): string {
-    return this.route.params.entry as string
-  }
-
-  get showMatrix(): boolean {
-    const dontShowMatrix = ['Laser']
-    return (
-      dontShowMatrix.indexOf(this.entry.elementName) < 0 &&
-      importElem(this.entry.elementName) != null
-    )
-  }
-}
 </script>
 
 <style lang="scss" scoped>

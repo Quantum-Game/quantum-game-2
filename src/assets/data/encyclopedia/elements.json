@@ -23,7 +23,7 @@
               "y": 1
             },
             "element": "Absorber",
-            "rotation": 90,
+            "rotation": 0,
             "frozen": false
           }
         ]
@@ -180,7 +180,7 @@
               "y": 1
             },
             "element": "CornerCube",
-            "rotation": 135,
+            "rotation": 0,
             "frozen": false
           }
         ]
@@ -217,7 +217,7 @@
               "y": 1
             },
             "element": "DetectorFour",
-            "rotation": 180,
+            "rotation": 0,
             "frozen": false
           }
         ]
@@ -373,7 +373,7 @@
               "y": 1
             },
             "element": "Glass",
-            "rotation": 90,
+            "rotation": 0,
             "frozen": false
           }
         ]
@@ -503,7 +503,7 @@
               "y": 1
             },
             "element": "Mine",
-            "rotation": 135,
+            "rotation": 0,
             "frozen": false
           }
         ]
