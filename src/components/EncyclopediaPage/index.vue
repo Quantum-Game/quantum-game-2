@@ -80,15 +80,15 @@ export default defineComponent({
   },
 })
 </script>
-<!-- eslint-disable-next-line vue-scoped-css/require-scoped -->
-<style lang="scss">
+<style lang="scss" scoped>
 .encyclopedia {
-  img {
+  background: #2e006a;
+
+  ::v-deep img {
     max-width: 100%;
   }
 }
-</style>
-<style lang="scss" scoped>
+
 h1 {
   padding-top: 30px;
   font-size: 1.5rem;

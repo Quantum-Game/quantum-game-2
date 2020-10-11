@@ -1,23 +1,25 @@
 <template>
-  <div class="main-layout" layout="column" flex>
-    <app-menu />
-    <header layout="row between u5">
-      <div flex>
-        <slot name="header"></slot>
-      </div>
-    </header>
+  <div class="main-layout" layout="column center" flex>
+    <div class="main-layout-inner" layout="column" flex>
+      <app-menu />
+      <header layout="row between u5">
+        <div flex>
+          <slot name="header"></slot>
+        </div>
+      </header>
 
-    <main layout="column u1" layout-lg="row u5">
-      <aside v-if="$slots.left" :class="`left ${leftClass}`">
-        <slot name="left"></slot>
-      </aside>
-      <article flex>
-        <slot name="main"></slot>
-      </article>
-      <aside v-if="$slots.right" class="right">
-        <slot name="right"></slot>
-      </aside>
-    </main>
+      <main layout="column u1" layout-lg="row u5">
+        <aside v-if="$slots.left" :class="`left ${leftClass}`">
+          <slot name="left"></slot>
+        </aside>
+        <article flex>
+          <slot name="main"></slot>
+        </article>
+        <aside v-if="$slots.right" class="right">
+          <slot name="right"></slot>
+        </aside>
+      </main>
+    </div>
   </div>
 </template>
 
@@ -36,9 +38,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.main-layout {
+.main-layout-inner {
   max-width: 1400px;
-  margin: 0 auto;
+  width: 100vw;
   min-height: 100vh;
   color: white;
 }
