@@ -1,5 +1,10 @@
 <template>
-  <div :class="{ open: appMenuOpened, 'menu-icon': true }" @click="toggleMenu">
+  <div
+    ref="button"
+    :class="{ open: appMenuOpened, 'menu-icon': true }"
+    :style="style"
+    @click="toggleMenu"
+  >
     <div class="bar1"></div>
     <div class="bar2"></div>
     <div class="bar3"></div>
@@ -8,18 +13,40 @@
 
 <script lang="ts">
 import { storeNamespace } from '@/store'
-import { defineComponent } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 
 export default defineComponent(() => {
   const game = storeNamespace('game')
   const appMenuOpened = game.useState('appMenuOpened')
   const SET_MENU_OPENED = game.useMutation('SET_MENU_OPENED')
+  const button = ref<HTMLElement>()
 
   function toggleMenu(): void {
     SET_MENU_OPENED(!appMenuOpened.value)
   }
 
+  const offsetTop = ref(0)
+  watch(
+    () => appMenuOpened.value,
+    (opened) => {
+      if (opened && button.value != null) {
+        const rect = button.value.getBoundingClientRect()
+        offsetTop.value = rect.top
+      } else {
+        offsetTop.value = 0
+      }
+    }
+  )
+
+  const style = computed(() => {
+    return {
+      transform: `translateY(${-offsetTop.value}px)`,
+    }
+  })
+
   return {
+    button,
+    style,
     toggleMenu,
     appMenuOpened,
   }
@@ -42,6 +69,8 @@ export default defineComponent(() => {
   display: block;
   cursor: pointer;
   z-index: 4;
+  transition: transform 0.1s;
+  transform: translateY(0px);
 
   .bar1,
   .bar2,
