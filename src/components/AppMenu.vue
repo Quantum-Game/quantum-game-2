@@ -47,7 +47,9 @@ export default defineComponent(() => {
   watchEffect(() => {
     if (appMenuOpened.value) {
       preservedOffset = window.scrollY
-      document.body.setAttribute('style', `top: ${-preservedOffset}px`)
+      const scrollbarVisible = document.body.scrollHeight > window.innerHeight
+      const overflowY = scrollbarVisible ? 'scroll' : 'auto'
+      document.body.setAttribute('style', `top: ${-preservedOffset}px; overflow-y: ${overflowY};`)
       document.body.classList.add('menu-opened')
     } else {
       document.body.classList.remove('menu-opened')

@@ -31,7 +31,7 @@ export default defineComponent(() => {
     (opened) => {
       if (opened && button.value != null) {
         const rect = button.value.getBoundingClientRect()
-        offsetTop.value = rect.top
+        offsetTop.value = rect.top - 30
       } else {
         offsetTop.value = 0
       }
@@ -69,7 +69,7 @@ export default defineComponent(() => {
   display: block;
   cursor: pointer;
   z-index: 4;
-  transition: transform 0.1s;
+  transition: transform 0.15s ease-out;
   transform: translateY(0px);
 
   .bar1,

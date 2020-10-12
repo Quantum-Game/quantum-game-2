@@ -33,13 +33,9 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  @media screen and (max-width: 800px) {
-    // overflow-y: hidden;
-  }
 
   &.menu-opened {
     position: fixed;
-    overflow-y: scroll;
     width: 100%;
     height: 100%;
   }
