@@ -1,15 +1,13 @@
 <template>
-  <app-layout class="encyclopedia" left-class="hide show-lg">
-    <template #header>
-      <h1>
+  <app-layout class="encyclopedia" left-class="hide show-lg" :menu-absolute="false">
+    <template #main>
+      <h3 v-if="crumbs.length > 0" class="breadcrumbs underlined">
         <template v-for="crumb in crumbs" :key="crumb.url">
           <span class="crumb">
             <router-link :to="crumb.to">{{ crumb.text }}</router-link>
           </span>
         </template>
-      </h1>
-    </template>
-    <template #main>
+      </h3>
       <router-view />
     </template>
     <template v-if="showAside" #left>
@@ -29,7 +27,7 @@ import { useRoute } from 'vue-router'
 import { elementNameList, conceptNameList, getEntry } from './loadData'
 
 const rootCrumb = {
-  text: 'encyclopedia',
+  text: 'Encyclopedia',
   to: '/info',
 }
 
@@ -60,14 +58,16 @@ export default defineComponent({
     })
 
     const crumbs = computed(() => {
-      const crumbs = [rootCrumb]
       if (entry.value != null) {
-        crumbs.push({
-          text: entry.value.title,
-          to: `/info/${entryId.value}`,
-        })
+        return [
+          rootCrumb,
+          {
+            text: entry.value.title,
+            to: `/info/${entryId.value}`,
+          },
+        ]
       }
-      return crumbs
+      return [rootCrumb]
     })
 
     return {
@@ -84,26 +84,23 @@ export default defineComponent({
 .encyclopedia {
   background: #2e006a;
 
-  ::v-deep img {
+  &::v-deep img {
     max-width: 100%;
   }
 }
 
-h1 {
-  padding-top: 30px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.7);
-  text-align: center;
-  display: block;
+.breadcrumbs {
+  margin-top: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: normal;
 }
 
 // eslint-disable-next-line vue-scoped-css/no-unused-selector
-.crumb > a {
+.crumb:last-child > a {
   color: white;
-  text-transform: uppercase;
 }
 
 // eslint-disable-next-line vue-scoped-css/no-unused-selector

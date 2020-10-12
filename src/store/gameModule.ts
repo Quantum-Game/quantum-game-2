@@ -2,17 +2,15 @@ import { storeModule } from './storeInterfaces'
 
 interface GameState {
   currentLevelID: number | null // check
+  appMenuOpened: boolean
   errors: string[]
 }
 
 export default storeModule({
   namespaced: true,
   state: {
-    activeCell: null,
-    cellSelected: false,
-    hoveredParticles: [],
-    simulationState: false,
     currentLevelID: null,
+    appMenuOpened: false,
     errors: [],
   } as GameState,
   mutations: {
@@ -26,6 +24,9 @@ export default storeModule({
     },
     RESET_ERRORS(state) {
       state.errors = []
+    },
+    SET_MENU_OPENED(state, opened: boolean) {
+      state.appMenuOpened = opened
     },
   },
 })

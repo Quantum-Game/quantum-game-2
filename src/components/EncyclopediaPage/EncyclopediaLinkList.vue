@@ -1,14 +1,16 @@
 <template>
   <div class="element-list" :class="{ entriesExpanded }" layout="column">
     <h3 v-if="title" @click="toggleEntries">{{ title }}</h3>
-    <router-link v-for="entry in entryList" :key="entry.name" :to="`/info/${entry}`">
-      {{ entryTitle(entry) }}
-    </router-link>
+    <div class="entries">
+      <router-link v-for="entry in sortedList" :key="entry.name" :to="`/info/${entry}`">
+        {{ entryTitle(entry) }}
+      </router-link>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from 'vue'
+import { computed, defineComponent, PropType, ref } from 'vue'
 import { getEntry } from './loadData'
 
 export default defineComponent({
@@ -16,9 +18,17 @@ export default defineComponent({
     title: { type: String, required: false },
     entryList: { type: Array as PropType<string[]>, required: true },
   },
-  setup() {
+  setup(props) {
     const entriesExpanded = ref(false)
+    const sortedList = computed(() => {
+      return [...props.entryList].sort((a, b) => {
+        const ta = getEntry(a).title
+        const tb = getEntry(b).title
+        return ta === tb ? 0 : ta > tb ? 1 : -1
+      })
+    })
     return {
+      sortedList,
       entriesExpanded,
       toggleEntries(): void {
         entriesExpanded.value = !entriesExpanded.value
@@ -40,6 +50,14 @@ export default defineComponent({
     margin-top: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     padding-bottom: 5px;
+  }
+}
+
+.entries {
+  columns: 330px;
+  column-rule: 1px solid rgba(255, 255, 255, 0.3);
+  > a {
+    display: block;
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div class="default-content" layout="column u5" layout-md="row u5">
-    <div flex layout="column u5">
+  <div class="default-content" layout="column u5">
+    <div flex layout="column u5" class="underline">
       <h2>Elements</h2>
-      <div layout="row wrap middle">
+      <div layout="row wrap start" class="elements">
         <router-link
           v-for="link in linkPieces"
           :key="link.to"
@@ -79,17 +79,18 @@ export default defineComponent({
   text-align: center;
 }
 
-h2 {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  padding-bottom: 5px;
-  text-align: center;
+.elements {
+  margin: auto;
+}
 
-  @include media('>=medium') {
-    text-align: left;
-  }
+h2 {
+  padding-bottom: 5px;
+}
+
+.underline {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .link-list {
-  align-self: center;
 }
 </style>

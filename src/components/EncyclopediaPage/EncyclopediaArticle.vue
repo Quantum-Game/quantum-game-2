@@ -1,10 +1,12 @@
 <template>
-  <div layout="column">
+  <div layout="column u4">
+    <!-- TITLE -->
+    <h1 class="title">{{ entry.title }}</h1>
     <!-- eslint-disable-next-line vue/no-v-html -->
     <h2 class="short" v-html="entry.short" />
     <!-- GRIDS -->
     <div class="grids">
-      <div layout="row wrap around u5">
+      <div layout="row wrap start u5">
         <encyclopedia-board
           v-for="(iGrid, i) in entry.grids"
           :key="i"
@@ -87,18 +89,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.title {
+  text-transform: uppercase;
+  font-size: 2em;
+}
+
 .short {
   font-size: 1rem;
-  padding-right: 20%;
-  padding-left: 20%;
   padding-bottom: 20px;
   font-weight: 300;
   line-height: 1.5rem;
   letter-spacing: 0.5px;
-  text-align: center;
-}
-
-.grids {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 </style>

@@ -28,7 +28,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 section.entry-section {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
   & .entry-title {
     padding: 1em 0;
     font-size: 1em;
