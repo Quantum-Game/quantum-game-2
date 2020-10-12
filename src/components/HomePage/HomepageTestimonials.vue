@@ -1,7 +1,7 @@
 <template>
-  <div class="testimonials" layout="column center u4">
-    <div layout="row wrap">
-      <div v-for="t in testimonials" :key="t.name" layout="column u4" class="testimonial">
+  <div layout="column center u4">
+    <div layout="column" layout-lg="row" class="testimonials-wrap">
+      <div v-for="t in testimonials" :key="t.name" flex layout="column u20" class="testimonial">
         <div flex class="testimonial-text">
           <i>“{{ t.text }}”</i>
         </div>
@@ -83,22 +83,14 @@ a:hover {
   color: white;
 }
 
-.testimonial {
-  // background: rgba(255, 255, 255, 0.479);
-  box-sizing: border-box;
+.testimonials-wrap {
   text-align: left;
-  width: 100%;
-  padding: 20px 40px;
   border-top: 2px solid white;
   border-bottom: 2px solid white;
-  @include media('>=medium') {
-    padding: 20px 20px;
-    width: 33.33%;
-  }
+}
 
-  @include media('>=large') {
-    padding: 20px 40px;
-  }
+.testimonial {
+  padding: 20px 20px;
 }
 
 .testimonial-img {
