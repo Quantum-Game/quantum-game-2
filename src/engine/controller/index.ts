@@ -1,2 +1,5 @@
 export * from './game'
 export * from './playhead'
+export * from './grab'
+export * from './goals'
+export * from './hints'

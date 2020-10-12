@@ -1,4 +1,12 @@
-import { Coord, Elem, Piece, pieceFromTool, ReleasePoint } from '@/engine/model'
+import {
+  Coord,
+  Elem,
+  hasFlags,
+  Piece,
+  PieceFlags,
+  pieceFromTool,
+  ReleasePoint,
+} from '@/engine/model'
 import Toolbox from '@/engine/Toolbox'
 import { assertUnreachable } from '@/types'
 import { proxyRefs, ref } from 'vue'
@@ -18,7 +26,7 @@ export type GrabState =
   | {
       source: GrabSource.Board
       coord: Coord
-      piece: Piece & { draggable: true; releasePoint: null }
+      piece: Piece & { releasePoint: null }
     }
 
 export function grabController(data: {
@@ -37,11 +45,11 @@ export function grabController(data: {
     putBack()
     const pieces = data.pieces()
     const piece = pieces?.get(coord)
-    if (pieces == null || piece == null || piece.draggable !== true) return
+    if (pieces == null || piece == null || !hasFlags(piece.flags, PieceFlags.Draggable)) return
     grabState.value = {
       source: GrabSource.Board,
       coord,
-      piece: { ...piece, draggable: true, releasePoint: null },
+      piece: { ...piece, releasePoint: null },
     }
     pieces.delete(coord)
   }
@@ -62,8 +70,7 @@ export function grabController(data: {
   function releaseTool() {
     if (
       grabState.value?.source === GrabSource.Board &&
-      grabState.value.piece.draggable &&
-      grabState.value.piece.rotateable
+      hasFlags(grabState.value.piece.flags, PieceFlags.Rotateable | PieceFlags.Draggable)
     ) {
       data.toolbox()?.addTool(grabState.value.piece.type)
       grabState.value = null
@@ -81,7 +88,7 @@ export function grabController(data: {
         case GrabSource.Board:
           if (atBoard == null) {
             pieces.set(coord, { ...grabState.value.piece, releasePoint })
-          } else if (atBoard.draggable) {
+          } else if (hasFlags(atBoard.flags, PieceFlags.Rotateable)) {
             // swap two pieces together
             pieces.set(grabState.value.coord, atBoard)
             pieces.set(coord, { ...grabState.value.piece, releasePoint })
@@ -92,7 +99,7 @@ export function grabController(data: {
         case GrabSource.Toolbox:
           if (atBoard == null) {
             pieces.set(coord, pieceFromTool(grabState.value.type, releasePoint))
-          } else if (atBoard.draggable && atBoard.rotateable) {
+          } else if (hasFlags(atBoard.flags, PieceFlags.Rotateable | PieceFlags.Draggable)) {
             // swap toolbox and board
             data.toolbox()?.addTool(atBoard.type)
             pieces.set(coord, pieceFromTool(grabState.value.type, releasePoint))
@@ -126,7 +133,7 @@ export function grabController(data: {
           } else {
             // This isn't exactly ideal with current toolbox setup,
             // as piece flags state will get lost
-            if (!grab.piece.rotateable) {
+            if (!hasFlags(grab.piece.flags, PieceFlags.Rotateable)) {
               console.warn('Putting non-rotateable element to toolbox')
             }
             data.toolbox()?.addTool(grab.piece.type)

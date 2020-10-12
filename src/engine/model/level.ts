@@ -33,7 +33,7 @@ export interface Board {
   readonly width: number
   readonly height: number
   readonly pieces: Map<Coord, Piece>
-  readonly hints: Map<Coord, Hint>
+  readonly hints: Hint[]
 }
 
 /**
@@ -50,16 +50,43 @@ export interface Piece {
   readonly rotation: Rotation
   readonly polarization: Rotation
   readonly goalThreshold: number
-  readonly draggable: boolean
-  readonly rotateable: boolean
+  readonly flags: PieceFlags
   readonly releasePoint: ReleasePoint
 }
 
-export interface Hint {
+export enum HintType {
+  Speech,
+  ActionHighlight,
+}
+
+export interface SpeechHint {
+  readonly type: HintType.Speech
+  readonly coord: Coord
   readonly content: string
   readonly color: string
 }
 
+export interface PartialActionHighlight {
+  readonly type: HintType.ActionHighlight
+  readonly coord: Coord
+  readonly action: HintActionType | null
+  readonly order: number
+}
+
+export const enum HintActionType {
+  Rotation,
+  Drag,
+  Pulse,
+}
+
+function importActionType(value: unknown): HintActionType | null {
+  if (value === 'rotation') return HintActionType.Rotation
+  if (value === 'drag') return HintActionType.Drag
+  if (value === 'pulse') return HintActionType.Pulse
+  return null
+}
+
+export type Hint = SpeechHint | PartialActionHighlight
 /**
  * Import grid Piece from unknown value
  * @param value parsed JSON object
@@ -75,16 +102,21 @@ function importPiece(
   const coord = Coord.import(tryGetProp(value, 'coord'))
   if (type == null || coord == null) return null
 
-  const frozen = tryGetBool(value, 'frozen') ?? false
+  const frozen = tryGetBool(value, 'frozen') ?? true
   const active = tryGetBool(value, 'active') ?? false
+  const draggable = tryGetBool(value, 'draggable') ?? (!frozen && active)
+  const rotateable = tryGetBool(value, 'rotateable') ?? !frozen
+
+  let flags = PieceFlags.Empty
+  if (draggable) flags |= PieceFlags.Draggable
+  if (rotateable) flags |= PieceFlags.Rotateable
 
   const piece = {
     type,
     rotation: rotationFromDegrees(tryGetNumber(value, 'rotation') ?? 0),
     polarization: rotationFromDegrees(tryGetNumber(value, 'polarization') ?? 0),
     goalThreshold: importedGoals.get(coord) ?? 0,
-    draggable: !frozen && active,
-    rotateable: !frozen,
+    flags,
     releasePoint: null,
   }
 
@@ -92,30 +124,49 @@ function importPiece(
 }
 
 /**
+ * bit flags enum
+ */
+export const enum PieceFlags {
+  Empty = 0,
+  Draggable = 1 << 0,
+  Rotateable = 1 << 1,
+}
+
+export function hasFlags(flags: PieceFlags, mask: PieceFlags): boolean {
+  return (flags & mask) === mask
+}
+
+export function hasAnyFlag(flags: PieceFlags, mask: PieceFlags): boolean {
+  return (flags & mask) !== 0
+}
+
+const defaultPiece = {
+  type: Elem.Rock,
+  rotation: Rotation.Right,
+  polarization: Rotation.Right,
+  goalThreshold: 0,
+  flags: PieceFlags.Empty,
+  releasePoint: null,
+} as const
+
+/**
  * Import toolbox piece from unknown value
  * @param value parsed JSON object
  */
-export function pieceFromTool(type: Elem, releasePoint: ReleasePoint): Piece & { draggable: true } {
+export function pieceFromTool(type: Elem, releasePoint: ReleasePoint): Piece {
   return {
+    ...defaultPiece,
     type,
-    rotation: Rotation.Right,
-    polarization: Rotation.Right,
     goalThreshold: type === Elem.Detector || type === Elem.DetectorFour ? 1 : 0,
-    draggable: true,
-    rotateable: true,
+    flags: PieceFlags.Draggable | PieceFlags.Rotateable,
     releasePoint,
   }
 }
 
 export function staticPiece(type: Elem): Piece {
   return {
+    ...defaultPiece,
     type,
-    rotation: Rotation.Right,
-    polarization: Rotation.Right,
-    goalThreshold: 0,
-    draggable: false,
-    rotateable: false,
-    releasePoint: null,
   }
 }
 
@@ -123,19 +174,32 @@ export function staticPiece(type: Elem): Piece {
  * Import Hint from unknown value
  * @param value parsed JSON object
  */
-function importHint(value: unknown): { coord: Coord; hint: Hint } | null {
+function importHint(value: unknown): Hint | null {
   if (!isObject(value)) return null
+  const coord = Coord.import(tryGetObject(value, 'coord'))
+  if (coord == null) return null
+
+  const order = tryGetNumber(value, 'order')
+  if (order != null) {
+    return {
+      type: HintType.ActionHighlight,
+      coord,
+      order,
+      action: importActionType(tryGetString(value, 'action')),
+    }
+  }
+
   const content = tryGetString(value, 'content')
   const color = tryGetString(value, 'color')
-  const coord = Coord.import(tryGetObject(value, 'coord'))
-  if (coord == null || color == null || content == null) return null
-  return {
-    coord,
-    hint: {
+  if (color != null && content != null) {
+    return {
+      type: HintType.Speech,
+      coord,
       content,
       color,
-    },
+    }
   }
+  return null
 }
 
 /**
@@ -165,7 +229,7 @@ export function importLevel(value: unknown): Level | null {
 
   const goalsMap = new Map<Coord, number>()
   const pieces = new Map<Coord, Piece>()
-  const hints = new Map<Coord, Hint>()
+  const hints = [] as Hint[]
 
   for (const hint of rawHints) {
     const imported = importHint(hint)
@@ -173,7 +237,7 @@ export function importLevel(value: unknown): Level | null {
       console.warn(`Invalid hint: '${JSON.stringify(hint)}'`)
       continue
     }
-    hints.set(imported.coord, imported.hint)
+    hints.push(imported)
   }
 
   for (const goal of goals) {
@@ -225,15 +289,25 @@ export function exportLevel(level: Level): Record<PropertyKey, unknown> {
         element: exportElem(piece.type),
         rotation: rotationToDegrees(piece.rotation),
         polarization: rotationToDegrees(piece.polarization),
-        frozen: !piece.rotateable,
-        active: piece.rotateable,
+        rotateable: hasFlags(piece.flags, PieceFlags.Rotateable),
+        draggable: hasFlags(piece.flags, PieceFlags.Draggable),
       })),
     },
-    hints: Array.from(level.board.hints).map(([coord, hint]) => ({
-      coord: coord.export(),
-      content: hint.content,
-      color: hint.color,
-    })),
+    hints: level.board.hints.map((hint) => {
+      switch (hint.type) {
+        case HintType.Speech:
+          return {
+            coord: hint.coord.export(),
+            content: hint.content,
+            color: hint.color,
+          }
+        case HintType.ActionHighlight:
+          return {
+            coord: hint.coord.export(),
+            action: hint.order,
+          }
+      }
+    }),
     goals: Array.from(level.board.pieces)
       .map(([coord, piece]) => {
         if (piece.goalThreshold > 0) {

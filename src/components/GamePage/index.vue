@@ -32,8 +32,8 @@
             :key="gameCtl.level.id"
             :toolbox="gameCtl.level.toolbox"
             :tile-size="scaledTileSize"
-            @grab="gameCtl.grab.grabTool"
-            @release="gameCtl.grab.releaseTool"
+            @grab="grabCtl.grabTool"
+            @release="grabCtl.releaseTool"
             @hover="updateInfoPayload"
           />
           <game-infobox :info-payload="infoPayload" />
@@ -49,10 +49,11 @@
             :laser-particles="laserParticles"
             :particles="activeParticles"
             :absorptions="gameCtl.sim.absorptions"
-            :highlight-empty="gameCtl.grab.grabState != null"
+            :highlight-empty="grabCtl.grabState != null"
+            :playing="playheadCtl.isPlaying"
             @touch="handleTouch"
-            @grab="gameCtl.grab.grabPiece"
-            @release="gameCtl.grab.releasePiece"
+            @grab="grabCtl.grabPiece"
+            @release="grabCtl.releasePiece"
             @hover="updateInfoPayload"
             @scale-changed="scaledTileSize = $event"
           />
@@ -69,7 +70,7 @@
 
       <template #right>
         <section>
-          <GameGoals :goals="gameCtl.goals" />
+          <GameGoals :goals="goalsCtl" />
           <div class="ket-viewer-game">
             <ket-viewer
               v-if="playheadCtl.activeFrame"
@@ -119,9 +120,11 @@ import {
   playheadController,
   GrabSource,
   GrabState,
+  grabController,
+  goalsController,
 } from '@/engine/controller'
 import { isInteger } from '@/types'
-import { Coord, Elem, Hint, Particle, Piece, pieceFromTool } from '@/engine/model'
+import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
 import { storeNamespace } from '@/store'
 
 export default defineComponent({
@@ -144,19 +147,32 @@ export default defineComponent({
 
     // const activeCell = game.useState('activeCell') // this need to me removed ASASP - the same fate as... fate
     const route = useRoute()
+    const routeLevelId = computed(() => {
+      const rawId = route.params.id as string | undefined
+      if (rawId != null && isInteger(+rawId)) {
+        return +rawId
+      }
+      return null
+    })
+
     const alreadyWon = usePerRouteFlag()
 
     const gameCtl = gameController()
+
+    const goalsCtl = goalsController({
+      absorptions: () => gameCtl.sim?.absorptions ?? null,
+      level: () => gameCtl.level ?? null,
+    })
+
+    const grabCtl = grabController({
+      pieces: () => gameCtl.level?.board.pieces ?? null,
+      toolbox: () => gameCtl.level?.toolbox ?? null,
+    })
+    useWindowEvent('mouseup', () => grabCtl.putBack())
+
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: true,
-    })
-    const scaledTileSize = ref(64)
-
-    const mouse = useMouseCoords()
-
-    useWindowEvent('mouseup', () => {
-      gameCtl.grab.putBack()
     })
 
     function grabbedPiece(state: GrabState): Piece {
@@ -168,8 +184,10 @@ export default defineComponent({
       }
     }
 
+    const scaledTileSize = ref(64)
+    const mouse = useMouseCoords()
     const dragState = computed(() => {
-      const grab = gameCtl.grab.grabState
+      const grab = grabCtl.grabState
       const halfTile = scaledTileSize.value / 2
       if (grab == null) return null
       return {
@@ -198,24 +216,6 @@ export default defineComponent({
       particles: [],
       text: 'Hover on a element for more information.',
     } as IInfoPayload)
-
-    // TODO: FATE
-    // const fateCoord = ref<Coord>()
-    // const fateStep = ref(999)
-    // const displayFate = ref(false)
-    //  function computeNewFate(simulation: Simulation) {
-    //     const fate = simulation.sampleRandomRealization()
-    //     displayFate.value = false
-    //     fateCoord.value = Coord.importCoord({ x: fate.x, y: fate.y })
-    //     fateStep.value = fate.step
-    //   }
-    const routeLevelId = computed(() => {
-      const rawId = route.params.id as string | undefined
-      if (rawId != null && isInteger(+rawId)) {
-        return +rawId
-      }
-      return null
-    })
 
     // save last visited level id globally, so it can be returned to from the menu screen
     watch(routeLevelId, (id) => writeCurrentLevelId(id), { immediate: true })
@@ -273,7 +273,7 @@ export default defineComponent({
 
     const overlayGameState = computed(() => {
       if (!alreadyWon.flag && playheadCtl.isLastFrame && routeLevelId.value != null) {
-        switch (gameCtl.goals.gameOutcome) {
+        switch (goalsCtl.gameOutcome) {
           case GameOutcome.Victory:
             return 'Victory'
           case GameOutcome.MineExploded:
@@ -283,9 +283,6 @@ export default defineComponent({
       return null
     })
 
-    const hints = computed(() => {
-      return gameCtl.level?.board.hints ?? new Map<Coord, Hint>()
-    })
     /**
      * Should an overlay be shown when progressing
      * to the next level?
@@ -343,6 +340,8 @@ export default defineComponent({
 
     return {
       gameCtl,
+      grabCtl,
+      goalsCtl,
       playheadCtl,
       dragState,
       previousLevel,
@@ -353,7 +352,6 @@ export default defineComponent({
       continueAfterWin,
       updateInfoPayload,
       nextLevelOrOvelay,
-      hints,
       overlayGameState,
       activeParticles,
       laserParticles,

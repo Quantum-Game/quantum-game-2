@@ -19,7 +19,15 @@
 import { elementComponents } from './Cell/index'
 import { computed, defineComponent, PropType, ref } from 'vue'
 import { PieceState } from './Cell/Piece'
-import { Coord, Elem, Piece, rotationToDegrees } from '@/engine/model'
+import {
+  Coord,
+  Elem,
+  hasAnyFlag,
+  hasFlags,
+  Piece,
+  PieceFlags,
+  rotationToDegrees,
+} from '@/engine/model'
 import { IStyle } from '@/types'
 import { Easing, useAngleTween, useTween } from '@/mixins'
 
@@ -91,7 +99,7 @@ export default defineComponent({
 
         return {
           transformOrigin: `${origin.x - x}px ${origin.y - y}px`,
-          transform: `rotate(-${rotation}deg) translate(${translate.x - x}px, ${translate.y -
+          transform: `rotate(${-rotation}deg) translate(${translate.x - x}px, ${translate.y -
             y}px)`,
         }
       }
@@ -104,8 +112,8 @@ export default defineComponent({
     const cellClass = computed(() => {
       return {
         interacting: props.interacting,
-        active: props.piece.draggable || props.piece.rotateable,
-        frozen: !props.available || !props.piece.draggable,
+        active: hasAnyFlag(props.piece.flags, PieceFlags.Draggable | PieceFlags.Rotateable),
+        frozen: !props.available || !hasFlags(props.piece.flags, PieceFlags.Draggable),
         transparent: !props.available,
         laser: props.piece.type === Elem.Laser,
       }
@@ -118,7 +126,9 @@ export default defineComponent({
     const rectClass = computed(() => {
       return {
         'inner-rect': true,
-        'movable-space': !props.interacting && (props.piece.draggable || props.piece.rotateable),
+        'movable-space':
+          !props.interacting &&
+          hasAnyFlag(props.piece.flags, PieceFlags.Draggable | PieceFlags.Rotateable),
       }
     })
 
@@ -134,8 +144,10 @@ export default defineComponent({
     }
 
     let clickState = ClickState.Released
-    function onMouseDown() {
-      clickState = ClickState.JustClicked
+    function onMouseDown(e: MouseEvent) {
+      if (e.buttons === 1) {
+        clickState = ClickState.JustClicked
+      }
     }
 
     function onMouseUp() {
