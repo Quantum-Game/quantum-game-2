@@ -47,7 +47,6 @@ export default defineComponent(() => {
   watchEffect(() => {
     if (appMenuOpened.value) {
       preservedOffset = window.scrollY
-      console.log(window.scrollY)
       document.body.setAttribute('style', `top: ${-preservedOffset}px`)
       document.body.classList.add('menu-opened')
     } else {
