@@ -372,6 +372,9 @@ export default defineComponent({
   top: 0;
   left: 0;
   z-index: 10;
+  svg {
+    overflow: visible;
+  }
 }
 // Overlay
 .overlay {

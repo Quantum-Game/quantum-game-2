@@ -36,13 +36,9 @@ export interface Board {
   readonly hints: Hint[]
 }
 
-/**
- * Exact board coordinates at last interaction, if any.
- * The coordinates are non-floored version of coord.
- */
-export type ReleasePoint = null | {
-  x: number
-  y: number
+export interface Vec2 {
+  readonly x: number
+  readonly y: number
 }
 
 export interface Piece {
@@ -51,7 +47,7 @@ export interface Piece {
   readonly polarization: Rotation
   readonly goalThreshold: number
   readonly flags: PieceFlags
-  readonly releasePoint: ReleasePoint
+  readonly interactDelta: Vec2 | null
 }
 
 export enum HintType {
@@ -117,7 +113,7 @@ function importPiece(
     polarization: rotationFromDegrees(tryGetNumber(value, 'polarization') ?? 0),
     goalThreshold: importedGoals.get(coord) ?? 0,
     flags,
-    releasePoint: null,
+    interactDelta: null,
   }
 
   return { coord, piece }
@@ -146,20 +142,20 @@ const defaultPiece = {
   polarization: Rotation.Right,
   goalThreshold: 0,
   flags: PieceFlags.Empty,
-  releasePoint: null,
+  interactDelta: null,
 } as const
 
 /**
  * Import toolbox piece from unknown value
  * @param value parsed JSON object
  */
-export function pieceFromTool(type: Elem, releasePoint: ReleasePoint): Piece {
+export function pieceFromTool(type: Elem, interactDelta: Vec2 | null): Piece {
   return {
     ...defaultPiece,
     type,
     goalThreshold: type === Elem.Detector || type === Elem.DetectorFour ? 1 : 0,
     flags: PieceFlags.Draggable | PieceFlags.Rotateable,
-    releasePoint,
+    interactDelta,
   }
 }
 
