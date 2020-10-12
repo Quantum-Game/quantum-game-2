@@ -1,7 +1,7 @@
 <template>
-  <div class="testimonials" layout="column center u4">
-    <div layout="row wrap">
-      <div v-for="t in testimonials" :key="t.name" layout="column u4" class="testimonial">
+  <div layout="column center u4">
+    <div layout="column" layout-lg="row" class="testimonials-wrap">
+      <div v-for="t in testimonials" :key="t.name" flex layout="column u20" class="testimonial">
         <div flex class="testimonial-text">
           <i>“{{ t.text }}”</i>
         </div>
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <p>
+    <p class="extra-text">
       Cited in
       <a
         href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=%22quantumgame.io%22+OR+%22Quantum+Game+with+Photons%22&amp;btnG="
@@ -76,27 +76,21 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
   color: white;
 }
 
-.testimonial {
-  box-sizing: border-box;
+.testimonials-wrap {
   text-align: left;
-  width: 100%;
+  border-top: 2px solid white;
+  border-bottom: 2px solid white;
+}
 
-  padding: 20px 40px;
-  @include media('>=medium') {
-    padding: 20px 20px;
-    width: 33.3%;
-  }
-
-  @include media('>=large') {
-    padding: 20px 40px;
-  }
+.testimonial {
+  padding: 20px 20px;
 }
 
 .testimonial-img {
@@ -121,5 +115,10 @@ a.testimonial-link {
   color: white;
   text-decoration: underline;
   font-size: 0.8rem;
+}
+
+.extra-text {
+  width: 35%;
+  line-height: 1.5;
 }
 </style>

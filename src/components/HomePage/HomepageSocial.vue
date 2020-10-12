@@ -12,10 +12,14 @@
 
 <style lang="scss" scoped>
 a {
-  color: rgb(255, 181, 209);
+  color: #eab5ff;
   text-decoration: none;
 }
 a:hover {
   color: white;
+}
+.social {
+  border-top: 2px solid white;
+  padding-top: 30px;
 }
 </style>
