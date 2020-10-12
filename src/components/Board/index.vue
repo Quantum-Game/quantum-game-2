@@ -43,7 +43,7 @@
         :piece="piece"
         :energized="energized"
         @touch="handleCellTouch(coord)"
-        @grab="handleCellGrab(coord)"
+        @grab="handleCellGrab"
         @mouseover="handleMouseEnter(coord)"
       />
 
@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { Coord, Particle, Board, Elem, HintActionType } from '@/engine/model'
+import { Coord, Particle, Board, Elem, HintActionType, Vec2 } from '@/engine/model'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import ActionHint from '@/components/Board/ActionHint.vue'
@@ -99,7 +99,7 @@ import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
-import { hintsController, ReleaseEvent } from '@/engine/controller'
+import { hintsController, BoardInteraction } from '@/engine/controller'
 import { InterpolatedParticle } from '@/engine/interpolation'
 
 export default defineComponent({
@@ -122,8 +122,8 @@ export default defineComponent({
     playing: { type: Boolean, default: false },
   },
   emits: {
-    grab: Coord.validate,
-    release: emitType<ReleaseEvent>(),
+    grab: emitType<BoardInteraction>(),
+    release: emitType<BoardInteraction>(),
     touch: Coord.validate,
     hover: validateInfoPayload,
     'scale-changed': emitType<number>(),
@@ -174,13 +174,17 @@ export default defineComponent({
       )
     })
 
-    function handleBoardRelease(e: MouseEvent) {
+    function getInteraction(clientX: number, clientY: number): BoardInteraction {
       const rect = boardScaler.value?.getBoundingClientRect()
-      if (rect == null) return
-      const x = ((e.clientX - rect.x) / rect.width) * props.board.width
-      const y = ((e.clientY - rect.y) / rect.height) * props.board.height
+      if (rect == null) throw new Error('Missing board rect on interaction')
+      const x = ((clientX - rect.x) / rect.width) * props.board.width
+      const y = ((clientY - rect.y) / rect.height) * props.board.height
       const coord = Coord.new(Math.floor(x), Math.floor(y))
-      emit('release', { coord, releasePoint: { x, y } })
+      return { coord, interactPoint: { x, y } }
+    }
+
+    function handleBoardRelease(e: MouseEvent) {
+      emit('release', getInteraction(e.clientX, e.clientY))
     }
 
     const empties = computed(() => {
@@ -220,9 +224,10 @@ export default defineComponent({
         hintsCtl.advanceHighlights(coord, [HintActionType.Pulse, HintActionType.Rotation])
         emit('touch', coord)
       },
-      handleCellGrab(coord: Coord): void {
-        hintsCtl.advanceHighlights(coord, [HintActionType.Drag])
-        emit('grab', coord)
+      handleCellGrab(clientPos: Vec2): void {
+        const interaction = getInteraction(clientPos.x, clientPos.y)
+        hintsCtl.advanceHighlights(interaction.coord, [HintActionType.Drag])
+        emit('grab', interaction)
       },
     }
   },

@@ -1,4 +1,5 @@
 import { assertUnreachable } from '@/types'
+import { Vec2 } from './level'
 
 export const enum Rotation {
   Right,
@@ -15,7 +16,7 @@ const diag = 1 / Math.SQRT2
 
 // Generate unit vector with given rotation.
 // X points right, Y points up.
-export function unitVector(rot: Rotation): { x: number; y: number } {
+export function unitVector(rot: Rotation): Vec2 {
   switch (rot) {
     case Rotation.Right:
       return { x: 1, y: 0 }

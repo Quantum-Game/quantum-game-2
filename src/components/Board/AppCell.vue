@@ -46,19 +46,16 @@ export default defineComponent({
     const hover = ref(false)
 
     const releaseDiff = (() => {
-      const releasePoint = props.piece.releasePoint
-      if (releasePoint == null) return { x: 0, y: 0 }
-      const coord = props.coord ?? Coord.new(0, 0)
-      const dx = coord.x - releasePoint.x + 0.5
-      const dy = coord.y - releasePoint.y + 0.5
-      return { x: dx * 64, y: dy * 64 }
+      const interactDelta = props.piece.interactDelta
+      if (interactDelta == null) return { x: 0, y: 0 }
+      return { x: interactDelta.x * 64, y: interactDelta.y * 64 }
     })()
 
     const releaseOffset = useTween({
       from: () => releaseDiff,
       to: () => ({ x: 0, y: 0 }),
       easing: Easing.Exponential.Out,
-      duration: 100,
+      duration: 150,
     })
 
     const tweenRotation = useAngleTween({
@@ -142,18 +139,21 @@ export default defineComponent({
       HandledTouch,
       HandledGrab,
     }
+    const clickCoords = { x: 0, y: 0 }
 
     let clickState = ClickState.Released
     function onMouseDown(e: MouseEvent) {
       if (e.buttons === 1) {
         clickState = ClickState.JustClicked
+        clickCoords.x = e.clientX
+        clickCoords.y = e.clientY
       }
     }
 
     function onMouseUp() {
       if (clickState === ClickState.JustClicked) {
         clickState = ClickState.HandledTouch
-        emit('touch')
+        emit('touch', clickCoords)
       }
     }
 
@@ -161,7 +161,7 @@ export default defineComponent({
       hover.value = true
       if (clickState === ClickState.JustClicked) {
         clickState = ClickState.HandledGrab
-        emit('grab')
+        emit('grab', clickCoords)
       }
     }
 
