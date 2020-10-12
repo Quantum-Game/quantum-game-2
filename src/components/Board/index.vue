@@ -42,8 +42,8 @@
         :coord="coord"
         :piece="piece"
         :energized="energized"
-        @touch="$emit('touch', coord)"
-        @grab="$emit('grab', coord)"
+        @touch="handleCellTouch(coord)"
+        @grab="handleCellGrab(coord)"
         @mouseover="handleMouseEnter(coord)"
       />
 
@@ -60,6 +60,9 @@
         />
       </template>
 
+      <!-- ACTION HINTS -->
+      <action-hint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
+
       <!-- PROBABILITY -->
       <text
         v-for="[coord, probability] in absorptions"
@@ -75,19 +78,19 @@
 
     <!-- SPEECH BUBBLES -->
     <speech-bubble
-      v-for="[coord, hint] in board.hints"
-      :key="coord"
+      v-for="hint in hintsCtl.speechBubbles"
+      :key="hint"
       :hint="hint"
-      :coord="coord"
       :tile-size="scaledTileSize"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Coord, Particle, Board } from '@/engine/model'
+import { Coord, Particle, Board, Elem, HintActionType } from '@/engine/model'
 import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
+import ActionHint from '@/components/Board/ActionHint.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
@@ -96,12 +99,13 @@ import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
-import { ReleaseEvent } from '@/engine/controller'
+import { hintsController, ReleaseEvent } from '@/engine/controller'
 import { InterpolatedParticle } from '@/engine/interpolation'
 
 export default defineComponent({
   name: 'Board',
   components: {
+    ActionHint,
     AppCell,
     AppPhoton,
     BoardLasers,
@@ -115,6 +119,7 @@ export default defineComponent({
     absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
     fate: { type: Object as PropType<Coord>, required: false },
     highlightEmpty: { type: Boolean, default: false },
+    playing: { type: Boolean, default: false },
   },
   emits: {
     grab: Coord.validate,
@@ -129,6 +134,24 @@ export default defineComponent({
 
     const tileSize = 64
     const scaledTileSize = ref(64)
+
+    const hintsCtl = hintsController({
+      board: () => props.board ?? null,
+    })
+
+    // trigger laser hint on play
+    watch(
+      () => props.playing,
+      (playing) => {
+        if (props.board != null && playing) {
+          for (const [coord, piece] of props.board.pieces) {
+            if (piece.type === Elem.Laser) {
+              hintsCtl.advanceHighlights(coord, [HintActionType.Pulse])
+            }
+          }
+        }
+      }
+    )
 
     watch(
       boardRect,
@@ -170,6 +193,7 @@ export default defineComponent({
     })
 
     return {
+      hintsCtl,
       tileSize,
       scaledTileSize,
       boardScaler,
@@ -191,6 +215,14 @@ export default defineComponent({
         if (piece != null) {
           emit('hover', { kind: 'piece', piece })
         }
+      },
+      handleCellTouch(coord: Coord): void {
+        hintsCtl.advanceHighlights(coord, [HintActionType.Pulse, HintActionType.Rotation])
+        emit('touch', coord)
+      },
+      handleCellGrab(coord: Coord): void {
+        hintsCtl.advanceHighlights(coord, [HintActionType.Drag])
+        emit('grab', coord)
       },
     }
   },

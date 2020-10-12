@@ -113,7 +113,7 @@ export class Synth {
 
   log: any
 
-  constructor(logging = true) {
+  constructor(logging = false) {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     this.log = logging ? console.log : (): void => {}
 

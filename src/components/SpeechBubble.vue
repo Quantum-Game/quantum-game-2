@@ -14,14 +14,13 @@
 </template>
 
 <script lang="ts">
-import { Coord, Hint } from '@/engine/model'
+import { SpeechHint } from '@/engine/model'
 import { computed, defineComponent, PropType, ref } from 'vue'
 
 export default defineComponent({
   name: 'SpeechBubble',
   props: {
-    coord: { type: Object as PropType<Coord>, required: true },
-    hint: { type: Object as PropType<Hint>, required: true },
+    hint: { type: Object as PropType<SpeechHint>, required: true },
     tileSize: { type: Number, default: 64 },
     overlay: { type: String },
   },
@@ -73,7 +72,7 @@ export default defineComponent({
      * @returns an offsets object
      */
     function boardPositionStyle() {
-      const offset = props.coord.gridCenter(props.tileSize)
+      const offset = props.hint.coord.gridCenter(props.tileSize)
 
       return {
         left: offset.x + 'px',

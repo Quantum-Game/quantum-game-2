@@ -7,6 +7,8 @@ import {
   Simulation,
   Coord,
   Vector,
+  PieceFlags,
+  hasFlags,
 } from '@/engine/model'
 import { GoalsController, goalsController } from './goals'
 import { grabController, GrabController } from './grab'
@@ -43,7 +45,7 @@ export function gameController(options?: {
 
   function rotateCcw(coord: Coord) {
     const piece = level.value?.board.pieces.get(coord)
-    if (piece != null && piece.rotateable) {
+    if (piece != null && hasFlags(piece.flags, PieceFlags.Rotateable)) {
       level.value?.board.pieces.set(coord, {
         ...piece,
         rotation: nextElementRotation(piece.type, piece.rotation),
