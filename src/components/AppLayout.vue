@@ -1,8 +1,9 @@
 <template>
   <div class="main-layout" layout="column center" flex>
+    <app-menu />
     <div class="main-layout-inner" layout="column" flex>
-      <app-menu />
       <header layout="row between u5">
+        <app-menu-button :class="{ absolute: menuAbsolute, inlineMenu: !menuAbsolute }" />
         <div flex>
           <slot name="header"></slot>
         </div>
@@ -25,14 +26,17 @@
 
 <script lang="ts">
 import AppMenu from '@/components/AppMenu.vue'
+import AppMenuButton from '@/components/AppMenuButton.vue'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   components: {
     AppMenu,
+    AppMenuButton,
   },
   props: {
     leftClass: { type: String, default: '' },
+    menuAbsolute: { type: Boolean, default: true },
   },
 })
 </script>
@@ -43,6 +47,11 @@ export default defineComponent({
   width: 100vw;
   min-height: 100vh;
   color: white;
+  padding: 0 20px;
+}
+
+.inlineMenu {
+  padding: 10px 0;
 }
 
 @include media('>=large') {
@@ -50,10 +59,5 @@ export default defineComponent({
   .right {
     width: 200px;
   }
-}
-
-main,
-header {
-  padding: 0 20px;
 }
 </style>

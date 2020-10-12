@@ -145,7 +145,6 @@ export default defineComponent({
     const game = storeNamespace('game')
     const writeCurrentLevelId = game.useMutation('SET_CURRENT_LEVEL_ID')
 
-    // const activeCell = game.useState('activeCell') // this need to me removed ASASP - the same fate as... fate
     const route = useRoute()
     const routeLevelId = computed(() => {
       const rawId = route.params.id as string | undefined

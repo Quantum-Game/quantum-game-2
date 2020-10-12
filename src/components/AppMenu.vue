@@ -1,11 +1,6 @@
 <template>
-  <div :class="{ open: isMenuOpen, 'menu-icon': true }" @click="toggleMenu">
-    <div class="bar1"></div>
-    <div class="bar2"></div>
-    <div class="bar3"></div>
-  </div>
   <transition name="fade">
-    <div v-if="isMenuOpen" class="menu-overlay" flex layout="column">
+    <div v-if="appMenuOpened" class="menu-overlay" flex layout="column">
       <menu layout="column around u1">
         <router-link to="/">BACK TO THE MAIN PAGE</router-link>
         <router-link v-if="currentLevel != null" :to="`/level/${currentLevel}`">
@@ -27,84 +22,51 @@
 <script lang="ts">
 import { useWindowEvent } from '@/mixins/event'
 import { storeNamespace } from '@/store'
-import { defineComponent, ref } from 'vue'
+import { defineComponent, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
-const user = storeNamespace('user')
-const game = storeNamespace('game')
-
 export default defineComponent(() => {
+  const user = storeNamespace('user')
+  const game = storeNamespace('game')
   const isLoggedIn = user.useGetter('isLoggedIn')
   const currentLevel = game.useState('currentLevelID')
-  const router = useRouter()
-  const isMenuOpen = ref(false)
+  const appMenuOpened = game.useState('appMenuOpened')
+  const SET_MENU_OPENED = game.useMutation('SET_MENU_OPENED')
 
   useWindowEvent('keydown', (e) => {
     if (e.key === 'Escape') {
-      toggleMenu()
+      SET_MENU_OPENED(!appMenuOpened.value)
     }
   })
 
-  router.afterEach(() => {
-    isMenuOpen.value = false
+  useRouter().afterEach(() => {
+    SET_MENU_OPENED(false)
   })
 
-  function toggleMenu(): void {
-    isMenuOpen.value = !isMenuOpen.value
-  }
+  let preservedOffset = 0
+  watchEffect(() => {
+    if (appMenuOpened.value) {
+      preservedOffset = window.scrollY
+      const scrollbarVisible = document.body.scrollHeight > window.innerHeight
+      const overflowY = scrollbarVisible ? 'scroll' : 'auto'
+      document.body.setAttribute('style', `top: ${-preservedOffset}px; overflow-y: ${overflowY};`)
+      document.body.classList.add('menu-opened')
+    } else {
+      document.body.classList.remove('menu-opened')
+      document.body.setAttribute('style', '')
+      window.scrollTo(0, preservedOffset)
+    }
+  })
 
   return {
-    toggleMenu,
     isLoggedIn,
     currentLevel,
-    isMenuOpen,
+    appMenuOpened,
   }
 })
 </script>
 
 <style scoped lang="scss">
-.menu-icon {
-  display: block;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  cursor: pointer;
-  z-index: 4;
-
-  .bar1,
-  .bar2,
-  .bar3 {
-    width: 35px;
-    height: 3px;
-    background-color: rgb(255, 255, 255);
-    margin: 8px 0;
-    transition: 0.4s;
-    @include media('<large') {
-      width: 6vw;
-      height: 0.5vw;
-      margin: 1vw 0;
-    }
-  }
-
-  &.open {
-    position: fixed;
-    .bar1 {
-      transform: rotate(-45deg) translate(-7px, 3px);
-      @include media('<large') {
-        transform: rotate(-45deg) translate(-1.2vw, 1.2vw);
-      }
-    }
-    .bar2 {
-      opacity: 0;
-    }
-    .bar3 {
-      transform: rotate(45deg) translate(-11px, -11px);
-      @include media('<large') {
-        transform: rotate(45deg) translate(-1vw, -1vw);
-      }
-    }
-  }
-}
 .menu-overlay {
   z-index: 3;
   position: fixed;

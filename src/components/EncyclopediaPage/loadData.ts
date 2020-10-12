@@ -9,9 +9,9 @@ export const conceptNameList = Object.keys(concepts)
 // used by Encyclopedia Article
 export function getEntry(name: string): IEntry {
   let entry
-  if (elementNameList.includes(name)) {
+  if (Object.hasOwnProperty.call(elements, name)) {
     entry = elements[name as keyof typeof elements]
-  } else if (conceptNameList.includes(name)) {
+  } else if (Object.hasOwnProperty.call(concepts, name)) {
     entry = concepts[name as keyof typeof concepts]
   } else {
     throw new Error(`Encyclopedia Entry not found: ${name}`)
