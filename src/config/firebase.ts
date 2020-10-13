@@ -22,6 +22,5 @@ auth.onAuthStateChanged((user) => {
     store.dispatch('userModule/FETCH_USER', user)
   }
 })
-export { db, auth }
 
-export default firebase
+export { db, auth, firebase }

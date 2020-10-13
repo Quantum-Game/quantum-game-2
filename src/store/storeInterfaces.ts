@@ -1,16 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */ // required due to linting errors for `infer T`
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import {
-  StoreOptions,
-  GetterTree,
-  ActionTree,
-  Store,
-  ActionContext,
-  MutationTree,
-  ActionHandler,
-} from 'vuex'
-import firebase from '@/config/firebase'
+import { StoreOptions, GetterTree, ActionTree, ActionHandler } from 'vuex'
+import type { firebase } from '@/config/firebase'
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IRootState {}

@@ -6,7 +6,10 @@ import {
   storeModule,
 } from '@/store/storeInterfaces'
 import router from '@/router'
-import firebase, { db, auth } from '@/config/firebase'
+
+function importFirebase() {
+  return import(/* webpackChunkName: 'chunk-firebase' */ '@/config/firebase')
+}
 
 interface UserState {
   user: User
@@ -85,7 +88,8 @@ export default storeModule({
     },
   },
   actions: {
-    SET_INITIAL_PROGRESS({ commit }): void {
+    async SET_INITIAL_PROGRESS({ commit }) {
+      const { firebase } = await importFirebase()
       const payload: ProgressObj[] = [
         { id: 0, status: 'won', timeOpened: firebase.firestore.Timestamp.fromDate(new Date()) },
       ]
@@ -106,9 +110,9 @@ export default storeModule({
         commit('SET_USER', null)
       }
     },
-    SIGN_IN({ commit, getters }, user): void {
+    async SIGN_IN({ commit, getters }, user) {
+      const { auth, firebase } = await importFirebase()
       commit('SET_REMEMBER_ME', user.rememberMe)
-
       let authPersistance = auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
 
       if (!getters.user.rememberMe) {
@@ -126,19 +130,23 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    SIGN_IN_GITHUB({ dispatch }): void {
+    async SIGN_IN_GITHUB({ dispatch }) {
+      const { firebase } = await importFirebase()
       const provider = new firebase.auth.GithubAuthProvider()
       dispatch('SIGN_IN_WITH_POPUP', provider)
     },
-    SIGN_IN_FACEBOOK({ dispatch }): void {
+    async SIGN_IN_FACEBOOK({ dispatch }) {
+      const { firebase } = await importFirebase()
       const provider = new firebase.auth.FacebookAuthProvider()
       dispatch('SIGN_IN_WITH_POPUP', provider)
     },
-    SIGN_IN_GOOGLE({ dispatch }): void {
+    async SIGN_IN_GOOGLE({ dispatch }) {
+      const { firebase } = await importFirebase()
       const provider = new firebase.auth.GoogleAuthProvider()
       dispatch('SIGN_IN_WITH_POPUP', provider)
     },
-    SIGN_IN_WITH_POPUP({ commit }, provider): void {
+    async SIGN_IN_WITH_POPUP({ commit }, provider) {
+      const { auth } = await importFirebase()
       auth
         .signInWithPopup(provider)
         .then(() => {
@@ -148,7 +156,8 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    SIGN_UP({ commit }, user): void {
+    async SIGN_UP({ commit }, user) {
+      const { auth } = await importFirebase()
       auth
         .createUserWithEmailAndPassword(user.email, user.password)
         .then((data) => {
@@ -165,7 +174,8 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    SIGN_OUT({ commit }): void {
+    async SIGN_OUT({ commit }) {
+      const { auth } = await importFirebase()
       auth.signOut().then(() => {
         commit('SET_LOGGED_IN', false)
         router.replace({
@@ -173,7 +183,8 @@ export default storeModule({
         })
       })
     },
-    SAVE_PROGRESS({ commit, getters }): void {
+    async SAVE_PROGRESS({ commit, getters }) {
+      const { auth, db } = await importFirebase()
       if (auth.currentUser) {
         const { progressArr }: { progressArr: ProgressObj } = getters
         const dbRef = db.collection('users').doc(auth.currentUser.uid)
@@ -192,7 +203,8 @@ export default storeModule({
     /**
      * @todo It should be a database, not a list.
      */
-    GET_PROGRESS({ commit }): void {
+    async GET_PROGRESS({ commit }) {
+      const { auth, db } = await importFirebase()
       if (auth.currentUser) {
         const dbRef = db.collection('users').doc(auth.currentUser.uid)
         dbRef
@@ -215,7 +227,8 @@ export default storeModule({
     /**
      * @todo Does not match level structure from levels in JSON.
      */
-    SAVE_LEVEL({ commit, dispatch }, level: SavedLevel['level']): void {
+    async SAVE_LEVEL({ commit, dispatch }, level: SavedLevel['level']) {
+      const { auth, firebase, db } = await importFirebase()
       if (auth.currentUser == null) {
         console.log('You are not logged in!')
         return
@@ -242,7 +255,8 @@ export default storeModule({
           commit('errors/SET_ERROR', err.message, { root: true })
         })
     },
-    UPDATE_LEVEL({ commit }, level: SavedLevel['level']): void {
+    async UPDATE_LEVEL({ commit }, level: SavedLevel['level']) {
+      const { auth, firebase, db } = await importFirebase()
       if (auth.currentUser == null) {
         console.log('You are not logged in!')
         return
@@ -261,7 +275,8 @@ export default storeModule({
         commit('errors/SET_ERROR', err.message, { root: true })
       })
     },
-    FETCH_MY_LEVELS({ commit }): void {
+    async FETCH_MY_LEVELS({ commit }) {
+      const { auth, db } = await importFirebase()
       if (auth.currentUser) {
         const myLevels: SavedLevelMetadata[] = []
         const docs = db.collection('levels').where('userId', '==', auth.currentUser.uid)
@@ -289,7 +304,8 @@ export default storeModule({
         console.log('You are not logged in!')
       }
     },
-    FETCH_PUBLIC_LEVELS({ commit }): void {
+    async FETCH_PUBLIC_LEVELS({ commit }) {
+      const { auth, db } = await importFirebase()
       if (auth.currentUser) {
         const publicLevels: SavedLevelMetadata[] = []
         const docs = db.collection('levels').where('public', '==', true)
@@ -317,7 +333,8 @@ export default storeModule({
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PUBLIC({ commit, dispatch }, levelID: string): void {
+    async MAKE_LEVEL_PUBLIC({ commit, dispatch }, levelID: string) {
+      const { auth, firebase, db } = await importFirebase()
       if (auth.currentUser) {
         const docs = db
           .collection('levels')
@@ -343,7 +360,8 @@ export default storeModule({
         console.log('You are not logged in!')
       }
     },
-    MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID: string): void {
+    async MAKE_LEVEL_PRIVATE({ commit, dispatch }, levelID: string) {
+      const { auth, db } = await importFirebase()
       if (auth.currentUser) {
         const doc = db.collection('levels').doc(levelID)
 
@@ -359,7 +377,8 @@ export default storeModule({
         console.log('You are not logged in!')
       }
     },
-    REMOVE_LEVEL({ commit }, levelID: string): void {
+    async REMOVE_LEVEL({ commit }, levelID: string) {
+      const { db } = await importFirebase()
       const dbRef = db.collection('levels')
 
       dbRef
