@@ -171,7 +171,7 @@ export default defineComponent({
   padding-bottom: 100px;
 }
 
-.matrix-viewer::v-deep svg {
+.matrix-viewer::v-deep(svg) {
   overflow: visible;
 }
 </style>
