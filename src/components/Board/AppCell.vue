@@ -72,6 +72,10 @@ export default defineComponent({
           hover: hover.value,
           interacting: props.interacting,
           energized: props.energized > 0,
+          goalProgress:
+            props.piece.goalThreshold > 0
+              ? Math.min(1, props.energized / props.piece.goalThreshold)
+              : 0,
         }
       }
     )

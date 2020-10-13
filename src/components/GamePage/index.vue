@@ -70,7 +70,6 @@
 
       <template #right>
         <section>
-          <GameGoals :goals="goalsCtl" />
           <div class="ket-viewer-game">
             <ket-viewer
               v-if="playheadCtl.activeFrame"
@@ -101,7 +100,6 @@
 import { IInfoPayload } from '@/mixins/gameInterfaces'
 import levels from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
-import GameGoals from '@/components/GamePage/GameGoals.vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
@@ -132,7 +130,6 @@ export default defineComponent({
   components: {
     AppLayout,
     KetViewer,
-    GameGoals,
     GameInfobox,
     GameToolbox,
     GameControls,
