@@ -42,9 +42,7 @@ export function goalsController(data: {
     const absorptions = data.absorptions()
     if (absorptions == null) return 0
 
-    return allGoals.value.filter(
-      ({ coord, threshold }) => (absorptions.get(coord) ?? 0) >= threshold
-    ).length
+    return allGoals.value.filter(({ coord }) => (absorptions.get(coord) ?? 0) > 0).length
   })
 
   const goalsUnmet = computed(() => allGoals.value.length - goalsMet.value)
