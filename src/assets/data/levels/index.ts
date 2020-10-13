@@ -7,7 +7,6 @@ import finalLevels from './finalLevels.json'
 import classicLevels from './classicLevels.json'
 import sandbox from './sandboxLevel.json'
 import benchmarkLevels from './benchmark.json'
-import { exportLevel, importLevel } from '@/engine/model'
 
 export {
   sandbox,

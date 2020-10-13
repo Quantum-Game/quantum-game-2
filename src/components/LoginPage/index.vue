@@ -2,13 +2,11 @@
   <app-layout>
     <template #main>
       <div class="login-page-wrapper">
-        <h1>
-          User Login
-        </h1>
+        <h1>User Login</h1>
         <p>Login with your social account</p>
         <div class="social-login">
           <div class="social-login__btn social-login__gh" @click="actionSignInGithub">Github</div>
-          <div class="social-login__btn social-login__fb " @click="actionSignInFacebook">
+          <div class="social-login__btn social-login__fb" @click="actionSignInFacebook">
             Facebook
           </div>
           <div class="social-login__btn social-login__g" @click="actionSignInGoogle">Google</div>

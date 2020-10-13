@@ -82,7 +82,7 @@ export default storeModule({
       state.savedLevelsList.find((x) => x.id === payload)!.public = false
     },
     REMOVE_LEVEL(state, payload: string): void {
-      state.savedLevelsList = state.savedLevelsList.filter(function(obj) {
+      state.savedLevelsList = state.savedLevelsList.filter((obj) => {
         return obj.id !== payload
       })
     },
@@ -284,13 +284,14 @@ export default storeModule({
         docs
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach((doc) => {
+              const data = doc.data()
               myLevels.push({
                 id: doc.id,
                 link: `/level/${doc.id}`,
-                public: doc.data().public,
-                createdAt: doc.data().createdAt,
-                lastModified: doc.data().lastModified,
+                public: data.public,
+                createdAt: data.createdAt,
+                lastModified: data.lastModified,
               })
             })
           })
@@ -313,13 +314,14 @@ export default storeModule({
         docs
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach((doc) => {
+              const data = doc.data()
               publicLevels.push({
                 id: doc.id,
                 link: `/levels/${doc.id}`,
-                public: doc.data().public, // always true
-                createdAt: doc.data().createdAt,
-                lastModified: doc.data().lastModified,
+                public: data.public, // always true
+                createdAt: data.createdAt,
+                lastModified: data.lastModified,
               })
             })
           })
@@ -344,7 +346,7 @@ export default storeModule({
         docs
           .get()
           .then((querySnapshot) => {
-            querySnapshot.forEach(function(doc) {
+            querySnapshot.forEach((doc) => {
               if (doc.id === levelID) {
                 doc.ref.update({ public: true })
               }

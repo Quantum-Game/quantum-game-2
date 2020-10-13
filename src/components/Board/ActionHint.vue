@@ -55,14 +55,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.hintOverlay::v-deep {
+.hintOverlay {
   pointer-events: none;
   transform-origin: 32px 32px;
   opacity: 0;
-  [fill] {
+  &::v-deep([fill]) {
     fill: white;
   }
-  [stroke] {
+  &::v-deep([stroke]) {
     stroke: white;
   }
 }

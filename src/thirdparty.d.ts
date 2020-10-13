@@ -5,7 +5,6 @@ declare module 'vue-confetti' {
   }
   export { Confetti }
 }
-declare module 'tone'
 
 // NOTE: ResizeObserver declaration is temporary, until the builtin typedefs are updated.
 declare class ResizeObserver {

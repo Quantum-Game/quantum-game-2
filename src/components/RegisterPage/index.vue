@@ -2,9 +2,7 @@
   <app-layout>
     <template #main>
       <div class="login-page-wrapper">
-        <h1>
-          User Registration
-        </h1>
+        <h1>User Registration</h1>
         <!-- <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div> -->
         <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
           <div class="col-md-6">

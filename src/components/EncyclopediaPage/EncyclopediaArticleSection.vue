@@ -24,22 +24,21 @@ export default defineComponent({
     section: { type: Object as PropType<IEntrySection>, required: true },
   },
   setup(props) {
-    const parsedContent = computed(() =>
-      props.section.content?.replace(
-          /(href="[^"]+wikipedia[^"]+">[^<]+)/g,
-          '$1 <i class="fab fa-wikipedia-w"></i>'
-        )
-        .replace(/(href="[^"]+youtube[^"]+">[^<]+)/g, '$1 <i class="fab fa-youtube"></i>')
-        .replace(/(href="[^"]+arxiv[^"]+">[^<]+)/g, '$1 <i class="fas fa-book-open"></i>')
-        .replace(/(href="[^"]+arxiv[^"]+">[^<]+)/g, '$1 <i class="fas fa-book-open"></i>')
-        .replace(
-          /(href="[^"]+(edmundoptics|rp-photonics|thorlabs)[^"]+">[^<]+)/g,
-          '$1 <i class="fas fa-microscope"></i>'
-        ) ?? ''
+    const parsedContent = computed(
+      () =>
+        props.section.content
+          ?.replace(/(href="[^"]+wikipedia[^"]+">[^<]+)/g, '$1 <i class="fab fa-wikipedia-w"></i>')
+          .replace(/(href="[^"]+youtube[^"]+">[^<]+)/g, '$1 <i class="fab fa-youtube"></i>')
+          .replace(/(href="[^"]+arxiv[^"]+">[^<]+)/g, '$1 <i class="fas fa-book-open"></i>')
+          .replace(/(href="[^"]+arxiv[^"]+">[^<]+)/g, '$1 <i class="fas fa-book-open"></i>')
+          .replace(
+            /(href="[^"]+(edmundoptics|rp-photonics|thorlabs)[^"]+">[^<]+)/g,
+            '$1 <i class="fas fa-microscope"></i>'
+          ) ?? ''
     )
 
     return { parsedContent }
-  }
+  },
 })
 </script>
 

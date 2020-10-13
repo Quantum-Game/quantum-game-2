@@ -84,7 +84,7 @@ export default defineComponent({
 .encyclopedia {
   background: #2e006a;
 
-  &::v-deep img {
+  &::v-deep(img) {
     max-width: 100%;
   }
 }

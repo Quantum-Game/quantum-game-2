@@ -1,8 +1,6 @@
 <template>
   <encyclopedia-section>
-    <template #title>
-      Transition matrix
-    </template>
+    <template #title>Transition matrix</template>
     <template #content>
       <p>This matrix ({{ elementName }}{{ rotationText }}) is {{ operatorPropertiesText }}.</p>
       <div layout="row wrap around u10" class="grids">
@@ -171,7 +169,7 @@ export default defineComponent({
   padding-bottom: 100px;
 }
 
-.matrix-viewer::v-deep svg {
+.matrix-viewer::v-deep(svg) {
   overflow: visible;
 }
 </style>
