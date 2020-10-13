@@ -3333,10 +3333,10 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
-bra-ket-vue@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.4.1.tgz#d40d8088bddab9839423b5c364d7c90b01d421ca"
-  integrity sha512-S4vnG7xfnELZutgBI4sqp3BbSRi5avLK3FfWQyBCVlQZ9VZe/5SoNz9IC071m78MNgJIygJfRTPa3MQw5EO97Q==
+bra-ket-vue@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/bra-ket-vue/-/bra-ket-vue-0.4.2.tgz#440734a82b785b66e1bc7990990bf5bd8b0f9531"
+  integrity sha512-6IQuHVEWCShb23bLOdH7kUesuQrc+xPcJvzUb5d85zGSGcW/hRrNcd29kBvgzXaKLZv4qFht3bOwQvJ6Z5Ll3A==
   dependencies:
     quantum-tensors "^0.4.11"
 
