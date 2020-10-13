@@ -1,10 +1,8 @@
 <template>
   <transition :name="state">
-    <div v-if="victory" :class="`wrapper ${state}`">
-      <div class="victory-circle">
-        <h2>
-          You won!
-        </h2>
+    <div v-if="victory" :class="`wrapper ${state}`" @click="$emit('bg-click')">
+      <div class="victory-circle" @click.stop>
+        <h2>You won!</h2>
         <slot></slot>
       </div>
     </div>
@@ -42,6 +40,9 @@ const confettiConfig = {
 export default defineComponent({
   props: {
     state: { type: String, required: false },
+  },
+  emits: {
+    'bg-click': null,
   },
   setup(props) {
     const confetti = new Confetti()

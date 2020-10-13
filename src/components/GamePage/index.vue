@@ -1,8 +1,8 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :state="overlayGameState" class="overlay" @click="continueAfterWin">
-      <p class="backButton">GO BACK</p>
+    <app-overlay :state="overlayGameState" class="overlay" @bg-click="continueAfterWin">
+      <p class="backButton" tabindex="0" @click="continueAfterWin">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
         <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
       </router-link>
