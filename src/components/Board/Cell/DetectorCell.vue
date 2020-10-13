@@ -45,7 +45,7 @@
           />
         </g>
       </g>
-      <g class="show-energized">
+      <g class="show-energized" :style="`opacity: ${state.goalProgress};`">
         <path
           fill="#891879"
           d="M7 58.5H4c0-15.1 15.5-18 15.6-18l.5 3-.2-1.5.3 1.5C19.6 43.6 7 46 7 58.5z"

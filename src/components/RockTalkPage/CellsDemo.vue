@@ -12,6 +12,10 @@
       <label><input v-model="pieceState.hover" type="checkbox" /> hover</label>
       <label><input v-model="pieceState.interacting" type="checkbox" /> interacting</label>
       <label><input v-model="pieceState.energized" type="checkbox" /> energized</label>
+      <label
+        ><input v-model="pieceState.goalProgress" type="range" step="0.1" min="0" max="1" /> goal
+        progress</label
+      >
     </div>
   </div>
 </template>
@@ -28,6 +32,7 @@ export default defineComponent({
       hover: false,
       interacting: false,
       energized: false,
+      goalProgress: 0,
     })
 
     return {

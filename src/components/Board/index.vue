@@ -60,20 +60,8 @@
         />
       </template>
 
-      <!-- ACTION HINTS -->
       <action-hint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
-
-      <!-- PROBABILITY -->
-      <text
-        v-for="[coord, probability] in absorptions"
-        :key="`probability-${coord.x}-${coord.y}`"
-        :x="(coord.x + 0.5) * 64"
-        :y="coord.y * 64"
-        text-anchor="middle"
-        class="probability"
-      >
-        {{ (probability * 100).toFixed(1) }}%
-      </text>
+      <board-absorptions :absorptions="absorptions" :goals="goals" />
     </svg>
 
     <!-- SPEECH BUBBLES -->
@@ -92,6 +80,7 @@ import AppCell from '@/components/Board/AppCell.vue'
 import BoardLasers from '@/components/Board/BoardLasers.vue'
 import ActionHint from '@/components/Board/ActionHint.vue'
 import BoardDots from '@/components/Board/BoardDots.vue'
+import BoardAbsorptions from '@/components/Board/BoardAbsorptions.vue'
 import AppPhoton from '@/components/AppPhoton.vue'
 import SpeechBubble from '@/components/SpeechBubble.vue'
 import { emitType } from '@/types'
@@ -111,6 +100,7 @@ export default defineComponent({
     BoardLasers,
     BoardDots,
     SpeechBubble,
+    BoardAbsorptions,
   },
   props: {
     board: { type: Object as PropType<Board>, required: true },
@@ -174,6 +164,14 @@ export default defineComponent({
       )
     })
 
+    const goals = computed(() => {
+      return new Map(
+        iFilterMap(props.board.pieces, ([coord, piece]) =>
+          piece.goalThreshold > 0 ? ([coord, piece.goalThreshold] as const) : null
+        )
+      )
+    })
+
     function getInteraction(clientX: number, clientY: number): BoardInteraction {
       const rect = boardScaler.value?.getBoundingClientRect()
       if (rect == null) throw new Error('Missing board rect on interaction')
@@ -198,6 +196,7 @@ export default defineComponent({
 
     return {
       hintsCtl,
+      goals,
       tileSize,
       scaledTileSize,
       boardScaler,
@@ -235,11 +234,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.probability {
-  fill: $fuchsia;
-  font-size: 0.8rem;
-}
-
 .board_scaler {
   position: relative;
   max-width: 1400px;
