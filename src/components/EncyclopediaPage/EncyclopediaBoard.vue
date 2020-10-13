@@ -75,7 +75,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.board {
+.board,
+.ket {
   width: 360px;
 }
 
