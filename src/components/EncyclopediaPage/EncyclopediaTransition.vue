@@ -154,6 +154,7 @@ export default defineComponent({
 
     return {
       grid,
+      rotation,
       vector,
       operator,
       rotationText,
