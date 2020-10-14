@@ -214,7 +214,15 @@ export default defineComponent({
     } as IInfoPayload)
 
     // save last visited level id globally, so it can be returned to from the menu screen
-    watch(routeLevelId, (id) => writeCurrentLevelId(id), { immediate: true })
+    watch(
+      routeLevelId,
+      (id) => {
+        if (id != null) {
+          writeCurrentLevelId(id)
+        }
+      },
+      { immediate: true }
+    )
 
     const levelData = computed(() => {
       if (routeLevelId.value != null) {
