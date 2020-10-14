@@ -1,11 +1,11 @@
 <template>
   <div class="test-page">
-    <rock-talk :type="type" :dialogue="dialogue">
+    <RockTalk :type="type" :dialogue="dialogue">
       <template #title>
         <h1>OVERLAYS DEMO</h1>
       </template>
-      <app-button type="big">PLAY</app-button>
-    </rock-talk>
+      <AppButton type="big">PLAY</AppButton>
+    </RockTalk>
     <menu class="test-page__controls">
       <h2>Overlay Controls:</h2>
       <section>

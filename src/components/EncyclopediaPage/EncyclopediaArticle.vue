@@ -7,7 +7,7 @@
     <!-- GRIDS -->
     <div class="grids">
       <div layout="row wrap start u5">
-        <encyclopedia-board
+        <EncyclopediaBoard
           v-for="(iGrid, i) in entry.grids"
           :key="i"
           :grid="iGrid"
@@ -18,14 +18,14 @@
     </div>
 
     <!-- SECTIONS -->
-    <encyclopedia-article-section
+    <EncyclopediaArticleSection
       v-for="section in entry.sections"
       :key="section.title"
       :section="section"
     />
 
     <!-- EQUATION GRID -->
-    <encyclopedia-transition
+    <EncyclopediaTransition
       v-if="showMatrix"
       :key="`transition-${entry.elementName}`"
       :elementName="entry.elementName"

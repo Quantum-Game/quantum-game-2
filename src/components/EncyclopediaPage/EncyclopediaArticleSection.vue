@@ -1,5 +1,5 @@
 <template>
-  <encyclopedia-section>
+  <EncyclopediaSection>
     <template #title>
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span v-html="section.title"></span>
@@ -10,7 +10,7 @@
         <div class="content" v-html="parsedContent" />
       </div>
     </template>
-  </encyclopedia-section>
+  </EncyclopediaSection>
 </template>
 
 <script lang="ts">

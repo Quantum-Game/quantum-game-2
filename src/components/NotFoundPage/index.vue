@@ -3,7 +3,7 @@
     <h1>404</h1>
     <p>OH NO :(</p>
     <img src="@/assets/graphics/rock_weasel.svg" alt="weasel" />
-    <router-link to="/"> <app-button type="basic">TAKE ME BACK!</app-button></router-link>
+    <router-link to="/"> <AppButton type="basic">TAKE ME BACK!</AppButton></router-link>
   </div>
 </template>
 

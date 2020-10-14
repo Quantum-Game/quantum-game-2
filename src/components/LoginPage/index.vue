@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <div class="login-page-wrapper">
         <h1>User Login</h1>
@@ -43,14 +43,14 @@
               <input v-model="user.rememberMe" type="checkbox" checked name="rememberme" />
               <label for="rememberme">Remember Me</label>
             </div>
-            <app-button type="special"> Login </app-button>
+            <AppButton type="special"> Login </AppButton>
           </div>
         </form>
         <p>Forgot your password?</p>
         <p>Don't have an account? <router-link to="/register"> Sign Up </router-link></p>
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">

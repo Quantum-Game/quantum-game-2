@@ -11,7 +11,7 @@
           layout="column center"
         >
           <svg viewBox="0 0 64 64" width="64" height="64">
-            <app-cell :piece="link.piece" />
+            <AppCell :piece="link.piece" />
           </svg>
           <span>{{ elemName(link.piece.type) }}</span>
         </router-link>
@@ -19,7 +19,7 @@
     </div>
     <div layout="column u5">
       <h2>Concepts</h2>
-      <encyclopedia-link-list :entryList="conceptNameList" class="link-list" />
+      <EncyclopediaLinkList :entryList="conceptNameList" class="link-list" />
     </div>
   </div>
 </template>

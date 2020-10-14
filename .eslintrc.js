@@ -41,6 +41,7 @@ module.exports = {
       'never',
       { ignore: ['text-anchor', 'clip-rule', 'clip-path-units'] },
     ],
+    'vue/component-name-in-template-casing': ['warn', 'PascalCase'],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

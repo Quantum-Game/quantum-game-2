@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <div class="options-wrapper" layout="column u4">
         <h2>{{ i18n.t('options.header') }}</h2>
@@ -34,7 +34,7 @@
         </form>
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">

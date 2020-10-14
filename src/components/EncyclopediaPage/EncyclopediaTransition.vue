@@ -1,11 +1,11 @@
 <template>
-  <encyclopedia-section>
+  <EncyclopediaSection>
     <template #title>Transition matrix</template>
     <template #content>
       <p>This matrix ({{ elementName }}{{ rotationText }}) is {{ operatorPropertiesText }}.</p>
       <div layout="row wrap around u10" class="grids">
         <div class="matrix">
-          <matrix-viewer
+          <MatrixViewer
             class="matrix-viewer"
             :operator="operator"
             :size="30"
@@ -13,7 +13,7 @@
           />
         </div>
         <div class="eboard">
-          <encyclopedia-board
+          <EncyclopediaBoard
             class="board"
             :grid="grid"
             :vector="vector"
@@ -24,7 +24,7 @@
         </div>
       </div>
     </template>
-  </encyclopedia-section>
+  </EncyclopediaSection>
 </template>
 
 <script lang="ts">

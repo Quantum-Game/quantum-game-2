@@ -17,7 +17,7 @@
         <circle :cx="0" :cy="64" r="1" fill="#edeaf4" />
         <circle :cx="64" :cy="0" r="1" fill="#edeaf4" />
         <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
-        <app-cell :piece="piece" :available="count > 0" @grab="onGrab(piece.type)" />
+        <AppCell :piece="piece" :available="count > 0" @grab="onGrab(piece.type)" />
       </svg>
       <span class="counter">× {{ count }}</span>
     </div>

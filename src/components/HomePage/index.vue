@@ -5,16 +5,16 @@
     </div>
     <div layout="row wrap middle u5">
       <router-link to="/level/1">
-        <app-button class="button" type="big">PLAY GAME</app-button>
+        <AppButton class="button" type="big">PLAY GAME</AppButton>
       </router-link>
       <router-link to="/sandbox">
-        <app-button class="button" type="big">VIRTUAL LAB</app-button>
+        <AppButton class="button" type="big">VIRTUAL LAB</AppButton>
       </router-link>
     </div>
     <div class="hello" layout="column u10">
       <h1>{{ i18n.t('homepage.main') }}</h1>
       <p class="main-description">{{ i18n.t('homepage.desc') }}</p>
-      <homepage-interactive />
+      <HomepageInteractive />
     </div>
     <div class="gameVersion">
       <p>
@@ -33,13 +33,13 @@
       </p>
     </div>
     <div class="hello" layout="column u10">
-      <homepage-testimonials class="testimonials" />
-      <homepage-social />
-      <homepage-authors />
-      <homepage-history />
+      <HomepageTestimonials class="testimonials" />
+      <HomepageSocial />
+      <HomepageAuthors />
+      <HomepageHistory />
     </div>
     <svg viewBox="0 0 64 64" width="200" height="200">
-      <app-cell :piece="piece" class="rock" />
+      <AppCell :piece="piece" class="rock" />
     </svg>
   </div>
 </template>
