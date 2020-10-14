@@ -1,5 +1,5 @@
 <template>
-  <app-layout class="encyclopedia" left-class="hide show-lg" :menu-absolute="false">
+  <app-layout class="encyclopedia" leftClass="hide show-lg" :menuAbsolute="false">
     <template #main>
       <h3 v-if="crumbs.length > 0" class="breadcrumbs underlined">
         <template v-for="crumb in crumbs" :key="crumb.url">
@@ -12,8 +12,8 @@
     </template>
     <template v-if="showAside" #left>
       <div layout="column u4">
-        <encyclopedia-link-list :entry-list="elementNameList" title="Elements" />
-        <encyclopedia-link-list :entry-list="conceptNameList" title="Concepts" />
+        <encyclopedia-link-list :entryList="elementNameList" title="Elements" />
+        <encyclopedia-link-list :entryList="conceptNameList" title="Concepts" />
       </div>
     </template>
   </app-layout>

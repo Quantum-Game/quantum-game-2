@@ -36,6 +36,11 @@ module.exports = {
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
+    'vue/attribute-hyphenation': [
+      'warn',
+      'never',
+      { ignore: ['text-anchor', 'clip-rule', 'clip-path-units'] },
+    ],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

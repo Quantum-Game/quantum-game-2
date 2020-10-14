@@ -12,7 +12,7 @@
           :key="i"
           :grid="iGrid"
           :step="5"
-          :default-step="2"
+          :defaultStep="2"
         />
       </div>
     </div>
@@ -28,8 +28,8 @@
     <encyclopedia-transition
       v-if="showMatrix"
       :key="`transition-${entry.elementName}`"
-      :element-name="entry.elementName"
-      :default-rotation="entry.defaultRotation"
+      :elementName="entry.elementName"
+      :defaultRotation="entry.defaultRotation"
       step="3"
     />
   </div>

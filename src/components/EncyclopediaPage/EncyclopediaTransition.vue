@@ -17,8 +17,8 @@
             class="board"
             :grid="grid"
             :vector="vector"
-            :max-steps="2"
-            :default-step="2"
+            :maxSteps="2"
+            :defaultStep="2"
             @rotated="rotation = $event"
           />
         </div>

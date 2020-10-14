@@ -19,7 +19,7 @@
     </div>
     <div layout="column u5">
       <h2>Concepts</h2>
-      <encyclopedia-link-list :entry-list="conceptNameList" class="link-list" />
+      <encyclopedia-link-list :entryList="conceptNameList" class="link-list" />
     </div>
   </div>
 </template>

@@ -4,12 +4,12 @@
       class="board"
       :absorptions="gameCtl.sim.absorptions"
       :board="gameCtl.level.board"
-      :laser-particles="laserParticles"
+      :laserParticles="laserParticles"
       :particles="playheadCtl.interpolatedParticles"
       @touch="updateRotation"
     />
     <board-frame-picker :playhead="playheadCtl" />
-    <ket-viewer class="ket" :vector="playheadCtl.activeFrame.vector" :pol-basis="polBasis" />
+    <ket-viewer class="ket" :vector="playheadCtl.activeFrame.vector" :polBasis="polBasis" />
   </div>
 </template>
 

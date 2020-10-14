@@ -29,9 +29,9 @@
         v-for="(particle, index) in particles"
         :key="'photon-' + index"
         :particle="particle"
-        :display-magnetic="false"
-        :display-electric="true"
-        :display-gaussian="true"
+        :displayMagnetic="false"
+        :displayElectric="true"
+        :displayGaussian="true"
         @mouseenter="handleMouseEnter(particle.coord)"
       />
 
@@ -69,7 +69,7 @@
       v-for="hint in hintsCtl.speechBubbles"
       :key="hint"
       :hint="hint"
-      :tile-size="scaledTileSize"
+      :tileSize="scaledTileSize"
     />
   </div>
 </template>
