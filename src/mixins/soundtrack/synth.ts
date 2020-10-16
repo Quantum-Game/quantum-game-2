@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import * as Tone from 'tone'
+import { BarsBeatsSixteenths } from 'tone/build/esm/core/type/Units'
 
 interface ITransportPosition {
   bars: number
@@ -26,7 +27,7 @@ export class Synth {
   feedbackDelay = new Tone.FeedbackDelay('8n', 0.7)
   chorus = new Tone.Chorus(4, 2.5, 0.5)
   pingPongDelay = new Tone.PingPongDelay('4n', 0.2)
-  synth1 = new Tone.PolySynth(4, Tone.Synth, {
+  synth1 = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: 'sine3' },
     envelope: { attack: 0.2, decay: 0.6, sustain: 0.3, release: 1.1 },
   })
@@ -34,11 +35,9 @@ export class Synth {
   synth2Freeverb = new Tone.Freeverb({
     roomSize: 0.97,
     dampening: 500,
-    wet: 1.0,
-    dry: 0.0,
   })
 
-  synth2 = new Tone.PolySynth(1, Tone.Synth, {
+  synth2 = new Tone.PolySynth(Tone.Synth, {
     oscillator: { type: 'sine' },
     envelope: { attack: 0.01, decay: 0.1, sustain: 0.1, release: 0.3 },
   })
@@ -117,7 +116,7 @@ export class Synth {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     this.log = logging ? console.log : (): void => {}
 
-    this.limiter.toMaster()
+    this.limiter.toDestination()
     this.gain.connect(this.limiter)
     this.hip1.connect(this.gain)
     this.feedbackDelay.connect(this.hip1)
@@ -193,7 +192,7 @@ export class Synth {
   }
 
   onEveryquarter(): void {
-    const nowPos = parseTransportPosition(Tone.Transport.position)
+    const nowPos = parseTransportPosition(Tone.Transport.position as BarsBeatsSixteenths)
     const prevPos = this.currentTransportPosition
     this.currentTransportPosition = nowPos
 

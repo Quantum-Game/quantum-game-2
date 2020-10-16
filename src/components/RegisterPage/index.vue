@@ -1,10 +1,8 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <div class="login-page-wrapper">
-        <h1>
-          User Registration
-        </h1>
+        <h1>User Registration</h1>
         <!-- <div v-if="moduleGetterError" class="alert-error">{{ moduleGetterError }}</div> -->
         <form class="email-login" action="#" @submit.prevent="actionSignUp(user)">
           <div class="col-md-6">
@@ -45,14 +43,14 @@
             />
           </div>
           <div class="login-button-wrapper">
-            <app-button type="special"> Sign Up </app-button>
+            <AppButton type="special"> Sign Up </AppButton>
           </div>
         </form>
         <p>Forgot your password?</p>
         <p>You have an account?<router-link to="/login"> Sign In </router-link></p>
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">

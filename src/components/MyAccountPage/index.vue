@@ -1,17 +1,15 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <h1>My Account</h1>
       <h2>Hi {{ moduleGetterUserName }}!</h2>
       <p>User page is under construction. Right now, see:</p>
-      <router-link to="/savedlevels"
-        ><app-button> Saved and shared levels </app-button>
-      </router-link>
+      <router-link to="/savedlevels"><AppButton> Saved and shared levels </AppButton> </router-link>
       <div class="signOut">
         <a @click.prevent="signOut">Sign Out</a>
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">

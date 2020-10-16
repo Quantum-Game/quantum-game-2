@@ -1,7 +1,7 @@
 <template>
-  <svg-global-defs />
+  <SvgGlobalDefs />
   <router-view />
-  <login-status />
+  <LoginStatus />
 </template>
 
 <script lang="ts">

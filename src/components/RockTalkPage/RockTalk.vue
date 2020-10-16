@@ -3,8 +3,8 @@
     <slot name="title"></slot>
     <div class="wrapper">
       <img :src="url" />
-      <speech-bubble v-if="showFirst" :hint="dialogue[0]" :overlay="type" />
-      <speech-bubble v-if="showSecond" :hint="dialogue[1]" :overlay="'second'" />
+      <SpeechBubble v-if="showFirst" :hint="dialogue[0]" :overlay="type" />
+      <SpeechBubble v-if="showSecond" :hint="dialogue[1]" :overlay="'second'" />
     </div>
     <div class="slot"><slot></slot></div>
   </div>

@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <h1>Saved Levels</h1>
       <div class="my-levels">
@@ -9,13 +9,13 @@
             <router-link :to="lvl.link">{{ lvl.id.slice(0, 8) }}</router-link>
             ({{ printDate(lvl.createdAt) }})
             <a class="remove-btn" @click.prevent="removeLevel(lvl.id, lvl.public)"
-              ><app-button type="special"> X </app-button></a
+              ><AppButton type="special"> X </AppButton></a
             >
             <a v-if="!lvl.public" class="private-btn" @click.prevent="makePublic(lvl.id)"
-              ><app-button type="special"> Unlisted </app-button></a
+              ><AppButton type="special"> Unlisted </AppButton></a
             >
             <a v-if="lvl.public" class="public-btn" @click.prevent="makePrivate(lvl.id)"
-              ><app-button type="basic"> Public </app-button></a
+              ><AppButton type="basic"> Public </AppButton></a
             >
           </li>
         </ul>
@@ -35,7 +35,7 @@
         <a @click.prevent="signOut">Sign Out</a>
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">

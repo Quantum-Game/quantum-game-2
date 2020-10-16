@@ -1,15 +1,15 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <app-overlay :state="overlayGameState" class="overlay" @bg-click="continueAfterWin">
+    <AppOverlay :state="overlayGameState" class="overlay" @bgClick="continueAfterWin">
       <p class="backButton" tabindex="0" @click="continueAfterWin">GO BACK</p>
       <router-link :to="nextLevelOrOvelay">
-        <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
+        <AppButton :overlay="true" :inline="false">NEXT LEVEL</AppButton>
       </router-link>
-    </app-overlay>
+    </AppOverlay>
 
     <!-- GENERAL LAYOUT -->
-    <app-layout>
+    <AppLayout>
       <template #header>
         <div layout="row u2 middle center">
           <router-link :to="previousLevel">
@@ -27,37 +27,37 @@
       <!-- MAIN-LEFT -->
       <template #left>
         <section layout="column u10">
-          <game-toolbox
+          <GameToolbox
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :toolbox="gameCtl.level.toolbox"
-            :tile-size="scaledTileSize"
+            :tileSize="scaledTileSize"
             @grab="grabCtl.grabTool"
             @release="grabCtl.releaseTool"
             @hover="updateInfoPayload"
           />
-          <game-infobox :info-payload="infoPayload" />
+          <GameInfobox :infoPayload="infoPayload" />
         </section>
       </template>
 
       <template #main>
         <section>
-          <board
+          <Board
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :board="gameCtl.level.board"
-            :laser-particles="laserParticles"
+            :laserParticles="laserParticles"
             :particles="activeParticles"
             :absorptions="gameCtl.sim.absorptions"
-            :highlight-empty="grabCtl.grabState != null"
+            :highlightEmpty="grabCtl.grabState != null"
             :playing="playheadCtl.isPlaying"
             @touch="handleTouch"
             @grab="grabCtl.grabPiece"
             @release="grabCtl.releasePiece"
             @hover="updateInfoPayload"
-            @scale-changed="scaledTileSize = $event"
+            @scaleChanged="scaledTileSize = $event"
           />
-          <game-controls
+          <GameControls
             :playhead="playheadCtl"
             @reload="reload"
             @download="downloadLevel"
@@ -71,7 +71,7 @@
       <template #right>
         <section>
           <div class="ket-viewer-game">
-            <ket-viewer
+            <KetViewer
               v-if="playheadCtl.activeFrame"
               class="ket"
               :vector="playheadCtl.activeFrame.vector"
@@ -79,7 +79,7 @@
           </div>
         </section>
       </template>
-    </app-layout>
+    </AppLayout>
 
     <!-- DRAG AND DROP CELL -->
     <div class="drag-container">
@@ -90,7 +90,7 @@
         :height="scaledTileSize"
         :style="dragState.style"
       >
-        <app-cell :piece="dragState.piece" :interacting="true" />
+        <AppCell :piece="dragState.piece" :interacting="true" />
       </svg>
     </div>
   </div>
@@ -214,7 +214,15 @@ export default defineComponent({
     } as IInfoPayload)
 
     // save last visited level id globally, so it can be returned to from the menu screen
-    watch(routeLevelId, (id) => writeCurrentLevelId(id), { immediate: true })
+    watch(
+      routeLevelId,
+      (id) => {
+        if (id != null) {
+          writeCurrentLevelId(id)
+        }
+      },
+      { immediate: true }
+    )
 
     const levelData = computed(() => {
       if (routeLevelId.value != null) {

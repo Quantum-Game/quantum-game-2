@@ -2,7 +2,12 @@
   <div class="element-list" :class="{ entriesExpanded }" layout="column">
     <h3 v-if="title" @click="toggleEntries">{{ title }}</h3>
     <div class="entries">
-      <router-link v-for="entry in sortedList" :key="entry.name" :to="`/info/${entry}`">
+      <router-link
+        v-for="entry in sortedList"
+        :key="entry.name"
+        class="link"
+        :to="`/info/${entry}`"
+      >
         {{ entryTitle(entry) }}
       </router-link>
     </div>
@@ -56,7 +61,7 @@ export default defineComponent({
 .entries {
   columns: 330px;
   column-rule: 1px solid rgba(255, 255, 255, 0.3);
-  > a {
+  > .link {
     display: block;
   }
 }

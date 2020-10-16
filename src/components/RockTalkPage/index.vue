@@ -1,6 +1,6 @@
 <template>
   <div class="inter-level-overlay" flex layout="column center">
-    <rock-talk-line
+    <RockTalkLine
       :graphics="rockTalk.graphics"
       :dialogue="rockTalk.dialogue"
       :link="rockTalk.link"
@@ -10,7 +10,7 @@
       class="button-next"
       :to="`/level/${currentLevelID + 1}`"
     >
-      <app-button :overlay="true" :inline="false">NEXT LEVEL</app-button>
+      <AppButton :overlay="true" :inline="false">NEXT LEVEL</AppButton>
     </router-link>
   </div>
 </template>

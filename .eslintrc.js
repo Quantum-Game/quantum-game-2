@@ -5,10 +5,9 @@ module.exports = {
   },
   extends: [
     'plugin:vue/vue3-recommended',
-    'prettier/@typescript-eslint',
-    '@vue/standard',
     '@vue/typescript',
     '@vue/prettier',
+    'prettier/@typescript-eslint',
     'plugin:@typescript-eslint/recommended',
     'plugin:vue-scoped-css/recommended',
   ],
@@ -33,7 +32,16 @@ module.exports = {
     'vue/require-default-prop': 'off',
     '@typescript-eslint/no-unused-expressions': 'error',
     '@typescript-eslint/no-extra-semi': 'off', // sometimes in conflict with prettier
-    '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
+    '@typescript-eslint/no-unused-vars': [
+      'warn',
+      { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
+    'vue/attribute-hyphenation': [
+      'warn',
+      'never',
+      { ignore: ['text-anchor', 'clip-rule', 'clip-path-units'] },
+    ],
+    'vue/component-name-in-template-casing': ['warn', 'PascalCase'],
   },
   parserOptions: {
     parser: '@typescript-eslint/parser',

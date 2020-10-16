@@ -45,9 +45,7 @@ const mColor = scaleSequential(interpolateViridis).domain([-1, 1])
  * See also: https://github.com/d3/d3-scale-chromatic/
  *
  */
-const eColor = scaleLinear<string>()
-  .domain([-1, 0, 1])
-  .range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
+const eColor = scaleLinear<string>().domain([-1, 0, 1]).range(['#5c00d3', '#ff0055', '#ffde3e']) // PURPLE RED YELLOW
 
 /**
  * Gaussian distribution curve

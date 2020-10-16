@@ -1,8 +1,6 @@
 <template>
   <g>
-    <g v-for="[opacity, d] in paths" :key="opacity">
-      <path class="laser" :d="d" :style="{ opacity }" />
-    </g>
+    <path v-for="[opacity, d] in paths" :key="opacity" class="laser" :d="d" :style="{ opacity }" />
   </g>
 </template>
 
@@ -53,7 +51,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 $red: #ff0055;
 .laser {
-  fill: transparent;
+  fill: none;
   stroke: $red;
   stroke-width: 4; // Use particle.probability * x for scaling
   stroke-dasharray: 4 12;

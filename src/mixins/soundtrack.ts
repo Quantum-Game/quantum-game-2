@@ -27,9 +27,8 @@ function handler() {
 }
 
 setTimeout(() => {
-  Tone.getContext((c: AudioContext) => {
-    if (c.state === 'running') handler()
-  })
+  const ctx = Tone.getContext()
+  if (ctx.state === 'running') handler()
 }, 100)
 
 export function useSoundtrack(): void {

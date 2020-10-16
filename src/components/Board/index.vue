@@ -6,10 +6,10 @@
   >
     <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`" @mouseup="handleBoardRelease">
       <!-- DOTS -->
-      <board-dots :rows="board.height" :cols="board.width" />
+      <BoardDots :rows="board.height" :cols="board.width" />
 
       <!-- LASER PATH -->
-      <board-lasers v-if="laserParticles.length > 0" :laserParticles="laserParticles" />
+      <BoardLasers v-if="laserParticles.length > 0" :laserParticles="laserParticles" />
 
       <!-- FATE -->
       <transition name="fate-blink">
@@ -25,18 +25,18 @@
       </transition>
 
       <!-- PHOTONS -->
-      <app-photon
+      <AppPhoton
         v-for="(particle, index) in particles"
         :key="'photon-' + index"
         :particle="particle"
-        :display-magnetic="false"
-        :display-electric="true"
-        :display-gaussian="true"
+        :displayMagnetic="false"
+        :displayElectric="true"
+        :displayGaussian="true"
         @mouseenter="handleMouseEnter(particle.coord)"
       />
 
       <!-- CELLS -->
-      <app-cell
+      <AppCell
         v-for="{ coord, piece, energized } in cells"
         :key="`cell-${coord.x}-${coord.y}`"
         :coord="coord"
@@ -60,16 +60,16 @@
         />
       </template>
 
-      <action-hint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
-      <board-absorptions :absorptions="absorptions" :goals="goals" />
+      <ActionHint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
+      <BoardAbsorptions :absorptions="absorptions" :goals="goals" />
     </svg>
 
     <!-- SPEECH BUBBLES -->
-    <speech-bubble
+    <SpeechBubble
       v-for="hint in hintsCtl.speechBubbles"
       :key="hint"
       :hint="hint"
-      :tile-size="scaledTileSize"
+      :tileSize="scaledTileSize"
     />
   </div>
 </template>

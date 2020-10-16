@@ -1,9 +1,9 @@
 <template>
   <div class="main-layout" layout="column center" flex>
-    <app-menu />
+    <AppMenu />
     <div class="main-layout-inner" layout="column" flex>
       <header layout="row between u5">
-        <app-menu-button :class="{ absolute: menuAbsolute, inlineMenu: !menuAbsolute }" />
+        <AppMenuButton :class="{ absolute: menuAbsolute, inlineMenu: !menuAbsolute }" />
         <div flex>
           <slot name="header"></slot>
         </div>

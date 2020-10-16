@@ -100,8 +100,9 @@ export default defineComponent({
 
         return {
           transformOrigin: `${origin.x - x}px ${origin.y - y}px`,
-          transform: `rotate(${-rotation}deg) translate(${translate.x - x}px, ${translate.y -
-            y}px)`,
+          transform: `rotate(${-rotation}deg) translate(${translate.x - x}px, ${
+            translate.y - y
+          }px)`,
         }
       }
     )

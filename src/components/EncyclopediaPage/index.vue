@@ -1,5 +1,5 @@
 <template>
-  <app-layout class="encyclopedia" left-class="hide show-lg" :menu-absolute="false">
+  <AppLayout class="encyclopedia" leftClass="hide show-lg" :menuAbsolute="false">
     <template #main>
       <h3 v-if="crumbs.length > 0" class="breadcrumbs underlined">
         <template v-for="crumb in crumbs" :key="crumb.url">
@@ -12,11 +12,11 @@
     </template>
     <template v-if="showAside" #left>
       <div layout="column u4">
-        <encyclopedia-link-list :entry-list="elementNameList" title="Elements" />
-        <encyclopedia-link-list :entry-list="conceptNameList" title="Concepts" />
+        <EncyclopediaLinkList :entryList="elementNameList" title="Elements" />
+        <EncyclopediaLinkList :entryList="conceptNameList" title="Concepts" />
       </div>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">
@@ -84,7 +84,7 @@ export default defineComponent({
 .encyclopedia {
   background: #2e006a;
 
-  &::v-deep img {
+  &::v-deep(img) {
     max-width: 100%;
   }
 }

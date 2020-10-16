@@ -33,11 +33,14 @@ import { computed, defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
-    infoPayload: { type: Object as PropType<IInfoPayload>, default: () => ({
-      kind: 'ui',
-      particles: [],
-      text: '',
-    })}
+    infoPayload: {
+      type: Object as PropType<IInfoPayload>,
+      default: () => ({
+        kind: 'ui',
+        particles: [],
+        text: '',
+      }),
+    },
   },
   setup(props) {
     const name = computed((): string => {
@@ -78,7 +81,7 @@ export default defineComponent({
       description,
       hyphenedElementEntryURL,
     }
-  }
+  },
 })
 </script>
 

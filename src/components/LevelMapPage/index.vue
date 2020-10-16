@@ -1,5 +1,5 @@
 <template>
-  <app-layout>
+  <AppLayout>
     <template #main>
       <article class="main">
         <div class="container">
@@ -14,7 +14,7 @@
         </div>
       </article>
     </template>
-  </app-layout>
+  </AppLayout>
 </template>
 
 <script lang="ts">
