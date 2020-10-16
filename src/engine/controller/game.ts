@@ -10,8 +10,6 @@ import {
   PieceFlags,
   hasFlags,
 } from '@/engine/model'
-import { GoalsController, goalsController } from './goals'
-import { grabController, GrabController } from './grab'
 import { nextElementRotation } from '@/engine/elements'
 
 export function gameController(options?: {
@@ -28,11 +26,6 @@ export function gameController(options?: {
         )
       : null
   )
-
-  const goals = goalsController({
-    absorptions: () => sim.value?.absorptions ?? null,
-    level: () => level.value ?? null,
-  })
 
   // user-callable actions
   // function removePiece(coord: Coord) {
@@ -64,7 +57,6 @@ export function gameController(options?: {
   }
 
   function loadLevel(value: Level): void {
-    grab.putBack()
     level.value = value
   }
 
@@ -73,16 +65,9 @@ export function gameController(options?: {
     return exportLevel(level.value)
   }
 
-  const grab = grabController({
-    pieces: () => level.value?.board.pieces ?? null,
-    toolbox: () => level.value?.toolbox ?? null,
-  })
-
   return proxyRefs({
     sim,
     level,
-    goals,
-    grab,
     // removePiece,
     // setPiece,
     rotateCcw,
@@ -95,8 +80,6 @@ export function gameController(options?: {
 export interface GameController {
   readonly sim: Simulation | null
   readonly level: Level | undefined
-  goals: GoalsController
-  grab: GrabController
 
   // removePiece(coord: Coord): void
   // setPiece(coord: Coord, piece: Piece): void

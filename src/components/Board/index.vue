@@ -9,31 +9,38 @@
       <BoardDots :rows="board.height" :cols="board.width" />
 
       <!-- LASER PATH -->
-      <BoardLasers v-if="laserParticles.length > 0" :laserParticles="laserParticles" />
-
-      <!-- FATE -->
-      <transition name="fate-blink">
-        <circle
-          v-if="fate != null"
-          class="fate"
-          fill="purple"
-          :cx="fatePos.x"
-          :cy="fatePos.y"
-          :style="{ transformOrigin: `${fatePos.x}px ${fatePos.y}px` }"
-          r="30"
-        />
-      </transition>
+      <BoardLasers
+        v-if="laserParticles.length > 0"
+        :opacity="laserOpacity"
+        :particles="laserParticles"
+        :blur="laserBlur"
+      />
 
       <!-- PHOTONS -->
-      <AppPhoton
-        v-for="(particle, index) in particles"
-        :key="'photon-' + index"
-        :particle="particle"
-        :displayMagnetic="false"
-        :displayElectric="true"
-        :displayGaussian="true"
-        @mouseenter="handleMouseEnter(particle.coord)"
-      />
+      <g :style="{ opacity: laserBlur ? 1 - laserOpacity : 1 }">
+        <AppPhoton
+          v-for="(particle, index) in particles"
+          :key="index"
+          :particle="particle"
+          :displayMagnetic="false"
+          :displayElectric="true"
+          :displayGaussian="true"
+          @mouseenter="handleMouseEnter(particle.coord)"
+        />
+      </g>
+
+      <!-- FATE -->
+      <template v-for="fate in fateCircles" :key="fate.coord">
+        <circle
+          v-for="key in fate.keys"
+          :key="key"
+          class="fate"
+          :cx="fate.pos.x"
+          :cy="fate.pos.y"
+          :style="{ transformOrigin: `${fate.pos.x}px ${fate.pos.y}px` }"
+          r="30"
+        />
+      </template>
 
       <!-- CELLS -->
       <AppCell
@@ -90,6 +97,7 @@ import { useDOMNodeSize } from '@/mixins/event'
 import { iFilterMap, iMap } from '@/itertools'
 import { hintsController, BoardInteraction } from '@/engine/controller'
 import { InterpolatedParticle } from '@/engine/interpolation'
+import { range } from 'lodash'
 
 export default defineComponent({
   name: 'Board',
@@ -104,10 +112,13 @@ export default defineComponent({
   },
   props: {
     board: { type: Object as PropType<Board>, required: true },
+    laserOpacity: { type: Number, default: 1 },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
+    laserBlur: { type: Boolean, default: false },
+    alwaysShowLaser: { type: Boolean, default: true },
     particles: { type: Array as PropType<InterpolatedParticle[]>, required: true },
     absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
-    fate: { type: Object as PropType<Coord>, required: false },
+    histogram: { type: Map as PropType<Map<Coord, number>>, required: false },
     highlightEmpty: { type: Boolean, default: false },
     playing: { type: Boolean, default: false },
   },
@@ -127,6 +138,17 @@ export default defineComponent({
 
     const hintsCtl = hintsController({
       board: () => props.board ?? null,
+    })
+
+    const fateCircles = computed(() => {
+      if (props.histogram == null || props.histogram.size === 0) return []
+
+      const circles: { coord: Coord; pos: Vec2; keys: number[] }[] = []
+      for (const [coord, num] of props.histogram) {
+        let pos = coord.gridCenter()
+        circles.push({ coord, pos, keys: range(Math.max(0, num - 5), num) })
+      }
+      return circles
     })
 
     // trigger laser hint on play
@@ -202,10 +224,10 @@ export default defineComponent({
       boardScaler,
       totalWidth: computed(() => props.board.width * tileSize),
       totalHeight: computed(() => props.board.height * tileSize),
-      fatePos: computed(() => props.fate?.gridCenter(tileSize)),
       handleBoardRelease,
       cells,
       empties,
+      fateCircles,
       handleMouseEnter(coord: Coord): void {
         const piece = props.board.pieces.get(coord)
         const particles = props.particles.filter(
@@ -249,10 +271,6 @@ export default defineComponent({
   }
 }
 
-.fate {
-  opacity: 0;
-}
-
 .empty {
   fill: white;
   opacity: 0;
@@ -264,18 +282,20 @@ export default defineComponent({
   opacity: 0.1;
 }
 
-.fate-blink-enter-active {
-  animation: fate-blink-in 1.5s;
+.fate {
+  // opacity: 0;
+  fill: $orange;
+  animation: fate-blink-in 0.1s ease-out forwards;
 }
 
 @keyframes fate-blink-in {
   0% {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(0.5);
   }
   100% {
     opacity: 0;
-    transform: scale(3);
+    transform: scale(2);
   }
 }
 </style>

@@ -1,57 +1,65 @@
 <template>
-  <div class="controls">
+  <div class="controls" layout="row">
     <!-- SIMULATION CONTROLS -->
-    <span class="playback">
-      <!-- <button type="button" :style="styles.rewind" @click="$emit('rewind')" /> -->
+    <span class="playback" layout="row">
+      <!-- <button type="button" :class="classes.rewind" @click="$emit('rewind')" /> -->
       <button
         type="button"
-        :style="styles.back"
+        :class="classes.back"
         @click="playhead.stepBack()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: one step back.' })"
       />
       <button
-        id="play"
+        class="play"
         type="button"
-        :style="styles.play"
+        :class="classes.play"
         @click="playhead.toggle()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Run the simulation.' })"
       />
       <button
         type="button"
-        :style="styles.forward"
+        :class="classes.forward"
         @click="playhead.stepForward()"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Simulation: the next step.' })"
       />
-      <!-- <button type="button" :style="styles.fastForward" @click="$emit('fast-forward')" /> -->
+      <!-- <button type="button" :class="classes.fastForward" @click="$emit('fast-forward')" /> -->
     </span>
     <!-- FRAME INFO -->
-    <span class="frameInfo">
+    <span class="frameInfo" layout="column u2 center" flex>
+      <div layout="row u2">
+        <button :class="classes.laser" @click="playhead.rewind()" />
+        <button :class="classes.wave" @click="playhead.seek(1)" />
+        <button
+          :class="{ ...classes.experiment, blink: !classes.experiment.active && promptExperiment }"
+          @click="playhead.play(true, true)"
+        />
+      </div>
       <span class="gameState">{{ displayStatus }}</span>
     </span>
     <!-- LEVEL CONTROLS -->
     <span class="view-mode">
       <button
         type="button"
-        :style="styles.reload"
+        :class="classes.reload"
         @click="$emit('reload')"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Reset the level.' })"
       />
       <button
         type="button"
-        :style="styles.sound"
+        :class="classes.sound"
         @click="toggleSound(), showSoundHint()"
         @mouseenter="showSoundHint"
       />
       <button
         type="button"
-        :style="styles.download"
+        :class="classes.download"
         @click="$emit('download')"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Download level as a JSON file.' })"
       />
 
       <label
         for="fileUpload"
-        :style="styles.upload"
+        :class="classes.upload"
         class="upload"
         @mouseenter="$emit('hover', { kind: 'ui', text: 'Load level from a JSON file.' })"
       >
@@ -60,7 +68,7 @@
 
       <button
         type="button"
-        :style="styles.save"
+        :class="classes.save"
         @click="$emit('save')"
         @mouseenter="showSaveHint()"
       />
@@ -69,37 +77,18 @@
 </template>
 
 <script lang="ts">
-import { IStyle } from '@/types'
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { storeNamespace } from '@/store'
 import { computed, defineComponent, PropType, proxyRefs } from 'vue'
-import { PlayheadController } from '@/engine/controller'
+import { PlayheadController, SimulationVisType } from '@/engine/controller'
 
 const user = storeNamespace('user')
 const options = storeNamespace('options')
 
-const icons = {
-  pause: require(`@/assets/graphics/icons/pause.svg`),
-  play: require(`@/assets/graphics/icons/play.svg`),
-  reload: require(`@/assets/graphics/icons/reload.svg`),
-  rewind: require(`@/assets/graphics/icons/rewind.svg`),
-  origStepBack: require(`@/assets/graphics/icons/orig_step_back.svg`),
-  origStepForward: require(`@/assets/graphics/icons/orig_step_forward.svg`),
-  fastForward: require(`@/assets/graphics/icons/fast_forward.svg`),
-  soundOff: require(`@/assets/graphics/icons/sound_off.svg`),
-  soundOn: require(`@/assets/graphics/icons/sound_on.svg`),
-  download: require(`@/assets/graphics/icons/download.svg`),
-  upload: require(`@/assets/graphics/icons/upload.svg`),
-  save: require(`@/assets/graphics/icons/save.svg`),
-  account: require(`@/assets/graphics/icons/account.svg`),
-  accountRegister: require(`@/assets/graphics/icons/account_register.svg`),
-  options: require(`@/assets/graphics/icons/options.svg`),
-  map: require(`@/assets/graphics/icons/map.svg`),
-}
-
 export default defineComponent({
   props: {
     playhead: { type: Object as PropType<PlayheadController>, required: true },
+    promptExperiment: { type: Boolean, default: false },
   },
   emits: {
     hover: validateInfoPayload,
@@ -114,45 +103,51 @@ export default defineComponent({
     const isLoggedIn = user.useGetter('isLoggedIn')
 
     const displayStatus = computed(() => {
-      if (props.playhead.isPlaying) {
-        // (each time a random outcome)
-        return 'Quantum simulation (live)'
-      } else if (props.playhead.frameIndex > 0) {
-        return 'Quantum simulation (step-by-step)'
-      } else {
-        // (still with polarization & interference)
-        return 'Classical laser beam'
+      switch (props.playhead.visType) {
+        case SimulationVisType.Laser:
+          return 'Classical laser beam'
+        case SimulationVisType.QuantumWave:
+          return 'Quantum simulation'
+        case SimulationVisType.Stochastic:
+          return 'Running experiment'
       }
     })
 
-    function iconStyle(icon: keyof typeof icons, active: boolean): IStyle {
+    function iconClass(icon: string, active: boolean): Record<string, boolean> {
       return {
-        backgroundImage: `url(${icons[icon]})`,
-        opacity: `${active ? 1 : 0.16}`,
+        [`i-${icon}`]: true,
+        active,
       }
     }
 
-    const styles = proxyRefs({
+    const classes = proxyRefs({
       rewind: computed(() =>
-        iconStyle('rewind', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
+        iconClass('rewind', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
       ),
       back: computed(() =>
-        iconStyle('origStepBack', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
+        iconClass('origStepBack', !props.playhead.isPlaying && !props.playhead.isFirstFrame)
       ),
-      play: computed(() => iconStyle(props.playhead.isPlaying ? 'pause' : 'play', true)),
+      play: computed(() => iconClass(props.playhead.isPlaying ? 'pause' : 'play', true)),
       forward: computed(() =>
-        iconStyle('origStepForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
+        iconClass('origStepForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
       ),
       fastForward: computed(() =>
-        iconStyle('fastForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
+        iconClass('fastForward', !props.playhead.isPlaying && !props.playhead.isLastFrame)
       ),
-      reload: computed(() => iconStyle('reload', !props.playhead.isPlaying)),
+      reload: computed(() => iconClass('reload', !props.playhead.isPlaying)),
       sound: computed(() =>
-        iconStyle(soundActive.value ? 'soundOff' : 'soundOn', !props.playhead.isPlaying)
+        iconClass(soundActive.value ? 'soundOff' : 'soundOn', !props.playhead.isPlaying)
       ),
-      download: computed(() => iconStyle('download', !props.playhead.isPlaying)),
-      upload: computed(() => iconStyle('upload', !props.playhead.isPlaying)),
-      save: computed(() => iconStyle('save', isLoggedIn.value && !props.playhead.isPlaying)),
+      download: computed(() => iconClass('download', !props.playhead.isPlaying)),
+      upload: computed(() => iconClass('upload', !props.playhead.isPlaying)),
+      save: computed(() => iconClass('save', isLoggedIn.value && !props.playhead.isPlaying)),
+      wave: computed(() =>
+        iconClass('wave', props.playhead.visType === SimulationVisType.QuantumWave)
+      ),
+      laser: computed(() => iconClass('laser', props.playhead.visType === SimulationVisType.Laser)),
+      experiment: computed(() =>
+        iconClass('experiment', props.playhead.visType === SimulationVisType.Stochastic)
+      ),
     })
 
     function showSoundHint() {
@@ -170,7 +165,7 @@ export default defineComponent({
     }
 
     return {
-      styles,
+      classes,
       displayStatus,
       toggleSound,
       showSoundHint,
@@ -181,16 +176,83 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-button {
+@mixin define-icon($class, $filename) {
+  .i-#{$class} {
+    background-image: url(~@/assets/graphics/icons/#{$filename}.svg);
+  }
+}
+
+@include define-icon(pause, pause);
+@include define-icon(play, play);
+@include define-icon(reload, reload);
+@include define-icon(rewind, rewind);
+@include define-icon(origStepBack, orig_step_back);
+@include define-icon(origStepForward, orig_step_forward);
+@include define-icon(fastForward, fast_forward);
+@include define-icon(soundOff, sound_off);
+@include define-icon(soundOn, sound_on);
+@include define-icon(download, download);
+@include define-icon(upload, upload);
+@include define-icon(save, save);
+@include define-icon(account, account);
+@include define-icon(accountRegister, account_register);
+@include define-icon(options, options);
+@include define-icon(map, map);
+@include define-icon(wave, icon_wave);
+@include define-icon(laser, icon_laser);
+@include define-icon(experiment, icon_experiment);
+
+button,
+label {
   cursor: pointer;
   height: 20px;
   width: 20px;
   margin: 0.2rem 0.4rem;
+  background-size: cover;
   background-color: transparent;
   border: none;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-out;
+  opacity: 0.16;
+
+  &.active {
+    opacity: 1;
+  }
 }
-#play {
+
+.frameInfo button {
+  width: 49px;
+  height: 29px;
+  background-color: mix($fuchsia, black);
+  border-radius: 2px;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
+  transition: all 0.1s ease-out;
+  opacity: 0.5;
+
+  &:hover {
+    background-color: mix($orange, black);
+  }
+
+  &.blink {
+    opacity: 0.75;
+    animation: button-blink 0.5s ease-in-out alternate infinite;
+  }
+
+  &.active {
+    opacity: 1;
+    background-color: $fuchsia;
+  }
+}
+
+@keyframes button-blink {
+  30% {
+    background-color: mix($fuchsia, black);
+  }
+  100% {
+    background-color: mix($orange, black, 80%);
+  }
+}
+
+.play {
   height: 30px;
   width: 30px;
   margin: 0 0.2rem;
@@ -222,7 +284,6 @@ input[type='file'] {
 }
 .controls {
   width: 100%;
-  display: flex;
   padding-top: 1rem;
   padding-bottom: 1rem;
   justify-content: space-between;

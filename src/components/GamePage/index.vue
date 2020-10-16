@@ -46,9 +46,12 @@
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :board="gameCtl.level.board"
+            :histogram="histogram"
             :laserParticles="laserParticles"
+            :laserOpacity="laserOpacity"
+            :laserBlur="laserBlur"
             :particles="activeParticles"
-            :absorptions="gameCtl.sim.absorptions"
+            :absorptions="absorptions"
             :highlightEmpty="grabCtl.grabState != null"
             :playing="playheadCtl.isPlaying"
             @touch="handleTouch"
@@ -59,6 +62,7 @@
           />
           <GameControls
             :playhead="playheadCtl"
+            :promptExperiment="isVictory"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -120,10 +124,12 @@ import {
   GrabState,
   grabController,
   goalsController,
+  SimulationVisType,
 } from '@/engine/controller'
 import { isInteger } from '@/types'
 import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
 import { storeNamespace } from '@/store'
+import { iMap, mapEntries } from '@/itertools'
 
 export default defineComponent({
   name: 'GamePage',
@@ -155,8 +161,13 @@ export default defineComponent({
 
     const gameCtl = gameController()
 
+    const totalAbsorptions = computed(() => {
+      let absorptions = gameCtl.sim?.upToFrameAbsorptions ?? []
+      return absorptions[absorptions.length - 1] ?? new Map()
+    })
+
     const goalsCtl = goalsController({
-      absorptions: () => gameCtl.sim?.absorptions ?? null,
+      absorptions: () => totalAbsorptions.value,
       level: () => gameCtl.level ?? null,
     })
 
@@ -166,10 +177,113 @@ export default defineComponent({
     })
     useWindowEvent('mouseup', () => grabCtl.putBack())
 
+    const possibleOutcomes = computed(() => {
+      const frames = gameCtl.sim?.frames ?? []
+      let probabilityDensity = 0
+
+      const outcomes = frames.flatMap((f, frame) =>
+        Array.from(
+          iMap(f.absorptions, ([coord, probability]) => {
+            probabilityDensity += probability
+            return {
+              coord,
+              frame,
+              pdf: probabilityDensity,
+            }
+          })
+        )
+      )
+      // normalize pdf
+      outcomes.forEach((o) => (o.pdf /= probabilityDensity))
+      return outcomes
+    })
+
+    function sampleOutcome() {
+      const outcomes = possibleOutcomes.value
+      const choice = Math.random()
+
+      // binary search through probability density
+      let start = 0
+      let end = outcomes.length - 1
+      let repetitions = 0
+      while (start < end) {
+        let i = (start + end) >> 1
+        let pdf = outcomes[i].pdf
+        if (pdf < choice) start = i + 1
+        else end = i
+
+        if (repetitions++ > 100) {
+          console.error('infinite looping in probability density sampling')
+          return null
+        }
+      }
+      return outcomes[start] ?? null
+    }
+
+    const histogram = ref(new Map<Coord, number>())
+    const totalSamples = ref(0)
+
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: true,
+      pickOutcome: sampleOutcome,
+      onExperimentOutcome: (outcome) => {
+        if (outcome != null) {
+          const h = histogram.value
+          const coord = outcome.coord
+          h.set(coord, (h.get(coord) ?? 0) + 1)
+          totalSamples.value += 1
+        }
+      },
+      onExperimentStart: () => {
+        histogram.value.clear()
+        totalSamples.value = 0
+      },
     })
+
+    const experimentFadeProgress = computed(() =>
+      Math.max(0, Math.min(1, (totalSamples.value - 5) * 0.01))
+    )
+
+    const laserOpacity = computed(() => {
+      switch (playheadCtl.visType) {
+        case SimulationVisType.Laser:
+          return 1
+        case SimulationVisType.QuantumWave:
+          return 0
+        case SimulationVisType.Stochastic:
+          return experimentFadeProgress.value
+      }
+    })
+
+    const laserBlur = computed(() => {
+      return playheadCtl.visType === SimulationVisType.Stochastic
+    })
+
+    const stochasticAbsorptions = computed(() => {
+      const total = totalSamples.value
+      const trueAbsorptions = totalAbsorptions.value
+      const fade = experimentFadeProgress.value
+      const negFade = 1 - fade
+      return mapEntries(histogram.value, ([coord, samples]) => {
+        const sampled = samples / total
+        const ideal = trueAbsorptions.get(coord) ?? 0
+        return [coord, sampled * negFade + ideal * fade]
+      })
+    })
+
+    const absorptions = computed(
+      (): Map<Coord, number> => {
+        switch (playheadCtl.visType) {
+          case SimulationVisType.Laser:
+            return totalAbsorptions.value
+          case SimulationVisType.QuantumWave:
+            return gameCtl.sim?.upToFrameAbsorptions[playheadCtl.frameIndex] ?? new Map()
+          case SimulationVisType.Stochastic:
+            return stochasticAbsorptions.value
+        }
+      }
+    )
 
     function grabbedPiece(state: GrabState): Piece {
       switch (state.source) {
@@ -195,11 +309,15 @@ export default defineComponent({
       }
     })
 
+    useWindowEvent('keyup', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault()
+        playheadCtl.toggle()
+      }
+    })
+
     useWindowEvent('keydown', (e) => {
       switch (e.key) {
-        case ' ':
-          e.preventDefault()
-          return playheadCtl.toggle()
         case 'ArrowLeft':
           return playheadCtl.stepBack()
         case 'ArrowRight':
@@ -232,17 +350,12 @@ export default defineComponent({
       }
     })
 
-    watch(
-      levelData,
-      (data) => {
-        gameCtl.importLevel(data)
-      },
-      { immediate: true }
-    )
-
     function reload() {
+      grabCtl.putBack()
       gameCtl.importLevel(levelData.value)
     }
+
+    watch(levelData, reload, { immediate: true })
 
     /**
      * Retrieve all particles for laser paths
@@ -276,7 +389,11 @@ export default defineComponent({
     })
 
     const overlayGameState = computed(() => {
-      if (!alreadyWon.flag && playheadCtl.isLastFrame && routeLevelId.value != null) {
+      if (
+        !alreadyWon.flag &&
+        playheadCtl.visType === SimulationVisType.Stochastic &&
+        experimentFadeProgress.value === 1
+      ) {
         switch (goalsCtl.gameOutcome) {
           case GameOutcome.Victory:
             return 'Victory'
@@ -286,6 +403,8 @@ export default defineComponent({
       }
       return null
     })
+
+    const isVictory = computed(() => goalsCtl.gameOutcome === GameOutcome.Victory)
 
     /**
      * Should an overlay be shown when progressing
@@ -327,6 +446,7 @@ export default defineComponent({
       reader.onload = (): void => {
         if (reader.result !== undefined && reader.result !== null) {
           const result: string = reader.result.toString()
+          grabCtl.putBack()
           gameCtl.importLevel(JSON.parse(result))
         }
       }
@@ -347,6 +467,7 @@ export default defineComponent({
       grabCtl,
       goalsCtl,
       playheadCtl,
+      histogram,
       dragState,
       previousLevel,
       nextLevel,
@@ -359,10 +480,14 @@ export default defineComponent({
       overlayGameState,
       activeParticles,
       laserParticles,
+      laserOpacity,
+      laserBlur,
       infoPayload,
       loadJsonLevelFromFile,
       handleTouch,
       scaledTileSize,
+      absorptions,
+      isVictory,
     }
   },
 })

@@ -159,6 +159,9 @@ export function interpolateParticle(
   return particles
 }
 
+const spread = 1.2
+const clipSelf = `M${-spread} ${-spread} ${-spread} ${+spread} ${+spread} ${+spread} ${+spread} ${-spread}`
+
 /**
  * Generate half-plane clip path, visible area in the provided rotation direction.
  * Path is in the photon inner svg space.
@@ -206,6 +209,6 @@ export function clipPlanePath(clips: ClipPlane[], offset: { x: number; y: number
           return `M${x1} ${y1} ${x2} ${y2} ${x3} ${y3} ${x4} ${y4} ${x5} ${y5}`
         }
       })
-      .join(' ') + `M${-1.2} ${-1.2} ${-1.2} ${+1.2} ${+1.2} ${+1.2} ${+1.2} ${-1.2}`
+      .join(' ') + clipSelf
   )
 }

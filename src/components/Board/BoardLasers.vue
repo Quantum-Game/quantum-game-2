@@ -1,6 +1,12 @@
 <template>
-  <g>
-    <path v-for="[opacity, d] in paths" :key="opacity" class="laser" :d="d" :style="{ opacity }" />
+  <g :key="blur" :class="{ laserBlur: blur }">
+    <path
+      v-for="[probability, d] in paths"
+      :key="probability"
+      class="laser"
+      :d="d"
+      :style="{ opacity: probability * opacity }"
+    />
   </g>
 </template>
 
@@ -12,12 +18,12 @@ import { computed, defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   props: {
-    laserParticles: { type: Array as PropType<Particle[]>, default: [] },
+    opacity: { type: Number, default: 1 },
+    particles: { type: Array as PropType<Particle[]>, default: [] },
+    blur: { type: Boolean, default: false },
   },
   setup(props) {
-    const particlesByProbability = computed(() =>
-      groupBy(props.laserParticles, particleProbability)
-    )
+    const particlesByProbability = computed(() => groupBy(props.particles, particleProbability))
     const paths = computed(() =>
       Array.from(
         iFilterMap(Object.entries(particlesByProbability.value), ([prob, ps]) =>
@@ -56,10 +62,18 @@ $red: #ff0055;
   stroke-width: 4; // Use particle.probability * x for scaling
   stroke-dasharray: 4 12;
   animation: dash 3s linear 0s infinite reverse forwards;
+  transition: opacity 0.1s ease-out;
 }
 @keyframes dash {
   to {
     stroke-dashoffset: 64;
   }
+}
+
+.laserBlur .laser {
+  transition: opacity 0.5s ease-out;
+  animation: none;
+  stroke-dasharray: initial;
+  stroke-width: 20;
 }
 </style>
