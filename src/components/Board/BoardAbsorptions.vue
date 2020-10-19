@@ -12,32 +12,30 @@
   </text>
   <!-- GOALS -->
   <g v-for="[coord, { threshold, value }] in goalPercents" :key="`goal-${coord.x}-${coord.y}`">
-    <rect fill="#4F2F7B" :x="coord.x * 64 + 2" :y="coord.y * 64 - 8" :width="64 - 4" height="5" />
-    <rect
-      fill="url(#progress-gradient)"
-      :x="coord.x * 64 + 2"
-      :y="coord.y * 64 - 8"
-      :width="(64 - 4) * value"
-      height="5"
-      class="progress-bar"
-    />
-
-    <rect
-      stroke="white"
-      :x="coord.x * 64 + 2 + (64 - 4) * threshold"
-      :y="coord.y * 64 - 9"
-      :width="0.01"
-      height="7"
-    />
-    <text
-      :x="(coord.x + 0.5) * 64"
-      :y="coord.y * 64 - 12"
-      text-anchor="middle"
-      class="goal-probability"
-      :class="{ 'goal-met': value >= threshold }"
-    >
-      {{ (value * 100).toFixed(1) }}%
-    </text>
+    <template v-if="$flags.circleAbsorptions">
+      <AbsorptionCircle :coord="coord" :threshold="threshold" :value="value" />
+      <text
+        :x="(coord.x + 0.5) * 64"
+        :y="coord.y * 64 - 2"
+        text-anchor="middle"
+        class="goal-probability"
+        :class="{ 'goal-met': value >= threshold }"
+      >
+        {{ (value * 100).toFixed(1) }}%
+      </text>
+    </template>
+    <template v-else>
+      <AbsorptionBar :coord="coord" :threshold="threshold" :value="value" />
+      <text
+        :x="(coord.x + 0.5) * 64"
+        :y="coord.y * 64 - 12"
+        text-anchor="middle"
+        class="goal-probability"
+        :class="{ 'goal-met': value >= threshold }"
+      >
+        {{ (value * 100).toFixed(1) }}%
+      </text>
+    </template>
   </g>
 </template>
 
@@ -45,8 +43,13 @@
 import { Coord } from '@/engine/model'
 import { iFilter, mapEntries } from '@/itertools'
 import { computed, defineComponent, PropType } from 'vue'
-
+import AbsorptionCircle from './AbsorptionCircle.vue'
+import AbsorptionBar from './AbsorptionBar.vue'
 export default defineComponent({
+  components: {
+    AbsorptionCircle,
+    AbsorptionBar,
+  },
   props: {
     absorptions: { type: Map as PropType<Map<Coord, number>>, required: true },
     goals: { type: Map as PropType<Map<Coord, number>>, required: true },
