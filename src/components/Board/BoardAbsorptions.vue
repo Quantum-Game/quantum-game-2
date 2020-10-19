@@ -92,13 +92,16 @@ export default defineComponent({
 }
 
 .goal-probability {
+  font-weight: bold;
   fill: mix($fuchsia, $purple, 70%);
   font-size: 0.8rem;
   transition: font-size 0.3s, text-shadow 0.3s, fill 0.3s;
+  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark;
 }
 
 .goal-met {
   fill: $fuchsia;
-  text-shadow: 0 0 5px mix($fuchsia, $purple);
+  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark,
+    0 0 5px mix($fuchsia, $purple-dark), 0 0 1px $fuchsia;
 }
 </style>

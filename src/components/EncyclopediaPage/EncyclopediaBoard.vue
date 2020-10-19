@@ -49,7 +49,6 @@ export default defineComponent({
 
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
-      rewindOnUpdate: false,
     })
     playheadCtl.seek(props.defaultStep ?? 0)
 

@@ -1,4 +1,4 @@
-import { onUnmounted } from 'vue'
+import { onUnmounted, Ref, watchEffect } from 'vue'
 
 interface Timer {
   /**
@@ -43,4 +43,24 @@ export function useTimer(handler?: () => void): Timer {
       if (interval != null) window.clearInterval(interval)
     },
   }
+}
+
+/**
+ * Wait for observable condition.
+ *
+ * @param condition the condition to wait for. Promise resolves when this becomes true
+ * @param until the condition to stop waiting. Promise rejects when this becomes true
+ */
+export function waitFor(condition: () => boolean, until?: () => boolean): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const unwatch = watchEffect(() => {
+      if (condition()) {
+        unwatch()
+        resolve()
+      } else if (until?.() ?? false) {
+        unwatch()
+        reject()
+      }
+    })
+  })
 }

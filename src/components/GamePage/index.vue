@@ -184,8 +184,15 @@ export default defineComponent({
 
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
-      rewindOnUpdate: true,
     })
+
+    watch(
+      () => gameCtl.sim?.frames,
+      () => {
+        experimentCtl.stop()
+        playheadCtl.rewind(false)
+      }
+    )
 
     const experimentCtl = experimentController({
       playhead: playheadCtl,
@@ -266,18 +273,22 @@ export default defineComponent({
       }
     })
 
-    function globalToggle() {
+    function globalToggle(shift: boolean) {
       if (experimentCtl.isRunning) {
         experimentCtl.stop()
       } else {
-        playheadCtl.toggle()
+        if (shift && !playheadCtl.isPlaying) {
+          experimentCtl.play()
+        } else {
+          playheadCtl.toggle()
+        }
       }
     }
 
     useWindowEvent('keyup', (e) => {
       if (e.key === ' ') {
         e.preventDefault()
-        globalToggle()
+        globalToggle(e.shiftKey)
       }
     })
 

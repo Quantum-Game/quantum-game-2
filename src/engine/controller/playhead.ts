@@ -1,4 +1,4 @@
-import { useRaf } from '@/mixins'
+import { useRaf, waitFor } from '@/mixins'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
 import { InterpolatedParticle, interpolateParticle } from '../interpolation'
@@ -6,10 +6,7 @@ import { Frame, Particle } from '../model'
 
 const storeOptions = storeNamespace('options')
 
-export function playheadController(options: {
-  rewindOnUpdate: boolean
-  frames: () => Frame[]
-}): PlayheadController {
+export function playheadController(options: { frames: () => Frame[] }): PlayheadController {
   const frameInterval = storeOptions.useGetter('gameSpeedInterval')
   const targetFrameIndex = ref(0)
   const isPlaying = ref(false)
@@ -54,24 +51,19 @@ export function playheadController(options: {
       targetFrameIndex.value = Math.floor(t)
 
       if (particlesTime.value >= expectedLastFrame.value) {
-        isPlaying.value = false
-        onStopped?.(true)
+        doStop()
       }
     } else {
       lastTime = null
       const f = 0.4
       const dx = targetFrameIndex.value - particlesTime.value
-      if (Math.abs(dx) < 0.001) {
+      if (Math.abs(dx) < 0.01) {
         particlesTime.value = targetFrameIndex.value
       } else {
         particlesTime.value += Math.max(f * dx)
       }
     }
   })
-
-  if (options.rewindOnUpdate) {
-    watch(frames, () => rewind(false))
-  }
 
   const baseId = computed((): number => {
     const framesArray = frames.value
@@ -122,8 +114,7 @@ export function playheadController(options: {
   function stepForward() {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.ceil(particlesTime.value)
-      isPlaying.value = false
-      onStopped?.(false)
+      doStop()
     } else {
       if (frameIndex.value < totalFrames.value - 1) {
         targetFrameIndex.value += 1
@@ -134,8 +125,7 @@ export function playheadController(options: {
   function stepBack() {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.floor(particlesTime.value)
-      isPlaying.value = false
-      onStopped?.(false)
+      doStop()
     } else {
       if (frameIndex.value > 0) {
         targetFrameIndex.value -= 1
@@ -143,26 +133,35 @@ export function playheadController(options: {
     }
   }
 
-  function fastForward(): void {
-    targetFrameIndex.value = Math.max(0, totalFrames.value - 1)
+  function doStop(): boolean {
     if (isPlaying.value) {
       isPlaying.value = false
-      onStopped?.(true)
+      onStopped?.(particlesTime.value >= expectedLastFrame.value)
+      return true
     }
+    return false
+  }
+
+  function fastForward(): void {
+    targetFrameIndex.value = Math.max(0, totalFrames.value - 1)
+    doStop()
   }
 
   function seek(frame: number): void {
     targetFrameIndex.value = Math.max(0, Math.min(frame, totalFrames.value - 1))
   }
 
-  function rewind(instant = false): void {
+  function rewind(instant = false): Promise<void> {
     targetFrameIndex.value = 0
-    if (instant) {
+    doStop()
+    if (instant || particlesTime.value === 0) {
       particlesTime.value = 0
-    }
-    if (isPlaying.value) {
-      isPlaying.value = false
-      onStopped?.(false)
+      return Promise.resolve()
+    } else {
+      return waitFor(
+        () => particlesTime.value === 0,
+        () => isPlaying.value
+      )
     }
   }
 
@@ -171,6 +170,10 @@ export function playheadController(options: {
     onStopped?: (completed: boolean) => void
     interval?: number
   }) {
+    if (particlesTime.value >= expectedLastFrame.value) {
+      rewind(true)
+    }
+
     limitFrames.value = options?.maxFrames ?? null
     onStopped = options?.onStopped ?? null
     overrideInterval.value = options?.interval ?? null
@@ -178,11 +181,8 @@ export function playheadController(options: {
   }
 
   function toggle() {
-    if (!isPlaying.value) {
+    if (!doStop()) {
       play()
-    } else {
-      isPlaying.value = false
-      onStopped?.(false)
     }
   }
 
@@ -218,7 +218,7 @@ export interface PlayheadController {
   stepBack(): void
   fastForward(): void
   seek(frame: number): void
-  rewind(instant?: boolean): void
+  rewind(instant?: boolean): Promise<void>
   play(options?: {
     maxFrames?: number
     onStopped?: (complete: boolean) => void

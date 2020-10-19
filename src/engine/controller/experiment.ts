@@ -1,5 +1,5 @@
 import { iMap } from '@/itertools'
-import { computed, proxyRefs, ref, watch } from 'vue'
+import { computed, proxyRefs, ref } from 'vue'
 import { Coord } from '../model'
 import { PlayheadController } from './playhead'
 
@@ -87,14 +87,16 @@ export function experimentController(options: {
   }
 
   function play() {
+    if (isRunning.value) return
     isRunning.value = true
     histogram.value.clear()
     samples.value = 0
     experimentState.value = null
-    simulateOnce()
+    playhead.rewind(false).then(simulateOnce)
   }
 
   function stop() {
+    if (!isRunning.value) return
     isRunning.value = false
     histogram.value.clear()
     samples.value = 0
