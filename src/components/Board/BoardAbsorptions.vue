@@ -11,7 +11,10 @@
     {{ (probability * 100).toFixed(1) }}%
   </text>
   <!-- GOALS -->
-  <g v-for="[coord, { threshold, value }] in goalPercents" :key="`goal-${coord.x}-${coord.y}`">
+  <g
+    v-for="[coord, { threshold, value, text }] in goalPercents"
+    :key="`goal-${coord.x}-${coord.y}`"
+  >
     <template v-if="$flags.circleAbsorptions">
       <AbsorptionCircle :coord="coord" :threshold="threshold" :value="value" />
       <text
@@ -21,7 +24,7 @@
         class="goal-probability"
         :class="{ 'goal-met': value >= threshold }"
       >
-        {{ (value * 100).toFixed(1) }}%
+        {{ text }}
       </text>
     </template>
     <template v-else>
@@ -33,7 +36,7 @@
         class="goal-probability"
         :class="{ 'goal-met': value >= threshold }"
       >
-        {{ (value * 100).toFixed(1) }}%
+        {{ text }}
       </text>
     </template>
   </g>
@@ -45,6 +48,7 @@ import { iFilter, mapEntries } from '@/itertools'
 import { computed, defineComponent, PropType } from 'vue'
 import AbsorptionCircle from './AbsorptionCircle.vue'
 import AbsorptionBar from './AbsorptionBar.vue'
+import { histogram } from 'd3-array'
 export default defineComponent({
   components: {
     AbsorptionCircle,
@@ -53,6 +57,8 @@ export default defineComponent({
   props: {
     absorptions: { type: Map as PropType<Map<Coord, number>>, required: true },
     goals: { type: Map as PropType<Map<Coord, number>>, required: true },
+    histogram: { type: Map as PropType<Map<Coord, number>>, required: false },
+    useHistogram: { type: Boolean, default: false },
   },
   setup(props) {
     const nonGoalPercents = computed(() => {
@@ -62,10 +68,14 @@ export default defineComponent({
     const goalPercents = computed(() => {
       const goals = props.goals
       const absorptions = props.absorptions
-      return mapEntries(goals, ([coord, threshold]) => [
-        coord,
-        { threshold, value: absorptions.get(coord) ?? 0 },
-      ])
+      const histogram = props.useHistogram ? props.histogram : null
+      return mapEntries(goals, ([coord, threshold]) => {
+        const value = absorptions.get(coord) ?? 0
+        const text =
+          histogram != null ? `${histogram.get(coord) ?? 0}` : `${(value * 100).toFixed(1)}%`
+
+        return [coord, { threshold, value, text }]
+      })
     })
     return {
       nonGoalPercents,
@@ -79,10 +89,6 @@ export default defineComponent({
 .probability {
   fill: $fuchsia;
   font-size: 0.8rem;
-}
-
-.progress-bar {
-  transition: width 0.3s ease-out;
 }
 
 .goal-probability {

@@ -28,10 +28,10 @@
     <span class="frameInfo" layout="column u2 center" flex>
       <div layout="row u2">
         <button :class="classes.laser" @click="playhead.rewind()" />
-        <button :class="classes.wave" @click="playhead.seek(1)" />
+        <button :class="classes.wave" @click="playhead.play()" />
         <button
           :class="{ ...classes.experiment, blink: !classes.experiment.active && promptExperiment }"
-          @click="playhead.play(true, true)"
+          @click="$emit('run-experiment')"
         />
       </div>
       <span class="gameState">{{ displayStatus }}</span>
@@ -89,6 +89,7 @@ export default defineComponent({
   props: {
     playhead: { type: Object as PropType<PlayheadController>, required: true },
     promptExperiment: { type: Boolean, default: false },
+    visType: { type: Number as PropType<SimulationVisType>, required: true },
   },
   emits: {
     hover: validateInfoPayload,
@@ -96,6 +97,7 @@ export default defineComponent({
     upload: (_: Event) => true,
     save: null,
     reload: null,
+    'run-experiment': null,
   },
   setup(props, { emit }) {
     const toggleSound = options.useAction('TOGGLE_SOUND')
@@ -103,12 +105,12 @@ export default defineComponent({
     const isLoggedIn = user.useGetter('isLoggedIn')
 
     const displayStatus = computed(() => {
-      switch (props.playhead.visType) {
+      switch (props.visType) {
         case SimulationVisType.Laser:
           return 'Classical laser beam'
         case SimulationVisType.QuantumWave:
           return 'Quantum simulation'
-        case SimulationVisType.Stochastic:
+        case SimulationVisType.Experiment:
           return 'Running experiment'
       }
     })
@@ -141,12 +143,10 @@ export default defineComponent({
       download: computed(() => iconClass('download', !props.playhead.isPlaying)),
       upload: computed(() => iconClass('upload', !props.playhead.isPlaying)),
       save: computed(() => iconClass('save', isLoggedIn.value && !props.playhead.isPlaying)),
-      wave: computed(() =>
-        iconClass('wave', props.playhead.visType === SimulationVisType.QuantumWave)
-      ),
-      laser: computed(() => iconClass('laser', props.playhead.visType === SimulationVisType.Laser)),
+      wave: computed(() => iconClass('wave', props.visType === SimulationVisType.QuantumWave)),
+      laser: computed(() => iconClass('laser', props.visType === SimulationVisType.Laser)),
       experiment: computed(() =>
-        iconClass('experiment', props.playhead.visType === SimulationVisType.Stochastic)
+        iconClass('experiment', props.visType === SimulationVisType.Experiment)
       ),
     })
 

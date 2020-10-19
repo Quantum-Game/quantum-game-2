@@ -13,11 +13,11 @@
         v-if="laserParticles.length > 0"
         :opacity="laserOpacity"
         :particles="laserParticles"
-        :blur="laserBlur"
+        :blur="experiment"
       />
 
       <!-- PHOTONS -->
-      <g :style="{ opacity: laserBlur ? 1 - laserOpacity : 1 }">
+      <g v-if="photonOpacity > 0" :style="{ opacity: photonOpacity }">
         <AppPhoton
           v-for="(particle, index) in particles"
           :key="index"
@@ -68,7 +68,12 @@
       </template>
 
       <ActionHint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
-      <BoardAbsorptions :absorptions="absorptions" :goals="goals" />
+      <BoardAbsorptions
+        :absorptions="absorptions"
+        :goals="goals"
+        :histogram="histogram"
+        :useHistogram="experiment"
+      />
     </svg>
 
     <!-- SPEECH BUBBLES -->
@@ -114,7 +119,7 @@ export default defineComponent({
     board: { type: Object as PropType<Board>, required: true },
     laserOpacity: { type: Number, default: 1 },
     laserParticles: { type: Array as PropType<Particle[]>, default: [] },
-    laserBlur: { type: Boolean, default: false },
+    experiment: { type: Boolean, default: false },
     alwaysShowLaser: { type: Boolean, default: true },
     particles: { type: Array as PropType<InterpolatedParticle[]>, required: true },
     absorptions: { type: Map as PropType<Map<Coord, number>>, default: [] },
@@ -216,6 +221,10 @@ export default defineComponent({
       )
     })
 
+    const photonOpacity = computed(() => {
+      return props.experiment ? 1 - props.laserOpacity : 1
+    })
+
     return {
       hintsCtl,
       goals,
@@ -228,6 +237,7 @@ export default defineComponent({
       cells,
       empties,
       fateCircles,
+      photonOpacity,
       handleMouseEnter(coord: Coord): void {
         const piece = props.board.pieces.get(coord)
         const particles = props.particles.filter(

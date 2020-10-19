@@ -46,10 +46,10 @@
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :board="gameCtl.level.board"
-            :histogram="histogram"
+            :histogram="experimentCtl.histogram"
             :laserParticles="laserParticles"
             :laserOpacity="laserOpacity"
-            :laserBlur="laserBlur"
+            :experiment="experiment"
             :particles="activeParticles"
             :absorptions="absorptions"
             :highlightEmpty="grabCtl.grabState != null"
@@ -63,6 +63,8 @@
           <GameControls
             :playhead="playheadCtl"
             :promptExperiment="isVictory"
+            :visType="visType"
+            @run-experiment="experimentCtl.play()"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -73,15 +75,17 @@
       </template>
 
       <template #right>
-        <section>
-          <div class="ket-viewer-game">
-            <KetViewer
-              v-if="playheadCtl.activeFrame"
-              class="ket"
-              :vector="playheadCtl.activeFrame.vector"
-            />
-          </div>
-        </section>
+        <transition name="fade">
+          <section v-if="!experiment">
+            <div class="ket-viewer-game">
+              <KetViewer
+                v-if="playheadCtl.activeFrame"
+                class="ket"
+                :vector="playheadCtl.activeFrame.vector"
+              />
+            </div>
+          </section>
+        </transition>
       </template>
     </AppLayout>
 
@@ -125,11 +129,12 @@ import {
   grabController,
   goalsController,
   SimulationVisType,
+  experimentController,
 } from '@/engine/controller'
 import { isInteger } from '@/types'
 import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
 import { storeNamespace } from '@/store'
-import { iMap, mapEntries } from '@/itertools'
+import { mapEntries } from '@/itertools'
 
 export default defineComponent({
   name: 'GamePage',
@@ -177,109 +182,61 @@ export default defineComponent({
     })
     useWindowEvent('mouseup', () => grabCtl.putBack())
 
-    const possibleOutcomes = computed(() => {
-      const frames = gameCtl.sim?.frames ?? []
-      let probabilityDensity = 0
-
-      const outcomes = frames.flatMap((f, frame) =>
-        Array.from(
-          iMap(f.absorptions, ([coord, probability]) => {
-            probabilityDensity += probability
-            return {
-              coord,
-              frame,
-              pdf: probabilityDensity,
-            }
-          })
-        )
-      )
-      // normalize pdf
-      outcomes.forEach((o) => (o.pdf /= probabilityDensity))
-      return outcomes
-    })
-
-    function sampleOutcome() {
-      const outcomes = possibleOutcomes.value
-      const choice = Math.random()
-
-      // binary search through probability density
-      let start = 0
-      let end = outcomes.length - 1
-      let repetitions = 0
-      while (start < end) {
-        let i = (start + end) >> 1
-        let pdf = outcomes[i].pdf
-        if (pdf < choice) start = i + 1
-        else end = i
-
-        if (repetitions++ > 100) {
-          console.error('infinite looping in probability density sampling')
-          return null
-        }
-      }
-      return outcomes[start] ?? null
-    }
-
-    const histogram = ref(new Map<Coord, number>())
-    const totalSamples = ref(0)
-
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
       rewindOnUpdate: true,
-      pickOutcome: sampleOutcome,
-      onExperimentOutcome: (outcome) => {
-        if (outcome != null) {
-          const h = histogram.value
-          const coord = outcome.coord
-          h.set(coord, (h.get(coord) ?? 0) + 1)
-          totalSamples.value += 1
-        }
-      },
-      onExperimentStart: () => {
-        histogram.value.clear()
-        totalSamples.value = 0
-      },
+    })
+
+    const experimentCtl = experimentController({
+      playhead: playheadCtl,
     })
 
     const experimentFadeProgress = computed(() =>
-      Math.max(0, Math.min(1, (totalSamples.value - 5) * 0.01))
+      Math.max(0, Math.min(1, (experimentCtl.samples - 5) * 0.2))
     )
 
+    const visType = computed(() => {
+      if (experimentCtl.isRunning) return SimulationVisType.Experiment
+      if (!playheadCtl.isPlaying && playheadCtl.isFirstFrame) return SimulationVisType.Laser
+      return SimulationVisType.QuantumWave
+    })
+
     const laserOpacity = computed(() => {
-      switch (playheadCtl.visType) {
+      switch (visType.value) {
         case SimulationVisType.Laser:
           return 1
         case SimulationVisType.QuantumWave:
           return 0
-        case SimulationVisType.Stochastic:
+        case SimulationVisType.Experiment:
           return experimentFadeProgress.value
       }
     })
 
-    const laserBlur = computed(() => {
-      return playheadCtl.visType === SimulationVisType.Stochastic
+    const experiment = computed(() => {
+      return visType.value === SimulationVisType.Experiment
     })
 
     const stochasticAbsorptions = computed(() => {
-      const total = totalSamples.value
-      const trueAbsorptions = totalAbsorptions.value
-      const fade = experimentFadeProgress.value
-      const negFade = 1 - fade
-      return mapEntries(histogram.value, ([coord, samples]) => {
+      const total = experimentCtl.samples
+      // const trueAbsorptions = totalAbsorptions.value
+      // const fade = experimentFadeProgress.value
+      // const negFade = 1 - fade
+      return mapEntries(experimentCtl.histogram, ([coord, samples]) => {
         const sampled = samples / total
-        const ideal = trueAbsorptions.get(coord) ?? 0
-        return [coord, sampled * negFade + ideal * fade]
+        return [coord, sampled]
+        // const ideal = trueAbsorptions.get(coord) ?? 0
+        // return [coord, sampled * negFade + ideal * fade]
       })
     })
 
     const absorptions = computed(
       (): Map<Coord, number> => {
-        switch (playheadCtl.visType) {
+        switch (visType.value) {
           case SimulationVisType.Laser:
             return totalAbsorptions.value
           case SimulationVisType.QuantumWave:
             return gameCtl.sim?.upToFrameAbsorptions[playheadCtl.frameIndex] ?? new Map()
-          case SimulationVisType.Stochastic:
+          case SimulationVisType.Experiment:
             return stochasticAbsorptions.value
         }
       }
@@ -309,19 +266,29 @@ export default defineComponent({
       }
     })
 
+    function globalToggle() {
+      if (experimentCtl.isRunning) {
+        experimentCtl.stop()
+      } else {
+        playheadCtl.toggle()
+      }
+    }
+
     useWindowEvent('keyup', (e) => {
       if (e.key === ' ') {
         e.preventDefault()
-        playheadCtl.toggle()
+        globalToggle()
       }
     })
 
     useWindowEvent('keydown', (e) => {
       switch (e.key) {
         case 'ArrowLeft':
-          return playheadCtl.stepBack()
+          if (!experimentCtl.isRunning) playheadCtl.stepBack()
+          break
         case 'ArrowRight':
-          return playheadCtl.stepForward()
+          if (!experimentCtl.isRunning) playheadCtl.stepForward()
+          break
       }
     })
 
@@ -391,7 +358,7 @@ export default defineComponent({
     const overlayGameState = computed(() => {
       if (
         !alreadyWon.flag &&
-        playheadCtl.visType === SimulationVisType.Stochastic &&
+        visType.value === SimulationVisType.Experiment &&
         experimentFadeProgress.value === 1
       ) {
         switch (goalsCtl.gameOutcome) {
@@ -467,7 +434,7 @@ export default defineComponent({
       grabCtl,
       goalsCtl,
       playheadCtl,
-      histogram,
+      experimentCtl,
       dragState,
       previousLevel,
       nextLevel,
@@ -481,13 +448,14 @@ export default defineComponent({
       activeParticles,
       laserParticles,
       laserOpacity,
-      laserBlur,
+      experiment,
       infoPayload,
       loadJsonLevelFromFile,
       handleTouch,
       scaledTileSize,
       absorptions,
       isVictory,
+      visType,
     }
   },
 })

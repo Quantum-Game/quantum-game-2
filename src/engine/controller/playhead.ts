@@ -2,31 +2,19 @@ import { useRaf } from '@/mixins'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
 import { InterpolatedParticle, interpolateParticle } from '../interpolation'
-import { Coord, Frame, Particle } from '../model'
+import { Frame, Particle } from '../model'
 
 const storeOptions = storeNamespace('options')
-
-export interface ObservationOutcome {
-  coord: Coord
-  frame: number
-}
-
-interface ExperimentState {
-  outcome: ObservationOutcome | null
-  repetition: number
-}
 
 export function playheadController(options: {
   rewindOnUpdate: boolean
   frames: () => Frame[]
-  pickOutcome?: () => ObservationOutcome | null
-  onExperimentOutcome?: (outcome: ObservationOutcome | null) => void
-  onExperimentStart?: () => void
 }): PlayheadController {
   const frameInterval = storeOptions.useGetter('gameSpeedInterval')
   const targetFrameIndex = ref(0)
   const isPlaying = ref(false)
-  const experimentState = ref<ExperimentState | null>(null)
+  const limitFrames = ref<number | null>(null)
+  const overrideInterval = ref<number | null>(null)
 
   const frames = computed(options.frames)
   const totalFrames = computed(() => frames.value.length)
@@ -38,21 +26,19 @@ export function playheadController(options: {
   const activeFrame = computed((): Frame | null => frames.value[frameIndex.value] ?? null)
 
   const particlesTime = ref(0)
+  let onStopped: ((completed: boolean) => void) | null = null
 
   // let startFrame = 0;
   let lastTime: number | null = null
 
   const expectedLastFrame = computed(() => {
-    if (visType.value === SimulationVisType.Stochastic && experimentState.value != null) {
-      return Math.min(experimentState.value.outcome?.frame ?? 0, totalFrames.value - 1)
-    } else {
-      return totalFrames.value - 1
-    }
+    const limit = limitFrames.value ?? totalFrames.value
+    return Math.min(limit - 1, totalFrames.value - 1)
   })
 
   const speedOfLight = computed(() => {
-    if (experimentState.value != null) {
-      return (experimentState.value.repetition + 1) / frameInterval.value
+    if (overrideInterval.value != null) {
+      return 1 / overrideInterval.value
     } else {
       return 1 / frameInterval.value
     }
@@ -66,6 +52,11 @@ export function playheadController(options: {
       const t = Math.max(0, Math.min(newTime, totalFrames.value - 1))
       particlesTime.value = t
       targetFrameIndex.value = Math.floor(t)
+
+      if (particlesTime.value >= expectedLastFrame.value) {
+        isPlaying.value = false
+        onStopped?.(true)
+      }
     } else {
       lastTime = null
       const f = 0.4
@@ -76,25 +67,10 @@ export function playheadController(options: {
         particlesTime.value += Math.max(f * dx)
       }
     }
-
-    if (particlesTime.value >= expectedLastFrame.value) {
-      const experiment = experimentState.value
-      if (visType.value === SimulationVisType.Stochastic && experiment != null) {
-        options.onExperimentOutcome?.(experiment.outcome)
-        if (experiment.outcome != null) {
-          particlesTime.value = 0
-          targetFrameIndex.value = 0
-          experiment.repetition += 1
-          experiment.outcome = options.pickOutcome?.() ?? null
-        }
-      } else {
-        isPlaying.value = false
-      }
-    }
   })
 
   if (options.rewindOnUpdate) {
-    watch(frames, rewind)
+    watch(frames, () => rewind(false))
   }
 
   const baseId = computed((): number => {
@@ -143,20 +119,11 @@ export function playheadController(options: {
     return histories.flatMap(([prevs, p, nexts]) => interpolateParticle(t, prevs, p, nexts, all))
   })
 
-  const visType = computed(() => {
-    if (experimentState.value != null) {
-      return SimulationVisType.Stochastic
-    } else if (!isPlaying.value && isFirstFrame.value) {
-      return SimulationVisType.Laser
-    } else {
-      return SimulationVisType.QuantumWave
-    }
-  })
-
   function stepForward() {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.ceil(particlesTime.value)
       isPlaying.value = false
+      onStopped?.(false)
     } else {
       if (frameIndex.value < totalFrames.value - 1) {
         targetFrameIndex.value += 1
@@ -168,7 +135,7 @@ export function playheadController(options: {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.floor(particlesTime.value)
       isPlaying.value = false
-      experimentState.value = null
+      onStopped?.(false)
     } else {
       if (frameIndex.value > 0) {
         targetFrameIndex.value -= 1
@@ -177,51 +144,50 @@ export function playheadController(options: {
   }
 
   function fastForward(): void {
-    isPlaying.value = false
-    experimentState.value = null
     targetFrameIndex.value = Math.max(0, totalFrames.value - 1)
+    if (isPlaying.value) {
+      isPlaying.value = false
+      onStopped?.(true)
+    }
   }
 
   function seek(frame: number): void {
-    experimentState.value = null
     targetFrameIndex.value = Math.max(0, Math.min(frame, totalFrames.value - 1))
   }
 
-  function rewind(): void {
+  function rewind(instant = false): void {
     targetFrameIndex.value = 0
-    isPlaying.value = false
-    experimentState.value = null
+    if (instant) {
+      particlesTime.value = 0
+    }
+    if (isPlaying.value) {
+      isPlaying.value = false
+      onStopped?.(false)
+    }
   }
 
-  function play(play: boolean, observation = false) {
-    if (observation && options.pickOutcome == null) {
-      console.warn('trying to run experiment without outcome selector')
-    }
-
-    if (play && isLastFrame.value) {
-      targetFrameIndex.value = 0
-      particlesTime.value = 0
-    }
-
-    if (observation) {
-      targetFrameIndex.value = 0
-      particlesTime.value = 0
-
-      options.onExperimentStart?.()
-      experimentState.value = {
-        outcome: options.pickOutcome?.() ?? null,
-        repetition: 0,
-      }
-    }
-
-    isPlaying.value = play
+  function play(options?: {
+    maxFrames?: number
+    onStopped?: (completed: boolean) => void
+    interval?: number
+  }) {
+    limitFrames.value = options?.maxFrames ?? null
+    onStopped = options?.onStopped ?? null
+    overrideInterval.value = options?.interval ?? null
+    isPlaying.value = true
   }
 
   function toggle() {
-    play(!isPlaying.value)
+    if (!isPlaying.value) {
+      play()
+    } else {
+      isPlaying.value = false
+      onStopped?.(false)
+    }
   }
 
   return proxyRefs({
+    frames,
     isPlaying,
     isFirstFrame,
     isLastFrame,
@@ -229,7 +195,6 @@ export function playheadController(options: {
     interpolatedParticles,
     totalFrames,
     frameIndex,
-    visType,
     stepForward,
     stepBack,
     fastForward,
@@ -240,13 +205,8 @@ export function playheadController(options: {
   })
 }
 
-export const enum SimulationVisType {
-  Laser,
-  QuantumWave,
-  Stochastic,
-}
-
 export interface PlayheadController {
+  readonly frames: Frame[]
   readonly isPlaying: boolean
   readonly isFirstFrame: boolean
   readonly isLastFrame: boolean
@@ -254,12 +214,15 @@ export interface PlayheadController {
   readonly interpolatedParticles: InterpolatedParticle[]
   readonly totalFrames: number
   readonly frameIndex: number
-  readonly visType: SimulationVisType
   stepForward(): void
   stepBack(): void
   fastForward(): void
   seek(frame: number): void
-  rewind(): void
-  play(play: boolean): void
+  rewind(instant?: boolean): void
+  play(options?: {
+    maxFrames?: number
+    onStopped?: (complete: boolean) => void
+    interval?: number
+  }): void
   toggle(): void
 }

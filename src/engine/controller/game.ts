@@ -12,6 +12,12 @@ import {
 } from '@/engine/model'
 import { nextElementRotation } from '@/engine/elements'
 
+export const enum SimulationVisType {
+  Laser,
+  QuantumWave,
+  Experiment,
+}
+
 export function gameController(options?: {
   initialState?: () => Vector | undefined
   maxSteps?: () => number | undefined
