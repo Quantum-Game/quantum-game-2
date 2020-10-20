@@ -2,7 +2,6 @@ import {
   IGrid as QTGrid,
   ICell as QTCell,
   IParticle as QTParticle,
-  IAbsorption as QTIAbsorption,
 } from 'quantum-tensors/dist/interfaces'
 import { Simulation as QTSimulation, Frame as QTFrame, Vector, Complex } from 'quantum-tensors'
 import { Board, Piece } from './level'
@@ -10,7 +9,7 @@ import { exportElem } from './elem'
 import { Coord } from './coord'
 import { Direction, directionFromDegrees } from './direction'
 import { rotationToDegrees } from './rotation'
-import { fromEntries, iFilterMap } from '@/itertools'
+import { groupReduceBy } from '@/itertools'
 
 // reexport types from quantum-tensors that we actually
 // intend to use in other parts of the app
@@ -22,12 +21,13 @@ export { Complex, Vector }
  */
 export interface Simulation {
   readonly frames: Frame[]
-  readonly absorptions: Map<Coord, number>
+  readonly upToFrameAbsorptions: Map<Coord, number>[]
 }
 
 export interface Frame {
   readonly particles: Particle[]
   readonly vector: Vector
+  readonly absorptions: Map<Coord, number>
 }
 
 export interface Particle {
@@ -45,6 +45,12 @@ function importFrame(frame: QTFrame): Frame {
   return {
     particles: frame.particles.map(importParticle),
     vector: frame.vector,
+    absorptions: groupReduceBy(
+      frame.absorptions,
+      (absorption) => Coord.new(absorption.x, absorption.y),
+      () => 0,
+      (sum, absorption) => sum + absorption.probability
+    ),
   }
 }
 
@@ -57,20 +63,25 @@ function importParticle(particle: QTParticle): Particle {
   }
 }
 
-const absorptionThreshold = 0.0001
-
-function importAbsorptions(absorptions: QTIAbsorption[]): Map<Coord, number> {
-  return fromEntries(
-    iFilterMap(absorptions, (a) =>
-      a.probability > absorptionThreshold ? ([Coord.new(a.x, a.y), a.probability] as const) : null
+function importAbsorptions(frames: Frame[]): Map<Coord, number>[] {
+  let cumulative = new Map<Coord, number>()
+  return frames.map((frame) => {
+    cumulative = groupReduceBy(
+      frame.absorptions,
+      (entry) => entry[0],
+      () => 0,
+      (sum, entry) => sum + entry[1],
+      new Map(cumulative)
     )
-  )
+    return cumulative
+  })
 }
 
 function importSimulation(sim: QTSimulation): Simulation {
+  const frames = sim.frames.map(importFrame)
   return {
-    frames: sim.frames.map(importFrame),
-    absorptions: importAbsorptions(sim.totalAbsorptionPerTile),
+    frames,
+    upToFrameAbsorptions: importAbsorptions(frames),
   }
 }
 

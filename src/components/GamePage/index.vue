@@ -46,9 +46,12 @@
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
             :board="gameCtl.level.board"
+            :histogram="experimentCtl.histogram"
             :laserParticles="laserParticles"
+            :laserOpacity="laserOpacity"
+            :experiment="experiment"
             :particles="activeParticles"
-            :absorptions="gameCtl.sim.absorptions"
+            :absorptions="absorptions"
             :highlightEmpty="grabCtl.grabState != null"
             :playing="playheadCtl.isPlaying"
             @touch="handleTouch"
@@ -59,6 +62,11 @@
           />
           <GameControls
             :playhead="playheadCtl"
+            :promptExperiment="isVictory"
+            :visType="visType"
+            @mode-laser="setMode(SimulationVisType.Laser)"
+            @mode-wave="setMode(SimulationVisType.QuantumWave)"
+            @mode-experiment="setMode(SimulationVisType.Experiment)"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -69,15 +77,17 @@
       </template>
 
       <template #right>
-        <section>
-          <div class="ket-viewer-game">
-            <KetViewer
-              v-if="playheadCtl.activeFrame"
-              class="ket"
-              :vector="playheadCtl.activeFrame.vector"
-            />
-          </div>
-        </section>
+        <transition name="fade">
+          <section v-if="!experiment">
+            <div class="ket-viewer-game">
+              <KetViewer
+                v-if="playheadCtl.activeFrame"
+                class="ket"
+                :vector="playheadCtl.activeFrame.vector"
+              />
+            </div>
+          </section>
+        </transition>
       </template>
     </AppLayout>
 
@@ -120,10 +130,13 @@ import {
   GrabState,
   grabController,
   goalsController,
+  SimulationVisType,
+  experimentController,
 } from '@/engine/controller'
 import { isInteger } from '@/types'
 import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
 import { storeNamespace } from '@/store'
+import { mapEntries } from '@/itertools'
 
 export default defineComponent({
   name: 'GamePage',
@@ -151,12 +164,19 @@ export default defineComponent({
       return null
     })
 
+    const rewindingWave = ref(false)
+
     const alreadyWon = usePerRouteFlag()
 
     const gameCtl = gameController()
 
+    const totalAbsorptions = computed(() => {
+      let absorptions = gameCtl.sim?.upToFrameAbsorptions ?? []
+      return absorptions[absorptions.length - 1] ?? new Map()
+    })
+
     const goalsCtl = goalsController({
-      absorptions: () => gameCtl.sim?.absorptions ?? null,
+      absorptions: () => totalAbsorptions.value,
       level: () => gameCtl.level ?? null,
     })
 
@@ -168,8 +188,90 @@ export default defineComponent({
 
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
-      rewindOnUpdate: true,
     })
+
+    watch(
+      () => gameCtl.sim?.frames,
+      () => {
+        experimentCtl.stop()
+        playheadCtl.rewind(false)
+      }
+    )
+
+    const experimentCtl = experimentController({
+      playhead: playheadCtl,
+    })
+
+    const experimentFadeProgress = computed(() =>
+      Math.max(0, Math.min(1, (experimentCtl.samples - 5) * 0.2))
+    )
+
+    const visType = computed(() => {
+      if (experimentCtl.isRunning) return SimulationVisType.Experiment
+      if (!playheadCtl.isPlaying && playheadCtl.isFirstFrame && !rewindingWave.value)
+        return SimulationVisType.Laser
+      return SimulationVisType.QuantumWave
+    })
+
+    function setMode(mode: SimulationVisType) {
+      if (mode === SimulationVisType.Experiment) {
+        experimentCtl.stop()
+        experimentCtl.play()
+      } else if (mode === SimulationVisType.Laser) {
+        experimentCtl.stop()
+        playheadCtl.rewind(false)
+      } else if (mode === SimulationVisType.QuantumWave) {
+        experimentCtl.stop()
+        rewindingWave.value = true
+        playheadCtl
+          .rewind(false)
+          .then(() => {
+            playheadCtl.play()
+          })
+          .finally(() => (rewindingWave.value = false))
+      }
+    }
+
+    const laserOpacity = computed(() => {
+      switch (visType.value) {
+        case SimulationVisType.Laser:
+          return 1
+        case SimulationVisType.QuantumWave:
+          return 0
+        case SimulationVisType.Experiment:
+          return experimentFadeProgress.value
+      }
+    })
+
+    const experiment = computed(() => {
+      return visType.value === SimulationVisType.Experiment
+    })
+
+    const stochasticAbsorptions = computed(() => {
+      const total = experimentCtl.samples
+      // const trueAbsorptions = totalAbsorptions.value
+      // const fade = experimentFadeProgress.value
+      // const negFade = 1 - fade
+      return mapEntries(experimentCtl.histogram, ([coord, samples]) => {
+        const sampled = samples / total
+        return [coord, sampled]
+        // const ideal = trueAbsorptions.get(coord) ?? 0
+        // return [coord, sampled * negFade + ideal * fade]
+      })
+    })
+
+    const absorptions = computed(
+      (): Map<Coord, number> => {
+        switch (visType.value) {
+          case SimulationVisType.Laser:
+            return totalAbsorptions.value
+          case SimulationVisType.QuantumWave:
+            return gameCtl.sim?.upToFrameAbsorptions[playheadCtl.frameIndex] ?? new Map()
+          case SimulationVisType.Experiment:
+            return stochasticAbsorptions.value
+        }
+      }
+    )
 
     function grabbedPiece(state: GrabState): Piece {
       switch (state.source) {
@@ -195,15 +297,33 @@ export default defineComponent({
       }
     })
 
+    function globalToggle(shift: boolean) {
+      if (experimentCtl.isRunning) {
+        experimentCtl.stop()
+      } else {
+        if (shift && !playheadCtl.isPlaying) {
+          experimentCtl.play()
+        } else {
+          playheadCtl.toggle()
+        }
+      }
+    }
+
+    useWindowEvent('keyup', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault()
+        globalToggle(e.shiftKey)
+      }
+    })
+
     useWindowEvent('keydown', (e) => {
       switch (e.key) {
-        case ' ':
-          e.preventDefault()
-          return playheadCtl.toggle()
         case 'ArrowLeft':
-          return playheadCtl.stepBack()
+          if (!experimentCtl.isRunning) playheadCtl.stepBack()
+          break
         case 'ArrowRight':
-          return playheadCtl.stepForward()
+          if (!experimentCtl.isRunning) playheadCtl.stepForward()
+          break
       }
     })
 
@@ -232,17 +352,12 @@ export default defineComponent({
       }
     })
 
-    watch(
-      levelData,
-      (data) => {
-        gameCtl.importLevel(data)
-      },
-      { immediate: true }
-    )
-
     function reload() {
+      grabCtl.putBack()
       gameCtl.importLevel(levelData.value)
     }
+
+    watch(levelData, reload, { immediate: true })
 
     /**
      * Retrieve all particles for laser paths
@@ -276,7 +391,11 @@ export default defineComponent({
     })
 
     const overlayGameState = computed(() => {
-      if (!alreadyWon.flag && playheadCtl.isLastFrame && routeLevelId.value != null) {
+      if (
+        !alreadyWon.flag &&
+        visType.value === SimulationVisType.Experiment &&
+        experimentFadeProgress.value === 1
+      ) {
         switch (goalsCtl.gameOutcome) {
           case GameOutcome.Victory:
             return 'Victory'
@@ -286,6 +405,8 @@ export default defineComponent({
       }
       return null
     })
+
+    const isVictory = computed(() => goalsCtl.gameOutcome === GameOutcome.Victory)
 
     /**
      * Should an overlay be shown when progressing
@@ -327,6 +448,7 @@ export default defineComponent({
       reader.onload = (): void => {
         if (reader.result !== undefined && reader.result !== null) {
           const result: string = reader.result.toString()
+          grabCtl.putBack()
           gameCtl.importLevel(JSON.parse(result))
         }
       }
@@ -347,6 +469,7 @@ export default defineComponent({
       grabCtl,
       goalsCtl,
       playheadCtl,
+      experimentCtl,
       dragState,
       previousLevel,
       nextLevel,
@@ -359,10 +482,17 @@ export default defineComponent({
       overlayGameState,
       activeParticles,
       laserParticles,
+      laserOpacity,
+      experiment,
       infoPayload,
       loadJsonLevelFromFile,
       handleTouch,
       scaledTileSize,
+      absorptions,
+      isVictory,
+      visType,
+      setMode,
+      SimulationVisType,
     }
   },
 })

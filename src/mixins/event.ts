@@ -7,13 +7,14 @@ import { onMounted, onUnmounted, Ref, watch, ref, reactive } from 'vue'
  */
 export function useWindowEvent<K extends keyof WindowEventMap>(
   event: K,
-  handler: (e: WindowEventMap[K]) => void
+  handler: (e: WindowEventMap[K]) => void,
+  options?: boolean | AddEventListenerOptions
 ): void {
   onMounted(() => {
-    window.addEventListener(event, handler)
+    window.addEventListener(event, handler, options)
   })
   onUnmounted(() => {
-    window.removeEventListener(event, handler)
+    window.removeEventListener(event, handler, options)
   })
 }
 

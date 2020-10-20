@@ -39,7 +39,7 @@ module.exports = {
     'vue/attribute-hyphenation': [
       'warn',
       'never',
-      { ignore: ['text-anchor', 'clip-rule', 'clip-path-units'] },
+      { ignore: ['text-anchor', 'clip-rule', 'clip-path-units', 'stroke-width'] },
     ],
     'vue/component-name-in-template-casing': ['warn', 'PascalCase'],
   },

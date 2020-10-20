@@ -71,6 +71,33 @@ export function mapEntries<A, B, C, D>(
   return fromEntries(iMap(map, mapper))
 }
 
+export function groupReduceBy<T, K, R>(
+  iterable: Iterable<T>,
+  groupKey: (item: T) => K,
+  initial: (key: K) => R,
+  reducer: (reduced: R, item: T, key: K) => R,
+  initialMap?: Map<K, R>
+): Map<K, R> {
+  const map = initialMap ?? new Map<K, R>()
+  for (const item of iterable) {
+    const key = groupKey(item)
+    map.set(key, reducer(map.get(key) ?? initial(key), item, key))
+  }
+  return map
+}
+
+export function iReduce<T, R>(
+  iterable: Iterable<T>,
+  reducer: (reduced: R, item: T) => R,
+  initial: R
+): R {
+  let state = initial
+  for (const item of iterable) {
+    state = reducer(state, item)
+  }
+  return state
+}
+
 export function fromEntries<A, B>(iter: Iterable<readonly [A, B]>): Map<A, B> {
   const map = new Map<A, B>()
   for (const [k, v] of iter) {

@@ -1,4 +1,4 @@
-import { useRaf } from '@/mixins'
+import { useRaf, waitFor } from '@/mixins'
 import { storeNamespace } from '@/store'
 import { computed, proxyRefs, ref, watch } from 'vue'
 import { InterpolatedParticle, interpolateParticle } from '../interpolation'
@@ -6,13 +6,12 @@ import { Frame, Particle } from '../model'
 
 const storeOptions = storeNamespace('options')
 
-export function playheadController(options: {
-  rewindOnUpdate: boolean
-  frames: () => Frame[]
-}): PlayheadController {
+export function playheadController(options: { frames: () => Frame[] }): PlayheadController {
   const frameInterval = storeOptions.useGetter('gameSpeedInterval')
   const targetFrameIndex = ref(0)
   const isPlaying = ref(false)
+  const limitFrames = ref<number | null>(null)
+  const overrideInterval = ref<number | null>(null)
 
   const frames = computed(options.frames)
   const totalFrames = computed(() => frames.value.length)
@@ -24,36 +23,47 @@ export function playheadController(options: {
   const activeFrame = computed((): Frame | null => frames.value[frameIndex.value] ?? null)
 
   const particlesTime = ref(0)
+  let onStopped: ((completed: boolean) => void) | null = null
 
   // let startFrame = 0;
   let lastTime: number | null = null
+
+  const expectedLastFrame = computed(() => {
+    const limit = limitFrames.value ?? totalFrames.value
+    return Math.min(limit - 1, totalFrames.value - 1)
+  })
+
+  const speedOfLight = computed(() => {
+    if (overrideInterval.value != null) {
+      return 1 / overrideInterval.value
+    } else {
+      return 1 / frameInterval.value
+    }
+  })
 
   useRaf((time) => {
     if (isPlaying.value) {
       const dt = time - (lastTime ?? time)
       lastTime = time
-      const newTime = particlesTime.value + dt / frameInterval.value
+      const newTime = particlesTime.value + dt * speedOfLight.value
       const t = Math.max(0, Math.min(newTime, totalFrames.value - 1))
       particlesTime.value = t
       targetFrameIndex.value = Math.floor(t)
-      if (t === totalFrames.value - 1) {
-        isPlaying.value = false
+
+      if (particlesTime.value >= expectedLastFrame.value) {
+        doStop()
       }
     } else {
       lastTime = null
       const f = 0.4
       const dx = targetFrameIndex.value - particlesTime.value
-      if (Math.abs(dx) < 0.001) {
+      if (Math.abs(dx) < 0.01) {
         particlesTime.value = targetFrameIndex.value
       } else {
         particlesTime.value += Math.max(f * dx)
       }
     }
   })
-
-  if (options.rewindOnUpdate) {
-    watch(frames, rewind)
-  }
 
   const baseId = computed((): number => {
     const framesArray = frames.value
@@ -104,7 +114,7 @@ export function playheadController(options: {
   function stepForward() {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.ceil(particlesTime.value)
-      isPlaying.value = false
+      doStop()
     } else {
       if (frameIndex.value < totalFrames.value - 1) {
         targetFrameIndex.value += 1
@@ -115,7 +125,7 @@ export function playheadController(options: {
   function stepBack() {
     if (isPlaying.value) {
       targetFrameIndex.value = Math.floor(particlesTime.value)
-      isPlaying.value = false
+      doStop()
     } else {
       if (frameIndex.value > 0) {
         targetFrameIndex.value -= 1
@@ -123,33 +133,61 @@ export function playheadController(options: {
     }
   }
 
+  function doStop(): boolean {
+    if (isPlaying.value) {
+      isPlaying.value = false
+      onStopped?.(particlesTime.value >= expectedLastFrame.value)
+      return true
+    }
+    return false
+  }
+
   function fastForward(): void {
-    isPlaying.value = false
     targetFrameIndex.value = Math.max(0, totalFrames.value - 1)
+    doStop()
   }
 
   function seek(frame: number): void {
     targetFrameIndex.value = Math.max(0, Math.min(frame, totalFrames.value - 1))
   }
 
-  function rewind(): void {
+  function rewind(instant = false): Promise<void> {
     targetFrameIndex.value = 0
-    isPlaying.value = false
-  }
-
-  function play(play: boolean) {
-    isPlaying.value = play
-    if (play && isLastFrame.value) {
-      targetFrameIndex.value = 0
+    doStop()
+    if (instant || particlesTime.value === 0) {
       particlesTime.value = 0
+      return Promise.resolve()
+    } else {
+      return waitFor(
+        () => particlesTime.value === 0,
+        () => isPlaying.value
+      )
     }
   }
 
+  function play(options?: {
+    maxFrames?: number
+    onStopped?: (completed: boolean) => void
+    interval?: number
+  }) {
+    if (particlesTime.value >= expectedLastFrame.value) {
+      rewind(true)
+    }
+
+    limitFrames.value = options?.maxFrames ?? null
+    onStopped = options?.onStopped ?? null
+    overrideInterval.value = options?.interval ?? null
+    isPlaying.value = true
+  }
+
   function toggle() {
-    play(!isPlaying.value)
+    if (!doStop()) {
+      play()
+    }
   }
 
   return proxyRefs({
+    frames,
     isPlaying,
     isFirstFrame,
     isLastFrame,
@@ -168,6 +206,7 @@ export function playheadController(options: {
 }
 
 export interface PlayheadController {
+  readonly frames: Frame[]
   readonly isPlaying: boolean
   readonly isFirstFrame: boolean
   readonly isLastFrame: boolean
@@ -179,7 +218,11 @@ export interface PlayheadController {
   stepBack(): void
   fastForward(): void
   seek(frame: number): void
-  rewind(): void
-  play(play: boolean): void
+  rewind(instant?: boolean): Promise<void>
+  play(options?: {
+    maxFrames?: number
+    onStopped?: (complete: boolean) => void
+    interval?: number
+  }): void
   toggle(): void
 }
