@@ -12,6 +12,8 @@ const params = new URL(window.location.href).searchParams
 export const $flags = Object.freeze({
   /** display absorption "progress" as circular */
   circleAbsorptions: getBoolFlag('ca'),
+  /** dim background when experiment mode is active */
+  dimBackground: getBoolFlag('dim'),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,5 +31,10 @@ function getStrFlag(name: string): string | null {
 export const flagsPlugin: Plugin = {
   install: (app) => {
     app.config.globalProperties.$flags = $flags
+    for (const f in $flags) {
+      if ($flags[f as keyof typeof $flags]) {
+        document.body.classList.add(`flag-${f}`)
+      }
+    }
   },
 }
