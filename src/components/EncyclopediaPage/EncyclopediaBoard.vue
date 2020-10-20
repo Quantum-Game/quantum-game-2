@@ -2,7 +2,7 @@
   <div v-if="gameCtl.level" class="container" layout="column center u1">
     <Board
       class="board"
-      :absorptions="gameCtl.sim.absorptions"
+      :absorptions="totalAbsorptions"
       :board="gameCtl.level.board"
       :laserParticles="laserParticles"
       :particles="playheadCtl.interpolatedParticles"
@@ -49,7 +49,6 @@ export default defineComponent({
 
     const playheadCtl = playheadController({
       frames: () => gameCtl.sim?.frames ?? [],
-      rewindOnUpdate: false,
     })
     playheadCtl.seek(props.defaultStep ?? 0)
 
@@ -61,6 +60,11 @@ export default defineComponent({
       return props.vector?.dimensions.find((d) => d.name === 'polarization')?.coordString ?? 'HV'
     })
 
+    const totalAbsorptions = computed(() => {
+      let absorptions = gameCtl.sim?.upToFrameAbsorptions ?? []
+      return absorptions[absorptions.length - 1] ?? new Map()
+    })
+
     function updateRotation(coord: Coord) {
       gameCtl.rotateCcw(coord)
       const piece = gameCtl.level?.board.pieces.get(coord)
@@ -69,7 +73,7 @@ export default defineComponent({
       }
     }
 
-    return { gameCtl, playheadCtl, laserParticles, polBasis, updateRotation }
+    return { gameCtl, playheadCtl, laserParticles, polBasis, updateRotation, totalAbsorptions }
   },
 })
 </script>

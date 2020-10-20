@@ -4,6 +4,7 @@ import router from './router'
 import { store } from './store/store'
 import './registerServiceWorker'
 import { i18n } from './i18n'
+import { flagsPlugin } from './flags'
 import App from './App.vue'
 
 import 'bra-ket-vue/dist/bra-ket-vue.css'
@@ -16,4 +17,5 @@ createApp(App)
   // })
   .use(i18n)
   .use(store)
+  .use(flagsPlugin)
   .mount('#app')

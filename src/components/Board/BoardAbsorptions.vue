@@ -11,33 +11,34 @@
     {{ (probability * 100).toFixed(1) }}%
   </text>
   <!-- GOALS -->
-  <g v-for="[coord, { threshold, value }] in goalPercents" :key="`goal-${coord.x}-${coord.y}`">
-    <rect fill="#4F2F7B" :x="coord.x * 64 + 2" :y="coord.y * 64 - 8" :width="64 - 4" height="5" />
-    <rect
-      fill="url(#progress-gradient)"
-      :x="coord.x * 64 + 2"
-      :y="coord.y * 64 - 8"
-      :width="(64 - 4) * value"
-      height="5"
-      class="progress-bar"
-    />
-
-    <rect
-      stroke="white"
-      :x="coord.x * 64 + 2 + (64 - 4) * threshold"
-      :y="coord.y * 64 - 9"
-      :width="0.01"
-      height="7"
-    />
-    <text
-      :x="(coord.x + 0.5) * 64"
-      :y="coord.y * 64 - 12"
-      text-anchor="middle"
-      class="goal-probability"
-      :class="{ 'goal-met': value >= threshold }"
-    >
-      {{ (value * 100).toFixed(1) }}%
-    </text>
+  <g
+    v-for="[coord, { threshold, value, text }] in goalPercents"
+    :key="`goal-${coord.x}-${coord.y}`"
+  >
+    <template v-if="$flags.circleAbsorptions">
+      <AbsorptionCircle :coord="coord" :threshold="threshold" :value="value" />
+      <text
+        :x="(coord.x + 0.5) * 64"
+        :y="coord.y * 64 - 2"
+        text-anchor="middle"
+        class="goal-probability"
+        :class="{ 'goal-met': value >= threshold }"
+      >
+        {{ text }}
+      </text>
+    </template>
+    <template v-else>
+      <AbsorptionBar :coord="coord" :threshold="threshold" :value="value" />
+      <text
+        :x="(coord.x + 0.5) * 64"
+        :y="coord.y * 64 - 12"
+        text-anchor="middle"
+        class="goal-probability"
+        :class="{ 'goal-met': value >= threshold }"
+      >
+        {{ text }}
+      </text>
+    </template>
   </g>
 </template>
 
@@ -45,11 +46,19 @@
 import { Coord } from '@/engine/model'
 import { iFilter, mapEntries } from '@/itertools'
 import { computed, defineComponent, PropType } from 'vue'
-
+import AbsorptionCircle from './AbsorptionCircle.vue'
+import AbsorptionBar from './AbsorptionBar.vue'
+import { histogram } from 'd3-array'
 export default defineComponent({
+  components: {
+    AbsorptionCircle,
+    AbsorptionBar,
+  },
   props: {
     absorptions: { type: Map as PropType<Map<Coord, number>>, required: true },
     goals: { type: Map as PropType<Map<Coord, number>>, required: true },
+    histogram: { type: Map as PropType<Map<Coord, number>>, required: false },
+    useHistogram: { type: Boolean, default: false },
   },
   setup(props) {
     const nonGoalPercents = computed(() => {
@@ -59,10 +68,14 @@ export default defineComponent({
     const goalPercents = computed(() => {
       const goals = props.goals
       const absorptions = props.absorptions
-      return mapEntries(goals, ([coord, threshold]) => [
-        coord,
-        { threshold, value: absorptions.get(coord) ?? 0 },
-      ])
+      const histogram = props.useHistogram ? props.histogram : null
+      return mapEntries(goals, ([coord, threshold]) => {
+        const value = absorptions.get(coord) ?? 0
+        const text =
+          histogram != null ? `${histogram.get(coord) ?? 0}` : `${(value * 100).toFixed(1)}%`
+
+        return [coord, { threshold, value, text }]
+      })
     })
     return {
       nonGoalPercents,
@@ -78,18 +91,17 @@ export default defineComponent({
   font-size: 0.8rem;
 }
 
-.progress-bar {
-  transition: width 0.3s ease-out;
-}
-
 .goal-probability {
+  font-weight: bold;
   fill: mix($fuchsia, $purple, 70%);
   font-size: 0.8rem;
   transition: font-size 0.3s, text-shadow 0.3s, fill 0.3s;
+  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark;
 }
 
 .goal-met {
   fill: $fuchsia;
-  text-shadow: 0 0 5px mix($fuchsia, $purple);
+  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark,
+    0 0 5px mix($fuchsia, $purple-dark), 0 0 1px $fuchsia;
 }
 </style>
