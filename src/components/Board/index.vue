@@ -22,8 +22,7 @@
           v-for="(particle, index) in particles"
           :key="index"
           :particle="particle"
-          :displayMagnetic="false"
-          :displayElectric="true"
+          :totalParticles="particles.length"
           :displayGaussian="true"
           @mouseenter="handleMouseEnter(particle.coord)"
         />
@@ -275,10 +274,7 @@ export default defineComponent({
   }
 }
 .grid {
-  transform-origin: 0 0%;
-  @include media('<large') {
-    transform-origin: 0 0;
-  }
+  will-change: transform;
 }
 
 .empty {

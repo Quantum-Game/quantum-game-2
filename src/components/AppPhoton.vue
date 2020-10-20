@@ -11,7 +11,7 @@
           <path v-if="displayGaussian" class="gaussian" :d="gaussianPath" />
           <g fill="none" stroke-linecap="round">
             <path
-              v-for="(p, index) in wavePaths"
+              v-for="(p, index) in electricPaths"
               :key="index"
               :d="p.path"
               :stroke="p.color"
@@ -26,19 +26,14 @@
 
 <script lang="ts">
 import { range } from 'd3-array'
-import { scaleLinear, scaleSequential } from 'd3-scale'
-import { interpolateViridis } from 'd3-scale-chromatic'
+import { scaleLinear } from 'd3-scale'
 import { Complex, directionToDegrees } from '@/engine/model'
 import { IStyle } from '@/types'
 import { computed, defineComponent, PropType } from 'vue'
 import { clipPlanePath, InterpolatedParticle } from '@/engine/interpolation'
+import { memoized } from '@/mixins'
 
 let uid = 0
-
-/**
- * Magnetic field color scheme.
- */
-const mColor = scaleSequential(interpolateViridis).domain([-1, 1])
 
 /**
  * Electric field color scheme.
@@ -113,11 +108,8 @@ export default defineComponent({
   props: {
     particle: { type: Object as PropType<InterpolatedParticle>, required: true },
     k: { type: Number, default: 20 },
-    displayMagnetic: { type: Boolean, default: false },
-    displayElectric: { type: Boolean, default: true },
     displayGaussian: { type: Boolean, default: true },
-    displayOpacity: { type: Boolean, default: true },
-    displayDirection: { type: Boolean, default: true },
+    totalParticles: { type: Number, default: 1 },
   },
   setup(props) {
     const intensity = computed((): number => {
@@ -126,29 +118,28 @@ export default defineComponent({
     const normalization = computed((): number => {
       return Math.sqrt(intensity.value)
     })
-    const a = computed(
-      (): Complex => {
-        const { re, im } = props.particle.a
-        const norm = normalization.value
-        return new Complex(re / norm, im / norm)
-      }
+
+    function computeParticle({ re, im }: Complex): Complex {
+      const norm = normalization.value
+      return new Complex(re / norm, im / norm)
+    }
+
+    const a = memoized(
+      () => computeParticle(props.particle.a),
+      (a, b) => a.equal(b)
     )
-    const b = computed(
-      (): Complex => {
-        const { re, im } = props.particle.b
-        const norm = normalization.value
-        return new Complex(re / norm, im / norm)
-      }
+
+    const b = memoized(
+      () => computeParticle(props.particle.b),
+      (a, b) => a.equal(b)
     )
 
     const photonInnerStyle = computed(
       (): IStyle => {
         return {
-          opacity: `${props.displayOpacity ? intensity.value : 1}`,
+          opacity: `${intensity.value}`,
           transformOrigin: `$0px 0px`,
-          transform: `rotate(${
-            props.displayDirection ? directionToDegrees(props.particle.direction) : 0
-          }deg)`,
+          transform: `rotate(${directionToDegrees(props.particle.direction)}deg)`,
         }
       }
     )
@@ -181,29 +172,29 @@ export default defineComponent({
       )
     })
 
+    const batchPrecision = memoized(() => {
+      if (props.totalParticles < 4) return 100
+      if (props.totalParticles < 8) return 10
+      return 1
+    })
+
     const segmentBatches = computed(() => {
       const yBatches: Record<string, number[]> = {}
-      const xBatches: Record<string, number[]> = {}
+
       const w = waves.value
+      const precision = batchPrecision.value
       for (let i = 0; i < zs.length - 1; i++) {
-        const [x1, y1] = w[i]
-        const [x2, y2] = w[i + 1]
-        const xBatch = (x1 + x2).toFixed(2)
-        const yBatch = (y1 + y2).toFixed(2)
-        const xArr = xBatches[xBatch]
+        const [_x1, y1] = w[i]
+        const [_x2, y2] = w[i + 1]
+        const yBatch = Math.round((y1 + y2) * precision)
         const yArr = yBatches[yBatch]
-        if (xArr === undefined) {
-          xBatches[xBatch] = [i]
-        } else {
-          xArr.push(i)
-        }
         if (yArr === undefined) {
           yBatches[yBatch] = [i]
         } else {
           yArr.push(i)
         }
       }
-      return { xBatches: Object.values(xBatches), yBatches: Object.values(yBatches) }
+      return Object.values(yBatches)
     })
 
     const dxStep = step * 0.5
@@ -225,9 +216,8 @@ export default defineComponent({
     }
 
     const electricPaths = computed(() => {
-      const batches = segmentBatches.value.yBatches
       const w = waves.value
-      return batches.map((batch) => {
+      return segmentBatches.value.map((batch) => {
         const [_x1, y1] = w[batch[0]]
         const [_x2, y2] = w[batch[0] + 1]
         const yAvg = +((y1 + y2) * 0.5).toFixed(2)
@@ -247,46 +237,12 @@ export default defineComponent({
       })
     })
 
-    const magneticPaths = computed(() => {
-      const batches = segmentBatches.value.xBatches
-      const w = waves.value
-      return batches.map((batch) => {
-        const [x1] = w[batch[0]]
-        const [x2] = w[batch[0] + 1]
-        const xAvg = +((x1 + x2) * 0.5).toFixed(2)
-
-        let path = ''
-        for (const i of batch) {
-          const [_x1, y1, _x1Dz, y1Dz] = w[i]
-          const [_x2, y2, _x2Dz, y2Dz] = w[i + 1]
-          path += pathSegment(zs[i], zs[i + 1], -y1, -y2, -y1Dz, -y2Dz)
-        }
-
-        return {
-          path,
-          color: mColor(xAvg),
-          width: 0.07 + xAvg * 0.06,
-        }
-      })
-    })
-
-    const wavePaths = computed(() => {
-      if (props.displayElectric && props.displayMagnetic) {
-        return electricPaths.value.concat(magneticPaths.value).sort((a, b) => a.width - b.width)
-      } else if (props.displayElectric) {
-        return electricPaths.value
-      } else if (props.displayMagnetic) {
-        return magneticPaths.value
-      }
-      return []
-    })
-
     return {
       uid: uid++,
       photonInnerStyle,
       photonOuterStyle,
       gaussianPath,
-      wavePaths,
+      electricPaths,
       clipPath,
     }
   },
