@@ -64,7 +64,9 @@
             :playhead="playheadCtl"
             :promptExperiment="isVictory"
             :visType="visType"
-            @run-experiment="experimentCtl.play()"
+            @mode-laser="setMode(SimulationVisType.Laser)"
+            @mode-wave="setMode(SimulationVisType.QuantumWave)"
+            @mode-experiment="setMode(SimulationVisType.Experiment)"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -162,6 +164,8 @@ export default defineComponent({
       return null
     })
 
+    const rewindingWave = ref(false)
+
     const alreadyWon = usePerRouteFlag()
 
     const gameCtl = gameController()
@@ -204,9 +208,29 @@ export default defineComponent({
 
     const visType = computed(() => {
       if (experimentCtl.isRunning) return SimulationVisType.Experiment
-      if (!playheadCtl.isPlaying && playheadCtl.isFirstFrame) return SimulationVisType.Laser
+      if (!playheadCtl.isPlaying && playheadCtl.isFirstFrame && !rewindingWave.value)
+        return SimulationVisType.Laser
       return SimulationVisType.QuantumWave
     })
+
+    function setMode(mode: SimulationVisType) {
+      if (mode === SimulationVisType.Experiment) {
+        experimentCtl.stop()
+        experimentCtl.play()
+      } else if (mode === SimulationVisType.Laser) {
+        experimentCtl.stop()
+        playheadCtl.rewind(false)
+      } else if (mode === SimulationVisType.QuantumWave) {
+        experimentCtl.stop()
+        rewindingWave.value = true
+        playheadCtl
+          .rewind(false)
+          .then(() => {
+            playheadCtl.play()
+          })
+          .finally(() => (rewindingWave.value = false))
+      }
+    }
 
     const laserOpacity = computed(() => {
       switch (visType.value) {
@@ -467,6 +491,8 @@ export default defineComponent({
       absorptions,
       isVictory,
       visType,
+      setMode,
+      SimulationVisType,
     }
   },
 })

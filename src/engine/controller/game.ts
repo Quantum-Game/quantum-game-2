@@ -12,7 +12,7 @@ import {
 } from '@/engine/model'
 import { nextElementRotation } from '@/engine/elements'
 
-export const enum SimulationVisType {
+export enum SimulationVisType {
   Laser,
   QuantumWave,
   Experiment,

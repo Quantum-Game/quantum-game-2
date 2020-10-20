@@ -27,11 +27,11 @@
     <!-- FRAME INFO -->
     <span class="frameInfo" layout="column u2 center" flex>
       <div layout="row u2">
-        <button :class="classes.laser" @click="playhead.rewind()" />
-        <button :class="classes.wave" @click="playhead.play()" />
+        <button :class="classes.laser" @click="$emit('mode-laser')" />
+        <button :class="classes.wave" @click="$emit('mode-wave')" />
         <button
           :class="{ ...classes.experiment, blink: !classes.experiment.active && promptExperiment }"
-          @click="$emit('run-experiment')"
+          @click="$emit('mode-experiment')"
         />
       </div>
       <span class="gameState">{{ displayStatus }}</span>
@@ -97,7 +97,9 @@ export default defineComponent({
     upload: (_: Event) => true,
     save: null,
     reload: null,
-    'run-experiment': null,
+    'mode-laser': null,
+    'mode-wave': null,
+    'mode-experiment': null,
   },
   setup(props, { emit }) {
     const toggleSound = options.useAction('TOGGLE_SOUND')
