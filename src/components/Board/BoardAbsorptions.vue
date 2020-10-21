@@ -1,14 +1,14 @@
 <template>
   <!-- PROBABILITY -->
   <text
-    v-for="[coord, probability] in nonGoalPercents"
+    v-for="[coord, text] in nonGoalPercents"
     :key="`probability-${coord.x}-${coord.y}`"
     :x="(coord.x + 0.5) * 64"
     :y="coord.y * 64"
     text-anchor="middle"
     class="probability"
   >
-    {{ (probability * 100).toFixed(1) }}%
+    {{ text }}
   </text>
   <!-- GOALS -->
   <g
@@ -44,11 +44,10 @@
 
 <script lang="ts">
 import { Coord } from '@/engine/model'
-import { iFilter, mapEntries } from '@/itertools'
+import { iFilterMap, mapEntries } from '@/itertools'
 import { computed, defineComponent, PropType } from 'vue'
 import AbsorptionCircle from './AbsorptionCircle.vue'
 import AbsorptionBar from './AbsorptionBar.vue'
-import { histogram } from 'd3-array'
 export default defineComponent({
   components: {
     AbsorptionCircle,
@@ -63,7 +62,18 @@ export default defineComponent({
   setup(props) {
     const nonGoalPercents = computed(() => {
       const goals = props.goals
-      return new Map(iFilter(props.absorptions, ([coord]) => !goals.has(coord)))
+      const histogram = props.useHistogram ? props.histogram : null
+      return new Map(
+        iFilterMap(props.absorptions, ([coord, value]) => {
+          if (goals.has(coord)) {
+            return null
+          }
+          return [
+            coord,
+            histogram != null ? `${histogram.get(coord) ?? 0}` : `${(value * 100).toFixed(1)}%`,
+          ] as const
+        })
+      )
     })
     const goalPercents = computed(() => {
       const goals = props.goals
@@ -86,17 +96,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.probability {
+.probability,
+.goal-probability {
+  pointer-events: none;
   fill: $fuchsia;
   font-size: 0.8rem;
+  font-weight: bold;
+  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark;
 }
 
 .goal-probability {
-  font-weight: bold;
   fill: mix($fuchsia, $purple, 70%);
-  font-size: 0.8rem;
   transition: font-size 0.3s, text-shadow 0.3s, fill 0.3s;
-  text-shadow: 0 0 2px $purple-dark, 0 0 5px $purple-dark, 0 0 10px $purple-dark;
 }
 
 .goal-met {

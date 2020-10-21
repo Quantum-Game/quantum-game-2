@@ -74,6 +74,6 @@ $red: #ff0055;
   transition: opacity 0.5s ease-out;
   animation: none;
   stroke-dasharray: initial;
-  stroke-width: 20;
+  stroke-width: 10;
 }
 </style>

@@ -121,7 +121,7 @@ import AppOverlay from '@/components/AppOverlay.vue'
 import '@/store/store'
 import { useRoute } from 'vue-router'
 import { computed, defineComponent, ref, watch } from 'vue'
-import { useWindowEvent, usePerRouteFlag, useMouseCoords } from '@/mixins'
+import { useWindowEvent, usePerRouteFlag, useMouseCoords, useBodyClass } from '@/mixins'
 import {
   GameOutcome,
   gameController,
@@ -231,6 +231,14 @@ export default defineComponent({
           .finally(() => (rewindingWave.value = false))
       }
     }
+
+    useBodyClass(() => {
+      return {
+        'mode-laser': visType.value === SimulationVisType.Laser,
+        'mode-wave': visType.value === SimulationVisType.QuantumWave,
+        'mode-experiment': visType.value === SimulationVisType.Experiment,
+      }
+    })
 
     const laserOpacity = computed(() => {
       switch (visType.value) {
