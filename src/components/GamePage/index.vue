@@ -3,7 +3,7 @@
     <!-- OVERLAY -->
     <AppOverlay :state="overlayGameState" class="overlay" @bgClick="continueAfterWin">
       <p class="backButton" tabindex="0" @click="continueAfterWin">GO BACK</p>
-      <router-link :to="nextLevelOrOvelay">
+      <router-link v-if="nextLevelOrOvelay" :to="nextLevelOrOvelay">
         <AppButton :overlay="true" :inline="false">NEXT LEVEL</AppButton>
       </router-link>
     </AppOverlay>
@@ -12,13 +12,11 @@
     <AppLayout>
       <template #header>
         <div layout="row u2 middle center">
-          <router-link :to="previousLevel">
+          <router-link v-if="previousLevel != null" :to="previousLevel">
             <img src="@/assets/graphics/icons/previousLevel.svg" alt="Previous Level" width="24" />
           </router-link>
-          <h1 class="title" :title="'I am &amp;#10; happy to have a newline entity.'">
-            {{ gameCtl.level ? gameCtl.level.id + ' - ' + gameCtl.level.name : 'loading' }}
-          </h1>
-          <router-link :to="nextLevelOrOvelay">
+          <h1 class="title">{{ title }}</h1>
+          <router-link v-if="nextLevelOrOvelay != null" :to="nextLevelOrOvelay">
             <img src="@/assets/graphics/icons/nextLevel.svg" alt="Next Level" width="24" />
           </router-link>
         </div>
@@ -28,7 +26,7 @@
       <template #left>
         <section layout="column u10">
           <GameToolbox
-            v-if="gameCtl.level"
+            v-if="showToolbox"
             :key="gameCtl.level.id"
             :toolbox="gameCtl.level.toolbox"
             :tileSize="scaledTileSize"
@@ -108,7 +106,7 @@
 
 <script lang="ts">
 import { IInfoPayload } from '@/mixins/gameInterfaces'
-import levels from '@/assets/data/levels'
+import { campaignLevel, campaignLink, LevelId, LevelKind, sandboxLevel } from '@/assets/data/levels'
 import { KetViewer } from 'bra-ket-vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
@@ -119,8 +117,7 @@ import AppButton from '@/components/AppButton.vue'
 import AppCell from '@/components/Board/AppCell.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
 import '@/store/store'
-import { useRoute } from 'vue-router'
-import { computed, defineComponent, ref, watch } from 'vue'
+import { computed, defineComponent, PropType, ref, watch } from 'vue'
 import { useWindowEvent, usePerRouteFlag, useMouseCoords, useBodyClass } from '@/mixins'
 import {
   GameOutcome,
@@ -133,10 +130,10 @@ import {
   SimulationVisType,
   experimentController,
 } from '@/engine/controller'
-import { isInteger } from '@/types'
 import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
 import { storeNamespace } from '@/store'
 import { mapEntries } from '@/itertools'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'GamePage',
@@ -151,18 +148,13 @@ export default defineComponent({
     AppOverlay,
     AppCell,
   },
-  setup() {
+  props: {
+    levelId: { type: Object as PropType<LevelId>, required: true },
+  },
+  setup(props) {
+    const router = useRouter()
     const game = storeNamespace('game')
     const writeCurrentLevelId = game.useMutation('SET_CURRENT_LEVEL_ID')
-
-    const route = useRoute()
-    const routeLevelId = computed(() => {
-      const rawId = route.params.id as string | undefined
-      if (rawId != null && isInteger(+rawId)) {
-        return +rawId
-      }
-      return null
-    })
 
     const rewindingWave = ref(false)
 
@@ -341,31 +333,30 @@ export default defineComponent({
       text: 'Hover on a element for more information.',
     } as IInfoPayload)
 
-    // save last visited level id globally, so it can be returned to from the menu screen
-    watch(
-      routeLevelId,
-      (id) => {
-        if (id != null) {
-          writeCurrentLevelId(id)
-        }
-      },
-      { immediate: true }
-    )
-
-    const levelData = computed(() => {
-      if (routeLevelId.value != null) {
-        return levels[routeLevelId.value]
-      } else {
-        return levels[0] // sandbox
-      }
-    })
+    watch(() => props.levelId, reload, { immediate: true })
+    const isLab = computed(() => props.levelId.kind === LevelKind.Lab)
 
     function reload() {
+      let levelId = props.levelId
       grabCtl.putBack()
-      gameCtl.importLevel(levelData.value)
+      // save last visited level id globally, so it can be returned to from the menu screen
+      writeCurrentLevelId(levelId)
+      switch (levelId.kind) {
+        case LevelKind.Campaign:
+          let rawData = campaignLevel(levelId.index)
+          if (rawData == null) {
+            return router.replace('/levels')
+          }
+          gameCtl.importLevel(rawData)
+          break
+        case LevelKind.User:
+          console.error('User levels not yet implemented')
+        // fall-through
+        case LevelKind.Lab:
+          gameCtl.importLevel(sandboxLevel)
+          break
+      }
     }
-
-    watch(levelData, reload, { immediate: true })
 
     /**
      * Retrieve all particles for laser paths
@@ -383,6 +374,10 @@ export default defineComponent({
       return playheadCtl.interpolatedParticles
     })
 
+    const showToolbox = computed(() => {
+      return isLab.value || !(gameCtl.level?.toolbox.initializedEmpty() ?? true)
+    })
+
     /**
      * Actual 'save' button handling
      */
@@ -391,15 +386,12 @@ export default defineComponent({
       console.error('not yet implemented')
     }
 
-    const previousLevel = computed(() => {
-      return `/level/${(routeLevelId.value ?? 1) - 1}`
-    })
-    const nextLevel = computed(() => {
-      return `/level/${(routeLevelId.value ?? -1) + 1}`
-    })
+    const previousLevel = computed(() => campaignLink(props.levelId, -1))
+    const nextLevel = computed(() => campaignLink(props.levelId, 1))
 
     const overlayGameState = computed(() => {
       if (
+        !isLab.value &&
         !alreadyWon.flag &&
         visType.value === SimulationVisType.Experiment &&
         experimentFadeProgress.value === 1
@@ -421,7 +413,7 @@ export default defineComponent({
      * to the next level?
      * @returns an router link :to attribute string
      */
-    const nextLevelOrOvelay = computed((): string => {
+    const nextLevelOrOvelay = computed((): string | null => {
       const rockTalkId = gameCtl.level?.rockTalkId
       return rockTalkId != null ? `/rocks/${rockTalkId}` : nextLevel.value
     })
@@ -472,21 +464,40 @@ export default defineComponent({
       }
     }
 
+    const title = computed(() => {
+      const levelId = props.levelId
+      switch (levelId.kind) {
+        case LevelKind.Lab:
+          return 'Virtual Lab'
+        case LevelKind.Campaign:
+          if (gameCtl.level != null) {
+            return `${gameCtl.level.id} - ${gameCtl.level.name}`
+          }
+          break
+        case LevelKind.User:
+          // TODO
+          break
+      }
+      if (props.levelId.kind === LevelKind.Campaign) if (isLab.value) return 'Virtual Lab'
+      if (props.levelId.kind === LevelKind.Campaign)
+        if (gameCtl.level) {
+        }
+      return 'Loading...'
+    })
+
     return {
       gameCtl,
       grabCtl,
-      goalsCtl,
       playheadCtl,
       experimentCtl,
       dragState,
       previousLevel,
-      nextLevel,
+      nextLevelOrOvelay,
       handleSave,
       downloadLevel,
       reload,
       continueAfterWin,
       updateInfoPayload,
-      nextLevelOrOvelay,
       overlayGameState,
       activeParticles,
       laserParticles,
@@ -501,6 +512,8 @@ export default defineComponent({
       visType,
       setMode,
       SimulationVisType,
+      showToolbox,
+      title,
     }
   },
 })

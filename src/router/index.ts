@@ -1,3 +1,4 @@
+import { levelIdFromString, LevelKind } from '@/assets/data/levels'
 import { createRouter, createWebHistory } from 'vue-router'
 
 /* eslint-disable */
@@ -18,22 +19,20 @@ export default createRouter({
       component: () => import('@/components/LevelMapPage/index.vue'),
     },
     {
-      path: '/level/:username/:id/',
-      name: 'sharedlevels',
-      component: () => import('@/components/GamePage/index.vue'),
-      meta: {
-        shared: true,
-      },
-    },
-    {
       path: '/level/:id',
       name: 'level',
       component: () => import('@/components/GamePage/index.vue'),
+      props: (route) => {
+        return {
+          levelId: levelIdFromString(route.params.id as string),
+        }
+      },
     },
     {
-      path: '/sandbox',
-      name: 'sandbox',
+      path: '/lab',
+      name: 'lab',
       component: () => import('@/components/GamePage/index.vue'),
+      props: { levelId: { kind: LevelKind.Lab } },
     },
     {
       path: '/info',
@@ -88,7 +87,7 @@ export default createRouter({
       component: () => import('@/components/RockTalkPage/CellsDemo.vue'),
     },
     {
-      path: '/*',
+      path: '/:pathMatch(.*)*',
       name: '404',
       component: () => import('@/components/NotFoundPage/index.vue'),
     },

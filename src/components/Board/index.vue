@@ -7,7 +7,7 @@
   >
     <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`">
       <clipPath :id="`grid-clip-${uid}`">
-        <rect :width="totalWidth" :height="totalWidth" />
+        <rect :width="totalWidth" :height="totalHeight" />
       </clipPath>
       <!-- DOTS -->
       <BoardDots :rows="board.height" :cols="board.width" />

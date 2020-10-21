@@ -22,6 +22,7 @@ export default defineComponent({
 .not-found {
   color: white;
   align-items: center;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   & h1 {

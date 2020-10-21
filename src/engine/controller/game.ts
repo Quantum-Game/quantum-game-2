@@ -27,7 +27,7 @@ export function gameController(options?: {
     level.value != null
       ? runSimulation(
           level.value.board,
-          options?.maxSteps?.() ?? 40,
+          options?.maxSteps?.() ?? 50,
           options?.initialState?.() ?? undefined
         )
       : null

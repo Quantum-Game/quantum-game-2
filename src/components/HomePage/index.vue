@@ -7,7 +7,7 @@
       <router-link to="/level/1">
         <AppButton class="button" type="big">PLAY GAME</AppButton>
       </router-link>
-      <router-link to="/sandbox">
+      <router-link to="/lab">
         <AppButton class="button" type="big">VIRTUAL LAB</AppButton>
       </router-link>
     </div>

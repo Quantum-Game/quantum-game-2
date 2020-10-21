@@ -18,6 +18,10 @@ export default class Toolbox {
     }
   }
 
+  initializedEmpty(): boolean {
+    return this.tools.size === 0
+  }
+
   /**
    * @returns names of present elements
    */

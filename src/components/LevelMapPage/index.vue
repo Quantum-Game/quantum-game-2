@@ -3,13 +3,18 @@
     <template #main>
       <article class="main">
         <div class="container">
+          <div class="groups">
+            <router-link class="levelLink" :to="`/lab`">VIRTUAL LAB</router-link>
+          </div>
           <div v-for="(group, i) in groups" :key="'group' + i" class="groups">
-            <!-- <h3>{{ group[0].group }}</h3> -->
-            <ul v-for="(level, j) in group" :key="'level' + j" class="group">
-              <router-link class="levelLink" :to="`/level/${level.id}`">
-                {{ level.id }} - {{ level.name }}
-              </router-link>
-            </ul>
+            <router-link
+              v-for="(level, j) in group"
+              :key="'level' + j"
+              class="levelLink"
+              :to="`/level/${level.id}`"
+            >
+              {{ level.id }} - {{ level.name }}
+            </router-link>
           </div>
         </div>
       </article>
@@ -20,7 +25,7 @@
 <script lang="ts">
 import { groupBy } from 'lodash'
 import AppLayout from '@/components/AppLayout.vue'
-import levels from '@/assets/data/levels/index'
+import { levels } from '@/assets/data/levels/index'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -49,7 +54,6 @@ export default defineComponent({
   .groups {
     display: block;
     padding: 20px;
-    margin: 20px 0px 0px 0px;
     border-bottom: 1px solid white;
     flex-direction: column;
     font-size: 1.2rem;
@@ -59,8 +63,10 @@ export default defineComponent({
       margin: 20px 30px 0px 30px;
     }
   }
-  .group {
+  .levelLink {
+    display: block;
     font-weight: 900;
+    margin: 5px;
   }
 }
 </style>

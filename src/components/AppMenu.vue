@@ -9,7 +9,7 @@
         <router-link to="/levels">LEVELS</router-link>
         <router-link v-if="isLoggedIn" to="/myaccount">MY ACCOUNT</router-link>
         <router-link v-else to="/login">LOG IN</router-link>
-        <router-link to="/sandbox">SANDBOX</router-link>
+        <router-link to="/lab">VIRTUAL LAB</router-link>
         <router-link to="/levels">LEVELS</router-link>
         <router-link to="/info">ENCYCLOPEDIA</router-link>
         <router-link to="/options">OPTIONS</router-link>
