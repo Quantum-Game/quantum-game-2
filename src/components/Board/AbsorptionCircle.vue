@@ -1,12 +1,8 @@
 <template>
   <g fill="none" stroke-width="5">
-    <path :d="calculateArc(coord, 1)" stroke="#4F2F7B" class="progress-ring" />
-    <path
-      :d="calculateArc(coord, Math.min(valueTween, thresholdTween))"
-      stroke="red"
-      class="progress-ring"
-    />
-    <path :d="calculateArc(coord, valueTween)" stroke="red" opacity="0.5" class="progress-ring" />
+    <path :d="calculateArc(coord, 1)" stroke="#4F2F7B" />
+    <path :d="calculateArc(coord, Math.min(valueTween, thresholdTween))" stroke="red" />
+    <path :d="calculateArc(coord, valueTween)" stroke="red" opacity="0.5" />
   </g>
   <g stroke="white">
     <rect

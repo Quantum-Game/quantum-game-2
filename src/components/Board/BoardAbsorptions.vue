@@ -65,7 +65,7 @@ export default defineComponent({
       const histogram = props.useHistogram ? props.histogram : null
       return new Map(
         iFilterMap(props.absorptions, ([coord, value]) => {
-          if (goals.has(coord)) {
+          if (goals.has(coord) || coord.x < 0 || coord.y < 0) {
             return null
           }
           return [

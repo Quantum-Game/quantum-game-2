@@ -149,6 +149,7 @@ export default defineComponent({
 
       const circles: { coord: Coord; pos: Vec2; keys: number[] }[] = []
       for (const [coord, num] of props.histogram) {
+        if (coord.x < 0 || coord.y < 0) continue
         let pos = coord.gridCenter()
         circles.push({ coord, pos, keys: range(Math.max(0, num - 5), num) })
       }
