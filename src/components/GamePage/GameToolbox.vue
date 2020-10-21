@@ -80,6 +80,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.toolbox {
+  pointer-events: initial;
+}
+
 .tool {
   padding: 8px 0;
   text-align: center;
