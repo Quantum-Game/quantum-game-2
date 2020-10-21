@@ -3,70 +3,76 @@
     ref="boardScaler"
     class="board_scaler"
     :style="{ maxWidth: `${totalWidth}px`, maxHeight: `${totalHeight}px` }"
+    @mouseup="handleBoardRelease"
   >
-    <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`" @mouseup="handleBoardRelease">
+    <svg class="grid" :viewBox="`0 0 ${totalWidth} ${totalHeight}`">
+      <clipPath :id="`grid-clip-${uid}`">
+        <rect :width="totalWidth" :height="totalWidth" />
+      </clipPath>
       <!-- DOTS -->
       <BoardDots :rows="board.height" :cols="board.width" />
 
-      <!-- LASER PATH -->
-      <BoardLasers
-        v-if="laserParticles.length > 0"
-        :opacity="laserOpacity"
-        :particles="laserParticles"
-        :blur="experiment"
-      />
-
-      <!-- PHOTONS -->
-      <g v-if="photonOpacity > 0" :style="{ opacity: photonOpacity }">
-        <AppPhoton
-          v-for="(particle, index) in particles"
-          :key="index"
-          :particle="particle"
-          :totalParticles="particles.length"
-          :displayGaussian="true"
-          @mouseenter="handleMouseEnter(particle.coord)"
+      <g :clip-path="`url(#grid-clip-${uid})`">
+        <!-- LASER PATH -->
+        <BoardLasers
+          v-if="laserParticles.length > 0"
+          :opacity="laserOpacity"
+          :particles="laserParticles"
+          :blur="experiment"
         />
+
+        <!-- PHOTONS -->
+        <g v-if="photonOpacity > 0" :style="{ opacity: photonOpacity }">
+          <AppPhoton
+            v-for="(particle, index) in particles"
+            :key="index"
+            :particle="particle"
+            :totalParticles="particles.length"
+            :displayGaussian="true"
+            @mouseenter="handleMouseEnter(particle.coord)"
+          />
+        </g>
+
+        <!-- FATE -->
+        <template v-for="fate in fateCircles" :key="fate.coord">
+          <circle
+            v-for="key in fate.keys"
+            :key="key"
+            class="fate"
+            :cx="fate.pos.x"
+            :cy="fate.pos.y"
+            :style="{ transformOrigin: `${fate.pos.x}px ${fate.pos.y}px` }"
+            r="30"
+          />
+        </template>
+
+        <!-- CELLS -->
+        <AppCell
+          v-for="{ coord, piece, energized } in cells"
+          :key="`cell-${coord.x}-${coord.y}`"
+          :coord="coord"
+          :piece="piece"
+          :energized="energized"
+          @touch="handleCellTouch(coord)"
+          @grab="handleCellGrab"
+          @mouseover="handleMouseEnter(coord)"
+        />
+
+        <!-- EMPTY CELLS -->
+        <template v-if="highlightEmpty">
+          <rect
+            v-for="{ x, y } in empties"
+            :key="`empty-${x}-${y}`"
+            class="empty"
+            :x="x"
+            :y="y"
+            :width="tileSize"
+            :height="tileSize"
+          />
+        </template>
+
+        <ActionHint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
       </g>
-
-      <!-- FATE -->
-      <template v-for="fate in fateCircles" :key="fate.coord">
-        <circle
-          v-for="key in fate.keys"
-          :key="key"
-          class="fate"
-          :cx="fate.pos.x"
-          :cy="fate.pos.y"
-          :style="{ transformOrigin: `${fate.pos.x}px ${fate.pos.y}px` }"
-          r="30"
-        />
-      </template>
-
-      <!-- CELLS -->
-      <AppCell
-        v-for="{ coord, piece, energized } in cells"
-        :key="`cell-${coord.x}-${coord.y}`"
-        :coord="coord"
-        :piece="piece"
-        :energized="energized"
-        @touch="handleCellTouch(coord)"
-        @grab="handleCellGrab"
-        @mouseover="handleMouseEnter(coord)"
-      />
-
-      <!-- EMPTY CELLS -->
-      <template v-if="highlightEmpty">
-        <rect
-          v-for="{ x, y } in empties"
-          :key="`empty-${x}-${y}`"
-          class="empty"
-          :x="x"
-          :y="y"
-          :width="tileSize"
-          :height="tileSize"
-        />
-      </template>
-
-      <ActionHint v-for="hint in hintsCtl.activeActionHighlights" :key="hint" :hint="hint" />
       <BoardAbsorptions
         :absorptions="absorptions"
         :goals="goals"
@@ -74,7 +80,6 @@
         :useHistogram="experiment"
       />
     </svg>
-
     <!-- SPEECH BUBBLES -->
     <SpeechBubble
       v-for="hint in hintsCtl.speechBubbles"
@@ -102,6 +107,8 @@ import { iFilterMap, iMap } from '@/itertools'
 import { hintsController, BoardInteraction } from '@/engine/controller'
 import { InterpolatedParticle } from '@/engine/interpolation'
 import { range } from 'lodash'
+
+let uid = 0
 
 export default defineComponent({
   name: 'Board',
@@ -226,6 +233,7 @@ export default defineComponent({
     })
 
     return {
+      uid: uid++,
       hintsCtl,
       goals,
       tileSize,
@@ -276,6 +284,7 @@ export default defineComponent({
 }
 .grid {
   will-change: transform;
+  overflow: visible;
 }
 
 .empty {
