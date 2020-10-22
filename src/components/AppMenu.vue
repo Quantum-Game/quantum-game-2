@@ -6,11 +6,10 @@
         <router-link v-if="currentLevel != null" :to="`/level/${currentLevel}`">
           CONTINUE
         </router-link>
-        <router-link to="/levels">LEVELS</router-link>
         <router-link v-if="isLoggedIn" to="/myaccount">MY ACCOUNT</router-link>
         <router-link v-else to="/login">LOG IN</router-link>
         <router-link to="/lab">VIRTUAL LAB</router-link>
-        <router-link to="/levels">LEVELS</router-link>
+        <router-link v-if="$flags.fullAccess" to="/levels">LEVELS</router-link>
         <router-link to="/info">ENCYCLOPEDIA</router-link>
         <router-link to="/options">OPTIONS</router-link>
         <a href="https://medium.com/quantum-photons" target="_blank">BLOG</a>

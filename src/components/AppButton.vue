@@ -1,5 +1,5 @@
 <template>
-  <button :class="computeClass">
+  <button :disabled="disabled" :class="computeClass">
     <slot></slot>
   </button>
 </template>
@@ -12,6 +12,7 @@ export default defineComponent({
     type: { type: String, default: 'basic' },
     inline: { type: Boolean, default: true },
     overlay: { type: Boolean, default: false },
+    disabled: { type: Boolean, default: false },
   },
   computed: {
     computeClass(): string[] {
@@ -56,7 +57,7 @@ button {
   &.special {
     background-color: #ff0055;
     border-bottom: 4px solid #890236;
-    &:hover {
+    &:not(:disabled):hover {
       background-color: #c20047;
       transition: 0.5s;
       text-decoration: none;
@@ -67,21 +68,17 @@ button {
     background-color: #5c00d3;
     font-size: 1.5rem;
     border-bottom: 4px solid #120223;
-    &:hover {
+    &:not(:disabled):hover {
       background-color: #4700a3;
       transition: 0.5s;
       text-decoration: none;
     }
   }
 
-  &.inactive {
+  &:disabled {
     opacity: 0.3;
     cursor: initial;
     outline: none;
-    &:hover {
-      background-color: #ff0055;
-      transition: none;
-    }
   }
 
   &.overlay-btn {

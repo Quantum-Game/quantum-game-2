@@ -7,6 +7,7 @@ import finalLevels from './finalLevels.json'
 import classicLevels from './classicLevels.json'
 import sandboxLevel from './sandboxLevel.json'
 import benchmarkLevels from './benchmark.json'
+import { $flags } from '@/flags'
 
 export {
   sandboxLevel,
@@ -29,16 +30,18 @@ const finalGroup = finalLevels
 const classicGroup = classicLevels
 const benchmarkGroup = benchmarkLevels
 
-export const levels = [
-  ...classicGroup,
-  ...introGroup,
-  ...reflectionGroup,
-  ...phaseGroup,
-  ...interferenceGroup,
-  ...polarizationGroup,
-  ...finalGroup,
-  ...benchmarkGroup,
-]
+export const levels = $flags.fullAccess
+  ? [
+      ...classicGroup,
+      ...introGroup,
+      ...reflectionGroup,
+      ...phaseGroup,
+      ...interferenceGroup,
+      ...polarizationGroup,
+      ...finalGroup,
+      ...benchmarkGroup,
+    ]
+  : []
 
 export enum LevelKind {
   Lab,

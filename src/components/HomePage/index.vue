@@ -4,9 +4,10 @@
       <img src="@/assets/graphics/QG_logo.svg" alt="QuantumGame" />
     </div>
     <div layout="row wrap middle u5">
-      <router-link to="/level/1">
+      <router-link v-if="$flags.fullAccess" to="/level/1">
         <AppButton class="button" type="big">PLAY GAME</AppButton>
       </router-link>
+      <AppButton v-else :disabled="true" class="button" type="big">PLAY GAME</AppButton>
       <router-link to="/lab">
         <AppButton class="button" type="big">VIRTUAL LAB</AppButton>
       </router-link>

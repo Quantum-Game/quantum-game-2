@@ -14,7 +14,10 @@ export const $flags = Object.freeze({
   circleAbsorptions: getBoolFlag('ca'),
   /** dim background when experiment mode is active */
   dimBackground: getBoolFlag('dim'),
+  /** Enable alternative menu design */
   altMenu: getBoolFlag('altmenu'),
+  /** Enable full access to the game */
+  fullAccess: getBoolFlag('full'),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
