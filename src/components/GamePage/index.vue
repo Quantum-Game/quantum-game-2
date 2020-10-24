@@ -1,7 +1,7 @@
 <template>
   <div class="game">
     <!-- OVERLAY -->
-    <AppOverlay :state="overlayGameState" class="overlay" @bgClick="continueAfterWin">
+    <AppOverlay :victory="showVictoryOverlay" class="overlay" @bgClick="continueAfterWin">
       <p class="backButton" tabindex="0" @click="continueAfterWin">GO BACK</p>
       <router-link v-if="nextLevelOrOvelay" :to="nextLevelOrOvelay">
         <AppButton :overlay="true" :inline="false">NEXT LEVEL</AppButton>
@@ -39,7 +39,7 @@
       </template>
 
       <template #main>
-        <section>
+        <section class="main-section">
           <Board
             v-if="gameCtl.level"
             :key="gameCtl.level.id"
@@ -47,24 +47,33 @@
             :histogram="experimentCtl.histogram"
             :laserParticles="laserParticles"
             :laserOpacity="laserOpacity"
-            :experiment="experiment"
+            :experiment="visCtl.isExperiment"
             :particles="activeParticles"
             :absorptions="absorptions"
             :highlightEmpty="grabCtl.grabState != null"
             :playing="playheadCtl.isPlaying"
             @touch="handleTouch"
+            @menu="handleMenu"
             @grab="grabCtl.grabPiece"
             @release="grabCtl.releasePiece"
             @hover="updateInfoPayload"
             @scaleChanged="scaledTileSize = $event"
-          />
+          >
+            <EditorBubble
+              v-if="isLab"
+              :gameCtl="gameCtl"
+              :coord="menuCoord"
+              :tileSize="scaledTileSize"
+              @close="hideMenu"
+            />
+          </Board>
           <GameControls
             :playhead="playheadCtl"
             :promptExperiment="isVictory"
-            :visType="visType"
-            @mode-laser="setMode(SimulationVisType.Laser)"
-            @mode-wave="setMode(SimulationVisType.QuantumWave)"
-            @mode-experiment="setMode(SimulationVisType.Experiment)"
+            :visMode="visCtl.visMode"
+            @mode-laser="visCtl.setMode(SimulationVisMode.Laser)"
+            @mode-wave="visCtl.setMode(SimulationVisMode.QuantumWave)"
+            @mode-experiment="visCtl.setMode(SimulationVisMode.Experiment)"
             @reload="reload"
             @download="downloadLevel"
             @upload="loadJsonLevelFromFile"
@@ -76,7 +85,7 @@
 
       <template #right>
         <transition name="fade">
-          <section v-if="!experiment">
+          <section v-if="visCtl.visMode !== SimulationVisMode.Experiment">
             <div class="ket-viewer-game">
               <KetViewer
                 v-if="playheadCtl.activeFrame"
@@ -90,17 +99,7 @@
     </AppLayout>
 
     <!-- DRAG AND DROP CELL -->
-    <div class="drag-container">
-      <svg
-        v-if="dragState"
-        viewBox="0 0 64 64"
-        :width="scaledTileSize"
-        :height="scaledTileSize"
-        :style="dragState.style"
-      >
-        <AppCell :piece="dragState.piece" :interacting="true" />
-      </svg>
-    </div>
+    <DragContainer :grabCtl="grabCtl" :tileSize="scaledTileSize" />
   </div>
 </template>
 
@@ -111,26 +110,26 @@ import { KetViewer } from 'bra-ket-vue'
 import GameInfobox from '@/components/GamePage/GameInfobox.vue'
 import GameToolbox from '@/components/GamePage/GameToolbox.vue'
 import GameControls from '@/components/GamePage/GameControls.vue'
+import DragContainer from '@/components/GamePage/DragContainer.vue'
 import AppLayout from '@/components/AppLayout.vue'
 import Board from '@/components/Board/index.vue'
 import AppButton from '@/components/AppButton.vue'
-import AppCell from '@/components/Board/AppCell.vue'
 import AppOverlay from '@/components/AppOverlay.vue'
+import EditorBubble from '@/components/EditorBubble.vue'
 import '@/store/store'
 import { computed, defineComponent, PropType, ref, watch } from 'vue'
-import { useWindowEvent, usePerRouteFlag, useMouseCoords, useBodyClass } from '@/mixins'
+import { useWindowEvent, usePerRouteFlag } from '@/mixins'
 import {
   GameOutcome,
   gameController,
   playheadController,
-  GrabSource,
-  GrabState,
   grabController,
   goalsController,
-  SimulationVisType,
+  SimulationVisMode,
   experimentController,
+  simulationVisCtl,
 } from '@/engine/controller'
-import { Coord, Elem, Particle, Piece, pieceFromTool } from '@/engine/model'
+import { Coord, Elem, hasFlags, Particle, PieceFlags } from '@/engine/model'
 import { storeNamespace } from '@/store'
 import { mapEntries } from '@/itertools'
 import { useRouter } from 'vue-router'
@@ -146,7 +145,8 @@ export default defineComponent({
     Board,
     AppButton,
     AppOverlay,
-    AppCell,
+    DragContainer,
+    EditorBubble,
   },
   props: {
     levelId: { type: Object as PropType<LevelId>, required: true },
@@ -156,8 +156,8 @@ export default defineComponent({
     const game = storeNamespace('game')
     const writeCurrentLevelId = game.useMutation('SET_CURRENT_LEVEL_ID')
 
-    const rewindingWave = ref(false)
-
+    const scaledTileSize = ref(64)
+    const menuCoord = ref<Coord | null>(null)
     const alreadyWon = usePerRouteFlag()
 
     const gameCtl = gameController()
@@ -186,65 +186,23 @@ export default defineComponent({
       () => gameCtl.sim?.frames,
       () => {
         experimentCtl.stop()
-        playheadCtl.rewind(false)
+        // playheadCtl.rewind(false)
       }
     )
-
     const experimentCtl = experimentController({
       playhead: playheadCtl,
     })
-
-    const experimentFadeProgress = computed(() =>
-      Math.max(0, Math.min(1, (experimentCtl.samples - 5) * 0.2))
-    )
-
-    const visType = computed(() => {
-      if (experimentCtl.isRunning) return SimulationVisType.Experiment
-      if (!playheadCtl.isPlaying && playheadCtl.isFirstFrame && !rewindingWave.value)
-        return SimulationVisType.Laser
-      return SimulationVisType.QuantumWave
-    })
-
-    function setMode(mode: SimulationVisType) {
-      if (mode === SimulationVisType.Experiment) {
-        experimentCtl.stop()
-        experimentCtl.play()
-      } else if (mode === SimulationVisType.Laser) {
-        experimentCtl.stop()
-        playheadCtl.rewind(false)
-      } else if (mode === SimulationVisType.QuantumWave) {
-        experimentCtl.stop()
-        rewindingWave.value = true
-        playheadCtl
-          .rewind(false)
-          .then(() => {
-            playheadCtl.play()
-          })
-          .finally(() => (rewindingWave.value = false))
-      }
-    }
-
-    useBodyClass(() => {
-      return {
-        'mode-laser': visType.value === SimulationVisType.Laser,
-        'mode-wave': visType.value === SimulationVisType.QuantumWave,
-        'mode-experiment': visType.value === SimulationVisType.Experiment,
-      }
-    })
+    const visCtl = simulationVisCtl({ playheadCtl, experimentCtl })
 
     const laserOpacity = computed(() => {
-      switch (visType.value) {
-        case SimulationVisType.Laser:
+      switch (visCtl.visMode) {
+        case SimulationVisMode.Laser:
           return 1
-        case SimulationVisType.QuantumWave:
+        case SimulationVisMode.QuantumWave:
           return 0
-        case SimulationVisType.Experiment:
-          return experimentFadeProgress.value
+        case SimulationVisMode.Experiment:
+          return experimentCtl.fadeProgress
       }
-    })
-
-    const experiment = computed(() => {
-      return visType.value === SimulationVisType.Experiment
     })
 
     const stochasticAbsorptions = computed(() => {
@@ -262,57 +220,25 @@ export default defineComponent({
 
     const absorptions = computed(
       (): Map<Coord, number> => {
-        switch (visType.value) {
-          case SimulationVisType.Laser:
+        switch (visCtl.visMode) {
+          case SimulationVisMode.Laser:
             return totalAbsorptions.value
-          case SimulationVisType.QuantumWave:
+          case SimulationVisMode.QuantumWave:
             return gameCtl.sim?.upToFrameAbsorptions[playheadCtl.frameIndex] ?? new Map()
-          case SimulationVisType.Experiment:
+          case SimulationVisMode.Experiment:
             return stochasticAbsorptions.value
         }
       }
     )
 
-    function grabbedPiece(state: GrabState): Piece {
-      switch (state.source) {
-        case GrabSource.Board:
-          return state.piece
-        case GrabSource.Toolbox:
-          return pieceFromTool(state.type, null)
-      }
-    }
-
-    const scaledTileSize = ref(64)
-    const mouse = useMouseCoords()
-    const dragState = computed(() => {
-      const grab = grabCtl.grabState
-      const halfTile = scaledTileSize.value / 2
-      if (grab == null) return null
-      return {
-        piece: grabbedPiece(grab),
-        style: {
-          transformOrigin: `50% 50%`,
-          transform: `translate(${mouse.pageX - halfTile}px, ${mouse.pageY - halfTile}px)`,
-        },
-      }
-    })
-
-    function globalToggle(shift: boolean) {
-      if (experimentCtl.isRunning) {
-        experimentCtl.stop()
-      } else {
-        if (shift && !playheadCtl.isPlaying) {
+    useWindowEvent('keyup', (e) => {
+      if (e.key === ' ') {
+        e.preventDefault()
+        if (e.shiftKey && !playheadCtl.isPlaying) {
           experimentCtl.play()
         } else {
           playheadCtl.toggle()
         }
-      }
-    }
-
-    useWindowEvent('keyup', (e) => {
-      if (e.key === ' ') {
-        e.preventDefault()
-        globalToggle(e.shiftKey)
       }
     })
 
@@ -339,6 +265,7 @@ export default defineComponent({
     function reload() {
       let levelId = props.levelId
       grabCtl.putBack()
+      hideMenu()
       // save last visited level id globally, so it can be returned to from the menu screen
       writeCurrentLevelId(levelId)
       switch (levelId.kind) {
@@ -389,24 +316,17 @@ export default defineComponent({
     const previousLevel = computed(() => campaignLink(props.levelId, -1))
     const nextLevel = computed(() => campaignLink(props.levelId, 1))
 
-    const overlayGameState = computed(() => {
-      if (
+    const showVictoryOverlay = computed(() => {
+      return (
+        goalsCtl.gameOutcome === GameOutcome.Victory &&
         !isLab.value &&
         !alreadyWon.flag &&
-        visType.value === SimulationVisType.Experiment &&
-        experimentFadeProgress.value === 1
-      ) {
-        switch (goalsCtl.gameOutcome) {
-          case GameOutcome.Victory:
-            return 'Victory'
-          case GameOutcome.MineExploded:
-            return 'MineExploded'
-        }
-      }
-      return null
+        visCtl.isExperiment &&
+        experimentCtl.fadeProgress === 1
+      )
     })
 
-    const isVictory = computed(() => goalsCtl.gameOutcome === GameOutcome.Victory)
+    const isVictory = computed(() => !isLab.value && goalsCtl.gameOutcome === GameOutcome.Victory)
 
     /**
      * Should an overlay be shown when progressing
@@ -457,10 +377,24 @@ export default defineComponent({
     function handleTouch(coord: Coord) {
       const piece = gameCtl.level?.board.pieces.get(coord)
       if (piece == null) return
-      if (piece.type === Elem.Laser) {
+      if (piece.type === Elem.Laser && !hasFlags(piece.flags, PieceFlags.Rotateable)) {
         playheadCtl.toggle()
       } else {
         gameCtl.rotateCcw(coord)
+      }
+    }
+
+    function hideMenu() {
+      if (menuCoord.value != null) {
+        menuCoord.value = null
+      }
+    }
+
+    function handleMenu(coord: Coord) {
+      if (gameCtl.level?.board.pieces.get(coord) == null) {
+        hideMenu()
+      } else {
+        menuCoord.value = coord
       }
     }
 
@@ -490,7 +424,7 @@ export default defineComponent({
       grabCtl,
       playheadCtl,
       experimentCtl,
-      dragState,
+      visCtl,
       previousLevel,
       nextLevelOrOvelay,
       handleSave,
@@ -498,39 +432,29 @@ export default defineComponent({
       reload,
       continueAfterWin,
       updateInfoPayload,
-      overlayGameState,
+      showVictoryOverlay,
       activeParticles,
       laserParticles,
       laserOpacity,
-      experiment,
       infoPayload,
       loadJsonLevelFromFile,
       handleTouch,
+      handleMenu,
+      hideMenu,
+      menuCoord,
       scaledTileSize,
       absorptions,
       isVictory,
-      visType,
-      setMode,
-      SimulationVisType,
+      SimulationVisMode,
       showToolbox,
       title,
+      isLab,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-// Drag & drop
-.drag-container {
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  svg {
-    overflow: visible;
-  }
-}
 // Overlay
 .overlay {
   .backButton {
@@ -564,5 +488,9 @@ h1.title {
   margin-top: 10px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.main-section {
+  position: relative;
 }
 </style>

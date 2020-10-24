@@ -1,4 +1,5 @@
 import {
+  assertUnreachable,
   isDef,
   isObject,
   tryGetBool,
@@ -10,8 +11,8 @@ import {
 } from '@/types'
 import Toolbox from '../Toolbox'
 import { Coord } from './coord'
-import { Elem, exportElem, importElem } from './elem'
-import { Rotation, rotationFromDegrees, rotationToDegrees } from './rotation'
+import { defaultPiece, Elem, exportElem, importElem, Piece, PieceFlags } from './elem'
+import { rotationFromDegrees, rotationToDegrees } from './rotation'
 
 export interface Level {
   readonly id: number
@@ -39,15 +40,6 @@ export interface Board {
 export interface Vec2 {
   readonly x: number
   readonly y: number
-}
-
-export interface Piece {
-  readonly type: Elem
-  readonly rotation: Rotation
-  readonly polarization: Rotation
-  readonly goalThreshold: number
-  readonly flags: PieceFlags
-  readonly interactDelta: Vec2 | null
 }
 
 export enum HintType {
@@ -87,9 +79,9 @@ export type Hint = SpeechHint | PartialActionHighlight
  * Import grid Piece from unknown value
  * @param value parsed JSON object
  */
-function importPiece(
+export function importPiece(
   value: unknown,
-  importedGoals: Map<Coord, number>
+  importedGoals?: Map<Coord, number>
 ): { coord: Coord; piece: Piece } | null {
   if (!isObject(value)) {
     return null
@@ -102,48 +94,82 @@ function importPiece(
   const active = tryGetBool(value, 'active') ?? false
   const draggable = tryGetBool(value, 'draggable') ?? (!frozen && active)
   const rotateable = tryGetBool(value, 'rotateable') ?? !frozen
+  const goalThreshold = importedGoals?.get(coord) ?? tryGetNumber(value, 'goalThreshold') ?? 0
+  const rotation = rotationFromDegrees(tryGetNumber(value, 'rotation') ?? 0)
 
   let flags = PieceFlags.Empty
   if (draggable) flags |= PieceFlags.Draggable
   if (rotateable) flags |= PieceFlags.Rotateable
 
-  const piece = {
-    type,
-    rotation: rotationFromDegrees(tryGetNumber(value, 'rotation') ?? 0),
-    polarization: rotationFromDegrees(tryGetNumber(value, 'polarization') ?? 0),
-    goalThreshold: importedGoals.get(coord) ?? 0,
-    flags,
-    interactDelta: null,
-  }
+  const common = { flags, interactDelta: null }
+
+  const piece = ((): Piece => {
+    switch (type) {
+      case Elem.Wall:
+      case Elem.Rock:
+      case Elem.Gate:
+      case Elem.Mine:
+      case Elem.Glass:
+      case Elem.VacuumJar:
+      case Elem.CornerCube:
+      case Elem.NonLinearCrystal:
+        return { ...common, type }
+      case Elem.Laser:
+        return { ...common, type, rotation, polarization: tryGetNumber(value, 'polarization') ?? 0 }
+      case Elem.Mirror:
+        return { ...common, type, rotation }
+      case Elem.BeamSplitter:
+      case Elem.PolarizingBeamSplitter:
+      case Elem.CoatedBeamSplitter:
+        return { ...common, type, rotation }
+      case Elem.Detector:
+        return { ...common, type, rotation, goalThreshold }
+      case Elem.DetectorFour:
+        return { ...common, type, rotation, goalThreshold }
+      case Elem.Absorber:
+        return { ...common, type, absorption: tryGetNumber(value, 'absorption') ?? 0.5 }
+      case Elem.Polarizer:
+        return { ...common, type, rotation }
+      case Elem.QuarterWavePlate:
+        return { ...common, type, rotation }
+      case Elem.HalfWavePlate:
+        return { ...common, type, rotation }
+      case Elem.SugarSolution:
+        return {
+          ...common,
+          type,
+          polarizationRotation: tryGetNumber(value, 'polarization') ?? 0.125,
+        }
+      case Elem.FaradayRotator:
+        return {
+          ...common,
+          type,
+          rotation,
+          polarizationRotation: tryGetNumber(value, 'polarization') ?? 0.125,
+        }
+      default:
+        assertUnreachable(type)
+    }
+  })()
 
   return { coord, piece }
-}
-
-/**
- * bit flags enum
- */
-export const enum PieceFlags {
-  Empty = 0,
-  Draggable = 1 << 0,
-  Rotateable = 1 << 1,
 }
 
 export function hasFlags(flags: PieceFlags, mask: PieceFlags): boolean {
   return (flags & mask) === mask
 }
 
+export function setFlags(flags: PieceFlags, mask: PieceFlags, set: boolean): PieceFlags {
+  if (set) {
+    return flags | mask
+  } else {
+    return flags & ~mask
+  }
+}
+
 export function hasAnyFlag(flags: PieceFlags, mask: PieceFlags): boolean {
   return (flags & mask) !== 0
 }
-
-const defaultPiece = {
-  type: Elem.Rock,
-  rotation: Rotation.Right,
-  polarization: Rotation.Right,
-  goalThreshold: 0,
-  flags: PieceFlags.Empty,
-  interactDelta: null,
-} as const
 
 /**
  * Import toolbox piece from unknown value
@@ -151,18 +177,9 @@ const defaultPiece = {
  */
 export function pieceFromTool(type: Elem, interactDelta: Vec2 | null): Piece {
   return {
-    ...defaultPiece,
-    type,
-    goalThreshold: type === Elem.Detector || type === Elem.DetectorFour ? 1 : 0,
+    ...defaultPiece(type),
     flags: PieceFlags.Draggable | PieceFlags.Rotateable,
     interactDelta,
-  }
-}
-
-export function staticPiece(type: Elem): Piece {
-  return {
-    ...defaultPiece,
-    type,
   }
 }
 
@@ -210,6 +227,7 @@ export function importLevel(value: unknown): Level | null {
   const grid = tryGetObject(value, 'grid')
   const goals = tryGetInstance(value, 'goals', Array) ?? []
   const tools = tryGetInstance(value, 'tools', Array) ?? []
+  const toolsInfinite = tryGetBool(value, 'toolsInfinite') ?? false
   const rawHints = tryGetInstance(value, 'hints', Array) ?? []
 
   if (grid == null) return null
@@ -267,7 +285,7 @@ export function importLevel(value: unknown): Level | null {
       pieces,
       hints,
     },
-    toolbox: Toolbox.import(tools),
+    toolbox: Toolbox.import(tools, toolsInfinite),
     safetyThreshold: tryGetNumber(value, 'safetyThreshold') ?? 0,
     rockTalkId: tryGetString(value, 'rockTalkId'),
   }
@@ -283,8 +301,9 @@ export function exportLevel(level: Level): Record<PropertyKey, unknown> {
       cells: Array.from(level.board.pieces).map(([coord, piece]) => ({
         coord: coord.export(),
         element: exportElem(piece.type),
-        rotation: rotationToDegrees(piece.rotation),
-        polarization: rotationToDegrees(piece.polarization),
+        rotation: 'rotation' in piece ? rotationToDegrees(piece.rotation) : undefined,
+        goalThreshold:
+          'goalThreshold' in piece ? rotationToDegrees(piece.goalThreshold) : undefined,
         rotateable: hasFlags(piece.flags, PieceFlags.Rotateable),
         draggable: hasFlags(piece.flags, PieceFlags.Draggable),
       })),
@@ -306,7 +325,7 @@ export function exportLevel(level: Level): Record<PropertyKey, unknown> {
     }),
     goals: Array.from(level.board.pieces)
       .map(([coord, piece]) => {
-        if (piece.goalThreshold > 0) {
+        if ('goalThreshold' in piece && piece.goalThreshold > 0) {
           return {
             coord: coord.export(),
             threshold: piece.goalThreshold,

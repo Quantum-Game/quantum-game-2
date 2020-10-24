@@ -54,6 +54,7 @@
           :piece="piece"
           :energized="energized"
           @touch="handleCellTouch(coord)"
+          @menu="handleCellMenu(coord)"
           @grab="handleCellGrab"
           @mouseover="handleMouseEnter(coord)"
         />
@@ -87,6 +88,7 @@
       :hint="hint"
       :tileSize="scaledTileSize"
     />
+    <slot />
   </div>
 </template>
 
@@ -137,6 +139,7 @@ export default defineComponent({
     grab: emitType<BoardInteraction>(),
     release: emitType<BoardInteraction>(),
     touch: Coord.validate,
+    menu: Coord.validate,
     hover: validateInfoPayload,
     'scale-changed': emitType<number>(),
   },
@@ -201,7 +204,9 @@ export default defineComponent({
     const goals = computed(() => {
       return new Map(
         iFilterMap(props.board.pieces, ([coord, piece]) =>
-          piece.goalThreshold > 0 ? ([coord, piece.goalThreshold] as const) : null
+          'goalThreshold' in piece && piece.goalThreshold > 0
+            ? ([coord, piece.goalThreshold] as const)
+            : null
         )
       )
     })
@@ -262,6 +267,9 @@ export default defineComponent({
       handleCellTouch(coord: Coord): void {
         hintsCtl.advanceHighlights(coord, [HintActionType.Pulse, HintActionType.Rotation])
         emit('touch', coord)
+      },
+      handleCellMenu(coord: Coord): void {
+        emit('menu', coord)
       },
       handleCellGrab(clientPos: Vec2): void {
         const interaction = getInteraction(clientPos.x, clientPos.y)

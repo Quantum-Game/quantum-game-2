@@ -21,7 +21,9 @@ export function goalsController(data: {
   const allGoals = computed(() =>
     Array.from(
       iFilterMap(data.level()?.board.pieces ?? [], ([coord, piece]) =>
-        piece.goalThreshold > 0 ? { coord, threshold: piece.goalThreshold } : null
+        'goalThreshold' in piece && piece.goalThreshold > 0
+          ? { coord, threshold: piece.goalThreshold }
+          : null
       )
     )
   )

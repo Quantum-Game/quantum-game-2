@@ -3,6 +3,7 @@
     :class="cellClass"
     :style="cellStyle"
     @mousedown.prevent="onMouseDown"
+    @contextmenu.prevent="onContextMenu"
     @mousemove="onMouseMove"
     @mouseup="onMouseUp"
     @mouseout="hover = false"
@@ -41,7 +42,7 @@ export default defineComponent({
     energized: { type: Number, default: 0 },
     available: { type: Boolean, default: true },
   },
-  emits: ['grab', 'touch'],
+  emits: ['grab', 'touch', 'menu'],
   setup(props, { emit }) {
     const hover = ref(false)
 
@@ -59,7 +60,7 @@ export default defineComponent({
     })
 
     const tweenRotation = useAngleTween({
-      to: () => rotationToDegrees(props.piece.rotation),
+      to: () => ('rotation' in props.piece ? rotationToDegrees(props.piece.rotation) : 0),
       easing: Easing.Exponential.Out,
       duration: 200,
     })
@@ -73,7 +74,7 @@ export default defineComponent({
           interacting: props.interacting,
           energized: props.energized > 0,
           goalProgress:
-            props.piece.goalThreshold > 0
+            'goalThreshold' in props.piece && props.piece.goalThreshold > 0
               ? Math.min(1, props.energized / props.piece.goalThreshold)
               : 0,
         }
@@ -145,28 +146,37 @@ export default defineComponent({
       HandledGrab,
     }
     const clickCoords = { x: 0, y: 0 }
+    let clickButtons = 0
 
     let clickState = ClickState.Released
     function onMouseDown(e: MouseEvent) {
-      if (e.buttons === 1) {
-        clickState = ClickState.JustClicked
-        clickCoords.x = e.clientX
-        clickCoords.y = e.clientY
-      }
+      clickState = ClickState.JustClicked
+      clickCoords.x = e.clientX
+      clickCoords.y = e.clientY
+      clickButtons = e.buttons
+    }
+
+    function onContextMenu(e: MouseEvent) {
+      clickState = ClickState.HandledTouch
+      emit('menu', { x: e.clientX, y: e.clientY })
     }
 
     function onMouseUp() {
       if (clickState === ClickState.JustClicked) {
-        clickState = ClickState.HandledTouch
-        emit('touch', clickCoords)
+        if (clickButtons === 1) {
+          clickState = ClickState.HandledTouch
+          emit('touch', clickCoords)
+        }
       }
     }
 
     function onMouseMove() {
       hover.value = true
       if (clickState === ClickState.JustClicked) {
-        clickState = ClickState.HandledGrab
-        emit('grab', clickCoords)
+        if (clickButtons === 1) {
+          clickState = ClickState.HandledGrab
+          emit('grab', clickCoords)
+        }
       }
     }
 
@@ -180,6 +190,7 @@ export default defineComponent({
       cellStyle,
       rectStyle,
       onMouseDown,
+      onContextMenu,
       onMouseMove,
       onMouseUp,
     }

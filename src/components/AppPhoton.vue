@@ -139,7 +139,7 @@ export default defineComponent({
         return {
           opacity: `${intensity.value}`,
           transformOrigin: `$0px 0px`,
-          transform: `rotate(${directionToDegrees(props.particle.direction)}deg)`,
+          transform: `rotate(${-directionToDegrees(props.particle.direction)}deg)`,
         }
       }
     )

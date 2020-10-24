@@ -80,7 +80,7 @@
 import { validateInfoPayload } from '@/mixins/gameInterfaces'
 import { storeNamespace } from '@/store'
 import { computed, defineComponent, PropType, proxyRefs } from 'vue'
-import { PlayheadController, SimulationVisType } from '@/engine/controller'
+import { PlayheadController, SimulationVisMode } from '@/engine/controller'
 
 const user = storeNamespace('user')
 const options = storeNamespace('options')
@@ -89,7 +89,7 @@ export default defineComponent({
   props: {
     playhead: { type: Object as PropType<PlayheadController>, required: true },
     promptExperiment: { type: Boolean, default: false },
-    visType: { type: Number as PropType<SimulationVisType>, required: true },
+    visMode: { type: Number as PropType<SimulationVisMode>, required: true },
   },
   emits: {
     hover: validateInfoPayload,
@@ -107,12 +107,12 @@ export default defineComponent({
     const isLoggedIn = user.useGetter('isLoggedIn')
 
     const displayStatus = computed(() => {
-      switch (props.visType) {
-        case SimulationVisType.Laser:
+      switch (props.visMode) {
+        case SimulationVisMode.Laser:
           return 'Classical laser beam'
-        case SimulationVisType.QuantumWave:
+        case SimulationVisMode.QuantumWave:
           return 'Quantum simulation'
-        case SimulationVisType.Experiment:
+        case SimulationVisMode.Experiment:
           return 'Running experiment'
       }
     })
@@ -145,10 +145,10 @@ export default defineComponent({
       download: computed(() => iconClass('download', !props.playhead.isPlaying)),
       upload: computed(() => iconClass('upload', !props.playhead.isPlaying)),
       save: computed(() => iconClass('save', isLoggedIn.value && !props.playhead.isPlaying)),
-      wave: computed(() => iconClass('wave', props.visType === SimulationVisType.QuantumWave)),
-      laser: computed(() => iconClass('laser', props.visType === SimulationVisType.Laser)),
+      wave: computed(() => iconClass('wave', props.visMode === SimulationVisMode.QuantumWave)),
+      laser: computed(() => iconClass('laser', props.visMode === SimulationVisMode.Laser)),
       experiment: computed(() =>
-        iconClass('experiment', props.visType === SimulationVisType.Experiment)
+        iconClass('experiment', props.visMode === SimulationVisMode.Experiment)
       ),
     })
 

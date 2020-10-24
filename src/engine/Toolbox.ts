@@ -9,12 +9,13 @@ import { iFilterMap } from '@/itertools'
 export default class Toolbox {
   readonly tools: Map<Elem, number> = new Map()
 
-  public constructor(elements: Elem[]) {
+  public constructor(elements: Elem[], infinite = true) {
     const elems = Object.values(Elem).filter(isNotString)
     const counts = countBy(elements)
 
     for (const elem of elems) {
-      this.tools.set(elem, counts[elem] || 0)
+      const count = counts[elem] ?? 0
+      this.tools.set(elem, infinite && count > 0 ? Infinity : count)
     }
   }
 
@@ -80,8 +81,8 @@ export default class Toolbox {
     return resultStr
   }
 
-  public static import(tools: unknown[]): Toolbox {
-    return new Toolbox(tools.map(importElem).filter(isDef))
+  public static import(tools: unknown[], infinite = false): Toolbox {
+    return new Toolbox(tools.map(importElem).filter(isDef), infinite)
   }
 
   public export(): string[] {

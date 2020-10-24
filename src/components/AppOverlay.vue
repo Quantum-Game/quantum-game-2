@@ -1,6 +1,6 @@
 <template>
-  <transition :name="state">
-    <div v-if="victory" :class="`wrapper ${state}`" @click="$emit('bg-click')">
+  <transition name="victory">
+    <div v-if="victory" class="wrapper victory" @click="$emit('bg-click')">
       <div class="victory-circle" @click.stop>
         <h2>You won!</h2>
         <slot></slot>
@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Confetti } from 'vue-confetti'
-import { computed, defineComponent, onUnmounted, watch } from 'vue'
+import { defineComponent, onUnmounted, watch } from 'vue'
 
 const confettiConfig = {
   particlesPerFrame: 3,
@@ -39,7 +39,7 @@ const confettiConfig = {
 
 export default defineComponent({
   props: {
-    state: { type: String, required: false },
+    victory: { type: Boolean, required: true },
   },
   emits: {
     'bg-click': null,
@@ -48,31 +48,31 @@ export default defineComponent({
     const confetti = new Confetti()
     onUnmounted(() => confetti.stop())
 
-    const victory = computed(() => props.state === 'Victory')
-    watch(victory, (victory) => {
-      if (victory) {
-        confetti.start(confettiConfig)
-      } else {
-        confetti.stop()
+    watch(
+      () => props.victory,
+      (victory) => {
+        if (victory) {
+          confetti.start(confettiConfig)
+        } else {
+          confetti.stop()
+        }
       }
-    })
-
-    return { victory }
+    )
   },
 })
 </script>
 
 <style lang="scss" scoped>
-.Victory-enter-active,
-.Victory-leave-active {
+.victory-enter-active,
+.victory-leave-active {
   transition: opacity 0.5s;
 }
-.Victory-enter,
-.Victory-leave-to {
+.victory-enter,
+.victory-leave-to {
   opacity: 0;
 }
 
-.Victory.wrapper {
+.victory.wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,16 +92,6 @@ export default defineComponent({
     font-size: 2rem;
     margin: 10px;
   }
-}
-
-.MineExploded-enter,
-.MineExploded-leave-to {
-  opacity: 0;
-}
-
-.MineExploded.wrapper {
-  opacity: 0.8;
-  background: #ff0055;
 }
 
 .wrapper {

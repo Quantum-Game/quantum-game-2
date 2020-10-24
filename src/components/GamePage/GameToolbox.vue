@@ -19,7 +19,8 @@
         <circle :cx="64" :cy="64" r="1" fill="#edeaf4" />
         <AppCell :piece="piece" :available="count > 0" @grab="onGrab(piece.type)" />
       </svg>
-      <span class="counter">× {{ count }}</span>
+      <span v-if="Number.isFinite(count)" class="counter">× {{ count }}</span>
+      <span v-else class="counter">{{ '&nbsp;' }}</span>
     </div>
   </div>
 </template>

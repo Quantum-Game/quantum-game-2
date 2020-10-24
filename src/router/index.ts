@@ -1,8 +1,8 @@
 import { levelIdFromString, LevelKind } from '@/assets/data/levels'
+import { isEqual } from 'lodash'
 import { createRouter, createWebHistory } from 'vue-router'
 
-/* eslint-disable */
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes: [
     {
@@ -93,4 +93,15 @@ export default createRouter({
     },
   ],
 })
-/* eslint-enable */
+
+// preserve feature flags in the route
+router.beforeEach((to, from, next) => {
+  const mergedQuery = { ...from.query, ...to.query }
+  if (!isEqual(to.query, mergedQuery)) {
+    next({ ...to, query: { ...from.query, ...to.query } })
+  } else {
+    next()
+  }
+})
+
+export default router

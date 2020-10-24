@@ -68,7 +68,7 @@ export default defineComponent({
     function updateRotation(coord: Coord) {
       gameCtl.rotateCcw(coord)
       const piece = gameCtl.level?.board.pieces.get(coord)
-      if (piece) {
+      if (piece != null && 'rotation' in piece) {
         emit('rotated', piece.rotation)
       }
     }
