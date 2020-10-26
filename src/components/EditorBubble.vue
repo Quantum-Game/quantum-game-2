@@ -223,6 +223,19 @@ export default defineComponent({
         })
       }
 
+      if ('split' in p) {
+        params.push({
+          kind: ParamKind.Range,
+          label: 'Split',
+          min: 0,
+          max: 100,
+          ref: computed({
+            get: () => Math.round(p.split * 100),
+            set: (v) => updatePiece(p, { split: setNum(v, 100) }),
+          }),
+        })
+      }
+
       return params
     })
 

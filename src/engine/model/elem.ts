@@ -103,12 +103,16 @@ export type PieceGate = { type: Elem.Gate }
 export type PieceLaser = { type: Elem.Laser; rotation: Rotation; polarization: number }
 export type PieceNonLinearCrystal = { type: Elem.NonLinearCrystal }
 export type PieceMirror = { type: Elem.Mirror; rotation: Rotation }
-export type PieceBeamSplitter = { type: Elem.BeamSplitter; rotation: Rotation }
+export type PieceBeamSplitter = { type: Elem.BeamSplitter; rotation: Rotation; split: number }
 export type PiecePolarizingBeamSplitter = {
   type: Elem.PolarizingBeamSplitter
   rotation: Rotation
 }
-export type PieceCoatedBeamSplitter = { type: Elem.CoatedBeamSplitter; rotation: Rotation }
+export type PieceCoatedBeamSplitter = {
+  type: Elem.CoatedBeamSplitter
+  rotation: Rotation
+  split: number
+}
 export type PieceCornerCube = { type: Elem.CornerCube }
 export type PieceDetector = { type: Elem.Detector; rotation: Rotation; goalThreshold: number }
 export type PieceRock = { type: Elem.Rock }
@@ -191,11 +195,11 @@ export function defaultPiece(type: Elem): Piece {
     case Elem.Mirror:
       return { ...common, type, rotation: Rotation.Right }
     case Elem.BeamSplitter:
-      return { ...common, type, rotation: Rotation.Right }
+      return { ...common, type, rotation: Rotation.Right, split: 0.5 }
     case Elem.PolarizingBeamSplitter:
       return { ...common, type, rotation: Rotation.Right }
     case Elem.CoatedBeamSplitter:
-      return { ...common, type, rotation: Rotation.Right }
+      return { ...common, type, rotation: Rotation.Right, split: 0.5 }
     case Elem.Detector:
       return { ...common, type, rotation: Rotation.Right, goalThreshold: 1 }
     case Elem.Absorber:

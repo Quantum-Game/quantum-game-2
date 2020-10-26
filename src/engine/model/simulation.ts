@@ -108,9 +108,9 @@ export function cellOperator(cell: Piece): Operator {
     case Elem.Absorber:
       return Elements.attenuator(Math.sqrt(cell.absorption))
     case Elem.BeamSplitter:
-      return Elements.beamSplitter(rotationToDegrees(cell.rotation))
+      return beamSplitter(rotationToDegrees(cell.rotation), cell.split)
     case Elem.CoatedBeamSplitter:
-      return Elements.beamSplitter(rotationToDegrees(cell.rotation))
+      return beamSplitter(rotationToDegrees(cell.rotation), cell.split)
     case Elem.CornerCube:
       return Elements.cornerCube()
     case Elem.FaradayRotator:
@@ -208,4 +208,15 @@ export function runSimulation(board: Board, maxFrames: number, initialState?: Ve
   simulation.frames.push(frame)
   simulation.generateFrames(maxFrames)
   return importSimulation(simulation)
+}
+
+const idPol = Operator.identity([dimPol])
+export function beamSplitter(angle: number, split: number): Operator {
+  return Operator.outer([Ops.reflectFromPlaneDirection(angle), Ops.reflectPhaseFromDenser()])
+    .mulConstant(new Complex(0.0, Math.sqrt(split)))
+    .add(
+      Ops.beamsplitterTransmittionDirections(angle)
+        .outer(idPol)
+        .mulConstant(new Complex(Math.sqrt(1 - split), 0.0))
+    )
 }
