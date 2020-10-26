@@ -2,7 +2,9 @@ use approx::{AbsDiffEq, UlpsEq};
 use core::f32::consts::PI;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 const TAU: f32 = 2.0 * PI;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 #[derive(Clone, Copy, PartialEq, Default)]
 pub struct Complex {
     pub re: f32,
@@ -10,11 +12,14 @@ pub struct Complex {
 }
 
 /// Alias for Complex::new
-pub const fn cx(re: f32, im: f32) -> Complex {
+#[wasm_bindgen]
+pub fn cx(re: f32, im: f32) -> Complex {
     Complex::new(re, im)
 }
 
+#[wasm_bindgen]
 pub struct DisplayPolar(Complex);
+#[wasm_bindgen]
 pub struct DisplayPolarTau(Complex);
 
 impl core::fmt::Debug for Complex {
@@ -61,9 +66,12 @@ impl From<(f32, f32)> for Complex {
 impl Complex {
     pub const ZERO: Complex = Complex { re: 0.0, im: 0.0 };
     pub const ONE: Complex = Complex { re: 1.0, im: 0.0 };
+}
 
+#[wasm_bindgen]
+impl Complex {
     /// Create a complex number from cartesian coordinates
-    pub const fn new(re: f32, im: f32) -> Self {
+    pub fn new(re: f32, im: f32) -> Self {
         Self { re, im }
     }
 
@@ -83,12 +91,12 @@ impl Complex {
     }
 
     /// Display in polar coordinates
-    pub const fn display_polar(&self) -> DisplayPolar {
+    pub fn display_polar(&self) -> DisplayPolar {
         DisplayPolar(*self)
     }
 
     /// Display in polar-tau coordinates
-    pub const fn display_polar_tau(&self) -> DisplayPolarTau {
+    pub fn display_polar_tau(&self) -> DisplayPolarTau {
         DisplayPolarTau(*self)
     }
 

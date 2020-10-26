@@ -1,5 +1,3 @@
-use alloc::vec::Vec;
-use hashbrown::hash_map::HashMap;
 mod dimensions;
 mod elements;
 
@@ -7,21 +5,29 @@ pub use dimensions::*;
 pub use elements::*;
 
 use crate::{operator::PartialDims, util::RepeatIter, Dims, Operator, PartialOperator, Vector};
+use alloc::vec::Vec;
 use frunk::{
     indices::{Here, There},
     HNil,
 };
+use hashbrown::hash_map::HashMap;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Coord {
     pub x: u16,
     pub y: u16,
 }
 
+#[wasm_bindgen]
 impl Coord {
     pub fn new(x: u16, y: u16) -> Coord {
         Coord { x, y }
     }
+}
+
+impl Coord {
     pub fn as_indicator(&self) -> Operator<Hlist![PosX, PosY]> {
         Operator::indicator(hlist![PosX(self.x), PosY(self.y)])
     }
@@ -307,7 +313,7 @@ mod tests {
 
     #[test]
     fn should_operate_on_single_photon() {
-        let simulation = sim_with_elem(Element::Mirror(Angle::UpLeft));
+        let simulation = sim_with_elem(Element::Mirror(Angle::DownLeft));
         let one_photon = photon![0, 2, >, H];
         let mut sim = simulation.simulate(&one_photon);
 
@@ -328,7 +334,7 @@ mod tests {
         let simulation = Simulation::new(&Grid {
             width: 5,
             height: 5,
-            elements: map![Coord::new(2, 2) => Element::Mirror(Angle::UpLeft)],
+            elements: map![Coord::new(2, 2) => Element::Mirror(Angle::DownLeft)],
         });
 
         let two_photons = photon![1, 2, >, H | 2, 4, ^, V];

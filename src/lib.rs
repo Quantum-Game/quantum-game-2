@@ -5,6 +5,8 @@ extern crate alloc;
 #[macro_use] // for the hlist macro
 extern crate frunk;
 
+pub use frunk::*;
+
 mod macros;
 
 mod complex;

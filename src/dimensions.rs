@@ -6,8 +6,10 @@
 ///
 /// For enums, use `enum_dimension!` macro to auto-derive all of the above.
 use crate::enum_dimension;
+use wasm_bindgen::prelude::*;
 
 enum_dimension! {
+    #[wasm_bindgen]
     pub enum Polarization {
         H,
         V,
@@ -15,13 +17,17 @@ enum_dimension! {
 }
 
 enum_dimension! {
+    #[wasm_bindgen]
     pub enum Spin {
         U,
         D,
     }
 }
+
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct PositionX(pub u32);
 
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct PositionY(pub u32);

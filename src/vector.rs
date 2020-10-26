@@ -99,6 +99,10 @@ impl<D: Dims> Vector<D> {
         &self.values
     }
 
+    pub fn get(&self, dim: &D) -> Option<Complex> {
+        self.values.get(dim).copied()
+    }
+
     pub fn insert(&mut self, key: D, value: Complex) {
         if !value.almost_zero() {
             self.values.insert(key, value);

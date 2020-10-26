@@ -1,5 +1,6 @@
 use crate::{enum_dimension, PartialOperator};
 use alloc::boxed::Box;
+use wasm_bindgen::prelude::*;
 
 pub use crate::dimensions::Polarization;
 
@@ -19,10 +20,12 @@ pub type SinglePhotonOperator = Box<dyn PartialOperator<SinglePhotonDims>>;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct PosX(pub u16);
+
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
 pub struct PosY(pub u16);
 
 enum_dimension! {
+    #[wasm_bindgen]
     pub enum Direction {
         Right,
         Up,

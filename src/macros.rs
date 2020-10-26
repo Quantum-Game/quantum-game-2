@@ -31,11 +31,13 @@ macro_rules! vector {
 #[macro_export]
 macro_rules! enum_dimension {
     {
+        $(#$attr:tt)*
         $vis:vis enum $name:ident {
             $($variant:ident),*
             $(,)?
         }
     } => {
+        $(#$attr)*
         #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]
         $vis enum $name {
             $($variant),*

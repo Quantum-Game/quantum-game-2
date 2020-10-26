@@ -1,10 +1,11 @@
-use crate::{cx, enumerable::enumerate_two, operator, Complex, Dims, Enumerable, Operator};
-use core::f32::consts::{PI, SQRT_2};
-
 pub use super::dimensions::*;
+use crate::{cx, enumerable::enumerate_two, operator, Complex, Dims, Enumerable, Operator};
+use core::f32::consts::PI;
+use wasm_bindgen::prelude::*;
 
 const TAU: f32 = PI * 2.0;
 
+#[wasm_bindgen]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Angle {
     Right,
@@ -117,7 +118,7 @@ impl Angle {
 pub enum Element {
     Wall,
     Gate,
-    Laser,
+    Laser(Direction),
     NonLinearCrystal,
     Mirror(Angle),
     BeamSplitter(Angle, f32),
@@ -145,7 +146,7 @@ impl Element {
             | Element::Gate
             | Element::Detector(_) // TODO: Direction
             | Element::Mine
-            | Element::Laser
+            | Element::Laser(_)
             | Element::DetectorFour => attenuator(0.0),
             Element::Mirror(angle) => mirror(angle),
             Element::BeamSplitter(angle, split) => beamsplitter(angle, split),
@@ -187,7 +188,7 @@ fn polarizing_beamsplitter(angle: Angle) -> Operator<DimDirPol> {
     let proj_v = Operator::indicator(V);
 
     Operator::<DimDir>::identity().outer(&proj_h)
-        + &reflect_from_plane_direction(angle.rot225()).outer(&proj_v)
+        + &reflect_from_plane_direction(angle.rot45()).outer(&proj_v)
 }
 
 fn polarizer(angle: Angle) -> Operator<DimDirPol> {
@@ -254,16 +255,17 @@ fn reflect_from_plane_direction(angle: Angle) -> Operator<DimDir> {
             (RIGHT, LEFT) => Complex::ONE,
         ],
         Angle::UpRight | Angle::DownLeft => operator![
-            (RIGHT, DOWN) => Complex::ONE,
-            (DOWN, RIGHT) => Complex::ONE,
-            (LEFT, UP) => Complex::ONE,
-            (UP, LEFT) => Complex::ONE,
-        ],
-        Angle::UpLeft | Angle::DownRight => operator![
             (RIGHT, UP) => Complex::ONE,
             (UP, RIGHT) => Complex::ONE,
             (LEFT, DOWN) => Complex::ONE,
             (DOWN, LEFT) => Complex::ONE,
+        ],
+        Angle::UpLeft | Angle::DownRight => operator![
+            (RIGHT, DOWN) => Complex::ONE,
+            (DOWN, RIGHT) => Complex::ONE,
+            (LEFT, UP) => Complex::ONE,
+            (UP, LEFT) => Complex::ONE,
+
         ],
     }
 }
@@ -344,7 +346,7 @@ mod tests {
     use crate::photons::dimensions::*;
     use crate::{cx, vector, Angle, Complex, Direction, PosX, PosY, SinglePhotonDims, Vector};
     use approx::assert_ulps_eq;
-    use core::f32::consts::{FRAC_1_SQRT_2, SQRT_2};
+    use core::f32::consts::FRAC_1_SQRT_2;
 
     const H: Polarization = Polarization::H;
     const V: Polarization = Polarization::V;
@@ -393,7 +395,7 @@ mod tests {
 
     #[test]
     fn test_laser() {
-        assert_eq!(default_mul(Element::Laser), vector![])
+        assert_eq!(default_mul(Element::Laser(Direction::Right)), vector![])
     }
 
     // #[test]
@@ -409,11 +411,11 @@ mod tests {
             origin_photon(Direction::Left, H, Complex::ONE)
         );
         assert_eq!(
-            default_mul(Element::Mirror(Angle::UpRight)),
+            default_mul(Element::Mirror(Angle::DownRight)),
             origin_photon(Direction::Down, H, Complex::ONE)
         );
         assert_eq!(
-            default_mul(Element::Mirror(Angle::UpLeft)),
+            default_mul(Element::Mirror(Angle::DownLeft)),
             origin_photon(Direction::Up, H, Complex::ONE)
         );
     }
@@ -430,7 +432,7 @@ mod tests {
                 + origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
         );
         assert_eq!(
-            default_mul(Element::BeamSplitter(Angle::UpRight, 0.5)),
+            default_mul(Element::BeamSplitter(Angle::DownRight, 0.5)),
             origin_photon(Direction::Down, H, cx(0.0, FRAC_1_SQRT_2))
                 + origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
         );

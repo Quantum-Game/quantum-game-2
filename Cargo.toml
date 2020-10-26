@@ -11,3 +11,4 @@ frunk = { version = "0.3.1", default-features = false }
 approx = "0.3.2"
 # used instead of std HashMap for stable raw_entry api
 hashbrown = "0.9.1" 
+wasm-bindgen = "0.2.68"
