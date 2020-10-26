@@ -11,8 +11,8 @@ use core::{
 use frunk::hlist::{HZippable, Sculptor};
 use hashbrown::hash_map::HashMap;
 
-pub trait Dims: Eq + Hash + Clone + Debug + DebugHlist {}
-impl<T: Eq + Hash + Clone + Debug + DebugHlist> Dims for T {}
+pub trait Dims: Eq + Hash + Clone + Debug {}
+impl<T: Eq + Hash + Clone + Debug> Dims for T {}
 
 pub trait DimsSculptor<Target, Indices>: Dims {
     type Rest: Dims;

@@ -132,8 +132,8 @@ pub enum Element {
     Polarizer(Angle),
     QuarterWavePlate(Angle),
     HalfWavePlate(Angle),
-    SugarSolution,
-    FaradayRotator(Direction),
+    SugarSolution(f32),
+    FaradayRotator(Direction, f32),
     Glass,
     VacuumJar,
 }
@@ -156,8 +156,8 @@ impl Element {
             Element::Polarizer(angle) => polarizer(angle),
             Element::QuarterWavePlate(angle) => phase_plate(angle, 0.25),
             Element::HalfWavePlate(angle) => phase_plate(angle, 0.5),
-            Element::SugarSolution => sugar_solution(0.125),
-            Element::FaradayRotator(dir) => faraday_rotator(dir, 0.125),
+            Element::SugarSolution(pol_rotation) => sugar_solution(pol_rotation),
+            Element::FaradayRotator(dir, pol_rotation) => faraday_rotator(dir, pol_rotation),
             Element::Glass => amplitude_intensity(1.0, 0.25),
             Element::VacuumJar => amplitude_intensity(1.0, -0.25),
             Element::NonLinearCrystal => todo!(),
@@ -570,7 +570,7 @@ mod tests {
     #[test]
     fn test_sugar_solution() {
         assert_eq!(
-            default_mul(Element::SugarSolution),
+            default_mul(Element::SugarSolution(0.125)),
             origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
                 + origin_photon(Direction::Right, V, cx(-FRAC_1_SQRT_2, 0.0))
         )
@@ -579,12 +579,12 @@ mod tests {
     #[test]
     fn test_faraday_rotator() {
         assert_eq!(
-            default_mul(Element::FaradayRotator(Direction::Right)),
+            default_mul(Element::FaradayRotator(Direction::Right, 0.125)),
             origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
                 + origin_photon(Direction::Right, V, cx(-FRAC_1_SQRT_2, 0.0))
         );
         assert_eq!(
-            default_mul(Element::FaradayRotator(Direction::Up)),
+            default_mul(Element::FaradayRotator(Direction::Up, 0.125)),
             vector![],
         );
     }
