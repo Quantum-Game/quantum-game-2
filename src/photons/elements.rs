@@ -4,7 +4,6 @@ use core::f32::consts::{PI, SQRT_2};
 pub use super::dimensions::*;
 
 const TAU: f32 = PI * 2.0;
-const I_SQRT_2: Complex = cx(0.0, SQRT_2);
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Angle {
@@ -114,16 +113,15 @@ impl Angle {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum Element {
     Wall,
     Gate,
     Laser,
     NonLinearCrystal,
     Mirror(Angle),
-    BeamSplitter(Angle),
+    BeamSplitter(Angle, f32),
     PolarizingBeamSplitter(Angle),
-    CoatedBeamSplitter(Angle),
     CornerCube,
     Detector(Direction),
     Rock,
@@ -150,7 +148,7 @@ impl Element {
             | Element::Laser
             | Element::DetectorFour => attenuator(0.0),
             Element::Mirror(angle) => mirror(angle),
-            Element::BeamSplitter(angle) => beamsplitter(angle),
+            Element::BeamSplitter(angle, split) => beamsplitter(angle, split),
             Element::PolarizingBeamSplitter(angle) => polarizing_beamsplitter(angle),
             Element::CornerCube => corner_cube(),
             Element::Absorber => attenuator(0.5),
@@ -162,7 +160,6 @@ impl Element {
             Element::Glass => amplitude_intensity(1.0, 0.25),
             Element::VacuumJar => amplitude_intensity(1.0, -0.25),
             Element::NonLinearCrystal => todo!(),
-            Element::CoatedBeamSplitter(_angle) => todo!(),
         }
     }
 }
@@ -176,13 +173,13 @@ fn mirror(angle: Angle) -> Operator<DimDirPol> {
     reflect_from_plane_direction(angle).outer(&reflect_phase_from_denser())
 }
 
-fn beamsplitter(angle: Angle) -> Operator<DimDirPol> {
-    let reflectance =
-        reflect_from_plane_direction(angle).outer(&reflect_phase_from_denser()) * cx(0.0, 1.0);
-    let transmittance =
-        beamsplitter_transmittion_directions(angle).outer(&Operator::<DimPol>::identity());
-
-    (reflectance + &transmittance) * I_SQRT_2
+fn beamsplitter(angle: Angle, split: f32) -> Operator<DimDirPol> {
+    let reflectance = reflect_from_plane_direction(angle).outer(&reflect_phase_from_denser())
+        * cx(0.0, split.sqrt());
+    let transmittance = beamsplitter_transmittion_directions(angle)
+        .outer(&Operator::<DimPol>::identity())
+        * cx((1.0 - split).sqrt(), 0.0);
+    reflectance + transmittance
 }
 
 fn polarizing_beamsplitter(angle: Angle) -> Operator<DimDirPol> {
@@ -423,16 +420,19 @@ mod tests {
 
     #[test]
     fn test_beam_splitter() {
-        assert_eq!(default_mul(Element::BeamSplitter(Angle::Right)), vector![]);
+        assert_eq!(
+            default_mul(Element::BeamSplitter(Angle::Right, 0.5)),
+            vector![]
+        );
         assert_ulps_eq!(
-            default_mul(Element::BeamSplitter(Angle::Up)),
-            origin_photon(Direction::Left, H, cx(-SQRT_2, 0.0))
-                + origin_photon(Direction::Right, H, cx(0.0, SQRT_2))
+            default_mul(Element::BeamSplitter(Angle::Up, 0.5)),
+            origin_photon(Direction::Left, H, cx(0.0, FRAC_1_SQRT_2))
+                + origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
         );
         assert_eq!(
-            default_mul(Element::BeamSplitter(Angle::UpRight)),
-            origin_photon(Direction::Down, H, cx(-SQRT_2, 0.0))
-                + origin_photon(Direction::Right, H, cx(0.0, SQRT_2))
+            default_mul(Element::BeamSplitter(Angle::UpRight, 0.5)),
+            origin_photon(Direction::Down, H, cx(0.0, FRAC_1_SQRT_2))
+                + origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
         );
     }
 
@@ -467,14 +467,6 @@ mod tests {
             &h_photon + origin_photon(Direction::Down, V, Complex::ONE),
         );
     }
-
-    // #[test]
-    // fn test_coated_beam_splitter() {
-    //     assert_eq!(
-    //         default_mul(Element::CoatedBeamSplitter(Angle::Right)),
-    //         vector![]
-    //     )
-    // }
 
     #[test]
     fn test_corner_cube() {
