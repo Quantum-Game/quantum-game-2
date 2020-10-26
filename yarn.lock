@@ -10198,10 +10198,10 @@ qs@~6.5.2:
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
   integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
 
-quantum-tensors@^0.4.11, quantum-tensors@^0.4.12:
-  version "0.4.12"
-  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.12.tgz#98bf88009e1aa29c7c6fbe2d192a47de5e223542"
-  integrity sha512-/54Y/ZLdv54wu28G9x/5NvYdAIxwBBkdabNQR6TKfY59BD9spWiD5RImcXcXaRercQ2bxy3NpIJP8pVrYmtCTg==
+quantum-tensors@^0.4.11, quantum-tensors@^0.4.13:
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/quantum-tensors/-/quantum-tensors-0.4.13.tgz#0d8154d8aa43d9a7873d5287fccc4a07852b630f"
+  integrity sha512-6+keK02uBXWAXcYWdpnDzJKOK3IhaL3DaWEF/6ZdaJ391smfIIfevtzFAbknxq1cgRT8GVSpEyh+In1k+sUurQ==
   dependencies:
     "@types/lodash" "^4.14.138"
     lodash "^4.17.15"
