@@ -1,5 +1,5 @@
+use core::marker::PhantomData;
 use frunk::{HCons, HNil};
-use std::marker::PhantomData;
 
 /// Enumerate all possible values for given dimension
 pub trait Enumerable: Sized {
@@ -21,9 +21,9 @@ pub fn enumerate_two<T: Enumerable>() -> Option<(EnumItem<T>, EnumItem<T>)> {
 pub type EnumItem<E> = <<E as Enumerable>::Iter as Iterator>::Item;
 
 impl Enumerable for HNil {
-    type Iter = std::iter::Once<HNil>;
+    type Iter = core::iter::Once<HNil>;
     fn enumerate() -> Self::Iter {
-        std::iter::once(HNil)
+        core::iter::once(HNil)
     }
 }
 

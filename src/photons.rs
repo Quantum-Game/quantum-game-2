@@ -1,3 +1,4 @@
+use alloc::vec::Vec;
 use hashbrown::hash_map::HashMap;
 mod dimensions;
 mod elements;
@@ -161,7 +162,7 @@ impl Simulation {
         vector: &Vector<D>,
     ) -> Vector<D>
     where
-        Vector<D>: std::fmt::Debug,
+        Vector<D>: core::fmt::Debug,
     {
         D::interact(&self.propagate(vector), &self.localized_ops_diff)
     }
@@ -174,7 +175,7 @@ impl Simulation {
         initial_state: &'a Vector<D>,
     ) -> impl Iterator<Item = Vector<D>> + 'a
     where
-        Vector<D>: std::fmt::Debug,
+        Vector<D>: core::fmt::Debug,
     {
         SimulateIter {
             sim: self,
@@ -222,7 +223,7 @@ enum SimulateIterState<'a, D> {
 impl<'a, D> Iterator for SimulateIter<'a, D>
 where
     D: MultiPhotonDims + MultiPhotonInteract<SinglePhotonDims, SinglePhotonDims, D>,
-    Vector<D>: std::fmt::Debug,
+    Vector<D>: core::fmt::Debug,
 {
     type Item = Vector<D>;
     fn next(&mut self) -> Option<Self::Item> {
@@ -245,7 +246,7 @@ where
                         SimulateIterState::Generating(next_vec)
                     };
                     if let SimulateIterState::Generating(vec) =
-                        std::mem::replace(&mut self.state, new_state)
+                        core::mem::replace(&mut self.state, new_state)
                     {
                         return Some(vec);
                     } else {

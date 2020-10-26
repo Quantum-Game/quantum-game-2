@@ -4,14 +4,15 @@ use crate::{
     vector::DimsSculptor,
     Complex, Dims, Enumerable, Vector,
 };
-use frunk::hlist::Sculptor;
-use hashbrown::hash_map::HashMap;
-use std::{
+use alloc::boxed::Box;
+use core::{
     fmt,
     iter::{once, FromIterator},
     marker::PhantomData,
     ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
 };
+use frunk::hlist::Sculptor;
+use hashbrown::hash_map::HashMap;
 
 pub trait PartialDims<I, O, Indices>: Sized + DimsSculptor<I, Indices> {
     fn join(rest: Self::Rest, out: O) -> Self;
@@ -448,7 +449,7 @@ impl<I: Dims, O: Dims> Add<&Operator<I, O>> for &Operator<I, O> {
     }
 }
 
-impl<I: Dims, O: Dims> std::iter::Sum for Operator<I, O> {
+impl<I: Dims, O: Dims> core::iter::Sum for Operator<I, O> {
     fn sum<T: Iterator<Item = Self>>(iter: T) -> Self {
         iter.fold(Operator::new(), Add::add)
     }
@@ -492,6 +493,7 @@ mod tests {
         dimensions::{Polarization, PositionX, PositionY, Spin},
         map, operator, vector, Operator,
     };
+    use alloc::{boxed::Box, vec, vec::Vec};
     use operator::PartialOperator;
 
     const D_H: Hlist![Spin, Polarization] = hlist![Spin::D, Polarization::H];

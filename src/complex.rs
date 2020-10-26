@@ -1,6 +1,6 @@
 use approx::{AbsDiffEq, UlpsEq};
-use std::f32::consts::PI;
-use std::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
+use core::f32::consts::PI;
+use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 const TAU: f32 = 2.0 * PI;
 
 #[derive(Clone, Copy, PartialEq, Default)]
@@ -17,28 +17,28 @@ pub const fn cx(re: f32, im: f32) -> Complex {
 pub struct DisplayPolar(Complex);
 pub struct DisplayPolarTau(Complex);
 
-impl std::fmt::Debug for Complex {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Debug for Complex {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_tuple("Cx").field(&self.re).field(&self.im).finish()
     }
 }
 
-impl std::fmt::Display for Complex {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for Complex {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let p = f.precision().unwrap_or(2);
         write!(f, "({:.*} {:+.*}i)", p, self.re, p, self.im)
     }
 }
 
-impl std::fmt::Display for DisplayPolar {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for DisplayPolar {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let p = f.precision().unwrap_or(2);
         write!(f, "{:.*} exp({:.*}i)", p, self.0.abs(), p, self.0.arg())
     }
 }
 
-impl std::fmt::Display for DisplayPolarTau {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+impl core::fmt::Display for DisplayPolarTau {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         let p = f.precision().unwrap_or(2);
         let abs = self.0.abs();
         let phi = self.0.phi_tau();
@@ -231,7 +231,7 @@ impl Div for Complex {
     }
 }
 
-impl std::iter::Sum for Complex {
+impl core::iter::Sum for Complex {
     fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
         iter.fold(Complex::ZERO, Add::add)
     }
@@ -267,8 +267,9 @@ impl UlpsEq for Complex {
 #[cfg(test)]
 mod tests {
     use super::{cx, Complex};
+    use alloc::format;
     use approx::{assert_ulps_eq, ulps_eq};
-    use std::f32::consts::PI;
+    use core::f32::consts::PI;
 
     #[test]
     fn should_create_a_complex_element_from_two_numbers() {

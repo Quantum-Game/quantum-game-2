@@ -1,5 +1,5 @@
+use core::fmt;
 use frunk::{HCons, HNil};
-use std::fmt;
 
 /// Pretty printing for hlists
 pub trait DebugHlist {

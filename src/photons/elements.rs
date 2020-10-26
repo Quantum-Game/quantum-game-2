@@ -1,5 +1,5 @@
 use crate::{cx, enumerable::enumerate_two, operator, Complex, Dims, Enumerable, Operator};
-use std::f32::consts::{PI, SQRT_2};
+use core::f32::consts::{PI, SQRT_2};
 
 pub use super::dimensions::*;
 
@@ -347,7 +347,7 @@ mod tests {
     use crate::photons::dimensions::*;
     use crate::{cx, vector, Angle, Complex, Direction, PosX, PosY, SinglePhotonDims, Vector};
     use approx::assert_ulps_eq;
-    use std::f32::consts::{FRAC_1_SQRT_2, SQRT_2};
+    use core::f32::consts::{FRAC_1_SQRT_2, SQRT_2};
 
     const H: Polarization = Polarization::H;
     const V: Polarization = Polarization::V;
@@ -528,9 +528,6 @@ mod tests {
     fn test_polarizer() {
         let photon_45deg = origin_photon(Direction::Right, H, cx(0.5, 0.0))
             + origin_photon(Direction::Right, V, cx(0.5, 0.0));
-
-        dbg!(&photon_45deg);
-        dbg!(default_mul(Element::Polarizer(Angle::UpRight)));
 
         assert_eq!(default_mul(Element::Polarizer(Angle::Up)), vector![]);
         assert_eq!(default_mul(Element::Polarizer(Angle::Down)), vector![]);

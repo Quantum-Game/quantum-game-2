@@ -1,15 +1,15 @@
 use crate::complex::Complex;
 use crate::util::{DebugHlist, HlistPrint, MapExt as _};
 use approx::{AbsDiffEq, UlpsEq};
-use frunk::hlist::{HZippable, Sculptor};
-use hashbrown::hash_map::HashMap;
-use std::{
+use core::{
     fmt,
     fmt::Debug,
     hash::Hash,
     iter::{once, FromIterator},
     ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
+use frunk::hlist::{HZippable, Sculptor};
+use hashbrown::hash_map::HashMap;
 
 pub trait Dims: Eq + Hash + Clone + Debug + DebugHlist {}
 impl<T: Eq + Hash + Clone + Debug + DebugHlist> Dims for T {}

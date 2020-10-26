@@ -1,3 +1,7 @@
+#![no_std]
+
+extern crate alloc;
+
 #[macro_use] // for the hlist macro
 extern crate frunk;
 

@@ -1,8 +1,8 @@
+use core::iter::{empty, once, Chain, Empty, Once};
 use frunk::{
     indices::{Here, There},
     HCons, HNil,
 };
-use std::iter::{empty, once, Chain, Empty, Once};
 
 trait NumAdd<T> {
     type Sum;

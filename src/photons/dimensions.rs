@@ -1,4 +1,5 @@
 use crate::{enum_dimension, PartialOperator};
+use alloc::boxed::Box;
 
 pub use crate::dimensions::Polarization;
 
@@ -14,7 +15,6 @@ pub(crate) const DOWN: Hlist![Direction] = hlist![Direction::Down];
 pub(crate) const LEFT: Hlist![Direction] = hlist![Direction::Left];
 
 pub type SinglePhotonDims = Hlist![PosX, PosY, Direction, Polarization];
-
 pub type SinglePhotonOperator = Box<dyn PartialOperator<SinglePhotonDims>>;
 
 #[derive(Debug, Clone, Copy, Eq, PartialEq, Hash)]

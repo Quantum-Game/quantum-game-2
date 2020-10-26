@@ -42,7 +42,7 @@ macro_rules! enum_dimension {
         }
 
         impl crate::Enumerable for $name {
-            type Iter = ::std::iter::Copied<::std::slice::Iter<'static, $name>>;
+            type Iter = ::core::iter::Copied<::core::slice::Iter<'static, $name>>;
             fn enumerate() -> Self::Iter {
                 const VARIANTS: [$name; [$($name::$variant),*].len()] = [$($name::$variant),*];
                 VARIANTS.iter().copied()
