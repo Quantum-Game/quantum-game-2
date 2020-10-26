@@ -1,9 +1,9 @@
 use crate::complex::Complex;
 use crate::util::{DebugHlist, HlistPrint, MapExt as _};
 use approx::{AbsDiffEq, UlpsEq};
-use frunk::hlist::{HList, HZippable, Sculptor};
+use frunk::hlist::{HZippable, Sculptor};
+use hashbrown::hash_map::HashMap;
 use std::{
-    collections::HashMap,
     fmt,
     fmt::Debug,
     hash::Hash,
@@ -11,8 +11,23 @@ use std::{
     ops::{Add, AddAssign, Mul, MulAssign, Neg, Sub, SubAssign},
 };
 
-pub trait Dims: HList + Eq + Hash + Clone + Copy + Debug + DebugHlist {}
-impl<T: HList + Eq + Hash + Clone + Copy + Debug + DebugHlist> Dims for T {}
+pub trait Dims: Eq + Hash + Clone + Debug + DebugHlist {}
+impl<T: Eq + Hash + Clone + Debug + DebugHlist> Dims for T {}
+
+pub trait DimsSculptor<Target, Indices>: Dims {
+    type Rest: Dims;
+    fn sculpt(self) -> (Target, Self::Rest);
+}
+impl<T, Target, Indices> DimsSculptor<Target, Indices> for T
+where
+    T: Dims + Sculptor<Target, Indices>,
+    T::Remainder: Dims,
+{
+    type Rest = T::Remainder;
+    fn sculpt(self) -> (Target, Self::Rest) {
+        Sculptor::sculpt(self)
+    }
+}
 
 #[derive(Clone)]
 pub struct Vector<D> {
@@ -120,17 +135,16 @@ impl<D: Dims> Vector<D> {
         }
     }
 
-    pub fn group_by_dims<E: Dims, Indices>(&self) -> HashMap<D::Remainder, Vector<E>>
+    pub fn group_by_dims<E: Dims, Indices>(&self) -> HashMap<D::Rest, Vector<E>>
     where
-        D: Sculptor<E, Indices>,
-        D::Remainder: Dims,
+        D: DimsSculptor<E, Indices>,
     {
-        let mut map: HashMap<D::Remainder, Vector<E>> = HashMap::new();
-        for (&k, &v) in &self.values {
-            let (selected, key) = k.sculpt();
+        let mut map: HashMap<D::Rest, Vector<E>> = HashMap::new();
+        for (k, v) in &self.values {
+            let (selected, key) = k.clone().sculpt();
             map.entry(key)
-                .and_modify(|t| t.insert(selected, v))
-                .or_insert_with(|| Vector::from_values(once((selected, v))));
+                .and_modify(|t| t.insert(selected.clone(), *v))
+                .or_insert_with(|| Vector::from_values(once((selected, *v))));
         }
         map
     }
@@ -178,7 +192,7 @@ impl<D: Dims> Vector<D> {
             values: self
                 .values
                 .iter()
-                .map::<(E, Complex), _>(|(k, v)| (Sculptor::sculpt(*k).0, *v))
+                .map::<(E, Complex), _>(|(k, v)| (Sculptor::sculpt(k.clone()).0, *v))
                 .collect(),
         }
     }
@@ -197,7 +211,10 @@ impl<D: Dims> Vector<D> {
         Vector {
             values: a
                 .iter()
-                .flat_map(|(&k1, &v1)| b.iter().map(move |(&k2, &v2)| (k1 + k2, v1 * v2)))
+                .flat_map(|(k1, v1)| {
+                    b.iter()
+                        .map(move |(k2, v2)| (k1.clone() + k2.clone(), v1 * v2))
+                })
                 .collect(),
         }
     }
@@ -218,8 +235,11 @@ impl<D: Dims> AddAssign<&Vector<D>> for Vector<D> {
             }
         }
         // add new values
-        for (&k, v) in &rhs.values {
-            self.values.entry(k).or_insert(*v);
+        for (k, v) in &rhs.values {
+            self.values
+                .raw_entry_mut()
+                .from_key(k)
+                .or_insert_with(|| (k.clone(), *v));
         }
         self.values.retain(|_, v| !v.almost_zero())
     }
@@ -258,8 +278,15 @@ impl<D: Dims> Add<&Vector<D>> for &Vector<D> {
                 .iter_either(&rhs.values)
                 .filter_map(|(k, v1, v2)| match (v1, v2) {
                     (None, None) => None,
-                    (Some(v), None) | (None, Some(v)) => Some((*k, *v)),
-                    (Some(v1), Some(v2)) => Some((*k, *v1 + *v2)).filter(|(_, v)| !v.almost_zero()),
+                    (Some(v), None) | (None, Some(v)) => Some((k.clone(), *v)),
+                    (Some(v1), Some(v2)) => {
+                        let v = *v1 + *v2;
+                        if v.almost_zero() {
+                            None
+                        } else {
+                            Some((k.clone(), v))
+                        }
+                    }
                 })
                 .collect(),
         }
@@ -275,8 +302,11 @@ impl<D: Dims> SubAssign<&Vector<D>> for Vector<D> {
             }
         }
         // sub new values
-        for (&k, v) in &rhs.values {
-            self.values.entry(k).or_insert(-v);
+        for (k, v) in &rhs.values {
+            self.values
+                .raw_entry_mut()
+                .from_key(k)
+                .or_insert_with(|| (k.clone(), -v));
         }
         self.values.retain(|_, v| !v.almost_zero())
     }
@@ -291,9 +321,16 @@ impl<D: Dims> Sub<&Vector<D>> for &Vector<D> {
                 .iter_either(&rhs.values)
                 .filter_map(|(k, v1, v2)| match (v1, v2) {
                     (None, None) => None,
-                    (Some(v), None) => Some((*k, *v)),
-                    (None, Some(v)) => Some((*k, -v)),
-                    (Some(v1), Some(v2)) => Some((*k, *v1 - *v2)).filter(|(_, v)| !v.almost_zero()),
+                    (Some(v), None) => Some((k.clone(), *v)),
+                    (None, Some(v)) => Some((k.clone(), -v)),
+                    (Some(v1), Some(v2)) => {
+                        let v = *v1 - *v2;
+                        if v.almost_zero() {
+                            None
+                        } else {
+                            Some((k.clone(), v))
+                        }
+                    }
                 })
                 .collect(),
         }

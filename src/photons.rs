@@ -1,15 +1,14 @@
-use std::collections::HashMap;
+use hashbrown::hash_map::HashMap;
 mod dimensions;
 mod elements;
 
 pub use dimensions::*;
 pub use elements::*;
 
-use crate::{util::Joiner, Dims, Operator, PartialOperator, Vector};
+use crate::{operator::PartialDims, util::RepeatIter, Dims, Operator, PartialOperator, Vector};
 use frunk::{
-    hlist::Sculptor,
     indices::{Here, There},
-    HCons, HNil,
+    HNil,
 };
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -40,15 +39,7 @@ pub struct Simulation {
     localized_ops_diff: Operator<SinglePhotonDims>,
 }
 
-pub struct PhotonStateMut<'a> {
-    pos_x: &'a mut PosX,
-    pos_y: &'a mut PosY,
-    dir: &'a mut Direction,
-    pol: &'a mut Polarization,
-}
-
-type PhotonCons<Tail> = HCons<PosX, HCons<PosY, HCons<Direction, HCons<Polarization, Tail>>>>;
-
+type PhotonHlist<Tail = HNil> = Hlist![PosX, PosY, Direction, Polarization, ...Tail];
 type FirstPhotonIndices = Hlist![Here, Here, Here, Here];
 
 pub trait NextIndices {
@@ -56,7 +47,7 @@ pub trait NextIndices {
 }
 
 type PlusFour<T> = There<There<There<There<T>>>>;
-impl<A, B, C, D, Tail> NextIndices for HCons<A, HCons<B, HCons<C, HCons<D, Tail>>>> {
+impl<A, B, C, D, Tail> NextIndices for Hlist![A, B, C, D, ...Tail] {
     type Next = Hlist![PlusFour<A>, PlusFour<B>, PlusFour<C>, PlusFour<D>];
 }
 
@@ -65,13 +56,9 @@ pub trait MultiPhotonInteract<I, O, T> {
     fn interact(vec: &Vector<T>, operator: &Operator<I, O>) -> Vector<T>;
 }
 
-impl<I, O, T> MultiPhotonInteract<I, O, T> for PhotonCons<HNil>
+impl<I: Dims, O: Dims, T> MultiPhotonInteract<I, O, T> for PhotonHlist
 where
-    I: Dims,
-    O: Dims,
-    T: Dims + Sculptor<I, FirstPhotonIndices>,
-    <T as Sculptor<I, FirstPhotonIndices>>::Remainder:
-        Joiner<O, FirstPhotonIndices, Joined = T> + Dims,
+    T: PartialDims<I, O, FirstPhotonIndices>,
 {
     type RevIndices = FirstPhotonIndices;
     #[inline(always)]
@@ -81,63 +68,25 @@ where
 }
 
 type NextIndicesIter<I, O, T, Tail> =
-    <<PhotonCons<Tail> as MultiPhotonInteract<I, O, T>>::RevIndices as NextIndices>::Next;
+    <<PhotonHlist<Tail> as MultiPhotonInteract<I, O, T>>::RevIndices as NextIndices>::Next;
 
-impl<I, O, T, Tail> MultiPhotonInteract<I, O, T> for PhotonCons<PhotonCons<Tail>>
+impl<I: Dims, O: Dims, T: Dims, Tail> MultiPhotonInteract<I, O, T>
+    for PhotonHlist<PhotonHlist<Tail>>
 where
-    PhotonCons<Tail>: MultiPhotonInteract<I, O, T>,
-    <PhotonCons<Tail> as MultiPhotonInteract<I, O, T>>::RevIndices: NextIndices,
-    I: Dims,
-    O: Dims,
-    T: Dims + Sculptor<I, NextIndicesIter<I, O, T, Tail>>,
-    <T as Sculptor<I, NextIndicesIter<I, O, T, Tail>>>::Remainder:
-        Joiner<O, NextIndicesIter<I, O, T, Tail>, Joined = T> + Dims,
+    PhotonHlist<Tail>: MultiPhotonInteract<I, O, T>,
+    <PhotonHlist<Tail> as MultiPhotonInteract<I, O, T>>::RevIndices: NextIndices,
+    T: PartialDims<I, O, NextIndicesIter<I, O, T, Tail>>,
 {
     type RevIndices = NextIndicesIter<I, O, T, Tail>;
     #[inline(always)]
     fn interact(vec: &Vector<T>, operator: &Operator<I, O>) -> Vector<T> {
-        let vec = <PhotonCons<Tail> as MultiPhotonInteract<I, O, T>>::interact(vec, operator);
+        let vec = <PhotonHlist<Tail> as MultiPhotonInteract<I, O, T>>::interact(vec, operator);
         operator.mul_vec_partial(&vec) + vec
     }
 }
 
-fn unpack_photon<Tail>(cons: &mut PhotonCons<Tail>) -> (PhotonStateMut<'_>, &mut Tail) {
-    (
-        PhotonStateMut {
-            pos_x: &mut cons.head,
-            pos_y: &mut cons.tail.head,
-            dir: &mut cons.tail.tail.head,
-            pol: &mut cons.tail.tail.tail.head,
-        },
-        &mut cons.tail.tail.tail.tail,
-    )
-}
-
-pub trait MultiPhotonDims: Dims + for<'a> PhotonStateIter<'a> {}
-impl<T> MultiPhotonDims for T where T: Dims + for<'a> PhotonStateIter<'a> {}
-
-pub trait PhotonStateIter<'a>: Dims {
-    type Iter: Iterator<Item = PhotonStateMut<'a>>;
-    fn iter_mut(&'a mut self) -> Self::Iter;
-}
-
-impl<'a> PhotonStateIter<'a> for PhotonCons<HNil> {
-    type Iter = std::iter::Once<PhotonStateMut<'a>>;
-    fn iter_mut(&'a mut self) -> Self::Iter {
-        std::iter::once(unpack_photon(self).0)
-    }
-}
-
-impl<'a, Tail> PhotonStateIter<'a> for PhotonCons<Tail>
-where
-    Tail: PhotonStateIter<'a>,
-{
-    type Iter = std::iter::Chain<std::iter::Once<PhotonStateMut<'a>>, Tail::Iter>;
-    fn iter_mut(&'a mut self) -> Self::Iter {
-        let (state, tail) = unpack_photon(self);
-        std::iter::once(state).chain(tail.iter_mut())
-    }
-}
+pub trait MultiPhotonDims: Dims + for<'a> RepeatIter<'a, SinglePhotonDims> {}
+impl<T> MultiPhotonDims for T where T: Dims + for<'a> RepeatIter<'a, SinglePhotonDims> {}
 
 /// Manually implemented photon state vector operator
 /// that propagates the photons along their direction
@@ -150,23 +99,21 @@ struct PropagateAndCullOperator {
 impl<E: MultiPhotonDims> PartialOperator<E> for PropagateAndCullOperator {
     fn mul_vec_partial(&self, vector: &Vector<E>) -> Vector<E> {
         Vector::from_values(vector.values().iter().filter_map(|(dims, val)| {
-            let mut new_dims = *dims;
+            let mut new_dims = dims.clone();
 
-            for photon in new_dims.iter_mut() {
-                match photon.dir {
+            for hlist_pat![pos_x, pos_y, dir, ...] in new_dims.iter_mut() {
+                match dir {
                     Direction::Right => {
-                        photon.pos_x.0 =
-                            photon.pos_x.0.checked_add(1).filter(|x| x < &self.width)?;
+                        pos_x.0 = pos_x.0.checked_add(1).filter(|x| x < &self.width)?;
                     }
                     Direction::Up => {
-                        photon.pos_y.0 = photon.pos_y.0.checked_sub(1)?;
+                        pos_y.0 = pos_y.0.checked_sub(1)?;
                     }
                     Direction::Left => {
-                        photon.pos_x.0 = photon.pos_x.0.checked_sub(1)?;
+                        pos_x.0 = pos_x.0.checked_sub(1)?;
                     }
                     Direction::Down => {
-                        photon.pos_y.0 =
-                            photon.pos_y.0.checked_add(1).filter(|y| y < &self.height)?;
+                        pos_y.0 = pos_y.0.checked_add(1).filter(|y| y < &self.height)?;
                     }
                 };
             }
@@ -176,9 +123,9 @@ impl<E: MultiPhotonDims> PartialOperator<E> for PropagateAndCullOperator {
     }
 }
 
-type OnePhotonDims = PhotonCons<HNil>;
-type TwoPhotonDims = PhotonCons<OnePhotonDims>;
-type ThreePhotonDims = PhotonCons<TwoPhotonDims>;
+type OnePhotonDims = PhotonHlist<HNil>;
+type TwoPhotonDims = PhotonHlist<OnePhotonDims>;
+type ThreePhotonDims = PhotonHlist<TwoPhotonDims>;
 
 impl Simulation {
     pub fn new(grid: &Grid) -> Self {

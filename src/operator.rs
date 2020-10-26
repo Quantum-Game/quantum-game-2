@@ -1,16 +1,31 @@
 use crate::{
     operator,
     util::{DebugHlist, HlistPrint, Joiner, MapExt},
+    vector::DimsSculptor,
     Complex, Dims, Enumerable, Vector,
 };
 use frunk::hlist::Sculptor;
+use hashbrown::hash_map::HashMap;
 use std::{
-    collections::HashMap,
     fmt,
     iter::{once, FromIterator},
     marker::PhantomData,
     ops::{Add, AddAssign, Mul, MulAssign, Sub, SubAssign},
 };
+
+pub trait PartialDims<I, O, Indices>: Sized + DimsSculptor<I, Indices> {
+    fn join(rest: Self::Rest, out: O) -> Self;
+}
+
+impl<I, O, Indices, T> PartialDims<I, O, Indices> for T
+where
+    T: Sized + DimsSculptor<I, Indices>,
+    T::Rest: Joiner<O, Indices, Joined = T> + Dims,
+{
+    fn join(rest: Self::Rest, out: O) -> Self {
+        rest.join(out)
+    }
+}
 
 #[derive(Clone)]
 pub struct Operator<I, O = I> {
@@ -91,7 +106,7 @@ impl<D> Operator<D, D> {
         D: Dims,
     {
         Operator {
-            values: keys.into_iter().map(|k| ((k, k), cx)).collect(),
+            values: keys.into_iter().map(|k| ((k.clone(), k), cx)).collect(),
         }
     }
 
@@ -118,7 +133,7 @@ impl<D> Operator<D, D> {
     where
         D: Dims,
     {
-        operator![(coord, coord) => Complex::ONE]
+        operator![(coord.clone(), coord) => Complex::ONE]
     }
 }
 
@@ -161,10 +176,11 @@ impl<I: Dims, O: Dims> Operator<I, O> {
     // to row vectors
     pub fn vector_per_input(&self) -> HashMap<I, Vector<O>> {
         let mut map: HashMap<I, Vector<O>> = HashMap::new();
-        for (&(i, o), &v) in &self.values {
-            map.entry(i)
-                .and_modify(|t| t.insert(o, v))
-                .or_insert_with(|| Vector::from_values(once((o, v))));
+        for ((ref i, ref o), &v) in &self.values {
+            map.raw_entry_mut()
+                .from_key(i)
+                .and_modify(|_, t| t.insert(o.clone(), v))
+                .or_insert_with(|| (i.clone(), Vector::from_values(once((o.clone(), v)))));
         }
         map
     }
@@ -172,10 +188,11 @@ impl<I: Dims, O: Dims> Operator<I, O> {
     // to column vectors
     pub fn vector_per_output(&self) -> HashMap<O, Vector<I>> {
         let mut map: HashMap<O, Vector<I>> = HashMap::new();
-        for (&(i, o), &v) in &self.values {
-            map.entry(o)
-                .and_modify(|t| t.insert(i, v))
-                .or_insert_with(|| Vector::from_values(once((i, v))));
+        for ((ref i, ref o), &v) in &self.values {
+            map.raw_entry_mut()
+                .from_key(o)
+                .and_modify(|_, t| t.insert(i.clone(), v))
+                .or_insert_with(|| (o.clone(), Vector::from_values(once((i.clone(), v)))));
         }
         map
     }
@@ -204,17 +221,16 @@ impl<I: Dims, O: Dims> Operator<I, O> {
         })
     }
 
-    pub fn mul_vec_partial<E: Dims, Indices>(&self, rhs: &Vector<E>) -> Vector<E>
-    where
-        E: Sculptor<I, Indices>,
-        E::Remainder: Joiner<O, Indices, Joined = E> + Dims,
-    {
+    pub fn mul_vec_partial<E: PartialDims<I, O, Indices>, Indices>(
+        &self,
+        rhs: &Vector<E>,
+    ) -> Vector<E> {
         let per_output = self.vector_per_output();
         let grouped = rhs.group_by_dims::<I, Indices>();
         let entries = grouped.into_iter().flat_map(|(r, vector)| {
             per_output
                 .iter()
-                .map(move |(&o, row)| (r.join(o), row.dot(&vector)))
+                .map(move |(o, row)| (E::join(r.clone(), o.clone()), row.dot(&vector)))
         });
         let out = Vector::from_values(entries);
         out
@@ -227,7 +243,7 @@ impl<I: Dims, O: Dims> Operator<I, O> {
             values: self
                 .values
                 .iter()
-                .map(|(&(i, o), &v)| ((o, i), v))
+                .map(|((i, o), v)| ((o.clone(), i.clone()), *v))
                 .collect(),
         }
     }
@@ -240,7 +256,7 @@ impl<I: Dims, O: Dims> Operator<I, O> {
             values: self
                 .values
                 .iter()
-                .map(|(&(i, o), &v)| ((o, i), v.conj()))
+                .map(|((i, o), v)| ((o.clone(), i.clone()), v.conj()))
                 .collect(),
         }
     }
@@ -269,9 +285,10 @@ impl<I: Dims, O: Dims> Operator<I, O> {
         Operator {
             values: a
                 .iter()
-                .flat_map(|(&(i1, o1), &v1)| {
-                    b.iter()
-                        .map(move |(&(i2, o2), &v2)| ((i1 + i2, o1 + o2), v1 * v2))
+                .flat_map(|((i1, o1), v1)| {
+                    b.iter().map(move |((i2, o2), v2)| {
+                        ((i1.clone() + i2.clone(), o1.clone() + o2.clone()), v1 * v2)
+                    })
                 })
                 .collect(),
         }
@@ -324,12 +341,12 @@ impl<A: Dims, B: Dims, C: Dims> Mul<&Operator<A, B>> for &Operator<B, C> {
             values: rows
                 .into_iter()
                 .flat_map(|(out_coords, col)| {
-                    cols.iter().flat_map(move |(&in_coords, row)| {
+                    cols.iter().flat_map(move |(in_coords, row)| {
                         let dot = row.dot(&col);
                         if dot.almost_zero() {
                             return None;
                         }
-                        Some(((in_coords, out_coords), dot))
+                        Some(((in_coords.clone(), out_coords.clone()), dot))
                     })
                 })
                 .collect(),
@@ -386,8 +403,11 @@ impl<I: Dims, O: Dims> AddAssign<&Operator<I, O>> for Operator<I, O> {
             }
         }
         // add new values
-        for (&k, v) in &rhs.values {
-            self.values.entry(k).or_insert(*v);
+        for (k, v) in &rhs.values {
+            self.values
+                .raw_entry_mut()
+                .from_key(k)
+                .or_insert_with(|| (k.clone(), *v));
         }
         self.values.retain(|_, v| !v.almost_zero())
     }
@@ -418,8 +438,10 @@ impl<I: Dims, O: Dims> Add<&Operator<I, O>> for &Operator<I, O> {
                 .iter_either(&rhs.values)
                 .filter_map(|(k, v1, v2)| match (v1, v2) {
                     (None, None) => None,
-                    (Some(v), None) | (None, Some(v)) => Some((*k, *v)),
-                    (Some(v1), Some(v2)) => Some((*k, *v1 + *v2)).filter(|(_, v)| !v.almost_zero()),
+                    (Some(v), None) | (None, Some(v)) => Some((k.clone(), *v)),
+                    (Some(v1), Some(v2)) => {
+                        Some((k.clone(), v1 + v2)).filter(|(_, v)| !v.almost_zero())
+                    }
                 })
                 .collect(),
         }
@@ -441,8 +463,8 @@ impl<I: Dims, O: Dims> SubAssign<&Operator<I, O>> for Operator<I, O> {
             }
         }
         // sub new values
-        for (&k, v) in &rhs.values {
-            self.values.entry(k).or_insert(-v);
+        for (k, v) in &rhs.values {
+            self.values.entry(k.clone()).or_insert(-v);
         }
         self.values.retain(|_, v| !v.almost_zero())
     }

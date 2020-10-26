@@ -318,10 +318,10 @@ where
     let sin = cx(alpha.sin(), 0.0);
     let cos = cx(alpha.cos(), 0.0);
     operator![
-        (a, a) => cos * cos,
-        (a, b) => cos * sin,
-        (b, a) => cos * sin,
-        (b, b) => sin * sin,
+        (a.clone(), a.clone()) => cos * cos,
+        (a.clone(), b.clone()) => cos * sin,
+        (b.clone(), a) => cos * sin,
+        (b.clone(), b) => sin * sin,
     ]
 }
 
@@ -334,10 +334,10 @@ where
     let sin = cx(alpha.sin(), 0.0);
     let cos = cx(alpha.cos(), 0.0);
     operator![
-        (a, a) => cos,
-        (a, b) => -sin,
-        (b, a) => sin,
-        (b, b) => cos,
+        (a.clone(), a.clone()) => cos,
+        (a.clone(), b.clone()) => -sin,
+        (b.clone(), a) => sin,
+        (b.clone(), b) => cos,
     ]
 }
 

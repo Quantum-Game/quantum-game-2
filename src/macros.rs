@@ -1,8 +1,8 @@
 #[macro_export]
 macro_rules! map {
-    {} => { ::std::collections::HashMap::new() };
+    {} => { ::hashbrown::hash_map::HashMap::new() };
     { $($key:expr => $value:expr),*$(,)? } => {{
-        let mut m = ::std::collections::HashMap::new();
+        let mut m = ::hashbrown::hash_map::HashMap::new();
         $(m.insert($key, $value);)*
         m
     }};

@@ -1,8 +1,5 @@
-use std::{
-    collections::hash_map::{HashMap, Iter, Keys},
-    hash::Hash,
-    iter::Chain,
-};
+use hashbrown::hash_map::{HashMap, Iter, Keys};
+use std::{hash::Hash, iter::Chain};
 
 pub struct BothMapsIter<'a, K, V1, V2> {
     a_entries: Iter<'a, K, V1>,
