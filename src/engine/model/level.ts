@@ -115,7 +115,12 @@ export function importPiece(
       case Elem.NonLinearCrystal:
         return { ...common, type }
       case Elem.Laser:
-        return { ...common, type, rotation, polarization: tryGetNumber(value, 'polarization') ?? 0 }
+        return {
+          ...common,
+          type,
+          rotation,
+          polarization: tryGetNumber(value, 'polarization') ?? 0,
+        }
       case Elem.Mirror:
         return { ...common, type, rotation }
       case Elem.BeamSplitter:
@@ -126,7 +131,7 @@ export function importPiece(
       case Elem.Detector:
         return { ...common, type, rotation, goalThreshold }
       case Elem.DetectorFour:
-        return { ...common, type, rotation, goalThreshold }
+        return { ...common, type, goalThreshold }
       case Elem.Absorber:
         return { ...common, type, absorption: tryGetNumber(value, 'absorption') ?? 0.5 }
       case Elem.Polarizer:

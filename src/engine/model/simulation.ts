@@ -8,6 +8,8 @@ import {
   Dimension,
   Elements,
   Ops,
+  Cx,
+  VectorEntry,
 } from 'quantum-tensors'
 import { Board } from './level'
 import { Elem, Piece, PieceLaser } from './elem'
@@ -17,6 +19,9 @@ import { Rotation, rotationToDegrees } from './rotation'
 import { groupReduceBy, iFilter, iMap } from '@/itertools'
 import { assertUnreachable } from '@/types'
 import { TAU } from '../Helpers'
+
+import { Angle, Coord as RustCoord, Complex as RustComplex, SimulationBuilder } from 'qg-rust'
+import { $flags } from '@/flags'
 
 // reexport types from quantum-tensors that we actually
 // intend to use in other parts of the app
@@ -114,7 +119,7 @@ export function cellOperator(cell: Piece): Operator {
     case Elem.CornerCube:
       return Elements.cornerCube()
     case Elem.FaradayRotator:
-      return Elements.faradayRotator(rotationToDegrees(cell.rotation))
+      return Elements.faradayRotator(rotationToDegrees(cell.rotation), cell.polarizationRotation)
     case Elem.Mirror:
       return Elements.mirror(rotationToDegrees(cell.rotation))
     case Elem.NonLinearCrystal:
@@ -159,7 +164,7 @@ function laserDirection(rotation: Rotation) {
     case Rotation.Down:
       return 'v'
     default:
-      return '>'
+      throw new Error('Invalid laser direction')
   }
 }
 
@@ -190,6 +195,183 @@ function generateLaserState(board: Board): Vector | null {
   return vec
 }
 
+function runTsSimulation(board: Board, maxFrames: number, state: Vector): Simulation {
+  const simulation = new QTSimulation(board.width, board.height, generateOperators(board))
+  const frame = new QTFrame(simulation)
+  frame.vector = state
+  simulation.frames.push(frame)
+  simulation.generateFrames(maxFrames)
+  return importSimulation(simulation)
+}
+
+function wasmAngle(rot: Rotation): Angle {
+  switch (rot) {
+    case Rotation.Right:
+      return Angle.Right
+    case Rotation.UpRight:
+      return Angle.UpRight
+    case Rotation.Up:
+      return Angle.Up
+    case Rotation.UpLeft:
+      return Angle.UpLeft
+    case Rotation.Left:
+      return Angle.Left
+    case Rotation.DownLeft:
+      return Angle.DownLeft
+    case Rotation.Down:
+      return Angle.Down
+    case Rotation.DownRight:
+      return Angle.DownRight
+    default:
+      assertUnreachable(rot)
+  }
+}
+
+function wasmDirection(rot: Rotation): Direction {
+  switch (rot) {
+    case Rotation.Right:
+      return Direction.Right
+    case Rotation.Up:
+      return Direction.Up
+    case Rotation.Left:
+      return Direction.Left
+    case Rotation.Down:
+      return Direction.Down
+    default:
+      throw new Error(`Invalid direction ${rot}`)
+  }
+}
+
+function runRustSimulation(board: Board, maxFrames: number, state: Vector): Simulation {
+  // const state = initialState
+  //   ? initialState.toBasisAll('polarization', 'HV')
+  //   : generateLaserState(board)
+
+  let builder = SimulationBuilder.new(board.width, board.height)
+
+  for (const entry of state.entries) {
+    const [x, y, dir, pol] = entry.coord
+    const val = entry.value
+    builder = builder.with_entry(RustCoord.new(x, y), dir, pol, RustComplex.new(val.re, val.im))
+  }
+
+  for (const [coord, piece] of board.pieces) {
+    const c = RustCoord.new(coord.x, coord.y)
+    switch (piece.type) {
+      case Elem.Wall:
+        builder = builder.with_wall(c)
+        break
+      case Elem.Rock:
+        builder = builder.with_rock(c)
+        break
+      case Elem.Gate:
+        builder = builder.with_gate(c)
+        break
+      case Elem.Mine:
+        builder = builder.with_mine(c)
+        break
+      case Elem.Glass:
+        builder = builder.with_glass(c)
+        break
+      case Elem.VacuumJar:
+        builder = builder.with_vacuum_jar(c)
+        break
+      case Elem.CornerCube:
+        builder = builder.with_corner_cube(c)
+        break
+      case Elem.NonLinearCrystal:
+        builder = builder.with_non_linear_crystal(c)
+        break
+      case Elem.Laser:
+        builder = builder.with_laser(c, wasmDirection(piece.rotation))
+        break
+      case Elem.Mirror:
+        builder = builder.with_mirror(c, wasmAngle(piece.rotation))
+        break
+      case Elem.BeamSplitter:
+        builder = builder.with_beam_splitter(c, wasmAngle(piece.rotation), piece.split)
+        break
+      case Elem.PolarizingBeamSplitter:
+        builder = builder.with_polarizing_beam_splitter(c, wasmAngle(piece.rotation))
+        break
+      case Elem.CoatedBeamSplitter:
+        builder = builder.with_beam_splitter(c, wasmAngle(piece.rotation), piece.split)
+        break
+      case Elem.Detector:
+        builder = builder.with_detector(c, wasmDirection(piece.rotation))
+        break
+      case Elem.Absorber:
+        builder = builder.with_absorber(c, piece.absorption)
+        break
+      case Elem.DetectorFour:
+        builder = builder.with_detector_four(c)
+        break
+      case Elem.Polarizer:
+        builder = builder.with_polarizer(c, wasmAngle(piece.rotation))
+        break
+      case Elem.QuarterWavePlate:
+        builder = builder.with_quarter_wave_plate(c, wasmAngle(piece.rotation))
+        break
+      case Elem.HalfWavePlate:
+        builder = builder.with_half_wave_plate(c, wasmAngle(piece.rotation))
+        break
+      case Elem.SugarSolution:
+        builder = builder.with_sugar_solution(c, piece.polarizationRotation)
+        break
+      case Elem.FaradayRotator:
+        builder = builder.with_faraday_rotator(
+          c,
+          wasmDirection(piece.rotation),
+          piece.polarizationRotation
+        )
+        break
+      default:
+        assertUnreachable(piece)
+    }
+  }
+
+  const dims = [
+    Dimension.position(board.width, 'x'),
+    Dimension.position(board.height, 'y'),
+    Dimension.direction(),
+    Dimension.polarization(),
+  ]
+
+  const frames = builder.simulate(maxFrames).map((f) => {
+    const absorptions = new Map<Coord, number>()
+
+    for (const abs of f.absorptions()) {
+      const c = Coord.new(abs.coord.x, abs.coord.y)
+      absorptions.set(c, (absorptions.get(c) ?? 0) + abs.probability)
+    }
+
+    return {
+      particles: f.particles().map(
+        (p): Particle => {
+          return {
+            coord: Coord.new(p.coord.x, p.coord.y),
+            direction: p.direction,
+            a: Cx(p.a.re, p.a.im),
+            b: Cx(p.b.re, p.b.im),
+          }
+        }
+      ),
+      vector: new Vector(
+        f.entries().map(([coord, d, p, val]) => {
+          return new VectorEntry([coord.x, coord.y, d, p], new Complex(val.im, val.re))
+        }),
+        dims
+      ),
+      absorptions,
+    }
+  })
+
+  return {
+    frames,
+    upToFrameAbsorptions: importAbsorptions(frames),
+  }
+}
+
 export function runSimulation(board: Board, maxFrames: number, initialState?: Vector): Simulation {
   const state = initialState
     ? initialState.toBasisAll('polarization', 'HV')
@@ -202,10 +384,9 @@ export function runSimulation(board: Board, maxFrames: number, initialState?: Ve
     }
   }
 
-  const simulation = new QTSimulation(board.width, board.height, generateOperators(board))
-  const frame = new QTFrame(simulation)
-  frame.vector = state
-  simulation.frames.push(frame)
-  simulation.generateFrames(maxFrames)
-  return importSimulation(simulation)
+  if ($flags.rust) {
+    return runRustSimulation(board, maxFrames, state)
+  } else {
+    return runTsSimulation(board, maxFrames, state)
+  }
 }

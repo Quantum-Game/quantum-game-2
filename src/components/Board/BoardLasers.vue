@@ -23,7 +23,9 @@ export default defineComponent({
     blur: { type: Boolean, default: false },
   },
   setup(props) {
-    const particlesByProbability = computed(() => groupBy(props.particles, particleProbability))
+    const particlesByProbability = computed(() =>
+      groupBy(props.particles, (p) => Math.round(particleProbability(p) * 20) / 20)
+    )
     const paths = computed(() =>
       Array.from(
         iFilterMap(Object.entries(particlesByProbability.value), ([prob, ps]) =>

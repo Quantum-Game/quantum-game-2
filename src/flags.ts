@@ -14,6 +14,8 @@ export const $flags = Object.freeze({
   circleAbsorptions: getBoolFlag('ca'),
   /** dim background when experiment mode is active */
   dimBackground: getBoolFlag('dim'),
+  /** Run simulation using rust code through wasm */
+  rust: getBoolFlag('rust'),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,5 +1,5 @@
 import { assertUnreachable, Vec2 } from '@/types'
-import { Rotation } from './rotation'
+import { Rotation, rotationToDegrees } from './rotation'
 
 export enum Elem {
   // Basic
@@ -128,7 +128,7 @@ export type PieceSugarSolution = {
 }
 export type PieceFaradayRotator = {
   type: Elem.FaradayRotator
-  rotation: number
+  rotation: Rotation
   polarizationRotation: number
 }
 export type PieceGlass = { type: Elem.Glass }
@@ -218,5 +218,19 @@ export function defaultPiece(type: Elem): Piece {
       return { ...common, type, rotation: Rotation.Right, polarizationRotation: 0.125 }
     default:
       assertUnreachable(type)
+  }
+}
+
+export function pieceRotationDegrees(piece: Piece): number {
+  if (!('rotation' in piece)) {
+    return 0
+  }
+  switch (piece.type) {
+    case Elem.Laser:
+    case Elem.Detector:
+    case Elem.FaradayRotator:
+      return rotationToDegrees(piece.rotation)
+    default:
+      return rotationToDegrees(piece.rotation)
   }
 }
