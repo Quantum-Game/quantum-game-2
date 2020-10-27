@@ -153,6 +153,23 @@ impl<D: Dims> Vector<D> {
         map
     }
 
+    pub fn norm_squared_partial<E: Dims, Indices>(&self, index: E) -> f32
+    where
+        D: Sculptor<E, Indices>,
+    {
+        self.values
+            .iter()
+            .filter_map(|(coords, value)| {
+                let (target, _) = coords.clone().sculpt();
+                if target == index {
+                    Some(value.abs2())
+                } else {
+                    None
+                }
+            })
+            .sum()
+    }
+
     pub fn dot_partial<E: Dims, Indices>(&self, rhs: &Vector<E>) -> Vector<E::Remainder>
     where
         E: Sculptor<D, Indices>,

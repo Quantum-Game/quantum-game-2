@@ -127,7 +127,7 @@ pub enum Element {
     Detector(Direction),
     Rock,
     Mine,
-    Absorber,
+    Absorber(f32),
     DetectorFour,
     Polarizer(Angle),
     QuarterWavePlate(Angle),
@@ -152,7 +152,7 @@ impl Element {
             Element::BeamSplitter(angle, split) => beamsplitter(angle, split),
             Element::PolarizingBeamSplitter(angle) => polarizing_beamsplitter(angle),
             Element::CornerCube => corner_cube(),
-            Element::Absorber => attenuator(0.5),
+            Element::Absorber(absorption) => attenuator(absorption),
             Element::Polarizer(angle) => polarizer(angle),
             Element::QuarterWavePlate(angle) => phase_plate(angle, 0.25),
             Element::HalfWavePlate(angle) => phase_plate(angle, 0.5),
@@ -344,7 +344,7 @@ where
 mod tests {
     use super::Element;
     use crate::photons::dimensions::*;
-    use crate::{cx, vector, Angle, Complex, Direction, PosX, PosY, SinglePhotonDims, Vector};
+    use crate::{cx, vector, Angle, Complex, Coord, Direction, SinglePhotonDims, Vector};
     use approx::assert_ulps_eq;
     use core::f32::consts::FRAC_1_SQRT_2;
 
@@ -359,7 +359,7 @@ mod tests {
         cx: Complex,
     ) -> Vector<SinglePhotonDims> {
         vector![
-            hlist![PosX(x), PosY(y), dir, pol] => cx
+            hlist![Coord {x, y}, dir, pol] => cx
         ]
     }
 
@@ -508,7 +508,7 @@ mod tests {
     #[test]
     fn test_absorber() {
         assert_eq!(
-            default_mul(Element::Absorber),
+            default_mul(Element::Absorber(0.5)),
             origin_photon(Direction::Right, H, cx(FRAC_1_SQRT_2, 0.0))
         )
     }

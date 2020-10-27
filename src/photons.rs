@@ -4,34 +4,17 @@ mod elements;
 pub use dimensions::*;
 pub use elements::*;
 
-use crate::{operator::PartialDims, util::RepeatIter, Dims, Operator, PartialOperator, Vector};
+use crate::{
+    operator::PartialDims, util::RepeatIter, Complex, Dims, Operator, PartialOperator, Vector,
+};
 use alloc::vec::Vec;
+use core::mem::replace;
 use frunk::{
     indices::{Here, There},
     HNil,
 };
 use hashbrown::hash_map::HashMap;
 use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub struct Coord {
-    pub x: u16,
-    pub y: u16,
-}
-
-#[wasm_bindgen]
-impl Coord {
-    pub fn new(x: u16, y: u16) -> Coord {
-        Coord { x, y }
-    }
-}
-
-impl Coord {
-    pub fn as_indicator(&self) -> Operator<Hlist![PosX, PosY]> {
-        Operator::indicator(hlist![PosX(self.x), PosY(self.y)])
-    }
-}
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Grid {
@@ -46,21 +29,29 @@ pub struct Simulation {
     localized_ops_diff: Operator<SinglePhotonDims>,
 }
 
-type PhotonHlist<Tail = HNil> = Hlist![PosX, PosY, Direction, Polarization, ...Tail];
-type FirstPhotonIndices = Hlist![Here, Here, Here, Here];
+#[wasm_bindgen]
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Absorption {
+    pub coord: Coord,
+    pub photon_id: u32,
+    pub probability: f32,
+}
+
+type PhotonHlist<Tail = HNil> = Hlist![Coord, Direction, Polarization, ...Tail];
+type FirstPhotonIndices = Hlist![Here, Here, Here];
 
 pub trait NextIndices {
     type Next;
 }
 
-type PlusFour<T> = There<There<There<There<T>>>>;
-impl<A, B, C, D, Tail> NextIndices for Hlist![A, B, C, D, ...Tail] {
-    type Next = Hlist![PlusFour<A>, PlusFour<B>, PlusFour<C>, PlusFour<D>];
+type PlusThree<T> = There<There<There<T>>>;
+impl<A, B, C, Tail> NextIndices for Hlist![A, B, C, ...Tail] {
+    type Next = Hlist![PlusThree<A>, PlusThree<B>, PlusThree<C>];
 }
 
 pub trait MultiPhotonInteract<I, O, T> {
     type RevIndices;
-    fn interact(vec: &Vector<T>, operator: &Operator<I, O>) -> Vector<T>;
+    fn interact_diff(vec: &Vector<T>, operator: &Operator<I, O>) -> (Vector<T>, Vector<T>);
 }
 
 impl<I: Dims, O: Dims, T> MultiPhotonInteract<I, O, T> for PhotonHlist
@@ -69,8 +60,9 @@ where
 {
     type RevIndices = FirstPhotonIndices;
     #[inline(always)]
-    fn interact(vec: &Vector<T>, operator: &Operator<I, O>) -> Vector<T> {
-        operator.mul_vec_partial(vec) + vec
+    fn interact_diff(vec: &Vector<T>, operator: &Operator<I, O>) -> (Vector<T>, Vector<T>) {
+        let diff = operator.mul_vec_partial(vec);
+        (&diff + vec, diff)
     }
 }
 
@@ -86,9 +78,11 @@ where
 {
     type RevIndices = NextIndicesIter<I, O, T, Tail>;
     #[inline(always)]
-    fn interact(vec: &Vector<T>, operator: &Operator<I, O>) -> Vector<T> {
-        let vec = <PhotonHlist<Tail> as MultiPhotonInteract<I, O, T>>::interact(vec, operator);
-        operator.mul_vec_partial(&vec) + vec
+    fn interact_diff(vec: &Vector<T>, operator: &Operator<I, O>) -> (Vector<T>, Vector<T>) {
+        let (vec, prev_diff) =
+            <PhotonHlist<Tail> as MultiPhotonInteract<I, O, T>>::interact_diff(vec, operator);
+        let diff = operator.mul_vec_partial(&vec);
+        (vec + &diff, prev_diff + diff)
     }
 }
 
@@ -108,19 +102,19 @@ impl<E: MultiPhotonDims> PartialOperator<E> for PropagateAndCullOperator {
         Vector::from_values(vector.values().iter().filter_map(|(dims, val)| {
             let mut new_dims = dims.clone();
 
-            for hlist_pat![pos_x, pos_y, dir, ...] in new_dims.iter_mut() {
+            for hlist_pat![coord, dir, ...] in new_dims.iter_mut() {
                 match dir {
                     Direction::Right => {
-                        pos_x.0 = pos_x.0.checked_add(1).filter(|x| x < &self.width)?;
+                        coord.x = coord.x.checked_add(1).filter(|x| x < &self.width)?;
                     }
                     Direction::Up => {
-                        pos_y.0 = pos_y.0.checked_sub(1)?;
+                        coord.y = coord.y.checked_sub(1)?;
                     }
                     Direction::Left => {
-                        pos_x.0 = pos_x.0.checked_sub(1)?;
+                        coord.x = coord.x.checked_sub(1)?;
                     }
                     Direction::Down => {
-                        pos_y.0 = pos_y.0.checked_add(1).filter(|y| y < &self.height)?;
+                        coord.y = coord.y.checked_add(1).filter(|y| y < &self.height)?;
                     }
                 };
             }
@@ -130,13 +124,38 @@ impl<E: MultiPhotonDims> PartialOperator<E> for PropagateAndCullOperator {
     }
 }
 
-type OnePhotonDims = PhotonHlist<HNil>;
-type TwoPhotonDims = PhotonHlist<OnePhotonDims>;
-type ThreePhotonDims = PhotonHlist<TwoPhotonDims>;
+fn absorptions<E: MultiPhotonDims>(original: &Vector<E>, diff: &Vector<E>) -> Vec<Absorption>
+where
+    Vector<E>: core::fmt::Debug,
+{
+    let mut map: HashMap<(Coord, u32), f32> = HashMap::new();
+    for (dims, diff_value) in diff.values() {
+        for (photon_id, hlist_pat![coord, ...]) in dims.iter().enumerate() {
+            let old_value = original.get(dims).unwrap_or(Complex::ZERO);
+            let new_value = old_value + *diff_value;
+            let absorption = old_value.abs2() - new_value.abs2();
+            if absorption.abs() > 1.0e-6 {
+                map.entry((*coord, photon_id as u32))
+                    .and_modify(|v| *v += absorption)
+                    .or_insert(absorption);
+            }
+        }
+    }
+
+    map.into_iter()
+        .filter(|(_, probability)| probability.abs() > 1.0e-6)
+        .map(|((coord, photon_id), probability)| Absorption {
+            coord,
+            photon_id,
+            probability,
+        })
+        .collect()
+}
 
 impl Simulation {
     pub fn new(grid: &Grid) -> Self {
         let dir_pol_identity = Operator::<DimDirPol>::identity();
+
         Self {
             width: grid.width,
             height: grid.height,
@@ -166,11 +185,17 @@ impl Simulation {
     >(
         &self,
         vector: &Vector<D>,
-    ) -> Vector<D>
+    ) -> (Vector<D>, Vec<Absorption>)
     where
         Vector<D>: core::fmt::Debug,
     {
-        D::interact(&self.propagate(vector), &self.localized_ops_diff)
+        let propagated = self.propagate(vector);
+
+        let (interacted, diff) = D::interact_diff(&propagated, &self.localized_ops_diff);
+
+        // this assumes single photon
+
+        (interacted, absorptions(&propagated, &diff))
     }
 
     pub fn simulate<
@@ -179,50 +204,27 @@ impl Simulation {
     >(
         &'a self,
         initial_state: &'a Vector<D>,
-    ) -> impl Iterator<Item = Vector<D>> + 'a
+    ) -> impl Iterator<Item = (Vector<D>, Vec<Absorption>)> + 'a
     where
         Vector<D>: core::fmt::Debug,
     {
-        SimulateIter {
-            sim: self,
-            state: SimulateIterState::Initial(initial_state),
-        }
-    }
+        let state = if initial_state.norm_squared() > 1e-6 {
+            SimulateIterState::Generating(initial_state.clone(), Vec::new())
+        } else {
+            SimulateIterState::Done
+        };
 
-    // non-generic methods for FFI
-    pub fn simulate_one(
-        &self,
-        max_frames: usize,
-        v: &Vector<OnePhotonDims>,
-    ) -> Vec<Vector<OnePhotonDims>> {
-        self.simulate(v).take(max_frames).collect()
-    }
-
-    pub fn simulate_two(
-        &self,
-        max_frames: usize,
-        v: &Vector<TwoPhotonDims>,
-    ) -> Vec<Vector<TwoPhotonDims>> {
-        self.simulate(v).take(max_frames).collect()
-    }
-
-    pub fn simulate_three(
-        &self,
-        max_frames: usize,
-        v: &Vector<ThreePhotonDims>,
-    ) -> Vec<Vector<ThreePhotonDims>> {
-        self.simulate(v).take(max_frames).collect()
+        SimulateIter { sim: self, state }
     }
 }
 
 struct SimulateIter<'a, D> {
-    state: SimulateIterState<'a, D>,
+    state: SimulateIterState<D>,
     sim: &'a Simulation,
 }
 
-enum SimulateIterState<'a, D> {
-    Initial(&'a Vector<D>),
-    Generating(Vector<D>),
+enum SimulateIterState<D> {
+    Generating(Vector<D>, Vec<Absorption>),
     Done,
 }
 
@@ -231,30 +233,22 @@ where
     D: MultiPhotonDims + MultiPhotonInteract<SinglePhotonDims, SinglePhotonDims, D>,
     Vector<D>: core::fmt::Debug,
 {
-    type Item = Vector<D>;
+    type Item = (Vector<D>, Vec<Absorption>);
     fn next(&mut self) -> Option<Self::Item> {
         loop {
             match &self.state {
                 SimulateIterState::Done => return None,
-                SimulateIterState::Initial(vec) => {
-                    let next_vec = self.sim.propagate_and_interact(vec);
-                    self.state = if next_vec.norm_squared() < 1e-6 {
+                SimulateIterState::Generating(vec, _) => {
+                    let (next_vec, absorptions) = self.sim.propagate_and_interact(&vec);
+                    let new_state = if absorptions.is_empty() && next_vec.norm_squared() < 1e-6 {
                         SimulateIterState::Done
                     } else {
-                        SimulateIterState::Generating(next_vec)
+                        SimulateIterState::Generating(next_vec, absorptions)
                     };
-                }
-                SimulateIterState::Generating(vec) => {
-                    let next_vec = self.sim.propagate_and_interact(vec);
-                    let new_state = if next_vec.norm_squared() < 1e-6 {
-                        SimulateIterState::Done
-                    } else {
-                        SimulateIterState::Generating(next_vec)
-                    };
-                    if let SimulateIterState::Generating(vec) =
-                        core::mem::replace(&mut self.state, new_state)
+                    if let SimulateIterState::Generating(vec, absorptions) =
+                        replace(&mut self.state, new_state)
                     {
-                        return Some(vec);
+                        return Some((vec, absorptions));
                     } else {
                         unreachable!()
                     }
@@ -301,7 +295,7 @@ mod tests {
 
     macro_rules! state {
         ($($x:expr, $y:expr, $dir:tt, $pol:ident)|+) => {
-            hlist![$(PosX($x), PosY($y), expand_dir!($dir), Polarization::$pol),+]
+            hlist![$(Coord { x: $x, y: $y }, expand_dir!($dir), Polarization::$pol),+]
         };
     }
 
@@ -322,10 +316,11 @@ mod tests {
         let frame3 = photon![2, 1, ^, H];
         let frame4 = photon![2, 0, ^, H];
 
-        assert_eq!(sim.next(), Some(frame1));
-        assert_eq!(sim.next(), Some(frame2));
-        assert_eq!(sim.next(), Some(frame3));
-        assert_eq!(sim.next(), Some(frame4));
+        assert_eq!(sim.next(), Some((one_photon.clone(), Vec::new())));
+        assert_eq!(sim.next(), Some((frame1, Vec::new())));
+        assert_eq!(sim.next(), Some((frame2, Vec::new())));
+        assert_eq!(sim.next(), Some((frame3, Vec::new())));
+        assert_eq!(sim.next(), Some((frame4, Vec::new())));
         assert_eq!(sim.next(), None);
     }
 
@@ -340,8 +335,18 @@ mod tests {
         let two_photons = photon![1, 2, >, H | 2, 4, ^, V];
 
         let mut sim = simulation.simulate(&two_photons);
-        assert_eq!(sim.next(), Some(photon![2, 2, ^, H | 2, 3, ^, V]));
-        assert_eq!(sim.next(), Some(-photon![2, 1, ^, H | 2, 2, >, V]));
-        assert_eq!(sim.next(), Some(-photon![2, 0, ^, H | 3, 2, >, V]));
+        assert_eq!(sim.next(), Some((two_photons.clone(), Vec::new())));
+        assert_eq!(
+            sim.next(),
+            Some((photon![2, 2, ^, H | 2, 3, ^, V], Vec::new()))
+        );
+        assert_eq!(
+            sim.next(),
+            Some((-photon![2, 1, ^, H | 2, 2, >, V], Vec::new()))
+        );
+        assert_eq!(
+            sim.next(),
+            Some((-photon![2, 0, ^, H | 3, 2, >, V], Vec::new()))
+        );
     }
 }
