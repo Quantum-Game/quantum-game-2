@@ -14,6 +14,7 @@ export const $flags = Object.freeze({
   circleAbsorptions: getBoolFlag('ca'),
   /** dim background when experiment mode is active */
   dimBackground: getBoolFlag('dim'),
+  altMenu: getBoolFlag('altmenu'),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

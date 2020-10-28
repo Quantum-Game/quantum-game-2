@@ -31,6 +31,25 @@ module.exports = {
     // Force all instances of vue to be resolved as single module.
     // Multiple instances can be present when using "yarn link".
     config.resolve.alias.set('vue', path.dirname(require.resolve('vue')))
+
+    const vueRule = config.module.rule('vue')
+    const svgRule = config.module.rule('svg')
+
+    const prevConfig = svgRule.toConfig()
+    svgRule.uses.clear()
+
+    svgRule
+      .oneOf('inline')
+      .resourceQuery(/\?inline/)
+      .merge(vueRule.toConfig())
+      .test(undefined)
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader')
+      .end()
+      .end()
+      .oneOf('external')
+      .merge(prevConfig)
+      .test(undefined)
   },
   css: {
     loaderOptions: {

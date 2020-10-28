@@ -1,6 +1,6 @@
 import { useRaf, waitFor } from '@/mixins'
 import { storeNamespace } from '@/store'
-import { computed, proxyRefs, ref, watch } from 'vue'
+import { computed, proxyRefs, ref } from 'vue'
 import { InterpolatedParticle, interpolateParticle } from '../interpolation'
 import { Frame, Particle } from '../model'
 

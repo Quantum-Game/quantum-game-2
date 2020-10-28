@@ -3,7 +3,7 @@
     <AppMenu />
     <div class="main-layout-inner" layout="column" flex>
       <header layout="row between u5">
-        <AppMenuButton :class="{ absolute: menuAbsolute, inlineMenu: !menuAbsolute }" />
+        <AppMenuButton />
         <div flex>
           <slot name="header"></slot>
         </div>
@@ -36,7 +36,6 @@ export default defineComponent({
   },
   props: {
     leftClass: { type: String, default: '' },
-    menuAbsolute: { type: Boolean, default: true },
   },
 })
 </script>
@@ -48,10 +47,6 @@ export default defineComponent({
   min-height: 100vh;
   color: white;
   padding: 0 20px;
-}
-
-.inlineMenu {
-  padding: 10px 0;
 }
 
 @include media('>=large') {
