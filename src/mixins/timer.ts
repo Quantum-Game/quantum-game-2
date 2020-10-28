@@ -1,4 +1,4 @@
-import { onUnmounted, Ref, watchEffect } from 'vue'
+import { onUnmounted, watchEffect } from 'vue'
 
 interface Timer {
   /**

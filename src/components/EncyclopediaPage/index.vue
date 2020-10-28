@@ -1,5 +1,5 @@
 <template>
-  <AppLayout class="encyclopedia" leftClass="hide show-lg" :menuAbsolute="false">
+  <AppLayout class="encyclopedia" leftClass="hide show-lg">
     <template #main>
       <h3 v-if="crumbs.length > 0" class="breadcrumbs underlined">
         <template v-for="crumb in crumbs" :key="crumb.url">
