@@ -133,12 +133,7 @@ p {
   width: 100vw;
   min-width: 1300px;
   position: center;
-  height: 100px;
-  margin-bottom: 8rem;
   align-items: center;
-  @include media('<large') {
-    margin-bottom: 6rem;
-  }
 }
 
 .testimonials {
