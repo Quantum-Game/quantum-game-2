@@ -1,4 +1,5 @@
-import { assertUnreachable } from '@/types'
+import { assertUnreachable, Vec2 } from '@/types'
+import { Rotation } from './rotation'
 
 export enum Elem {
   // Basic
@@ -94,5 +95,128 @@ export function elemName(elem: Elem): string {
       return 'Vacuum jar'
     default:
       assertUnreachable(elem)
+  }
+}
+
+export type PieceWall = { type: Elem.Wall }
+export type PieceGate = { type: Elem.Gate }
+export type PieceLaser = { type: Elem.Laser; rotation: Rotation; polarization: number }
+export type PieceNonLinearCrystal = { type: Elem.NonLinearCrystal }
+export type PieceMirror = { type: Elem.Mirror; rotation: Rotation }
+export type PieceBeamSplitter = { type: Elem.BeamSplitter; rotation: Rotation; split: number }
+export type PiecePolarizingBeamSplitter = {
+  type: Elem.PolarizingBeamSplitter
+  rotation: Rotation
+}
+export type PieceCoatedBeamSplitter = {
+  type: Elem.CoatedBeamSplitter
+  rotation: Rotation
+  split: number
+}
+export type PieceCornerCube = { type: Elem.CornerCube }
+export type PieceDetector = { type: Elem.Detector; rotation: Rotation; goalThreshold: number }
+export type PieceRock = { type: Elem.Rock }
+export type PieceMine = { type: Elem.Mine }
+export type PieceAbsorber = { type: Elem.Absorber; absorption: number }
+export type PieceDetectorFour = { type: Elem.DetectorFour; goalThreshold: number }
+export type PiecePolarizer = { type: Elem.Polarizer; rotation: Rotation }
+export type PieceQuarterWavePlate = { type: Elem.QuarterWavePlate; rotation: Rotation }
+export type PieceHalfWavePlate = { type: Elem.HalfWavePlate; rotation: Rotation }
+export type PieceSugarSolution = {
+  type: Elem.SugarSolution
+  polarizationRotation: number
+}
+export type PieceFaradayRotator = {
+  type: Elem.FaradayRotator
+  rotation: number
+  polarizationRotation: number
+}
+export type PieceGlass = { type: Elem.Glass }
+export type PieceVacuumJar = { type: Elem.VacuumJar }
+export type PieceData =
+  | PieceWall
+  | PieceGate
+  | PieceLaser
+  | PieceNonLinearCrystal
+  | PieceMirror
+  | PieceBeamSplitter
+  | PiecePolarizingBeamSplitter
+  | PieceCoatedBeamSplitter
+  | PieceCornerCube
+  | PieceDetector
+  | PieceRock
+  | PieceMine
+  | PieceAbsorber
+  | PieceDetectorFour
+  | PiecePolarizer
+  | PieceQuarterWavePlate
+  | PieceHalfWavePlate
+  | PieceSugarSolution
+  | PieceFaradayRotator
+  | PieceGlass
+  | PieceVacuumJar
+
+/**
+ * bit flags enum
+ */
+export const enum PieceFlags {
+  Empty = 0,
+  Draggable = 1 << 0,
+  Rotateable = 1 << 1,
+}
+
+type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
+
+export type Piece = Expand<
+  Readonly<PieceData> & {
+    readonly flags: PieceFlags
+    readonly interactDelta: Vec2 | null
+  }
+>
+
+export function defaultPiece(type: Elem): Piece {
+  const common = {
+    flags: PieceFlags.Empty,
+    interactDelta: null,
+  }
+
+  switch (type) {
+    case Elem.Wall:
+    case Elem.Rock:
+    case Elem.Gate:
+    case Elem.Mine:
+    case Elem.Glass:
+    case Elem.VacuumJar:
+    case Elem.CornerCube:
+    case Elem.NonLinearCrystal:
+      return { ...common, type }
+    case Elem.Laser:
+      return { ...common, type, rotation: Rotation.Right, polarization: 0 }
+    case Elem.Mirror:
+      return { ...common, type, rotation: Rotation.Right }
+    case Elem.BeamSplitter:
+      return { ...common, type, rotation: Rotation.Right, split: 0.5 }
+    case Elem.PolarizingBeamSplitter:
+      return { ...common, type, rotation: Rotation.Right }
+    case Elem.CoatedBeamSplitter:
+      return { ...common, type, rotation: Rotation.Right, split: 0.5 }
+    case Elem.Detector:
+      return { ...common, type, rotation: Rotation.Right, goalThreshold: 1 }
+    case Elem.Absorber:
+      return { ...common, type, absorption: 0.5 }
+    case Elem.DetectorFour:
+      return { ...common, type, goalThreshold: 1 }
+    case Elem.Polarizer:
+      return { ...common, type, rotation: Rotation.Right }
+    case Elem.QuarterWavePlate:
+      return { ...common, type, rotation: Rotation.Right }
+    case Elem.HalfWavePlate:
+      return { ...common, type, rotation: Rotation.Right }
+    case Elem.SugarSolution:
+      return { ...common, type, polarizationRotation: 0.125 }
+    case Elem.FaradayRotator:
+      return { ...common, type, rotation: Rotation.Right, polarizationRotation: 0.125 }
+    default:
+      assertUnreachable(type)
   }
 }

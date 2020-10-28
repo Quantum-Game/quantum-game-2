@@ -88,3 +88,8 @@ export function assertUnreachable(_: never): never {
 export function emitType<T>(): (_: T) => true {
   return () => true
 }
+
+export interface Vec2 {
+  readonly x: number
+  readonly y: number
+}

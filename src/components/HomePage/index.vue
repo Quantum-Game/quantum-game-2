@@ -7,7 +7,7 @@
       <router-link to="/level/1">
         <AppButton class="button" type="big">PLAY GAME</AppButton>
       </router-link>
-      <router-link to="/sandbox">
+      <router-link to="/lab">
         <AppButton class="button" type="big">VIRTUAL LAB</AppButton>
       </router-link>
     </div>
@@ -52,7 +52,7 @@ import HomepageTestimonials from '@/components/HomePage/HomepageTestimonials.vue
 import HomepageInteractive from '@/components/HomePage/HomepageInteractive.vue'
 import HomepageHistory from '@/components/HomePage/HomepageHistory.vue'
 import AppCell from '@/components/Board/AppCell.vue'
-import { Elem, staticPiece } from '@/engine/model'
+import { Elem, defaultPiece } from '@/engine/model'
 import { defineComponent } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -72,7 +72,7 @@ export default defineComponent({
       version: process.env.VUE_APP_VERSION || 'unknown',
       commitHash: process.env.VUE_APP_GIT_HASH,
       commitDate: new Date(+(process.env.VUE_APP_GIT_DATE || 0) * 1000).toUTCString(),
-      piece: staticPiece(Elem.Rock),
+      piece: defaultPiece(Elem.Rock),
     }
   },
 })

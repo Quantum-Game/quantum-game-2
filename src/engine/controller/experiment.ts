@@ -46,6 +46,8 @@ export function experimentController(options: {
     return outcomes
   })
 
+  const fadeProgress = computed(() => Math.max(0, Math.min(1, (samples.value - 5) * 0.2)))
+
   function onStopped(complete: boolean) {
     if (!complete) {
       return stop()
@@ -105,6 +107,7 @@ export function experimentController(options: {
   }
 
   return proxyRefs({
+    fadeProgress,
     isRunning,
     samples,
     histogram,
@@ -117,6 +120,7 @@ export interface ExperimentController {
   readonly isRunning: boolean
   readonly samples: number
   readonly histogram: Map<Coord, number>
+  readonly fadeProgress: number
   play(): void
   stop(): void
 }

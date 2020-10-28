@@ -29,7 +29,7 @@ import AppCell from '@/components/Board/AppCell.vue'
 import EncyclopediaLinkList from '@/components/EncyclopediaPage/EncyclopediaLinkList.vue'
 
 import { defineComponent } from 'vue'
-import { Elem, elemName, Piece, staticPiece } from '@/engine/model'
+import { Elem, elemName, Piece, defaultPiece } from '@/engine/model'
 import { conceptNameList } from './loadData'
 
 interface LinkPiece {
@@ -38,23 +38,23 @@ interface LinkPiece {
 }
 
 const linkPieces: LinkPiece[] = [
-  { to: '/info/laser', piece: staticPiece(Elem.Laser) },
-  { to: '/info/detector', piece: staticPiece(Elem.Detector) },
-  { to: '/info/detector-four', piece: staticPiece(Elem.DetectorFour) },
-  { to: '/info/rock', piece: staticPiece(Elem.Rock) },
-  { to: '/info/mine', piece: staticPiece(Elem.Mine) },
-  { to: '/info/mirror', piece: staticPiece(Elem.Mirror) },
-  { to: '/info/corner-cube', piece: staticPiece(Elem.CornerCube) },
-  { to: '/info/beam-splitter', piece: staticPiece(Elem.BeamSplitter) },
-  { to: '/info/polarizing-beam-splitter', piece: staticPiece(Elem.PolarizingBeamSplitter) },
-  { to: '/info/sugar-solution', piece: staticPiece(Elem.SugarSolution) },
-  { to: '/info/faraday-rotator', piece: staticPiece(Elem.FaradayRotator) },
-  { to: '/info/polarizer', piece: staticPiece(Elem.Polarizer) },
-  { to: '/info/quarter-wave-plate', piece: staticPiece(Elem.QuarterWavePlate) },
-  { to: '/info/half-wave-plate', piece: staticPiece(Elem.HalfWavePlate) },
-  { to: '/info/glass', piece: staticPiece(Elem.Glass) },
-  { to: '/info/vacuum-jar', piece: staticPiece(Elem.VacuumJar) },
-  { to: '/info/absorber', piece: staticPiece(Elem.Absorber) },
+  { to: '/info/laser', piece: defaultPiece(Elem.Laser) },
+  { to: '/info/detector', piece: defaultPiece(Elem.Detector) },
+  { to: '/info/detector-four', piece: defaultPiece(Elem.DetectorFour) },
+  { to: '/info/rock', piece: defaultPiece(Elem.Rock) },
+  { to: '/info/mine', piece: defaultPiece(Elem.Mine) },
+  { to: '/info/mirror', piece: defaultPiece(Elem.Mirror) },
+  { to: '/info/corner-cube', piece: defaultPiece(Elem.CornerCube) },
+  { to: '/info/beam-splitter', piece: defaultPiece(Elem.BeamSplitter) },
+  { to: '/info/polarizing-beam-splitter', piece: defaultPiece(Elem.PolarizingBeamSplitter) },
+  { to: '/info/sugar-solution', piece: defaultPiece(Elem.SugarSolution) },
+  { to: '/info/faraday-rotator', piece: defaultPiece(Elem.FaradayRotator) },
+  { to: '/info/polarizer', piece: defaultPiece(Elem.Polarizer) },
+  { to: '/info/quarter-wave-plate', piece: defaultPiece(Elem.QuarterWavePlate) },
+  { to: '/info/half-wave-plate', piece: defaultPiece(Elem.HalfWavePlate) },
+  { to: '/info/glass', piece: defaultPiece(Elem.Glass) },
+  { to: '/info/vacuum-jar', piece: defaultPiece(Elem.VacuumJar) },
+  { to: '/info/absorber', piece: defaultPiece(Elem.Absorber) },
 ]
 
 export default defineComponent({

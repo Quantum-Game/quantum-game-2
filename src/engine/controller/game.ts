@@ -9,14 +9,9 @@ import {
   Vector,
   PieceFlags,
   hasFlags,
+  Piece,
 } from '@/engine/model'
 import { nextElementRotation } from '@/engine/elements'
-
-export enum SimulationVisType {
-  Laser,
-  QuantumWave,
-  Experiment,
-}
 
 export function gameController(options?: {
   initialState?: () => Vector | undefined
@@ -25,11 +20,7 @@ export function gameController(options?: {
   const level = ref<Level>()
   const sim = computed(() =>
     level.value != null
-      ? runSimulation(
-          level.value.board,
-          options?.maxSteps?.() ?? 40,
-          options?.initialState?.() ?? undefined
-        )
+      ? runSimulation(level.value.board, options?.maxSteps?.() ?? 50, options?.initialState?.())
       : null
   )
 
@@ -38,13 +29,13 @@ export function gameController(options?: {
   //   level.value?.board.pieces.delete(coord)
   // }
 
-  // function setPiece(coord: Coord, piece: Piece) {
-  //   level.value?.board.pieces.set(coord, piece)
-  // }
+  function setPiece(coord: Coord, piece: Piece) {
+    level.value?.board.pieces.set(coord, piece)
+  }
 
   function rotateCcw(coord: Coord) {
     const piece = level.value?.board.pieces.get(coord)
-    if (piece != null && hasFlags(piece.flags, PieceFlags.Rotateable)) {
+    if (piece != null && 'rotation' in piece && hasFlags(piece.flags, PieceFlags.Rotateable)) {
       level.value?.board.pieces.set(coord, {
         ...piece,
         rotation: nextElementRotation(piece.type, piece.rotation),
@@ -75,7 +66,7 @@ export function gameController(options?: {
     sim,
     level,
     // removePiece,
-    // setPiece,
+    setPiece,
     rotateCcw,
     loadLevel,
     importLevel: actionImport,
@@ -88,7 +79,7 @@ export interface GameController {
   readonly level: Level | undefined
 
   // removePiece(coord: Coord): void
-  // setPiece(coord: Coord, piece: Piece): void
+  setPiece(coord: Coord, piece: Piece): void
   rotateCcw(coord: Coord): void
 
   loadLevel(value: Level): void

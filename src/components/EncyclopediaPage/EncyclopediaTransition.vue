@@ -32,9 +32,17 @@ import { IGrid } from '@/engine/interfaces'
 import { MatrixViewer } from 'bra-ket-vue'
 import EncyclopediaBoard from '@/components/EncyclopediaPage/EncyclopediaBoard.vue'
 import EncyclopediaSection from '@/components/EncyclopediaPage/EncyclopediaSection.vue'
-import { Operator, Vector, Elements, Dimension } from 'quantum-tensors'
+import { Vector, Dimension } from 'quantum-tensors'
 import { elementsData } from '@/engine/elements'
-import { importElem, rotationFromDegrees, rotationToDegrees } from '@/engine/model'
+import {
+  defaultPiece,
+  importElem,
+  importPiece,
+  cellOperator,
+  rotationFromDegrees,
+  rotationToDegrees,
+  Elem,
+} from '@/engine/model'
 import { computed, defineComponent, ref, toRaw } from 'vue'
 
 export default defineComponent({
@@ -116,18 +124,10 @@ export default defineComponent({
       ]).outer(newVector)
     }
 
-    const operator = computed(
-      (): Operator => {
-        const cell = grid.value.cells[0]
-        return Elements.generateOperator({
-          x: cell.coord.x,
-          y: cell.coord.y,
-          element: cell.element,
-          rotation: cell.rotation ?? 0,
-          polarization: cell.polarization ?? 0,
-        }).op
-      }
-    )
+    const operator = computed(() => {
+      let piece = importPiece(grid.value.cells[0])?.piece ?? defaultPiece(Elem.Rock)
+      return cellOperator(piece)
+    })
 
     const operatorProperties = computed((): { name: string; is: boolean }[] => {
       const op = operator.value

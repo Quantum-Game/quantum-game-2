@@ -1,7 +1,8 @@
+import { LevelId } from '@/assets/data/levels'
 import { storeModule } from './storeInterfaces'
 
 interface GameState {
-  currentLevelID: number | null // check
+  currentLevelID: LevelId | null // check
   appMenuOpened: boolean
   errors: string[]
 }
@@ -15,7 +16,7 @@ export default storeModule({
   } as GameState,
   mutations: {
     // hovered cell functional
-    SET_CURRENT_LEVEL_ID(state, id: number | null) {
+    SET_CURRENT_LEVEL_ID(state, id: LevelId | null) {
       state.currentLevelID = id
     },
     // errors handling

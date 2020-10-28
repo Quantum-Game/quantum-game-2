@@ -49,7 +49,7 @@ export function hintsController(options: { board: () => Board | null }): Highlig
           coord: h.coord,
           order: h.order,
           elem: piece.type,
-          rotation: piece.rotation,
+          rotation: 'rotation' in piece ? piece.rotation : Rotation.Right,
         }
       })
     )

@@ -5,11 +5,7 @@
       :dialogue="rockTalk.dialogue"
       :link="rockTalk.link"
     />
-    <router-link
-      v-if="currentLevelID != '31'"
-      class="button-next"
-      :to="`/level/${currentLevelID + 1}`"
-    >
+    <router-link v-if="nextLevelLink" class="button-next" :to="nextLevelLink">
       <AppButton :overlay="true" :inline="false">NEXT LEVEL</AppButton>
     </router-link>
   </div>
@@ -22,6 +18,7 @@ import AppButton from '@/components/AppButton.vue'
 import { useRoute } from 'vue-router'
 import { storeNamespace } from '@/store'
 import { computed, defineComponent } from 'vue'
+import { campaignLink } from '@/assets/data/levels'
 
 const game = storeNamespace('game')
 
@@ -34,7 +31,8 @@ export default defineComponent({
     const currentLevelID = game.useState('currentLevelID')
     const route = useRoute()
     const rockTalk = computed(() => getRockTalkById(route.params.id as string))
-    return { currentLevelID, rockTalk }
+    const nextLevelLink = computed(() => campaignLink(currentLevelID.value, 1))
+    return { nextLevelLink, rockTalk }
   },
 })
 </script>

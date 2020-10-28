@@ -3,12 +3,12 @@
     <div
       v-if="shown"
       class="hint"
-      :class="hintClass"
-      :style="absolutePositionStyle"
+      :class="`hint--${hint.color}`"
+      :style="positionStyle"
       @click="shouldHide"
     >
-      <div class="close">x</div>
       <span>{{ hint.content }}</span>
+      <div v-if="closeable" class="close">x</div>
     </div>
   </transition>
 </template>
@@ -22,74 +22,21 @@ export default defineComponent({
   props: {
     hint: { type: Object as PropType<SpeechHint>, required: true },
     tileSize: { type: Number, default: 64 },
-    overlay: { type: String },
+    overridePosition: { type: Object as PropType<{ left: string; top: string }>, required: false },
+    closeable: { type: Boolean, default: true },
   },
   setup(props) {
     const shown = ref(true)
 
-    const hintClass = computed(() => {
-      return `hint--${props.hint.color} ${props.overlay === 'second' ? 'second' : ''}`
-    })
-
-    /**
-     * Top and left offsets calculation for when the tooltip
-     * complements the overlay image. The outcome depends on
-     * the overlay type and whether the tooltip is the "second"
-     * one in the dual-tooltip overlay.
-     * @returns an offsets object
-     */
-    function overlayPositionStyle() {
-      switch (props.overlay) {
-        // single rock
-        case 'rock':
-          return {
-            top: `30%`,
-            left: `50%`,
-          }
-        // the pile's first talking rock
-        case 'pile':
-        case 'pile2':
-          return {
-            top: `0%`,
-            left: `30%`,
-          }
-        // second of the two talking rocks
-        case 'second':
-          return {
-            top: `30%`,
-            left: `80%`,
-          }
-        default:
-          return {
-            top: `1%`,
-            left: `44%`,
-          }
+    const positionStyle = computed(() => {
+      if (props.overridePosition != null) {
+        return props.overridePosition
       }
-    }
-
-    /**
-     * Top and left offsets calulations for then the tooltip appears on the board
-     * @returns an offsets object
-     */
-    function boardPositionStyle() {
       const offset = props.hint.coord.gridCenter(props.tileSize)
-
       return {
         left: offset.x + 'px',
         top: offset.y + 'px',
       }
-    }
-
-    /**
-     * Positioning calculations depend on whether the tooltip
-     * appears against the board (this.hint.coord determine its position)
-     * or against an overlay image (then the position is "fixed" - relative to
-     * image/wrapper proportions)
-     * @returns an object with with the 'top' and 'left' fields -
-     * the vertical and horizonatal offsets
-     */
-    const absolutePositionStyle = computed(() => {
-      return props.overlay != null ? overlayPositionStyle() : boardPositionStyle()
     })
 
     /**
@@ -97,15 +44,14 @@ export default defineComponent({
      * depends on the context; disabled for overlays
      */
     function shouldHide(): void {
-      if (!props.overlay) {
+      if (props.closeable) {
         shown.value = false
       }
     }
 
     return {
       shown,
-      hintClass,
-      absolutePositionStyle,
+      positionStyle,
       shouldHide,
     }
   },
@@ -120,20 +66,25 @@ export default defineComponent({
   max-width: 500px;
   position: absolute;
   color: #fff;
-  font-size: 8px;
-  @include media('>=small') {
-    font-size: 12px;
-    padding: 8px;
-  }
+  font-size: 12px;
+  padding: 8px;
   @include media('>=medium') {
     font-size: 16px;
-    padding: 4px 12px 12px 12px;
+    padding: 12px 12px 12px 12px;
   }
   & .close {
+    user-select: none;
+    position: absolute;
+    right: 4px;
+    top: 2px;
     text-align: right;
     font-size: 10px;
     font-weight: 900;
     color: rgba(0, 0, 0, 0.5);
+    @include media('>=medium') {
+      right: 8px;
+      top: 4px;
+    }
   }
   &::after {
     content: ' ';
@@ -143,9 +94,6 @@ export default defineComponent({
     margin-left: -10px;
     border-width: 10px;
     border-style: solid;
-  }
-  &.second {
-    max-width: 10vw;
   }
   &.hint--fuchsia {
     background-color: $fuchsia;
