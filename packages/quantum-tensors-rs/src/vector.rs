@@ -200,7 +200,7 @@ impl<D: Dims> Vector<D> {
 
     /// ```compile_fail
     /// use frunk::Hlist;
-    /// use quanta::Vector;
+    /// use quantum_tensors::Vector;
     /// let t: Vector<Hlist![u8, u16]> = Vector::zeros();
     /// let impossible_permute: Vector<Hlist![u8]> = t.permute(); // should not compile
     /// ```

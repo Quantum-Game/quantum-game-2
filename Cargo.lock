@@ -160,14 +160,14 @@ version = "0.1.0"
 dependencies = [
  "console_error_panic_hook",
  "js-sys",
- "quanta",
+ "quantum-tensors",
  "wasm-bindgen",
  "wasm-bindgen-test",
  "wee_alloc",
 ]
 
 [[package]]
-name = "quanta"
+name = "quantum-tensors"
 version = "0.1.0"
 dependencies = [
  "approx",

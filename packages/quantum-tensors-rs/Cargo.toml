@@ -1,5 +1,5 @@
 [package]
-name = "quanta"
+name = "quantum-tensors"
 version = "0.1.0"
 authors = ["Paweł Grabarz <frizi09@gmail.com>"]
 edition = "2018"

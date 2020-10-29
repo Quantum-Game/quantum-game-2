@@ -8,7 +8,7 @@ pub use utils::*;
 #[global_allocator]
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 use js_sys::Array;
-use quanta::{
+use quantum_tensors::{
     hlist, hlist_pat, Absorption, Angle, Complex, Coord, Direction, Element, Grid, Hlist,
     Polarization, Simulation, SinglePhotonDims, Vector,
 };
