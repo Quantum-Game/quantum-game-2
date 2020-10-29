@@ -3,7 +3,6 @@ module.exports = {
   env: {
     node: true,
   },
-  ignorePatterns: ['qg-rust/*'],
   extends: [
     'plugin:vue/vue3-recommended',
     '@vue/typescript',

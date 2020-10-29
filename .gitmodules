@@ -1,3 +1,3 @@
-[submodule "src/assets/qg-encyclopedia"]
-	path = src/assets/qg-encyclopedia
+[submodule "qg-encyclopedia"]
+	path = packages/quantum-game/src/assets/qg-encyclopedia
 	url = git@github.com:Quantum-Game/qg-encyclopedia.git

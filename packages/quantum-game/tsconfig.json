@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "esnext",
     "module": "esnext",
     "strict": true,
@@ -9,12 +10,17 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "lib": ["esnext", "dom", "dom.iterable"],
-    /* this should be project specific, but is needed as a vetur hack for now */
-    /* should be removed once monorepo support is implemented: https://github.com/vuejs/vetur/pull/2377 */
-    "baseUrl": "packages/quantum-game",
+    "sourceMap": true,
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
   },
-  "exclude": ["node_modules"]
+  "include": [
+    "src/*.ts",
+    "src/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.json",
+    "tests/**/*.ts",
+  ],
 }
