@@ -23,7 +23,7 @@
         <div><IconLevels /></div>
         <span>LEVELS</span>
       </router-link>
-      <router-link to="/sandbox" class="nav-icon">
+      <router-link to="/lab" class="nav-icon">
         <div><IconLab /></div>
         <span>LAB</span>
       </router-link>
@@ -163,7 +163,7 @@ export default defineComponent({
   .bar2,
   .bar3 {
     width: 35px;
-    height: 3px;
+    height: 1px;
     background-color: rgb(255, 255, 255);
     margin: 8px 0;
     transition: transform 0.3s, opacity 0.3s;
