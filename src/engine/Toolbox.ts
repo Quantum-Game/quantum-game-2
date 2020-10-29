@@ -65,7 +65,14 @@ export default class Toolbox {
    * Create list of available tools
    */
   public fullElemList(): Elem[] {
-    return this.present().flatMap((name) => Array(this.getCount(name)).fill(name))
+    return this.present().flatMap((name) => {
+      const count = this.getCount(name)
+      if (Number.isFinite(count)) {
+        return Array(count).fill(name)
+      } else {
+        return []
+      }
+    })
   }
 
   /**

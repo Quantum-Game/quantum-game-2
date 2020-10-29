@@ -9,6 +9,7 @@ import {
   tryGetProp,
   tryGetString,
 } from '@/types'
+import { elementAngles } from '../elements'
 import Toolbox from '../Toolbox'
 import { Coord } from './coord'
 import { defaultPiece, Elem, exportElem, importElem, Piece, PieceFlags } from './elem'
@@ -184,7 +185,7 @@ export function hasAnyFlag(flags: PieceFlags, mask: PieceFlags): boolean {
 export function pieceFromTool(type: Elem, interactDelta: Vec2 | null): Piece {
   return {
     ...defaultPiece(type),
-    flags: PieceFlags.Draggable | PieceFlags.Rotateable,
+    flags: PieceFlags.Rotateable | (elementAngles(type).length > 1 ? PieceFlags.Draggable : 0),
     interactDelta,
   }
 }

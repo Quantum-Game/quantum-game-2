@@ -1,11 +1,10 @@
-import { Elem, Rotation } from './model'
+import { Elem } from './model/elem'
+import { Rotation } from './model/rotation'
 
 interface ElementData {
   description: string
   ascii: string[]
 }
-
-export const ElemVoid = Symbol('Void')
 
 const rot1 = [Rotation.Right]
 const rot4 = [Rotation.Right, Rotation.Up, Rotation.Left, Rotation.Down]
@@ -38,11 +37,7 @@ export function elementAngles(elem: Elem): Rotation[] {
   throw new Error(`invalid ascii definition size for element '${Elem[elem]}'`)
 }
 
-export const elementsData: Record<Elem | typeof ElemVoid, ElementData> = {
-  [ElemVoid]: {
-    description: 'The void...',
-    ascii: ['.'],
-  },
+export const elementsData: Record<Elem, ElementData> = {
   [Elem.Wall]: {
     description: 'Another brick in the wall.',
     ascii: ['▓'],
