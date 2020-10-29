@@ -1,5 +1,5 @@
 [workspace]
-members = [ "packages/qg-rust" ]
+members = [ "packages/qg-rust", "packages/quanta" ]
 
 [profile.release]
 # Tell `rustc` to optimize for small code size.
