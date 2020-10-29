@@ -76,9 +76,11 @@ button {
   }
 
   &:disabled {
-    opacity: 0.3;
     cursor: initial;
     outline: none;
+    color: #beabd8;
+    background-color: #6c508c;
+    border-bottom-color: #3e2954;
   }
 
   &.overlay-btn {
