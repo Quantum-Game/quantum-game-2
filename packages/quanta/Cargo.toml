@@ -1,0 +1,14 @@
+[package]
+name = "quanta"
+version = "0.1.0"
+authors = ["Paweł Grabarz <frizi09@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+frunk = { version = "0.3.1", default-features = false }
+approx = "0.3.2"
+# used instead of std HashMap for stable raw_entry api
+hashbrown = "0.9.1" 
+wasm-bindgen = "0.2.68"
