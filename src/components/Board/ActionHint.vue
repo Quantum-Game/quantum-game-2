@@ -60,10 +60,10 @@ export default defineComponent({
   transform-origin: 32px 32px;
   opacity: 0;
   &::v-deep([fill]) {
-    fill: white;
+    fill: $fuchsia;
   }
   &::v-deep([stroke]) {
-    stroke: white;
+    stroke: $fuchsia;
   }
 }
 
@@ -88,10 +88,10 @@ export default defineComponent({
     transform: rotate(3deg);
   }
   8% {
-    transform: rotate(-6deg);
+    transform: rotate(-10deg);
   }
   10% {
-    transform: rotate(6deg);
+    transform: rotate(10deg);
   }
   12% {
     transform: rotate(-4deg);
@@ -136,11 +136,12 @@ export default defineComponent({
     opacity: 0;
   }
   40% {
-    opacity: 0.8;
+    opacity: 0.2;
   }
 
   80% {
     opacity: 0;
+    transform: scale(1.8, 1.8);
   }
 }
 </style>
