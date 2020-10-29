@@ -85,6 +85,7 @@ export default defineComponent({
 
 h2 {
   padding-bottom: 5px;
+  text-transform: uppercase;
 }
 
 .underline {

@@ -55,12 +55,14 @@ export default defineComponent({
     margin-top: 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
     padding-bottom: 5px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
   }
 }
 
 .entries {
   columns: 330px;
-  column-rule: 1px solid rgba(255, 255, 255, 0.3);
+  column-rule: 1px solid rgba(255, 255, 255, 0.0);
   > .link {
     display: block;
   }
