@@ -125,7 +125,7 @@ export default defineComponent({
 
 // eslint-disable-next-line vue-scoped-css/no-unused-selector
 .nav-icon.router-link-active {
-  color: $fuchsia;
+  color: white;
 }
 
 .alt > .nav-icon {
@@ -148,7 +148,7 @@ export default defineComponent({
 // eslint-disable-next-line vue-scoped-css/no-unused-selector
 .alt > .nav-icon.router-link-active > span {
   color: $purple-dark;
-  background: $fuchsia;
+  background: $grey;
 }
 
 .menu-icon {
