@@ -41,6 +41,45 @@ yarn serve
 
 ![In-game screenshot from Quantum Game 2](public/img/qg2_social_media_screenshot.png)
 
+### Docker
+
+Alternatively, you can install dependencies using Docker.
+
+#### Building
+You can build this image by running the following command in the root of this repository:
+`docker build -t quantum-game-2:latest .`
+
+#### Running
+If your build completes sucessfully then you can run it like this:
+`docker run -d -p 8080:8080 --name quantume-game-2 quantum-game-2:latest`
+
+For a community built image try this:
+`docker run -d -p 8080:8080 --name quantume-game-2 spkane/quantum-game-2:latest`
+
+Watch the logs for the following message (it will take a minute or so to set everything up.):
+
+```shell
+$ docker logs -f quantume-game-2
+...
+<s> [webpack.Progress] 100%
+
+
+  App running at:
+  - Local:   http://localhost:8080/
+
+  It seems you are running Vue CLI inside a container.
+  Access the dev server via http://localhost:<your container's external mapped port>/
+
+  Note that the development build is not optimized.
+  To create a production build, run yarn build.
+
+No issues found.
+```
+
+Exit the logs by pressing `Control-C`.
+
+Finally, open up a web browser and point it to port 8080 on your Docker host.
+
 ## Contribution
 
 It as an open-source project and we appreciate contributions.
