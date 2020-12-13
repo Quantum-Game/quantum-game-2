@@ -80,6 +80,14 @@ Exit the logs by pressing `Control-C`.
 
 Finally, open up a web browser and point it to port 8080 on your Docker host.
 
+#### Deployment
+
+If you want to run Quantum Game 2 in Kubernetes then you can simply run something like this to start a single replica in your cluster.
+
+```shell
+$ kubectl apply -f kubectl ./quantum-game-2-deployment.yaml
+```
+
 ## Contribution
 
 It as an open-source project and we appreciate contributions.
