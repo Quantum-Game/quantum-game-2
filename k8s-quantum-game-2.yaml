@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: quantum-game-2-deployment
+  name: quantum-game-2
   labels:
     app: quantum-game-2
 spec:
