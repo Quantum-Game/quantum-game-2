@@ -26,7 +26,7 @@
     "d3-scale-chromatic": "^2.0.0",
     "firebase": "^7.23.0",
     "include-media": "^1.4.9",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "quantum-tensors": "^0.4.13",
     "register-service-worker": "^1.7.1",
     "tone": "^14.7.58",
